@@ -4,7 +4,7 @@ Configs: {
 		Headers.Modes: Modes
 
 		RevVanillaAIDisabled: {
-			Label: Revengeance Mode Vanilla AI Disabled
+			Label: Revengeance Mode Vanilla AI
 			Tooltip: ""
 		}
 	}
