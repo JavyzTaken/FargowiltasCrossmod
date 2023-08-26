@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Common
+namespace FargowiltasCrossmod.Core.Calamity
 {
     public class CalamityAIOverride : ModSystem
     {
