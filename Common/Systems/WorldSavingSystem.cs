@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Common
+namespace FargowiltasCrossmod.Common.Systems
 {
-    internal class SomeSystem
+    public class WorldSavingSystem : ModSystem
     {
     }
 }

@@ -11,6 +11,9 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CalamityMod">
+      <HintPath>C:\ModReader\CalamityMod\CalamityMod.dll</HintPath>
+    </Reference>
     <Reference Include="tModLoader">
       <HintPath>D:\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
     </Reference>
