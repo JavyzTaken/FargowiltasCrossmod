@@ -1,4 +1,6 @@
 displayName = Fargo's Cross-Mod DLC
 author = Javyz, Danny, Shipmans Agla, Zavarski
 version = 0.1
-modReferences = Fargowiltas
+modReferences = Fargowiltas@3.1.2
+modReferences = FargowiltasSouls@1.5.1
+weakReferences = CalamityMod@2.0.3
