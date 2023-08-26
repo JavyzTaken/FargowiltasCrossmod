@@ -15,9 +15,4 @@
       <HintPath>D:\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\" />
-    <Folder Include="Common\" />
-    <Folder Include="Content\Calamity\" />
-  </ItemGroup>
 </Project>
