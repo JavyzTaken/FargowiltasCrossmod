@@ -1,10 +1,9 @@
-Serves to make Fargo's Souls Mod's Eternity Difficulty function well with Calamity's difficulties, fixes bugs between the mods, and provide balance/progression changes across the mods.
+Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods, by making balance and progression changes, fixing bugs, and even adding new content and Enchantments!
 Officially maintained by Fargo's Mods developers.
+
+Currently supports:
+Calamity Mod
+
+Planned to support Thorium Mod in the future.
 Features several toggles to customize your Fargo's/Calamity cross-mod experience!
 
-Features may include:
---toggling between eternity and calamity boss behaviors when both are enabled
---toggling between eternity and calamity vanilla changes (gear rebalancing)
---postML progression locks to make souls and calamity playable together
---boss stat rebalancing to compensate for having both op fargo accessories and op cal gear
---finding and fixing important bugs between the mods
