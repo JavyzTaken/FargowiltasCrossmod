@@ -1,1 +1,11 @@
-# This file will automatically update with entries for new content after a build and reload
+Configs: {
+	CrossmodConfig: {
+		DisplayName: Crossmod Config
+		Headers.Modes: Modes
+
+		RevVanillaAIDisabled: {
+			Label: Revengeance Mode Vanilla AI
+			Tooltip: ""
+		}
+	}
+}
