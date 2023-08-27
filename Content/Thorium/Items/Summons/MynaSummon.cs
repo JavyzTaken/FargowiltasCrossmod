@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Summons
     [ExtendsFromMod("ThoriumMod")]
     public class MynaSummon : ModItem
     {
-        public override string Texture => "SoulsBetterDLC/Items/Placeholder";
+        public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
 
         public override void SetStaticDefaults()
         {
@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Summons
             Item.width = 20;
             Item.height = 20;
             Item.maxStack = 20;
-            Item.value = Item.sellPrice(0, 0, 2);
+            Item.value = Item.sellPrice(0, 15);
             Item.rare = ItemRarityID.Yellow;
             Item.useAnimation = 30;
             Item.useTime = 30;

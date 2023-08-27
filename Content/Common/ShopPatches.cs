@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Items.Summons;
 using System.Reflection;
+using static FargowiltasCrossmod.Core.Systems.DownedEnemiesSystem;
 
 namespace FargowiltasCrossmod.Content.Common
 {
@@ -51,10 +52,9 @@ namespace FargowiltasCrossmod.Content.Common
         {
             ModShopNames.Add("Thorium");
             var npcShop = new NPCShop(ModContent.NPCType<Deviantt>(), "Thorium");
-            //npcShop
-            //    .Add(new Item(ModContent.ItemType<GildedSummon>()) { shopCustomPrice = Item.buyPrice(0, 7) }, new Condition("Mods.SoulsBetterDLC.Conditions.GildedDown", () => DLCSystem.DLCDownedBools["GildedLycan"] && DLCSystem.DLCDownedBools["GildedBat"] && DLCSystem.DLCDownedBools["GildedSlime"]))
-            //    .Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(0, 15) }, new Condition("Mods.SoulsBetterDLC.Conditions.MynaDown", () => DLCSystem.DLCDownedBools["Myna"]))
-            //;
+
+            //npcShop.Add(ModContent.ItemType<GildedSummon>());
+            //TODO: find out what is causing a bug that makes adding anything to this shop not work
 
             npcShop.Register();
         }
@@ -74,12 +74,12 @@ namespace FargowiltasCrossmod.Content.Common
                 player.QuickSpawnItem(player.GetSource_OpenItem(itemType), itemType, 50);
             }
         }
-        internal static void SetupThoriumShop(Chest shop, ref int nextSlot)
-        {
-            shop.item[nextSlot].SetDefaults(ModContent.ItemType<ThoriumMod.Items.ArcaneArmor.YewWood>());
-            shop.item[nextSlot].shopCustomPrice = 10;
-            nextSlot++;
-        }
+        //internal static void SetupThoriumShop(Chest shop, ref int nextSlot)
+        //{
+        //    shop.item[nextSlot].SetDefaults(ModContent.ItemType<ThoriumMod.Items.ArcaneArmor.YewWood>());
+        //    shop.item[nextSlot].shopCustomPrice = 10;
+        //    nextSlot++;
+        //}
     }
 
     public static class LumberBoyPatches
@@ -116,8 +116,6 @@ namespace FargowiltasCrossmod.Content.Common
             }
             orig(self, firstButton, ref shopName);
         }
-
-        
 
         internal static void SetupCalamityShop(Chest shop, ref int nextSlot)
         {

@@ -24,14 +24,14 @@ namespace FargowiltasCrossmod.Core.Calamity
                 MonoModHooks.Modify(detourMethod, CalamityPreAI_ILEdit);
             }
         }
-        public static void CalamityPreAI_ILEdit(ILContext il)
+        public void CalamityPreAI_ILEdit(ILContext il)
         {
             var BossRushEvent = ModLoader.GetMod("CalamityMod").Code.GetType("CalamityMod.Events.BossRushEvent");
             var c = new ILCursor(il);
             //go to correct boss rush check
-            c.GotoNext(i => i.MatchLdsfld<CalamityMod.Events.BossRushEvent>("BossRushActive"));
+            //c.GotoNext(i => i.MatchLdsfld<CalamityMod.Events.BossRushEvent>("BossRushActive"));
             c.Index++;
-            c.GotoNext(i => i.MatchLdsfld<CalamityMod.Events.BossRushEvent>("BossRushActive"));
+            //c.GotoNext(i => i.MatchLdsfld<CalamityMod.Events.BossRushEvent>("BossRushActive"));
             c.Index++;
             //get label for skipping past ai changes
             ILLabel label = null;

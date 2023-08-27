@@ -797,9 +797,9 @@ Projectiles: {
 	LodeStonePlatform.DisplayName: Lode Stone Platform
 	MidExplosion.DisplayName: Sun Blast
 	SaucerDeathrayProj.DisplayName: Saucer Beam
-	Steel_Parry.DisplayName: Steel_ Parry
-	Templar_Fire.DisplayName: Templar_ Fire
-	Valadium_Chunk.DisplayName: Valadium_ Chunk
+	Steel_Parry.DisplayName: Steel Parry
+	Templar_Fire.DisplayName: Templar Fire
+	Valadium_Chunk.DisplayName: Valadium Chunk
 	MagicShard.DisplayName: Magic Shard
 	Magic.SulphurCloudHostile.DisplayName: Sulphur Cloud Hostile
 	MeleeShockwave.DisplayName: Melee Shockwave
@@ -826,11 +826,23 @@ Projectiles: {
 }
 
 Conditions: {
-	GildedDown: All Gilded Enemies Slain
-	MynaDown: Myna Killed
+	GildedDown: Mods.FargowiltasCrossmod.Conditions.GildedDown
+	MynaDown: Mods.FargowiltasCrossmod.Conditions.MynaDown
 }
 
 Keybinds: {
 	"Living wood roots.DisplayName": Living wood roots
 	"Steel parry.DisplayName": Steel parry
+}
+
+Configs: {
+	CrossmodConfig: {
+		DisplayName: Crossmod Config
+		Headers.Modes: Modes Header
+
+		RevVanillaAIDisabled: {
+			Label: Rev Vanilla A I Disabled
+			Tooltip: ""
+		}
+	}
 }

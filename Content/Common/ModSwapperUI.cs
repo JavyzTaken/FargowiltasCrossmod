@@ -37,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Common
         {
             _lastUpdateUiGameTime = gameTime;
             // Update this when we add more shop patches
-            if (Main.LocalPlayer.talkNPC > 0 && !Main.playerInventory/* && Main.npc[Main.LocalPlayer.talkNPC].ModNPC.Type == ModContent.NPCType<Fargowiltas.NPCs.Deviantt>()*/)
+            if (Main.LocalPlayer.talkNPC != -1 && !Main.playerInventory && Main.npc[Main.LocalPlayer.talkNPC].ModNPC.Type == ModContent.NPCType<Fargowiltas.NPCs.Deviantt>())
             {
                 if (SwapperInterface?.CurrentState != null)
                 {
@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Common
             if (npcChatMenuIndex != -1)
             {
                 layers.Insert(npcChatMenuIndex, new LegacyGameInterfaceLayer(
-                    "SoulsBetterDLC: ModSwapperInterface",
+                    "FargowiltasCrossmod: ModSwapperInterface",
                     delegate
                     {
                         if (_lastUpdateUiGameTime != null && SwapperInterface?.CurrentState != null)
