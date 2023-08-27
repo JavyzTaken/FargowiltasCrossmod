@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class Tentacle : ModProjectile
     {

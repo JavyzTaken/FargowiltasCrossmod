@@ -5,7 +5,7 @@ using Terraria.ID;
 using CalamityMod;
 using Microsoft.Xna.Framework;
 using Terraria.Graphics.Shaders;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {

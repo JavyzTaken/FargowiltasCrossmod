@@ -1,5 +1,5 @@
 ﻿
-using FargowiltasCrossmod.Core;
+
 using Terraria;
 using Terraria.ModLoader;
 

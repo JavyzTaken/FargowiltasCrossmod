@@ -5,7 +5,7 @@ using Terraria.ID;
 using System;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {

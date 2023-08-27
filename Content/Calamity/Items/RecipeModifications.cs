@@ -10,12 +10,9 @@ using Terraria.ID;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Materials;
 using FargowiltasSouls.Content.Items.Materials;
-using ThoriumMod.Items.Terrarium;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using CalamityMod.Items.Accessories.Wings;
 using CalamityMod.Items.Mounts;
-using ThoriumMod.Items.BossThePrimordials;
-using ThoriumMod.Items.BasicAccessories;
 using Terraria.GameContent.ItemDropRules;
 using Fargowiltas.Items.Tiles;
 using CalamityMod.Items.Weapons.Melee;
@@ -28,7 +25,7 @@ using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Fishing.FishingRods;
 using CalamityMod.Items.Tools;
 using Microsoft.CodeAnalysis.Operations;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {

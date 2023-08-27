@@ -1,5 +1,5 @@
 ﻿using CalamityMod.Items.PermanentBoosters;
-using FargowiltasCrossmod.Core;
+
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Consumables;
 using System;

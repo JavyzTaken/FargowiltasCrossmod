@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class TarragonRoot : ModProjectile
     {

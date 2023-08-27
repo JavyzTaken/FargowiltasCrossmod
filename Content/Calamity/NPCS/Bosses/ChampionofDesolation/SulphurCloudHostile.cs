@@ -4,7 +4,7 @@ using CalamityMod.Projectiles.Magic;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SulphurCloudHostile : MiasmaGas
     {

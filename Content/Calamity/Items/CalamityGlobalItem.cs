@@ -1,5 +1,5 @@
 ﻿
-using FargowiltasCrossmod.Core;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;

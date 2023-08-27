@@ -14,7 +14,7 @@ using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     //Boss for the force of exploration, initial creator: Shipmans Agla, complain to him if shits broken
     //Enchantments included (base attacks off): Wulfrum, Desert Prowler, Marnite, Aerospec

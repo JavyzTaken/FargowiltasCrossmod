@@ -9,7 +9,7 @@ using Terraria.GameContent;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
     //so i can slightly change how projectiles work without making a new one
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationGlobalProjectile : GlobalProjectile
     {

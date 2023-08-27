@@ -6,6 +6,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]

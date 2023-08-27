@@ -10,7 +10,7 @@ using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [AutoloadBossHead]
     public class DesolationHead : WormHead
@@ -356,7 +356,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
             }
         }
     }
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DesolationBody : WormBody
     {
@@ -451,7 +451,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
             //}
         }
     }
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DesolationTail : WormTail
     {

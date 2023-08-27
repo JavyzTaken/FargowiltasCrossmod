@@ -1,7 +1,7 @@
 ﻿
 using CalamityMod;
 using CalamityMod.NPCs.NormalNPCs;
-using FargowiltasCrossmod.Core;
+
 using FargowiltasCrossmod.Core.Calamity;
 using Terraria;
 using Terraria.ID;

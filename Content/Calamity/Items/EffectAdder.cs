@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using CalamityMod.Items.Accessories;
 using Terraria.Localization;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {

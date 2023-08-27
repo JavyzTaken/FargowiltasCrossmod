@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
     /// <summary>
     /// The base class for non-separating Worm enemies.
     /// </summary>
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public abstract class Worm : ModNPC
     {
@@ -128,7 +128,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
     /// <summary>
     /// The base class for head segment NPCs of Worm enemies
     /// </summary>
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public abstract class WormHead : Worm
     {
@@ -581,7 +581,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
                 NPC.netUpdate = true;
         }
     }
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public abstract class WormBody : Worm
     {
@@ -639,7 +639,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
     }
 
     // Since the body and tail segments share the same AI
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public abstract class WormTail : Worm
     {

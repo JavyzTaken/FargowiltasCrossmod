@@ -1,7 +1,7 @@
 ﻿using FargowiltasSouls.Core.Toggler;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {

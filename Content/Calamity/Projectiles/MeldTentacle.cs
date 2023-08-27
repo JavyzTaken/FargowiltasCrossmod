@@ -1,5 +1,5 @@
 ﻿using CalamityMod.Buffs.DamageOverTime;
-using FargowiltasCrossmod.Core;
+
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;

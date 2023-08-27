@@ -25,7 +25,7 @@ using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Fishing.FishingRods;
 using CalamityMod.Items.Tools;
 using Microsoft.CodeAnalysis.Operations;
-using FargowiltasCrossmod.Core;
+
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasSouls.Content.Items.Summons;
