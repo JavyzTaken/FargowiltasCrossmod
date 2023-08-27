@@ -1,31 +1,22 @@
-﻿using FargowiltasCrossmod.Common.Systems;
-using MonoMod.Cil;
-using MonoMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MonoMod.Cil;
+using CalamityMod.NPCs;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityAIOverride : ModSystem
     {
+        public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
+
         public override void Load()
         {
-            if (ModLoader.HasMod("CalamityMod"))
-            {
-                Type calamityDetourClass = ModLoader.GetMod("CalamityMod").Code.GetType("CalamityMod.NPCs.CalamityGlobalNPC");
-                MethodInfo detourMethod = calamityDetourClass.GetMethod("PreAI", BindingFlags.Public | BindingFlags.Instance);
-                MonoModHooks.Modify(detourMethod, CalamityPreAI_ILEdit);
-            }
+            MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);
         }
-        public static void CalamityPreAI_ILEdit(ILContext il)
+
+        private static void CalamityPreAI_ILEdit(ILContext il)
         {
-            var BossRushEvent = ModLoader.GetMod("CalamityMod").Code.GetType("CalamityMod.Events.BossRushEvent");
             var c = new ILCursor(il);
             //go to correct boss rush check
             c.GotoNext(i => i.MatchLdsfld<CalamityMod.Events.BossRushEvent>("BossRushActive"));
@@ -42,7 +33,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().RevVanillaAIDisabled);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
             c.Index -= 4;
-            ILLabel label2 = il.DefineLabel(c.Prev);
+            var label2 = il.DefineLabel(c.Prev);
 
             //go to checking for queen bee and go to the skipper after it
             c.GotoPrev(i => i.MatchLdcI4(222));
@@ -57,8 +48,6 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Remove();
             c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label2);
             //MonoModHooks.DumpIL(Instance, il);
-
-
         }
     }
 }
