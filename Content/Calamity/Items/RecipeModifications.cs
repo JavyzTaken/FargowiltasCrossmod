@@ -18,37 +18,22 @@ using ThoriumMod.Items.BossThePrimordials;
 using ThoriumMod.Items.BasicAccessories;
 using Terraria.GameContent.ItemDropRules;
 using Fargowiltas.Items.Tiles;
-using ThoriumMod.Items.Donate;
-using ThoriumMod.Items.NPCItems;
-using ThoriumMod.Items.BossBuriedChampion;
-using ThoriumMod.Items.Titan;
-using ThoriumMod.Items.BossThePrimordials.Aqua;
-using ThoriumMod.Items.BossLich;
-using ThoriumMod.Items.Depths;
-using ThoriumMod.Items.BossThePrimordials.Slag;
-using FargowiltasSouls.Content.Items.Accessories.Essences;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
-using ThoriumMod.Items.BossMini;
-using ThoriumMod.Items.Dragon;
 using CalamityMod.Items.Weapons.Magic;
-using ThoriumMod.Items.MagicItems;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Summon;
-using ThoriumMod.Items.SummonItems;
 using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
-using ThoriumMod.Items.Misc;
-using ThoriumMod.Items.HealerItems;
 using CalamityMod.Items.Fishing.FishingRods;
-using ThoriumMod.Items.TransformItems;
 using CalamityMod.Items.Tools;
 using Microsoft.CodeAnalysis.Operations;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
     //for putting mod stuff into souls recipes or vice versa
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityRecipesModifications : ModSystem
     {
         //for when 

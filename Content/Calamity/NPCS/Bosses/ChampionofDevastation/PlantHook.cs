@@ -10,7 +10,7 @@ using Terraria.GameContent;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDevastation
 {
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PlantHook : ModProjectile
     {
         public override string Texture => "Terraria/Images/NPC_" + NPCID.PlanterasHook;

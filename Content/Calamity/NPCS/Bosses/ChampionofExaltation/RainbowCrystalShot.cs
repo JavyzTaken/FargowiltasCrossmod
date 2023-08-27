@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class RainbowCrystalShot : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.RainbowCrystalExplosion;

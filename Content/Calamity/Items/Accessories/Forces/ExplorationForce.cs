@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationForce : BaseForce
     {
         public override void SetStaticDefaults()

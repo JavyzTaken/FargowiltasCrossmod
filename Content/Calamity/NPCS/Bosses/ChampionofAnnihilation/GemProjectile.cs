@@ -10,7 +10,7 @@ using Terraria.Audio;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilation
 {
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class GemProjectile : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Typeless/GemTechRedGem";

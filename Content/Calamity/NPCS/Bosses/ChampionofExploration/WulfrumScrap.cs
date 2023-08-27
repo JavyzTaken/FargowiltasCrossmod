@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class WulfrumScrap : ModProjectile
     {
         public override string Texture => "CalamityMod/Items/Materials/WulfrumMetalScrap";

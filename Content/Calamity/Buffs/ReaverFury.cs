@@ -1,9 +1,11 @@
 ﻿
+using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ReaverFury : ModBuff
     {
         public override void SetStaticDefaults()

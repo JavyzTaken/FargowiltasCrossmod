@@ -9,11 +9,12 @@ using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class BloodflareEnchantment : BaseEnchant
     {
         
