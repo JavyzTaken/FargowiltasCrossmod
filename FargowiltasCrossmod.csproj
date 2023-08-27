@@ -8,11 +8,57 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Thorium\Buffs\GildedSightDB.cs~RF1504f37.TMP" />
+    <None Remove="Content\Thorium\DragonMinionBody.png" />
+    <None Remove="Content\Thorium\DragonMinionBody2.png" />
+    <None Remove="Content\Thorium\DragonMinionHead.png" />
+    <None Remove="Content\Thorium\DragonMinionTail.png" />
+    <None Remove="Content\Thorium\FungusSpore.png" />
+    <None Remove="Content\Thorium\KluexBlast.png" />
+    <None Remove="Content\Thorium\KluexOrb.png" />
+    <None Remove="Content\Thorium\LivingWood_GrowRoots.png" />
+    <None Remove="Content\Thorium\LivingWood_Roots.png" />
+    <None Remove="Content\Thorium\LodeStonePlatform.png" />
+    <None Remove="Content\Thorium\Steel_Parry.png" />
+    <None Remove="Content\Thorium\temp\AstroEnchant.png" />
+    <None Remove="Content\Thorium\temp\DarksteelEnchant.png" />
+    <None Remove="Content\Thorium\temp\DevastationForce.png" />
+    <None Remove="Content\Thorium\temp\DragonEnchant.png" />
+    <None Remove="Content\Thorium\temp\EbonEnchant.png" />
+    <None Remove="Content\Thorium\temp\ExaltationForce.png" />
+    <None Remove="Content\Thorium\temp\ExplorationForce.png" />
+    <None Remove="Content\Thorium\temp\FungusEnchant.png" />
+    <None Remove="Content\Thorium\temp\LivingWoodEnchant.png" />
+    <None Remove="Content\Thorium\temp\LodeStoneEnchant.png" />
+    <None Remove="Content\Thorium\temp\NoviceClericEnchant.png" />
+    <None Remove="Content\Thorium\temp\SilkEnchant.png" />
+    <None Remove="Content\Thorium\temp\SteelEnchant.png" />
+    <None Remove="Content\Thorium\temp\TemplarEnchant.png" />
+    <None Remove="Content\Thorium\temp\ValadiumEnchant.png" />
+    <None Remove="Content\Thorium\Valadium_Chunk.png" />
+    <None Remove="localization\en-US.hjson" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CalamityMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
+    </Reference>
+    <Reference Include="Fargowiltas">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas2\Fargowiltas.dll</HintPath>
+    </Reference>
+    <Reference Include="FargowiltasSouls">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+    </Reference>
+    <Reference Include="ThoriumMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
+    </Reference>
     <Reference Include="tModLoader">
       <HintPath>D:\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Thorium\temp\" />
   </ItemGroup>
 </Project>
