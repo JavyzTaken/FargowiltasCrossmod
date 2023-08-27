@@ -8,4 +8,19 @@ Configs: {
 			Tooltip: ""
 		}
 	}
+
+	CalamityConfig: {
+		DisplayName: Calamity Config
+		Headers.Modes: Modes Header
+
+		RevVanillaAIDisabled: {
+			Label: Rev Vanilla A I Disabled
+			Tooltip: ""
+		}
+
+		EternityVanillaAIDisabled: {
+			Label: Eternity Vanilla A I Disabled
+			Tooltip: ""
+		}
+	}
 }
