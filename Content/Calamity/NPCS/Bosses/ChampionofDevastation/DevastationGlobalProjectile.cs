@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDevastation
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DevastationGlobalProjectile : GlobalProjectile
     {

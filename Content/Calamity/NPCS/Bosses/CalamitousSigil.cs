@@ -12,7 +12,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamitousSigil : ModItem
     {

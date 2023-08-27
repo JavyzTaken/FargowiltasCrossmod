@@ -2,7 +2,7 @@
 using Terraria.ModLoader;
 using Terraria.Localization;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {

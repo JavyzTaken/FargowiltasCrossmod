@@ -12,7 +12,7 @@ using System;
 using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {

@@ -1,6 +1,6 @@
 ﻿using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatBuffs;
-using FargowiltasCrossmod.Core;
+
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;

@@ -5,7 +5,7 @@ using ReLogic.Content;
 using Terraria.ModLoader;
 using Terraria;
 using Terraria.ID;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {

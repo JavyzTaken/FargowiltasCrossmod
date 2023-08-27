@@ -1,3 +1,4 @@
+global using FargowiltasCrossmod.Core;
 using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader;

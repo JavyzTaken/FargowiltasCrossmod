@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {

@@ -8,7 +8,7 @@ using ReLogic.Content;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationBlade : ModProjectile
     {

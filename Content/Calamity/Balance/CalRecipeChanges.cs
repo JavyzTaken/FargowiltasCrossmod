@@ -26,12 +26,16 @@ using CalamityMod.Items.Fishing.FishingRods;
 using CalamityMod.Items.Tools;
 using Microsoft.CodeAnalysis.Operations;
 
+using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls.Content.Items.Accessories.Forces;
+using FargowiltasSouls.Content.Items.Summons;
+using CalamityMod.Tiles.Furniture.CraftingStations;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
     //for putting mod stuff into souls recipes or vice versa
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalamityRecipesModifications : ModSystem
+    public class CalRecipeChanges : ModSystem
     {
         //for when 
         public override void PostAddRecipes()
@@ -39,20 +43,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
             //!!! WARNING !!!
             //Make sure condition to go into a recipe change is false if the change already happened !!!
             //else it will cause an infinite loop and game will not load and your computer will be set ablaze
+            //Check if the recipe contains one of the ingredients you're adding or removing.
 
-            bool FMSEdited = false;
-            bool SSSEdited = false;
-            bool ColossusEdited = false;
-            bool BerserkerEdited = false;
-            bool WizardEdited = false;
-            bool ConjuristEdited = false;
-            bool SniperEdited = false;
-            bool TrawlerEdited = false;
-            bool ShaperEdited = false;
 
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 Recipe recipe = Main.recipe[i];
+
+                #region Compatibility
                 if (recipe.HasResult(ModContent.ItemType<AeolusBoots>()) && recipe.HasIngredient(ItemID.TerrasparkBoots))
                 {
                     if (recipe.RemoveIngredient(ItemID.TerrasparkBoots))
@@ -63,12 +61,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                 if (recipe.HasResult(ModContent.ItemType<TracersCelestial>()) && recipe.HasIngredient<AngelTreads>())
                 {
                     if (recipe.RemoveIngredient(ModContent.ItemType<AngelTreads>()))
-                    recipe.AddIngredient(ModContent.ItemType<AeolusBoots>());
+                        recipe.AddIngredient(ModContent.ItemType<AeolusBoots>());
                 }
 
-                if (recipe.HasResult(ModContent.ItemType<SupersonicSoul>()) && !SSSEdited)
+                if (recipe.HasResult(ModContent.ItemType<SupersonicSoul>()) && recipe.HasIngredient(ModContent.ItemType<AeolusBoots>()))
                 {
-                    SSSEdited = true;
                     if (recipe.RemoveIngredient(ModContent.ItemType<AeolusBoots>()))
                         recipe.AddIngredient(ModContent.ItemType<TracersElysian>());
                     if (recipe.RemoveIngredient(ItemID.BundleofBalloons))
@@ -82,18 +79,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                     .AddIngredient(ModContent.ItemType<WulfrumAcrobaticsPack>())
                     .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<FlightMasterySoul>()) && !FMSEdited)
+                if (recipe.HasResult(ModContent.ItemType<FlightMasterySoul>()) && !recipe.HasIngredient(ModContent.ItemType<SkylineWings>()))
                 {
-                    FMSEdited = true;
                     recipe.AddIngredient(ModContent.ItemType<SkylineWings>())
                         .AddIngredient(ModContent.ItemType<HadarianWings>())
                         .AddIngredient(ModContent.ItemType<TarragonWings>())
                         .AddIngredient(ModContent.ItemType<SilvaWings>());
-                    
+
                 }
-                if (recipe.HasResult(ModContent.ItemType<ColossusSoul>()) && !ColossusEdited)
+                if (recipe.HasResult(ModContent.ItemType<ColossusSoul>()) && recipe.HasIngredient(ItemID.WormScarf))
                 {
-                    ColossusEdited = true;
                     if (recipe.RemoveIngredient(ItemID.WormScarf))
                         recipe.AddIngredient(ModContent.ItemType<BloodyWormScarf>());
                     if (recipe.RemoveIngredient(ItemID.BrainOfConfusion))
@@ -105,9 +100,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                     recipe.AddIngredient(ModContent.ItemType<TheCamper>())
                     .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<BerserkerSoul>()) && !BerserkerEdited)
+                if (recipe.HasResult(ModContent.ItemType<BerserkerSoul>()) && recipe.HasIngredient(ItemID.SharkToothNecklace))
                 {
-                    BerserkerEdited = true;
                     if (recipe.RemoveIngredient(ItemID.SharkToothNecklace))
                         recipe.AddIngredient(ModContent.ItemType<ReaperToothNecklace>());
                     if (recipe.RemoveIngredient(ItemID.FireGauntlet))
@@ -120,9 +114,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                             .AddIngredient(ModContent.ItemType<DevilsDevastation>())
                             .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<ArchWizardsSoul>()) && !WizardEdited)
+                if (recipe.HasResult(ModContent.ItemType<ArchWizardsSoul>()) && recipe.HasIngredient(ItemID.MagnetSphere))
                 {
-                    WizardEdited = true;
                     if (recipe.RemoveIngredient(ItemID.ArcaneFlower) && recipe.RemoveIngredient(ItemID.ManaCloak) && recipe.RemoveIngredient(ItemID.MagnetFlower) && recipe.RemoveIngredient(ItemID.CelestialEmblem))
                         recipe.AddIngredient(ModContent.ItemType<EtherealTalisman>());
                     if (recipe.RemoveIngredient(ItemID.MagnetSphere))
@@ -138,9 +131,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                     recipe.AddIngredient(ModContent.ItemType<VitriolicViper>())
                              .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<SnipersSoul>()) && !SniperEdited)
+                if (recipe.HasResult(ModContent.ItemType<SnipersSoul>()) && recipe.HasIngredient(ItemID.MoltenQuiver))
                 {
-                    SniperEdited = true;
                     if (recipe.RemoveIngredient(ItemID.MoltenQuiver) && recipe.RemoveIngredient(ItemID.StalkersQuiver))
                     {
                         recipe.AddIngredient(ModContent.ItemType<ElementalQuiver>());
@@ -165,9 +157,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                     recipe.AddIngredient(ModContent.ItemType<DynamoStemCells>());
                     recipe.AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<ConjuristsSoul>()) && !ConjuristEdited)
+                if (recipe.HasResult(ModContent.ItemType<ConjuristsSoul>()) && recipe.HasIngredient(ItemID.PygmyNecklace))
                 {
-                    ConjuristEdited = true;
                     if (recipe.RemoveIngredient(ItemID.PygmyNecklace))
                         recipe.AddIngredient(ModContent.ItemType<Nucleogenesis>());
                     if (recipe.RemoveIngredient(ItemID.Smolstar))
@@ -185,9 +176,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                     recipe.AddIngredient(ModContent.ItemType<GuidelightofOblivion>());
                     recipe.AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<TrawlerSoul>()) && !TrawlerEdited)
+                if (recipe.HasResult(ModContent.ItemType<TrawlerSoul>()) && recipe.HasIngredient(ItemID.ArcticDivingGear))
                 {
-                    TrawlerEdited = true;
                     if (recipe.RemoveIngredient(ItemID.ArcticDivingGear))
                     {
                         recipe.AddIngredient(ModContent.ItemType<AbyssalDivingSuit>());
@@ -200,14 +190,40 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                         .AddIngredient(ModContent.ItemType<TheDevourerofCods>())
                         .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                if (recipe.HasResult(ModContent.ItemType<WorldShaperSoul>()) && !ShaperEdited)
+                if (recipe.HasResult(ModContent.ItemType<WorldShaperSoul>()) && !recipe.HasIngredient(ModContent.ItemType<BlossomPickaxe>()))
                 {
-                    ShaperEdited = true;
                     recipe.AddIngredient(ModContent.ItemType<BlossomPickaxe>())
                         .AddIngredient(ModContent.ItemType<ArchaicPowder>())
                         .AddIngredient(ModContent.ItemType<SpelunkersAmulet>())
                         .AddIngredient(ModContent.ItemType<OnyxExcavatorKey>());
                 }
+                #endregion
+
+                #region Balance and Progression Locks
+                if (CalamityConfig.Instance.ProgressionChanges)
+                {
+                    if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient(ModContent.ItemType<DivineGeode>()))
+                    {
+                        recipe.AddIngredient(ModContent.ItemType<DivineGeode>(), 4);
+                    }
+                    if (recipe.HasResult(ModContent.ItemType<AbomsCurse>()) && !recipe.HasIngredient(ModContent.ItemType<AuricBar>()))
+                    {
+                        recipe.AddIngredient(ModContent.ItemType<AuricBar>(), 2);
+                    }
+                    List<int> Tier2Souls = new List<int>() 
+                    {
+                        ModContent.ItemType<TerrariaSoul>(), 
+                    };
+                    if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ModContent.ItemType<ShadowspecBar>()))
+                    {
+                        recipe.AddIngredient(ModContent.ItemType<ShadowspecBar>(), 5);
+                        if (recipe.RemoveTile(ModContent.TileType<CrucibleCosmosSheet>()))
+                        {
+                            recipe.AddTile(ModContent.TileType<DraedonsForge>());
+                        }
+                    }
+                }
+                #endregion
             }
         }
     }

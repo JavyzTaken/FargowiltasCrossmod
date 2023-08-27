@@ -10,7 +10,7 @@ using Terraria.DataStructures;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
-    [JITWhenModsEnabled("CalamityMod")]
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AuricSoul : ModNPC
     {

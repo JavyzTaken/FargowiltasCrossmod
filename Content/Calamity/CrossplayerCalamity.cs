@@ -7,7 +7,7 @@ using Terraria.GameInput;
 using Terraria.DataStructures;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls.Core.ModPlayers;
-using FargowiltasCrossmod.Core;
+
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
