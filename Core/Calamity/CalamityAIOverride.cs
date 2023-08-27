@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label = null;
             c.GotoNext(i => i.MatchBrfalse(out label));
             c.Index -= 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CrossmodConfig>().RevVanillaAIDisabled);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().RevVanillaAIDisabled);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);
@@ -108,7 +108,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label3 = null;
             c.GotoNext(i => i.MatchBneUn(out label3));
             c.Index -= 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CrossmodConfig>().RevVanillaAIDisabled);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().RevVanillaAIDisabled);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label3);
             c.Index -= 4;
             var label4 = il.DefineLabel(c.Prev);
