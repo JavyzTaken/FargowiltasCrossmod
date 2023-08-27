@@ -132,7 +132,13 @@ namespace FargowiltasCrossmod.Content.Calamity
             Prismatic = false;
             FearOfTheValkyrie = false;
             Crocket = false;
+            if (!Gemtech)
+            {
+                GemTechTimer = 0;
+                HeldItem = null;
+            }
             Gemtech = false;
+            
 
             ExploEffects = false;
             DevastEffects = false;
@@ -361,6 +367,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (FearOfTheValkyrie)
             {
                 FearmongerEffects();
+            }
+            if (Gemtech)
+            {
+                GemTechEffects();
             }
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
