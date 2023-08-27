@@ -14,7 +14,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [AutoloadEquip(EquipType.Wings)]
     public class DaedalusEnchantment : BaseEnchant
     {

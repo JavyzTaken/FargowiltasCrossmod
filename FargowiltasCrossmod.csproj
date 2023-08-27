@@ -42,21 +42,7 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="CalamityMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
-    </Reference>
-    <Reference Include="Fargowiltas">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
-    </Reference>
-    <Reference Include="FargowiltasSouls">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
-    </Reference>
-    <Reference Include="ThoriumMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
-    </Reference>
-    <Reference Include="tModLoader">
-      <HintPath>D:\Steam\steamapps\common\tModLoader\tModLoader.dll</HintPath>
-    </Reference>
+    <Reference Include="Libraries\*.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Thorium\temp\" />

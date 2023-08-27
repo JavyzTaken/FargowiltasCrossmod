@@ -9,10 +9,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MarniteSword : ModProjectile
     {
         public override void SetStaticDefaults()

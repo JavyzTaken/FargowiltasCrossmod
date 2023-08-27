@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [AutoloadEquip(EquipType.Wings)]
     public class RuffianEnchantment : BaseEnchant
     {

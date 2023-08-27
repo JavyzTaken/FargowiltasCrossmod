@@ -17,7 +17,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MolluskEnchantment : BaseEnchant
     {
         
@@ -81,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
         }
     }
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MolluskGNPC : GlobalNPC
     {
         public override bool InstancePerEntity => true;

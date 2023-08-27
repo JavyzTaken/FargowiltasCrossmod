@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilation
 {
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class Corvid : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Summon/PowerfulRaven";

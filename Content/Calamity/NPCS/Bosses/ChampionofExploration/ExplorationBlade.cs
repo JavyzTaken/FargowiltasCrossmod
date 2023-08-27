@@ -9,7 +9,7 @@ using ReLogic.Content;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationBlade : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.GladiusStab;

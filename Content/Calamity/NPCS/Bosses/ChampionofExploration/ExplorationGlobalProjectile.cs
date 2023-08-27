@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
     //so i can slightly change how projectiles work without making a new one
     [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationGlobalProjectile : GlobalProjectile
     {
         public override void SetDefaults(Projectile projectile)
