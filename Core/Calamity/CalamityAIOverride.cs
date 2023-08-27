@@ -39,7 +39,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Index -= 3;
             //add new check and get label for skipping to it
 
-            c.EmitDelegate(() => ModContent.GetInstance<CrossmodConfig>().RevVanillaAIDisabled);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().RevVanillaAIDisabled);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);
