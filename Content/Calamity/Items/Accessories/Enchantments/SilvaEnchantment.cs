@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod("CalamityMod")]
     public class SilvaEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(161, 255, 107);
         public override void SetStaticDefaults()
         {

@@ -530,5 +530,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 PrismaticTrigger();
             }
         }
+        
     }
+    
 }

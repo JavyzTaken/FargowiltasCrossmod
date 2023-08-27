@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod("CalamityMod")]
     public class BloodflareEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(204, 42, 60);
         public override void SetStaticDefaults()
         {

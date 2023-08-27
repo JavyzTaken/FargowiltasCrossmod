@@ -46,7 +46,7 @@
       <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
     </Reference>
     <Reference Include="Fargowiltas">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas2\Fargowiltas.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
     </Reference>
     <Reference Include="FargowiltasSouls">
       <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>

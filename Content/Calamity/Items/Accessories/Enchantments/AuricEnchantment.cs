@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod("CalamityMod")]
     public class AuricEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(227, 174, 0);
         public override void SetStaticDefaults()
         {

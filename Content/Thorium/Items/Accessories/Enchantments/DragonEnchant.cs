@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod("ThoriumMod")]
     public class DragonEnchant : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => Color.Green;
 
         public override void SetStaticDefaults()

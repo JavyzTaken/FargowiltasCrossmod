@@ -31,5 +31,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
             }
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
         }
+        public override bool? UseItem(Item item, Player player)
+        {
+            return base.UseItem(item, player);
+        }
     }
 }

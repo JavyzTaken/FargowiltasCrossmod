@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod("CalamityMod")]
     public class OmegaBlueEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(30, 30, 130);
         public override void SetStaticDefaults()
         {

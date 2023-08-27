@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class AstroEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.LightBlue;
-        public override string wizardEffect => "";
+        
 
         public override void SetStaticDefaults()
         {
