@@ -847,7 +847,11 @@ Configs: {
 
 	CalamityConfig: {
 		DisplayName: Calamity Config
-		Headers.Modes: Modes Header
+
+		Headers: {
+			Modes: Modes Header
+			Balance: Balance
+		}
 
 		RevVanillaAIDisabled: {
 			Label: Rev Vanilla A I Disabled
@@ -857,6 +861,16 @@ Configs: {
 		EternityVanillaAIDisabled: {
 			Label: Eternity Vanilla A I Disabled
 			Tooltip: ""
+		}
+
+		ProgressionChanges: {
+			Label: Calamity/Souls Progression changes
+			Tooltip: "Changes recipes to make Calamity and Souls mod "
+		}
+
+		BalanceChanges: {
+			Label: Calamity/Souls Balance changes
+			Tooltip: Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience.
 		}
 	}
 }

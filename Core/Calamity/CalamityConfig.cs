@@ -11,11 +11,21 @@ namespace FargowiltasCrossmod.Core.Calamity
         public static CalamityConfig Instance => ModContent.GetInstance<CalamityConfig>();
 
         [Header("Modes")] // Title
+
         [DefaultValue(true)] // This sets the configs default value.
         public bool RevVanillaAIDisabled; 
 
         [DefaultValue(false)] // This sets the configs default value.
         public bool EternityVanillaAIDisabled;
+
+        [Header("Balance")] // Title
+
+        [DefaultValue(true)] // This sets the configs default value.
+        [ReloadRequired]
+        public bool ProgressionChanges;
+
+        [DefaultValue(true)] // This sets the configs default value.
+        public bool BalanceChanges;
 
     }
 }
