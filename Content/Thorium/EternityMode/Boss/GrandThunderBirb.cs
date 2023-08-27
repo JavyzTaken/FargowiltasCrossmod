@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             None,
             KluexMoving,
             HorizontalDashs,
-            Storm,
+            //Storm,
         }
 
         AIMode currentMode;
@@ -264,11 +264,11 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
 
                         break;
                     }
-                case AIMode.Storm:
-                    {
-                        npc.TargetClosest();
-                        break;
-                    }
+                //case AIMode.Storm:
+                //    {
+                //        npc.TargetClosest();
+                //        break;
+                //    }
                 default: break;
             }
             return false;
