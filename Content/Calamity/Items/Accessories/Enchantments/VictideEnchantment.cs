@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod("CalamityMod")]
     public class VictideEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(255, 233, 197);
         public override void SetStaticDefaults()
         {

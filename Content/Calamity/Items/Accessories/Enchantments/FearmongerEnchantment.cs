@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     public class FearmongerEnchantment : BaseEnchant
     {
         protected override Color nameColor => new(81, 99, 123);
-        public override string wizardEffect => "";
+        
         public override void SetStaticDefaults()
         {
 

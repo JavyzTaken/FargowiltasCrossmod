@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     public class ReaverEnchantment : BaseEnchant
     {
         protected override Color nameColor => new Color(145, 203, 102);
-        public override string wizardEffect => "";
+        
 
         public override void SetStaticDefaults()
         {

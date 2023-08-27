@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod("ThoriumMod")]
     public class LivingWoodEnchant : BaseEnchant
     {
-        public override string wizardEffect => "Shoots high-velocity bullets instead of arrows";
+        
         protected override Color nameColor => Color.Brown;
 
         public override void SetStaticDefaults()

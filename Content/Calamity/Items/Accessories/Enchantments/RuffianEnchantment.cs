@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [AutoloadEquip(EquipType.Wings)]
     public class RuffianEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(160, 185, 213);
         public override void SetStaticDefaults()
         {

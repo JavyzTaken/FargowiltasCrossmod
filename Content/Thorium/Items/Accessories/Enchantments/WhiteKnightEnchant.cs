@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         protected override Color nameColor => Color.Silver;
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
-        public override string wizardEffect => "TBD";
+        
         public override void SetStaticDefaults()
         {
 

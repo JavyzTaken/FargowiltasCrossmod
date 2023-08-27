@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     public class BringerEnchantment : BaseEnchant
     {
         public int peaceTimer;
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new Color(128, 188, 67);
 
         public override void SetStaticDefaults()

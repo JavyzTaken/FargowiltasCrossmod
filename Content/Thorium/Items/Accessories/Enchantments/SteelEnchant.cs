@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class SteelEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.DarkGray;
-        public override string wizardEffect => "Parries cause explosions";
+        
 
         public override void SetStaticDefaults()
         {

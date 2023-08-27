@@ -817,6 +817,12 @@ Projectiles: {
 	OrbitGem.DisplayName: Orbit Gem
 	RogueSoul.DisplayName: Rogue Soul
 	LineTelegraph.DisplayName: Line Telegraph
+	GemTechMagic.DisplayName: Gem Tech Magic
+	GemTechMelee.DisplayName: Gem Tech Melee
+	GemTechMeleeWave.DisplayName: Gem Tech Melee Wave
+	GemTechRanged.DisplayName: Gem Tech Ranged
+	GemTechRogue.DisplayName: Gem Tech Rogue
+	GemTechSummon.DisplayName: Gem Tech Summon
 }
 
 Conditions: {

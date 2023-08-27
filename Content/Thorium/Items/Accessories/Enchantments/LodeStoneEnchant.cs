@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod("ThoriumMod")]
     public class LodeStoneEnchant : BaseEnchant
     {
-        public override string wizardEffect => "Summons a third platform";
+        
         protected override Color nameColor => Color.Brown;
 
         public override void SetStaticDefaults()

@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments // 
     [ExtendsFromMod("ThoriumMod")]
     public class TemplarEnchant : BaseEnchant
     {
-        public override string wizardEffect => "TBD";
+        
         protected override Color nameColor => Color.PaleVioletRed;
 
         public override void SetStaticDefaults()

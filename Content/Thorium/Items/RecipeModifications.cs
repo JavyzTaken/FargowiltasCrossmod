@@ -7,13 +7,9 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
-using CalamityMod.Items.Accessories;
-using CalamityMod.Items.Materials;
 using FargowiltasSouls.Content.Items.Materials;
 using ThoriumMod.Items.Terrarium;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
-using CalamityMod.Items.Accessories.Wings;
-using CalamityMod.Items.Mounts;
 using ThoriumMod.Items.BossThePrimordials;
 using ThoriumMod.Items.BasicAccessories;
 using Terraria.GameContent.ItemDropRules;
@@ -27,22 +23,13 @@ using ThoriumMod.Items.BossLich;
 using ThoriumMod.Items.Depths;
 using ThoriumMod.Items.BossThePrimordials.Slag;
 using FargowiltasSouls.Content.Items.Accessories.Essences;
-using CalamityMod.Items.Weapons.Melee;
-using CalamityMod.Items.Weapons.DraedonsArsenal;
 using ThoriumMod.Items.BossMini;
 using ThoriumMod.Items.Dragon;
-using CalamityMod.Items.Weapons.Magic;
 using ThoriumMod.Items.MagicItems;
-using CalamityMod.Items.Weapons.Ranged;
-using CalamityMod.Items.Weapons.Summon;
 using ThoriumMod.Items.SummonItems;
-using CalamityMod.Items.Fishing.BrimstoneCragCatches;
-using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using ThoriumMod.Items.Misc;
 using ThoriumMod.Items.HealerItems;
-using CalamityMod.Items.Fishing.FishingRods;
 using ThoriumMod.Items.TransformItems;
-using CalamityMod.Items.Tools;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items
@@ -83,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items
                             .AddIngredient(ModContent.ItemType<WeightedWinglets>())
                             .AddIngredient(ModContent.ItemType<SpectralFang>())
                             .AddIngredient(ModContent.ItemType<MoltenCollar>())
-                            .AddIngredient(ModContent.ItemType<WulfrumAcrobaticsPack>())
+                            
                             .AddIngredient(ModContent.ItemType<TheOmegaCore>());
                 }
                 if (recipe.HasResult(ModContent.ItemType<FlightMasterySoul>()) && !FMSEdited)

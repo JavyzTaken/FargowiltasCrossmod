@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
+    [ExtendsFromMod("CalamityMod")]
     public class BrimflameBuff : ModBuff
     {
         public override string Texture => "CalamityMod/Buffs/StatBuffs/BrimflameFrenzyBuff";

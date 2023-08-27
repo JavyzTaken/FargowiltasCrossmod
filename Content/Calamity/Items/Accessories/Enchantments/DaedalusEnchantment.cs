@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [AutoloadEquip(EquipType.Wings)]
     public class DaedalusEnchantment : BaseEnchant
     {
-        public override string wizardEffect => "";
+        
         protected override Color nameColor => new(132, 212, 246);
         public override void SetStaticDefaults()
         {

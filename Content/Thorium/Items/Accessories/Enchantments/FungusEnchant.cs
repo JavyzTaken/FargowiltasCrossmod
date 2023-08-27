@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class FungusEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.LightBlue;
-        public override string wizardEffect => "";
+        
 
         public override void SetStaticDefaults()
         {
