@@ -834,3 +834,29 @@ Keybinds: {
 	"Living wood roots.DisplayName": Living wood roots
 	"Steel parry.DisplayName": Steel parry
 }
+Configs: {
+	CrossmodConfig: {
+		DisplayName: Crossmod Config
+		Headers.Modes: Modes
+
+		RevVanillaAIDisabled: {
+			Label: Revengeance Mode Vanilla AI
+			Tooltip: ""
+		}
+	}
+
+	CalamityConfig: {
+		DisplayName: Calamity Config
+		Headers.Modes: Modes Header
+
+		RevVanillaAIDisabled: {
+			Label: Rev Vanilla A I Disabled
+			Tooltip: ""
+		}
+
+		EternityVanillaAIDisabled: {
+			Label: Eternity Vanilla A I Disabled
+			Tooltip: ""
+		}
+	}
+}
