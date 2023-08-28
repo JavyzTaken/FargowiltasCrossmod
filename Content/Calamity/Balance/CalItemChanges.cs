@@ -2,6 +2,7 @@
 using CalamityMod.Items.PermanentBoosters;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Core.ModPlayers;
 using System;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -46,6 +48,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (MutantsPactSlot)
                 {
                     MutantPactShouldBeEnabled = true; //store if the slot is enabled
+                    DropPactSlot();
                     MutantsPactSlot = false; //turn it off since celestial onion slot is replacing it
                 }
             }
@@ -61,6 +64,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void LoadData(TagCompound tag)
         {
             MutantPactShouldBeEnabled = tag.GetBool($"{Mod.Name}.{Player.name}.MutantPactShouldBeEnabled");
+        }
+
+        private void DropPactSlot()
+        {
+            //this is ugly but it has to be like this
+            void DropItem(Item item)
+            {
+                int i = Item.NewItem(Player.GetSource_DropAsItem(), Player.Center, item);
+                if (i != Main.maxItems && Main.item[i] != null)
+                {
+                    //not needed apparently
+                }
+            }
+            void DropSlot(ref ModAccessorySlot slot)
+            {
+                DropItem(slot.FunctionalItem);
+                slot.FunctionalItem = new();
+                DropItem(slot.VanityItem);
+                slot.VanityItem = new();
+                DropItem(slot.DyeItem);
+                slot.DyeItem = new();
+                //making dummy items because nulling ModAccessorySlot items crashes the game because of course it does
+            }
+            ModAccessorySlot eSlot0 = LoaderManager.Get<AccessorySlotLoader>().Get(ModContent.GetInstance<EModeAccessorySlot0>().Type, Player);
+            ModAccessorySlot eSlot1 = LoaderManager.Get<AccessorySlotLoader>().Get(ModContent.GetInstance<EModeAccessorySlot1>().Type, Player);
+            ModAccessorySlot eSlot2 = LoaderManager.Get<AccessorySlotLoader>().Get(ModContent.GetInstance<EModeAccessorySlot2>().Type, Player);
+            DropSlot(ref eSlot0);
+            DropSlot(ref eSlot1);
+            DropSlot(ref eSlot2); 
         }
     }
 }
