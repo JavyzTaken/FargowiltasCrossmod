@@ -3,6 +3,19 @@ using CalamityMod;
 using CalamityMod.NPCs.NormalNPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
+using FargowiltasSouls.Content.Bosses.Champions.Earth;
+using FargowiltasSouls.Content.Bosses.Champions.Life;
+using FargowiltasSouls.Content.Bosses.Champions.Nature;
+using FargowiltasSouls.Content.Bosses.Champions.Shadow;
+using FargowiltasSouls.Content.Bosses.Champions.Spirit;
+using FargowiltasSouls.Content.Bosses.Champions.Terra;
+using FargowiltasSouls.Content.Bosses.Champions.Timber;
+using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.Patreon.Duck;
+using FargowiltasSouls.Content.Patreon.GreatestKraken;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,6 +25,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalNPCChanges : GlobalNPC
     {
+        public static List<int> Champions = new List<int>
+        {
+            ModContent.NPCType<CosmosChampion>(),
+            ModContent.NPCType<EarthChampion>(),
+            ModContent.NPCType<LifeChampion>(),
+            ModContent.NPCType<NatureChampion>(),
+            ModContent.NPCType<ShadowChampion>(),
+            ModContent.NPCType<SpiritChampion>(),
+            ModContent.NPCType<TerraChampion>(),
+            ModContent.NPCType<TimberChampion>(),
+            ModContent.NPCType<WillChampion>()
+        };
+        public override void SetDefaults(NPC npc)
+        {
+            #region Balance
+            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceChanges)
+            {
+                //champions
+                if (Champions.Contains(npc.type))
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 0.8f);
+                }
+            }
+            #endregion
+        }
         public override bool PreAI(NPC npc)
         {
             #region Balance Changes config
