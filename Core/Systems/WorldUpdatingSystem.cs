@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Calamity;
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace FargowiltasCrossmod.Common.Systems
     {
         public override void PreUpdateWorld()
         {
-            ModLoader.GetMod("FargowiltasSouls").Call("EternityVanillaBossBehaviour", !ModContent.GetInstance<CalamityConfig>().EternityVanillaAIDisabled);
+            ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", !ModContent.GetInstance<CalamityConfig>().EternityVanillaAIDisabled);
         }
     }
 }

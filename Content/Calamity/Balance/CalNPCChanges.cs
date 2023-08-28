@@ -14,7 +14,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     {
         public override bool PreAI(NPC npc)
         {
-            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().RevVanillaAIDisabled)
+            #region Balance Changes config
+            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceChanges)
+            {
+                //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
+                if (npc.ModNPC != null)
+                {
+                    if (npc.ModNPC.Mod == ModLoader.GetMod(ModCompatibility.SoulsMod.Name) && npc.IsAnEnemy())
+                    {
+                        ModLoader.GetMod(ModCompatibility.Calamity.Name).Call("SetDefenseDamageNPC", npc, true);
+                    }
+                }
+            }
+            #endregion
+            if (!ModContent.GetInstance<Core.Calamity.CalamityConfig>().RevVanillaAIDisabled)
             {
                 return base.PreAI(npc);
             }
@@ -31,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //make destroyer not invincible
             if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail)
             {
-                Mod calamity = ModLoader.GetMod("CalamityMod");
+                Mod calamity = ModLoader.GetMod(ModCompatibility.Calamity.Name);
                 calamity.Call("SetCalamityAI", npc, 1, 600f);
                 calamity.Call("SetCalamityAI", npc, 2, 0f);
             }

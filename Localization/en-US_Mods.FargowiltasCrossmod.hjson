@@ -41,7 +41,7 @@ Configs: {
 			Label: Calamity/Souls Balance changes
 			Tooltip:
 				'''
-				Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience.
+				Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. Makes Souls content interact with Calamity mechanics, for example.
 				Recommended to be used together with the Progression Changes config.
 				'''
 		}
