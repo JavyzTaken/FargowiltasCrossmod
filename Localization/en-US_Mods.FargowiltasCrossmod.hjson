@@ -887,12 +887,21 @@ Configs: {
 
 		ProgressionChanges: {
 			Label: Calamity/Souls Progression changes
-			Tooltip: "Changes recipes to make Calamity and Souls mod "
+			Tooltip:
+				'''
+				Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
+				Recommended to be used together with the Balance Changes config.
+				Changing requires a reload."
+				'''
 		}
 
 		BalanceChanges: {
 			Label: Calamity/Souls Balance changes
-			Tooltip: Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience.
+			Tooltip:
+				'''
+				Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience.
+				Recommended to be used together with the Progression Changes config.
+				'''
 		}
 	}
 }

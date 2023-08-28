@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         {
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);
             MonoModHooks.Modify(typeof(CalamityGlobalProjectile).GetMethod(nameof(CalamityGlobalProjectile.PreAI)), CalamityProjectilePreAI_ILEdit);
-            MonoModHooks.Modify(typeof(CalamityGlobalProjectile).GetMethod(nameof(CalamityGlobalProjectile.AI)), CalamityProjectileAI_ILEdit);
+            //MonoModHooks.Modify(typeof(CalamityGlobalProjectile).GetMethod(nameof(CalamityGlobalProjectile.AI)), CalamityProjectileAI_ILEdit);
         }
 
         private static void CalamityPreAI_ILEdit(ILContext il)
@@ -109,34 +109,34 @@ namespace FargowiltasCrossmod.Core.Calamity
 
             
         }
-        private static void CalamityProjectileAI_ILEdit(ILContext il)
-        {
-            //make everlasting rainbow not fuck off forever
-            var c = new ILCursor(il);
-            c.GotoNext(i => i.MatchLdcI4(872));
-            ILLabel label3 = null;
-            c.GotoNext(i => i.MatchBneUn(out label3));
-            c.Index -= 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().RevVanillaAIDisabled);
-            c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label3);
-            c.Index -= 4;
-            var label4 = il.DefineLabel(c.Prev);
+        //private static void CalamityProjectileAI_ILEdit(ILContext il)
+        //{
+        //    //make everlasting rainbow not fuck off forever
+        //    var c = new ILCursor(il);
+        //    c.GotoNext(i => i.MatchLdcI4(872));
+        //    ILLabel label3 = null;
+        //    c.GotoNext(i => i.MatchBneUn(out label3));
+        //    c.Index -= 3;
+        //    c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().RevVanillaAIDisabled);
+        //    c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label3);
+        //    c.Index -= 4;
+        //    var label4 = il.DefineLabel(c.Prev);
 
-            c.GotoPrev(i => i.MatchLdcI4(95));
-            c.Index++;
-            c.Remove();
-            c.Emit(Mono.Cecil.Cil.OpCodes.Blt, label4);
+        //    c.GotoPrev(i => i.MatchLdcI4(95));
+        //    c.Index++;
+        //    c.Remove();
+        //    c.Emit(Mono.Cecil.Cil.OpCodes.Blt, label4);
 
-            c.GotoPrev(i => i.MatchLdsfld(typeof(Main), nameof(Main.zenithWorld)));
-            c.Index++;
-            c.Remove();
-            c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label4);
+        //    c.GotoPrev(i => i.MatchLdsfld(typeof(Main), nameof(Main.zenithWorld)));
+        //    c.Index++;
+        //    c.Remove();
+        //    c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label4);
 
-            c.GotoPrev(i => i.MatchLdcI4(1013));
-            c.Index++;
-            c.Remove();
-            c.Emit(Mono.Cecil.Cil.OpCodes.Bne_Un, label4);
-            MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
-        }
+        //    c.GotoPrev(i => i.MatchLdcI4(1013));
+        //    c.Index++;
+        //    c.Remove();
+        //    c.Emit(Mono.Cecil.Cil.OpCodes.Bne_Un, label4);
+        //    MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
+        //}
     }
 }
