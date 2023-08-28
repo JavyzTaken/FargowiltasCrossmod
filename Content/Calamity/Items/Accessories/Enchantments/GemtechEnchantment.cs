@@ -17,6 +17,8 @@ using CalamityMod.Items.Weapons.Summon;
 using CalamityMod.Rarities;
 using CalamityMod.CalPlayer;
 using Terraria.Audio;
+using rail;
+using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -34,6 +36,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void SafeModifyTooltips(List<TooltipLine> tooltips)
         {
+            if (!Item.social)
+            {
+                string tooltip = "";
+                Player player = Main.player[Main.myPlayer];
+                if (player.HeldItem.DamageType == DamageClass.Melee || player.HeldItem.DamageType == DamageClass.MeleeNoSpeed || player.HeldItem.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || player.HeldItem.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+                    tooltip = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.GemtechEnchantment.MeleeEffect");
+                if (player.HeldItem.DamageType == DamageClass.Magic)
+                    tooltip = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.GemtechEnchantment.MagicEffect");
+                if (player.HeldItem.DamageType == DamageClass.Summon || player.HeldItem.DamageType == DamageClass.SummonMeleeSpeed)
+                    tooltip = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.GemtechEnchantment.SummonEffect");
+                if (player.HeldItem.DamageType == DamageClass.Ranged)
+                    tooltip = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.GemtechEnchantment.RangedEffect");
+                if (player.HeldItem.DamageType == ModContent.GetInstance<RogueDamageClass>())
+                    tooltip = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.GemtechEnchantment.RogueEffect");
+                tooltips.Insert(4, new TooltipLine(Mod, "GemtechAbility", tooltip));
+            }
             base.SafeModifyTooltips(tooltips);
         }
         public override void SetDefaults()
@@ -90,11 +108,11 @@ namespace FargowiltasCrossmod.Content.Calamity
                         dustID = DustID.GreenFairy;
                     if (newHeld.DamageType == DamageClass.Magic)
                         dustID = DustID.PinkFairy;
-                    if (newHeld.DamageType == DamageClass.Throwing)
-                        dustID = DustID.RedTorch;
+                    if (newHeld.DamageType == ModContent.GetInstance<RogueDamageClass>())
+                        dustID = DustID.Firework_Red;
                     if (newHeld.DamageType == DamageClass.Summon)
                         dustID = DustID.BlueFairy;
-                    Dust.NewDustDirect(Player.position, Player.width, Player.height, dustID);
+                    Dust.NewDustDirect(Player.position, Player.width, Player.height, dustID).noGravity = true;
                 }
                 SoundEngine.PlaySound(SoundID.Item4 with { Pitch = -0.5f}, Player.Center);
             }
@@ -111,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
         public void GemTechUseEffect(Item item, Player player)
         {
             CrossplayerCalamity mp = player.GetModPlayer<CrossplayerCalamity>();
-            Main.NewText(item.DamageType);
+            //Main.NewText(item.DamageType);
             if ((item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed || item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()) && mp.GemTechTimer >= 200)
             {
                 
@@ -135,7 +153,61 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                 }
                 SoundEngine.PlaySound(SoundID.Item60, player.Center);
             }
+            if (item.DamageType == DamageClass.Magic && mp.GemTechTimer >= 200)
+            {
+                for (int i = 0; i < 40; i++)
+                {
+                    int type = Main.rand.NextBool(7) ? 1 : 0;
+                    Projectile.NewProjectile(player.GetSource_ItemUse(item),
+                        player.Center + new Vector2(Main.rand.Next(-900, 900), 600),
+                        new Vector2(0, Main.rand.Next(-22, -2)),
+                        ModContent.ProjectileType<GemTechMagic>(),
+                        player.CalcIntDamage<MagicDamageClass>(800), 0, Main.myPlayer, ai1: type);
+                }
+            }
+            if (item.DamageType == ModContent.GetInstance<RogueDamageClass>() &&  mp.GemTechTimer >= 200)
+            {
+                player.SetImmuneTimeForAllTypes(90);
+                for (int i = -1; i < 2; i++)
+                {
+                    Vector2 targetVel = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero) * 20;
+                    Projectile.NewProjectile(player.GetSource_ItemUse(item), player.Center,
+                        (Main.MouseWorld - player.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(i * 20)) * 6,
+                        ModContent.ProjectileType<GemTechRogue>(), player.CalcIntDamage<RogueDamageClass>(3000), 0, Main.myPlayer, targetVel.X, targetVel.Y);
+                }
+            }
             mp.GemTechTimer = 0;
+        }
+    }
+}
+namespace FargowiltasCrossmod.Content.Calamity.Projectiles
+{
+    public partial class CalamityGlobalProjectile : GlobalProjectile
+    {
+        public int GemTechTimer;
+        public void GemTechMinionEffect(Projectile proj)
+        {
+            
+            if (proj.minion && Main.player[proj.owner].GetModPlayer<CrossplayerCalamity>().Gemtech && proj.active)
+            {
+                Player owner = Main.player[proj.owner];
+
+                GemTechTimer++;
+                
+                if (owner.GetModPlayer<CrossplayerCalamity>().GemTechTimer >= 200 && GemTechTimer >= 200 && proj.active)
+                {
+                    proj.Kill();
+                    for (int i = 0; i < 7; i++)
+                    {
+                        Projectile.NewProjectile(proj.GetSource_Death(), proj.Center,
+                            new Vector2(Main.rand.Next(10, 20), 0).RotatedByRandom(MathHelper.TwoPi),
+                            ModContent.ProjectileType<GemTechSummon>(), owner.CalcIntDamage<SummonDamageClass>(3000), 0, owner.whoAmI);
+                    }
+                    Projectile.NewProjectile(proj.GetSource_Death(), proj.Center, Vector2.Zero, ModContent.ProjectileType<GemTechSummonBoom>(), owner.CalcIntDamage<SummonDamageClass>(15000), 0, owner.whoAmI);
+                    SoundEngine.PlaySound(SoundID.Item14, proj.Center);
+                }
+            }
+
         }
     }
 }

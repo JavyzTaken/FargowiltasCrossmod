@@ -659,8 +659,8 @@ Items: {
 			'''
 		MeleeEffect: "[i:FargowiltasSouls/BarbariansEssence] Launches a fiery wave and spread of yellow gems"
 		RangedEffect: "[i:FargowiltasSouls/SharpshootersEssence] Fires a stream of green gems"
-		MagicEffect: "[i:FargowiltasSouls/ApprenticesEssence] Summons hominh purple gems from the bottom of the screen. Some of them replenish mana"
-		SummonEffect: "[i:FargowiltasSouls/OccultistsEssence] Minions explode and release homing blue gems after a while"
+		MagicEffect: "[i:FargowiltasSouls/ApprenticesEssence] Summons homing purple gems from the bottom of the screen. Some of them replenish mana"
+		SummonEffect: "[i:FargowiltasSouls/OccultistsEssence] Minions explode and release blue gems after a while"
 		RogueEffect: "[i:CalamityMod/RogueEmblem] Grants brief invincibility frames and throws red gems that return to you and grant stealth on enemy hits"
 	}
 
@@ -832,6 +832,7 @@ Projectiles: {
 	GemTechRanged.DisplayName: Gem Tech Ranged
 	GemTechRogue.DisplayName: Gem Tech Rogue
 	GemTechSummon.DisplayName: Gem Tech Summon
+	GemTechSummonBoom.DisplayName: Gem Tech Summon Boom
 }
 
 Conditions: {
@@ -843,6 +844,7 @@ Keybinds: {
 	"Living wood roots.DisplayName": Living wood roots
 	"Steel parry.DisplayName": Steel parry
 }
+
 Configs: {
 	CrossmodConfig: {
 		DisplayName: Crossmod Config
