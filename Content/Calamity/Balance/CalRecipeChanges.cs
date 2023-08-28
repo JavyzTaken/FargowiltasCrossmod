@@ -31,13 +31,14 @@ using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasSouls.Content.Items.Summons;
 using CalamityMod.Tiles.Furniture.CraftingStations;
 
-namespace FargowiltasCrossmod.Content.Calamity.Items
+namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
     //for putting mod stuff into souls recipes or vice versa
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+
+    //specifically this file needs ExtendsFromMod instead of JITWhenModsEnabled for some god forsaken reason
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalRecipeChanges : ModSystem
     {
-        //for when 
         public override void PostAddRecipes()
         {
             //!!! WARNING !!!
