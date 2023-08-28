@@ -9,14 +9,28 @@ using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
-    public class CrossmodConfig : ModConfig
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public class CalamityConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
-        public static CrossmodConfig Instance => ModContent.GetInstance<CrossmodConfig>();
+        public static CalamityConfig Instance => ModContent.GetInstance<CalamityConfig>();
 
-        [Header("Modes")] // Headers are like titles in a config. You only need to declare a header on the item it should appear over, not every item in the category. 
+        [Header("Modes")] // Title
+
         [DefaultValue(true)] // This sets the configs default value.
-        public bool RevVanillaAIDisabled; // To see the implementation of this option, see ExampleWings.cs
+        public bool RevVanillaAIDisabled; 
+
+        [DefaultValue(false)] // This sets the configs default value.
+        public bool EternityVanillaAIDisabled;
+
+        [Header("Balance")] // Title
+
+        [DefaultValue(true)] // This sets the configs default value.
+        [ReloadRequired]
+        public bool ProgressionChanges;
+
+        [DefaultValue(true)] // This sets the configs default value.
+        public bool BalanceChanges;
 
     }
 }

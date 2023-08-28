@@ -8,8 +8,8 @@ using ReLogic.Content;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationCoin : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Ranged/RicoshotCoin";

@@ -13,9 +13,10 @@ using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class LargeSilvaCrystal : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Summon/SilvaCrystal";

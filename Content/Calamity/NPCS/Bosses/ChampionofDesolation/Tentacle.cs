@@ -9,8 +9,8 @@ using System.Collections.Generic;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class Tentacle : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Typeless/OmegaBlueTentacle";

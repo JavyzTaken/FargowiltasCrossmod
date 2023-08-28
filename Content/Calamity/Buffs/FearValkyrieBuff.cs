@@ -2,9 +2,10 @@
 using Terraria.ModLoader;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class FearValkyrieBuff : ModBuff
     {
         public override string Texture => "CalamityMod/Buffs/Summon/CorvidHarbringerBuff";

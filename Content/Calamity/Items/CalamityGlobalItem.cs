@@ -1,4 +1,5 @@
 ﻿
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -6,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public partial class CalamityGlobalItem : GlobalItem
     {
         public override bool OnPickup(Item item, Player player)
@@ -33,6 +34,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
         }
         public override bool? UseItem(Item item, Player player)
         {
+            CrossplayerCalamity mp = player.GetModPlayer<CrossplayerCalamity>();
+            if (mp.Gemtech)
+            {
+                GemTechUseEffect(item, player);
+            }
             return base.UseItem(item, player);
         }
     }

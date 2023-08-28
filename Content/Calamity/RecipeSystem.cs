@@ -9,9 +9,10 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using CalamityMod.Items.Placeables.Furniture;
 
+
 namespace FargowiltasCrossmod.Content.Calamity
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityRecipeSystem : ModSystem
     {
         public override void AddRecipes()

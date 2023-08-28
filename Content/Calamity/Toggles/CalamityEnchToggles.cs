@@ -2,9 +2,10 @@
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using Terraria.ModLoader;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityEnchToggles : ToggleCollection
     {
         public override string Mod => "CalamityMod";

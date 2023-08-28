@@ -6,9 +6,10 @@ using Microsoft.Xna.Framework;
 using CalamityMod.Projectiles.Magic;
 using Terraria.Audio;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PrisMissile : ModProjectile
     {
         public override void SetStaticDefaults()

@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationShot : ModProjectile
     {
         public override void SetDefaults()

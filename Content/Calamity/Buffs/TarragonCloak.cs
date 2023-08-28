@@ -6,9 +6,10 @@ using CalamityMod;
 using Microsoft.Xna.Framework;
 using Terraria.Graphics.Shaders;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class TarragonCloak : ModBuff
     {
         public override string Texture => "CalamityMod/Buffs/StatBuffs/TarragonCloak";

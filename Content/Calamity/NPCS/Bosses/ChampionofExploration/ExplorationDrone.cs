@@ -9,8 +9,8 @@ using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationDrone : ModNPC
     {
         public override string Texture => "CalamityMod/NPCs/NormalNPCs/WulfrumDrone";

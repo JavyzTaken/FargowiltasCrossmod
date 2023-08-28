@@ -12,7 +12,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SlayerDash : PlayerDashEffect
     {
         public new static string ID => "Slayed Counter Dash";

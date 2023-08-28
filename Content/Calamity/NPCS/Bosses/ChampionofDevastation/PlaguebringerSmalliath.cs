@@ -7,8 +7,8 @@ using Terraria.DataStructures;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDevastation
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PlaguebringerSmalliath : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Summon/PlaguebringerSummon";

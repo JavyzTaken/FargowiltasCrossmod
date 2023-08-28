@@ -1,9 +1,11 @@
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ProwlerTornado : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.SandnadoHostile;

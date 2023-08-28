@@ -5,9 +5,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using CalamityMod;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class FearsomeFeather : ModProjectile
     {
         public override void SetStaticDefaults()

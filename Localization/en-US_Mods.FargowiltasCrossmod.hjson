@@ -652,7 +652,16 @@ Items: {
 
 	GemtechEnchantment: {
 		DisplayName: Gemtech Enchantment
-		Tooltip: ""
+		Tooltip:
+			'''
+			Holding a weapon without attacking will charge up an attack
+			Use the weapon to unleash the attack
+			'''
+		MeleeEffect: "[i:FargowiltasSouls/BarbariansEssence] Launches a fiery wave and spread of yellow gems"
+		RangedEffect: "[i:FargowiltasSouls/SharpshootersEssence] Fires a stream of green gems"
+		MagicEffect: "[i:FargowiltasSouls/ApprenticesEssence] Summons homing purple gems from the bottom of the screen. Some of them replenish mana"
+		SummonEffect: "[i:FargowiltasSouls/OccultistsEssence] Minions explode and release blue gems after a while"
+		RogueEffect: "[i:CalamityMod/RogueEmblem] Grants brief invincibility frames and throws red gems that return to you and grant stealth on enemy hits"
 	}
 
 	SlingersEssence: {
@@ -823,6 +832,7 @@ Projectiles: {
 	GemTechRanged.DisplayName: Gem Tech Ranged
 	GemTechRogue.DisplayName: Gem Tech Rogue
 	GemTechSummon.DisplayName: Gem Tech Summon
+	GemTechSummonBoom.DisplayName: Gem Tech Summon Boom
 }
 
 Conditions: {
@@ -838,11 +848,40 @@ Keybinds: {
 Configs: {
 	CrossmodConfig: {
 		DisplayName: Crossmod Config
-		Headers.Modes: Modes Header
+		Headers.Modes: Modes
+
+		RevVanillaAIDisabled: {
+			Label: Revengeance Mode Vanilla AI
+			Tooltip: ""
+		}
+	}
+
+	CalamityConfig: {
+		DisplayName: Calamity Config
+
+		Headers: {
+			Modes: Modes Header
+			Balance: Balance
+		}
 
 		RevVanillaAIDisabled: {
 			Label: Rev Vanilla A I Disabled
 			Tooltip: ""
+		}
+
+		EternityVanillaAIDisabled: {
+			Label: Eternity Vanilla A I Disabled
+			Tooltip: ""
+		}
+
+		ProgressionChanges: {
+			Label: Calamity/Souls Progression changes
+			Tooltip: "Changes recipes to make Calamity and Souls mod "
+		}
+
+		BalanceChanges: {
+			Label: Calamity/Souls Balance changes
+			Tooltip: Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience.
 		}
 	}
 }

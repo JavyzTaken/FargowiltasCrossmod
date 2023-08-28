@@ -14,24 +14,14 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ThoriumMod;
-using ThoriumMod.Items.Terrarium;
-using ThoriumMod.Utilities;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using CalamityMod.Items.Accessories;
-using ThoriumMod.Items.Donate;
-using ThoriumMod.Items.BasicAccessories;
-using ThoriumMod.Items.BossLich;
-using ThoriumMod.Items.Depths;
-using ThoriumMod.Items.NPCItems;
-using ThoriumMod.Items.MagicItems;
-using ThoriumMod.Items.SummonItems;
-using ThoriumMod.Items.ThrownItems;
 using Terraria.Localization;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityEffectAdder : GlobalItem
     {
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)

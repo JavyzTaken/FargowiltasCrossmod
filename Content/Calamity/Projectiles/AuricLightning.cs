@@ -9,9 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Terraria.Audio;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AuricLightning : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.CultistBossLightningOrbArc;

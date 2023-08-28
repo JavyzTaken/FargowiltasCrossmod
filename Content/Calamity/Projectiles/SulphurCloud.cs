@@ -2,9 +2,10 @@
 using Terraria.ModLoader;
 using CalamityMod;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SulphurCloud : ModProjectile
     {
         public override void SetStaticDefaults()

@@ -3,9 +3,10 @@ using Terraria.ModLoader;
 using CalamityMod;
 using Terraria.ID;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class FathomCloud : ModProjectile
     {
         private int timerDead;

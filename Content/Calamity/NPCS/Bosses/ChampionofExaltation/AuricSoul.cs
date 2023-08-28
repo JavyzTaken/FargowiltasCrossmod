@@ -10,8 +10,8 @@ using Terraria.DataStructures;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AuricSoul : ModNPC
     {
         public override string Texture => "CalamityMod/Items/Materials/YharonSoulFragment";

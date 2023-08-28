@@ -11,7 +11,7 @@ using FargowiltasSouls.Content.Items.Accessories.Forces;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExaltationForce : BaseForce
     {
         public override void SetStaticDefaults()

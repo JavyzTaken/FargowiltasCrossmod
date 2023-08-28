@@ -14,9 +14,10 @@ using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class BrimflameEnchantment : BaseEnchant
     {
         

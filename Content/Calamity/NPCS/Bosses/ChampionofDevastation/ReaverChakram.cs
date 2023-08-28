@@ -6,8 +6,8 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDevastation
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ReaverChakram : MutantRetirang
     {
         public override string Texture => "CalamityMod/Items/Weapons/Rogue/MangroveChakram";

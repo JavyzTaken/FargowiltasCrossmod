@@ -2,9 +2,10 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SlayerStar : ModProjectile
     {
         int killTime;

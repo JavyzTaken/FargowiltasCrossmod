@@ -6,9 +6,10 @@ using Terraria.ModLoader;
 using Terraria;
 using Terraria.ID;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class TarragonAura : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Healing/SilvaOrb";

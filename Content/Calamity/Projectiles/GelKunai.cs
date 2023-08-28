@@ -1,9 +1,10 @@
-﻿using Terraria;
+﻿
+using Terraria;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class GelKunai : ModProjectile
     {
         int killTime;

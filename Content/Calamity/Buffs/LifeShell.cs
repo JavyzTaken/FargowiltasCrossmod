@@ -3,9 +3,10 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class LifeShell : ModBuff
     {
         public override string Texture => "CalamityMod/Buffs/Summon/SilvaCrystalBuff";

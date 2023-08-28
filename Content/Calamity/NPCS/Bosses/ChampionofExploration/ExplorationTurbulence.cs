@@ -4,8 +4,8 @@ using CalamityMod.Projectiles.Rogue;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
-    [JITWhenModsEnabled("CalamityMod")]
-    [ExtendsFromMod("CalamityMod")]
+    
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationTurbulence : TurbulanceProjectile
     {
         public override string Texture => "CalamityMod/Items/Weapons/Rogue/Turbulance";

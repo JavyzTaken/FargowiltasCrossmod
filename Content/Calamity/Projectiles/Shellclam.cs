@@ -7,9 +7,10 @@ using Terraria.DataStructures;
 using Terraria.ModLoader;
 using Terraria.ID;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class Shellclam : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Summon/Shellfish";

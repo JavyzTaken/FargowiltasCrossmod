@@ -1,3 +1,6 @@
+global using FargowiltasCrossmod.Core;
+using System.Linq;
+using System.Reflection;
 using Terraria.ModLoader;
 using System.Reflection;
 using MonoMod.RuntimeDetour;
@@ -11,6 +14,22 @@ namespace FargowiltasCrossmod
 	{
 		internal static bool CalamityLoaded;
 		internal static bool ThoriumLoaded;
+
+
+        private class ClassPreJitFilter : PreJITFilter
+        {
+            public override bool ShouldJIT(MemberInfo member)
+            {
+                return base.ShouldJIT(member) &&
+                       // also check attributes on declaring class
+                       member.DeclaringType?.GetCustomAttributes<MemberJitAttribute>().All(a => a.ShouldJIT(member)) != false;
+            }
+        }
+
+        public FargowiltasCrossmod()
+        {
+            PreJITFilter = new ClassPreJitFilter();
+        }
 
         public override void Load()
         {
@@ -110,4 +129,5 @@ namespace FargowiltasCrossmod
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
         }
     }
+{
 }

@@ -2,8 +2,10 @@
 using Terraria.ModLoader;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 
+
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MarniteSwordsBuff : ModBuff
     {
         public override void SetStaticDefaults()
