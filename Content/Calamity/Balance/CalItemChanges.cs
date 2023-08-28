@@ -4,6 +4,9 @@ using CalamityMod.Items.PermanentBoosters;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items.Consumables;
+using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.Patreon.Duck;
+using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
 using System;
 using System.Collections.Generic;
@@ -20,6 +23,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
+        public static List<int> ChampionTierFargoWeapons = new List<int>
+        {
+            ModContent.ItemType<EaterLauncher>(),
+            ModContent.ItemType<FleshCannon>(),
+            ModContent.ItemType<HellZone>(),
+            ModContent.ItemType<MechanicalLeashOfCthulhu>(),
+            ModContent.ItemType<SlimeSlingingSlasher>(),
+            ModContent.ItemType<TheBigSting>(),
+            ModContent.ItemType<ScientificRailgun>(),
+            ModContent.ItemType<VortexMagnetRitual>()
+        };
+        public float BalanceChange(Item item)
+        {
+            if (ChampionTierFargoWeapons.Contains(item.type))
+            {
+                return 0.8f;
+            }
+            return 1;
+        }
+        public override void SetDefaults(Item item)
+        {
+            //Progression balance changes
+            if (CalamityConfig.Instance.BalanceChanges)
+            {
+                float balance  = BalanceChange(item);
+                if (balance != 1)
+                {
+                    item.damage = (int)(item.damage * balance);
+                }
+            }
+        }
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceChanges)
@@ -30,13 +64,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            const string BalanceLine = "Cross-mod Balance: ";
             if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceChanges)
             {
-                tooltips.Add(new TooltipLine(Mod, "OnionDisabled", $"[c/FF0000:\"Calamity/Souls Balance changes\":] Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
+                tooltips.Add(new TooltipLine(Mod, "OnionDisabled", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
+
+            #region Item Balance
+            float balance = BalanceChange(item);
+
+            if (balance > 1)
+                        {
+                tooltips.Add(new TooltipLine(Mod, "DamageBalanceUp", $"[c/00A36C:{BalanceLine}]Damage increased by {Math.Round((balance - 1) * 100)}%."));
+            }
+            else if (balance < 1)
+            {
+                tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+            }
+            #endregion
         }
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalExtraSlotPlayer : ModPlayer
     {
         public bool MutantPactShouldBeEnabled = false;

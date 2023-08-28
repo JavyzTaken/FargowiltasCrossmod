@@ -31,6 +31,10 @@
     <Reference Include="Libraries\*.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Calamity\NPCS\" />
+    <Folder Include="Content\Calamity\Projectiles\" />
+  </ItemGroup>
+  <ItemGroup>
     <AdditionalFiles Remove="Content\Thorium\temp\**" />
     <Compile Remove="Content\Thorium\temp\**" />
     <EmbeddedResource Remove="Content\Thorium\temp\**" />
