@@ -17,7 +17,7 @@ using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
         public override bool CanUseItem(Item item, Player player)
@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
         }
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    
     public class CalExtraSlotPlayer : ModPlayer
     {
         public bool MutantPactShouldBeEnabled = false;

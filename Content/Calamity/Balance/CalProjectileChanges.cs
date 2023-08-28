@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Events;
 using CalamityMod.World;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,10 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Projectiles
+namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
-    public class CalGlobalProjectile : GlobalProjectile
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class CalProjectileChanges : GlobalProjectile
     {
         public override void AI(Projectile projectile)
         {

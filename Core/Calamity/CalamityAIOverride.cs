@@ -6,11 +6,12 @@ using CalamityMod.Events;
 using System.Reflection;
 using System;
 using CalamityMod.Projectiles;
+using FargowiltasCrossmod.Content.Calamity.BaseClasses;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalamityAIOverride : ModSystem
+    
+    public class CalamityAIOverride : CalModSystem
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
