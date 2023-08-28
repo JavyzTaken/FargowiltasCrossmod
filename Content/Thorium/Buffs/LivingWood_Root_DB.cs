@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Buffs
 {
+    [ExtendsFromMod("ThoriumMod")]
     public class LivingWood_Root_DB : ModBuff
     {
         public override string Texture => "FargowiltasSouls/Content/Buffs/PlaceholderDebuff";
@@ -12,6 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Buffs
 
         }
     }
+    [ExtendsFromMod("ThoriumMod")]
     public class LivingWood_Root_B : ModBuff
     {
         public override void SetStaticDefaults()

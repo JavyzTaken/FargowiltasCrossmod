@@ -17,7 +17,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilation;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [AutoloadBossHead]
     public class ChampionofAnnihilation : ModNPC
     {

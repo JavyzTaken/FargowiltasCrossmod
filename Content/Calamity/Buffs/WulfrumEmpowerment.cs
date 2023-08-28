@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class WulfrumEmpowerment : ModBuff
     {
         public override void SetStaticDefaults()

@@ -5,7 +5,7 @@ using FargowiltasCrossmod.Content.Calamity.Projectiles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class FearValkyrieBuff : ModBuff
     {
         public override string Texture => "CalamityMod/Buffs/Summon/CorvidHarbringerBuff";

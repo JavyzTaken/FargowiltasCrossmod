@@ -11,7 +11,7 @@ using FargowiltasSouls.Core.ModPlayers;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public partial class CrossplayerCalamity : ModPlayer
     {
         //effect booleans

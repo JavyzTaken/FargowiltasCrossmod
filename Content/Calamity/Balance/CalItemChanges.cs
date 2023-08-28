@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
         public override bool CanUseItem(Item item, Player player)

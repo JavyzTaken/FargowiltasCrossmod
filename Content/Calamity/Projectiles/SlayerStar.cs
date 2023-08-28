@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SlayerStar : ModProjectile
     {
         int killTime;

@@ -6,7 +6,7 @@ using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class FathomBubble : ModNPC
     {
         private int timerDead;

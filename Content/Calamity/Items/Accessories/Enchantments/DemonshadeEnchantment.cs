@@ -19,7 +19,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DemonshadeEnchantment : BaseEnchant
     {
         

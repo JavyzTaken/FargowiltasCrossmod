@@ -17,7 +17,7 @@ using CalamityMod.Projectiles;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityAIOverride : ModSystem
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         private static void CalamityPreAI_ILEdit(ILContext il)
         {
-            var BossRushEvent = ModLoader.GetMod("CalamityMod").Code.GetType("CalamityMod.Events.BossRushEvent");
+            //var BossRushEvent = ModLoader.GetMod("CalamityMod").Code.GetType("CalamityMod.Events.BossRushEvent");
             var c = new ILCursor(il);
             Mod calamity = ModLoader.GetMod("CalamityMod");
             Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent");

@@ -9,7 +9,7 @@ using ReLogic.Content;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDevastation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DarklightBarrier : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Melee/LightBeam";

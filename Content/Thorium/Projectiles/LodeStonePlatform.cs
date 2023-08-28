@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
+    [ExtendsFromMod("ThoriumMod")]
     public class LodeStonePlatform : ModProjectile
     {
         public bool WorldPosAbovePlatform(Vector2 pos)
@@ -94,7 +95,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             return false;
         }
     }
-
+    [ExtendsFromMod("ThoriumMod")]
     public class LodeStoneHeldSentry : GlobalProjectile
     {
         public int platform = -1;

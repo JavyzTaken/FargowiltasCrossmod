@@ -8,7 +8,7 @@ using Terraria.Audio;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AstralStar : AuroradicalStar
     {
         public override string Texture => "CalamityMod/Projectiles/Rogue/AuroradicalStar";

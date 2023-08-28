@@ -34,7 +34,7 @@ using CalamityMod.Tiles.Furniture.CraftingStations;
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
     //for putting mod stuff into souls recipes or vice versa
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalRecipeChanges : ModSystem
     {
         //for when 

@@ -9,6 +9,7 @@ using static FargowiltasCrossmod.Content.Thorium.Projectiles.ValaChunkCollisions
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
+    [ExtendsFromMod("ThoriumMod")]
     public class Valadium_Chunk : ModProjectile
     {
         // Size is ai[0], Mass is ai[1]

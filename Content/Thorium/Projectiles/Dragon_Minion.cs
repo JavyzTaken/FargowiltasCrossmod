@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 // god this is such a mess
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
+    
     public struct DragonData
     {
         public int parent = -1, child = -1, head = -1, position = -1;
@@ -32,6 +33,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             child = c;
         }
     }
+    [ExtendsFromMod("ThoriumMod")]
     public abstract class DragonMinion : ModProjectile
     {
         public static int HeadType => ModContent.ProjectileType<DragonMinionHead>();
@@ -236,7 +238,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         //damageScale += (Head.Bonuses[DamageClass.Generic] - 1);
         //     }
     }
-
+    [ExtendsFromMod("ThoriumMod")]
     public class DragonSpawnSource : EntitySource_Parent
     {
         public readonly DragonData data;
@@ -245,7 +247,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             this.data = data;
         }
     }
-
+    [ExtendsFromMod("ThoriumMod")]
     public partial class DragonMinionHead : DragonMinion
     {
         // sheinanigans to make it not have to get mod player and get damage as much
@@ -496,6 +498,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.friendly = true;
         }
     }
+    [ExtendsFromMod("ThoriumMod")]
     public class DragonMinionBody : DragonMinion
     {
         public override void SetDefaults()
@@ -511,6 +514,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.friendly = true;
         }
     }
+    [ExtendsFromMod("ThoriumMod")]
     public class DragonMinionBody2 : DragonMinion
     {
         public override void SetDefaults()

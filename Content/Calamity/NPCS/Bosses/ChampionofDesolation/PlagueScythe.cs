@@ -12,7 +12,7 @@ using System.IO;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PlagueScythe : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Melee/SoulScythe";

@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class BabyColossalSquid : ModNPC
     {
         public override string Texture => "CalamityMod/Projectiles/Summon/CalamariMinion";

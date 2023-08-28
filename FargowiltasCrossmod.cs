@@ -129,5 +129,4 @@ namespace FargowiltasCrossmod
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
         }
     }
-{
 }

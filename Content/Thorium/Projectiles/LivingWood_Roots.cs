@@ -9,6 +9,7 @@ using ReLogic.Content;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
+    [ExtendsFromMod("ThoriumMod")]
     public class LivingWood_Roots : ModProjectile
     {
         public int FireCD;
@@ -114,7 +115,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             return false;
         }
     }
-
+    [ExtendsFromMod("ThoriumMod")]
     public class LivingWoodDrawLayer : PlayerDrawLayer
     {
         private Asset<Texture2D> GrowingRoots;
