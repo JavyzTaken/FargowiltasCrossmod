@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
         }
     }
-    
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalExtraSlotPlayer : ModPlayer
     {
         public bool MutantPactShouldBeEnabled = false;
