@@ -13,15 +13,17 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using CalamityMod.Items.Armor.LunicCorps;
+using CalamityMod.Items.Weapons.Rogue;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
     [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class PrismaticEnchantment : BaseEnchant
+    public class LunicCorpsEnchantment : BaseEnchant
     {
         
-        protected override Color nameColor => new Color(206, 201, 170);
+        protected override Color nameColor => new Color(75, 101, 5);
 
         public override void SetStaticDefaults()
         {
@@ -39,32 +41,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     tooltip.Text = tooltip.Text.Insert(index, CalamityKeybinds.SetBonusHotKey.TooltipHotkeyString());
                 }
             }
+            base.SafeModifyTooltips(tooltips);
         }
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Cyan;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             CrossplayerCalamity SBDPlayer = player.GetModPlayer<CrossplayerCalamity>();
-            SBDPlayer.Prismatic = true;
+            SBDPlayer.Lunic = true;
+            player.Calamity().lunicCorpsSet = true;
         }
 
         public override void AddRecipes()
         {
             //recipe
             Recipe recipe = CreateRecipe();
-            
-            recipe.AddIngredient(ModContent.ItemType<PrismaticHelmet>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<PrismaticRegalia>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<PrismaticGreaves>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<DarkSpark>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<HandheldTank>(), 1);
-            recipe.AddRecipeGroup("FargowiltasCrossmod:AnyRailguns");
-            recipe.AddIngredient(ModContent.ItemType<LunicCorpsEnchantment>());
-            recipe.AddTile(TileID.CrystalBall);
+            recipe.AddIngredient(ModContent.ItemType<LunicCorpsHelmet>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<LunicCorpsVest>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<LunicCorpsBoots>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<P90>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<Needler>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<ShockGrenade>(), 300);
+            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
     }
@@ -73,11 +75,12 @@ namespace FargowiltasCrossmod.Content.Calamity
 {
     public partial class CrossplayerCalamity : ModPlayer
     {
-        public void PrismaticAttackEffects(int damage)
+        public int LunicCharge;
+        public void LunicAttackEffects(int damage)
         {
-            bool charged = PrismaticCharge >= 50000;
-            PrismaticCharge += damage;
-            if (!charged && PrismaticCharge >= 50000)
+            bool charged = LunicCharge >= 25000;
+            LunicCharge += damage;
+            if (!charged && LunicCharge >= 25000)
             {
                 for (int i = 0; i < 15; i++)
                 {
@@ -87,12 +90,12 @@ namespace FargowiltasCrossmod.Content.Calamity
                 SoundEngine.PlaySound(SoundID.Item4 with { Pitch = -1, Volume = 0.5f }, Player.Center);
             }
         }
-        public void PrismaticTrigger()
+        public void LunicTrigger()
         {
-            if (CalamityKeybinds.SetBonusHotKey.JustPressed && PrismaticCharge >= 50000 && Main.myPlayer == Player.whoAmI)
+            if (CalamityKeybinds.SetBonusHotKey.JustPressed && LunicCharge >= 25000 && Main.myPlayer == Player.whoAmI)
             {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<PrisMissile>(), 500, 0, Main.myPlayer);
-                PrismaticCharge = 0;
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<PlasmaGrenade>(), 500, 0, Main.myPlayer);
+                LunicCharge = 0;
                 for (int i = 0; i < 15; i++)
                 {
                     Dust.NewDustDirect(Player.Center, 0, 0, ModContent.DustType<CalamityMod.Dusts.CosmiliteBarDust>()).noGravity = true;
@@ -100,14 +103,6 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
                 SoundEngine.PlaySound(SoundID.Item92, Player.Center);
             }
-        }
-        public int PrismaticeHitEffects(int damage, NPC npc)
-        {
-            if (npc.lifeMax < 500)
-            {
-                return 0;
-            }
-            return damage;
         }
     }
 }

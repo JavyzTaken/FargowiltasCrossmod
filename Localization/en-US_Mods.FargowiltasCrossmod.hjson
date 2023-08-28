@@ -683,6 +683,16 @@ Items: {
 			Mermaid Canteen, and Deadman's Patch
 			'''
 	}
+
+	LunicCorpsEnchantment: {
+		DisplayName: Lunic Corps Enchantment
+		Tooltip:
+			'''
+			Grants an energy shield that blocks damage
+			Dealing damage charges a plasma grenade
+			Press [button] to throw the grenade
+			'''
+	}
 }
 
 NPCs: {
@@ -833,6 +843,7 @@ Projectiles: {
 	GemTechRogue.DisplayName: Gem Tech Rogue
 	GemTechSummon.DisplayName: Gem Tech Summon
 	GemTechSummonBoom.DisplayName: Gem Tech Summon Boom
+	PlasmaGrenade.DisplayName: Plasma Grenade
 }
 
 Conditions: {

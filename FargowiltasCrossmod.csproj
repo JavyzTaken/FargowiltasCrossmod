@@ -8,6 +8,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\LunicCorpsEnchantment.png" />
     <None Remove="Content\Thorium\Buffs\GildedSightDB.cs~RF1504f37.TMP" />
     <None Remove="Content\Thorium\DragonMinionBody.png" />
     <None Remove="Content\Thorium\DragonMinionBody2.png" />
@@ -34,5 +35,25 @@
     <Compile Remove="Content\Thorium\temp\**" />
     <EmbeddedResource Remove="Content\Thorium\temp\**" />
     <None Remove="Content\Thorium\temp\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Remove="Libraries\CalamityMod.dll" />
+    <Reference Remove="Libraries\Fargowiltas.dll" />
+    <Reference Remove="Libraries\FargowiltasSouls.dll" />
+    <Reference Remove="Libraries\ThoriumMod.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CalamityMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
+    </Reference>
+    <Reference Include="Fargowiltas">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
+    </Reference>
+    <Reference Include="FargowiltasSouls">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+    </Reference>
+    <Reference Include="ThoriumMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
