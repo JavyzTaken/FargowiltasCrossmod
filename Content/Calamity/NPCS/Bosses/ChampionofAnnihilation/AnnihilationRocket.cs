@@ -8,7 +8,7 @@ using Terraria.Audio;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AnnihilationRocket : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Ranged/MiniRocket";

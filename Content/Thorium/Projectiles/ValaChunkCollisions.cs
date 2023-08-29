@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
+    [ExtendsFromMod("ThoriumMod")]
     internal static class ValaChunkCollisions
     {
         private static Dictionary<int, Action<Projectile, Projectile>> Collisions = new()

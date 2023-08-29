@@ -13,7 +13,7 @@ using FargowiltasCrossmod.Content.Calamity.Buffs;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MarniteSword : ModProjectile
     {
         public override void SetStaticDefaults()

@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AeroFeather : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Magic/StickyFeather";

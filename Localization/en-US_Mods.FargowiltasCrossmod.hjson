@@ -683,6 +683,16 @@ Items: {
 			Mermaid Canteen, and Deadman's Patch
 			'''
 	}
+
+	LunicCorpsEnchantment: {
+		DisplayName: Lunic Corps Enchantment
+		Tooltip:
+			'''
+			Grants an energy shield that blocks damage
+			Dealing damage charges a plasma grenade
+			Press [button] to throw the grenade
+			'''
+	}
 }
 
 NPCs: {
@@ -833,6 +843,7 @@ Projectiles: {
 	GemTechRogue.DisplayName: Gem Tech Rogue
 	GemTechSummon.DisplayName: Gem Tech Summon
 	GemTechSummonBoom.DisplayName: Gem Tech Summon Boom
+	PlasmaGrenade.DisplayName: Plasma Grenade
 }
 
 Conditions: {
@@ -876,12 +887,21 @@ Configs: {
 
 		ProgressionChanges: {
 			Label: Calamity/Souls Progression changes
-			Tooltip: "Changes recipes to make Calamity and Souls mod "
+			Tooltip:
+				'''
+				Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
+				Recommended to be used together with the Balance Changes config.
+				Changing requires a reload."
+				'''
 		}
 
 		BalanceChanges: {
 			Label: Calamity/Souls Balance changes
-			Tooltip: Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience.
+			Tooltip:
+				'''
+				Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. Makes Souls content interact with Calamity mechanics, for example.
+				Recommended to be used together with the Progression Changes config.
+				'''
 		}
 	}
 }

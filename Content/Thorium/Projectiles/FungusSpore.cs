@@ -12,6 +12,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
+    [ExtendsFromMod("ThoriumMod")]
     public class FungusSpore : ModProjectile
     {
         //public override string Texture => $"Terraria/Images/NPC_{NPCID.FungiSpore}";

@@ -9,7 +9,7 @@ using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AeroValkyrie : ModProjectile
     {
         private int feathimer = 90;

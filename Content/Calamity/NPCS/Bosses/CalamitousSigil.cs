@@ -13,7 +13,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamitousSigil : ModItem
     {
         public override string Texture => "CalamityMod/Items/Accessories/OccultSkullCrown";

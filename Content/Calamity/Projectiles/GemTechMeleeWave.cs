@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class GemTechMeleeWave : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.TerraBlade2Shot;

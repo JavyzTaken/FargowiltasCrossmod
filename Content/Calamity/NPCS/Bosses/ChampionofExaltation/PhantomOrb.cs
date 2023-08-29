@@ -12,7 +12,7 @@ using Terraria.Audio;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PhantomOrb : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Boss/PhantomMine";

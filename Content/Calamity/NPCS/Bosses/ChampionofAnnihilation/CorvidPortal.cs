@@ -11,7 +11,7 @@ using Terraria.Audio;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CorvidPortal : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_617";

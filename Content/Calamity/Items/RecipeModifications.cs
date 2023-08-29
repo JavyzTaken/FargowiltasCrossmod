@@ -30,7 +30,7 @@ using Microsoft.CodeAnalysis.Operations;
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
     //for putting mod stuff into souls recipes or vice versa
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityRecipesModifications : ModSystem
     {
         //for when 

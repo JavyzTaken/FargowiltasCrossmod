@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DevastationForce : BaseForce
     {
         public override void SetStaticDefaults()

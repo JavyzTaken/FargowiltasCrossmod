@@ -21,7 +21,7 @@ using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityEffectAdder : GlobalItem
     {
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)

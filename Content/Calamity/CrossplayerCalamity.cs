@@ -11,7 +11,7 @@ using FargowiltasSouls.Core.ModPlayers;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public partial class CrossplayerCalamity : ModPlayer
     {
         //effect booleans
@@ -51,6 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public bool Auric;
         public bool ExaltEffects;
 
+        public bool Lunic;
         public bool Prismatic;
         public int PrismaticCharge;
         public bool Brimflame;
@@ -130,6 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (BrimflameCooldown > 0)
                 BrimflameCooldown--;
             Demonshade = false;
+            Lunic = false;
             Prismatic = false;
             FearOfTheValkyrie = false;
             Crocket = false;
@@ -433,6 +435,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 DemonshadeHitEffect(damageDone);
             }
+            if (Lunic)
+            {
+                LunicAttackEffects(damageDone);
+            }
             if (Prismatic)
             {
                 PrismaticAttackEffects(damageDone);
@@ -505,6 +511,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 DemonshadeHitEffect(damageDone);
             }
+            if (Lunic)
+            {
+                LunicAttackEffects(damageDone);
+            }
             if (Prismatic)
             {
                 PrismaticAttackEffects(damageDone);
@@ -535,6 +545,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (Silva && Player.GetToggleValue("SilvaCrystal"))
             {
                 SilvaTrigger();
+            }
+            if (Lunic)
+            {
+                LunicTrigger();
             }
             if (Prismatic)
             {

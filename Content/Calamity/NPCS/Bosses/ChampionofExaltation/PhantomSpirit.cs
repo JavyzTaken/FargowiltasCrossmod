@@ -6,7 +6,7 @@ using CalamityMod.Projectiles.Ranged;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PhantomSpirit : BloodflareSoul
     {
         public override string Texture => "CalamityMod/Projectiles/Ranged/BloodflareSoul";

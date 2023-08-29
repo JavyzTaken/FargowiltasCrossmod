@@ -12,7 +12,7 @@ using System.Collections.Generic;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
 {
     
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class TarragonRoot : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Healing/SilvaOrb";

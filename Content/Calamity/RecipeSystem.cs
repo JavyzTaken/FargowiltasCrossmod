@@ -12,7 +12,7 @@ using CalamityMod.Items.Placeables.Furniture;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityRecipeSystem : ModSystem
     {
         public override void AddRecipes()

@@ -17,7 +17,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class PrismaticEnchantment : BaseEnchant
     {
         
@@ -56,12 +56,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             //recipe
             Recipe recipe = CreateRecipe();
+            
             recipe.AddIngredient(ModContent.ItemType<PrismaticHelmet>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PrismaticRegalia>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PrismaticGreaves>(), 1);
             recipe.AddIngredient(ModContent.ItemType<DarkSpark>(), 1);
             recipe.AddIngredient(ModContent.ItemType<HandheldTank>(), 1);
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyRailguns");
+            recipe.AddIngredient(ModContent.ItemType<LunicCorpsEnchantment>());
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
         }

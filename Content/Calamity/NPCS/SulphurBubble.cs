@@ -7,7 +7,7 @@ using FargowiltasCrossmod.Content.Calamity.Projectiles;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SulphurBubble : ModNPC
     {
         private int timerDead;
