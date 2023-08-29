@@ -199,7 +199,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 #endregion
 
                 #region Balance and Progression Locks
-                if (CalamityConfig.Instance.ProgressionChanges)
+                if (CalamityConfig.Instance.BalanceRework)
                 {
                     if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient(ModContent.ItemType<DivineGeode>()))
                     {

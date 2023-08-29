@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void SetDefaults(NPC npc)
         {
             #region Balance
-            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceChanges)
+            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceRework)
             {
                 //champions
                 //if (Champions.Contains(npc.type))
@@ -105,7 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override bool PreAI(NPC npc)
         {
             #region Balance Changes config
-            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceChanges)
+            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
