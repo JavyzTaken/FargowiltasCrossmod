@@ -134,10 +134,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             void DropItem(Item item)
             {
                 int i = Item.NewItem(Player.GetSource_DropAsItem(), Player.Center, item);
-                if (i != Main.maxItems && Main.item[i] != null)
-                {
-                    //not needed apparently
-                }
             }
             void DropSlot(ref ModAccessorySlot slot)
             {
