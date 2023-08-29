@@ -85,15 +85,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
 
             #region Item Balance
-            float balance = BalanceChange(item);
-
-            if (balance > 1)
-                        {
-                tooltips.Add(new TooltipLine(Mod, "DamageBalanceUp", $"[c/00A36C:{BalanceLine}]Damage increased by {Math.Round((balance - 1) * 100)}%."));
-            }
-            else if (balance < 1)
+            if (CalamityConfig.Instance.BalanceChanges)
             {
-                tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                float balance = BalanceChange(item);
+
+                if (balance > 1)
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceUp", $"[c/00A36C:{BalanceLine}]Damage increased by {Math.Round((balance - 1) * 100)}%."));
+                }
+                else if (balance < 1)
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                }
             }
             #endregion
         }
