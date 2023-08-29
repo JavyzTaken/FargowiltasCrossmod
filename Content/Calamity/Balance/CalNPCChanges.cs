@@ -1,6 +1,8 @@
 ﻿
 using CalamityMod;
+using CalamityMod.NPCs.Bumblebirb;
 using CalamityMod.NPCs.NormalNPCs;
+using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
@@ -49,13 +51,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //{
                     //npc.lifeMax = (int)(npc.lifeMax * 0.8f);
                 //}
-                //Providence
+                //Providence and guardian minions
                 if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() || 
                     npc.type == ModContent.NPCType<ProvSpawnHealer>() || npc.type == ModContent.NPCType<ProvSpawnOffense>())
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 1.7f);
                 }
-                
+                //profaned guardians and rock thing
+                if (npc.type == ModContent.NPCType<ProfanedGuardianHealer>() || npc.type == ModContent.NPCType<ProfanedGuardianDefender>() ||
+                    npc.type == ModContent.NPCType<ProfanedGuardianCommander>() || npc.type == ModContent.NPCType<ProfanedRocks>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                }
+                //dragonfolly and minion
+                if (npc.type == ModContent.NPCType<Bumblefuck>() || npc.type == ModContent.NPCType<Bumblefuck2>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.4f);
+                }
             }
             #endregion
         }
