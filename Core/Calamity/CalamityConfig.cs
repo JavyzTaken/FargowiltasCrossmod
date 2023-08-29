@@ -17,12 +17,9 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         [Header("Balance")] // Title
 
-        [DefaultValue(true)] // This sets the configs default value.
         [ReloadRequired]
-        public bool ProgressionChanges;
-
         [DefaultValue(true)] // This sets the configs default value.
-        public bool BalanceChanges;
+        public bool BalanceRework;
 
     }
 }

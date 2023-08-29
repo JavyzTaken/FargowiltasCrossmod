@@ -48,7 +48,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void SetDefaults(Item item)
         {
             //Progression balance changes
-            if (CalamityConfig.Instance.BalanceChanges)
+            if (CalamityConfig.Instance.BalanceRework)
             {
                 float balance  = BalanceChange(item);
                 if (balance != 1)
@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return false;
             }
-            if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceChanges)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceRework)
             {
                 return player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
             }
@@ -79,13 +79,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
-            if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceChanges)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceRework)
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
 
             #region Item Balance
-            if (CalamityConfig.Instance.BalanceChanges)
+            if (CalamityConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
 
@@ -108,7 +108,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
-            if (Player.GetModPlayer<CalamityPlayer>().extraAccessoryML && CalamityConfig.Instance.BalanceChanges) 
+            if (Player.GetModPlayer<CalamityPlayer>().extraAccessoryML && CalamityConfig.Instance.BalanceRework) 
             {
                 if (MutantsPactSlot)
                 {

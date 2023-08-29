@@ -27,30 +27,23 @@ Mods: {
 					Balance: Balance
 				}
 
-				ProgressionChanges: {
-					Label: Calamity/Souls Progression changes
+				BalanceRework: {
+					Label: Calamity/Souls Balance Rework
 					Tooltip:
 						'''
 						Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
-						Recommended to be used together with the Balance Changes config.
+						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. 
+						Makes Souls content interact with Calamity mechanics, for example Defense Damage.
+						Recommended to keep enabled.
 						Changing requires a reload.
-						'''
-				}
-
-				BalanceChanges: {
-					Label: Calamity/Souls Balance changes
-					Tooltip:
-						'''
-						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. Makes Souls content interact with Calamity mechanics, for example.
-						Recommended to be used together with the Progression Changes config.
 						'''
 				}
 
 				EternityPriorityOverRev: {
 					Label: Eternity Priority over Calamity Modes
-					Tooltip: 
+					Tooltip:
 						'''
-						Enables Eternity Mode to take priority over Revengeance Mode and other Calamity difficulties.
+						Enables Eternity Mode boss behaviour to take priority over Revengeance Mode boss behaviour and other Calamity difficulties.
 						Applies to bosses that would otherwise be changed by both, such as vanilla bosses. 
 						Disabling this makes Calamity difficulties take priority over Eternity.
 						'''

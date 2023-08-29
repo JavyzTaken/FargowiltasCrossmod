@@ -23,7 +23,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override bool PreAI(Projectile projectile)
         {
             #region Balance Changes config
-            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceChanges)
+            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (projectile.ModProjectile != null)
