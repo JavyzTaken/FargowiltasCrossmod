@@ -1,9 +1,14 @@
 ﻿
 using CalamityMod;
 using CalamityMod.NPCs.Bumblebirb;
+using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.NPCs.NormalNPCs;
+using CalamityMod.NPCs.OldDuke;
+using CalamityMod.NPCs.Polterghast;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
+using CalamityMod.NPCs.Signus;
+using CalamityMod.NPCs.StormWeaver;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
@@ -67,6 +72,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (npc.type == ModContent.NPCType<Bumblefuck>() || npc.type == ModContent.NPCType<Bumblefuck2>())
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 1.4f);
+                }
+                //signus
+                if (npc.type == ModContent.NPCType<Signus>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.8f);
+                }
+                //ceaseless void & dark energy
+                if (npc.type == ModContent.NPCType<CeaselessVoid>() || npc.type == ModContent.NPCType<DarkEnergy>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.5f);
+                }
+                //storm weaver
+                //sw is weird yes i need to set all segments
+                if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverTail>() || npc.type == ModContent.NPCType<StormWeaverBody>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.8f);
+                }
+                //polterghast and polterclone
+                if (npc.type == ModContent.NPCType<Polterghast>() || npc.type == ModContent.NPCType<PolterPhantom>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.2f);
+                }
+                //overdose
+                if (npc.type == ModContent.NPCType<OldDuke>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.25f);
                 }
             }
             #endregion
