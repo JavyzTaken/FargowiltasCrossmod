@@ -39,6 +39,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         };
         public float BalanceChange(Item item)
         {
+            if (item.type == ModContent.ItemType<MechanicalLeashOfCthulhu>())
+                return 0.7f;
             if (ChampionTierFargoWeapons.Contains(item.type))
             {
                 return 0.8f;

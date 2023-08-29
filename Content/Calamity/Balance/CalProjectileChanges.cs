@@ -1,9 +1,11 @@
 ﻿using CalamityMod;
 using CalamityMod.Events;
+using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +38,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             return true;
             #endregion
+        }
+        public static List<int> MultipartShredders = new List<int>
+        {
+            ModContent.ProjectileType<CelestialRuneFireball>()
+
+        };
+        public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
+        {
+            if (MultipartShredders.Contains(projectile.type) && target.type == ModContent.NPCType<DarkEnergy>())
+            {
+                modifiers.FinalDamage *= 0.2f;
+            }
         }
         public override void AI(Projectile projectile)
         {
