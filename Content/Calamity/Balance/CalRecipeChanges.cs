@@ -212,6 +212,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     List<int> Tier2Souls = new List<int>() 
                     {
                         ModContent.ItemType<TerrariaSoul>(), 
+                        ModContent.ItemType<UniverseSoul>(),
+                        ModContent.ItemType<DimensionSoul>(),
+                        ModContent.ItemType<MasochistSoul>()
                     };
                     if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ModContent.ItemType<ShadowspecBar>()))
                     {
