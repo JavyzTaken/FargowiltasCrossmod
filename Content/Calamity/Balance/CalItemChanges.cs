@@ -1,9 +1,11 @@
 ﻿using CalamityMod.CalPlayer;
 using CalamityMod.Items.PermanentBoosters;
 using CalamityMod.Items.Potions.Alcohol;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Common;
+using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.Duck;
@@ -57,6 +59,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override bool CanUseItem(Item item, Player player)
         {
+            if (item.type == ModContent.ItemType<Masochist>())
+            {
+                return false;
+            }
             if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceChanges)
             {
                 return player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
@@ -65,10 +71,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            if (item.type == ModContent.ItemType<Masochist>())
+            {
+                
+                tooltips.RemoveAll(t => t.Text != item.Name);
+                tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", $"[c/FF0000:Calamity Crossmod Support:] Disabled. Use Calamity's difficulty UI instead!"));
+            }
+
             const string BalanceLine = "Cross-mod Balance: ";
             if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceChanges)
             {
-                tooltips.Add(new TooltipLine(Mod, "OnionDisabled", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
+                tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
 
             #region Item Balance

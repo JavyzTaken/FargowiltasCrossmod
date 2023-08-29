@@ -3,6 +3,7 @@ using CalamityMod.Events;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Systems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void AI(Projectile projectile)
         {
-            if (projectile.type == 872 && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && ModContent.GetInstance<Core.Calamity.CalamityConfig>().RevVanillaAIDisabled)
+            if (projectile.type == 872 && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && WorldSavingSystem.E_EternityRev)
             {
                 projectile.velocity /= 1.015525f;
             }

@@ -3,6 +3,7 @@ using CalamityMod;
 using CalamityMod.NPCs.NormalNPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.Champions.Life;
@@ -65,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
             #endregion
-            if (!ModContent.GetInstance<Core.Calamity.CalamityConfig>().RevVanillaAIDisabled)
+            if (!WorldSavingSystem.E_EternityRev)
             {
                 return base.PreAI(npc);
             }

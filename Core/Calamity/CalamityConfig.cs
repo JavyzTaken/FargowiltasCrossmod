@@ -13,10 +13,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         [Header("Modes")] // Title
 
         [DefaultValue(true)] // This sets the configs default value.
-        public bool RevVanillaAIDisabled; 
-
-        [DefaultValue(false)] // This sets the configs default value.
-        public bool EternityVanillaAIDisabled;
+        public bool EternityPriorityOverRev; 
 
         [Header("Balance")] // Title
 
