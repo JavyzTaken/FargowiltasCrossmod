@@ -51,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //{
                     //npc.lifeMax = (int)(npc.lifeMax * 0.8f);
                 //}
-                //Providence
+                //Providence and guardian minions
                 if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() || 
                     npc.type == ModContent.NPCType<ProvSpawnHealer>() || npc.type == ModContent.NPCType<ProvSpawnOffense>())
                 {
