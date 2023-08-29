@@ -47,8 +47,13 @@ Mods: {
 				}
 
 				EternityPriorityOverRev: {
-					Label: Eternity Priority Over Rev
-					Tooltip: ""
+					Label: Eternity Priority over Calamity Modes
+					Tooltip: 
+						'''
+						Enables Eternity Mode to take priority over Revengeance Mode and other Calamity difficulties.
+						Applies to bosses that would otherwise be changed by both, such as vanilla bosses. 
+						Disabling this makes Calamity difficulties take priority over Eternity.
+						'''
 				}
 			}
 		}

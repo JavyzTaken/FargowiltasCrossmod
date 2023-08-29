@@ -47,11 +47,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceChanges)
             {
                 //champions
-                if (Champions.Contains(npc.type))
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.8f);
-                }
-                //Providence and guardian minions
+                //if (Champions.Contains(npc.type))
+                //{
+                    //npc.lifeMax = (int)(npc.lifeMax * 0.8f);
+                //}
+                //Providence
                 if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() || 
                     npc.type == ModContent.NPCType<ProvSpawnHealer>() || npc.type == ModContent.NPCType<ProvSpawnOffense>())
                 {
