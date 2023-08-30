@@ -2,6 +2,7 @@
 using CalamityMod;
 using CalamityMod.NPCs.Bumblebirb;
 using CalamityMod.NPCs.CeaselessVoid;
+using CalamityMod.NPCs.DevourerofGods;
 using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.NPCs.OldDuke;
 using CalamityMod.NPCs.Polterghast;
@@ -9,9 +10,11 @@ using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
 using CalamityMod.NPCs.Signus;
 using CalamityMod.NPCs.StormWeaver;
+using CalamityMod.NPCs.Yharon;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.Champions.Life;
@@ -21,6 +24,7 @@ using FargowiltasSouls.Content.Bosses.Champions.Spirit;
 using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
@@ -98,6 +102,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (npc.type == ModContent.NPCType<OldDuke>())
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 1.25f);
+                }
+                //dog
+                if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.7f);
+                }
+                //yhar
+                if (npc.type == ModContent.NPCType<Yharon>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.1f);
+                }
+                //abom
+                if (npc.type == ModContent.NPCType<AbomBoss>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                }
+                //mutant
+                if (npc.type == ModContent.NPCType<MutantBoss>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
             }
             #endregion
