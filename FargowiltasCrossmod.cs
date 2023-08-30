@@ -1,7 +1,9 @@
+using CalamityMod;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using System.Linq;
 using System.Reflection;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod;
@@ -14,5 +16,10 @@ public class FargowiltasCrossmod : Mod
         {
             _ = new EternityRevDifficulty();
         }
+    }
+
+    public override void PostSetupContent()
+    {
+        CalamityLists.pierceResistExceptionList.Add(ProjectileID.FinalFractal);
     }
 }
