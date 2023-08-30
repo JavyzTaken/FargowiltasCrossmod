@@ -460,7 +460,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 OmegaBlueHitEffects();
             }
             //hydroth   ermic
-            if (AtaxiaEruption/* && Player.GetToggleValue("HydrothermicHits")*/)
+            if (AtaxiaEruption && Player.GetToggleValue("HydrothermicHits"))
             {
                 HydrothermicProjHitEffect(target, damageDone);
             }
