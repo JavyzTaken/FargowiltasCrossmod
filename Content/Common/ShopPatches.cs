@@ -38,16 +38,6 @@ namespace FargowiltasCrossmod.Content.Common
             }
         }
 
-        internal delegate void orig_AddShops(Deviantt self);
-        internal static void AddShops(orig_AddShops orig, Deviantt self)
-        {
-            orig(self);
-            if (FargowiltasCrossmod.ThoriumLoaded)
-            {
-                AddThoriumDeviShop();
-            }
-        }
-
         internal static void AddThoriumDeviShop()
         {
             ModShopNames.Add("Thorium");

@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool FungusEnch;
         public bool GraniteEnch;
         public bool AstroEnch;
+        public bool SpiritTrapperEnch;
 
         public Item TemplarEnchItem;
         public Item LivingWoodEnchItem;
@@ -43,6 +44,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item ValadiumEnchItem;
         public Item GraniteEnchItem;
         public Item AstroEnchItem;
+        public Item SpiritTrapperEnchItem;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -77,6 +79,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             FungusEnch = false;
             GraniteEnch = false;
             AstroEnch = false;
+            SpiritTrapperEnch = false;
 
             TemplarEnchItem = null;
             LivingWoodEnchItem = null;
@@ -84,6 +87,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             ValadiumEnchItem = null;
             GraniteEnchItem = null;
             AstroEnchItem = null;
+            SpiritTrapperEnchItem = null;
 
             GildedMonicle = false;
             GildedBinoculars = false;
@@ -92,7 +96,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             TempleCoreItem = null;
         }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (TemplarEnch && TemplarCD == 0)
             {
@@ -114,6 +118,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (AstroEnch && hit.Crit && AstroLaserCD <= 0)
             {
                 SpawnAstroLaser(target);
+            }
+            if (SpiritTrapperEnch && hit.Crit/* && hit.Damage >= target.life*/)
+            {
+                SpawnSpiritTrapperSpirit(target.Center);
             }
         }
 

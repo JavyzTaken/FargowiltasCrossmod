@@ -693,6 +693,11 @@ Items: {
 			Press [button] to throw the grenade
 			'''
 	}
+
+	SpiritTrapperEnchant: {
+		DisplayName: Spirit Trapper Enchant
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -844,6 +849,7 @@ Projectiles: {
 	GemTechSummon.DisplayName: Gem Tech Summon
 	GemTechSummonBoom.DisplayName: Gem Tech Summon Boom
 	PlasmaGrenade.DisplayName: Plasma Grenade
+	SpiritTrapperSpirit.DisplayName: Spirit Trapper Spirit
 }
 
 Conditions: {
