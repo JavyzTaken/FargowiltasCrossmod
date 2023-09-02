@@ -11,7 +11,7 @@ using FargowiltasSouls.Core.ModPlayers;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public partial class CrossplayerCalamity : ModPlayer
     {
         //effect booleans
@@ -51,6 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public bool Auric;
         public bool ExaltEffects;
 
+        public bool Lunic;
         public bool Prismatic;
         public int PrismaticCharge;
         public bool Brimflame;
@@ -102,7 +103,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             AyeCicleSmol = false;
             AtaxiaEruption = false;
             if (AtaxiaCooldown > 0) AtaxiaCooldown--;
-            if (AtaxiaCountdown > 0 && AtaxiaDR == 5) AtaxiaCountdown--;
+            if (AtaxiaCountdown > 0) AtaxiaCountdown--;
 
             Empyrean = false;
             OmegaBlue = false;
@@ -130,10 +131,17 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (BrimflameCooldown > 0)
                 BrimflameCooldown--;
             Demonshade = false;
+            Lunic = false;
             Prismatic = false;
             FearOfTheValkyrie = false;
             Crocket = false;
+            if (!Gemtech)
+            {
+                GemTechTimer = 0;
+                HeldItem = null;
+            }
             Gemtech = false;
+            
 
             ExploEffects = false;
             DevastEffects = false;
@@ -363,6 +371,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 FearmongerEffects();
             }
+            if (Gemtech)
+            {
+                GemTechEffects();
+            }
         }
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
@@ -422,6 +434,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (Demonshade)
             {
                 DemonshadeHitEffect(damageDone);
+            }
+            if (Lunic)
+            {
+                LunicAttackEffects(damageDone);
             }
             if (Prismatic)
             {
@@ -495,6 +511,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 DemonshadeHitEffect(damageDone);
             }
+            if (Lunic)
+            {
+                LunicAttackEffects(damageDone);
+            }
             if (Prismatic)
             {
                 PrismaticAttackEffects(damageDone);
@@ -525,6 +545,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (Silva && Player.GetToggleValue("SilvaCrystal"))
             {
                 SilvaTrigger();
+            }
+            if (Lunic)
+            {
+                LunicTrigger();
             }
             if (Prismatic)
             {

@@ -12,7 +12,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class HydrothermicEnchantment : BaseEnchant
     {
         
@@ -57,9 +57,10 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public void AtaxiaEffects()
         {
-            if (AtaxiaDR <= 5) Player.endurance += 0.05f * AtaxiaDR;
-            if (AtaxiaCountdown == 0 && AtaxiaDR < 5) AtaxiaCountdown = 30 * 60;
-            if (AtaxiaDR == 5 && AtaxiaCountdown == 0)
+            if (AtaxiaDR <= 5) Player.endurance += 0.05f * AtaxiaDR; else Player.endurance += 0.05f * 5;
+            if (AtaxiaDR == 5) AtaxiaCountdown = 30 * 60;
+            if (AtaxiaDR == 5 && AtaxiaCountdown > 0) AtaxiaDR = 6;
+            if (AtaxiaDR == 6 && AtaxiaCountdown == 0)
             {
                 SoundEngine.PlaySound(SoundID.Item74, Player.Center);
                 AtaxiaDR = 0;

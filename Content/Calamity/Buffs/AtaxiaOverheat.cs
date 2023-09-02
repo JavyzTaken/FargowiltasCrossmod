@@ -1,17 +1,17 @@
-﻿using Terraria;
-using Terraria.ID;
+﻿
+
+using Terraria;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Buffs
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AtaxiaOverheat : ModBuff
     {
         public override void SetStaticDefaults()
         {
+
             Main.debuff[Type] = true;
-            BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
-            Main.buffNoSave[Type] = true;
         }
 
         public override void Update(Player player, ref int buffIndex)
