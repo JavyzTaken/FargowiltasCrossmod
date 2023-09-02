@@ -235,7 +235,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TheMicrowave>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.StarSputter>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Magic.StarShower>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.GodspawnHelixStaff>(),
+                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.StarspawnHelixStaff>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.RegulusRiot>(),
                 ModContent.ItemType<CalamityMod.Items.Pets.ChromaticOrb>()
             });
