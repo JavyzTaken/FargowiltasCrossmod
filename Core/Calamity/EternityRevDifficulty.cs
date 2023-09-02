@@ -61,16 +61,17 @@ namespace FargowiltasCrossmod.Core.Calamity
 
             ActivationSound = SoundID.Roar with { Pitch = -0.5f};
             ChatTextColor = Color.Cyan;
-
+            
             //MostAlternateDifficulties = 1;
-            Difficulties = new DifficultyMode[] { new NoDifficulty(), new RevengeanceDifficulty(), new DeathDifficulty(), this };
-            Difficulties = Difficulties.OrderBy(d => d.DifficultyScale).ToArray();
+            //Difficulties = new DifficultyMode[] { new NoDifficulty(), new RevengeanceDifficulty(), new DeathDifficulty(), this };
+            //Difficulties = Difficulties.OrderBy(d => d.DifficultyScale).ToArray();
+            Difficulties.Add(this);
 
             DifficultyTiers = new List<DifficultyMode[]>();
             float currentTier = -1;
             int tierIndex = -1;
 
-            for (int i = 0; i < Difficulties.Length; i++)
+            for (int i = 0; i < Difficulties.Count; i++)
             {
                 // If at a new tier, create a new list of difficulties at that tier.
                 if (currentTier != Difficulties[i].DifficultyScale)

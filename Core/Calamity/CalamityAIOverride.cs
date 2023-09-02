@@ -34,29 +34,41 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Index++;
             //get label for skipping past ai changes
             ILLabel label = null;
-            c.GotoNext(i => i.MatchBrfalse(out label));
-            //go to before checks
-            c.Index -= 3;
-            //add new check and get label for skipping to it
-
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev);
-            c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
-            c.Index -= 4;
+            c.GotoPrev(i => i.MatchBrtrue(out label));
+            c.Index += 3;
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ret);
+            c.Index -= 9;
             var label2 = il.DefineLabel(c.Prev);
-
-            //go to checking for queen bee and go to the skipper after it
-            c.GotoPrev(i => i.MatchLdcI4(222));
-            c.Index++;
-            //replace skipper with my own
+            c.Index -= 4;
             c.Remove();
-            c.Emit(Mono.Cecil.Cil.OpCodes.Bne_Un, label2);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label2);
 
-            //do it again but make the check for zenith seed not skip my check
-            c.GotoPrev(i => i.MatchLdsfld(typeof(Main), nameof(Main.zenithWorld)));
-            c.Index++;
-            c.Remove();
-            c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label2);
-            //MonoModHooks.DumpIL(Instance, il);
+            //old method (only excludes boss ais)
+            ////go to before checks
+            //c.Index -= 3;
+            ////add new check and get label for skipping to it
+
+            //c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev);
+            //c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
+            //c.Index -= 4;
+            //var label2 = il.DefineLabel(c.Prev);
+
+            ////go to checking for queen bee and go to the skipper after it
+            //c.GotoPrev(i => i.MatchLdcI4(222));
+            //c.Index++;
+            ////replace skipper with my own
+            //c.Remove();
+            //c.Emit(Mono.Cecil.Cil.OpCodes.Bne_Un, label2);
+
+            ////do it again but make the check for zenith seed not skip my check
+            //c.GotoPrev(i => i.MatchLdsfld(typeof(Main), nameof(Main.zenithWorld)));
+            //c.Index++;
+            //c.Remove();
+            //c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label2);
+            MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
         }
         private static void CalamityProjectilePreAI_ILEdit(ILContext il)
         {

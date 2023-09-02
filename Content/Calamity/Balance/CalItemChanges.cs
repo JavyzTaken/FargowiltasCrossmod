@@ -11,9 +11,11 @@ using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
+using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -45,6 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return 0.8f;
             }
+            
             return 1;
         }
         public override void SetDefaults(Item item)
@@ -57,13 +60,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     item.damage = (int)(item.damage * balance);
                 }
+                
             }
+        }
+        public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
+        {
+            //magic dagger not using system because needs to dynamically change and change shootspeed (setdefaults doesnt allow dynamic change)
+            if (item.type == ItemID.MagicDagger && !Main.hardMode)
+            {
+                damage *= 0.51f;
+                item.shootSpeed = 12;
+            }else if (item.type == ItemID.MagicDagger)
+            {
+                item.shootSpeed = 30;
+            }
+           
+        }
+        public override void UpdateInventory(Item item, Player player)
+        {
+            
         }
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.type == ModContent.ItemType<Masochist>())
             {
-                return false;
+                return true;
             }
             if (item.type == ModContent.ItemType<CelestialOnion>() && CalamityConfig.Instance.BalanceRework)
             {
@@ -98,6 +119,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 else if (balance < 1)
                 {
                     tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                }
+                if (item.type == ItemID.MagicDagger)
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by 50% in Pre-Hardmode."));
                 }
             }
             #endregion

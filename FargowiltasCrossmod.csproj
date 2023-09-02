@@ -18,7 +18,15 @@
     <None Remove="Assets\EternityRevIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Remove="Libraries\CalamityMod.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CalamityMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
