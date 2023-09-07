@@ -6,6 +6,10 @@ using CalamityMod.Events;
 using System.Reflection;
 using System;
 using CalamityMod.Projectiles;
+using FargowiltasSouls.Core.Systems;
+using Mono.Cecil.Cil;
+using System.ComponentModel.DataAnnotations;
+using CalamityMod.BiomeManagers;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -16,11 +20,204 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         public override void Load()
         {
+            //Disable rev+ enemy/boss ai in emode
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);
+            //Disable rev+ projectile ai in emode
             MonoModHooks.Modify(typeof(CalamityGlobalProjectile).GetMethod(nameof(CalamityGlobalProjectile.PreAI)), CalamityProjectilePreAI_ILEdit);
+            //Disable cal drops (readd later with conditions that arent dumb)
+            MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.ModifyNPCLoot)), CalamityRemoveDrops_ILEdit);
             //MonoModHooks.Modify(typeof(CalamityGlobalProjectile).GetMethod(nameof(CalamityGlobalProjectile.AI)), CalamityProjectileAI_ILEdit);
         }
+        private static void CalamityRemoveDrops_ILEdit(ILContext il)
+        {
+            #region RevMasterDropsRemoval
+            var c = new ILCursor(il);
+            //dark mage
+            c.GotoNext(i => i.MatchLdcI4(4946));
+            c.Index--;
+            c.RemoveRange(16);
+            ILLabel label = c.MarkLabel();
+            c.GotoPrev(i => i.MatchLdcI4(565));
+            c.Index++;
+            c.Remove();
+            c.Emit(OpCodes.Beq, label);
+            //ogre
+            c.GotoNext(i => i.MatchLdcI4(4947));
+            c.Index--;
+            c.RemoveRange(16);
+            label = c.MarkLabel();
+            c.GotoPrev(i => i.MatchLdcI4(577));
+            c.Index++; c.Remove();
+            c.Emit(OpCodes.Beq, label);
+            //flying dutchman
+            c.GotoNext(i => i.MatchLdcI4(4940));
+            c.Index--;
+            
+            c.RemoveRange(16);
+            label = c.MarkLabel();
+            ILLabel[] labels = null;
+            c.GotoPrev(i => i.MatchSwitch(out labels));
+            labels[31] = label;
+            c.Remove();
+            c.EmitSwitch(labels);
 
+            //morning wood
+            c.GotoNext(i => i.MatchLdcI4(4941));
+            c.Index -= 2;
+            c.RemoveRange(22);
+            //pumpking
+            c.GotoNext(i => i.MatchLdcI4(4942));
+            c.Index -= 2;
+            c.RemoveRange(22);
+            //evercream
+            c.GotoNext(i => i.MatchLdcI4(4944));
+            c.Index -= 2;
+            c.RemoveRange(22);
+            //santank
+            c.GotoNext(i => i.MatchLdcI4(4945));
+            c.Index -= 2;
+            c.RemoveRange(22);
+            //ice queen
+            c.GotoNext(i => i.MatchLdcI4(4943));
+            c.Index -= 2;
+            c.RemoveRange(22);
+            //flying saucer
+            c.GotoNext(i => i.MatchLdcI4(4939));
+            c.Index -= 40;
+            c.RemoveRange(55);
+            //ks
+            c.GotoNext(i => i.MatchLdcI4(4929));
+            c.Index--;
+            c.RemoveRange(16);
+            //eoc
+            c.GotoNext(i => i.MatchLdcI4(4924));
+            c.Index--;
+            c.RemoveRange(16);
+            //eow
+            c.GotoNext(i => i.MatchLdcI4(4925));
+            c.Index -= 10;
+            c.RemoveRange(36);
+            //boc
+            c.GotoNext(i => i.MatchLdcI4(4926));
+            c.Index--;
+            c.RemoveRange(16);
+            //deer
+            c.GotoNext(i => i.MatchLdcI4(5110));
+            c.Index--;
+            c.RemoveRange(16);
+            //qb
+            c.GotoNext(i => i.MatchLdcI4(4928));
+            c.Index--;
+            c.RemoveRange(16);
+            //skeletron
+            c.GotoNext(i => i.MatchLdcI4(4927));
+            c.Index--;
+            c.RemoveRange(16);
+            //wof
+            c.GotoNext(i => i.MatchLdcI4(4930));
+            c.Index--;
+            c.RemoveRange(16);
+            //qs
+            c.GotoNext(i => i.MatchLdcI4(4950));
+            c.Index--;
+            c.RemoveRange(16);
+            //destroyer
+            c.GotoNext(i => i.MatchLdcI4(4932));
+            c.Index--;
+            c.RemoveRange(16);
+            //twins
+            c.GotoNext(i => i.MatchLdcI4(4931));
+            c.Index -= 10;
+            c.RemoveRange(36);
+            //prime
+            c.GotoNext(i => i.MatchLdcI4(4933));
+            c.Index--;
+            c.RemoveRange(16);
+            //plant
+            c.GotoNext(i => i.MatchLdcI4(4934));
+            c.Index--;
+            c.RemoveRange(16);
+            //golem
+            c.GotoNext(i => i.MatchLdcI4(4935));
+            c.Index--;
+            c.RemoveRange(16);
+            //betsy
+            c.GotoNext(i => i.MatchLdcI4(4948));
+            c.Index -= 47;
+            c.RemoveRange(62);
+            //duke
+            c.GotoNext(i => i.MatchLdcI4(4936));
+            c.Index--;
+            c.RemoveRange(16);
+            //eol
+            c.GotoNext(i => i.MatchLdcI4(4949));
+            c.Index--;
+            c.RemoveRange(16);
+            //cultist
+            c.GotoNext(i => i.MatchLdcI4(4937));
+            c.Index--;
+            c.RemoveRange(16);
+            label = c.MarkLabel();
+            c.GotoPrev(i => i.MatchLdcI4(439));
+            c.Index++;
+            c.Remove();
+            c.EmitBeq(label);
+            //ml
+            c.GotoNext(i => i.MatchLdcI4(4938));
+            c.Index--;
+            c.RemoveRange(16);
+            #endregion RevMasterDropsRemoval
+            //remove essence of sunlight from wyverns
+            var d = new ILCursor(il);
+            d.GotoNext(i => i.MatchLdcI4(10));
+            d.Index -= 4;
+            d.RemoveRange(10);
+            label = d.MarkLabel();
+            d.GotoPrev(i => i.MatchLdcI4(87));
+            d.Index++;
+            d.Remove();
+            d.EmitBeq(label);
+            //remove essence of sunlight from nimbus
+            d.GotoNext(i => i.MatchLdcI4(2));
+            d.Index++;
+            d.GotoNext(i => i.MatchLdcI4(2));
+            d.Index -= 3;
+            d.RemoveRange(8);
+            label = d.MarkLabel();
+            labels = null;
+            d.GotoPrev(i => i.MatchSwitch(out labels));
+            labels = null;
+            d.Index--;
+            d.GotoPrev(i => i.MatchSwitch(out labels));
+            labels = null;
+            d.Index--;
+            d.GotoPrev(i => i.MatchSwitch(out labels));
+            labels = null;
+            d.Index--;
+            d.GotoPrev(i => i.MatchSwitch(out labels));
+            labels[8] = label;
+            //remove cursed flames from world feeder
+            var e = new ILCursor(il);
+            e.GotoNext(i => i.MatchLdcI4(522));
+            e.Index -= 35;
+            e.RemoveRange(103);
+            label = e.MarkLabel();
+            e.GotoPrev(i => i.MatchLdcI4(113));
+            labels = null;
+            e.GotoPrev(i => i.MatchSwitch(out labels));
+            labels[0] = label;
+            //remove elemental in a bottles from sand elemental
+            e.GotoNext(i => i.MatchLdcI4(5));
+            
+            e.Index -= 2;
+            e.RemoveRange(14);
+            label = e.MarkLabel();
+            e.GotoPrev(i => i.MatchLdcI4(541));
+            e.Index++;
+            e.Remove();
+            e.EmitBeq(label);
+            MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
+        }
         private static void CalamityPreAI_ILEdit(ILContext il)
         {
             var c = new ILCursor(il);
@@ -68,7 +265,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             //c.Index++;
             //c.Remove();
             //c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label2);
-            MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
+            //MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
         }
         private static void CalamityProjectilePreAI_ILEdit(ILContext il)
         {

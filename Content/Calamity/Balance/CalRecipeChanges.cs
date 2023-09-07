@@ -30,6 +30,7 @@ using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasSouls.Content.Items.Summons;
 using CalamityMod.Tiles.Furniture.CraftingStations;
+using CalamityMod.Items.Placeables.Plates;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
@@ -37,6 +38,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalRecipeChanges : ModSystem
     {
+        public override void AddRecipes()
+        {
+            Recipe.Create(ModContent.ItemType<OnyxExcavatorKey>())
+                .AddIngredient(ModContent.ItemType<Onyxplate>(), 25)
+                .AddIngredient(ItemID.Wire, 10)
+                .AddIngredient(ModContent.ItemType<DubiousPlating>(), 20)
+                .AddIngredient(ModContent.ItemType<MysteriousCircuitry>(), 20)
+                .AddTile(TileID.Anvils)
+                .Register();
+            Recipe.Create(ModContent.ItemType<RoverDrive>())
+                .AddIngredient(ModContent.ItemType<WulfrumBattery>())
+                .AddIngredient(ModContent.ItemType<EnergyCore>(), 2)
+                .AddIngredient(ModContent.ItemType<WulfrumMetalScrap>(), 15)
+                .AddIngredient(ModContent.ItemType<DubiousPlating>(), 5)
+                .AddIngredient(ModContent.ItemType<MysteriousCircuitry>(), 5)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
         public override void PostAddRecipes()
         {
             //!!! WARNING !!!
@@ -66,7 +85,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (recipe.HasResult(ModContent.ItemType<SupersonicSoul>()) && recipe.HasIngredient(ModContent.ItemType<AeolusBoots>()))
                 {
                     if (recipe.RemoveIngredient(ModContent.ItemType<AeolusBoots>()))
-                        recipe.AddIngredient(ModContent.ItemType<TracersElysian>());
+                        recipe.AddIngredient(ModContent.ItemType<TracersSeraph>());
                     if (recipe.RemoveIngredient(ItemID.BundleofBalloons))
                         recipe.AddIngredient(ModContent.ItemType<MOAB>());
                     if (recipe.RemoveIngredient(ItemID.MasterNinjaGear))
@@ -83,7 +102,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     recipe.AddIngredient(ModContent.ItemType<SkylineWings>())
                         .AddIngredient(ModContent.ItemType<HadarianWings>())
                         .AddIngredient(ModContent.ItemType<TarragonWings>())
-                        .AddIngredient(ModContent.ItemType<SilvaWings>());
+                        .AddIngredient(ModContent.ItemType<SilvaWings>())
+                        .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
 
                 }
                 if (recipe.HasResult(ModContent.ItemType<ColossusSoul>()) && recipe.HasIngredient(ItemID.WormScarf))
@@ -96,7 +116,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         recipe.AddIngredient(ModContent.ItemType<AsgardianAegis>());
                     if (recipe.RemoveIngredient(ItemID.CharmofMyths) && recipe.RemoveIngredient(ItemID.StarVeil) && recipe.RemoveIngredient(ItemID.FrozenShield))
                         recipe.AddIngredient(ModContent.ItemType<RampartofDeities>());
-                    recipe.AddIngredient(ModContent.ItemType<TheCamper>())
+                    recipe
+                        .AddIngredient(ModContent.ItemType<Purity>())
                     .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
                 if (recipe.HasResult(ModContent.ItemType<BerserkerSoul>()) && recipe.HasIngredient(ItemID.SharkToothNecklace))
@@ -194,13 +215,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     recipe.AddIngredient(ModContent.ItemType<BlossomPickaxe>())
                         .AddIngredient(ModContent.ItemType<ArchaicPowder>())
                         .AddIngredient(ModContent.ItemType<SpelunkersAmulet>())
-                        .AddIngredient(ModContent.ItemType<OnyxExcavatorKey>());
+                        .AddIngredient(ModContent.ItemType<OnyxExcavatorKey>())
+                        .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
+                
                 #endregion
 
                 #region Balance and Progression Locks
                 if (CalamityConfig.Instance.BalanceRework)
                 {
+                    if (recipe.HasResult(ItemID.AnkhShield) && !recipe.HasIngredient(ItemID.SoulofNight))
+                    {
+                        recipe.AddIngredient(ItemID.SoulofNight, 3);
+                    }
                     if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient(ModContent.ItemType<DivineGeode>()))
                     {
                         recipe.AddIngredient(ModContent.ItemType<DivineGeode>(), 4);
