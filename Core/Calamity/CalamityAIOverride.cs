@@ -10,6 +10,30 @@ using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
 using System.ComponentModel.DataAnnotations;
 using CalamityMod.BiomeManagers;
+using System.Collections.Generic;
+using Fargowiltas.NPCs;
+using Terraria.ID;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
+using System.Linq;
+using CalamityMod.NPCs.SupremeCalamitas;
+using CalamityMod;
+using CalamityMod.Projectiles.Typeless;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
+using FargowiltasSouls.Content.Bosses.Lieflight;
+using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
+using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Bosses.Champions.Shadow;
+using FargowiltasSouls.Content.Bosses.Champions.Life;
+using FargowiltasSouls.Content.Bosses.Champions.Spirit;
+using FargowiltasSouls.Content.Bosses.Champions.Nature;
+using FargowiltasSouls.Content.Bosses.Champions.Earth;
+using FargowiltasSouls.Content.Bosses.Champions.Terra;
+using FargowiltasSouls.Content.Bosses.Champions.Timber;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Bosses.AbomBoss;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -17,7 +41,102 @@ namespace FargowiltasCrossmod.Core.Calamity
     public class CalamityAIOverride : ModSystem
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
+        public override void PostSetupContent()
+        {
+            //EXPLANATION OF TUPLES
+            //int: npc id
+            //int: time to set to (1 = day, -1 = night, 0 = dont force time)
+            //Action<int>: "boss spawning function" idfk look at cal source but dont put null though
+            //int: cooldown (to spawn i think???)
+            //bool: boss needs special sound effect
+            //float: dimness factor to be used when boss spawned
+            //int[]: list of npc ids to not delete when spawning
+            //int[]: list of other npc ids that need to die to continue event
 
+            //Adding bosses to boss rush
+            Mod cal = ModLoader.GetMod("CalamityMod");
+            //get the list of boss entries
+            List < (int, int, Action<int>, int, bool, float, int[], int[]) > Entries = cal.Call("GetBossRushEntries") as List<(int, int, Action<int>, int, bool, float, int[], int[])>;
+            //insert trojan squirrel at the beginning
+            Entries.Insert(0, (ModContent.NPCType<TrojanSquirrel>(), 0, delegate (int type)
+            {
+                FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TrojanSquirrel>());
+            }, -1, false, 0f, new int[] {ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelLimb>(), ModContent.NPCType<TrojanSquirrelPart>() }, new int[] { }));
+            //insert deviantt before sg
+            Entries.Insert(12, (ModContent.NPCType<DeviBoss>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<DeviBoss>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
+            //insert lieflight after mechs
+            Entries.Insert(22, (ModContent.NPCType<LifeChallenger>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<LifeChallenger>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
+            //insert champions after provi
+            Entries.Insert(38, (ModContent.NPCType<CosmosChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<CosmosChampion>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<WillChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<WillChampion>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<ShadowChampion>(), -1, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<ShadowChampion>());
+            }, -1, false, 0f, new int[] {ModContent.NPCType<ShadowOrbNPC>(),  }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<SpiritChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<SpiritChampion>());
+            }, -1, false, 0f, new int[] {ModContent.NPCType<SpiritChampionHand>() }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<LifeChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<LifeChampion>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<NatureChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<NatureChampion>());
+            }, -1, false, 0f, new int[] {ModContent.NPCType<NatureChampionHead>() }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<EarthChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<EarthChampion>());
+            }, -1, false, 0f, new int[] {ModContent.NPCType<EarthChampionHand>() }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<TerraChampion>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<TerraChampion>());
+
+            }, -1, false, 0f, new int[] {ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>() }, new int[] { }));
+            Entries.Insert(38, (ModContent.NPCType<TimberChampion>(), 0, delegate (int type)
+            {
+                FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TimberChampion>());
+                
+            }, -1, false, 0f, new int[] {ModContent.NPCType<TimberChampionHead>() }, new int[] {ModContent.NPCType<TimberChampionHead>() }));
+            //add abom before draedon
+            Entries.Insert(54, (ModContent.NPCType<AbomBoss>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<AbomBoss>());
+            }, -1, false, 0f, new int[] { ModContent.NPCType<AbomSaucer>()}, new int[] { }));
+            //add mutant boss entry to the end
+            Entries.Add((ModContent.NPCType<MutantBoss>(), 0, delegate (int type) {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<MutantBoss>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
+            //set boss rush entries to new list of entries
+            cal.Call("SetBossRushEntries", Entries);
+            //make scal not end the event on defeat so it continues to mutant
+            BossRushEvent.BossDeathEffects.Remove(ModContent.NPCType<SupremeCalamitas>());
+            //make killing mutant end the event
+            BossRushEvent.BossDeathEffects.Add(ModContent.NPCType<MutantBoss>(), delegate (NPC npc)
+            {
+                CalamityUtils.KillAllHostileProjectiles();
+                BossRushEvent.HostileProjectileKillCounter = 3;
+                DownedBossSystem.downedBossRush = true;
+                CalamityNetcode.SyncWorld();
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    Projectile.NewProjectile(new EntitySource_WorldEvent(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BossRushEndEffectThing>(), 0, 0f, Main.myPlayer, 0f, 0f, 0f);
+                }
+            });
+        }
         public override void Load()
         {
             //Disable rev+ enemy/boss ai in emode
@@ -233,9 +352,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label = null;
             c.GotoPrev(i => i.MatchBrtrue(out label));
             c.Index += 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !CalamityMod.Events.BossRushEvent.BossRushActive);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label);
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !CalamityMod.Events.BossRushEvent.BossRushActive);
             c.Emit(Mono.Cecil.Cil.OpCodes.Ret);
             c.Index -= 9;
             var label2 = il.DefineLabel(c.Prev);
@@ -278,7 +397,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label = null;
             c.GotoNext(i => i.MatchBrfalse(out label));
             c.Index -= 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !CalamityMod.Events.BossRushEvent.BossRushActive);
             c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);

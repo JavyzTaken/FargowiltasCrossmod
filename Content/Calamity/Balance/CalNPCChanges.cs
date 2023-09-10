@@ -1,29 +1,39 @@
 ﻿
 using CalamityMod;
+using CalamityMod.CalPlayer;
 using CalamityMod.Events;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Materials;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AcidRain;
+using CalamityMod.NPCs.AquaticScourge;
+using CalamityMod.NPCs.AstrumDeus;
 using CalamityMod.NPCs.Bumblebirb;
 using CalamityMod.NPCs.CeaselessVoid;
+using CalamityMod.NPCs.Crabulon;
+using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.NPCs.DevourerofGods;
 using CalamityMod.NPCs.DraedonLabThings;
 using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
+using CalamityMod.NPCs.HiveMind;
 using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.NPCs.OldDuke;
+using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.Polterghast;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
 using CalamityMod.NPCs.Signus;
+using CalamityMod.NPCs.SlimeGod;
 using CalamityMod.NPCs.StormWeaver;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.Yharon;
+using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
+using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.ItemDropRules;
@@ -38,14 +48,26 @@ using FargowiltasSouls.Content.Bosses.Champions.Spirit;
 using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Bosses.Lieflight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
+using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
+using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -84,6 +106,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     BuffID.Suffocation
                 }
+            });
+            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<BrimstoneHeart>(), new Terraria.DataStructures.NPCDebuffImmunityData
+            {
+                SpecificallyImmuneTo = new int[]
+                {
+                    ModContent.BuffType<ClippedWingsBuff>()
+                }
+            });
+            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<SupremeCataclysm>(), new Terraria.DataStructures.NPCDebuffImmunityData
+            {
+                SpecificallyImmuneTo = new int[]
+               {
+                    ModContent.BuffType<ClippedWingsBuff>()
+               }
+            });
+            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<SupremeCatastrophe>(), new Terraria.DataStructures.NPCDebuffImmunityData
+            {
+                SpecificallyImmuneTo = new int[]
+               {
+                    ModContent.BuffType<ClippedWingsBuff>()
+                    
+               }
             });
         }
         public static List<int> Champions = new List<int>
@@ -168,9 +212,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //champions
                 //if (Champions.Contains(npc.type))
                 //{
-                    //npc.lifeMax = (int)(npc.lifeMax * 0.8f);
+                //npc.lifeMax = (int)(npc.lifeMax * 0.8f);
                 //}
                 //Events/Minibosses
+
                 if (AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
@@ -182,7 +227,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
-                if (SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG) 
+                if (SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 4.5f);
                 }
@@ -213,7 +258,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //lunatic
                 if (npc.type == NPCID.CultistBoss && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.4f);
+                    npc.lifeMax = (int)(npc.lifeMax * 0.6f);
                 }
                 //moon lord
                 if (npc.type == NPCID.MoonLordCore && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
@@ -221,21 +266,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     npc.lifeMax = (int)(npc.lifeMax * 0.5f);
                 }
                 //Providence and guardian minions
-                if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() || 
+                if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() ||
                     npc.type == ModContent.NPCType<ProvSpawnHealer>() || npc.type == ModContent.NPCType<ProvSpawnOffense>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 1.7f);
+                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
                 }
                 //profaned guardians and rock thing
                 if (npc.type == ModContent.NPCType<ProfanedGuardianHealer>() || npc.type == ModContent.NPCType<ProfanedGuardianDefender>() ||
                     npc.type == ModContent.NPCType<ProfanedGuardianCommander>() || npc.type == ModContent.NPCType<ProfanedRocks>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                    npc.lifeMax = (int)(npc.lifeMax * 1.3f);
                 }
                 //dragonfolly and minion
                 if (npc.type == ModContent.NPCType<Bumblefuck>() || npc.type == ModContent.NPCType<Bumblefuck2>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 1.4f);
+                    npc.lifeMax = (int)(npc.lifeMax * 1.3f);
                 }
                 //signus
                 if (npc.type == ModContent.NPCType<Signus>())
@@ -256,27 +301,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //polterghast and polterclone
                 if (npc.type == ModContent.NPCType<Polterghast>() || npc.type == ModContent.NPCType<PolterPhantom>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 1.9f);
+                    npc.lifeMax = (int)(npc.lifeMax * 3.5f);
                 }
                 //overdose
                 if (npc.type == ModContent.NPCType<OldDuke>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2f);
+                    npc.lifeMax = (int)(npc.lifeMax * 3.2f);
                 }
                 //dog
                 if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.8f);
+                    npc.lifeMax = (int)(npc.lifeMax * 3.2f);
                 }
                 //yhar
                 if (npc.type == ModContent.NPCType<Yharon>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.0f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
                 //abom
                 if (npc.type == ModContent.NPCType<AbomBoss>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.5f);
+                    npc.lifeMax = (int)(npc.lifeMax * 3.8f);
                 }
                 //exos
                 if (npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosHead>()
@@ -294,14 +339,105 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //mutant
                 if (npc.type == ModContent.NPCType<MutantBoss>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.5f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.7f);
                 }
+                #region BRBalance
+                List<int> squirrelParts = new List<int>
+                {
+                    ModContent.NPCType<TrojanSquirrelArms>(),
+                    ModContent.NPCType<TrojanSquirrel>(),
+                    ModContent.NPCType<TrojanSquirrelHead>(),
+                    ModContent.NPCType<TrojanSquirrelLimb>(),
+                    ModContent.NPCType<TrojanSquirrelPart>(),
+                };
+                List<int> KingSlime = new List<int>
+                {
+                    NPCID.KingSlime,
+                    NPCID.BlueSlime,
+                    NPCID.SlimeSpiked,
+                    ModContent.NPCType<KingSlimeJewel>()
+                };
+                //List<int> EOC = new List<int> { NPCID.EyeofCthulhu, NPCID.ServantofCthulhu };
+                //List<int> DesertScourge = new List<int> { ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertNuisanceTail>(),
+                //ModContent.NPCType<DesertNuisanceHead>(), ModContent.NPCType<DesertNuisanceBody>(), ModContent.NPCType<DesertNuisanceTail>()};
+                //List<int> Crabulon = new List<int> { ModContent.NPCType<Crabulon>(), ModContent.NPCType<CrabShroom>() };
+                List<int> Eater = new List<int> { NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail };
+                //List<int> Brain = new List<int> { NPCID.BrainofCthulhu, NPCID.Creeper, ModContent.NPCType<BrainIllusion>(), ModContent.NPCType<BrainIllusion2>(), ModContent.NPCType<BrainIllusionAttack>() };
+                //List<int> HiveMind = new List<int> { ModContent.NPCType<HiveMind>(), ModContent.NPCType<HiveBlob>(), ModContent.NPCType<HiveBlob2>(), ModContent.NPCType<DankCreeper>() };
+                //List<int> Perforator = new List<int> { ModContent.NPCType<PerforatorHive>(),
+                //ModContent.NPCType<PerforatorHeadSmall>(), ModContent.NPCType<PerforatorHeadMedium>(), ModContent.NPCType<PerforatorHeadLarge>(),
+                //ModContent.NPCType<PerforatorBodySmall>(), ModContent.NPCType<PerforatorBodyMedium>(), ModContent.NPCType<PerforatorBodyLarge>(),
+                //ModContent.NPCType<PerforatorTailSmall>(), ModContent.NPCType<PerforatorTailMedium>(), ModContent.NPCType<PerforatorTailLarge>()};
+                //List<int> QueenBee = new List<int> { NPCID.QueenBee, NPCID.Bee, NPCID.BeeSmall, ModContent.NPCType<RoyalSubject>() };
+                //List<int> Skeletron = new List<int> { NPCID.SkeletronHead, NPCID.SkeletronHand };
+                List<int> SlimeGod = new List<int> { ModContent.NPCType<EbonianPaladin>(), ModContent.NPCType<SplitEbonianPaladin>(),
+                    ModContent.NPCType<CrimulanPaladin>(), ModContent.NPCType<SplitCrimulanPaladin>(),
+                    };
+                //List<int> WoF = new List<int> { NPCID.WallofFlesh, NPCID.WallofFleshEye, NPCID.TheHungry, NPCID.TheHungryII, NPCID.LeechHead, NPCID.LeechTail, NPCID.LeechBody };
+                List<int> worms = new List<int>
+                {
+                    ModContent.NPCType<DesertNuisanceHead>(), ModContent.NPCType<DesertNuisanceBody>(), ModContent.NPCType<DesertNuisanceTail>(),
+                    ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
+                    NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
+                    ModContent.NPCType<PerforatorHeadSmall>(),ModContent.NPCType<PerforatorBodySmall>(), ModContent.NPCType<PerforatorTailSmall>(),
+                    ModContent.NPCType<PerforatorHeadMedium>(),ModContent.NPCType<PerforatorBodyMedium>(), ModContent.NPCType<PerforatorTailMedium>(),
+                    ModContent.NPCType<PerforatorHeadLarge>(),ModContent.NPCType<PerforatorBodyLarge>(), ModContent.NPCType<PerforatorTailLarge>(),
+                    ModContent.NPCType<AquaticScourgeHead>(), ModContent.NPCType<AquaticScourgeBody>(),ModContent.NPCType<AquaticScourgeTail>(),
+                    NPCID.TheDestroyer, NPCID.TheDestroyerBody, NPCID.TheDestroyerTail,
+                    ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),
+                    ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>(),
 
-                
+                };
+                if (BossRushEvent.BossRushActive)
+                {
+                    //if (squirrelParts.Contains(npc.type) || npc.type == ModContent.NPCType<DeviBoss>())
+                    //{
+                    //    npc.lifeMax *= 3000;
+                    //}
+                    //if (KingSlime.Contains(npc.type) || EOC.Contains(npc.type) || Crabulon.Contains(npc.type) || HiveMind.Contains(npc.type) ||
+                    //    Perforator.Contains(npc.type) || Eater.Contains(npc.type) || DesertScourge.Contains(npc.type) || Brain.Contains(npc.type) ||
+                    //    QueenBee.Contains(npc.type) || Skeletron.Contains(npc.type) || SlimeGod.Contains(npc.type) || WoF.Contains(npc.type) || npc.type == NPCID.Deerclops)
+                    //{
+                    //    npc.lifeMax = (int)(npc.lifeMax *3.5);
+                    //}
+                    if (!npc.boss)
+                    {
+                        npc.lifeMax += 100000;
+
+                    }
+                    else
+                    {
+                        npc.lifeMax += 1000000;
+                    }
+                    if (npc.type == ModContent.NPCType<DeviBoss>())
+                    {
+                        npc.lifeMax += 900000;
+                    }
+                    if (SlimeGod.Contains(npc.type)){
+                        npc.lifeMax += 900000;
+                    }
+                    if (worms.Contains(npc.type) && !Eater.Contains(npc.type) && npc.boss){
+                        npc.lifeMax += 30000000;
+                    }
+                    else if (worms.Contains(npc.type) && !Eater.Contains(npc.type))
+                    {
+                        npc.lifeMax += 5000000;
+                    }
+                    if (Eater.Contains(npc.type))
+                    {
+                        npc.lifeMax += 500000;
+                    }
+                    if (npc.damage < 744 && npc.damage != 0)
+                    {
+                        npc.damage = 744;
+                    }
+                }
+                #endregion BRBalance
+
             }
             #endregion
 
-            
+
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
@@ -492,8 +628,52 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npcLoot.Add(PreHMNotBalanced);
             }
         }
+        
         public override bool PreKill(NPC npc)
         {
+            if (npc.type == ModContent.NPCType<TimberChampionHead>() && BossRushEvent.BossRushActive)
+            {
+                for (int playerIndex = 0; playerIndex < 255; playerIndex++)
+                {
+                    Player p = Main.player[playerIndex];
+                    if (p != null && p.active)
+                    {
+                        p.Calamity().BossRushReturnPosition = new Vector2?(p.Center);
+                        Vector2? underworld = new Vector2((Main.maxTilesX*16)/2, Main.maxTilesY*16 - 2400);
+                        if (underworld == null)
+                        {
+                            break;
+                        }
+                        CalamityPlayer.ModTeleport(p, underworld.Value, false, 2);
+                        SoundStyle teleportSound = BossRushEvent.TeleportSound;
+                        teleportSound.Volume = 1.6f;
+                        SoundEngine.PlaySound(teleportSound, new Vector2?(p.Center), null);
+                    }
+                }
+            }
+            if (npc.type == ModContent.NPCType<NatureChampion>() && BossRushEvent.BossRushActive)
+            {
+                for (int playerIndex = 0; playerIndex < 255; playerIndex++)
+                {
+                    Player p = Main.player[playerIndex];
+                    if (p != null && p.active)
+                    {
+                        if (p.Calamity().BossRushReturnPosition != null)
+                        {
+                            CalamityPlayer.ModTeleport(p, p.Calamity().BossRushReturnPosition.Value, false, 2);
+                            p.Calamity().BossRushReturnPosition = null;
+                        }
+                        p.Calamity().BossRushReturnPosition = null;
+                        SoundStyle teleportSound = BossRushEvent.TeleportSound;
+                        teleportSound.Volume = 1.6f;
+                        SoundEngine.PlaySound(teleportSound, new Vector2?(p.Center), null);
+                    }
+                }
+            }
+            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || Champions.Contains(npc.type) || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>())
+            {
+                BossRushEvent.BossRushStage++;
+            }
             if ((npc.type == NPCID.SolarCorite || npc.type == NPCID.SolarCrawltipedeHead || npc.type == NPCID.SolarCrawltipedeTail
                 || npc.type == NPCID.StardustJellyfishBig || npc.type == NPCID.NebulaBrain || npc.type == NPCID.VortexHornetQueen) && !NPC.downedAncientCultist)
             {
@@ -521,8 +701,71 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 pool[NPCID.PigronHallow] = 0f;
             }
         }
+        public override bool InstancePerEntity => true;
+        private int numAI = 0;
         public override bool PreAI(NPC npc)
         {
+            //BossRushEvent.BossRushStage = 36;
+            if (BossRushEvent.BossRushActive)
+            {
+                if (npc.type == NPCID.SkeletronHead && npc.life <= 13000 && npc.life > 1000)
+                {
+                    npc.life = 1000;
+                }
+                if (numAI == 0)
+                    if (npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<TrojanSquirrelHead>() || npc.type == ModContent.NPCType<TrojanSquirrelArms>() || npc.type == ModContent.NPCType<TrojanSquirrel>())
+                    {
+                        numAI++;
+                        npc.AI();
+                        float speedToAdd = 0.5f;
+                        Vector2 newPos = npc.position + npc.velocity * speedToAdd;
+                        if (!Collision.SolidCollision(newPos, npc.width, npc.height))
+                        {
+                            npc.position = newPos;
+                        }
+                    }
+            }
+            if (npc.type == ModContent.NPCType<SpiritChampion>() && BossRushEvent.BossRushActive)
+            {
+                Main.player[Main.myPlayer].ZoneRockLayerHeight = true;
+                Main.player[Main.myPlayer].ZoneUndergroundDesert = true;
+
+            }
+            if (npc.type == ModContent.NPCType<ShadowChampion>() && BossRushEvent.BossRushActive)
+            {
+                Main.dayTime = false;
+                Main.time = Main.nightLength / 2;
+            }
+            if (npc.type == ModContent.NPCType<TerraChampion>() && BossRushEvent.BossRushActive)
+            {
+                Main.player[Main.myPlayer].ZoneUnderworldHeight = false;
+            }
+            if (npc.type == ModContent.NPCType<EarthChampion>() && BossRushEvent.BossRushActive)
+            {
+                Main.player[Main.myPlayer].ZoneUnderworldHeight = true;
+            }
+            if (npc.type == ModContent.NPCType<NatureChampion>() && BossRushEvent.BossRushActive)
+            {
+                Main.player[Main.myPlayer].ZoneUnderworldHeight = false;
+                
+            }
+            if (npc.type == ModContent.NPCType<MutantBoss>() && BossRushEvent.BossRushActive)
+            {
+                npc.ModNPC.SceneEffectPriority = SceneEffectPriority.None;
+                if (npc.ai[0] == -7 && npc.ai[1] >= 250)
+                {
+                    npc.StrikeInstantKill();
+
+                    CalamityUtils.KillAllHostileProjectiles();
+                    BossRushEvent.HostileProjectileKillCounter = 3;
+                    DownedBossSystem.downedBossRush = true;
+                    CalamityNetcode.SyncWorld();
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Projectile.NewProjectile(new EntitySource_WorldEvent(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BossRushEndEffectThing>(), 0, 0f, Main.myPlayer, 0f, 0f, 0f);
+                    }
+                }
+            }
             //Main.NewText(FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
             #region Balance Changes config
             if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceRework)
@@ -544,6 +787,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (npc.type == NPCID.MoonLordCore)
             {
                 Main.player[Main.myPlayer].Calamity().infiniteFlight = true;
+            }
+            //queen bee no enrage during br
+            if (npc.type == NPCID.QueenBee && BossRushEvent.BossRushActive)
+            {
+                npc.GetGlobalNPC<QueenBee>().EnrageFactor = 0;
+            }
+            if (npc.type == NPCID.Golem && BossRushEvent.BossRushActive)
+            {
+                npc.GetGlobalNPC<Golem>().IsInTemple = true;
             }
             //make golem not fly
             if (npc.type == NPCID.Golem)
@@ -567,6 +819,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npc.StrikeInstantKill();
             }
             return base.PreAI(npc);
+        }
+        public override void PostAI(NPC npc)
+        {
+            if (numAI > 0)
+            {
+                numAI = 0;
+            }
         }
     }
 }

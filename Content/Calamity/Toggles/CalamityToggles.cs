@@ -1,4 +1,5 @@
 ﻿using CalamityMod.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Core.Toggler;
 using System;
@@ -18,12 +19,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public override int Priority => 1;
         public override bool Active => true;
 
+        public int VagabondsSoulHeader = ModContent.ItemType<VagabondsSoul>();
+        public string Nanotech;
+        public string EclipseMirror;
+        public string DragonScales;
+        public string VeneratedLocket;
+
         public int CalamityColossusHeader = ModContent.ItemType<ColossusSoul>();
         public string Amalgam;
         public string AsgardianAegis;
         public string RampartofDeities;
-        public string Camper;
-        public string Sponge;
         public string Purity;
 
         public int CalamityBerserkerHeader = ModContent.ItemType<BerserkerSoul>();

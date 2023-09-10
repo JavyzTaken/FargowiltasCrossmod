@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         public EternityRevDifficulty()
         {
-            DifficultyScale = 99999999f;
+            DifficultyScale = 1f;
             Name = Language.GetText("Mods.FargowiltasCrossmod.EternityRevDifficulty.Name");
             ShortDescription = Language.GetText("Mods.FargowiltasCrossmod.EternityRevDifficulty.ShortDescription");
 
@@ -65,29 +65,29 @@ namespace FargowiltasCrossmod.Core.Calamity
             //MostAlternateDifficulties = 1;
             //Difficulties = new DifficultyMode[] { new NoDifficulty(), new RevengeanceDifficulty(), new DeathDifficulty(), this };
             //Difficulties = Difficulties.OrderBy(d => d.DifficultyScale).ToArray();
-            Difficulties.Add(this);
+            //Difficulties.Add(this);
 
-            DifficultyTiers = new List<DifficultyMode[]>();
-            float currentTier = -1;
-            int tierIndex = -1;
+            //DifficultyTiers = new List<DifficultyMode[]>();
+            //float currentTier = -1;
+            //int tierIndex = -1;
 
-            for (int i = 0; i < Difficulties.Count; i++)
-            {
-                // If at a new tier, create a new list of difficulties at that tier.
-                if (currentTier != Difficulties[i].DifficultyScale)
-                {
-                    DifficultyTiers.Add(new DifficultyMode[] { Difficulties[i] });
-                    currentTier = Difficulties[i].DifficultyScale;
-                    tierIndex++;
-                }
+            //for (int i = 0; i < Difficulties.Count; i++)
+            //{
+            //    // If at a new tier, create a new list of difficulties at that tier.
+            //    if (currentTier != Difficulties[i].DifficultyScale)
+            //    {
+            //        DifficultyTiers.Add(new DifficultyMode[] { Difficulties[i] });
+            //        currentTier = Difficulties[i].DifficultyScale;
+            //        tierIndex++;
+            //    }
 
-                // If the tier already exists, just add it to the list of other difficulties at that tier.
-                else
-                {
-                    DifficultyTiers[tierIndex] = DifficultyTiers[tierIndex].Append(Difficulties[i]).ToArray();
-                    MostAlternateDifficulties = Math.Max(DifficultyTiers[tierIndex].Length, MostAlternateDifficulties);
-                }
-            }
+            //    // If the tier already exists, just add it to the list of other difficulties at that tier.
+            //    else
+            //    {
+            //        DifficultyTiers[tierIndex] = DifficultyTiers[tierIndex].Append(Difficulties[i]).ToArray();
+            //        MostAlternateDifficulties = Math.Max(DifficultyTiers[tierIndex].Length, MostAlternateDifficulties);
+            //    }
+            //}
         }
 
         public override int FavoredDifficultyAtTier(int tier)

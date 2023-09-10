@@ -1,5 +1,10 @@
 Mods: {
 	FargowiltasSouls: {
+		VagabondsSoulHeader: "[i:FargowiltasCrossmod/VagabondsSoul] Vagabond's Soul"
+		NanotechConfig: "[i:CalamityMod/Nanotech] Nanotech"
+		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
+		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
+		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
 		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul Toggles"
 		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
 		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
@@ -92,6 +97,11 @@ Mods: {
 					Effects of Elemental Quiver, Quiver of Nihility
 					Effects of Daawnlight Spirit Origin and Dynamo Stem Cells
 					'''
+				Vagabond:
+					'''
+					Effects of Nanotech and Eclipse Mirror
+					Effects of Dragon Scales and Venerated Locket
+					'''
 				ThoriumSniper: Effects of Concussive Warhead
 				CalamityConjurist: Effects of Nucleogenesis
 				ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
@@ -101,6 +111,28 @@ Mods: {
 					15% increased throwing velocity
 					Effects of Guide to Expert Throwing Volume III,
 					Mermaid Canteen, and Deadman's Patch
+					'''
+			}
+
+			OutlawsEssence: {
+				DisplayName: Outlaw's Essence
+				Tooltip:
+					'''
+					18% increased rogue damage
+					5% increased rogue projectile velocity
+					5% increased rogue critical chance
+					'''
+			}
+
+			VagabondsSoul: {
+				DisplayName: Vagabond's Soul
+				Tooltip:
+					'''
+					30% increased rogue damage
+					15% increased rogue projectile velocity
+					15% increased rogue critical chance
+					Effects of Nanotech and Eclipse Mirror
+					Effects of Dragon Scales and Venerated Locket
 					'''
 			}
 		}

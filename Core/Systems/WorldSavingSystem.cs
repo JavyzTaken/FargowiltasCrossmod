@@ -11,7 +11,7 @@ namespace FargowiltasCrossmod.Core.Systems
         public static bool EternityRev { get; set; }
         public static bool E_EternityRev => EternityRev && CalamityConfig.Instance.EternityPriorityOverRev;
         public static bool R_EternityRev = EternityRev && !CalamityConfig.Instance.EternityPriorityOverRev; 
-
+        
         public override void SaveWorldData(TagCompound tag)
         {
             if (WorldGen.generatingWorld)

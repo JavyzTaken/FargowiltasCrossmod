@@ -9,6 +9,7 @@ using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Systems;
 
 namespace FargowiltasCrossmod;
 
@@ -18,11 +19,10 @@ public class FargowiltasCrossmod : Mod
     {
         if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out Mod calamity))
         {
-            _ = new EternityRevDifficulty();
-        }
-        if (ModLoader.HasMod("CalamityMod"))
-        {
             LoadTogglesFromType(typeof(CalamityToggles));
+            EternityRevDifficulty difficulty = new EternityRevDifficulty();
+            DifficultyModeSystem.Difficulties.Add(difficulty);
+            DifficultyModeSystem.CalculateDifficultyData();
         }
     }
     public static void LoadTogglesFromType(Type type)

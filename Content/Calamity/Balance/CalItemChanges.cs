@@ -13,6 +13,7 @@ using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
@@ -46,10 +47,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<ScientificRailgun>(),
             ModContent.ItemType<VortexMagnetRitual>()
         };
+        public static List<int> AbomTierFargoWeapons = new List<int>
+        {
+            ModContent.ItemType<DragonBreath2>(),
+            ModContent.ItemType<DestroyerGun2>(),
+            ModContent.ItemType<GolemTome2>(),
+            ModContent.ItemType<GeminiGlaives>(),
+            ModContent.ItemType<Blender>(),
+            ModContent.ItemType<RefractorBlaster2>(),
+            ModContent.ItemType<NukeFishron>(),
+            ModContent.ItemType<StaffOfUnleashedOcean>(),
+        };
         public float BalanceChange(Item item)
         {
+            
             if (item.type == ModContent.ItemType<MechanicalLeashOfCthulhu>())
-                return 0.7f;
+                return 0.5f;
+            if (item.type == ModContent.ItemType<Blender>())
+                return 1f;
+            if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
+                return 2f;
+            if (AbomTierFargoWeapons.Contains(item.type))
+                return 1.5f;
             if (ChampionTierFargoWeapons.Contains(item.type))
             {
                 return 0.8f;
@@ -153,6 +172,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     ModContent.GetInstance<Nucleogenesis>().UpdateAccessory(player, hideVisual);
                 }
             }
+            if (item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            {
+                player.Calamity().rogueVelocity += 0.15f;
+                if (player.GetToggleValue("Nanotech"))
+                {
+                    ModContent.GetInstance<Nanotech>().UpdateAccessory(player, hideVisual);
+                }
+                if (player.GetToggleValue("EclipseMirror"))
+                {
+                    ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
+                }
+                if (player.GetToggleValue("DragonScales"))
+                {
+                    ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
+                }
+                if (player.GetToggleValue("VeneratedLocket"))
+                {
+                    ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
+                }
+            }
             if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
                 if (player.GetToggleValue("AbyssalDivingSuit"))
@@ -228,7 +267,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     Language.GetTextValue(key + "CalamityBerserker") + "\n" +
                     Language.GetTextValue(key + "CalamitySniper") + "\n" +
                     Language.GetTextValue(key + "CalamityWizard") + "\n" +
-                    Language.GetTextValue(key + "CalamityConjurist")));
+                    Language.GetTextValue(key + "CalamityConjurist") + "\n" +
+                    Language.GetTextValue(key + "Vagabond")));
             }
 
             if (item.type == ModContent.ItemType<DimensionSoul>() && !item.social)
