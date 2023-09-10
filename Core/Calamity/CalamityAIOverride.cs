@@ -34,10 +34,12 @@ using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
+using FargowiltasSouls.Content.Bosses.BanishedBaron;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityAIOverride : ModSystem
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
@@ -67,52 +69,56 @@ namespace FargowiltasCrossmod.Core.Calamity
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<DeviBoss>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
+            Entries.Insert(16, (ModContent.NPCType<BanishedBaron>(), 0, delegate (int type)
+            {
+                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<BanishedBaron>());
+            }, -1, false, 0f, new int[] { }, new int[] { }));
             //insert lieflight after mechs
-            Entries.Insert(22, (ModContent.NPCType<LifeChallenger>(), 0, delegate (int type)
+            Entries.Insert(23, (ModContent.NPCType<LifeChallenger>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<LifeChallenger>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             //insert champions after provi
-            Entries.Insert(38, (ModContent.NPCType<CosmosChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<CosmosChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<CosmosChampion>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<WillChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<WillChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<WillChampion>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<ShadowChampion>(), -1, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<ShadowChampion>(), -1, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<ShadowChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<ShadowOrbNPC>(),  }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<SpiritChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<SpiritChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<SpiritChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<SpiritChampionHand>() }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<LifeChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<LifeChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<LifeChampion>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<NatureChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<NatureChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<NatureChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<NatureChampionHead>() }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<EarthChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<EarthChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<EarthChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<EarthChampionHand>() }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<TerraChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<TerraChampion>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<TerraChampion>());
 
             }, -1, false, 0f, new int[] {ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>() }, new int[] { }));
-            Entries.Insert(38, (ModContent.NPCType<TimberChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<TimberChampion>(), 0, delegate (int type)
             {
                 FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TimberChampion>());
                 
             }, -1, false, 0f, new int[] {ModContent.NPCType<TimberChampionHead>() }, new int[] {ModContent.NPCType<TimberChampionHead>() }));
             //add abom before draedon
-            Entries.Insert(54, (ModContent.NPCType<AbomBoss>(), 0, delegate (int type)
+            Entries.Insert(55, (ModContent.NPCType<AbomBoss>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<AbomBoss>());
             }, -1, false, 0f, new int[] { ModContent.NPCType<AbomSaucer>()}, new int[] { }));

@@ -39,9 +39,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     projectile.damage = 225;
                 }
-                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 1000)
+                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 500)
                 {
-                    projectile.damage = 1000;
+                    projectile.damage = 500;
                 }
             }
             return true;

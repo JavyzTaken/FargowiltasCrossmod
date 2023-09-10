@@ -11,7 +11,11 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Libraries\*.dll" />
+    <Reference Include="FargowiltasSouls">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+    </Reference>
+    <Reference Include="Libraries\Fargowiltas.dll" />
+    <Reference Include="Libraries\ThoriumMod.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\EternityDeathIcon.png" />

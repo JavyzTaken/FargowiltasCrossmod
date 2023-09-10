@@ -1,10 +1,12 @@
 ﻿using CalamityMod;
 using CalamityMod.CalPlayer;
+using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Accessories.Wings;
 using CalamityMod.Items.PermanentBoosters;
 using CalamityMod.Items.Potions.Alcohol;
 using CalamityMod.World;
+using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Common;
@@ -30,6 +32,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
@@ -214,6 +217,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            if (item.type == ModContent.ItemType<Rock>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));
+            }
             if (item.type == ModContent.ItemType<Masochist>())
             {
                 
