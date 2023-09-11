@@ -35,6 +35,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -43,8 +44,10 @@ namespace FargowiltasCrossmod.Core.Calamity
     public class CalamityAIOverride : ModSystem
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
+        
         public override void PostSetupContent()
         {
+            
             //EXPLANATION OF TUPLES
             //int: npc id
             //int: time to set to (1 = day, -1 = night, 0 = dont force time)
@@ -67,49 +70,49 @@ namespace FargowiltasCrossmod.Core.Calamity
             //insert deviantt before sg
             Entries.Insert(12, (ModContent.NPCType<DeviBoss>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<DeviBoss>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<DeviBoss>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             Entries.Insert(16, (ModContent.NPCType<BanishedBaron>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<BanishedBaron>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<BanishedBaron>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             //insert lieflight after mechs
             Entries.Insert(23, (ModContent.NPCType<LifeChallenger>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<LifeChallenger>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChallenger>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             //insert champions after provi
             Entries.Insert(39, (ModContent.NPCType<CosmosChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<CosmosChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<CosmosChampion>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<WillChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<WillChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<WillChampion>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<ShadowChampion>(), -1, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<ShadowChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<ShadowChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<ShadowOrbNPC>(),  }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<SpiritChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<SpiritChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<SpiritChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<SpiritChampionHand>() }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<LifeChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<LifeChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChampion>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<NatureChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<NatureChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<NatureChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<NatureChampionHead>() }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<EarthChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<EarthChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<EarthChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<EarthChampionHand>() }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<TerraChampion>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<TerraChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<TerraChampion>());
 
             }, -1, false, 0f, new int[] {ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>() }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<TimberChampion>(), 0, delegate (int type)
@@ -120,31 +123,30 @@ namespace FargowiltasCrossmod.Core.Calamity
             //add abom before draedon
             Entries.Insert(55, (ModContent.NPCType<AbomBoss>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<AbomBoss>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<AbomBoss>());
             }, -1, false, 0f, new int[] { ModContent.NPCType<AbomSaucer>()}, new int[] { }));
             //add mutant boss entry to the end
             Entries.Add((ModContent.NPCType<MutantBoss>(), 0, delegate (int type) {
-                NPC.SpawnOnPlayer(BossRushEvent.ClosestPlayerToWorldCenter, ModContent.NPCType<MutantBoss>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<MutantBoss>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             //set boss rush entries to new list of entries
             cal.Call("SetBossRushEntries", Entries);
             //make scal not end the event on defeat so it continues to mutant
-            BossRushEvent.BossDeathEffects.Remove(ModContent.NPCType<SupremeCalamitas>());
-            //make killing mutant end the event
-            BossRushEvent.BossDeathEffects.Add(ModContent.NPCType<MutantBoss>(), delegate (NPC npc)
-            {
-                CalamityUtils.KillAllHostileProjectiles();
-                BossRushEvent.HostileProjectileKillCounter = 3;
-                DownedBossSystem.downedBossRush = true;
-                CalamityNetcode.SyncWorld();
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Projectile.NewProjectile(new EntitySource_WorldEvent(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BossRushEndEffectThing>(), 0, 0f, Main.myPlayer, 0f, 0f, 0f);
-                }
-            });
+            DeathEffectsList.Remove(ModContent.NPCType<SupremeCalamitas>());
+            
+        }
+        //make this a property instead of directly using it so tml doesnt shit itself trying to load it
+        public ref Dictionary<int, Action<NPC>> DeathEffectsList
+        {
+            get { return ref BossRushEvent.BossDeathEffects; }
         }
         public override void Load()
         {
+            if (ModLoader.TryGetMod("CalamityMod", out Mod calamity))
+            {
+                calamity.Call("AddDifficultyToUI", new EternityRevDifficulty());
+                FargowiltasCrossmod.LoadTogglesFromType(typeof(CalamityToggles));
+            }
             //Disable rev+ enemy/boss ai in emode
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);
             //Disable rev+ projectile ai in emode
@@ -358,9 +360,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label = null;
             c.GotoPrev(i => i.MatchBrtrue(out label));
             c.Index += 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !CalamityMod.Events.BossRushEvent.BossRushActive);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard));
             c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label);
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !CalamityMod.Events.BossRushEvent.BossRushActive);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard));
             c.Emit(Mono.Cecil.Cil.OpCodes.Ret);
             c.Index -= 9;
             var label2 = il.DefineLabel(c.Prev);
@@ -392,18 +394,23 @@ namespace FargowiltasCrossmod.Core.Calamity
             //c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label2);
             //MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
         }
+        public ref bool br
+        {
+            get { return ref CalamityMod.Events.BossRushEvent.BossRushActive; }
+        }
         private static void CalamityProjectilePreAI_ILEdit(ILContext il)
         {
             Mod calamity = ModLoader.GetMod("CalamityMod");
             Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent");
             FieldInfo BossRushEvent_BossRushActive = BossRushEvent.GetField("BossRushActive", BindingFlags.Public | BindingFlags.Static);
+            
             var c = new ILCursor(il);
             c.GotoNext(i => i.MatchLdsfld(BossRushEvent_BossRushActive));
             c.Index++;
             ILLabel label = null;
             c.GotoNext(i => i.MatchBrfalse(out label));
             c.Index -= 3;
-            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !CalamityMod.Events.BossRushEvent.BossRushActive);
+            c.EmitDelegate(() => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev && FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard));
             c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);

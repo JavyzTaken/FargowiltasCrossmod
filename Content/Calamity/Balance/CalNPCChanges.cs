@@ -72,6 +72,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using Terraria;
 using Terraria.Audio;
@@ -84,6 +85,7 @@ using ThoriumMod.Items.HealerItems;
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled("CalamityMod")]
     public class CalNPCChanges : GlobalNPC
     {
         public override void SetStaticDefaults()
@@ -424,7 +426,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     //reduce health of bosses that are either too tanky or impossible to dodge
                     //increase hp of bosses that die fast
                     //destroyer: tanky and incredibly difficult to dodge
-                    if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.TheDestroyerBody || npc.type == NPCID.TheDestroyerTail) npc.lifeMax /= 4;
+                    if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.TheDestroyerBody || npc.type == NPCID.TheDestroyerTail) npc.lifeMax /= 3;
                     //golem: flies into space and deals tons of damage and is impossible to dodge
                     if (npc.type == NPCID.Golem) npc.lifeMax /= 10;
                     //impossible to dodge in final phase
@@ -439,6 +441,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>()) npc.lifeMax *= 2;
                     //dies too fast
                     if (npc.type == ModContent.NPCType<Yharon>()) npc.lifeMax *= 3;
+                    //too tanky eyes
                     if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead) npc.lifeMax /= 5;
                 }
                 #endregion BRBalance
@@ -448,14 +451,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
 
         }
+        //all this bullshit just so tmod doesnt JITException a method that is supposed to be ignored >:(
+        public IItemDropRuleCondition PostDog
+        {
+            get { return DropHelper.PostDoG(true); }
+        }
+        public IItemDropRuleCondition Revenge
+        {
+            get { return DropHelper.RevNoMaster; }
+        }
+        public bool death
+        {
+            get { return CalamityWorld.death; }
+        }
+        private DropBasedOnExpertMode NormalVsExpertQuantity(int itemID, int droprate, int minNormal, int maxNormal, int minExpert, int maxExpert)
+        {
+            return DropHelper.NormalVsExpertQuantity(itemID, droprate, minNormal, maxNormal, minExpert, maxExpert);
+        }
+        public IItemDropRuleCondition If(Func<bool> lambda, Func<bool> ui, string dec = null)
+        {
+            return DropHelper.If(lambda, ui, dec);
+        }
+        [JITWhenModsEnabled("CalamityMod")]
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(DropHelper.PostDoG(true));
+            LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(PostDog);
             LeadingConditionRule emodeRule = new(new EModeDropCondition());
             LeadingConditionRule pMoon = new LeadingConditionRule(new Conditions.PumpkinMoonDropGatingChance());
             LeadingConditionRule fMoon = new LeadingConditionRule(new Conditions.FrostMoonDropGatingChance());
-            LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(DropHelper.RevNoMaster);
-            LeadingConditionRule hardmode = npcLoot.DefineConditionalDropSet(DropHelper.Hardmode(true));
+            LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
+            LeadingConditionRule hardmode = new LeadingConditionRule(Condition.Hardmode.ToDropCondition(ShowItemDropInUI.Always, true));
             
             #region MasterModeDropsInRev
             if (npc.type == NPCID.DD2DarkMageT3)
@@ -607,9 +632,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             LeadingConditionRule PreHMNotBalanced = new LeadingConditionRule(CalamityConditions.PreHardmodeAndNotBalance.ToDropCondition(ShowItemDropInUI.Always));
             if (npc.type == NPCID.WyvernHead)
             {
-                hardmode.Add(DropHelper.NormalVsExpertQuantity(ModContent.ItemType<EssenceofSunlight>(), 1, 8, 10, 10, 12));
-                PreHMNotBalanced.OnSuccess(DropHelper.NormalVsExpertQuantity(ModContent.ItemType<EssenceofSunlight>(), 1, 8, 10, 10, 12));
+                hardmode.OnSuccess(NormalVsExpertQuantity(ModContent.ItemType<EssenceofSunlight>(), 1, 8, 10, 10, 12));
+                PreHMNotBalanced.OnSuccess(NormalVsExpertQuantity(ModContent.ItemType<EssenceofSunlight>(), 1, 8, 10, 10, 12));
                 npcLoot.Add(PreHMNotBalanced);
+                npcLoot.Add(hardmode);
             }
             if (npc.type == NPCID.AngryNimbus)
             {
@@ -624,30 +650,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     CommonDrop drop = rule as CommonDrop;
                     return drop != null && drop.itemId == ItemID.CursedFlame && Condition.Hardmode.IsMet();
                 }, true);
-                npcLoot.DefineConditionalDropSet(DropHelper.If(() => !CalamityWorld.death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), () => !CalamityWorld.death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 2, 5, false);
-                npcLoot.DefineConditionalDropSet(DropHelper.If(() => CalamityWorld.death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), () => CalamityWorld.death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 6, 15, false);
-                npcLoot.DefineConditionalDropSet(DropHelper.If(() => CalamityWorld.death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), () => CalamityWorld.death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), CalamityUtils.GetTextValue("Condition.Drops.IsDeath"))).Add(ItemID.SoulofNight, 1, 4, 8, false);
+                npcLoot.DefineConditionalDropSet(If(() => !death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), () => !death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 2, 5, false);
+                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), () => death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 6, 15, false);
+                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), () => death && (Condition.Hardmode.IsMet() || CalamityConditions.PreHardmodeAndNotBalance.IsMet()), "In Death Mode")).Add(ItemID.SoulofNight, 1, 4, 8, false);
             }
             if (npc.type == NPCID.SandElemental)
             {
-                hardmode.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<WifeinaBottle>(), 5, 3));
-                hardmode.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<WifeinaBottlewithBoobs>(), 10, 6));
+                hardmode.OnSuccess(ItemDropRule.NormalvsExpert(ModContent.ItemType<WifeinaBottle>(), 5, 3));
+                hardmode.OnSuccess(ItemDropRule.NormalvsExpert(ModContent.ItemType<WifeinaBottlewithBoobs>(), 10, 6));
                 PreHMNotBalanced.OnSuccess(ItemDropRule.NormalvsExpert(ModContent.ItemType<WifeinaBottle>(), 5, 3));
                 PreHMNotBalanced.OnSuccess(ItemDropRule.NormalvsExpert(ModContent.ItemType<WifeinaBottlewithBoobs>(), 10, 6));
                 npcLoot.Add(PreHMNotBalanced);
+                npcLoot.Add(hardmode);
             }
         }
-        
+        public static bool killedAquatic = false;
         public override bool PreKill(NPC npc)
         {
             //the thing
-            if (BossRushEvent.BossRushActive)
-            {
-                if ((npc.type == NPCID.Spazmatism && !NPC.AnyNPCs(NPCID.Retinazer)) || (npc.type == NPCID.Retinazer && !NPC.AnyNPCs(NPCID.Spazmatism)))
-                {
-                    BossRushEvent.BossRushStage = 19;
-                }
-            }
+            
+            
             if (npc.type == ModContent.NPCType<TimberChampionHead>() && BossRushEvent.BossRushActive)
             {
                 for (int playerIndex = 0; playerIndex < 255; playerIndex++)
@@ -772,6 +794,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override bool PreAI(NPC npc)
         {
+            
+            if (BossRushEvent.BossRushActive)
+            {
+                if (!killedAquatic && BossRushEvent.BossRushStage > 19)
+                {
+                    BossRushEvent.BossRushStage = 19;
+                }
+                if (NPC.AnyNPCs(ModContent.NPCType<AquaticScourgeHead>()))
+                {
+                    killedAquatic = true;
+                }
+            }
+            else
+            {
+                killedAquatic = false;
+            }
+            
             //BossRushEvent.BossRushStage = 18;
             //BossRushEvent.BossRushStage = 36;
             if (BossRushEvent.BossRushActive)

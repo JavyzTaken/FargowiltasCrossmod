@@ -12,6 +12,8 @@ using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {
+    [ExtendsFromMod("CalamityMod")]
+    [JITWhenModsEnabled("CalamityMod")]
     public class CalamityToggles : ToggleCollection
     {
         public override string Mod => "CalamityMod";

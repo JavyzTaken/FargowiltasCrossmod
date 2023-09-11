@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Systems;
 using CalamityMod.World;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,6 +29,7 @@ namespace FargowiltasCrossmod.Core.Calamity
                 if (value)
                 {
                     CalamityWorld.revenge = true;
+                    CalamityWorld.death = false;
                 }
                 FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = value;
                 FargowiltasSouls.Core.Systems.WorldSavingSystem.ShouldBeEternityMode = value;

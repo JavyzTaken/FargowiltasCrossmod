@@ -207,7 +207,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             if (item.type == ModContent.ItemType<Masochist>())
             {
-                return true;
+                return false;
             }
             if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.CalamityConfig.Instance.BalanceRework)
             {
