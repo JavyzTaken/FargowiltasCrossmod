@@ -1,6 +1,6 @@
 ﻿using CalamityMod.Enums;
 using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using CalamityMod.CalPlayer.Dashes;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;

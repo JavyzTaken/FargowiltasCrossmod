@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
@@ -31,6 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI(Projectile projectile)
         {
+            
             GemTechMinionEffect(projectile);
         }
     }

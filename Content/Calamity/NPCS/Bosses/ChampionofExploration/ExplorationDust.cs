@@ -1,5 +1,5 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using CalamityMod.Projectiles.Rogue;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration

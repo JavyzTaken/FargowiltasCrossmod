@@ -1,5 +1,5 @@
 ﻿
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core; 
 using Terraria;
 using Terraria.ID;
 using CalamityMod;

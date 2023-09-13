@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\LunicCorpsEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Forces\AnnihilationForce.png" />
     <None Remove="Content\Thorium\Buffs\GildedSightDB.cs~RF1504f37.TMP" />
     <None Remove="Content\Thorium\DragonMinionBody.png" />
     <None Remove="Content\Thorium\DragonMinionBody2.png" />

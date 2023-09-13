@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using CalamityMod;
@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     public class PrismaticEnchantment : BaseEnchant
     {
         
-        protected override Color nameColor => new Color(206, 201, 170);
+        protected override Color nameColor => new Color(108, 66, 166);
 
         public override void SetStaticDefaults()
         {

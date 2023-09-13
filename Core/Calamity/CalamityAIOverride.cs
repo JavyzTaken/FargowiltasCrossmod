@@ -9,20 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using CalamityMod.NPCs;
 using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using CalamityMod.Events;
-using System.Reflection;
-using System;
+
 using CalamityMod.Projectiles;
 using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
 using System.ComponentModel.DataAnnotations;
 using CalamityMod.BiomeManagers;
-using System.Collections.Generic;
+
 using Fargowiltas.NPCs;
 using Terraria.ID;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
-using System.Linq;
+
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod;
 using CalamityMod.Projectiles.Typeless;
@@ -154,6 +153,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             {
                 calamity.Call("AddDifficultyToUI", new EternityRevDifficulty());
                 FargowiltasCrossmod.LoadTogglesFromType(typeof(CalamityToggles));
+                FargowiltasCrossmod.LoadTogglesFromType(typeof(CalamityEnchToggles));
             }
             //Disable rev+ enemy/boss ai in emode
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);

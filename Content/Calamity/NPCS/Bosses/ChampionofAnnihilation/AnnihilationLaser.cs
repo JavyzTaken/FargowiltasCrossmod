@@ -6,7 +6,7 @@ using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.Audio;
 using System.IO;
 

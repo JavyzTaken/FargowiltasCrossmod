@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ID;
 using FargowiltasSouls.Content.Items.Materials;
 using ThoriumMod.Items.Terrarium;

@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.Audio;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration

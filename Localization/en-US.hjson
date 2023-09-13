@@ -23,7 +23,6 @@ Mods: {
 		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
 		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul Toggles"
 		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
-
 		ExplorationHeader: "[i:FargowiltasCrossmod/ExplorationForce] {$Mods.FargowiltasCrossmod.Items.ExplorationForce.DisplayName}"
 		ValkyrieConfig: "[i:FargowiltasCrossmod/AerospecEnchantment] [c/99c8c1:Valkyrie Minion]"
 		TornadoesConfig: "[i:FargowiltasCrossmod/ProwlerEnchantment] [c/cc2a3c:Desert Tornadoes]"
@@ -48,6 +47,12 @@ Mods: {
 		HydrothermicHitsConfig: "[i:FargowiltasCrossmod/HydrothermicEnchantment] [c/f8b659:Hydrothermic Attacks]"
 		PlagueBeesConfig: "[i:FargowiltasCrossmod/BringerEnchantment] [c/80bc43:Plague Bees]"
 		PlagueDebuffConfig: "[i:FargowiltasCrossmod/BringerEnchantment] [c/80bc43:Inflict Plague]"
+		AnnihilationHeader: "[i:FargowiltasCrossmod/AnnihilationForce] {$Mods.FargowiltasCrossmod.Items.AnnihilationForce.DisplayName}"
+		EnrageConfig: "[i:FargowiltasCrossmod/DemonshadeEnchantment] [c/cc2a3c:Enrage Ability]"
+		RageBuffConfig: "[i:FargowiltasCrossmod/DemonshadeEnchantment] [c/cc2a3c:Rage Damage Scaling]"
+		ChargeAttacksConfig: "[i:FargowiltasCrossmod/GemtechEnchantment] [c/c89600:Gemtech Attacks]"
+		FearValkyrieConfig: "[i:FargowiltasCrossmod/FearmongerEnchantment] [c/51637b:Fearsome Valkyrie]"
+		PrismaticRocketConfig: "[i:FargowiltasCrossmod/PrismaticEnchantment] [c/6c42a6:Prismatic Rocket]"
 		AngelTreadsConfig: "[i:CalamityMod/AngelTreads] Angel Flight and Speed"
 	}
 
@@ -162,6 +167,5 @@ Mods: {
 					'''
 			}
 		}
-		
 	}
 }

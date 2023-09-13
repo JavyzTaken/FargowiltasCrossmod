@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; 
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences
 {

@@ -1,6 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using CalamityMod;

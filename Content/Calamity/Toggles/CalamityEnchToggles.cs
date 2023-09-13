@@ -1,6 +1,6 @@
 ﻿using FargowiltasSouls.Core.Toggler;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
@@ -39,5 +39,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public string HydrothermicHits;
         public string PlagueBees;
         public string PlagueDebuff;
+
+        public int AnnihilationHeader = ModContent.ItemType<AnnihilationForce>();
+        public string Enrage;
+        public string RageBuff;
+        public string ChargeAttacks;
+        public string FearValkyrie;
+        public string PrismaticRocket;
     }
 }

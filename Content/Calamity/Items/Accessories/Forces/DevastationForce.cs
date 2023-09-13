@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {

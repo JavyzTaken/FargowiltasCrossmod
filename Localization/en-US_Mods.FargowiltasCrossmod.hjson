@@ -103,34 +103,6 @@ Buffs: {
 
 Items: {
 	AddedEffects: {
-		AngelTreads: Effects of Angel Treads
-		AeolusBoots: Effects of Aeolus Boots
-		ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
-		CalamityColossus: Effects of The Amalgam, Asgardian Aegis, Rampart of Deities, and The Camper
-		ThoriumColossus:
-			'''
-			Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
-			Phylactery, Heart of Stone, and Spiny Shell
-			'''
-		CalamityBerserker: Effects of Reaper Tooth Necklace, Badge of Bravery, and Elemental Gauntlet
-		ThoriumBerserker: Effects of Rapier Badge
-		CalamityWizard: Effects of Ethereal Talisman
-		ThoriumWizard: Effects of Murky Catalyst
-		CalamitySniper:
-			'''
-			Effects of Elemental Quiver, Quiver of Nihility
-			Effects of Daawnlight Spirit Origin and Dynamo Stem Cells
-			'''
-		ThoriumSniper: Effects of Concussive Warhead
-		CalamityConjurist: Effects of Nucleogenesis
-		ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
-		CalamityTrawler: Effects of Abyssal Diving Suit
-		ThoriumUniverse:
-			'''
-			15% increased throwing velocity
-			Effects of Guide to Expert Throwing Volume III,
-			Mermaid Canteen, and Deadman's Patch
-			'''
 	}
 
 	AerospecEnchantment: {
@@ -577,8 +549,20 @@ Items: {
 		Tooltip: Increases damage the more frienly npcs are nearby
 	}
 
+	AnnihilationForce: {
+		DisplayName: Force of Annihilation
+		Tooltip:
+			'''
+			[i:FargowiltasCrossmod/DemonshadeEnchantment] Press [button] to enrage nearby enemies
+			     Rage builds up over time and gains more damage the more damage is dealt while active
+			[i:FargowiltasCrossmod/GemtechEnchantment] Holding a weapon while not attacking charges up a more powerful attack
+			[i:FargowiltasCrossmod/FearmongerEnchantment] Decreases the effect of the summoner mix nerf and summons a fearsome valkyrie to fight for you
+			[i:FargowiltasCrossmod/PrismaticEnchantment] Dealing damage charges up a prismatic rocket, Press [button2] to fire it
+			'''
+	}
+
 	DevastationForce: {
-		DisplayName: Devastation Force
+		DisplayName: Force of Devastation
 		Tooltip:
 			'''
 			[i:FargowiltasCrossmod/DaedalusEnchantment] While flying or gliding, damaging icicles fall down from your feet rapidly. Icicles deal 288 true damage and cannot be affected by boosts.
@@ -868,11 +852,7 @@ Configs: {
 	}
 
 	CalamityConfig: {
-		DisplayName: Calamity Config
-
 		Headers: {
-			Modes: Modes Header
-			Balance: Balance
 		}
 
 		RevVanillaAIDisabled: {

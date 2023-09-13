@@ -1,5 +1,5 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using FargowiltasSouls.Content.Bosses.MutantBoss;

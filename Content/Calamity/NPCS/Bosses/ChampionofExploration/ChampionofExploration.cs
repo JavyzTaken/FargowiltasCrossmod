@@ -1,5 +1,5 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ID;
 using Terraria.GameContent.Bestiary;
 using Microsoft.Xna.Framework;

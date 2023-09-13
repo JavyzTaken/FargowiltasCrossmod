@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ID;
 using FargowiltasCrossmod.Content.Thorium;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;

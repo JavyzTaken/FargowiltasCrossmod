@@ -1,6 +1,6 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;

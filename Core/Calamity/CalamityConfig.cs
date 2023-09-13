@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Core.Calamity

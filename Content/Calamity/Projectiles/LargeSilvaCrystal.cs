@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ID;
 using Terraria;
 using ReLogic.Content;

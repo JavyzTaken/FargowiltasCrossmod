@@ -3,7 +3,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using Terraria.GameContent.Bestiary;

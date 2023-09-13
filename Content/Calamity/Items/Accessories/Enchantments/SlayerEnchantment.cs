@@ -5,12 +5,11 @@ using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {

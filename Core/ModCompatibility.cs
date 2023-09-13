@@ -1,4 +1,4 @@
-﻿using Terraria.ModLoader;
+﻿using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Core;
 

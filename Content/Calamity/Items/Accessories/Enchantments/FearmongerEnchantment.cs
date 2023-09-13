@@ -1,5 +1,5 @@
 ﻿using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
@@ -7,6 +7,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -54,16 +55,19 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (Player.HeldItem.DamageType != DamageClass.Summon && Player.HeldItem.DamageType != DamageClass.Default && Player.HeldItem.DamageType != ModContent.GetInstance<AverageDamageClass>() && Player.HeldItem.active)
                 Player.GetDamage(DamageClass.Summon) += 0.25f; //i came up with this one myself actually
-            FearValkyrie = true;
-            if (Player.whoAmI == Main.myPlayer)
+            if (Player.GetToggleValue("FearValkyrie"))
             {
-                if (Player.FindBuffIndex(ModContent.BuffType<FearValkyrieBuff>()) == -1)
+                FearValkyrie = true;
+                if (Player.whoAmI == Main.myPlayer)
                 {
-                    Player.AddBuff(ModContent.BuffType<FearValkyrieBuff>(), 3000);
-                }
-                if (Player.ownedProjectileCounts[ModContent.ProjectileType<FearValkyrie>()] < 1)
-                {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X, Player.Center.Y, 0f, -1f, ModContent.ProjectileType<FearValkyrie>(), 0, 0f, Main.myPlayer);
+                    if (Player.FindBuffIndex(ModContent.BuffType<FearValkyrieBuff>()) == -1)
+                    {
+                        Player.AddBuff(ModContent.BuffType<FearValkyrieBuff>(), 3000);
+                    }
+                    if (Player.ownedProjectileCounts[ModContent.ProjectileType<FearValkyrie>()] < 1)
+                    {
+                        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X, Player.Center.Y, 0f, -1f, ModContent.ProjectileType<FearValkyrie>(), 0, 0f, Main.myPlayer);
+                    }
                 }
             }
         }

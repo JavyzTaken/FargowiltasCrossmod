@@ -11,7 +11,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {

@@ -12,7 +12,7 @@ using FargowiltasSouls.Content.Items.Accessories.Forces;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class ExaltationForce : BaseForce
+    public class AnnihilationForce : BaseForce
     {
         public override void SetStaticDefaults()
         {
@@ -33,34 +33,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
                 if (index != -1 && tooltip.Text.Length > 0)
                 {
                     tooltip.Text = tooltip.Text.Remove(index, 8);
-                    tooltip.Text = tooltip.Text.Insert(index, CalamityKeybinds.SetBonusHotKey.TooltipHotkeyString());
+                    tooltip.Text = tooltip.Text.Insert(index, CalamityKeybinds.RageHotKey.TooltipHotkeyString());
+                }
+                int index2 = tooltip.Text.IndexOf("[button2]");
+                if (index2 != -1 && tooltip.Text.Length > 0)
+                {
+                    tooltip.Text = tooltip.Text.Remove(index2, 9);
+                    tooltip.Text = tooltip.Text.Insert(index2, CalamityKeybinds.SetBonusHotKey.TooltipHotkeyString());
                 }
             }
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             CrossplayerCalamity SBDPlayer = player.GetModPlayer<CrossplayerCalamity>();
-            SBDPlayer.Tarragon = true;
-            SBDPlayer.BFCrazierRegen = true;
-            SBDPlayer.Silva = true;
-            SBDPlayer.GodSlayerMeltdown = true;
-            SBDPlayer.Auric = true;
-            SBDPlayer.UmbraCrazyRegen = false;
-            SBDPlayer.ExaltEffects = true;
-            if (player.GetToggleValue("SlayerDash"))
-            {
-                player.GetModPlayer<CalamityPlayer>().dodgeScarf = true;
-                player.GetModPlayer<CalamityPlayer>().DashID = AsgardianAegisDash.ID;
-            }
+            SBDPlayer.AnnihilEffects = true;
+            SBDPlayer.Demonshade = true;
+            SBDPlayer.Gemtech = true;
+            SBDPlayer.FearOfTheValkyrie = true;
+            SBDPlayer.Prismatic = true;
         }
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<TarragonEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<BloodflareEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<SilvaEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<SlayerEnchantment>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<AuricEnchantment>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<DemonshadeEnchantment>());
+            recipe.AddIngredient(ModContent.ItemType<GemtechEnchantment>());
+            recipe.AddIngredient(ModContent.ItemType<FearmongerEnchantment>());
+            recipe.AddIngredient(ModContent.ItemType<PrismaticEnchantment>());
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }

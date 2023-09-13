@@ -1,5 +1,5 @@
 using Terraria;
-using Terraria.ModLoader;
+using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
 using CalamityMod.World;
@@ -351,12 +351,18 @@ namespace FargowiltasCrossmod.Content.Calamity
 
             //ANNIHILATION (1/4)
 
+            if (Gemtech && Player.GetToggleValue("ChargeAttacks")){
+                GemTechEffects();
+            }
+            {
+                
+            }
             //brimflame
-            if (Brimflame)
+            if (Brimflame && Player.GetToggleValue("Enrage"))
             {
                 BrimflameBuffActivate();
             }
-            if (Demonshade)
+            if (Demonshade && Player.GetToggleValue("Enrage"))
             {
                 DemonshadeEffects();
             }
@@ -421,15 +427,15 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 GodSlayerHitEffect(target, damageDone);
             }
-            if (Demonshade)
+            if (Demonshade && Player.GetToggleValue("RageBuff"))
             {
                 DemonshadeHitEffect(damageDone);
             }
-            if (Lunic)
+            if (Lunic && Player.GetToggleValue("PrismaticRocket"))
             {
                 LunicAttackEffects(damageDone);
             }
-            if (Prismatic)
+            if (Prismatic && Player.GetToggleValue("PrismaticRocket"))
             {
                 PrismaticAttackEffects(damageDone);
             }
@@ -497,15 +503,15 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 GodSlayerProjHitEffect(proj, target, damageDone, hit.Crit);
             }
-            if (Demonshade)
+            if (Demonshade && Player.GetToggleValue("RageBuff"))
             {
                 DemonshadeHitEffect(damageDone);
             }
-            if (Lunic)
+            if (Lunic && Player.GetToggleValue("PrismaticRocket"))
             {
                 LunicAttackEffects(damageDone);
             }
-            if (Prismatic)
+            if (Prismatic && Player.GetToggleValue("PrismaticRocket"))
             {
                 PrismaticAttackEffects(damageDone);
             }
@@ -536,11 +542,11 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 SilvaTrigger();
             }
-            if (Lunic)
+            if (Lunic && Player.GetToggleValue("RageBuff"))
             {
                 LunicTrigger();
             }
-            if (Prismatic)
+            if (Prismatic && Player.GetToggleValue("PrismaticRocket"))
             {
                 PrismaticTrigger();
             }

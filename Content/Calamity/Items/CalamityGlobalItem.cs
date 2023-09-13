@@ -1,5 +1,6 @@
 ﻿
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -35,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
         public override bool? UseItem(Item item, Player player)
         {
             CrossplayerCalamity mp = player.GetModPlayer<CrossplayerCalamity>();
-            if (mp.Gemtech)
+            if (mp.Gemtech && player.GetToggleValue("ChargeAttacks"))
             {
                 GemTechUseEffect(item, player);
             }
