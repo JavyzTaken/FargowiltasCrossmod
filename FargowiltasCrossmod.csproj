@@ -11,11 +11,16 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="CalamityMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
+    </Reference>
     <Reference Include="FargowiltasSouls">
       <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
     </Reference>
     <Reference Include="Libraries\Fargowiltas.dll" />
-    <Reference Include="Libraries\ThoriumMod.dll" />
+    <Reference Include="ThoriumMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\EternityDeathIcon.png" />
@@ -25,14 +30,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
+    <Reference Remove="Libraries\ThoriumMod.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CalamityMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>

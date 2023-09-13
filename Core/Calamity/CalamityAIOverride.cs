@@ -21,7 +21,7 @@ using CalamityMod.Projectiles.Typeless;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
-using FargowiltasSouls.Content.Bosses.Lieflight;
+using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
 using FargowiltasSouls.Content.Bosses.Champions.Shadow;
@@ -98,9 +98,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<SpiritChampion>());
             }, -1, false, 0f, new int[] {ModContent.NPCType<SpiritChampionHand>() }, new int[] { }));
-            Entries.Insert(39, (ModContent.NPCType<LifeChampion>(), 0, delegate (int type)
+            Entries.Insert(39, (ModContent.NPCType<LifeChallenger>(), 0, delegate (int type)
             {
-                NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChampion>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChallenger>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
             Entries.Insert(39, (ModContent.NPCType<NatureChampion>(), 0, delegate (int type)
             {
