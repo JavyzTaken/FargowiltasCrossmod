@@ -10,13 +10,20 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using FargowiltasCrossmod.Content.Common;
 using System;
+using FargowiltasSouls.Core.Toggler;
+using System;
+using System.Collections.Generic;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Systems;
+using Terraria;
+using CalamityMod.Events;
 
 namespace FargowiltasCrossmod
 {
-	public class FargowiltasCrossmod : Mod
-	{
-		internal static bool CalamityLoaded;
-		internal static bool ThoriumLoaded;
+    public class FargowiltasCrossmod : Mod
+    {
+        internal static bool CalamityLoaded;
+        internal static bool ThoriumLoaded;
 
 
         private class ClassPreJitFilter : PreJITFilter
@@ -42,35 +49,35 @@ namespace FargowiltasCrossmod
 
             if (ThoriumLoaded) Thorium_Load();
 
-            if (CalamityLoaded)
+
+        }
+        [JITWhenModsEnabled("CalamityMod")]
+        public static void LoadTogglesFromType(Type type)
+        {
+
+            ToggleCollection toggles = (ToggleCollection)Activator.CreateInstance(type);
+
+            if (toggles.Active)
             {
-                //LoadTogglesFromType(typeof(CalamityToggles));
+                ModContent.GetInstance<FargowiltasCrossmod>().Logger.Info($"ToggleCollection found: {nameof(type)}");
+                List<Toggle> toggleCollectionChildren = toggles.Load();
+                foreach (Toggle toggle in toggleCollectionChildren)
+                {
+                    ToggleLoader.RegisterToggle(toggle);
+                }
             }
         }
-        //public static void LoadTogglesFromType(Type type)
-        //{
-        //    return;
-
-        //    ToggleCollection toggles = (ToggleCollection)Activator.CreateInstance(type);
-using FargowiltasSouls.Core.Toggler;
-using System;
-using System.Collections.Generic;
-using FargowiltasCrossmod.Content.Calamity.Toggles;
-using CalamityMod.Systems;
-using Terraria;
-using CalamityMod.Events;
-
-        //    if (toggles.Active)
-        //    {
-        //        Instance.Logger.Info($"ToggleCollection found: {nameof(type)}");
-        //        List<Toggle> toggleCollectionChildren = toggles.Load(ToggleLoader.LoadedToggles.Count - 1);
-        //        foreach (Toggle toggle in toggleCollectionChildren)
-        //        {
-        //            ToggleLoader.RegisterToggle(toggle);
-        //        }
-        //    }
-        //}
-
+        [JITWhenModsEnabled("CalamityMod")]
+        public static ref List<int> pierceResistExceptionList
+        {
+            get { return ref CalamityLists.pierceResistExceptionList; }
+        }
+        [JITWhenModsEnabled("CalamityMod")]
+        public override void PostSetupContent()
+        {
+            if (ModLoader.HasMod("CalamityMod"))
+                pierceResistExceptionList.Add(ProjectileID.FinalFractal);
+        }
         private struct DeviantHooks
         {
             internal static Hook SetChatButtons;
@@ -128,41 +135,6 @@ using CalamityMod.Events;
 
             DevianttPatches.AddThoriumDeviShop();
         }
-
-public class FargowiltasCrossmod : Mod
-{
-    
-    public override void Load()
-    {
-        
-    }
-    [JITWhenModsEnabled("CalamityMod")]
-    public static void LoadTogglesFromType(Type type)
-    {
-
-        ToggleCollection toggles = (ToggleCollection)Activator.CreateInstance(type);
-
-        if (toggles.Active)
-        {
-            ModContent.GetInstance<FargowiltasCrossmod>().Logger.Info($"ToggleCollection found: {nameof(type)}");
-            List<Toggle> toggleCollectionChildren = toggles.Load();
-            foreach (Toggle toggle in toggleCollectionChildren)
-            {
-                ToggleLoader.RegisterToggle(toggle);
-            }
-        }
-    }
-    [JITWhenModsEnabled("CalamityMod")]
-    public static ref List<int> pierceResistExceptionList
-    {
-        get { return ref CalamityLists.pierceResistExceptionList; }
-    }
-    [JITWhenModsEnabled("CalamityMod")]
-    public override void PostSetupContent()
-    {
-        if (ModLoader.HasMod("CalamityMod"))
-         pierceResistExceptionList.Add(ProjectileID.FinalFractal);
-    }
         public override void Unload()
         {
             if (DeviantHooks.SetChatButtons != null) DeviantHooks.SetChatButtons.Undo();
