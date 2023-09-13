@@ -1,4 +1,4 @@
-Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods, by making balance and progression changes, fixing bugs, and even adding new content and Enchantments!
+Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods, by making balance, recipe and progression changes, fixing bugs, and even adding new content and Enchantments!
 Officially maintained by Fargo's Mods developers.
 
 Currently supports:

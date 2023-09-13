@@ -1,5 +1,141 @@
 Mods: {
 	FargowiltasSouls: {
+		VagabondsSoulHeader: "[i:FargowiltasCrossmod/VagabondsSoul] Vagabond's Soul"
+		NanotechConfig: "[i:CalamityMod/Nanotech] Nanotech"
+		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
+		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
+		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
+		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul Toggles"
+		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
+		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
+		RampartofDeitiesConfig: "[i:CalamityMod/RampartofDeities] Rampart of Deities"
+		PurityConfig: "[i:CalamityMod/Purity] Purity"
+		CalamityBerserkerHeader: "[i:FargowiltasSouls/BerserkerSoul] Calamity Berserker Soul Toggles"
+		ElementalGauntletConfig: "[i:CalamityMod/ElementalGauntlet] Elemental Gauntlet"
+		CalamityWizardHeader: "[i:FargowiltasSouls/ArchWizardsSoul] Calamity Arch Wizard's Soul Toggles"
+		EtherealTalismanConfig: "[i:CalamityMod/EtherealTalisman] Ethereal Talisman"
+		CalamitySniperHeader: "[i:FargowiltasSouls/SnipersSoul] Calamity Sniper's Soul Toggles"
+		ElementalQuiverConfig: "[i:CalamityMod/ElementalQuiver] Elemental Quiver"
+		QuiverofNihilityConfig: "[i:CalamityMod/QuiverofNihility] Quiver of Nihility"
+		DaawnlightSpiritOriginConfig: "[i:CalamityMod/DaawnlightSpiritOrigin] Daawnlight Spirit Origin"
+		DynamoStemCellsConfig: "[i:CalamityMod/DynamoStemCells] Dynamo Stem Cells"
+		CalamityConjuristHeader: "[i:FargowiltasSouls/ConjuristsSoul] Calamity Conjurist's Soul Toggles"
+		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
+		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul Toggles"
+		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
+	}
+
+	FargowiltasCrossmod: {
+		EternityRevDifficulty: {
+			Name: Eternity Mode (Revengeance)
+			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
+			ExpandedDescription:
+				'''
+				[c/ff0000:Not] intended for use with Master Mode.
+				Toggles [c/00FFFF:Eternity Mode] [c/880808:and Revengeance Mode,] and enables Master Mode drops.
+				By default, [c/00FFFF:Eternity Mode] takes priority for bosses that would be changed by both. This can be changed in the configs.
+				-Deviantt provides a starter pack
+				-Improves base stats
+				-Debuffs wear off faster when not attacking
+				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+				'''
+			Activation: Eternity Mode (Revengeance) has activated!
+			Deactivation: Eternity Mode (Revengeance) has deactivated.
+		}
+
+		Configs: {
+			CalamityConfig: {
+				DisplayName: Calamity Config
+
+				Headers: {
+					Modes: Modes
+					Balance: Balance
+				}
+
+				BalanceRework: {
+					Label: Calamity/Souls Balance Rework
+					Tooltip:
+						'''
+						Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
+						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. 
+						Makes Souls content interact with Calamity mechanics, for example Defense Damage.
+						Recommended to keep enabled.
+						Changing requires a reload.
+						'''
+				}
+
+				EternityPriorityOverRev: {
+					Label: Eternity Priority over Calamity Modes
+					Tooltip:
+						'''
+						Enables Eternity Mode boss behaviour to take priority over Revengeance Mode boss behaviour and other Calamity difficulties.
+						Applies to bosses that would otherwise be changed by both, such as vanilla bosses. 
+						Disabling this makes Calamity difficulties take priority over Eternity.
+						'''
+				}
+			}
+		}
+
+		Items: {
+			AddedEffects: {
+				AngelTreads: Effects of Angel Treads
+				AeolusBoots: Effects of Aeolus Boots
+				ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
+				CalamityColossus: Effects of The Amalgam, Asgardian Aegis, Rampart of Deities, and Purity
+				ThoriumColossus:
+					'''
+					Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
+					Phylactery, Heart of Stone, and Spiny Shell
+					'''
+				CalamityBerserker: Effects of Reaper Tooth Necklace, Badge of Bravery, and Elemental Gauntlet
+				ThoriumBerserker: Effects of Rapier Badge
+				CalamityWizard: Effects of Ethereal Talisman
+				ThoriumWizard: Effects of Murky Catalyst
+				CalamitySniper:
+					'''
+					Effects of Elemental Quiver, Quiver of Nihility
+					Effects of Daawnlight Spirit Origin and Dynamo Stem Cells
+					'''
+				Vagabond:
+					'''
+					Effects of Nanotech and Eclipse Mirror
+					Effects of Dragon Scales and Venerated Locket
+					'''
+				ThoriumSniper: Effects of Concussive Warhead
+				CalamityConjurist: Effects of Nucleogenesis
+				ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
+				CalamityTrawler: Effects of Abyssal Diving Suit
+				ThoriumUniverse:
+					'''
+					15% increased throwing velocity
+					Effects of Guide to Expert Throwing Volume III,
+					Mermaid Canteen, and Deadman's Patch
+					'''
+			}
+
+			OutlawsEssence: {
+				DisplayName: Outlaw's Essence
+				Tooltip:
+					'''
+					18% increased rogue damage
+					5% increased rogue projectile velocity
+					5% increased rogue critical chance
+					'''
+			}
+
+			VagabondsSoul: {
+				DisplayName: Vagabond's Soul
+				Tooltip:
+					'''
+					30% increased rogue damage
+					15% increased rogue projectile velocity
+					15% increased rogue critical chance
+					Effects of Nanotech and Eclipse Mirror
+					Effects of Dragon Scales and Venerated Locket
+					'''
+			}
+		}
 		ExplorationHeader: "[i:FargowiltasCrossmod/ExplorationForce] {$Mods.FargowiltasCrossmod.Items.ExplorationForce.DisplayName}"
 		ValkyrieConfig: "[i:FargowiltasCrossmod/AerospecEnchantment] [c/99c8c1:Valkyrie Minion]"
 		TornadoesConfig: "[i:FargowiltasCrossmod/ProwlerEnchantment] [c/cc2a3c:Desert Tornadoes]"
