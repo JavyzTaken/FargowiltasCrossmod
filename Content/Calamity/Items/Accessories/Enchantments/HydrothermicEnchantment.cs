@@ -12,6 +12,7 @@ using FargowiltasCrossmod.Content.Calamity.NPCS;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class HydrothermicEnchantment : BaseEnchant
     {
