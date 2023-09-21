@@ -4,7 +4,6 @@ using CalamityMod.Items.Weapons.Rogue;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Items.Accessories.Essences;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class OutlawsEssence : BaseEssence
     {
-        protected override Color nameColor => new Color(217, 144, 67);
+        protected override Color nameColor => new(217, 144, 67);
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

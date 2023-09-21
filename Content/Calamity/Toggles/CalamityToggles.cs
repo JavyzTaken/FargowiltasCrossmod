@@ -1,14 +1,7 @@
-﻿using CalamityMod.Items.Accessories;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Core.Toggler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {
@@ -17,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     public class CalamityToggles : ToggleCollection
     {
         public override string Mod => "CalamityMod";
-        public override string SortCatagory => "Enchantments";
+        public override string SortCategory => "Enchantments";
         public override int Priority => 1;
         public override bool Active => true;
 

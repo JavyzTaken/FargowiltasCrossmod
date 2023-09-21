@@ -2,7 +2,6 @@
 
 namespace FargowiltasCrossmod.Core;
 
-// TODO: pick a good name before it's too late
 public static class ModCompatibility
 {
     public static class SoulsMod

@@ -1,16 +1,10 @@
-﻿using CalamityMod;
-using CalamityMod.Events;
+﻿using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls.Content.Projectiles.Masomode;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -20,8 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     public class CalProjectileChanges : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-
-        private bool DefenseDamageSet = false;
+        
         public override bool PreAI(Projectile projectile)
         {
             #region Balance Changes config
