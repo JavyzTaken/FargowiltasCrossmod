@@ -16,6 +16,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -74,16 +75,17 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public void DemonshadeEffects()
         {
-
+            int baseLevel = 0;
+            if (ForceEffect(ModContent.ItemType<DemonshadeEnchantment>())) baseLevel = 10;
             if (Player.dead || !Player.active)
             {
-                DemonshadeLevel = 0;
+                DemonshadeLevel = baseLevel;
                 DemonshadeXP = 0;
             }
 
             if (!Player.Calamity().rageModeActive)
             {
-                DemonshadeLevel = 0;
+                DemonshadeLevel = baseLevel;
                 DemonshadeXP = 0;
             }
             if (!Player.Calamity().rageModeActive && !Player.Calamity().shatteredCommunity && !Player.Calamity().heartOfDarkness)
@@ -134,8 +136,9 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 DemonshadeXP += damage;
             }
-
-            if (DemonshadeXP > 20000 * DemonshadeLevel + 4000 && DemonshadeLevel < 25)
+            int xpReq = 20000;
+            if (ForceEffect(ModContent.ItemType<DemonshadeEnchantment>())) xpReq = 10000;
+            if (DemonshadeXP > xpReq * DemonshadeLevel + 4000 && DemonshadeLevel < 25)
             {
 
                 DemonshadeLevel++;

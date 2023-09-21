@@ -8,6 +8,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -57,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public void ReaverEffects()
         {
 
-            if (!DevastEffects)
+            if (!ForceEffect(ModContent.ItemType<ReaverEnchantment>()))
             {
                 if (Player.GetToggleValue("ReaverStats"))
                 {
@@ -105,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public void ReaverHurtEffect()
         {
-            if (Main.rand.NextBool(4) && !ReaverHageBuff && Player.GetToggleValue("ReaverRage"))
+            if ((!ForceEffect(ModContent.ItemType<ReaverEnchantment>()) && Main.rand.NextBool(4)) || (ForceEffect(ModContent.ItemType<ReaverEnchantment>()) && Main.rand.NextBool(2)) && !ReaverHageBuff && Player.GetToggleValue("ReaverRage"))
             {
                 Player.AddBuff(ModContent.BuffType<ReaverFury>(), 600);
             }

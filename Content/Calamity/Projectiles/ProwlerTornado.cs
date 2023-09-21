@@ -2,6 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader; using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
@@ -28,11 +29,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.scale = 1.5f;
+            Projectile.extraUpdates = 3;
         }
 
         public override void AI()
         {
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Sand, 0f, 0f, 0, default, 1.5f);
+            if (Main.player[Projectile.owner].GetModPlayer<CrossplayerCalamity>().ForceEffect(ModContent.ItemType<ProwlerEnchantment>()))
+            {
+                for (int i = 0; i < Main.projectile.Length; i++)
+                {
+                    Projectile proj = Main.projectile[i];
+                    if (proj!= null && proj.active && proj.owner == Projectile.owner && proj.friendly && proj.damage > 0 && proj.Hitbox.Intersects(Projectile.Hitbox) && proj.type != Projectile.type)
+                    {
+                        NPC npc = proj.FindTargetWithinRange(500);
+                        if (npc != null && npc.active)
+                        {
+                            proj.velocity = (npc.Center - proj.Center).SafeNormalize(Microsoft.Xna.Framework.Vector2.Zero) * proj.velocity.Length();
+                        }
+                    }
+                }
+            }
         }
     }
 }

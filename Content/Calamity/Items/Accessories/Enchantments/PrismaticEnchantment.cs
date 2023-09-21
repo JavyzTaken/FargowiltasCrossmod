@@ -13,6 +13,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -91,7 +92,13 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (CalamityKeybinds.SetBonusHotKey.JustPressed && PrismaticCharge >= 50000 && Main.myPlayer == Player.whoAmI)
             {
+                if (ForceEffect(ModContent.ItemType<PrismaticEnchantment>()))
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero).RotatedBy(0.5) * 10, ModContent.ProjectileType<PrisMissile>(), 500, 0, Main.myPlayer);
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero).RotatedBy(-0.5) * 10, ModContent.ProjectileType<PrisMissile>(), 500, 0, Main.myPlayer);
+                }else
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<PrisMissile>(), 500, 0, Main.myPlayer);
+
                 PrismaticCharge = 0;
                 for (int i = 0; i < 15; i++)
                 {

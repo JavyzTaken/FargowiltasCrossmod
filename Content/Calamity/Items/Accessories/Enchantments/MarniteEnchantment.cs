@@ -11,6 +11,8 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasSouls.Core.ModPlayers;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -51,6 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity
 {
     public partial class CrossplayerCalamity : ModPlayer
     {
+        public int usedWeaponTimer;
         public void MarniteEffects()
         {
             if (Main.myPlayer == Player.whoAmI)
@@ -65,6 +68,30 @@ namespace FargowiltasCrossmod.Content.Calamity
                 {
                     Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, Vector2.Zero, ModContent.ProjectileType<MarniteSword>(), 10, 0f, Main.myPlayer);
                     Player.AddBuff(ModContent.BuffType<MarniteSwordsBuff>(), 18000);
+                }
+                if (ForceEffect(ModContent.ItemType<MarniteEnchantment>()))
+                {
+                    if (Player.controlUseItem && Player.HeldItem.damage > 0)
+                    {
+                        usedWeaponTimer = 300;
+                    }
+                    if (usedWeaponTimer > 0) usedWeaponTimer--;
+                    if (usedWeaponTimer == 0)
+                    {
+                        for (int i = 0; i < 180; i++)
+                        {
+                            Dust.NewDustPerfect(Player.Center + new Vector2(0, 200).RotatedBy(MathHelper.ToRadians(i * 2)), DustID.BlueFlare).noGravity = true ;
+                        }
+                        for (int i = 0; i < Main.npc.Length; i++)
+                        {
+                            NPC npc = Main.npc[i];
+                            if (npc.Distance(Player.Center) < 200 && npc.knockBackResist > 0)
+                            {
+                                npc.velocity += (npc.Center - Player.Center).SafeNormalize(Vector2.Zero) * 0.5f;
+
+                            }
+                        }
+                    }
                 }
             }
         }
