@@ -79,10 +79,10 @@ namespace FargowiltasCrossmod.Core.Calamity
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<DeviBoss>());
             }, -1, false, 0f, new int[] { }, new int[] { }));
-            Entries.Insert(16, (ModContent.NPCType<BanishedBaron>(), 0, delegate (int type)
+            /*Entries.Insert(16, (ModContent.NPCType<BanishedBaron>(), 0, delegate (int type)
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<BanishedBaron>());
-            }, -1, false, 0f, new int[] { }, new int[] { }));
+            }, -1, false, 0f, new int[] { }, new int[] { }));*/
             //insert lieflight after mechs
             Entries.Insert(23, (ModContent.NPCType<LifeChallenger>(), 0, delegate (int type)
             {
