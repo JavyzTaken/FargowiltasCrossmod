@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     public class CalamityEnchToggles : ToggleCollection
     {
         public override string Mod => "CalamityMod";
-        public override string SortCatagory => "Enchantments";
+        public override string SortCategory => "Enchantments";
         public override int Priority => 1;
         public override bool Active => true;
 
@@ -46,16 +46,5 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public string ChargeAttacks;
         public string FearValkyrie;
         public string PrismaticRocket;
-
-        public int DesolationHeader = ModContent.ItemType<DesolationForce>();
-        public string AbyssTentacles;
-        public string AbyssalMadness;
-        public string Shellfish;
-        public string WaterMovement;
-        public string GiantPearl;
-        public string Instakills;
-        public string AstralShield;
-        public string AstralTelegraph;
-        public string FathomBubble;
     }
 }
