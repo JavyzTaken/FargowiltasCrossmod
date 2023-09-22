@@ -15,6 +15,7 @@ using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
 using CalamityMod.Items.Armor.LunicCorps;
 using CalamityMod.Items.Weapons.Rogue;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -94,7 +95,13 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (CalamityKeybinds.SetBonusHotKey.JustPressed && LunicCharge >= 25000 && Main.myPlayer == Player.whoAmI)
             {
+
                 Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<PlasmaGrenade>(), 500, 0, Main.myPlayer);
+                if (ForceEffect(ModContent.ItemType<LunicCorpsEnchantment>()))
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)) * 10, ModContent.ProjectileType<PlasmaGrenade>(), 500, 0, Main.myPlayer);
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)) * 10, ModContent.ProjectileType<PlasmaGrenade>(), 500, 0, Main.myPlayer);
+                }
                 LunicCharge = 0;
                 for (int i = 0; i < 15; i++)
                 {

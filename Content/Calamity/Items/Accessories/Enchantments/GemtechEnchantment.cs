@@ -19,6 +19,7 @@ using CalamityMod.CalPlayer;
 using Terraria.Audio;
 using rail;
 using Terraria.Localization;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -89,17 +90,17 @@ namespace FargowiltasCrossmod.Content.Calamity
         public int GemTechTimer;
         public void GemTechEffects()
         {
-            
+            int time = ForceEffect(ModContent.ItemType<GemtechEnchantment>()) ? 140 : 200;
             Item newHeld = Player.HeldItem;
             if (HeldItem == null || newHeld == null || HeldItem != newHeld || newHeld.damage == -1)
             {
                 GemTechTimer = 0;
             }
-            else if (GemTechTimer < 200)
+            else if (GemTechTimer < time)
             {
                 GemTechTimer += 1;
             }
-            if (GemTechTimer == 199)
+            if (GemTechTimer == time - 1)
             {
                 for (int i = 0; i < 30; i++)
                 {
@@ -128,9 +129,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
     {
         public void GemTechUseEffect(Item item, Player player)
         {
+            int time = player.GetModPlayer<CrossplayerCalamity>().ForceEffect(ModContent.ItemType<GemtechEnchantment>()) ? 140 : 200;
             CrossplayerCalamity mp = player.GetModPlayer<CrossplayerCalamity>();
             //Main.NewText(item.DamageType);
-            if ((item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed || item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()) && mp.GemTechTimer >= 200)
+            if ((item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed || item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()) && mp.GemTechTimer >= time)
             {
                 
                 for (int i = -2; i < 3; i++) {
@@ -143,7 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                         ModContent.ProjectileType<GemTechMeleeWave>(), player.CalcIntDamage<MeleeDamageClass>(15000), 0, Main.myPlayer);
                 SoundEngine.PlaySound(SoundID.Item60, player.Center);
             }
-            if (item.DamageType == DamageClass.Ranged && mp.GemTechTimer >= 200)
+            if (item.DamageType == DamageClass.Ranged && mp.GemTechTimer >= time)
             {
                 for (int i = 0; i < 30; i++)
                 {
@@ -153,7 +155,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                 }
                 SoundEngine.PlaySound(SoundID.Item60, player.Center);
             }
-            if (item.DamageType == DamageClass.Magic && mp.GemTechTimer >= 200)
+            if (item.DamageType == DamageClass.Magic && mp.GemTechTimer >= time)
             {
                 for (int i = 0; i < 40; i++)
                 {
@@ -165,7 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                         player.CalcIntDamage<MagicDamageClass>(800), 0, Main.myPlayer, ai1: type);
                 }
             }
-            if (item.DamageType == ModContent.GetInstance<RogueDamageClass>() &&  mp.GemTechTimer >= 200)
+            if (item.DamageType == ModContent.GetInstance<RogueDamageClass>() &&  mp.GemTechTimer >= time)
             {
                 player.SetImmuneTimeForAllTypes(90);
                 for (int i = -1; i < 2; i++)
@@ -191,10 +193,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             if (proj.minion && Main.player[proj.owner].GetModPlayer<CrossplayerCalamity>().Gemtech && proj.active)
             {
                 Player owner = Main.player[proj.owner];
-
+                int time = owner.GetModPlayer<CrossplayerCalamity>().ForceEffect(ModContent.ItemType<GemtechEnchantment>()) ? 140 : 200;
                 GemTechTimer++;
                 
-                if (owner.GetModPlayer<CrossplayerCalamity>().GemTechTimer >= 200 && GemTechTimer >= 200 && proj.active)
+                if (owner.GetModPlayer<CrossplayerCalamity>().GemTechTimer >= time && GemTechTimer >= time && proj.active)
                 {
                     proj.Kill();
                     for (int i = 0; i < 7; i++)

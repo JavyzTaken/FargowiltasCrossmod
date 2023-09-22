@@ -5,7 +5,8 @@ using Terraria.ID;
 using System;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod;
-
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using CalamityMod.Projectiles.Rogue;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
@@ -184,12 +185,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 Vector2 velocity = Vector2.One;
                 for (int j = 0; j < 3; j++)
                 {
-                    int damage = (int)player.GetBestClassDamage().ApplyTo(25f);
-                    int aeroFethahs = Projectile.NewProjectile(player.GetSource_FromThis(), ValkyrieCenter, velocity, ModContent.ProjectileType<StickyFeatherAero>(), damage, 1f, player.whoAmI);
+                    int damage = (int)(player.GetBestClassDamage() - player.Calamity().stealthDamage).ApplyTo(25);
+                    int projType = ModContent.ProjectileType<StickyFeatherAero>();
+                    if (player.GetModPlayer<CrossplayerCalamity>().ForceEffect(ModContent.ItemType<AerospecEnchantment>()))
+                    {
+                        projType = ModContent.ProjectileType<TurbulanceProjectile>();
+                        damage = (int)(player.GetBestClassDamage() - player.Calamity().stealthDamage).ApplyTo(125);
+                    }
+                    
+                    int aeroFethahs = Projectile.NewProjectile(player.GetSource_FromThis(), ValkyrieCenter, velocity, projType, damage, 1f, player.whoAmI);
                     if (Main.projectile.IndexInRange(aeroFethahs))
                     {
                         Main.projectile[aeroFethahs].originalDamage = Projectile.originalDamage;
                         Main.projectile[aeroFethahs].velocity = Projectile.DirectionTo(targetCenter) * 8f;
+                        Main.projectile[aeroFethahs].DamageType = DamageClass.Default;
+                        Main.projectile[aeroFethahs].Calamity().stealthStrike = false;
                     }
                 }
             }

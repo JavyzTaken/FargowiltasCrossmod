@@ -7,6 +7,8 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
@@ -49,28 +51,29 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public void PlagueReaperHitEffect(NPC target)
         {
-            if (target.lifeMax <= 60000 && target.life == target.lifeMax)
+            if (target.lifeMax <= 50000 && target.life == target.lifeMax)
             {
-                if (Main.rand.NextBool(2))
+                if (Main.rand.NextBool(2) || ForceEffect(ModContent.ItemType<PlagueReaperEnchantment>()))
                 {
-
-                    target.life = 0;
-                    target.HitEffect();
-                    target.active = false;
-                    target.NPCLoot();
+                    target.StrikeInstantKill();
+                    //target.life = 0;
+                    //target.HitEffect();
+                    //target.active = false;
+                    //target.NPCLoot();
                 }
             }
         }
         public void PlagueReaperProjHitEffect(NPC target)
         {
-            if (target.lifeMax <= 60000 && target.life == target.lifeMax)
+            if (target.lifeMax <= 50000 && target.life == target.lifeMax)
             {
-                if (Main.rand.NextBool(2))
+                if (Main.rand.NextBool(2) || ForceEffect(ModContent.ItemType<PlagueReaperEnchantment>()))
                 {
-                    target.life = 0;
-                    target.HitEffect();
-                    target.active = false;
-                    target.NPCLoot();
+                    target.StrikeInstantKill();
+                    //target.life = 0;
+                    //target.HitEffect();
+                    //target.active = false;
+                    //target.NPCLoot();
                 }
             }
         }

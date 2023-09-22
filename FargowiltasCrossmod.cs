@@ -7,7 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader; 
 using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
-using FargowiltasCrossmod.Content.Common;
+//using FargowiltasCrossmod.Content.Common;
 using System;
 using FargowiltasSouls.Core.Toggler;
 using System.Collections.Generic;
@@ -99,12 +99,12 @@ namespace FargowiltasCrossmod
                 MethodInfo AddShops_DETOUR = deviDetourClass.GetMethod("AddShops", BindingFlags.Public | BindingFlags.Instance);
 
 
-                DeviantHooks.SetChatButtons = new Hook(SetChatButtons_DETOUR, DevianttPatches.SetChatButtons);
-                DeviantHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, DevianttPatches.OnChatButtonClicked);
+                //DeviantHooks.SetChatButtons = new Hook(SetChatButtons_DETOUR, DevianttPatches.SetChatButtons);
+                //DeviantHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, DevianttPatches.OnChatButtonClicked);
                 //DeviantHooks.AddShops = new Hook(AddShops_DETOUR, DevianttPatches.AddShops);
 
-                DeviantHooks.SetChatButtons.Apply();
-                DeviantHooks.OnChatButtonClicked.Apply();
+                //DeviantHooks.SetChatButtons.Apply();
+                //DeviantHooks.OnChatButtonClicked.Apply();
                 //DeviantHooks.AddShops.Apply();
             }
 
@@ -115,11 +115,11 @@ namespace FargowiltasCrossmod
                 MethodInfo OnChatButtonClicked_DETOUR = lumberDetourClass.GetMethod("OnChatButtonClicked", BindingFlags.Public | BindingFlags.Instance);
                 MethodInfo AddShops_DETOUR = lumberDetourClass.GetMethod("AddShops", BindingFlags.Public | BindingFlags.Instance);
 
-                LumberHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, LumberBoyPatches.OnChatButtonClicked);
-                LumberHooks.AddShops = new Hook(AddShops_DETOUR, LumberBoyPatches.AddShops);
+                //LumberHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, LumberBoyPatches.OnChatButtonClicked);
+                //LumberHooks.AddShops = new Hook(AddShops_DETOUR, LumberBoyPatches.AddShops);
 
-                LumberHooks.OnChatButtonClicked.Apply();
-                LumberHooks.AddShops.Apply();
+                //LumberHooks.OnChatButtonClicked.Apply();
+                //LumberHooks.AddShops.Apply();
             }
         }
 
@@ -131,7 +131,7 @@ namespace FargowiltasCrossmod
             Content.Thorium.Projectiles.DLCHealing.HealMethod = thoriumProjExtensions.GetMethod("ThoriumHeal", BindingFlags.Static | BindingFlags.NonPublic);
             Content.Thorium.Projectiles.DLCHealing.CustomHealingType = thoriumProjExtensions.GetNestedType("CustomHealing", BindingFlags.NonPublic);
 
-            DevianttPatches.AddThoriumDeviShop();
+            //DevianttPatches.AddThoriumDeviShop();
         }
         public override void Unload()
         {

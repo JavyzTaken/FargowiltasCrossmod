@@ -14,6 +14,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -67,7 +68,8 @@ namespace FargowiltasCrossmod.Content.Calamity
             EmpyreanHitCounter++;
             if (EmpyreanHitCounter >= 3)
             {
-                Player.AddBuff(Main.rand.NextBool() ? ModContent.BuffType<EmpyreanRage>() : ModContent.BuffType<EmpyreanWrath>(), 60);
+                int duration = ForceEffect(ModContent.ItemType<EmpyreanEnchantment>()) ? 120 : 60;
+                Player.AddBuff(Main.rand.NextBool() ? ModContent.BuffType<EmpyreanRage>() : ModContent.BuffType<EmpyreanWrath>(), duration);
                 EmpyreanHitCounter = 0;
             }
         }
@@ -75,8 +77,9 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (Player.whoAmI == Main.myPlayer && Main.rand.NextBool(5))
             {
+                int dmg = ForceEffect(ModContent.ItemType<EmpyreanEnchantment>()) ? damage : damage / 2;
                 SoundEngine.PlaySound(SoundID.Item103, Player.Center);
-                Projectile.NewProjectile(source, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<MeldTentacle>(), damage / 2, knockback, Main.myPlayer, Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1), Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1));
+                Projectile.NewProjectile(source, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 20, ModContent.ProjectileType<MeldTentacle>(), dmg, knockback, Main.myPlayer, Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1), Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1));
             }
 
         }

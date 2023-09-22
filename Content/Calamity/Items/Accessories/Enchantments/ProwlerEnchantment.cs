@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (Main.rand.NextBool(10))
             {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - new Vector2(960f, 0), new Vector2(12f, 0), ModContent.ProjectileType<ProwlerTornado>(), 25, 0f, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - new Vector2(960f, 0), new Vector2(4f, 0), ModContent.ProjectileType<ProwlerTornado>(), 25, 0f, Player.whoAmI);
 
             }
         }
@@ -62,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (Main.rand.NextBool(10) && proj.type != ModContent.ProjectileType<ProwlerTornado>())
             {
-                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - new Vector2(960f, 0), new Vector2(36f, 0), ModContent.ProjectileType<ProwlerTornado>(), 25, 0f, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center - new Vector2(960f, 0), new Vector2(12f, 0), ModContent.ProjectileType<ProwlerTornado>(), 25, 0f, Player.whoAmI);
 
             }
         }
