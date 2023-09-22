@@ -1,14 +1,10 @@
 Mods: {
 	FargowiltasSouls: {
-		//rogue soul
-		//
 		VagabondsSoulHeader: "[i:FargowiltasCrossmod/VagabondsSoul] Vagabond's Soul"
 		NanotechConfig: "[i:CalamityMod/Nanotech] Nanotech"
 		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
 		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
 		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
-		//calamity stuff added to base souls
-		//
 		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul Toggles"
 		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
 		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
@@ -27,17 +23,12 @@ Mods: {
 		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
 		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul Toggles"
 		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
-		AngelTreadsConfig: "[i:CalamityMod/AngelTreads] Angel Flight and Speed"
-		//Exploration Force
-		//
 		ExplorationHeader: "[i:FargowiltasCrossmod/ExplorationForce] {$Mods.FargowiltasCrossmod.Items.ExplorationForce.DisplayName}"
 		ValkyrieConfig: "[i:FargowiltasCrossmod/AerospecEnchantment] [c/99c8c1:Valkyrie Minion]"
 		TornadoesConfig: "[i:FargowiltasCrossmod/ProwlerEnchantment] [c/cc2a3c:Desert Tornadoes]"
 		BuildBuffConfig: "[i:FargowiltasCrossmod/MarniteEnchantment] [c/99c8c1:Building Stats]"
 		MarniteSwordsConfig: "[i:FargowiltasCrossmod/MarniteEnchantment] [c/99c8c1:Marnite Sword Minions]"
 		WulfrumBuffConfig: "[i:FargowiltasCrossmod/WulfrumEnchantment] [c/cec9aa:Wulfrum Empower]"
-		//Exaltation Force
-		//
 		ExaltationHeader: "[i:FargowiltasCrossmod/ExaltationForce] {$Mods.FargowiltasCrossmod.Items.ExaltationForce.DisplayName}"
 		TarragonCloakConfig: "[i:FargowiltasCrossmod/TarragonEnchantment] [c/c86414:Tarragon Cloak]"
 		TarragonAuraConfig: "[i:FargowiltasCrossmod/TarragonEnchantment] [c/c86414:Tarragon Aura]"
@@ -49,8 +40,6 @@ Mods: {
 		SlayerStarsConfig: "[i:FargowiltasCrossmod/SlayerEnchantment] [c/59aacc:Cosmilite Stars]"
 		AuricLightningConfig: "[i:FargowiltasCrossmod/AuricEnchantment] [c/e3ae00:Auric Lightning]"
 		AuricExplosionsConfig: "[i:FargowiltasCrossmod/AuricEnchantment] [c/e3ae00:Auric Explosions]"
-		//Devastation Force
-		//
 		DevastationHeader: "[i:FargowiltasCrossmod/DevastationForce] {$Mods.FargowiltasCrossmod.Items.DevastationForce.DisplayName}"
 		IceSpikesConfig: "[i:FargowiltasCrossmod/DaedalusEnchantment] [c/84d4f6:Ice Spikes]"
 		ReaverStatsConfig: "[i:FargowiltasCrossmod/ReaverEnchantment] [c/91cb66:Reaver Stats]"
@@ -58,114 +47,13 @@ Mods: {
 		HydrothermicHitsConfig: "[i:FargowiltasCrossmod/HydrothermicEnchantment] [c/f8b659:Hydrothermic Attacks]"
 		PlagueBeesConfig: "[i:FargowiltasCrossmod/BringerEnchantment] [c/80bc43:Plague Bees]"
 		PlagueDebuffConfig: "[i:FargowiltasCrossmod/BringerEnchantment] [c/80bc43:Inflict Plague]"
-		//Annihilation Force
-		//
 		AnnihilationHeader: "[i:FargowiltasCrossmod/AnnihilationForce] {$Mods.FargowiltasCrossmod.Items.AnnihilationForce.DisplayName}"
 		EnrageConfig: "[i:FargowiltasCrossmod/DemonshadeEnchantment] [c/cc2a3c:Enrage Ability]"
 		RageBuffConfig: "[i:FargowiltasCrossmod/DemonshadeEnchantment] [c/cc2a3c:Rage Damage Scaling]"
 		ChargeAttacksConfig: "[i:FargowiltasCrossmod/GemtechEnchantment] [c/c89600:Gemtech Attacks]"
 		FearValkyrieConfig: "[i:FargowiltasCrossmod/FearmongerEnchantment] [c/51637b:Fearsome Valkyrie]"
 		PrismaticRocketConfig: "[i:FargowiltasCrossmod/PrismaticEnchantment] [c/6c42a6:Prismatic Rocket]"
-		//Desolation Force
-		//
-		DesolationHeader: "[i:FargowiltasCrossmod/DesolationForce] {$Mods.FargowiltasCrossmod.Items.DesolationForce.DisplayName}"
-		AbyssTentaclesConfig: "[i:FargowiltasCrossmod/OmegaBlueEnchantment] [c/1e1e82:Abyss Tentacles]"
-		AbyssalMadnessConfig: "[i:FargowiltasCrossmod/OmegaBlueEnchantment] [c/1e1e82:Abyssal Madness]"
-		ShellfishConfig: "[i:FargowiltasCrossmod/MolluskEnchantment] [c/6478a0:Shellfish]"
-		WaterMovementConfig: "[i:FargowiltasCrossmod/MolluskEnchantment] [c/6478a0:Fast in Water, Slow on Land]"
-		GiantPearlConfig: "[i:FargowiltasCrossmod/MolluskEnchantment] [c/6478a0:Giant Pearl]"
-		InstakillsConfig: "[i:FargowiltasCrossmod/PlagueReaperEnchantment] [c/769293:Instakills below 60000]"
-		AstralShieldConfig: "[i:FargowiltasCrossmod/AstralEnchantment] [c/34edd4:Astral Shield]"
-		AstralTelegraphConfig: "[i:FargowiltasCrossmod/AstralEnchantment] [c/34edd4:Telegraphs]"
-		FathomBubbleConfig: "[i:FargowiltasCrossmod/FathomEnchantment] [c/63a0a4:Dirty Bubble]"
-		//Tyrant Soul
-		//
-		TyrantSoulHeader: "[i:FargowiltasCrossmod/TyrantSoul] {$Mods.FargowiltasCrossmod.Items.TyrantSoul.DisplayName}"
-		HeartoftheElementsConfig: "[i:CalamityMod/HeartoftheElements] Heart of the Elements"
-		OccultSkullCrownConfig: "[i:CalamityMod/OccultSkullCrown] Occult Skull Crown"
-		NebulousCoreConfig: "[i:CalamityMod/NebulousCore] Nebulous Core"
-		YharimsGiftConfig: "[i:CalamityMod/YharimsGift] {$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
-		DraedonsHeartConfig: "[i:CalamityMod/DraedonsHeart] Draedons Heart"
-		CalamityConfig: "[i:CalamityMod/Calamity] {$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
-		AncientSoulHeader: "[i:FargowiltasCrossmod/AncientsSoul] {$Mods.FargowiltasCrossmod.Items.AncientsSoul.DisplayName}"
-		EldritchSoulArtifactConfig: "[i:CalamityMod/EldritchSoulArtifact] {$Mods.CalamityMod.Items.Accessories.EldritchSoulArtifact.DisplayName}"
-		DimensionalSoulArtifactConfig: "[i:CalamityMod/DimensionalSoulArtifact] {$Mods.CalamityMod.Items.Accessories.DimensionalSoulArtifact.DisplayName}"
-		AuricSoulArtifactConfig: "[i:CalamityMod/GodlySoulArtifact] {$Mods.CalamityMod.Items.Accessories.GodlySoulArtifact.DisplayName}"
-		ProfanedSoulArtifactConfig: "[i:CalamityMod/ProfanedSoulArtifact] {$Mods.CalamityMod.Items.Accessories.ProfanedSoulArtifact.DisplayName}"
-		PhantomicArtifactConfig: "[i:CalamityMod/PhantomicArtifact] {$Mods.CalamityMod.Items.Accessories.PhantomicArtifact.DisplayName}"
-		DarkSunRingConfig: "[i:CalamityMod/DarkSunRing] {$Mods.CalamityMod.Items.Accessories.DarkSunRing.DisplayName}"
-		AncestralCharmHeader: "[i:FargowiltasCrossmod/AncestralCharm] {$Mods.FargowiltasCrossmod.Items.AncestralCharm.DisplayName}"
-		TrinketofChiConfig: "[i:CalamityMod/TrinketofChi] {$Mods.CalamityMod.Items.Accessories.TrinketofChi.DisplayName}"
-		GladiatorsLocketConfig: "[i:CalamityMod/GladiatorsLocket] {$Mods.CalamityMod.Items.Accessories.GladiatorsLocket.DisplayName}"
-		UnstableGraniteCoreConfig: "[i:CalamityMod/UnstableGraniteCore] {$Mods.CalamityMod.Items.Accessories.UnstableGraniteCore.DisplayName}"
-		FungalSymbioteConfig: "[i:CalamityMod/FungalSymbiote] {$Mods.CalamityMod.Items.Accessories.FungalSymbiote.DisplayName}"
-		LuxorsGiftConfig: "[i:CalamityMod/LuxorsGift] {$Mods.CalamityMod.Items.Accessories.LuxorsGift.DisplayName}"
-		SomethingMaliciousHeader: "[i:FargowiltasCrossmod/SomethingMalicious] {$Mods.FargowiltasCrossmod.Items.SomethingMalicious.DisplayName}"
-		DeepDiverConfig: "[i:CalamityMod/DeepDiver] {$Mods.CalamityMod.Items.Accessories.DeepDiver.DisplayName}"
-		EvasionScarfConfig: "[i:CalamityMod/EvasionScarf] {$Mods.CalamityMod.Items.Accessories.EvasionScarf.DisplayName}"
-		TheTransformerConfig: "[i:CalamityMod/TheTransformer] {$Mods.CalamityMod.Items.Accessories.TheTransformer.DisplayName}"
-		RegenatorConfig: "[i:CalamityMod/Regenator] {$Mods.CalamityMod.Items.Accessories.Regenator.DisplayName}"
-		FlameLickedShellConfig: "[i:CalamityMod/FlameLickedShell] {$Mods.CalamityMod.Items.Accessories.FlameLickedShell.DisplayName}"
-		PolarThingHeader: "[i:FargowiltasCrossmod/PolarThing] {$Mods.FargowiltasCrossmod.Items.PolarThing.DisplayName}"
-		OceanCrestConfig: "[i:CalamityMod/OceanCrest] {$Mods.CalamityMod.Items.Accessories.OceanCrest.DisplayName}"
-		FungalClumpConfig: "[i:CalamityMod/FungalClump] {$Mods.CalamityMod.Items.Accessories.FungalClump.DisplayName}"
-		BloodyWormToothConfig: "[i:CalamityMod/BloodyWormTooth] {$Mods.CalamityMod.Items.Accessories.BloodyWormTooth.DisplayName}"
-		RottenBrainConfig: "[i:CalamityMod/RottenBrain] {$Mods.CalamityMod.Items.Accessories.RottenBrain.DisplayName}"
-		ManaPolarizerConfig: "[i:CalamityMod/ManaPolarizer] {$Mods.CalamityMod.Items.Accessories.ManaPolarizer.DisplayName}"
-		PlastralHideHeader: "[i:FargowiltasCrossmod/PlastralHide] {$Mods.FargowiltasCrossmod.Items.PlastralHide.DisplayName}"
-		FrostFlareConfig: "[i:CalamityMod/FrostFlare] {$Mods.CalamityMod.Items.Accessories.FrostFlare.DisplayName}"
-		AquaticEmblemConfig: "[i:CalamityMod/AquaticEmblem] {$Mods.CalamityMod.Items.Accessories.AquaticEmblem.DisplayName}"
-		VoidofExtinctionConfig: "[i:CalamityMod/VoidofExtinction] {$Mods.CalamityMod.Items.Accessories.VoidofExtinction.DisplayName}"
-		LeviathanAmbergrisConfig: "[i:CalamityMod/LeviathanAmbergris] {$Mods.CalamityMod.Items.Accessories.LeviathanAmbergris.DisplayName}"
-		GravistarSabatonConfig: "[i:CalamityMod/GravistarSabaton] {$Mods.CalamityMod.Items.Accessories.GravistarSabaton.DisplayName}"
-		ToxicHeartConfig: "[i:CalamityMod/ToxicHeart] {$Mods.CalamityMod.Items.Accessories.ToxicHeart.DisplayName}"
-		HideofAstrumDeusConfig: "[i:CalamityMod/HideofAstrumDeus] {$Mods.CalamityMod.Items.Accessories.HideofAstrumDeus.DisplayName}"
-		VoidIconHeader: "[i:FargowiltasCrossmod/VoidIcon] {$Mods.FargowiltasCrossmod.Items.VoidIcon.DisplayName}"
-		WarbanneroftheSunConfig: "[i:CalamityMod/WarbanneroftheSun] {$Mods.CalamityMod.Items.Accessories.WarbanneroftheSun.DisplayName}"
-		BlazingCoreConfig: "[i:CalamityMod/BlazingCore] {$Mods.CalamityMod.Items.Accessories.BlazingCore.DisplayName}"
-		SpectralVeilConfig: "[i:CalamityMod/SpectralVeil] {$Mods.CalamityMod.Items.Accessories.SpectralVeil.DisplayName}"
-		TheEvolutionConfig: "[i:CalamityMod/TheEvolution] {$Mods.CalamityMod.Items.Accessories.TheEvolution.DisplayName}"
-		AfflictionConfig: "[i:CalamityMod/Affliction] {$Mods.CalamityMod.Items.Accessories.Affliction.DisplayName}"
-		MutatedTruffleConfig: "[i:CalamityMod/MutatedTruffle] {$Mods.CalamityMod.Items.Accessories.MutatedTruffle.DisplayName}"
-		ElementalOpalHeader: "[i:FargowiltasCrossmod/ElementalOpal] {$Mods.FargowiltasCrossmod.Items.ElementalOpal.DisplayName}"
-		AeroStoneConfig: "[i:CalamityMod/AeroStone] {$Mods.CalamityMod.Items.Accessories.AeroStone.DisplayName}"
-		CryoStoneConfig: "[i:CalamityMod/CryoStone] {$Mods.CalamityMod.Items.Accessories.CryoStone.DisplayName}"
-		ChaosStoneConfig: "[i:CalamityMod/ChaosStone] {$Mods.CalamityMod.Items.Accessories.ChaosStone.DisplayName}"
-		BloomStoneConfig: "[i:CalamityMod/BloomStone] {$Mods.CalamityMod.Items.Accessories.BloomStone.DisplayName}"
-
-		WizardEffect: {
-			Aerospec: The valkyrie is equiped with Turbulance
-			Fathom: The cloud chases enemies
-			Astral: Reduced Guard Cooldown
-			TitanHeart: Reduced Guard Cooldown
-			Auric: ""
-			Bloodflare: ""
-			Brimflame: Upgrades Brimflame Frenzy to Enraged
-			Bringer: Fires plague nukes instead of plague seekers
-			Daedelus: ""
-			Demonshade: Rage damage starts higher and gains damage faster
-			Empyrean: Tentacles deal full damage and Empyrean buffs last longer
-			Fearmonger: Completely removes the summon mix nerf
-			Gemtech: Lower charge time
-			Hydrothermic: Lose 5% more DR but gain 10% more damage after not getting hit for 30 seconds
-			LunicCorps: Throws 3 grenades at once
-			Marnite: Grants an electric field than repels weak enemies while not attacking
-			Mollusk: More clams can be attatched to one enemy
-			OmegaBlue: Tentacles deal more damage and Abyssal Madness lasts longer
-			PlagueReaper: 100% chance to instakill
-			Prismatic: Fires 2 rockets at once
-			Prowler: Projectiles that touch the tornado are redirected to the nearest enemy
-			Reaver: Increased stat changes and Reaver Rage chance
-			Ruffian: ""
-			Silva: ""
-			Slayer: ""
-			Statigel: ""
-			Sulphur: The cloud chases enemies
-			Tarragon: ""
-			Umbraphile: ""
-			Victide: ""
-			Wulfrum: Effect triggered at 40% HP
-		}
+		AngelTreadsConfig: "[i:CalamityMod/AngelTreads] Angel Flight and Speed"
 	}
 
 	FargowiltasCrossmod: {
@@ -276,169 +164,6 @@ Mods: {
 					15% increased rogue critical chance
 					Effects of Nanotech and Eclipse Mirror
 					Effects of Dragon Scales and Venerated Locket
-					'''
-			}
-
-			TitanHeartEnchantment: {
-				DisplayName: Titan Heart Enchantment
-				Tooltip:
-					'''
-					Immunity to Astral Infection
-					Grants a titan shield that you can guard with
-					Guarding increases defense and life regeneration,
-					but reduces movement speed and wing time
-					Taking damage while guarding causes an astral explosion
-					and disables it for 5 seconds
-					'''
-			}
-
-			AstralEnchantment: {
-				DisplayName: Astral Enchantment
-				Tooltip:
-					'''
-					Immunity to Astral Infection
-					Grants an astral shield that you can guard with
-					Guarding increases defense and life regeneration,
-					but reduces movement speed and wing time
-					Taking damage while guarding causes an astral explosion,
-					causes astral stars to fall from the sky, and disables it for 5 seconds
-					Gives all projectiles a telegraph
-					'''
-			}
-
-			DesolationForce: {
-				DisplayName: Force of Desolation
-				Tooltip:
-					'''
-					[i:FargowiltasCrossmod/OmegaBlueEnchantment] Abyss Tentacles that lifesteal lash out when you attack
-					[i:FargowiltasCrossmod/OmegaBlueEnchantment] Every 100 attacks grants you Abyssal Madness
-					[i:FargowiltasCrossmod/MolluskEnchantment] Your attacks throw shellfish
-					[i:FargowiltasCrossmod/MolluskEnchantment] Increased underwater breaCalamity and mobility but decreased mobility on land
-					[i:FargowiltasCrossmod/MolluskEnchantment] Effects of Giant Pearl
-					[i:FargowiltasCrossmod/PlagueReaperEnchantment] You have a chance to instakill enemies below 60000 max hp on your first attack
-					[i:FargowiltasCrossmod/AstralEnchantment] Grants a shield you can guard with and you explode when damaged while guarding
-					[i:FargowiltasCrossmod/AstralEnchantment] Gives all projectiles a telegraph
-					[i:FargowiltasCrossmod/FathomEnchantment] Summons a bubble near you that becomes a rain cloud when struck
-					'''
-			}
-
-			AncestralCharm: {
-				DisplayName: Ancestral Charm
-				Tooltip:
-					'''
-					Increased damage reduction by 10% if you have not been hit for 15 seconds
-					+1 life regen for everyone on your team
-					Weapons fire extra projectiles based on damage type
-					Enemies drop healing orbs on kill
-					Increases damage and movement speed based on health lost, up to 20%
-					You grow mushrooms on the grass beneath you
-					Eating a mushroom grants a buff to defense and life regen
-					All mushroom based weapons deal 10% more damage
-					You periodically zap nearby enemies with arcing electricity
-					'''
-			}
-
-			AncientsSoul: {
-				DisplayName: Soul of the Ancients
-				Tooltip:
-					'''
-					Increased melee speed by 10%, ranged velocity of 25%, and stealth generation by 15%
-					Increased damage by 37%, life regen by 0.5, and decreased mana usage by 25%
-					Increased minion knockback and max minions by 3 + 1 for every fiery draconid summon
-					Increases damage taken by 15%
-					Summons the Profaned Guardians to protect you
-					Whenever you hit an enemy you gain a phantomic buff
-					Provides various stat buffs depending on if it is day, night, or an eclipse
-					Knowledge. Purity. Power. Loyalty.
-					'''
-			}
-
-			SomethingMalicious: {
-				DisplayName: Something Malicious
-				Tooltip:
-					'''
-					15% increased true melee damage
-					Grants a dash that can dodge attacks every 30 seconds
-					Massively increases regenerative abilities but halves your max life
-					Multiplies electricity based debuff damage by 1.5
-					You release a blast of sparks when hit
-					Immunity to Electrified and electrical attacks
-					Bullets do half damage and are reflected for 800% their original damage
-					35% decreased movement speed
-					You lose 18 defense and gain movement speed when hit
-					Immunity to lava and Armor Crunch
-					15% increased damage, movement speed, and +15 defense when underwater
-					Grants a long dash when underwater
-					'''
-			}
-
-			ElementalOpal: {
-				DisplayName: Elemental Opal
-				Tooltip:
-					'''
-					Increases flight time, movement speed, and jump speed by 10%
-					Multiplies all cold-based debuff damage by 1.5
-					Creates a rotating ice shield around you that damages and slows down enemies
-					Mana Sickness is replaced with Mana Burn
-					Grants 1-3 life regen and accelerate life regen based on the time of day
-					Flowers and dye plants grow beneath your feet
-					The ancient relics, back together again
-					'''
-			}
-
-			PlastralHide: {
-				DisplayName: Plastral Hide
-				Tooltip:
-					'''
-					Effects of Frost flare, Aquatic Emblem, and Void of Extinction
-					Effects of Leviathan Ambergris, Gravistar sabaton, Toxic Heart, and Hide of Astrum Deus
-					'''
-			}
-
-			PolarThing: {
-				DisplayName: Polar Thing
-				Tooltip:
-					'''
-					Effects of Ocean Crest and Fungal Clump
-					Effects of Bloody Worm Tooth, Rotten Brain, and Mana Polarizer
-					'''
-			}
-
-			TyrantSoul: {
-				DisplayName: Soul of the Tyrant
-				Tooltip:
-					'''
-					Effects of Trinket of Chi, Gladiators Locket, and  Unstable Granite Core
-					Effects of Fungal Symbiote, Luxors Gift, and Ocean Crest
-					Effects of Fungal Clump, Bloody Worm Tooth, and Rotten Brain
-					Effects of Mana Polarizer, Frost Flare, and Aquatic Emblem
-					Effects of Void of Extinction, Leviathan Ambergris, and Gravistar Sabaton
-					Effects of Toxic Heart, Hide of Astrum Deus, and Warbanner of the Sun
-					Effects of Blazing Core, Spectral Veil, and The Evolution
-					Effects of Affliction, Mutated Truffle, and Evasion Scarf
-					Effects of Regenator, The Transformer, and Flame Licked Shell
-					Effects of Deep Diver, Aero Stone, and Cryo Stone
-					Effects of Choas Stone, Bloom Stone, and Eldritch Soul Artifact
-					Effects of Profaned Soul Artifact, Phantomic Artifact, and Dimensional Soul Artifact
-					Effects of Dark Sun Ring, Auric Soul Artifact, and Heart of the Elements
-					Effects of Occult Skull Crown, Nebulous Core, and Yharim's Gift
-					Effects of Draedon's Heart and Calamity
-					'''
-			}
-
-			VoidIcon: {
-				DisplayName: Void Icon
-				Tooltip:
-					'''
-					Increases melee stats the closer you are to enemies
-					Press [button] to encase yourself in a profaned crystal
-					Releases projectiles and reduces damage when hit while encased in the crystal
-					Press [button2] to consume 25% of your stealth and perform a teleport
-					Stealth generates 15% faster
-					You can reflect a projectile every 90 seconds
-					+0.5 life regen, 10% max life, 7% damage reduction,
-					13 defense, and 10% damage for all players on your team
-					Summons a small Old Duke to fight for you
 					'''
 			}
 		}

@@ -7,9 +7,7 @@ using Terraria.GameInput;
 using Terraria.DataStructures;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls.Core.ModPlayers;
-using ThoriumMod.PlayerLayers;
-using System.Collections.Generic;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -17,13 +15,12 @@ namespace FargowiltasCrossmod.Content.Calamity
     public partial class CrossplayerCalamity : ModPlayer
     {
         //effect booleans
-        //force of exploration
         public bool RideOfTheValkyrie;
         public bool Marnite;
         public bool WulfrumOverpower;
         public bool ProwlinOnTheFools;
         public bool ExploEffects;
-        //force of devestation
+
         public bool ReaverHage;
         public bool ReaverHageBuff;
         public bool ButterBeeSwarm;
@@ -31,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public bool AyeCicleSmol;
         public bool AtaxiaEruption;
         public bool DevastEffects;
-        //force og desolation
+
         public bool Empyrean;
         public bool OmegaBlue;
         public int OmegaGreenCounter;
@@ -40,11 +37,8 @@ namespace FargowiltasCrossmod.Content.Calamity
         public bool SulphurBubble;
         public bool FathomBubble;
         public bool DoctorBeeKill;
-        public bool TitanHeart;
-        public int TitanGuardCooldown;
-        public bool Astral;
         public bool DesolEffects;
-        //force of exaltation
+
         public bool Tarragon;
         public int TarragonTimer;
         public bool UmbraCrazyRegen;
@@ -56,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public bool SlayerCD;
         public bool Auric;
         public bool ExaltEffects;
-        //force of annihilation
+
         public bool Lunic;
         public bool Prismatic;
         public int PrismaticCharge;
@@ -71,8 +65,6 @@ namespace FargowiltasCrossmod.Content.Calamity
         public int RangedGemTimer;
         public int MeleeGemTimer;
         public bool AnnihilEffects;
-        //Soul of the Tyrant
-        public bool AncestralCharm;
 
         //mostly booleans for active checks
         public bool aValkie;
@@ -99,12 +91,11 @@ namespace FargowiltasCrossmod.Content.Calamity
 
         public override void ResetEffects()
         {
-            //force of exploration
             RideOfTheValkyrie = false;
             Marnite = false;
             WulfrumOverpower = false;
             ProwlinOnTheFools = false;
-            //force of devastation
+
             ReaverHage = false;
             ReaverHageBuff = false;
             ButterBeeSwarm = false;
@@ -113,7 +104,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             AtaxiaEruption = false;
             if (AtaxiaCooldown > 0) AtaxiaCooldown--;
             if (AtaxiaCountdown > 0 && AtaxiaDR == 5) AtaxiaCountdown--;
-            //force of desolation
+
             Empyrean = false;
             OmegaBlue = false;
             if (OmegaGreenCounter > 0) OmegaGreenCounter--;
@@ -121,11 +112,8 @@ namespace FargowiltasCrossmod.Content.Calamity
             Mollusk = false;
             SulphurBubble = false;
             FathomBubble = false;
-            TitanHeart = false;
-            Astral = false;
-            if (TitanGuardCooldown > 0) TitanGuardCooldown--;
             DoctorBeeKill = false;
-            //force of exaltation
+
             Tarragon = false;
             if (TarragonTimer > 0) TarragonTimer--;
             UmbraCrazyRegen = false;
@@ -138,7 +126,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             GodSlayerMeltdown = false;
             SlayerCD = false;
             Auric = false;
-            //force of annihilation
+
             Brimflame = false;
             if (BrimflameCooldown > 0)
                 BrimflameCooldown--;
@@ -148,15 +136,13 @@ namespace FargowiltasCrossmod.Content.Calamity
             FearOfTheValkyrie = false;
             Crocket = false;
             Gemtech = false;
-            //Soul of the Tyrant
-            AncestralCharm = false;
-            //forces
+
             ExploEffects = false;
             DevastEffects = false;
             DesolEffects = false;
             ExaltEffects = false;
             AnnihilEffects = false;
-            //minions active
+
             aValkie = false;
             aScarey = false;
             aSword = false;
@@ -238,43 +224,28 @@ namespace FargowiltasCrossmod.Content.Calamity
 
         public override void OnHurt(Player.HurtInfo info)
         {
-            //Devastion
             if (ReaverHage)
             {
                 ReaverHurtEffect();
+            }
+            if (Demonshade)
+            {
+                DemonshadeHurtEffect(info.Damage);
             }
             if (AtaxiaEruption)
             {
                 AtaxiaHurt();
             }
-            //annihilation
-            if (Demonshade)
-            {
-                DemonshadeHurtEffect(info.Damage);
-            }
-            
-            //Desolation
-            if (TitanHeart && Player.GetToggleValue("AstralShield"))
-            {
-                TitanHeartHurtEffects();
-            }
-            if (Astral && Player.GetToggleValue("AstralShield"))
-            {
-                AstralHurtEffects();
-            }
         }
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
-            //Annihilation
             if (Prismatic)
             {
                 modifiers.FinalDamage.Flat = PrismaticeHitEffects((int)modifiers.FinalDamage.Flat, npc);
             }
-            
         }
         public override void UpdateDead()
         {
-            //kill timers on death
             SDIcicleCooldown = 0;
             LifestealCD = 0;
             ButterBeeCD = 0;
@@ -285,21 +256,11 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void PostUpdate()
         {
-            //Desolation
-            //titan heart is here because player.bodyframe is changed for shield visual which gets overridden if its in update equips because of update orders
-            if (TitanHeart && Player.GetToggleValue("AstralShield"))
-            {
-                TitanHeartPostUpdate();
-            }
-            if (Astral && Player.GetToggleValue("AstralShield"))
-            {
-                AstralPostUpdate();
-            }
+            
         }
-        
         public override void PostUpdateEquips()
         {
-            //EXPLORATION
+            //EXPLORATION (3/4)
 
             //aerospec
             if (RideOfTheValkyrie && Player.GetToggleValue("Valkyrie"))
@@ -320,7 +281,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 WulfrumEffects();
             }
 
-            //DEVASTATION
+            //DEVASTATION (4/4)
 
             //snow ruffian. based off of Soul of Cryogen's code
             if (AyeCicleSmol)
@@ -353,7 +314,7 @@ namespace FargowiltasCrossmod.Content.Calamity
 
 
 
-            //DESOLATION 
+            //DESOLATION (2/5)
 
             //victide
             if (VictideSwimmin)
@@ -366,27 +327,20 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 MolluskEffects();
             }
-            if (Astral)
-            {
-                AstralEffects();
-            }
-            if (TitanHeart)
-            {
-                TitanHeartEffects();
-            }
+
             //sulphurous. possibly one of the enchantments I'm most proud of
-            if (SulphurBubble && !FathomBubble && Player.GetToggleValue("FathomBubble"))
+            if (SulphurBubble && !FathomBubble)
             {
                 SulphurEffects();
             }
 
             //fathom swarmer
-            if (FathomBubble && Player.GetToggleValue("FathomBubble"))
+            if (FathomBubble)
             {
                 FathomSwarmerEffects();
             }
-            
-            //EXALTATION 
+
+            //EXALTATION (1/5)
 
             //silva
             if (Silva && Player.GetToggleValue("SilvaCrystal"))
@@ -395,7 +349,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
 
 
-            //ANNIHILATION 
+            //ANNIHILATION (1/4)
 
             if (Gemtech && Player.GetToggleValue("ChargeAttacks")){
                 GemTechEffects();
@@ -417,41 +371,35 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 FearmongerEffects();
             }
-            
         }
-        
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Item, consider using OnHitNPC instead */
         {
-            //Exploration
             //desert prowler enchantment
             if (ProwlinOnTheFools && Player.GetToggleValue("Tornadoes"))
             {
                 ProwlerHitEffect();
             }
-            //Devastation
             //bringer bees. based off of fargo souls' bee enchantment effect
             if (ButterBeeSwarm)
             {
                 PlaguebringerHitEffect(item, target, damageDone);
+            }
+            //Empyrean
+            if (Empyrean)
+            {
+                EmpyreanHitEffect();
+            }
+            //omega blue
+            if (OmegaBlue)
+            {
+                OmegaBlueHitEffects();
             }
             //hydrothermic. just based
             if (AtaxiaEruption && Player.GetToggleValue("HydrothermicHits"))
             {
                 HydrothermicHitEffect(target, damageDone);
             }
-            //Desolation
-            //Empyrean
-            if (Empyrean && Player.GetToggleValue("AbyssalMadness"))
-            {
-                EmpyreanHitEffect();
-            }
-            //omega blue
-            if (OmegaBlue && Player.GetToggleValue("AbyssalMadness"))
-            {
-                OmegaBlueHitEffects();
-            }
-            
-            //Exaltation
+
             //umbra and blood timer calculus
             UmbraphileCalc(damageDone);
             BloodflareCalc(damageDone);
@@ -479,7 +427,6 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 GodSlayerHitEffect(target, damageDone);
             }
-            //Annihilation
             if (Demonshade && Player.GetToggleValue("RageBuff"))
             {
                 DemonshadeHitEffect(damageDone);
@@ -495,44 +442,40 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Item, consider using ModifyHitNPC instead */
         {
-            //Desolation
             //Plague Reaper conditions
-            if (DoctorBeeKill && Player.GetToggleValue("Instakills"))
+            if (DoctorBeeKill)
             {
                 PlagueReaperHitEffect(target);
             }
         }
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)/* tModPorter If you don't need the Projectile, consider using OnHitNPC instead */
         {
-            //Exploration
             //desert prowler enchantment
             if (ProwlinOnTheFools && Player.GetToggleValue("Tornadoes"))
             {
                 ProwlerProjHitEffect(proj);
             }
-            //Devastation
+
             //bringer bees. you've read the part on top
             if (ButterBeeSwarm)
             {
                 PlaguebringerProjHitEffect(proj, target, damageDone);
+            }
+            //Empyrean
+            if (Empyrean)
+            {
+                EmpyreanHitEffect();
+            }
+            //omega blue
+            if (OmegaBlue)
+            {
+                OmegaBlueHitEffects();
             }
             //hydroth   ermic
             if (AtaxiaEruption && Player.GetToggleValue("HydrothermicHits"))
             {
                 HydrothermicProjHitEffect(target, damageDone);
             }
-            //Desolation
-            //Empyrean
-            if (Empyrean && Player.GetToggleValue("AbyssalMadness"))
-            {
-                EmpyreanHitEffect();
-            }
-            //omega blue
-            if (OmegaBlue && Player.GetToggleValue("AbyssalMadness"))
-            {
-                OmegaBlueHitEffects();
-            }
-            //Exaltation
             //umbra blood timer
             UmbraphileCalc(damageDone);
             BloodflareCalc(damageDone);
@@ -560,7 +503,6 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 GodSlayerProjHitEffect(proj, target, damageDone, hit.Crit);
             }
-            //Annihilation
             if (Demonshade && Player.GetToggleValue("RageBuff"))
             {
                 DemonshadeHitEffect(damageDone);
@@ -576,7 +518,6 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Projectile, consider using ModifyHitNPC instead */
         {
-            //Desolation
             //plague reaper
             if (DoctorBeeKill)
             {
@@ -585,12 +526,11 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            //Desolation
-            if (Empyrean && Player.GetToggleValue("AbyssTentacles"))
+            if (Empyrean)
             {
                 EmpyreanAttackEffects(source, damage, knockback);
             }
-            if (OmegaBlue && Player.GetToggleValue("AbyssTentacles"))
+            if (OmegaBlue)
             {
                 OmegaBlueAttackEffects(source, damage, knockback);
             }
@@ -598,12 +538,10 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            //Exaltation
             if (Silva && Player.GetToggleValue("SilvaCrystal"))
             {
                 SilvaTrigger();
             }
-            //Annihilation
             if (Lunic && Player.GetToggleValue("RageBuff"))
             {
                 LunicTrigger();
@@ -613,76 +551,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 PrismaticTrigger();
             }
         }
-        public static List<int> DesolationForce = new List<int>()
-        {
-            ModContent.ItemType<EmpyreanEnchantment>(),
-            ModContent.ItemType<OmegaBlueEnchantment>(),
-            ModContent.ItemType<MolluskEnchantment>(),
-            ModContent.ItemType<VictideEnchantment>(),
-            ModContent.ItemType<SulphurEnchantment>(),
-            ModContent.ItemType<FathomEnchantment>(),
-            ModContent.ItemType<PlagueReaperEnchantment>(),
-            ModContent.ItemType<TitanHeartEnchantment>(),
-            ModContent.ItemType<AstralEnchantment>()
-        };
-        public static List<int> AnnihilationForce = new List<int>()
-        {
-            ModContent.ItemType<LunicCorpsEnchantment>(),
-            ModContent.ItemType<PrismaticEnchantment>(),
-            ModContent.ItemType<BrimflameEnchantment>(),
-            ModContent.ItemType<DemonshadeEnchantment>(),
-            ModContent.ItemType<GemtechEnchantment>(),
-            ModContent.ItemType<FearmongerEnchantment>(),
-        };
-        public static List<int> ExplorationForce = new List<int>()
-        {
-            ModContent.ItemType<AerospecEnchantment>(),
-            ModContent.ItemType<WulfrumEnchantment>(),
-            ModContent.ItemType<MarniteEnchantment>(),
-            ModContent.ItemType<ProwlerEnchantment>(),
-        };
-        public static List<int> DevastationForce = new List<int>()
-        {
-            ModContent.ItemType<BringerEnchantment>(),
-            ModContent.ItemType<ReaverEnchantment>(),
-            ModContent.ItemType<HydrothermicEnchantment>(),
-            ModContent.ItemType<DaedalusEnchantment>(),
-        };
-        public static List<int> ExaltationForce = new List<int>()
-        {
-            ModContent.ItemType<TarragonEnchantment>(),
-            ModContent.ItemType<BloodflareEnchantment>(),
-            ModContent.ItemType<SilvaEnchantment>(),
-            ModContent.ItemType<SlayerEnchantment>(),
-            ModContent.ItemType<AuricEnchantment>(),
-        };
-        public bool ForceEffect(int ench)
-        {
-            FargoSoulsPlayer modplayer = Player.GetModPlayer<FargoSoulsPlayer>();
-            if (modplayer.WizardEnchantActive && modplayer.WizardedItem != null && !modplayer.WizardedItem.IsAir && modplayer.WizardedItem.type == ench){
-                return true;
-            }
-            else if (DesolEffects && DesolationForce.Contains(ench))
-            {
-                return true;
-            }else if(AnnihilEffects && AnnihilationForce.Contains(ench))
-            {
-                return true;
-            }
-            else if (ExploEffects && ExplorationForce.Contains(ench))
-            {
-                return true;
-            }
-            else if (DevastEffects && DevastationForce.Contains(ench))
-            {
-                return true;
-            }
-            else if (ExaltEffects && ExaltationForce.Contains(ench))
-            {
-                return true;
-            }
-            return false;
-        }
+        
     }
     
 }

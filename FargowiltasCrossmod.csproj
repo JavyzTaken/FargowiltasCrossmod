@@ -8,15 +8,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\AstralEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\AstralEnchantment_Shield.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\LunicCorpsEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\Malicious.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\TitanHeartEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\TitanHeartEnchantment_Shield.png" />
     <None Remove="Content\Calamity\Items\Accessories\Forces\AnnihilationForce.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Forces\DesolationForce.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Souls\TyrantSoul.png" />
     <None Remove="Content\Thorium\Buffs\GildedSightDB.cs~RF1504f37.TMP" />
     <None Remove="Content\Thorium\DragonMinionBody.png" />
     <None Remove="Content\Thorium\DragonMinionBody2.png" />
@@ -55,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
-    <Reference Remove="Libraries\FargowiltasSouls.dll" />
     <Reference Remove="Libraries\ThoriumMod.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -71,6 +63,7 @@
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
     <Reference Remove="Libraries\Fargowiltas.dll" />
+    <Reference Remove="Libraries\FargowiltasSouls.dll" />
     <Reference Remove="Libraries\ThoriumMod.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +72,9 @@
     </Reference>
     <Reference Include="Fargowiltas">
       <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
+    </Reference>
+    <Reference Include="FargowiltasSouls">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
     </Reference>
     <Reference Include="ThoriumMod">
       <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>

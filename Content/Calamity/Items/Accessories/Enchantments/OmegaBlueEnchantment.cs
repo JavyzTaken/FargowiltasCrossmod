@@ -14,8 +14,6 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
-using ThoriumMod.Empowerments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -74,8 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 OmegaBlueCounter = 0;
                 if (OmegaGreenCounter > 0) return;
-                int duration = ForceEffect(ModContent.ItemType<OmegaBlueEnchantment>()) ? 20*Player.HeldItem.useTime : 15*Player.HeldItem.useTime;
-                Player.AddBuff(ModContent.BuffType<AbyssalMadness>(), duration);
+                Player.AddBuff(ModContent.BuffType<AbyssalMadness>(), 15 * Player.HeldItem.useTime);
 
                 SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/OmegaBlueAbility"), Player.Center);
                 OmegaGreenCounter = 180 + 360;
@@ -95,9 +92,9 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (Player.whoAmI == Main.myPlayer && tentacle)
             {
                 SoundEngine.PlaySound(SoundID.Item103, Player.Center);
-                int dmg = ForceEffect(ModContent.ItemType<OmegaBlueEnchantment>()) ? damage : damage / 2;
 
-                Projectile.NewProjectile(source, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 25, ModContent.ProjectileType<AbyssTentacle>(), dmg, knockback, Main.myPlayer, Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1), Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1));
+
+                Projectile.NewProjectile(source, Player.Center, (Main.MouseWorld - Player.Center).SafeNormalize(Vector2.Zero) * 25, ModContent.ProjectileType<AbyssTentacle>(), damage / 2, knockback, Main.myPlayer, Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1), Main.rand.Next(10, 160) * 0.001f * (Main.rand.NextBool() ? 1 : -1));
             }
 
         }

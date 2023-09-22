@@ -9,9 +9,6 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
-using CalamityMod.Projectiles.Summon;
-
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
 
@@ -73,13 +70,16 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 if (damage > 0)
                 {
-                    if (!ForceEffect(ModContent.ItemType<BringerEnchantment>()))
+                    if (!DevastEffects)
                     {
-                        bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-35, 36) * 0.02f, Main.rand.Next(-35, 36) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Melee.PlagueSeeker>(), damage, item.knockBack, Player.whoAmI);
+                        bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-35, 36) * 0.02f, Main.rand.Next(-35, 36) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Rogue.PlaguenadeBee>(), damage, item.knockBack, Player.whoAmI);
                     }
                     else
                     {
-                        bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-35, 36) * 0.02f, Main.rand.Next(-35, 36) * 0.02f, ModContent.ProjectileType<MK2RocketHoming>(), damage, item.knockBack, Player.whoAmI);
+                        if (!Main.rand.NextBool(2))
+                            bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-35, 36) * 0.02f, Main.rand.Next(-35, 0) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Rogue.PlaguenadeBee>(), damage, item.knockBack, Player.whoAmI);
+                        else
+                            bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-31, 32) * 0.2f, Main.rand.Next(-35, 0) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Melee.PlagueSeeker>(), damage, item.knockBack, Player.whoAmI);
                     }
                     if (bee != 1000)
                     {
@@ -98,15 +98,16 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 if (damage > 0)
                 {
-                    if (!ForceEffect(ModContent.ItemType<BringerEnchantment>()))
+                    if (!DevastEffects)
                     {
-                        
-                        bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X , target.Center.Y , Main.rand.Next(-35, 36) * 0.2f, Main.rand.Next(-35, 36) * 0.2f, ModContent.ProjectileType<CalamityMod.Projectiles.Melee.PlagueSeeker>(), damage, proj.knockBack, Player.whoAmI);
+                        bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-35, 36) * 0.02f, Main.rand.Next(-35, 36) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Rogue.PlaguenadeBee>(), damage, proj.knockBack, Player.whoAmI);
                     }
                     else
                     {
-                        Vector2 outside = new Vector2(target.width > target.height ? target.width : target.height, 0).RotatedByRandom(MathHelper.TwoPi);
-                        bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X + outside.X, target.Center.Y + outside.Y, Main.rand.Next(-35, 36) * 0.2f, Main.rand.Next(-35, 36) * 0.2f, ModContent.ProjectileType<MK2RocketHoming>(), damage, proj.knockBack, Player.whoAmI);
+                        if (!Main.rand.NextBool(2))
+                            bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-35, 36) * 0.02f, Main.rand.Next(-35, 0) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Rogue.PlaguenadeBee>(), damage, proj.knockBack, Player.whoAmI);
+                        else
+                            bee = Projectile.NewProjectile(Player.GetSource_FromThis(), target.Center.X, target.Center.Y, Main.rand.Next(-31, 32) * 0.2f, Main.rand.Next(-35, 0) * 0.02f, ModContent.ProjectileType<CalamityMod.Projectiles.Melee.PlagueSeeker>(), damage, proj.knockBack, Player.whoAmI);
                     }
                     if (bee != 1000)
                     {

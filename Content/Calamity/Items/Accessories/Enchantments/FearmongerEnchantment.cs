@@ -53,7 +53,6 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public void FearmongerEffects()
         {
-             
             if (Player.HeldItem.DamageType != DamageClass.Summon && Player.HeldItem.DamageType != DamageClass.Default && Player.HeldItem.DamageType != ModContent.GetInstance<AverageDamageClass>() && Player.HeldItem.active)
                 Player.GetDamage(DamageClass.Summon) += 0.25f; //i came up with this one myself actually
             if (Player.GetToggleValue("FearValkyrie"))

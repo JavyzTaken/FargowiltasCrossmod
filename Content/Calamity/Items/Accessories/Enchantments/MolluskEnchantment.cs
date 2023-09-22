@@ -14,8 +14,6 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
-using FargowiltasSouls.Core.Toggler;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -63,27 +61,21 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public void MolluskEffects()
         {
-            if (Player.GetToggleValue("WaterMovement"))
+            Player.gills = true;
+            Player.accFlipper = true;
+            Player.ignoreWater = true;
+            Player.GetModPlayer<CalamityPlayer>().abyssBreathLossStat -= 0.1f;
+            if (!Player.wet)
             {
-                Player.gills = true;
-                Player.accFlipper = true;
-                Player.ignoreWater = true;
-                Player.GetModPlayer<CalamityPlayer>().abyssBreathLossStat -= 0.1f;
-                if (!Player.wet)
-                {
-                    Player.moveSpeed -= 0.22f;
-                    Player.velocity.X *= 0.985f;
-                }
+                Player.moveSpeed -= 0.22f;
+                Player.velocity.X *= 0.985f;
             }
-            if (Player.GetToggleValue("GiantPearl"))
-            {
-                Player.GetModPlayer<CalamityPlayer>().giantPearl = true;
-                Lighting.AddLight((int)Player.Center.X / 16, (int)Player.Center.Y / 16, 0.45f, 0.8f, 0.8f);
-            }
+            Player.GetModPlayer<CalamityPlayer>().giantPearl = true;
+            Lighting.AddLight((int)Player.Center.X / 16, (int)Player.Center.Y / 16, 0.45f, 0.8f, 0.8f);
         }
         public void MolluskClamShot(EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int damage, float knockback)
         {
-            if (Player.GetModPlayer<CrossplayerCalamity>().Mollusk && Main.rand.NextBool(10) && Player.GetToggleValue("Shellfish"))
+            if (Player.GetModPlayer<CrossplayerCalamity>().Mollusk && Main.rand.NextBool(10))
             {
                 Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<Shellclam>(), damage / 3, knockback, Main.myPlayer);
             }
@@ -100,18 +92,16 @@ namespace FargowiltasCrossmod.Content.Calamity
 
                 int numclams = 0;
                 int owner = 255;
-
                 for (int i = 0; i < Main.projectile.Length; i++)
                 {
                     Projectile proj = Main.projectile[i];
                     if (proj.active && proj.type == ModContent.ProjectileType<Shellclam>() && proj.ai[0] == 1 && proj.ai[1] == npc.whoAmI)
                     {
                         owner = proj.owner;
-                        int maxclams = Main.player[owner].GetModPlayer<CrossplayerCalamity>().ForceEffect(ModContent.ItemType<MolluskEnchantment>()) ? 7 : 4;
                         numclams++;
-                        if (numclams > maxclams)
+                        if (numclams > 4)
                         {
-                            numclams = maxclams;
+                            numclams = 4;
                             break;
                         }
                     }

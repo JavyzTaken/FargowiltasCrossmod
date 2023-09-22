@@ -13,8 +13,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
-using CalamityMod.Buffs.StatDebuffs;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -72,28 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (CalamityKeybinds.RageHotKey.JustPressed && BrimflameCooldown == 0)
             {
-                if (ForceEffect(ModContent.ItemType<BrimflameEnchantment>()))
-                {
-                    if (Player.whoAmI == Main.myPlayer)
-                    {
-                        Player.AddBuff(ModContent.BuffType<Enraged>(), 300, false, false);
-                    }
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                    {
-                        for (int i = 0; i < Main.npc.Length; i++)
-                        {
-                            NPC npc = Main.npc[i];
-                            if (npc.active && !npc.friendly && !npc.dontTakeDamage && Vector2.Distance(Player.Center, npc.Center) <= 3000f)
-                            {
-                                npc.AddBuff(ModContent.BuffType<Enraged>(), 300, false);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Player.AddBuff(ModContent.BuffType<BrimflameBuff>(), 300);
-                }
+                Player.AddBuff(ModContent.BuffType<BrimflameBuff>(), 300);
                 BrimflameCooldown = 360;
                 SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/BrimflameAbility"));
                 for (int i = 0; i < 20; i++)

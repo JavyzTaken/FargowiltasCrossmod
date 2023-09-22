@@ -1,9 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using CalamityMod;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
-using FargowiltasSouls.Core.ModPlayers;
-using Microsoft.Xna.Framework;
+
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
@@ -58,21 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                     }
                 }
             }
-            if (Projectile.owner >= 0)
-            {
-                Player player = Main.player[Projectile.owner];
-                FargoSoulsPlayer modplayer = player.GetModPlayer<FargoSoulsPlayer>();
-                if (player.GetModPlayer<CrossplayerCalamity>().ForceEffect(ModContent.ItemType<SulphurEnchantment>()))
-                {
-                    NPC target = Projectile.FindTargetWithinRange(600);
-                    if (target != null && target.active)
-                        Projectile.velocity = Vector2.Lerp(Projectile.velocity, (target.Center - Projectile.Center + new Vector2(0, -200)).SafeNormalize(Vector2.Zero) * 15, 0.03f);
-                }
-                else
-                {
-                    Projectile.velocity = Vector2.Zero;
-                }
-            }
+
 
         }
         public override void Kill(int timeLeft)
