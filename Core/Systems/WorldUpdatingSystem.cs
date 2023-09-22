@@ -14,15 +14,11 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Common.Systems
 {
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class WorldUpdatingSystem : ModSystem
     {
-        public static bool emodeOverRev => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev;
-
         public override void PreUpdateWorld()
         {
-            if(ModLoader.HasMod("CalamityMod"))
-                  ModLoader.GetMod("FargoWiltasSouls").Call("EternityVanillaBossBehaviour", emodeOverRev);
+            ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev);
         }
         public override void PostUpdateWorld()
         {
