@@ -13,10 +13,13 @@ using FargowiltasSouls.Content.Items;
 using Terraria.Localization;
 using CalamityMod.Items.Materials;
 using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 {
     //no good name or unique affect yet
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ElementalOpal : ModItem
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

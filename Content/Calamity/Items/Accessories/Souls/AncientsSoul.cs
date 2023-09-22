@@ -15,9 +15,12 @@ using Fargowiltas.Items.Tiles;
 using CalamityMod.Rarities;
 using Terraria.Localization;
 using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AncientsSoul : BaseSoul
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

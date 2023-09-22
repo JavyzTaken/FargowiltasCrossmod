@@ -12,9 +12,12 @@ using Terraria.ID;
 using FargowiltasSouls.Content.Items;
 using Terraria.Localization;
 using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class AncestralCharm : ModItem
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

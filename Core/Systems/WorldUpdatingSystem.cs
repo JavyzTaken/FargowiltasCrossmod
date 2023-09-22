@@ -16,9 +16,11 @@ namespace FargowiltasCrossmod.Common.Systems
 {
     public class WorldUpdatingSystem : ModSystem
     {
+        public bool emodeOverRev => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev;
         public override void PreUpdateWorld()
         {
-            ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev);
+            if (ModLoader.HasMod("CalamityMod"))
+            ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", emodeOverRev);
         }
         public override void PostUpdateWorld()
         {

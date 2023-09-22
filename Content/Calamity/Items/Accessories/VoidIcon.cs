@@ -14,10 +14,13 @@ using Terraria.Localization;
 using CalamityMod.Items.Materials;
 using CalamityMod.Rarities;
 using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 {
     //no good name or unique affect yet
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class VoidIcon : ModItem
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
