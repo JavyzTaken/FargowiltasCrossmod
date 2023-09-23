@@ -1,21 +1,17 @@
-﻿using CalamityMod;
-using CalamityMod.Events;
+﻿using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.Projectiles.BaseProjectiles;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.ModPlayers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
@@ -89,7 +85,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void AI(Projectile projectile)
         {
-            if (projectile.type == 872 && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && WorldSavingSystem.E_EternityRev)
+            if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && WorldSavingSystem.E_EternityRev)
             {
                 projectile.velocity /= 1.015525f;
             }

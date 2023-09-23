@@ -1,14 +1,7 @@
-﻿using CalamityMod.Items.Accessories;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Core.Toggler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {

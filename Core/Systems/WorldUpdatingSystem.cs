@@ -1,18 +1,11 @@
 ﻿using Fargowiltas.NPCs;
-using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Common.Systems
+namespace FargowiltasCrossmod.Core.Systems
 {
     public class WorldUpdatingSystem : ModSystem
     {
@@ -22,7 +15,7 @@ namespace FargowiltasCrossmod.Common.Systems
         }
         public override void PostUpdateWorld()
         {
-            if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out Mod cal))
+            if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out _))
             {
                 if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !FargowiltasSouls.Core.Systems.WorldSavingSystem.SpawnedDevi && Main.netMode != NetmodeID.MultiplayerClient)
                 {

@@ -5,18 +5,10 @@ using Fargowiltas.Items.Tiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
-using FargowiltasSouls.Content.Items.Materials;
 using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
 {

@@ -2,16 +2,10 @@
 using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
-using CalamityMod.Items.Accessories.Wings;
 using CalamityMod.Items.PermanentBoosters;
-using CalamityMod.Items.Potions.Alcohol;
-using CalamityMod.World;
-using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
-using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
@@ -20,13 +14,8 @@ using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Toggler;
-using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -308,7 +297,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalExtraSlotPlayer : ModPlayer
     {
-        public bool MutantPactShouldBeEnabled = false;
+        public bool MutantPactShouldBeEnabled;
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
@@ -340,7 +329,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //this is ugly but it has to be like this
             void DropItem(Item item)
             {
-                int i = Item.NewItem(Player.GetSource_DropAsItem(), Player.Center, item);
+                Item.NewItem(Player.GetSource_DropAsItem(), Player.Center, item);
             }
             void DropSlot(ref ModAccessorySlot slot)
             {
