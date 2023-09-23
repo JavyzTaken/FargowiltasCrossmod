@@ -32,7 +32,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
