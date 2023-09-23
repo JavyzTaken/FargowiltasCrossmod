@@ -1,9 +1,18 @@
-Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods, by making balance, recipe and progression changes, fixing bugs, and even adding new content and Enchantments!
+Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods.
 Officially maintained by Fargo's Mods developers.
 
 Currently supports:
 Calamity Mod
 
-Planned to support Thorium Mod in the future.
-Features several toggles to customize your Fargo's/Calamity cross-mod experience!
+-Adds the Eternity (Revengeance) difficulty, that seamlessly merges Eternity and Revengeance mode together!
+-Countless balance and progression changes to make the mods content work well together, can be toggled with config
+-Fixes several bugs normally caused by using the mods/difficulties together
+
+Planned future features (not set in stone):
+-Thorium Mod compatibility
+-Calamity and Thorium Enchantments, Forces and Souls
+-Custom Champions for added Forces
+-Unique Eternity AI for Calamity and Thorium bosses
+
+Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
