@@ -441,6 +441,18 @@ Mods: {
 					Summons a small Old Duke to fight for you
 					'''
 			}
+
+			CalamitySoul: {
+				DisplayName: Soul of Calamity
+				Tooltip:
+					'''
+					Effects of Force of Exploration
+					Effects of Force of Devastation
+					Effects of Force of Desolation
+					Effects of Force of Exaltation
+					Effects of Force of Annihilation
+					'''
+			}
 		}
 	}
 }

@@ -67,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI(Projectile projectile)
         {
-            
+            if (projectile.owner >= 0 && Main.player[projectile.owner] != null && Main.player[projectile.owner].active && Main.player[projectile.owner].GetToggleValue("ChargeAttacks"))
             GemTechMinionEffect(projectile);
         }
     }

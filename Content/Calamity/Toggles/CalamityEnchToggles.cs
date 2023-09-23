@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     public class CalamityEnchToggles : ToggleCollection
     {
         public override string Mod => "CalamityMod";
-        public override string SortCatagory => "Enchantments";
+        public override string SortCategory => "Enchantments";
         public override int Priority => 1;
         public override bool Active => true;
 

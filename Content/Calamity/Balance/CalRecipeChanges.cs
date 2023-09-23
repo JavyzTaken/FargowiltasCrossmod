@@ -625,7 +625,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         .AddIngredient(ModContent.ItemType<OnyxExcavatorKey>())
                         .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                
+                if (recipe.HasResult(ModContent.ItemType<EternitySoul>()) && !recipe.HasIngredient<TyrantSoul>())
+                {
+                    recipe.AddIngredient<TyrantSoul>()
+                        .AddIngredient<CalamitySoul>();
+                }
                 #endregion
 
                 #region Balance and Progression Locks
