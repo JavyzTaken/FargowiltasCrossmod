@@ -55,6 +55,7 @@ using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Buffs.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Ammos;
 using FargowiltasSouls.Content.Items.Armor;
@@ -128,6 +129,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                {
                     ModContent.BuffType<ClippedWingsBuff>()
                     
+               }
+            });
+            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<DesertScourgeBody>(), new Terraria.DataStructures.NPCDebuffImmunityData
+            {
+                SpecificallyImmuneTo = new int[]
+               {
+                    ModContent.BuffType<LeadPoisonBuff>()
+
                }
             });
         }
@@ -340,7 +349,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //mutant
                 if (npc.type == ModContent.NPCType<MutantBoss>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.7f);
+                    npc.lifeMax = (int)(npc.lifeMax * 3.3f);
                 }
                 #region BRBalance
                 List<int> squirrelParts = new List<int>
@@ -718,6 +727,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 pool[NPCID.PigronCorruption] = 0f;
                 pool[NPCID.PigronCrimson] = 0f;
                 pool[NPCID.PigronHallow] = 0f;
+            }
+            if (spawnInfo.Player.Calamity().ZoneSunkenSea)
+            {
+                pool[NPCID.Mimic] = 0f;
             }
         }
         public override bool InstancePerEntity => true;

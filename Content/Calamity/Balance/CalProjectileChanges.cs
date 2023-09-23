@@ -1,9 +1,14 @@
 ﻿using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
+using CalamityMod.Projectiles.BaseProjectiles;
+using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.Masomode;
+using FargowiltasSouls.Core.ModPlayers;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
@@ -15,7 +20,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     public class CalProjectileChanges : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-        
+
+        private bool DefenseDamageSet = false;
+        public override void SetDefaults(Projectile entity)
+        {
+            if (entity.ModProjectile != null && entity.ModProjectile is BaseLaserbeamProjectile)
+            {
+                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().GrazeCheck =
+                Projectile =>
+                {
+                    float num6 = 0f;
+                    if (entity.ModProjectile.CanDamage() != false && Collision.CheckAABBvLineCollision(Main.LocalPlayer.Hitbox.TopLeft(), Main.LocalPlayer.Hitbox.Size(), Projectile.Center,
+                        Projectile.Center + Projectile.velocity * Projectile.localAI[1], 22f * Projectile.scale + Main.LocalPlayer.GetModPlayer<FargoSoulsPlayer>().GrazeRadius * 2f + Player.defaultHeight, ref num6))
+                    {
+                        return true;
+                    }
+                    return false;
+                };
+                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 1;
+            }
+            if (new List<int>() {ModContent.ProjectileType<Flarenado>(), ModContent.ProjectileType<BrimstoneMonster>(), ModContent.ProjectileType<YharonBulletHellVortex>(),
+            ModContent.ProjectileType<OldDukeVortex>(), ModContent.ProjectileType<Infernado>(),ModContent.ProjectileType<Infernado2>(),ModContent.ProjectileType<InfernadoRevenge>(),
+            ModContent.ProjectileType<SkyFlareRevenge>(), ModContent.ProjectileType<ProvidenceCrystal>(), ModContent.ProjectileType<AresGaussNukeProjectileBoom>(),}.Contains(entity.type))
+            {
+                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 2;
+            }
+        }
         public override bool PreAI(Projectile projectile)
         {
             #region Balance Changes config
