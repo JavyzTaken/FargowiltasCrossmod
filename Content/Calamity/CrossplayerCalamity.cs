@@ -9,7 +9,7 @@ using Terraria.DataStructures;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls.Core.ModPlayers;
 using System.Collections.Generic;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+//using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using System;
 using FargowiltasCrossmod.Core.Systems;
 
