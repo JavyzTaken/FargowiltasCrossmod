@@ -5,7 +5,7 @@ Currently supports:
 Calamity Mod
 
 -Adds the Eternity (Revengeance) difficulty, that seamlessly merges Eternity and Revengeance mode together!
--Countless balance and progression changes to make the mods content work well together, can be toggled with config
+-Countless balance and progression changes to make the mods' content work well together, can be toggled with config
 -Fixes several bugs normally caused by using the mods/difficulties together
 
 Planned future features (not set in stone):
