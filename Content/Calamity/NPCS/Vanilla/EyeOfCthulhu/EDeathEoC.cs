@@ -136,7 +136,8 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Vanilla.EyeOfCthulhu
                 npc.SimpleFlyMovement(val13, num44);
 
                 npc.ai[2] += 1;
-                if (npc.ai[2] % 45 == 0f)
+                int eyeDelay = FargowiltasSouls.Core.Systems.WorldSavingSystem.MasochistModeReal ? 2 : 45; //funny old gigavomit crossmod bug on maso
+                if (npc.ai[2] % eyeDelay == 0f)
                 {
                     Vector2 val14 = Vector2.Normalize((Main.player[npc.target]).Center - (npc).Center) * 5f;
                     Vector2 val15 = (npc).Center + val14 * 10f;
