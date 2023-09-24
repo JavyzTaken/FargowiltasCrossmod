@@ -56,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Vanilla.EyeOfCthulhu
         }
         public override bool SafePreAI(NPC npc)
         {
-            if (!WorldSavingSystem.EternityDeath)
+            if (!WorldSavingSystem.EternityDeath || !npc.HasValidTarget)
             {
                 return true;
             }
