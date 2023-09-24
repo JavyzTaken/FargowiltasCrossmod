@@ -787,10 +787,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override bool PreAI(NPC npc)
         {
-            if (npc.type == NPCID.EyeofCthulhu)
-            {
-                FargoSoulsUtil.PrintAI(npc);
-            }
             if (BossRushEvent.BossRushActive)
             {
                 if (!killedAquatic && BossRushEvent.BossRushStage > 19)
