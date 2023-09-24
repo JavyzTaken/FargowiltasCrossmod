@@ -31,9 +31,9 @@ Mods: {
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''
-				[c/ff0000:Not] intended for use with Master Mode.
-				Toggles [c/00FFFF:Eternity Mode] [c/880808:and Revengeance Mode,] and enables Master Mode drops.
+				Toggles [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
 				By default, [c/00FFFF:Eternity Mode] takes priority for bosses that would be changed by both. This can be changed in the configs.
+
 				-Deviantt provides a starter pack
 				-Improves base stats
 				-Debuffs wear off faster when not attacking
@@ -42,6 +42,25 @@ Mods: {
 				'''
 			Activation: Eternity Mode (Revengeance) has activated!
 			Deactivation: Eternity Mode (Revengeance) has deactivated.
+		}
+
+		EternityDeathDifficulty: {
+			Name: Eternity Mode (Death)
+			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes.]"
+			ExpandedDescription:
+				'''
+				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
+				Expanded AI for several vanilla Eternity bosses, sometimes including parts of Calamity AI.
+				By default, [c/00FFFF:Eternity Mode] takes priority for bosses that would be changed by both. This can be changed in the configs.
+
+				-Deviantt provides a starter pack
+				-Improves base stats
+				-Debuffs wear off faster when not attacking
+				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+				'''
+			Activation: Eternity Mode (Death) has activated!
+			Deactivation: Eternity Mode (Death) has deactivated.
 		}
 
 		Configs: {
