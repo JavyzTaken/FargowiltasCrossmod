@@ -22,5 +22,6 @@
   <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
+    <Folder Include="Core\BaseClasses\" />
   </ItemGroup>
 </Project>
