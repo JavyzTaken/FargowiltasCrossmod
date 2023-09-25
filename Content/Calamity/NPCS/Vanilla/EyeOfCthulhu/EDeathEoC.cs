@@ -26,7 +26,7 @@ using FargowiltasSouls.Content.Projectiles.Masomode;
 namespace FargowiltasCrossmod.Content.Calamity.NPCS.Vanilla.EyeOfCthulhu
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathEoC : EModeNPCBehaviour
+    public class EDeathEoC : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.EyeofCthulhu);
 
@@ -56,38 +56,14 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Vanilla.EyeOfCthulhu
         }
         public override bool SafePreAI(NPC npc)
         {
-            if (!WorldSavingSystem.EternityDeath || !npc.HasValidTarget)
+            if (!npc.HasValidTarget)
             {
                 return true;
             }
+            npc.GetGlobalNPC<EModeNPCBehaviour>().RunEmodeAI = true;
             if (HorizDash)
             {
-
-                /*
-                AI_Timer++;
-                const int HorizWindup = 90;
-                const int DashTime = 60;
-                if (AI_Timer <= HorizWindup)
-                {
-                    npc.rotation = npc.DirectionTo(Main.player[npc.target].Center).ToRotation();
-                }
-                if (AI_Timer >= HorizWindup)
-                {
-                    if (AI_Timer == HorizWindup)
-                    {
-                        SoundEngine.PlaySound(SoundID.Roar, npc.HasValidTarget ? Main.player[npc.target].Center : npc.Center);
-                        npc.velocity = Vector2.Normalize(Main.player[npc.target].Center - npc.Center) * 45;
-                    }
-                    if (AI_Timer > HorizWindup)
-                    {
-                        npc.velocity *= 0.97f;
-                    }
-                    if (AI_Timer >= HorizWindup && npc.velocity.Length() <= 3)
-                    {
-                        HorizDash = false;
-                    }
-                }
-                */
+                npc.GetGlobalNPC<EModeNPCBehaviour>().RunEmodeAI = false;
                 HorizontalDash(npc);
                 return false;
             }

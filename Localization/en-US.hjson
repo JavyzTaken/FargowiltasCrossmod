@@ -27,7 +27,7 @@ Mods: {
 
 	FargowiltasCrossmod: {
 		EternityRevDifficulty: {
-			Name: Eternity Mode (Revengeance)
+			Name: Eternity-Revengeance Mode
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''
@@ -45,7 +45,7 @@ Mods: {
 		}
 
 		EternityDeathDifficulty: {
-			Name: Eternity Mode (Death)
+			Name: Eternity-Death Mode
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''

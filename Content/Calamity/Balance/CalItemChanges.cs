@@ -3,6 +3,7 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
@@ -16,6 +17,7 @@ using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -224,7 +226,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
 
             string key = "Mods.FargowiltasCrossmod.Items.AddedEffects.";
-            
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
