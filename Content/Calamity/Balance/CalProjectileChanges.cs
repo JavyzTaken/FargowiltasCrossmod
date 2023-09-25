@@ -1,4 +1,5 @@
-﻿using CalamityMod.Events;
+﻿using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.Projectiles.BaseProjectiles;
 using CalamityMod.Projectiles.Boss;
@@ -48,6 +49,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override bool PreAI(Projectile projectile)
         {
+            Player player = Main.player[projectile.owner];
+            FargoSoulsPlayer modPlayer = player.GetModPlayer<FargoSoulsPlayer>();
+            /*
+            //rogue projectiles affected by vortex jammed debuff
+            if (!projectile.hostile && !projectile.trap && !projectile.npcProj)
+            {
+                if (modPlayer.Jammed && projectile.CountsAsClass(ModContent.GetInstance<RogueDamageClass>()) && projectile.type != ProjectileID.ConfettiGun)
+                {
+                    Projectile.NewProjectile(Entity.InheritSource(projectile), projectile.Center, projectile.velocity, ProjectileID.ConfettiGun, 0, 0f, projectile.owner);
+                    projectile.active = false;
+                }
+
+            }
+            */
             #region Balance Changes config
             if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceRework)
             {

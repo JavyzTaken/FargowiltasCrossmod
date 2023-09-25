@@ -37,6 +37,7 @@ using CalamityMod.World;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.ItemDropRules;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
@@ -786,7 +787,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override bool PreAI(NPC npc)
         {
-            
             if (BossRushEvent.BossRushActive)
             {
                 if (!killedAquatic && BossRushEvent.BossRushStage > 19)
