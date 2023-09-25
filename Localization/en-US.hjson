@@ -154,5 +154,26 @@ Mods: {
 					'''
 			}
 		}
+
+		NPCs: {
+			FungalClump.DisplayName: Fungal Clump
+			LargePerforatorBody.DisplayName: Large Perforator Body
+			LargePerforatorBody2.DisplayName: Large Perforator Body2
+			LargePerforatorHead.DisplayName: Large Perforator Head
+			LargePerforatorTail.DisplayName: Large Perforator Tail
+		}
+
+		Projectiles: {
+			FungusBall.DisplayName: Fungus Ball
+			MushroomSpear.DisplayName: Mushroom Spear
+			ShroomGas.DisplayName: Shroom Gas
+			SandChunk.DisplayName: Sand Chunk
+			SuckedSandBlast.DisplayName: Sucked Sand Blast
+			CursedLightning.DisplayName: Cursed Lightning
+			CurvingCursedFlames.DisplayName: Curving Cursed Flames
+			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
+			ShadeLightningCloud.DisplayName: Shade Lightning Cloud
+			ToothBall.DisplayName: Tooth Ball
+		}
 	}
 }
