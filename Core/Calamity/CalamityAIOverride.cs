@@ -11,6 +11,7 @@ using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
+using FargowiltasSouls.Content.Bosses.Champions.Life;
 using FargowiltasSouls.Content.Bosses.Champions.Nature;
 using FargowiltasSouls.Content.Bosses.Champions.Shadow;
 using FargowiltasSouls.Content.Bosses.Champions.Spirit;
@@ -88,9 +89,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<SpiritChampion>());
             }, -1, false, 0f, new[] {ModContent.NPCType<SpiritChampionHand>() }, Array.Empty<int>()));
-            Entries.Insert(39, (ModContent.NPCType<LifeChallenger>(), 0, delegate
+            Entries.Insert(39, (ModContent.NPCType<LifeChampion>(), 0, delegate
             {
-                NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChallenger>());
+                NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChampion>());
             }, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
             Entries.Insert(39, (ModContent.NPCType<NatureChampion>(), 0, delegate
             {
