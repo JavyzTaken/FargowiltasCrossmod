@@ -20,6 +20,7 @@
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
   </ItemGroup>
 </Project>
