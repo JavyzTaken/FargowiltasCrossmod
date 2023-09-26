@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
         }
         public override bool SafePreAI(NPC npc)
         {
-            if (!npc.HasValidTarget)
+            if (!npc.HasValidTarget || npc == null)
             {
                 return true;
             }
@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             {
                 npc.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = false;
                 HorizontalDash(npc);
-                return false;
+                return true;
             }
             if (npc.ai[0] == 3 && (npc.ai[1] == 0 || npc.ai[1] == 5))
             {
