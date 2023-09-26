@@ -10,45 +10,29 @@ using ReLogic.Content;
 using Terraria.Audio;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Globals;
+using CalamityMod.NPCs.DesertScourge;
+using FargowiltasSouls.Core.NPCMatching;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CrabulonEternity : GlobalNPC
+    public class CrabulonEternity : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<CalamityMod.NPCs.Crabulon.Crabulon>();
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.Crabulon.Crabulon>());
         public override bool InstancePerEntity => true;
         
-        public override void HitEffect(NPC npc, NPC.HitInfo hit)
-        {
-            base.HitEffect(npc, hit);
-        }
         public override void SetDefaults(NPC entity)
         {
-            if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
             entity.lifeMax = 5500;
-        }
-        public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
-        {
-            base.ApplyDifficultyAndPlayerScaling(npc, numPlayers, balance, bossAdjustment);
-        }
-        public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
-        {
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
             if (!WorldSavingSystem.EternityMode) return;
             attackCycle = new int[] { 0, 1, 1, 2 };
             
-        }
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npc, npcLoot);
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -87,10 +71,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         //ai[1]: index of attackCycle to read
         //ai[2]: timer
         //ai[3]: phase
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
 
-            if (!FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode) return true;
+            if (!WorldSavingSystem.EternityMode) return true;
                 if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
                 {
                     npc.TargetClosest();

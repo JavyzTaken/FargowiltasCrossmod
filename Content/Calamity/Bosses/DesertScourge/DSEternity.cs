@@ -2,6 +2,8 @@
 using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,49 +20,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DSEternity : GlobalNPC
+    public class DSEternity : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<DesertScourgeHead>();
-        }
-        public override bool InstancePerEntity => true;
-        public override void HitEffect(NPC npc, NPC.HitInfo hit)
-        {
-            base.HitEffect(npc, hit);
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<DesertScourgeHead>());
         public override void SetDefaults(NPC entity)
         {
-            if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
             entity.lifeMax = 3500;
-        }
-        public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
-        {
-            base.ApplyDifficultyAndPlayerScaling(npc, numPlayers, balance, bossAdjustment);
-        }
-        public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
-        {
-            base.OnHitPlayer(npc, target, hurtInfo);
-        }
-        public override void OnSpawn(NPC npc, IEntitySource source)
-        {
-            base.OnSpawn(npc, source);
-            
-        }
-        public override void OnKill(NPC npc)
-        {
-            base.OnKill(npc);
-        }
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npc, npcLoot);
         }
         public float[] drawInfo = new float[] { 0, 200, 200, 0 };
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Main.NewText(drawInfo[2]);
-            if (!WorldSavingSystem.EternityMode) return true;
             Asset<Texture2D> wind = TextureAssets.Projectile[ProjectileID.SandnadoHostile];
             for (int i = (int)drawInfo[2]; i > (int)drawInfo[1]; i--)
             {
@@ -92,9 +63,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public float[] ai = new float[] { 0, 0, 0, 0, 0 };
         public int[] attackCycle = new int[] { 0, 1, 0, 1, 1, 0 };
         public int phase;
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
-            if (!FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode) return true;
 
             if (npc.ai[2] < 20)
             {
@@ -649,12 +619,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DSBodyBuff : GlobalNPC
+    public class DSBodyBuff : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<DesertScourgeBody>();
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<DesertScourgeBody>());
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
@@ -667,18 +634,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 modifiers.FinalDamage.Base = 1;
             }
         }
-        public override void AI(NPC npc)
+        public override void SafePostAI(NPC npc)
         {
-            if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
+            if (NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()))
             {
-                if (NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()))
-                {
-                    npc.defense = 30;
-                }
-                else
-                {
-                    npc.defense = 10;
-                }
+                npc.defense = 30;
+            }
+            else
+            {
+                npc.defense = 10;
             }
         }
     }

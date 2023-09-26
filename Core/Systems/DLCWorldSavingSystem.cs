@@ -6,12 +6,12 @@ using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Core.Systems
 {
-    public class WorldSavingSystem : ModSystem
+    public class DLCWorldSavingSystem : ModSystem
     {
         public static bool EternityRev { get; set; }
         public static bool EternityDeath { get; set; }
-        public static bool E_EternityRev => EternityRev && CalamityConfig.Instance.EternityPriorityOverRev;
-        public static bool R_EternityRev = EternityRev && !CalamityConfig.Instance.EternityPriorityOverRev; 
+        public static bool E_EternityRev => EternityRev && DLCCalamityConfig.Instance.EternityPriorityOverRev;
+        public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev; 
         
         public override void SaveWorldData(TagCompound tag)
         {

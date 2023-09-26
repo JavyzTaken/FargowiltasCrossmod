@@ -629,7 +629,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 #endregion
 
                 #region Balance and Progression Locks
-                if (CalamityConfig.Instance.BalanceRework)
+                if (DLCCalamityConfig.Instance.BalanceRework)
                 {
                     if (recipe.HasIngredient<EternalEnergy>() && !recipe.HasIngredient<Rock>())
                     {

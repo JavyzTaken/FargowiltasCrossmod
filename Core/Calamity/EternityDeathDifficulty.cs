@@ -16,11 +16,11 @@ namespace FargowiltasCrossmod.Core.Calamity
     {
         public override bool Enabled
         {
-            get => WorldSavingSystem.EternityDeath;
+            get => DLCWorldSavingSystem.EternityDeath;
             set
             {
-                WorldSavingSystem.EternityRev = value;
-                WorldSavingSystem.EternityDeath = value;
+                DLCWorldSavingSystem.EternityRev = value;
+                DLCWorldSavingSystem.EternityDeath = value;
                 if (value)
                 {
                     CalamityWorld.revenge = true;

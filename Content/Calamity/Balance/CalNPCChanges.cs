@@ -71,7 +71,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using CalamityConfig = FargowiltasCrossmod.Core.Calamity.CalamityConfig;
+using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.DLCCalamityConfig;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
@@ -218,7 +218,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void SetDefaults(NPC npc)
         {
             #region Balance
-            if (ModContent.GetInstance<CalamityConfig>().BalanceRework)
+            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
             {
                 //champions
                 //if (Champions.Contains(npc.type))
@@ -874,7 +874,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             //Main.NewText(FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
             #region Balance Changes config
-            if (ModContent.GetInstance<CalamityConfig>().BalanceRework)
+            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
@@ -886,7 +886,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
             #endregion
-            if (!Core.Systems.WorldSavingSystem.E_EternityRev)
+            if (!Core.Systems.DLCWorldSavingSystem.E_EternityRev)
             {
                 return base.PreAI(npc);
             }

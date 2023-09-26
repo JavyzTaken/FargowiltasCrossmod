@@ -64,7 +64,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             */
             #region Balance Changes config
-            if (ModContent.GetInstance<Core.Calamity.CalamityConfig>().BalanceRework)
+            if (ModContent.GetInstance<Core.Calamity.DLCCalamityConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (projectile.ModProjectile != null)
@@ -100,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void AI(Projectile projectile)
         {
-            if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && WorldSavingSystem.E_EternityRev)
+            if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && DLCWorldSavingSystem.E_EternityRev)
             {
                 projectile.velocity /= 1.015525f;
             }

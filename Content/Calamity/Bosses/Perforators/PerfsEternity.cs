@@ -4,6 +4,8 @@ using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,12 +23,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class PerfsEternity : GlobalNPC
+    public class PerfsEternity : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<PerforatorHive>();
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<PerforatorHive>());
         public override bool InstancePerEntity => true;
         public override void HitEffect(NPC npc, NPC.HitInfo hit)
         {
@@ -142,7 +141,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public int lastAttack = 0;
         public int[] wormCycle = new int[] { 5, 5, 6, 5, 7 };
         public int attackCounter = -2;
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
             

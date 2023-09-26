@@ -32,7 +32,8 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Toggles [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
-				By default, [c/00FFFF:Eternity Mode] takes priority for bosses that would be changed by both. This can be changed in the configs.
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
+				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 
 				-Deviantt provides a starter pack
 				-Improves base stats
@@ -50,8 +51,9 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
-				Expanded AI for several vanilla Eternity bosses, sometimes including parts of Calamity AI.
-				By default, [c/00FFFF:Eternity Mode] takes priority for bosses that would be changed by both. This can be changed in the configs.
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
+				Expanded AI for some vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 
 				-Deviantt provides a starter pack
 				-Improves base stats
@@ -64,7 +66,7 @@ Mods: {
 		}
 
 		Configs: {
-			CalamityConfig: {
+			DLCCalamityConfig: {
 				DisplayName: Calamity Config
 
 				Headers: {
@@ -88,7 +90,7 @@ Mods: {
 					Tooltip:
 						'''
 						Enables Eternity Mode boss behaviour to take priority over Revengeance Mode boss behaviour and other Calamity difficulties.
-						Applies to bosses that would otherwise be changed by both, such as vanilla bosses. 
+						Some Calamity bosses have Eternity Mode changes when this is enabled.
 						Disabling this makes Calamity difficulties take priority over Eternity.
 						'''
 				}

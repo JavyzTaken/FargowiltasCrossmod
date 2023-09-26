@@ -1,5 +1,7 @@
 ﻿using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,8 +15,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SmallPerforator : GlobalNPC
+    public class SmallPerforator : EModeCalBehaviour
     {
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
+        ModContent.NPCType<PerforatorHeadSmall>(),
+        ModContent.NPCType<PerforatorBodySmall>(),
+        ModContent.NPCType<PerforatorTailSmall>()
+        );
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
@@ -32,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
             if (npc.type == ModContent.NPCType<PerforatorBodySmall>() || npc.type == ModContent.NPCType<PerforatorTailSmall>())

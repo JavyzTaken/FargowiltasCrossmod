@@ -14,17 +14,16 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class HMEternity : GlobalNPC
+    public class HMEternity : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>();
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>());
         public override bool InstancePerEntity => true;
 
         public override void HitEffect(NPC npc, NPC.HitInfo hit)
@@ -122,7 +121,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             return true;
         }
         
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
             npc.dontTakeDamage = false;

@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public override void PostUpdateBuffs()
         {
-            if (!WorldSavingSystem.EternityRev)
+            if (!DLCWorldSavingSystem.EternityRev)
                 return;
             //copied from emode player buffs, reverse effects
 
