@@ -22,6 +22,7 @@ using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
 using CalamityMod.Events;
 using FargowiltasSouls.Content.Projectiles.Masomode;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 {
@@ -60,10 +61,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             {
                 return true;
             }
-            npc.GetGlobalNPC<EModeNPCBehaviour>().RunEmodeAI = true;
+            npc.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = true;
             if (HorizDash)
             {
-                npc.GetGlobalNPC<EModeNPCBehaviour>().RunEmodeAI = false;
+                npc.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = false;
                 HorizontalDash(npc);
                 return false;
             }
