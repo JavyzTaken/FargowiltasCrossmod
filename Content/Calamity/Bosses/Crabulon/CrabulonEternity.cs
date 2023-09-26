@@ -13,6 +13,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using CalamityMod.NPCs.DesertScourge;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Content.Buffs.Masomode;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -73,126 +74,130 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         //ai[3]: phase
         public override bool SafePreAI(NPC npc)
         {
-
             if (!WorldSavingSystem.EternityMode) return true;
-                if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
-                {
-                    npc.TargetClosest();
-                }
-                if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
-                {
-                    npc.velocity.Y += 1;
-                    return false;
-                }
-                //Fungal clump phase 1
-                if (npc.ai[3] == 0 && npc.GetLifePercent() < 0.8f)
-                {
-                    npc.ai[3]++;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
-                    npc.ai[1] = 0;
-                    npc.HealEffect(-50);
-                    attackCycle = new int[] { -1, 1 };
-                    npc.ai[2] = 0;
-                }
-                //fungal clump phase 2
-                if (npc.ai[3] == 2 && npc.GetLifePercent() < 0.5f)
-                {
-                    npc.ai[3]++;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
-                    npc.ai[1] = 0;
-                    npc.HealEffect(-50);
-                    attackCycle = new int[] { -1, 1, -1, 2 };
-                    npc.ai[2] = 0;
-                }
-                //fungal clump phase 3
-                if (npc.ai[3] == 4 && npc.GetLifePercent() < 0.2f)
-                {
-                    npc.ai[3]++;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
-                    npc.ai[1] = 0;
-                    npc.HealEffect(-50);
-                    attackCycle = new int[] { -1, 1, -1, 2, 1 };
-                    npc.ai[2] = 0;
-                }
-                //Attack phase 2
-                if (npc.ai[3] == 2)
-                {
-                    attackCycle = new int[] { 0, 1, 1, 2, 4, 1 };
-                }
-                //attack phase 3
-                if (npc.ai[3] == 4)
-                {
-                    attackCycle = new int[] { 0, 2, 1, 4, 5, 2, 3, 1, 1 };
-                }
-                //attack phase 4
-                if (npc.ai[3] == 6)
-                {
-                    attackCycle = new int[] { 5, 1, 4, 3, 1, 1, 4, 2, 3, 1 };
-                }
-                Player target = Main.player[npc.target];
-                //high defense and stand still for a while (only does when fungal clump is alive)
-                if (attackCycle[(int)npc.ai[1]] == -1)
-                {
-                    npc.defense = 40;
-                    npc.velocity.X = MathHelper.Lerp(npc.velocity.X, 0, 0.05f);
-                    if (Math.Abs(npc.velocity.X) < 0.1f)
-                    {
-                        npc.velocity.X = 0;
-                    }
-                    npc.ai[2]++;
-                    if (npc.ai[2] == 300)
-                    {
-                        npc.defense = 8;
-                        IncrementCycle(npc);
-                        npc.ai[2] = 0;
-                    }
-                }
-                //Making sure crabulon isnt stuck in blocks/above the player
-                if (attackCycle[(int)npc.ai[1]] != 2 && attackCycle[(int)npc.ai[1]] != 3 && attackCycle[(int)npc.ai[1]] != 4)
-                {
-                    StayLevel(npc);
-                }
-                //Crabulon falls naturally during the jump attack
-                else
-                {
-                    npc.noGravity = false;
-                }
-                // jump with dust and sound when landing
-                if (attackCycle[(int)npc.ai[1]] == 2)
-                {
-                    Jump(npc, 0);
-                }
-                //jump with spears on landing
-                if (attackCycle[(int)npc.ai[1]] == 3)
-                {
-                    Jump(npc, 1);
-                }
-                //Jump with spore clouds on lander
-                if (attackCycle[(int)npc.ai[1]] == 4)
-                {
-                    Jump(npc, 2);
-                }
-                //walk towards the player
-                if (attackCycle[(int)npc.ai[1]] == 0)
-                {
-                    Walk(npc, 0);
-                }
-                //walk towards player and spawn crab shrooms as it walks
-                if (attackCycle[(int)npc.ai[1]] == 5)
-                {
-                    Walk(npc, 1);
-                }
-                //slow down quickly, then charge until hits edge of screen or wall and has passed the player
-                if (attackCycle[(int)npc.ai[1]] == 1)
-                {
-                    Charge(npc);
 
+            //low ground
+            if (Main.LocalPlayer.active && !Main.LocalPlayer.ghost && !Main.LocalPlayer.dead && npc.Distance(Main.LocalPlayer.Center) < 1000)
+                Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
 
-                }
+            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            {
+                npc.TargetClosest();
+            }
+            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            {
+                npc.velocity.Y += 1;
                 return false;
+            }
+            //Fungal clump phase 1
+            if (npc.ai[3] == 0 && npc.GetLifePercent() < 0.8f)
+            {
+                npc.ai[3]++;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                    NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
+                npc.ai[1] = 0;
+                npc.HealEffect(-50);
+                attackCycle = new int[] { -1, 1 };
+                npc.ai[2] = 0;
+            }
+            //fungal clump phase 2
+            if (npc.ai[3] == 2 && npc.GetLifePercent() < 0.5f)
+            {
+                npc.ai[3]++;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                    NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
+                npc.ai[1] = 0;
+                npc.HealEffect(-50);
+                attackCycle = new int[] { -1, 1, -1, 2 };
+                npc.ai[2] = 0;
+            }
+            //fungal clump phase 3
+            if (npc.ai[3] == 4 && npc.GetLifePercent() < 0.2f)
+            {
+                npc.ai[3]++;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                    NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
+                npc.ai[1] = 0;
+                npc.HealEffect(-50);
+                attackCycle = new int[] { -1, 1, -1, 2, 1 };
+                npc.ai[2] = 0;
+            }
+            //Attack phase 2
+            if (npc.ai[3] == 2)
+            {
+                attackCycle = new int[] { 0, 1, 1, 2, 4, 1 };
+            }
+            //attack phase 3
+            if (npc.ai[3] == 4)
+            {
+                attackCycle = new int[] { 0, 2, 1, 4, 5, 2, 3, 1, 1 };
+            }
+            //attack phase 4
+            if (npc.ai[3] == 6)
+            {
+                attackCycle = new int[] { 5, 1, 4, 3, 1, 1, 4, 2, 3, 1 };
+            }
+            Player target = Main.player[npc.target];
+            //high defense and stand still for a while (only does when fungal clump is alive)
+            if (attackCycle[(int)npc.ai[1]] == -1)
+            {
+                npc.defense = 40;
+                npc.velocity.X = MathHelper.Lerp(npc.velocity.X, 0, 0.05f);
+                if (Math.Abs(npc.velocity.X) < 0.1f)
+                {
+                    npc.velocity.X = 0;
+                }
+                npc.ai[2]++;
+                if (npc.ai[2] == 300)
+                {
+                    npc.defense = 8;
+                    IncrementCycle(npc);
+                    npc.ai[2] = 0;
+                }
+            }
+            //Making sure crabulon isnt stuck in blocks/above the player
+            if (attackCycle[(int)npc.ai[1]] != 2 && attackCycle[(int)npc.ai[1]] != 3 && attackCycle[(int)npc.ai[1]] != 4)
+            {
+                StayLevel(npc);
+            }
+            //Crabulon falls naturally during the jump attack
+            else
+            {
+                npc.noGravity = false;
+            }
+            // jump with dust and sound when landing
+            if (attackCycle[(int)npc.ai[1]] == 2)
+            {
+                Jump(npc, 0);
+            }
+            //jump with spears on landing
+            if (attackCycle[(int)npc.ai[1]] == 3)
+            {
+                Jump(npc, 1);
+            }
+            //Jump with spore clouds on lander
+            if (attackCycle[(int)npc.ai[1]] == 4)
+            {
+                Jump(npc, 2);
+            }
+            //walk towards the player
+            if (attackCycle[(int)npc.ai[1]] == 0)
+            {
+                Walk(npc, 0);
+            }
+            //walk towards player and spawn crab shrooms as it walks
+            if (attackCycle[(int)npc.ai[1]] == 5)
+            {
+                Walk(npc, 1);
+            }
+            //slow down quickly, then charge until hits edge of screen or wall and has passed the player
+            if (attackCycle[(int)npc.ai[1]] == 1)
+            {
+                Charge(npc);
+
+
+            }
+            return false;
         }
         public void StayLevel(NPC npc)
         {

@@ -1,5 +1,6 @@
 ﻿
 using CalamityMod.NPCs.DesertScourge;
+using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
@@ -32,7 +33,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Main.NewText(drawInfo[2]);
-            Asset<Texture2D> wind = TextureAssets.Projectile[ProjectileID.SandnadoHostile];
+            Main.instance.LoadProjectile(ProjectileID.SandnadoHostile);
+            Texture2D wind = Terraria.GameContent.TextureAssets.Projectile[ProjectileID.SandnadoHostile].Value;
             for (int i = (int)drawInfo[2]; i > (int)drawInfo[1]; i--)
             {
                 float opacity = 1;
@@ -42,16 +44,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 }
                 if (i < drawInfo[2] + 50)
                 {
-                    opacity = i / (drawInfo[2] +70);
+                    opacity = i / (drawInfo[2] + 70);
                 }
-                Vector2 pos = npc.Center - Main.screenPosition + new Vector2(20, 0).RotatedBy(npc.rotation - MathHelper.PiOver2) + new Vector2(2, 0).RotatedBy(npc.rotation - MathHelper.PiOver2) * i * 5 * (i / 100f);
+                Vector2 pos = npc.Center - screenPos + new Vector2(20, 0).RotatedBy(npc.rotation - MathHelper.PiOver2) + new Vector2(2, 0).RotatedBy(npc.rotation - MathHelper.PiOver2) * i * 5 * (i / 100f);
                 Vector2 pos2 = npc.Center + new Vector2(20, 0).RotatedBy(npc.rotation - MathHelper.PiOver2) + new Vector2(2, 0).RotatedBy(npc.rotation - MathHelper.PiOver2) * i * 5 * (i / 100f);
                 Color color = new Color(194, 178, 128, 120) * 0.3f * opacity;
                 if (Lighting.GetColor(pos2.ToTileCoordinates()).Equals(Color.Black))
                 {
                     color = Color.Black * 0;
                 }
-                Main.EntitySpriteDraw(wind.Value, pos, null, color, drawInfo[0] + MathHelper.ToRadians(i), wind.Size() / 2, 1 + i / 10f, SpriteEffects.None);
+                Main.NewText(wind + "" + pos + "" + color + "" + opacity);
+                Main.EntitySpriteDraw(wind, pos, null, color, drawInfo[0] + MathHelper.ToRadians(i), wind.Size() / 2, 1 + i / 10f, SpriteEffects.None);
             }
             
             drawInfo[0] += MathHelper.ToRadians(3f);
@@ -173,6 +176,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), pos, (npc.Center - pos).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<SuckedSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:npc.whoAmI);
                 }
+            }
+            if (ai[3] == -2) //telegraph spit followup
+            {
+                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/DesertScourgeRoar") with { Volume = 0.5f, Pitch = 0.2f });
             }
             if (ai[3] % 70 == 0 && ai[3] < 0)
             {
