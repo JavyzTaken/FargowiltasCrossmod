@@ -38,7 +38,7 @@ namespace FargowiltasSouls.Core.Globals
         {
             if (!(WorldSavingSystem.EternityDeath && WorldSavingSystem.E_EternityRev))
             {
-                return false;
+                return true;
             }
             if (FirstTick)
             {
