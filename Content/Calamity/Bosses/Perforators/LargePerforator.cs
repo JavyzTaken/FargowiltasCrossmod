@@ -138,6 +138,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         
         public override int TailType => ModContent.NPCType<LargePerforatorTail>();
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class LargePerforatorBody : WormBody
     {
         public override string Texture => "CalamityMod/NPCs/Perforator/PerforatorBodyLarge";
@@ -286,6 +288,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             LargePerforatorHead.CommonWormInit(this);
         }
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class LargePerforatorTail : WormTail
     {
         public override string Texture => "CalamityMod/NPCs/Perforator/PerforatorTailLarge";
