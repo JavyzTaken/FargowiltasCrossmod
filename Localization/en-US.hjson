@@ -176,6 +176,7 @@ Mods: {
 			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
 			ShadeLightningCloud.DisplayName: Shade Lightning Cloud
 			ToothBall.DisplayName: Tooth Ball
+			HomingRocket.DisplayName: Homing Rocket
 		}
 	}
 }

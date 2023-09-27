@@ -1,10 +1,12 @@
 ﻿using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -23,23 +25,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(npc, bitWriter, binaryWriter);
+            binaryWriter.Write(DashAttack);
+            binaryWriter.Write7BitEncodedInt(dashTime);
+            binaryWriter.Write7BitEncodedInt(timer);
+            binaryWriter.Write7BitEncodedInt(dashCounter);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             base.ReceiveExtraAI(npc, bitReader, binaryReader);
+            DashAttack = binaryReader.ReadBoolean();
+            dashTime = binaryReader.Read7BitEncodedInt();
+            timer = binaryReader.Read7BitEncodedInt();
+            dashCounter = binaryReader.Read7BitEncodedInt();
         }
         public bool DashAttack = false;
         public int dashTime = 150;
         public int timer = 0;
+        public int dashCounter = 0;
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget)
             {
                 return true;
             }
-            
-            if (DashAttack)
+            npc.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
+            if (DashAttack && npc.GetGlobalNPC<Retinazer>().DeathrayState == 0)
             {
+                npc.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
                 Player target = Main.player[npc.target];
                 timer++;
                 if (timer < 60)
@@ -53,22 +65,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
                 {
                     npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 22;
                 }
-                if (timer > 60 && timer % 20 == 0)
+                if (timer > 60 && timer % 15 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item33, npc.Center);
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<ScavengerLaser>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<ScavengerLaser>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage((int)(npc.damage * 0.75f)), 0);
                 }
-                if (timer >= dashTime)
+                if (timer >= dashTime - 20)
                 {
                     npc.velocity = Vector2.Zero;
                     timer = 0;
-                    DashAttack = false;
+                    dashCounter++;
+                    if (dashCounter > 1)
+                    {
+                        DashAttack = false;
+                        dashCounter = 0;
+                    }
                 }
                 return false;
             }
             //Main.NewText(npc.ai[2]);
-            if (npc.ai[0] == 3 && npc.ai[1] == 1 && npc.ai[2] == 178)
+            //Main.NewText(npc.GetGlobalNPC<Retinazer>().DeathrayState);
+            if (npc.GetGlobalNPC<Retinazer>().DeathrayState == 3)
             {
                 DashAttack = true;
                 

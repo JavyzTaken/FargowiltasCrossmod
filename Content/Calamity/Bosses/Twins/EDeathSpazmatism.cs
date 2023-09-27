@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -23,10 +24,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(npc, bitWriter, binaryWriter);
+            binaryWriter.Write(Fireballs);
+            binaryWriter.Write7BitEncodedInt(timer);
+            binaryWriter.Write7BitEncodedInt(FireballTime);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             base.ReceiveExtraAI(npc, bitReader, binaryReader);
+            Fireballs = binaryReader.ReadBoolean();
+            timer = binaryReader.Read7BitEncodedInt();
+            FireballTime = binaryReader.Read7BitEncodedInt(); 
         }
         public bool Fireballs = false;
         public int timer = 0;
@@ -37,16 +44,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             {
                 return true;
             }
-
+            npc.GetGlobalNPC<Spazmatism>().RunEmodeAI = true;
             if (Fireballs)
             {
-
+                npc.GetGlobalNPC<Spazmatism>().RunEmodeAI = true;
                 timer++;
                 Player target = Main.player[npc.target];
-                npc.velocity = Vector2.Lerp(npc.velocity, (target.Center + new Vector2(0, 300) - npc.Center).SafeNormalize(Vector2.Zero) * 20, 0.04f);
+                npc.velocity = Vector2.Lerp(npc.velocity, (target.Center + new Vector2(0, 350) - npc.Center).SafeNormalize(Vector2.Zero) * 20, 0.04f);
                 if (timer > 60 && timer % 45 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.ShadowflameFireball>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.ShadowflameFireball>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage((int)(npc.damage * 0.75f)), 0, ai1: 1);
                 }
                 if (timer >= FireballTime)
                 {
