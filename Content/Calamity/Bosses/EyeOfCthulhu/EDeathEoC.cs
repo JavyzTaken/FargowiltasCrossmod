@@ -224,6 +224,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     HorizDash = false;
                 }
             }
+            if (npc.GetLifePercent() <= 0.1f)
+            {
+                npc.netUpdate = true;
+                if (npc.netSpam > 10)
+                {
+                    npc.netSpam = 10;
+                }
+                npc.ai[2] = 0;
+                npc.ai[1] = 0;
+                HorizDash = false;
+            }
         }
         float Rotate(NPC npc, float rotation, Vector2 target, float speed)
         {

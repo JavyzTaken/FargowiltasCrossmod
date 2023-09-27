@@ -37,6 +37,7 @@ using CalamityMod.World;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.ItemDropRules;
+using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
@@ -218,6 +219,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void SetDefaults(NPC npc)
         {
             #region Balance
+
             if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
             {
                 //champions
@@ -448,7 +450,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
             }
             #endregion
-
+            
+            if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
+            {
+                if (WorldSavingSystem.EternityMode)
+                npc.scale = 1f;
+                if (DLCWorldSavingSystem.EternityDeath)
+                    npc.scale = 1.4f;
+            }
+            
 
         }
         //all this bullshit just so tmod doesnt JITException a method that is supposed to be ignored >:(
@@ -912,10 +922,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 npc.dontTakeDamage = true;
             }
-            //make destroyer not invincible
+            //make destroyer not invincible and normal scale
             if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail)
             {
                 Mod calamity = ModLoader.GetMod(ModCompatibility.Calamity.Name);
+                
                 calamity.Call("SetCalamityAI", npc, 1, 600f);
                 calamity.Call("SetCalamityAI", npc, 2, 0f);
             }
