@@ -1,22 +1,15 @@
-﻿using CalamityMod.Items.Potions.Alcohol;
-using CalamityMod.NPCs;
+﻿
 using CalamityMod.World;
 using CalamityMod;
-using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
@@ -223,6 +216,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     npc.ai[1] = 0;
                     HorizDash = false;
                 }
+            }
+            if (npc.GetLifePercent() <= 0.1f)
+            {
+                npc.netUpdate = true;
+                if (npc.netSpam > 10)
+                {
+                    npc.netSpam = 10;
+                }
+                npc.ai[2] = 0;
+                npc.ai[1] = 0;
+                HorizDash = false;
             }
         }
         float Rotate(NPC npc, float rotation, Vector2 target, float speed)
