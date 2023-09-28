@@ -1,13 +1,8 @@
-﻿using CalamityMod.NPCs.TownNPCs;
-using FargowiltasSouls;
+﻿
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -16,6 +11,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class HomingSickle : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.DemonScythe;

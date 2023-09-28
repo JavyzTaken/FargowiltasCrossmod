@@ -1,22 +1,15 @@
-﻿using CalamityMod.Items.Potions.Alcohol;
-using CalamityMod.NPCs;
+﻿
 using CalamityMod.World;
 using CalamityMod;
-using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;

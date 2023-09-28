@@ -1,19 +1,17 @@
-﻿using FargowiltasSouls.Core.Globals;
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EDeathSkeletron : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHead);

@@ -8,33 +8,43 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using FargowiltasSouls;
-using Terraria.Audio;
 using FargowiltasCrossmod.Core;
 
-namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
+namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathWoFMouth : EternideathNPC
+    public class EDeathQS : EternideathNPC
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.WallofFlesh);
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.QueenSlimeBoss);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(npc, bitWriter, binaryWriter);
+            binaryWriter.Write(slam);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             base.ReceiveExtraAI(npc, bitReader, binaryReader);
+            slam = binaryReader.ReadBoolean();
         }
+        public bool slam = false;
+        
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;
-            FargowiltasSouls.Content.Bosses.VanillaEternity.WallofFlesh wof = npc.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.WallofFlesh>();
-            //Main.NewText(wof.WorldEvilAttackCycleTimer);
-            if (wof.WorldEvilAttackCycleTimer == 150)
+            if (npc.ai[0] == 4)
+            {
+                slam = true;
+                
+            }
+            else if (slam)
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(1, 0) * npc.spriteDirection, ModContent.ProjectileType<HomingSickle>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
-                SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                    for (int i = 0; i < 11; i++)
+                    {
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-10, 0).RotatedBy(MathHelper.ToRadians(180 / 10f * i)), ModContent.ProjectileType<HallowedSlimeSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                    }
+                
+                slam = false;
             }
             return base.SafePreAI(npc);
         }

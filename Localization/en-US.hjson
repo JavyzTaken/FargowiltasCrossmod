@@ -178,6 +178,7 @@ Mods: {
 			ToothBall.DisplayName: Tooth Ball
 			HomingRocket.DisplayName: Homing Rocket
 			HomingSickle.DisplayName: Homing Sickle
+			HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
 		}
 	}
 }

@@ -7,9 +7,12 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
+using FargowiltasCrossmod.Core;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EDeathDestroyerBody : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.TheDestroyerBody);

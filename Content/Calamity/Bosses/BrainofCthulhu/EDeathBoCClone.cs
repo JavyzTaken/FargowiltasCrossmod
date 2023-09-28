@@ -1,4 +1,4 @@
-﻿using FargowiltasSouls.Content.Bosses.VanillaEternity;
+﻿
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using System.IO;
@@ -6,15 +6,16 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader.Config;
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Projectiles;
 using Terraria.Audio;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EDeathBoCClone : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<BrainClone>());

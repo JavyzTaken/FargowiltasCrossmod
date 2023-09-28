@@ -1,4 +1,4 @@
-﻿using FargowiltasSouls.Content.Bosses.VanillaEternity;
+﻿
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using System.IO;
@@ -6,9 +6,12 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
+using FargowiltasCrossmod.Core;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EDeathEoWBody : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail);
