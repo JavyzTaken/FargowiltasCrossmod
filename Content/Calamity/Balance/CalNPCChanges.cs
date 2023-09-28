@@ -63,6 +63,7 @@ using FargowiltasSouls.Content.Items.Ammos;
 using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
@@ -390,36 +391,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 };
                 if (BossRushEvent.BossRushActive)
                 {
-                    if (!npc.boss)
+                    if (!npc.boss && npc.type != ModContent.NPCType<CreeperGutted>())
                     {
-                        npc.lifeMax += 500000;
+                        npc.lifeMax += 100000;
 
                     }
                     else
                     {
-                        npc.lifeMax += 5000000;
+                        npc.lifeMax += 2000000;
                     }
                     if (npc.type == ModContent.NPCType<DeviBoss>())
                     {
-                        npc.lifeMax += 900000;
+                        npc.lifeMax += 500000;
                     }
                     if (SlimeGod.Contains(npc.type)){
-                        npc.lifeMax += 900000;
+                        npc.lifeMax += 400000;
                     }
                     if (worms.Contains(npc.type) && !Eater.Contains(npc.type) && npc.boss){
-                        npc.lifeMax += 25000000;
+                        npc.lifeMax += 15000000;
                     }
                     else if (worms.Contains(npc.type) && !Eater.Contains(npc.type))
                     {
-                        npc.lifeMax += 5000000;
+                        npc.lifeMax += 1000000;
                     }
                     if (Eater.Contains(npc.type))
                     {
-                        npc.lifeMax += 500000;
+                        npc.lifeMax += 100000;
                     }
-                    if (npc.damage < 544 && npc.damage != 0)
+                    if (npc.damage < 200 && npc.damage != 0)
                     {
-                        npc.damage = 544;
+                        npc.damage = 200;
                     }
                     if (npc.type == NPCID.Golem || npc.type == NPCID.GolemFistLeft || npc.type == NPCID.GolemFistRight || npc.type == NPCID.GolemHead)
                     {

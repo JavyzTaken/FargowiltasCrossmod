@@ -12,6 +12,8 @@ using System.Collections.Generic;
 //using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using System;
 using FargowiltasCrossmod.Core.Systems;
+using CalamityMod.Events;
+using FargowiltasSouls.Content.Buffs.Boss;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -33,7 +35,10 @@ namespace FargowiltasCrossmod.Content.Calamity
            // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
-
+            if (BossRushEvent.BossRushActive)
+            {
+                Player.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
+            }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
     }

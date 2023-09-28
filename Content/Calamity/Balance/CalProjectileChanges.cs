@@ -74,9 +74,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         ModLoader.GetMod(ModCompatibility.Calamity.Name).Call("SetDefenseDamageProjectile", projectile, true);
                     }
                 }
-                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 225 && projectile.damage != 0)
+                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 100 && projectile.damage != 0)
                 {
-                    projectile.damage = 225;
+                    projectile.damage = 100;
                 }
                 if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 500)
                 {
