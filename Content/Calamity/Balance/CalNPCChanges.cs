@@ -797,6 +797,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     killedAquatic = true;
                 }
+                if (npc.type == NPCID.GolemHead)
+                {
+                    npc.GetGlobalNPC<Golem>().IsInTemple = true;
+                }
+                if (npc.type == NPCID.GolemHead)
+                {
+                    npc.GetGlobalNPC<GolemHead>().IsInTemple = true;
+                }
             }
             else
             {
