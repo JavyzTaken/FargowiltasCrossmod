@@ -83,49 +83,49 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<ShockstormShuttle>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<ShockstormShuttle>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                 {
                     BuffID.Suffocation
                 }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<Sunskater>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<Sunskater>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                 {
                     BuffID.Suffocation
                 }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<AeroSlime>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<AeroSlime>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                 {
                     BuffID.Suffocation
                 }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<RepairUnitCritter>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<RepairUnitCritter>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                 {
                     BuffID.Suffocation
                 }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<BrimstoneHeart>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<BrimstoneHeart>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                 {
                     ModContent.BuffType<ClippedWingsBuff>()
                 }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<SupremeCataclysm>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<SupremeCataclysm>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                {
                     ModContent.BuffType<ClippedWingsBuff>()
                }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<SupremeCatastrophe>(), new NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<SupremeCatastrophe>(), new NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new[]
                {
@@ -133,7 +133,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     
                }
             });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<DesertScourgeBody>(), new Terraria.DataStructures.NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<DesertScourgeBody>(), new Terraria.DataStructures.NPCDebuffImmunityData
             {
                 SpecificallyImmuneTo = new int[]
                {

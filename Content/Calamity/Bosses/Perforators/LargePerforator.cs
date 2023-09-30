@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
             {
                 ImmuneToAllBuffsThatAreNotWhips = true,
 
@@ -155,7 +155,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
             {
                 ImmuneToAllBuffsThatAreNotWhips = true,
 
@@ -230,7 +230,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
             {
                 ImmuneToAllBuffsThatAreNotWhips = true,
 
@@ -307,7 +307,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
+            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
             {
                 ImmuneToAllBuffsThatAreNotWhips = true,
 

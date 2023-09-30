@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             base.OnSpawn(source);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item17, Projectile.Center);
             if (Main.netMode != NetmodeID.MultiplayerClient)

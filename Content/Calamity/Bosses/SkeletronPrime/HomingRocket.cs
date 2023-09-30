@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
             Projectile.hostile = true;
             Projectile.timeLeft = 1000;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             Projectile.position.X += Projectile.width / 2;
