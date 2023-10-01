@@ -522,7 +522,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (recipe.HasResult(ModContent.ItemType<BerserkerSoul>()) && recipe.HasIngredient(ItemID.StingerNecklace))
                 {
-                    if (recipe.RemoveIngredient(ItemID.SharkToothNecklace))
+                    if (recipe.RemoveIngredient(ItemID.StingerNecklace))
                         recipe.AddIngredient(ModContent.ItemType<ReaperToothNecklace>());
                     if (recipe.RemoveIngredient(ItemID.FireGauntlet))
                         recipe.AddIngredient(ModContent.ItemType<ElementalGauntlet>());
