@@ -421,7 +421,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
             {
                 if (WorldSavingSystem.EternityMode)
-                npc.scale = 1f;
+                    npc.scale = 1f;
                 if (DLCWorldSavingSystem.EternityDeath)
                     npc.scale = 1.4f;
             }
@@ -794,6 +794,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 if (npc.type == ModContent.NPCType<BanishedBaron>())
                 {
+                    //Fix for floppy fish in p1
+                    BanishedBaron baron = (npc.ModNPC as BanishedBaron);
+                    Player target = Main.player[npc.target];
+                    if (target != null && target.active && !target.dead)
+                    {
+                        if (baron.Phase == 1 && npc.Center.Y < target.Center.Y && !(Collision.WetCollision(npc.position, npc.width, npc.height) || Collision.SolidCollision(npc.position, npc.width, npc.height)))
+                        {
+                            npc.position.Y -= 4f;
+                        }
+                    }
+                    
                     foreach (Player player in Main.player)
                     {
                         if (player.active) player.buffImmune[ModContent.BuffType<BaronsBurdenBuff>()] = true;
