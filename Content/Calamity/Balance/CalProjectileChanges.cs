@@ -6,6 +6,7 @@ using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.ModPlayers;
@@ -32,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     float num6 = 0f;
                     if (entity.ModProjectile.CanDamage() != false && Collision.CheckAABBvLineCollision(Main.LocalPlayer.Hitbox.TopLeft(), Main.LocalPlayer.Hitbox.Size(), Projectile.Center,
-                        Projectile.Center + Projectile.velocity * Projectile.localAI[1], 22f * Projectile.scale + Main.LocalPlayer.GetModPlayer<FargoSoulsPlayer>().GrazeRadius * 2f + Player.defaultHeight, ref num6))
+                        Projectile.Center + Projectile.velocity * Projectile.localAI[1], 22f * Projectile.scale + Main.LocalPlayer.FargoSouls().GrazeRadius * 2f + Player.defaultHeight, ref num6))
                     {
                         return true;
                     }
@@ -50,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override bool PreAI(Projectile projectile)
         {
             Player player = Main.player[projectile.owner];
-            FargoSoulsPlayer modPlayer = player.GetModPlayer<FargoSoulsPlayer>();
+            FargoSoulsPlayer modPlayer = player.FargoSouls();
             /*
             //rogue projectiles affected by vortex jammed debuff
             if (!projectile.hostile && !projectile.trap && !projectile.npcProj)
@@ -69,9 +70,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (projectile.ModProjectile != null)
                 {
-                    if (projectile.ModProjectile.Mod == ModLoader.GetMod(ModCompatibility.SoulsMod.Name) && projectile.hostile)
+                    if (projectile.ModProjectile.Mod == ModCompatibility.SoulsMod.Mod && projectile.hostile)
                     {
-                        ModLoader.GetMod(ModCompatibility.Calamity.Name).Call("SetDefenseDamageProjectile", projectile, true);
+                        ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
                     }
                 }
                 if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 225 && projectile.damage != 0)

@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Core.Systems
         {
             if (ModCompatibility.Calamity.Loaded)
             {
-                ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev);
+                ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev);
             }
             
         }

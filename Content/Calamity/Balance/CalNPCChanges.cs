@@ -875,9 +875,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
                 {
-                    if (npc.ModNPC.Mod == ModLoader.GetMod(ModCompatibility.SoulsMod.Name) && npc.IsAnEnemy())
+                    if (npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod && npc.IsAnEnemy())
                     {
-                        ModLoader.GetMod(ModCompatibility.Calamity.Name).Call("SetDefenseDamageNPC", npc, true);
+                        ModCompatibility.Calamity.Mod.Call("SetDefenseDamageNPC", npc, true);
                     }
                 }
             }
@@ -911,7 +911,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //make destroyer not invincible and normal scale
             if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail)
             {
-                Mod calamity = ModLoader.GetMod(ModCompatibility.Calamity.Name);
+                Mod calamity = ModCompatibility.Calamity.Mod;
                 
                 calamity.Call("SetCalamityAI", npc, 1, 600f);
                 calamity.Call("SetCalamityAI", npc, 2, 0f);
