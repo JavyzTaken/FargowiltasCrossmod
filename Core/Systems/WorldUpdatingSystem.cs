@@ -11,11 +11,15 @@ namespace FargowiltasCrossmod.Core.Systems
     {
         public override void PreUpdateWorld()
         {
-            ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev);
+            if (ModCompatibility.Calamity.Loaded)
+            {
+                ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev);
+            }
+            
         }
         public override void PostUpdateWorld()
         {
-            if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out _))
+            if (ModCompatibility.Calamity.Loaded)
             {
                 if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !FargowiltasSouls.Core.Systems.WorldSavingSystem.SpawnedDevi && Main.netMode != NetmodeID.MultiplayerClient)
                 {
