@@ -46,25 +46,4 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
-    public partial class CrossplayerThorium
-    {
-        public void SpawnGraniteCore(Vector2 position)
-        {
-            Projectile proj = Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), position, Vector2.Zero, ModContent.ProjectileType<Projectiles.GraniteCore>(), 0, 0f, Player.whoAmI);
-            if (GraniteCores.Count > 0)
-            {
-                proj.ai[0] = GraniteCores[^1];
-            }
-            else
-            {
-                proj.ai[0] = -1;
-            }
-            GraniteCores.Add(proj.whoAmI);
-
-            if (GraniteCores.Count >= 10)
-            {
-                Main.projectile[GraniteCores[0]].Kill();
-            }
-        }
-    }
 }

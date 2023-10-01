@@ -111,10 +111,6 @@ namespace FargowiltasCrossmod.Content.Thorium
                     funguy.Infected = true;
                 }
             }
-            if (GraniteEnch && hit.Crit)
-            {
-                SpawnGraniteCore(proj.Center);
-            }
             if (AstroEnch && hit.Crit && AstroLaserCD <= 0)
             {
                 SpawnAstroLaser(target);
@@ -122,6 +118,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (SpiritTrapperEnch && hit.Crit/* && hit.Damage >= target.life*/)
             {
                 SpawnSpiritTrapperSpirit(target.Center);
+            }
+            if (GraniteEnch && hit.Damage >= target.life && proj.type != ModContent.ProjectileType<GraniteExplosion>())
+            {
+                Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), target.Center, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, Player.whoAmI);
             }
         }
 
@@ -134,14 +134,6 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (ThoriumKeybinds.SteelParryBind.JustPressed)
             {
                 ParryKey();
-            }
-            if (ThoriumMod.ThoriumHotkeySystem.AccessoryKey.JustPressed)
-            {
-                if (GraniteEnch)
-                {
-                    if (GraniteCores.Count != 0) 
-                        Main.projectile[GraniteCores[0]].Kill();
-                }
             }
         }
 

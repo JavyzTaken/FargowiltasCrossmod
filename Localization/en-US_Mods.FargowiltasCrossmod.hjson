@@ -526,11 +526,7 @@ Items: {
 
 	GraniteEnchant: {
 		DisplayName: Granite Enchantment
-		Tooltip:
-			'''
-			Critical strikes spawn stationary granite cores that link with nearby cores.
-			After 10 seconds pass the first core will explode, triggering any linked cores.
-			'''
+		Tooltip: Killing an enemy spawns a granite explosion, enemies killed by this explosion will not create additional explosions.
 	}
 
 	LivingWoodEnchant: {
@@ -695,8 +691,12 @@ Items: {
 	}
 
 	SpiritTrapperEnchant: {
-		DisplayName: Spirit Trapper Enchant
-		Tooltip: ""
+		DisplayName: Spirit Trapper Enchantment
+		Tooltip:
+			'''
+			Summons a red ghost that copies nearby projectiles to aid you.
+			"It seems angry"
+			'''
 	}
 }
 
@@ -850,6 +850,9 @@ Projectiles: {
 	GemTechSummonBoom.DisplayName: Gem Tech Summon Boom
 	PlasmaGrenade.DisplayName: Plasma Grenade
 	SpiritTrapperSpirit.DisplayName: Spirit Trapper Spirit
+	SpiritTrapperSpiritPro.DisplayName: Spirit Trapper Spirit Projectile
+	AngryGhost.DisplayName: Angry Ghost
+	GraniteExplosion.DisplayName: Granite Explosion
 }
 
 Conditions: {

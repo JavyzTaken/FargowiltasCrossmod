@@ -230,12 +230,12 @@ namespace FargowiltasCrossmod.Content.Calamity
                 ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Vesuvius>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.CorpusAvertor>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.AstrumDeusBag>(), new int[6]
+            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.AstrumDeusBag>(), new int[5]
             {
                 ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TheMicrowave>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.StarSputter>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Magic.StarShower>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.GodspawnHelixStaff>(),
+                //ModContent.ItemType<CalamityMod.Items.Weapons.Summon.GodspawnHelixStaff>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.RegulusRiot>(),
                 ModContent.ItemType<CalamityMod.Items.Pets.ChromaticOrb>()
             });

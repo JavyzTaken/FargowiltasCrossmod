@@ -9,7 +9,7 @@ using Terraria.ID;
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
     [ExtendsFromMod("ThoriumMod")]
-    public class GraniteCore : ModProjectile
+    public class GraniteExplosion : ModProjectile
     {
         public override string Texture => "ThoriumMod/Projectiles/Boss/GraniteCharge";
         public override void SetDefaults()
@@ -21,56 +21,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.damage = 32;
-            Projectile.timeLeft = 1200;
+            Projectile.timeLeft = 6;
         }
-        public override void SetStaticDefaults()
+
+        public override bool PreDraw(ref Color lightColor)
         {
-            Main.projFrames[Type] = 4;
+            return false;
         }
 
-        public override void OnSpawn(IEntitySource source)
-        {
-            Projectile.Center = Projectile.position;
-        }
-
-        public override void AI()
-        {
-            Projectile.velocity = Projectile.oldVelocity;
-            Projectile.frame = (int)MathF.Floor(Projectile.timeLeft / 15) % 3;
-
-            var DLCPlayer = Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>();
-
-            if (!DLCPlayer.GraniteCores.Contains(Projectile.whoAmI) || DLCPlayer.Player.dead)
-            {
-                Projectile.Kill();
-                return;
-            }
-
-            if (Projectile.ai[0] < 0) return;
-
-            if (!Main.projectile[(int)Projectile.ai[0]].active || Main.projectile[(int)Projectile.ai[0]].type != Projectile.type)
-            {
-                Projectile.Kill();
-                return;
-            }
-
-            Vector2 nextCorePos = Main.projectile[(int)Projectile.ai[0]].Center;
-            float DistanceTo = Projectile.Center.Distance(nextCorePos);
-
-            if (DistanceTo <= LinkedCoreMaxDist)
-            {
-                float DustIncr = 1 / (DistanceTo / 64);
-
-                for (float i = DustIncr; i < 1; i += DustIncr)
-                {
-                    float salt = Main.rand.NextFloat(-DustIncr, 0);
-                    Vector2 dustPos = Projectile.Center * (i + salt) + nextCorePos * (1 - i - salt);
-                    Dust.NewDustDirect(dustPos, 0, 0, DustID.Electric).noGravity = true;
-                }
-            }
-        }
-
-        const float LinkedCoreMaxDist = 1024;
         public override void Kill(int timeLeft)
         {
             Projectile.friendly = true;
