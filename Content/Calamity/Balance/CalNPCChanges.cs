@@ -81,66 +81,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
+        private static List<int> SuffocationImmune = new List<int>
+        {
+            ModContent.NPCType<ShockstormShuttle>(),
+            ModContent.NPCType<Sunskater>(),
+            ModContent.NPCType<AeroSlime>(),
+            ModContent.NPCType<RepairUnitCritter>(),
+            
+
+        };
+        private static List<int> ClippedWingsImmune = new List<int>
+        {
+            ModContent.NPCType<BrimstoneHeart>(),
+            ModContent.NPCType<SupremeCataclysm>(),
+            ModContent.NPCType<SupremeCatastrophe>(),
+
+        };
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<ShockstormShuttle>(), new NPCDebuffImmunityData
+            
+            foreach (int type in SuffocationImmune)
             {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<Sunskater>(), new NPCDebuffImmunityData
+                NPCID.Sets.SpecificDebuffImmunity[type][BuffID.Suffocation] = true;
+            }
+            foreach (int type in ClippedWingsImmune)
             {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<AeroSlime>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<RepairUnitCritter>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<BrimstoneHeart>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-                {
-                    ModContent.BuffType<ClippedWingsBuff>()
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<SupremeCataclysm>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-               {
-                    ModContent.BuffType<ClippedWingsBuff>()
-               }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<SupremeCatastrophe>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-               {
-                    ModContent.BuffType<ClippedWingsBuff>()
-                    
-               }
-            });
-            NPCID.Sets.DebuffImmunitySets/* tModPorter Removed: See the porting notes in https://github.com/tModLoader/tModLoader/pull/3453 */.Add(ModContent.NPCType<DesertScourgeBody>(), new Terraria.DataStructures.NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new int[]
-               {
-                    ModContent.BuffType<LeadPoisonBuff>()
-
-               }
-            });
+                NPCID.Sets.SpecificDebuffImmunity[type][ModContent.BuffType<ClippedWingsBuff>()] = true;
+            }
         }
         public static List<int> Champions = new List<int>
         {
