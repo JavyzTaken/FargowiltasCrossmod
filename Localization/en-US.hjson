@@ -41,8 +41,8 @@ Mods: {
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
-			Activation: Eternity Mode (Revengeance) has activated!
-			Deactivation: Eternity Mode (Revengeance) has deactivated.
+			Activation: Eternity-Revengeance Mode has activated!
+			Deactivation: Eternity-Revengeance Mode has deactivated.
 		}
 
 		EternityDeathDifficulty: {
@@ -61,8 +61,8 @@ Mods: {
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
-			Activation: Eternity Mode (Death) has activated!
-			Deactivation: Eternity Mode (Death) has deactivated.
+			Activation: Eternity-Death Mode has activated!
+			Deactivation: Eternity-Death Mode has deactivated.
 		}
 
 		Configs: {
