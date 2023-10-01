@@ -197,7 +197,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<Brimlance>(),
                 ModContent.ItemType<SeethingDischarge>(),
                 ModContent.ItemType<DormantBrimseeker>(),
-                ModContent.ItemType<Gehenna>(),
                 ModContent.ItemType<Abaddon>(),
                 ModContent.ItemType<RoseStone>()
             });
