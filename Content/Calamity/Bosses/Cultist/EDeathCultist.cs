@@ -8,12 +8,12 @@ using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Bosses.DukeFishron
+namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathDuke : EternideathNPC
+    public class EDeathCultist : EternideathNPC
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.DukeFishron);
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.CultistBoss);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(npc, bitWriter, binaryWriter);
@@ -25,17 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DukeFishron
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;
-            if (npc.ai[0] == 10 && npc.ai[3] == 8 && npc.ai[2] >= 20 && npc.GetLifePercent() <= 0.1f)
-            {
-                npc.Center = Main.player[npc.target].Center + Main.player[npc.target].velocity * 100;
-                if (npc.ai[2] == 25)
-                npc.ai[3] = 5;
-            }
-            if (npc.ai[3] == 1 && npc.GetLifePercent() <= 0.1f)
-            {
-                
-                npc.ai[3] = 5;
-            }
+            
             return base.SafePreAI(npc);
         }
     }

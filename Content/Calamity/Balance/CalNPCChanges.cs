@@ -375,18 +375,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 List<int> SlimeGod = new List<int> { ModContent.NPCType<EbonianPaladin>(), ModContent.NPCType<SplitEbonianPaladin>(),
                     ModContent.NPCType<CrimulanPaladin>(), ModContent.NPCType<SplitCrimulanPaladin>(),
                     };
-                List<int> worms = new List<int>
+                List<int> bossworms = new List<int>
                 {
-                    ModContent.NPCType<DesertNuisanceHead>(), ModContent.NPCType<DesertNuisanceBody>(), ModContent.NPCType<DesertNuisanceTail>(),
+                    
                     ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
                     NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
-                    ModContent.NPCType<PerforatorHeadSmall>(),ModContent.NPCType<PerforatorBodySmall>(), ModContent.NPCType<PerforatorTailSmall>(),
-                    ModContent.NPCType<PerforatorHeadMedium>(),ModContent.NPCType<PerforatorBodyMedium>(), ModContent.NPCType<PerforatorTailMedium>(),
-                    ModContent.NPCType<PerforatorHeadLarge>(),ModContent.NPCType<PerforatorBodyLarge>(), ModContent.NPCType<PerforatorTailLarge>(),
+                    
                     ModContent.NPCType<AquaticScourgeHead>(), ModContent.NPCType<AquaticScourgeBody>(),ModContent.NPCType<AquaticScourgeBodyAlt>(), ModContent.NPCType<AquaticScourgeTail>(),
                     NPCID.TheDestroyer, NPCID.TheDestroyerBody, NPCID.TheDestroyerTail,
                     ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),
                     ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>(),
+
+                };
+                List<int> minionworms = new List<int>()
+                {
+                    ModContent.NPCType<DesertNuisanceHead>(), ModContent.NPCType<DesertNuisanceBody>(), ModContent.NPCType<DesertNuisanceTail>(),
+                    ModContent.NPCType<PerforatorHeadSmall>(),ModContent.NPCType<PerforatorBodySmall>(), ModContent.NPCType<PerforatorTailSmall>(),
+                    ModContent.NPCType<PerforatorHeadMedium>(),ModContent.NPCType<PerforatorBodyMedium>(), ModContent.NPCType<PerforatorTailMedium>(),
+                    ModContent.NPCType<PerforatorHeadLarge>(),ModContent.NPCType<PerforatorBodyLarge>(), ModContent.NPCType<PerforatorTailLarge>(),
 
                 };
                 if (BossRushEvent.BossRushActive)
@@ -407,12 +413,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     if (SlimeGod.Contains(npc.type)){
                         npc.lifeMax += 400000;
                     }
-                    if (worms.Contains(npc.type) && !Eater.Contains(npc.type) && npc.boss){
+                    if (bossworms.Contains(npc.type) && !Eater.Contains(npc.type)){
                         npc.lifeMax += 15000000;
                     }
-                    else if (worms.Contains(npc.type) && !Eater.Contains(npc.type))
+                    else if (minionworms.Contains(npc.type) && !Eater.Contains(npc.type))
                     {
-                        npc.lifeMax += 1000000;
+                        npc.lifeMax += 2500000;
                     }
                     if (Eater.Contains(npc.type))
                     {
@@ -424,14 +430,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     }
                     if (npc.type == NPCID.Golem || npc.type == NPCID.GolemFistLeft || npc.type == NPCID.GolemFistRight || npc.type == NPCID.GolemHead)
                     {
-                        npc.lifeMax /= 5;
+                        npc.lifeMax /= 10;
                     }
                     //reduce health of bosses that are either too tanky or impossible to dodge
                     //increase hp of bosses that die fast
                     //destroyer: tanky and incredibly difficult to dodge
                     if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.TheDestroyerBody || npc.type == NPCID.TheDestroyerTail) npc.lifeMax /= 3;
                     //golem: flies into space and deals tons of damage and is impossible to dodge
-                    if (npc.type == NPCID.Golem) npc.lifeMax /= 10;
+                    //if (npc.type == NPCID.Golem) npc.lifeMax /= 10;
                     //impossible to dodge in final phase
                     if (npc.type == NPCID.DukeFishron) npc.lifeMax /= 2;
                     //dies fast because is really big
@@ -445,7 +451,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     //dies too fast
                     if (npc.type == ModContent.NPCType<Yharon>()) npc.lifeMax *= 3;
                     //too tanky eyes
-                    if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead) npc.lifeMax /= 5;
+                    if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead) npc.lifeMax /= 8;
                 }
                 #endregion BRBalance
 
@@ -808,7 +814,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     killedAquatic = true;
                 }
-                if (npc.type == NPCID.GolemHead)
+                if (npc.type == NPCID.Golem)
                 {
                     npc.GetGlobalNPC<Golem>().IsInTemple = true;
                 }
@@ -820,6 +826,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             else
             {
                 killedAquatic = false;
+                if (npc.type == NPCID.AncientLight && DLCWorldSavingSystem.EternityDeath)
+                {
+                    npc.Center += npc.velocity * 0.75f;
+                    npc.dontTakeDamage = true;
+                }
             }
             
             //BossRushEvent.BossRushStage = 18;
@@ -849,6 +860,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                             npc.position = newPos;
                         }
                     }
+            }
+            if (npc.type == NPCID.DukeFishron)
+            {
+                Main.player[Main.myPlayer].ZoneBeach = true;
             }
             if (npc.type == ModContent.NPCType<SpiritChampion>() && BossRushEvent.BossRushActive)
             {

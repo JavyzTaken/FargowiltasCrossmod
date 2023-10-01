@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
             
             NPC destroyer = FargoSoulsUtil.NPCExists(npc.realLife, NPCID.TheDestroyer);
             Player target = Main.player[npc.target];
-            if (!destroyer.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Destroyer>().InPhase2)
+            if (destroyer != null && !destroyer.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Destroyer>().InPhase2)
             {
                 npc.GetGlobalNPC<DestroyerSegment>().AttackTimer = 0;
                 NPC prevSegment = FargoSoulsUtil.NPCExists(npc.ai[1], NPCID.TheDestroyerBody);
