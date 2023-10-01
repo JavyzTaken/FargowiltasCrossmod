@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool GraniteEnch;
         public bool AstroEnch;
         public bool SpiritTrapperEnch;
+        public bool YewWoodEnch;
 
         public Item TemplarEnchItem;
         public Item LivingWoodEnchItem;
@@ -80,6 +81,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             GraniteEnch = false;
             AstroEnch = false;
             SpiritTrapperEnch = false;
+            YewWoodEnch = false;
 
             TemplarEnchItem = null;
             LivingWoodEnchItem = null;
@@ -114,10 +116,6 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (AstroEnch && hit.Crit && AstroLaserCD <= 0)
             {
                 SpawnAstroLaser(target);
-            }
-            if (SpiritTrapperEnch && hit.Crit/* && hit.Damage >= target.life*/)
-            {
-                SpawnSpiritTrapperSpirit(target.Center);
             }
             if (GraniteEnch && hit.Damage >= target.life && proj.type != ModContent.ProjectileType<GraniteExplosion>())
             {
@@ -163,10 +161,18 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
         }
 
+        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (YewWoodEnch)
+            {
+                YewWoodEffect(item, ref position, ref velocity, ref type, ref damage, ref knockback);
+            }
+        }
+
         public override void OnEnterWorld()
         {
-            Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning1"), Color.Yellow);
-            Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning2"), Color.Yellow);
+            //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning1"), Color.Yellow);
+            //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning2"), Color.Yellow);
         }
     }
 }

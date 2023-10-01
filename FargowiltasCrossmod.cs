@@ -116,6 +116,8 @@ namespace FargowiltasCrossmod
             Content.Thorium.Projectiles.DLCHealing.HealMethod = thoriumProjExtensions.GetMethod("ThoriumHeal", BindingFlags.Static | BindingFlags.NonPublic);
             Content.Thorium.Projectiles.DLCHealing.CustomHealingType = thoriumProjExtensions.GetNestedType("CustomHealing", BindingFlags.NonPublic);
 
+            Content.Thorium.Items.Accessories.Enchantments.YewWoodEnchant.LoadModdedArrows();
+
             DevianttPatches.AddThoriumDeviShop();
         }
 
