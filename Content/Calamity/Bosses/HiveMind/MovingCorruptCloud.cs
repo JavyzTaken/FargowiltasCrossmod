@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 28 * Projectile.frame, 28, 28), lightColor, Projectile.rotation, new Vector2(14, 14), Projectile.scale, SpriteEffects.None);
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (Main.netMode != NetmodeID.MultiplayerClient)
                 Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<ShadeNimbusHostile>(), Projectile.damage, 0);

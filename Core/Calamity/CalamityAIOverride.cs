@@ -50,7 +50,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             //int[]: list of other npc ids that need to die to continue event
 
             //Adding bosses to boss rush
-            Mod cal = ModLoader.GetMod("CalamityMod");
+            Mod cal = ModCompatibility.Calamity.Mod; 
             //get the list of boss entries
             var Entries = cal.Call("GetBossRushEntries") as List<(int, int, Action<int>, int, bool, float, int[], int[])>;
             //insert trojan squirrel at the beginning
@@ -132,7 +132,7 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         public override void Load()
         {
-            if (ModLoader.TryGetMod("CalamityMod", out Mod calamity))
+            if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out Mod calamity))
             {
                 calamity.Call("AddDifficultyToUI", new EternityRevDifficulty());
                 calamity.Call("AddDifficultyToUI", new EternityDeathDifficulty());
@@ -339,7 +339,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         private static void CalamityPreAI_ILEdit(ILContext il)
         {
             var c = new ILCursor(il);
-            Mod calamity = ModLoader.GetMod("CalamityMod");
+            Mod calamity = ModCompatibility.Calamity.Mod;
             Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent")!;
             FieldInfo BossRushEvent_BossRushActive = BossRushEvent.GetField("BossRushActive", BindingFlags.Public | BindingFlags.Static)!;
             //go to correct boss rush check
@@ -388,7 +388,7 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         private static void CalamityProjectilePreAI_ILEdit(ILContext il)
         {
-            Mod calamity = ModLoader.GetMod("CalamityMod");
+            Mod calamity = ModCompatibility.Calamity.Mod;
             Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent")!;
             FieldInfo BossRushEvent_BossRushActive = BossRushEvent.GetField("BossRushActive", BindingFlags.Public | BindingFlags.Static)!;
             

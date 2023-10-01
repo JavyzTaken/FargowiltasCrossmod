@@ -42,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             base.OnHitPlayer(target, info);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             if (Main.netMode != NetmodeID.MultiplayerClient)

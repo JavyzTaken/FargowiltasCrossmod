@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod;
 
@@ -12,7 +13,7 @@ public class FargowiltasCrossmod : Mod
     public override void Load()
     {
     }
-    [JITWhenModsEnabled("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static void LoadTogglesFromType(Type type)
     {
 
@@ -28,13 +29,13 @@ public class FargowiltasCrossmod : Mod
             }
         }
     }
-    [JITWhenModsEnabled("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static ref List<int> pierceResistExceptionList => ref CalamityLists.pierceResistExceptionList;
 
-    [JITWhenModsEnabled("CalamityMod")]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public override void PostSetupContent()
     {
-        if (ModLoader.HasMod("CalamityMod"))
+        if (ModCompatibility.Calamity.Loaded)
          pierceResistExceptionList.Add(ProjectileID.FinalFractal);
     }
 }

@@ -5,6 +5,7 @@ using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
 using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
@@ -102,7 +103,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 || item.type == ModContent.ItemType<StatisNinjaBelt>() || item.type == ModContent.ItemType<StatisVoidSash>() || item.type == ModContent.ItemType<ShieldoftheHighRuler>()
                 || (item.type == ModContent.ItemType<DeepDiver>() && player.wet) || player.Calamity().plaguebringerPatronSet)
             {
-                player.GetModPlayer<FargoSoulsPlayer>().HasDash = true;
+                player.FargoSouls().HasDash = true;
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -113,7 +114,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (player.GetToggleValue("AsgardianAegis"))
                 {
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
-                    player.GetModPlayer<FargoSoulsPlayer>().HasDash = true;
+                    player.FargoSouls().HasDash = true;
                 }
                 
                 if (player.GetToggleValue("RampartofDeities"))
@@ -201,7 +202,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
-                return player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
+                return player.FargoSouls().MutantsPactSlot;
             }
             return true;
         }
@@ -301,8 +302,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public bool MutantPactShouldBeEnabled;
         public override void PostUpdate()
         {
-            ref bool MutantsPactSlot = ref Player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
-            if (Player.GetModPlayer<CalamityPlayer>().extraAccessoryML && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework) 
+            ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
+            if (Player.Calamity().extraAccessoryML && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
                 if (MutantsPactSlot)
                 {

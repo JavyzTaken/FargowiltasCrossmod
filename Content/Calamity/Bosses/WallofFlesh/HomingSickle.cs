@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.NPCHit3, Projectile.Center);
         }

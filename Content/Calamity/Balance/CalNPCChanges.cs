@@ -82,66 +82,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
+        private static List<int> SuffocationImmune = new List<int>
+        {
+            ModContent.NPCType<ShockstormShuttle>(),
+            ModContent.NPCType<Sunskater>(),
+            ModContent.NPCType<AeroSlime>(),
+            ModContent.NPCType<RepairUnitCritter>(),
+            
+
+        };
+        private static List<int> ClippedWingsImmune = new List<int>
+        {
+            ModContent.NPCType<BrimstoneHeart>(),
+            ModContent.NPCType<SupremeCataclysm>(),
+            ModContent.NPCType<SupremeCatastrophe>(),
+
+        };
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<ShockstormShuttle>(), new NPCDebuffImmunityData
+            
+            foreach (int type in SuffocationImmune)
             {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<Sunskater>(), new NPCDebuffImmunityData
+                NPCID.Sets.SpecificDebuffImmunity[type][BuffID.Suffocation] = true;
+            }
+            foreach (int type in ClippedWingsImmune)
             {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<AeroSlime>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<RepairUnitCritter>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-                {
-                    BuffID.Suffocation
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<BrimstoneHeart>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-                {
-                    ModContent.BuffType<ClippedWingsBuff>()
-                }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<SupremeCataclysm>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-               {
-                    ModContent.BuffType<ClippedWingsBuff>()
-               }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<SupremeCatastrophe>(), new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new[]
-               {
-                    ModContent.BuffType<ClippedWingsBuff>()
-                    
-               }
-            });
-            NPCID.Sets.DebuffImmunitySets.Add(ModContent.NPCType<DesertScourgeBody>(), new Terraria.DataStructures.NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new int[]
-               {
-                    ModContent.BuffType<LeadPoisonBuff>()
-
-               }
-            });
+                NPCID.Sets.SpecificDebuffImmunity[type][ModContent.BuffType<ClippedWingsBuff>()] = true;
+            }
         }
         public static List<int> Champions = new List<int>
         {
@@ -461,7 +428,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
             {
                 if (WorldSavingSystem.EternityMode)
-                npc.scale = 1f;
+                    npc.scale = 1f;
                 if (DLCWorldSavingSystem.EternityDeath)
                     npc.scale = 1.4f;
             }
@@ -839,6 +806,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 if (npc.type == ModContent.NPCType<BanishedBaron>())
                 {
+                    //Fix for floppy fish in p1
+                    BanishedBaron baron = (npc.ModNPC as BanishedBaron);
+                    Player target = Main.player[npc.target];
+                    if (target != null && target.active && !target.dead)
+                    {
+                        if (baron.Phase == 1 && npc.Center.Y < target.Center.Y && !(Collision.WetCollision(npc.position, npc.width, npc.height) || Collision.SolidCollision(npc.position, npc.width, npc.height)))
+                        {
+                            npc.position.Y -= 4f;
+                        }
+                    }
+                    
                     foreach (Player player in Main.player)
                     {
                         if (player.active) player.buffImmune[ModContent.BuffType<BaronsBurdenBuff>()] = true;
@@ -913,9 +891,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
                 {
-                    if (npc.ModNPC.Mod == ModLoader.GetMod(ModCompatibility.SoulsMod.Name) && npc.IsAnEnemy())
+                    if (npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod && npc.IsAnEnemy())
                     {
-                        ModLoader.GetMod(ModCompatibility.Calamity.Name).Call("SetDefenseDamageNPC", npc, true);
+                        ModCompatibility.Calamity.Mod.Call("SetDefenseDamageNPC", npc, true);
                     }
                 }
             }
@@ -949,7 +927,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //make destroyer not invincible and normal scale
             if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail)
             {
-                Mod calamity = ModLoader.GetMod(ModCompatibility.Calamity.Name);
+                Mod calamity = ModCompatibility.Calamity.Mod;
                 
                 calamity.Call("SetCalamityAI", npc, 1, 600f);
                 calamity.Call("SetCalamityAI", npc, 2, 0f);
