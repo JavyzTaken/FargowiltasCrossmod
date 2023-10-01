@@ -11,6 +11,7 @@ using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls;
 using Terraria.ID;
 using FargowiltasCrossmod.Core;
+using CalamityMod.Events;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -37,6 +38,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             entity.noTileCollide = true;
             entity.Opacity = 0;
             entity.knockBackResist = 0;
+            if (BossRushEvent.BossRushActive)
+            {
+                entity.lifeMax = 5000000;
+            }
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {

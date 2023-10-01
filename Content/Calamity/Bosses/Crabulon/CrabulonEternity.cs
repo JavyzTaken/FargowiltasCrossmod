@@ -14,6 +14,7 @@ using FargowiltasSouls.Core.Globals;
 using CalamityMod.NPCs.DesertScourge;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using CalamityMod.Events;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -28,6 +29,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         {
             base.SetDefaults(entity);
             entity.lifeMax = 5500;
+            if (BossRushEvent.BossRushActive)
+            {
+                entity.lifeMax = 5000000;
+            }
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {

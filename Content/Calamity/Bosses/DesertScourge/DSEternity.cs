@@ -1,4 +1,5 @@
 ﻿
+using CalamityMod.Events;
 using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
@@ -28,6 +29,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             base.SetDefaults(entity);
             entity.lifeMax = 3500;
+            if (BossRushEvent.BossRushActive)
+            {
+                entity.lifeMax = 25000000;
+            }
         }
         public float[] drawInfo = new float[] { 0, 200, 200, 0 };
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -53,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 {
                     color = Color.Black * 0;
                 }
-                Main.NewText(wind + "" + pos + "" + color + "" + opacity);
+                //Main.NewText(wind + "" + pos + "" + color + "" + opacity);
                 Main.EntitySpriteDraw(wind, pos, null, color, drawInfo[0] + MathHelper.ToRadians(i), wind.Size() / 2, 1 + i / 10f, SpriteEffects.None);
             }
             
@@ -632,6 +637,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
+            if (BossRushEvent.BossRushActive)
+            {
+                entity.lifeMax = 25000000;
+            }
         }
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {

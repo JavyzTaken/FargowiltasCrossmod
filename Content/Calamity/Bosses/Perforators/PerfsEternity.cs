@@ -1,4 +1,5 @@
 ﻿
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
@@ -36,6 +37,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
             entity.lifeMax = 7000;
+            if (BossRushEvent.BossRushActive)
+            {
+                entity.lifeMax = 5000000;
+            }
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {

@@ -16,6 +16,7 @@ using FargowiltasSouls;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using CalamityMod.Events;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -38,6 +39,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             NPCID.Sets.TrailCacheLength[entity.type] = 10;
             NPCID.Sets.TrailingMode[entity.type] = 0;
             entity.lifeMax = 5000;
+            if (BossRushEvent.BossRushActive)
+            {
+                entity.lifeMax = 5000000;
+            }
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {

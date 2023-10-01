@@ -179,6 +179,10 @@ Mods: {
 			HomingRocket.DisplayName: Homing Rocket
 			HomingSickle.DisplayName: Homing Sickle
 			HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
+			BouncingFireball.DisplayName: Bouncing Fireball
+			BigLight.DisplayName: Big Light
+			DestructionBolt.DisplayName: Destruction Bolt
+			StarofDestruction.DisplayName: Starof Destruction
 		}
 	}
 }
