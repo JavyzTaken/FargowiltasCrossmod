@@ -24,13 +24,9 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilatio
 
         public override void SetStaticDefaults()
         {
-
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCDebuffImmunityData debuffdata = new NPCDebuffImmunityData
+            List<int> fireDebuffs = new List<int>()
             {
-                SpecificallyImmuneTo = new int[]
-                {
-                    BuffID.Confused,
+                BuffID.Confused,
                     ModContent.BuffType<CalamityMod.Buffs.DamageOverTime.BrimstoneFlames>(),
                     ModContent.BuffType<CalamityMod.Buffs.DamageOverTime.Dragonfire>(),
                     ModContent.BuffType<CalamityMod.Buffs.DamageOverTime.GodSlayerInferno>(),
@@ -48,10 +44,12 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilatio
                     BuffID.CursedInferno,
                     BuffID.Burning,
                     BuffID.Daybreak
-
-                }
             };
-            NPCID.Sets.DebuffImmunitySets.Add(Type, debuffdata);
+            NPCID.Sets.BossBestiaryPriority.Add(Type);
+            foreach (int id in fireDebuffs)
+            {
+                NPCID.Sets.SpecificDebuffImmunity[Type][id] = true;
+            }
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.MPAllowedEnemies[Type] = true;

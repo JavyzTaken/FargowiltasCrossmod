@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
         {
             base.OnSpawn(source);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             DoRainbowCrystalStaffExplosion();
             if (Main.myPlayer == Projectile.owner)

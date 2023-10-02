@@ -16,14 +16,8 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
         public override string Texture => "CalamityMod/NPCs/NormalNPCs/WulfrumDrone";
         public override void SetStaticDefaults()
         {
-            NPCDebuffImmunityData debuffdata = new NPCDebuffImmunityData
-            {
-                SpecificallyImmuneTo = new int[]
-                {
-                    BuffID.Confused
-                }
-            };
-            NPCID.Sets.DebuffImmunitySets.Add(Type, debuffdata);
+            
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Confused] = true;
         }
         public override void SetDefaults()
         {

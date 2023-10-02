@@ -17,15 +17,12 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
         public override string Texture => "CalamityMod/Items/Materials/YharonSoulFragment";
         public override void SetStaticDefaults()
         {
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers(0)
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new(0)
             {
                 Hide = true
             };
-            NPCDebuffImmunityData debuffdata = new NPCDebuffImmunityData
-            {
-                ImmuneToAllBuffsThatAreNotWhips = true
-            };
-            NPCID.Sets.DebuffImmunitySets.Add(Type, debuffdata);
+            
+            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.MPAllowedEnemies[Type] = true;

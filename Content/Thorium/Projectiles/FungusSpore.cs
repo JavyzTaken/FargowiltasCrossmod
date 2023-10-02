@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.rotation = Projectile.velocity.X * 0.2f;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 3; i++)
             {

@@ -33,11 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 
             NPCID.Sets.BossBestiaryPriority.Add(Type);
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
-            {
-                ImmuneToAllBuffsThatAreNotWhips = true,
-
-            });
+            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
 
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
@@ -370,11 +366,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 
 
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
-            {
-                ImmuneToAllBuffsThatAreNotWhips = true,
-
-            });
+            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
@@ -465,11 +457,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
 
 
             //add more debuffs if it makes sense idk what else is needed (separate with comma)
-            NPCID.Sets.DebuffImmunitySets.Add(NPC.type, new Terraria.DataStructures.NPCDebuffImmunityData
-            {
-                ImmuneToAllBuffsThatAreNotWhips = true,
-
-            });
+            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.MPAllowedEnemies[Type] = true;

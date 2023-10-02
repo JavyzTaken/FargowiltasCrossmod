@@ -109,8 +109,9 @@ Items: {
 		DisplayName: Aerospec Enchantment
 		Tooltip:
 			'''
-			Summons a Valkyrie that fires homing feathers.
-			Feathers stick to enemies and explode after some time.
+			Provides two feather jumps that release feather projectiles
+			The feathers increase your critical strike chance on enemy hits
+			This crit chance is lost when your jumps are reset
 			'Those who were able to befriend the Valkyries are truly brave�'
 			'''
 	}

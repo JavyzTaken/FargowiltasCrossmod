@@ -134,7 +134,7 @@ Mods: {
 		BloomStoneConfig: "[i:CalamityMod/BloomStone] {$Mods.CalamityMod.Items.Accessories.BloomStone.DisplayName}"
 
 		WizardEffect: {
-			Aerospec: The valkyrie is equiped with Turbulance
+			Aerospec: Jumps increased to 5 and max crit increased to 50
 			Fathom: The cloud chases enemies
 			Astral: Reduced Guard Cooldown
 			TitanHeart: Reduced Guard Cooldown
@@ -501,6 +501,7 @@ Mods: {
 			BigLight.DisplayName: Big Light
 			DestructionBolt.DisplayName: Destruction Bolt
 			StarofDestruction.DisplayName: Starof Destruction
+			FeatherJumpFeather.DisplayName: Feather Jump Feather
 		}
 	}
 }

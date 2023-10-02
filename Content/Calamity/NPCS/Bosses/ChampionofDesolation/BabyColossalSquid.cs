@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofDesolation
     [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class BabyColossalSquid : ModNPC
     {
-        public override string Texture => "CalamityMod/Projectiles/Summon/CalamariMinion";
+        public override string Texture => "CalamityMod/Projectiles/Summon/CalamarisLamentMinion";
         public override void SetDefaults()
         {
 

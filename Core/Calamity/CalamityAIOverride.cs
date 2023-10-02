@@ -3,32 +3,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using CalamityMod.Events;
 using CalamityMod.NPCs;
-using FargowiltasCrossmod.Common.Systems;
 using MonoMod.Cil;
-using MonoMod.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using CalamityMod.NPCs;
 using Terraria;
-using Terraria.ModLoader; using FargowiltasCrossmod.Core;
-using CalamityMod.Events;
-
+using Terraria.ModLoader;
 using CalamityMod.Projectiles;
 using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
-using System.ComponentModel.DataAnnotations;
-using CalamityMod.BiomeManagers;
-
-using Fargowiltas.NPCs;
-using Terraria.ID;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
-
 using CalamityMod.NPCs.SupremeCalamitas;
-using CalamityMod.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
@@ -44,13 +26,7 @@ using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
-using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
-using FargowiltasSouls.Core.Systems;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using Terraria;
-using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {

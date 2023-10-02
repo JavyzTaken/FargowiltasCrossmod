@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 SDIcicleCooldown--;
             }
-            if (SDIcicleCooldown <= 0 && Player.controlJump && !Player.canJumpAgain_Cloud && Player.jump == 0 && Player.velocity.Y != 0f && !Player.mount.Active && !Player.mount.Cart)
+            if (SDIcicleCooldown <= 0 && Player.controlJump && !Player.GetJumpState(ExtraJump.CloudInABottle).Available && Player.jump == 0 && Player.velocity.Y != 0f && !Player.mount.Active && !Player.mount.Cart)
             {
                 int smallIcicle = Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X, Player.Center.Y, 0f, 2f, ModContent.ProjectileType<CalamityMod.Projectiles.Rogue.FrostShardFriendly>(), 24, 3f, Player.whoAmI, 1f);
                 if (smallIcicle.WithinBounds(1000))

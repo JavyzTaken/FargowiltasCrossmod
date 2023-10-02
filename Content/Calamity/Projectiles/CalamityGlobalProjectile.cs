@@ -30,9 +30,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         {
             base.OnSpawn(projectile, source);
         }
-        public override void Kill(Projectile projectile, int timeLeft)
+        public override void OnKill(Projectile projectile, int timeLeft)
         {
-            base.Kill(projectile, timeLeft);
+            base.OnKill(projectile, timeLeft);
         }
         public float AstralTelegraphOpacity = 0;
         public override bool PreDrawExtras(Projectile projectile)

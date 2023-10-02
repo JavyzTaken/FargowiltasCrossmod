@@ -21,8 +21,27 @@
     <None Remove="icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Remove="Libraries\CalamityMod.dll" />
+    <Reference Remove="Libraries\Fargowiltas.dll" />
+    <Reference Remove="Libraries\FargowiltasSouls.dll" />
+    <Reference Remove="Libraries\ThoriumMod.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />
-    <Folder Include="Content\Calamity\Projectiles\" />
     <Folder Include="Core\BaseClasses\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CalamityMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
+    </Reference>
+    <Reference Include="Fargowiltas">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
+    </Reference>
+    <Reference Include="FargowiltasSouls">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+    </Reference>
+    <Reference Include="ThoriumMod">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

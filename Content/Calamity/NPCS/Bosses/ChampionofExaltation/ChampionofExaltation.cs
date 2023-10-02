@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
             {
                 ImmuneToAllBuffsThatAreNotWhips = true
             };
-            NPCID.Sets.DebuffImmunitySets.Add(Type, debuffdata);
+            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             NPCID.Sets.TrailingMode[NPC.type] = 0;
             NPCID.Sets.TrailCacheLength[NPC.type] = 10;
             NPCID.Sets.MPAllowedEnemies[Type] = true;

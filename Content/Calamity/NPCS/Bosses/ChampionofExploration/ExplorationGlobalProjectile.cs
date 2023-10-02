@@ -32,9 +32,9 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
             return base.PreKill(projectile, timeLeft);
         }
 
-        public override void Kill(Projectile projectile, int timeLeft)
+        public override void OnKill(Projectile projectile, int timeLeft)
         {
-            base.Kill(projectile, timeLeft);
+            base.OnKill(projectile, timeLeft);
         }
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {

@@ -45,7 +45,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 .AddIngredient<SpectralVeil>()
                 .AddIngredient<TheEvolution>()
                 .AddIngredient<Affliction>()
-                .AddIngredient<MutatedTruffle>()
                 .AddIngredient<CosmiliteBar>(10)
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
@@ -69,8 +68,6 @@ namespace FargowiltasCrossmod.Content.Calamity
                 ModContent.GetInstance<TheEvolution>().UpdateAccessory(player, hideVisual);
             if (player.GetToggleValue("Affliction"))
                 ModContent.GetInstance<Affliction>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("MutatedTruffle"))
-                ModContent.GetInstance<MutatedTruffle>().UpdateAccessory(player, hideVisual);
         }
     }
 }

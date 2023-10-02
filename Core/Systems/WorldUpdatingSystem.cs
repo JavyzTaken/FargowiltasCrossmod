@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Core.Systems
 {
     public class WorldUpdatingSystem : ModSystem
     {
-        public bool emodeOverRev => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev;
+        public bool emodeOverRev => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev;
         public override void PreUpdateWorld()
         {
             if (ModCompatibility.Calamity.Loaded)

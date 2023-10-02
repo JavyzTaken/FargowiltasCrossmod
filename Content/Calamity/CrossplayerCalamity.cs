@@ -15,6 +15,7 @@ using FargowiltasCrossmod.Core.Systems;
 using CalamityMod.Events;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using Terraria.Utilities.Terraria.Utilities;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -24,6 +25,8 @@ namespace FargowiltasCrossmod.Content.Calamity
         //effect booleans
         //force of exploration
         public bool RideOfTheValkyrie;
+        public int FeatherJumpsRemaining;
+        public float AeroCritBoost;
         public bool Marnite;
         public bool WulfrumOverpower;
         public bool ProwlinOnTheFools;
@@ -544,30 +547,17 @@ namespace FargowiltasCrossmod.Content.Calamity
 
             //umbra
             if (UmbraCrazyRegen)
-        public override void PostUpdateBuffs()
-        {
-            if (!DLCWorldSavingSystem.EternityRev)
-                return;
-            //copied from emode player buffs, reverse effects
+            {
                 UmbraphileProjHitEffect(damageDone);
-
-            //Player.pickSpeed -= 0.25f;
             }
-
-            //bloodflare
             if (BFCrazierRegen)
             {
                 BloodflareProjHitEffect(target, damageDone);
             }
-            //statigel
             if (StatigelNinjaStyle)
             {
                 StatigelProjHitEffect(proj, target, damageDone, hit.Crit);
             }
-            //Player.tileSpeed += 0.25f;
-            //Player.wallSpeed += 0.25f;
-
-            //slayer
             if (GodSlayerMeltdown && Player.GetToggleValue("SlayerStars"))
             {
                 GodSlayerProjHitEffect(proj, target, damageDone, hit.Crit);
@@ -585,6 +575,12 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 PrismaticAttackEffects(damageDone);
             }
+        }
+        public override void PostUpdateBuffs()
+        {
+            if (!DLCWorldSavingSystem.EternityRev)
+                return;
+            
         }
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)/* tModPorter If you don't need the Projectile, consider using ModifyHitNPC instead */
         {

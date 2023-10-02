@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
 
         const float LinkedCoreMaxDist = 1024;
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Projectile.friendly = true;
             Projectile.damage = 50;

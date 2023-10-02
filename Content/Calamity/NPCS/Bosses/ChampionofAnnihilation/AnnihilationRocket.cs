@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilatio
             Projectile.timeLeft = Main.rand.Next(75, 100);
             Projectile.scale = 2;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Vector2 pos = Projectile.Center + new Vector2(Main.rand.Next(-100, 100), -1200);
             if (Main.netMode != NetmodeID.MultiplayerClient)
