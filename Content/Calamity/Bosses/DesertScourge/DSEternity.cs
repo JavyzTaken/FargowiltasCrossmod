@@ -656,6 +656,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
+            if (projectile.maxPenetrate > 1 || projectile.maxPenetrate < 0)
+            {
+                modifiers.FinalDamage /= 8;
+            }
         }
         public override void SafePostAI(NPC npc)
         {
