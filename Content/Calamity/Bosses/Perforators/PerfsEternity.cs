@@ -143,11 +143,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
         {
-            return base.CanHitPlayer(npc, target, ref cooldownSlot);
+            return HitPlayer ? base.CanHitPlayer(npc, target, ref cooldownSlot) : false;
         }
         public int lastAttack = 0;
         public int[] wormCycle = new int[] { 5, 5, 6, 5, 7 };
         public int attackCounter = -2;
+        public bool HitPlayer = true;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -157,6 +158,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             binaryWriter.Write7BitEncodedInt(lastAttack);
             binaryWriter.Write7BitEncodedInt(attackCounter);
+            binaryWriter.Write(HitPlayer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -166,6 +168,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             lastAttack = binaryReader.Read7BitEncodedInt();
             attackCounter = binaryReader.Read7BitEncodedInt();
+            HitPlayer = binaryReader.ReadBoolean();
         }
         public override bool SafePreAI(NPC npc)
         {
@@ -524,11 +527,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     npc.velocity /= 1.1f;
                     npc.Center = Vector2.Lerp(npc.Center, target.Center + new Vector2(target.velocity.X * 40, -400), 0.04f);
+                    HitPlayer = false;
+                    NetSync(npc);
                 }
                 if (npc.ai[2] == 0 && npc.ai[1] > 30)
                 {
                     npc.velocity.Y = 15;
                     npc.velocity.X = 0;
+                    HitPlayer = true;
                 }
                 if (WorldGen.SolidTile((npc.Center + new Vector2(0, 20)).ToTileCoordinates()) && npc.ai[2] == 0)
                 {
