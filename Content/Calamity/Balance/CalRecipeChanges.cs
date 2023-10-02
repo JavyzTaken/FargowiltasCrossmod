@@ -1,6 +1,5 @@
-﻿using FargowiltasSouls.Content.Items.Accessories.Masomode;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using CalamityMod.Items;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,17 +7,25 @@ using Terraria;
 using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ID;
 using CalamityMod.Items.Accessories;
-using CalamityMod.Items.Materials;
-using FargowiltasSouls.Content.Items.Materials;
-using FargowiltasSouls.Content.Items.Accessories.Souls;
 using CalamityMod.Items.Accessories.Wings;
+using CalamityMod.Items.Fishing.BrimstoneCragCatches;
+using CalamityMod.Items.Fishing.FishingRods;
+using CalamityMod.Items.Fishing.SunkenSeaCatches;
+using CalamityMod.Items.Materials;
 using CalamityMod.Items.Mounts;
-using Terraria.GameContent.ItemDropRules;
-using Fargowiltas.Items.Tiles;
-using CalamityMod.Items.Weapons.Melee;
+using CalamityMod.Items.Pets;
+using CalamityMod.Items.Placeables.Banners;
+using CalamityMod.Items.Placeables.Furniture;
+using CalamityMod.Items.Placeables.Furniture.BossRelics;
+using CalamityMod.Items.Placeables.Furniture.Trophies;
+using CalamityMod.Items.Placeables.Plates;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.TreasureBags;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
 using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
@@ -26,8 +33,16 @@ using CalamityMod.Items.Fishing.FishingRods;
 using CalamityMod.Items.Tools;
 using Microsoft.CodeAnalysis.Operations;
 
+using CalamityMod.Items.Weapons.Typeless;
+using CalamityMod.Tiles.Furniture.CraftingStations;
+using Fargowiltas.Items.Tiles;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
+using FargowiltasSouls.Content.Items.Accessories.Souls;
+using FargowiltasSouls.Content.Items.Materials;
 using FargowiltasSouls.Content.Items.Summons;
 using CalamityMod.Tiles.Furniture.CraftingStations;
 using CalamityMod.Items.Placeables.Plates;
@@ -35,6 +50,9 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using CalamityMod.Items.Placeables.Furniture;
 using CalamityMod.Items;
 using Terraria.Localization;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
@@ -61,52 +79,52 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 .AddTile(TileID.Anvils)
                 .Register();
             //trinket of chi
-            Recipe tocrecipe = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Accessories.TrinketofChi>());
+            Recipe tocrecipe = Recipe.Create(ModContent.ItemType<TrinketofChi>());
             tocrecipe.AddIngredient(ItemID.ClayBlock, 20);
             tocrecipe.AddIngredient(ItemID.Chain, 2);
-            tocrecipe.AddIngredient(ItemID.RedHusk, 1);
+            tocrecipe.AddIngredient(ItemID.RedHusk);
             tocrecipe.AddTile(TileID.Furnaces);
             tocrecipe.Register();
             //gladiator's locket
-            Recipe glrecipe = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Accessories.GladiatorsLocket>());
+            Recipe glrecipe = Recipe.Create(ModContent.ItemType<GladiatorsLocket>());
             glrecipe.AddIngredient(ItemID.Marble, 20);
             glrecipe.AddIngredient(ItemID.LifeCrystal, 2);
             glrecipe.AddIngredient(ItemID.GoldWatch);
             glrecipe.AddTile(TileID.DemonAltar);
             glrecipe.Register();
-            Recipe glrecipe2 = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Accessories.GladiatorsLocket>());
+            Recipe glrecipe2 = Recipe.Create(ModContent.ItemType<GladiatorsLocket>());
             glrecipe2.AddIngredient(ItemID.Marble, 20);
             glrecipe2.AddIngredient(ItemID.LifeCrystal, 2);
             glrecipe2.AddIngredient(ItemID.PlatinumWatch);
             glrecipe2.AddTile(TileID.DemonAltar);
             glrecipe2.Register();
             //granite core recipe
-            Recipe ugcrecipe = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Accessories.UnstableGraniteCore>());
+            Recipe ugcrecipe = Recipe.Create(ModContent.ItemType<UnstableGraniteCore>());
             ugcrecipe.AddIngredient(ItemID.Granite, 20);
-            ugcrecipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Materials.EnergyCore>(), 2);
-            ugcrecipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.AmidiasSpark>(), 1);
+            ugcrecipe.AddIngredient(ModContent.ItemType<EnergyCore>(), 2);
+            ugcrecipe.AddIngredient(ModContent.ItemType<AmidiasSpark>());
             ugcrecipe.AddTile(TileID.DemonAltar);
             ugcrecipe.Register();
             //symbiote recipe
-            Recipe fgrecipe = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Accessories.FungalSymbiote>());
+            Recipe fgrecipe = Recipe.Create(ModContent.ItemType<FungalSymbiote>());
             fgrecipe.AddIngredient(ItemID.GlowingMushroom, 20);
             fgrecipe.AddIngredient(ItemID.Acorn, 2);
-            fgrecipe.AddIngredient(ItemID.ClayPot, 1);
+            fgrecipe.AddIngredient(ItemID.ClayPot);
             fgrecipe.AddTile(TileID.LivingLoom);
             fgrecipe.Register();
 
             //tundra leash recipe
-            Recipe tlrecipe = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Mounts.TundraLeash>());
+            Recipe tlrecipe = Recipe.Create(ModContent.ItemType<TundraLeash>());
             tlrecipe.AddRecipeGroup("AnySilverBar", 20);
             tlrecipe.AddIngredient(ItemID.Leather, 2);
-            tlrecipe.AddIngredient(ItemID.Bunny, 1);
+            tlrecipe.AddIngredient(ItemID.Bunny);
             tlrecipe.AddTile(TileID.CookingPots);
             tlrecipe.Register();
             //luxor recipe
-            Recipe lgrecipe = Recipe.Create(ModContent.ItemType<CalamityMod.Items.Accessories.LuxorsGift>());
+            Recipe lgrecipe = Recipe.Create(ModContent.ItemType<LuxorsGift>());
             lgrecipe.AddIngredient(ItemID.FossilOre, 20);
             lgrecipe.AddIngredient(ItemID.Ruby, 2);
-            lgrecipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.ScuttlersJewel>(), 1);
+            lgrecipe.AddIngredient(ModContent.ItemType<ScuttlersJewel>());
             lgrecipe.AddTile(TileID.Anvils);
             lgrecipe.Register();
 
@@ -114,297 +132,296 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             Recipe coref = Recipe.Create(ModContent.ItemType<CorruptionEffigy>());
             coref.AddIngredient(ItemID.EbonstoneBlock, 25);
             coref.AddIngredient(ItemID.RottenChunk, 5);
-            coref.AddIngredient(ItemID.AngelStatue, 1);
+            coref.AddIngredient(ItemID.AngelStatue);
             coref.AddTile(TileID.DemonAltar);
             coref.Register();
 
             Recipe crief = Recipe.Create(ModContent.ItemType<CrimsonEffigy>());
             crief.AddIngredient(ItemID.CrimstoneBlock, 25);
             crief.AddIngredient(ItemID.Vertebrae, 5);
-            crief.AddIngredient(ItemID.AngelStatue, 1);
+            crief.AddIngredient(ItemID.AngelStatue);
             crief.AddTile(TileID.DemonAltar);
             crief.Register();
 
-            CreateCalBagRecipes(2489, new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.CrownJewel>() }); //slime
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.DesertScourgeBag>(), new int[6]
+            CreateCalBagRecipes(2489, new[] { ModContent.ItemType<CrownJewel>() }); //slime
+            CreateCalBagRecipes(ModContent.ItemType<DesertScourgeBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.AquaticDischarge>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Barinade>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.StormSpray>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.SeaboundStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.ScourgeoftheDesert>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.SandCloak>()
+                ModContent.ItemType<AquaticDischarge>(),
+                ModContent.ItemType<Barinade>(),
+                ModContent.ItemType<StormSpray>(),
+                ModContent.ItemType<SeaboundStaff>(),
+                ModContent.ItemType<ScourgeoftheDesert>(),
+                ModContent.ItemType<SandCloak>()
             });
-            CreateCalBagRecipes(3319, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Summon.DeathstareRod>() }); //eoc bag
-            CreateCalBagRecipes(1360, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TeardropCleaver>() }); //eoc trophy
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.CrabulonBag>(), new int[6]
+            CreateCalBagRecipes(3319, new[] { ModContent.ItemType<DeathstareRod>() }); //eoc bag
+            CreateCalBagRecipes(1360, new[] { ModContent.ItemType<TeardropCleaver>() }); //eoc trophy
+            CreateCalBagRecipes(ModContent.ItemType<CrabulonBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.MycelialClaws>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Fungicide>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.HyphaeRod>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.PuffShroom>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.InfestedClawmerang>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.Mycoroot>()
+                ModContent.ItemType<MycelialClaws>(),
+                ModContent.ItemType<Fungicide>(),
+                ModContent.ItemType<HyphaeRod>(),
+                ModContent.ItemType<PuffShroom>(),
+                ModContent.ItemType<InfestedClawmerang>(),
+                ModContent.ItemType<Mycoroot>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.HiveMindTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Pets.RottingEyeball>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.PerforatorTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Pets.BloodyVein>() });
-            CreateCalBagRecipes(1364, new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.TheBee>() }); //bee
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.SlimeGodBag>(), new int[5]
+            CreateCalBagRecipes(ModContent.ItemType<HiveMindTrophy>(), new[] { ModContent.ItemType<RottingEyeball>() });
+            CreateCalBagRecipes(ModContent.ItemType<PerforatorTrophy>(), new[] { ModContent.ItemType<BloodyVein>() });
+            CreateCalBagRecipes(1364, new[] { ModContent.ItemType<TheBee>() }); //bee
+            CreateCalBagRecipes(ModContent.ItemType<SlimeGodBag>(), new[]
             {
 
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.OverloadedBlaster>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.AbyssalTome>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.EldritchTome>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.CrimslimeStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.CorroslimeStaff>()
+                ModContent.ItemType<OverloadedBlaster>(),
+                ModContent.ItemType<AbyssalTome>(),
+                ModContent.ItemType<EldritchTome>(),
+                ModContent.ItemType<CrimslimeStaff>(),
+                ModContent.ItemType<CorroslimeStaff>()
             });
-            CreateCalBagRecipes(3324, new int[4]
+            CreateCalBagRecipes(3324, new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Meowthrower>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.BlackHawkRemote>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.BlastBarrel>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.RogueEmblem>()
+                ModContent.ItemType<Meowthrower>(),
+                ModContent.ItemType<BlackHawkRemote>(),
+                ModContent.ItemType<BlastBarrel>(),
+                ModContent.ItemType<RogueEmblem>()
             }); //wof bag
-            CreateCalBagRecipes(1365, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Carnage>() }); //wof trophy
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.CryogenBag>(), new int[6]
+            CreateCalBagRecipes(1365, new[] { ModContent.ItemType<Carnage>() }); //wof trophy
+            CreateCalBagRecipes(ModContent.ItemType<CryogenBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Avalanche>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.HoarfrostBow>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.SnowstormStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.Icebreaker>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.CryoStone>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.FrostFlare>()
+                ModContent.ItemType<Avalanche>(),
+                ModContent.ItemType<HoarfrostBow>(),
+                ModContent.ItemType<SnowstormStaff>(),
+                ModContent.ItemType<Icebreaker>(),
+                ModContent.ItemType<CryoStone>(),
+                ModContent.ItemType<FrostFlare>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.CryogenTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Summon.GlacialEmbrace>() });
-            CreateCalBagRecipes(1368, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Arbalest>() }); //twins 1
-            CreateCalBagRecipes(1369, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Arbalest>() }); //twins 2
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.AquaticScourgeBag>(), new int[6]
+            CreateCalBagRecipes(ModContent.ItemType<CryogenTrophy>(), new[] { ModContent.ItemType<GlacialEmbrace>() });
+            CreateCalBagRecipes(1368, new[] { ModContent.ItemType<Arbalest>() }); //twins 1
+            CreateCalBagRecipes(1369, new[] { ModContent.ItemType<Arbalest>() }); //twins 2
+            CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.SubmarineShocker>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Barinautical>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Downpour>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.DeepseaStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.ScourgeoftheSeas>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.CorrosiveSpine>()
+                ModContent.ItemType<SubmarineShocker>(),
+                ModContent.ItemType<Barinautical>(),
+                ModContent.ItemType<Downpour>(),
+                ModContent.ItemType<DeepseaStaff>(),
+                ModContent.ItemType<ScourgeoftheSeas>(),
+                ModContent.ItemType<CorrosiveSpine>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.AquaticScourgeTrophy>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeTrophy>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.SeasSearing>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.DeepDiver>()
+                ModContent.ItemType<SeasSearing>(),
+                ModContent.ItemType<DeepDiver>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.BrimstoneWaifuBag>(), new int[6]
+            CreateCalBagRecipes(ModContent.ItemType<BrimstoneWaifuBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Brimlance>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.SeethingDischarge>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.DormantBrimseeker>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.Gehenna>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.Abaddon>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.RoseStone>()
+                ModContent.ItemType<Brimlance>(),
+                ModContent.ItemType<SeethingDischarge>(),
+                ModContent.ItemType<DormantBrimseeker>(),
+                ModContent.ItemType<Abaddon>(),
+                ModContent.ItemType<RoseStone>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.BrimstoneElementalTrophy>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<BrimstoneElementalTrophy>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Hellborn>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.FlameLickedShell>()
+                ModContent.ItemType<Hellborn>(),
+                ModContent.ItemType<FlameLickedShell>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.CalamitasCloneBag>(), new int[7]
+            CreateCalBagRecipes(ModContent.ItemType<CalamitasCloneBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Oblivion>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Animosity>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.HavocsBreath>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.LashesofChaos>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.EntropysVigil>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.CrushsawCrasher>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.ChaosStone>()
+                ModContent.ItemType<Oblivion>(),
+                ModContent.ItemType<Animosity>(),
+                ModContent.ItemType<HavocsBreath>(),
+                ModContent.ItemType<LashesofChaos>(),
+                ModContent.ItemType<EntropysVigil>(),
+                ModContent.ItemType<CrushsawCrasher>(),
+                ModContent.ItemType<ChaosStone>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.CalamitasCloneTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.Regenator>() });
-            CreateCalBagRecipes(3328, new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.BloomStone>() }); //plant bag
-            CreateCalBagRecipes(1370, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.BlossomFlux>() }); //plant trophy
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.LeviathanBag>(), new int[8]
+            CreateCalBagRecipes(ModContent.ItemType<CalamitasCloneTrophy>(), new[] { ModContent.ItemType<Regenator>() });
+            CreateCalBagRecipes(3328, new[] { ModContent.ItemType<BloomStone>() }); //plant bag
+            CreateCalBagRecipes(1370, new[] { ModContent.ItemType<BlossomFlux>() }); //plant trophy
+            CreateCalBagRecipes(ModContent.ItemType<LeviathanBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Greentide>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Leviatitan>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.AnahitasArpeggio>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Atlantis>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.GastricBelcherStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.BrackishFlask>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.LeviathanTeeth>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.PearlofEnthrallment>()
+                ModContent.ItemType<Greentide>(),
+                ModContent.ItemType<Leviatitan>(),
+                ModContent.ItemType<AnahitasArpeggio>(),
+                ModContent.ItemType<Atlantis>(),
+                ModContent.ItemType<GastricBelcherStaff>(),
+                ModContent.ItemType<BrackishFlask>(),
+                ModContent.ItemType<LeviathanTeeth>(),
+                ModContent.ItemType<PearlofEnthrallment>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.LeviathanTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.TheCommunity>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.AnahitaTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.TheCommunity>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.AstrumAureusBag>(), new int[5]
+            CreateCalBagRecipes(ModContent.ItemType<LeviathanTrophy>(), new[] { ModContent.ItemType<TheCommunity>() });
+            CreateCalBagRecipes(ModContent.ItemType<AnahitaTrophy>(), new[] { ModContent.ItemType<TheCommunity>() });
+            CreateCalBagRecipes(ModContent.ItemType<AstrumAureusBag>(), new[]
             {
 
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Nebulash>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.AuroraBlazer>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.AlulaAustralis>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.BorealisBomber>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.AuroradicalThrow>()
+                ModContent.ItemType<Nebulash>(),
+                ModContent.ItemType<AuroraBlazer>(),
+                ModContent.ItemType<AlulaAustralis>(),
+                ModContent.ItemType<BorealisBomber>(),
+                ModContent.ItemType<AuroradicalThrow>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.AstrumAureusTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.LeonidProgenitor>() });
-            CreateCalBagRecipes(1371, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Melee.AegisBlade>() }); //golem
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.PlaguebringerGoliathBag>(), new int[11]
+            CreateCalBagRecipes(ModContent.ItemType<AstrumAureusTrophy>(), new[] { ModContent.ItemType<LeonidProgenitor>() });
+            CreateCalBagRecipes(1371, new[] { ModContent.ItemType<AegisBlade>() }); //golem
+            CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Virulence>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.DiseasedPike>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Pandemic>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TheHive>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.BlightSpewer>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Malevolence>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.PestilentDefiler>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.PlagueStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.FuelCellBundle>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.InfectedRemote>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.TheSyringe>(),
+                ModContent.ItemType<Virulence>(),
+                ModContent.ItemType<DiseasedPike>(),
+                ModContent.ItemType<Pandemic>(),
+                ModContent.ItemType<TheHive>(),
+                ModContent.ItemType<BlightSpewer>(),
+                ModContent.ItemType<Malevolence>(),
+                ModContent.ItemType<PestilentDefiler>(),
+                ModContent.ItemType<PlagueStaff>(),
+                ModContent.ItemType<FuelCellBundle>(),
+                ModContent.ItemType<InfectedRemote>(),
+                ModContent.ItemType<TheSyringe>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.PlaguebringerGoliathTrophy>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathTrophy>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.Malachite>(),
-                ModContent.ItemType<CalamityMod.Items.Pets.PlagueCaller>(),
+                ModContent.ItemType<Malachite>(),
+                ModContent.ItemType<PlagueCaller>(),
             });
-            CreateCalBagRecipes(3330, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.DukesDecapitator>() }); //fishron bag
-            CreateCalBagRecipes(2589, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Melee.BrinyBaron>() }); //fishron trophy
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.RavagerBag>(), new int[7]
+            CreateCalBagRecipes(3330, new[] { ModContent.ItemType<DukesDecapitator>() }); //fishron bag
+            CreateCalBagRecipes(2589, new[] { ModContent.ItemType<BrinyBaron>() }); //fishron trophy
+            CreateCalBagRecipes(ModContent.ItemType<RavagerBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.UltimusCleaver>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.RealmRavager>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Hematemesis>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.SpikecragStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.CraniumSmasher>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.BloodPact>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.FleshTotem>()
+                ModContent.ItemType<UltimusCleaver>(),
+                ModContent.ItemType<RealmRavager>(),
+                ModContent.ItemType<Hematemesis>(),
+                ModContent.ItemType<SpikecragStaff>(),
+                ModContent.ItemType<CraniumSmasher>(),
+                ModContent.ItemType<BloodPact>(),
+                ModContent.ItemType<FleshTotem>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.RavagerTrophy>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<RavagerTrophy>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Vesuvius>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.CorpusAvertor>()
+                ModContent.ItemType<Vesuvius>(),
+                ModContent.ItemType<CorpusAvertor>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.AstrumDeusBag>(), new int[6]
+            CreateCalBagRecipes(ModContent.ItemType<AstrumDeusBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TheMicrowave>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.StarSputter>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.StarShower>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.StarspawnHelixStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.RegulusRiot>(),
-                ModContent.ItemType<CalamityMod.Items.Pets.ChromaticOrb>()
+                ModContent.ItemType<TheMicrowave>(),
+                ModContent.ItemType<StarSputter>(),
+                ModContent.ItemType<StarShower>(),
+                ModContent.ItemType<StarspawnHelixStaff>(),
+                ModContent.ItemType<RegulusRiot>(),
+                ModContent.ItemType<ChromaticOrb>()
             });
-            CreateCalBagRecipes(3332, new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.UtensilPoker>() }); //moon lodr
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.BossRelics.ProfanedGuardiansRelic>(), new int[3]
+            CreateCalBagRecipes(3332, new[] { ModContent.ItemType<UtensilPoker>() }); //moon lodr
+            CreateCalBagRecipes(ModContent.ItemType<ProfanedGuardiansRelic>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Typeless.RelicOfDeliverance>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Typeless.RelicOfResilience>(),
-                ModContent.ItemType<CalamityMod.Items.RelicOfConvergence>(),
+                ModContent.ItemType<RelicOfDeliverance>(),
+                ModContent.ItemType<RelicOfResilience>(),
+                ModContent.ItemType<RelicOfConvergence>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.ProfanedGuardianTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Accessories.WarbanneroftheSun>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.DragonfollyBag>(), new int[4]
+            CreateCalBagRecipes(ModContent.ItemType<ProfanedGuardianTrophy>(), new[] { ModContent.ItemType<WarbanneroftheSun>() });
+            CreateCalBagRecipes(ModContent.ItemType<DragonfollyBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.GildedProboscis>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.GoldenEagle>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.RougeSlash>(),
-                ModContent.ItemType<CalamityMod.Items.Mounts.FollyFeed>()
+                ModContent.ItemType<GildedProboscis>(),
+                ModContent.ItemType<GoldenEagle>(),
+                ModContent.ItemType<RougeSlash>(),
+                ModContent.ItemType<FollyFeed>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.DragonfollyTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Swordsplosion>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.ProvidenceBag>(), new int[9]
+            CreateCalBagRecipes(ModContent.ItemType<DragonfollyTrophy>(), new[] { ModContent.ItemType<Swordsplosion>() });
+            CreateCalBagRecipes(ModContent.ItemType<ProvidenceBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.HolyCollider>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.SolarFlare>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.BlissfulBombardier>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TelluricGlare>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.PurgeGuzzler>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.DazzlingStabberStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.MoltenAmputator>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.Wings.ElysianWings>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.ElysianAegis>()
+                ModContent.ItemType<HolyCollider>(),
+                ModContent.ItemType<SolarFlare>(),
+                ModContent.ItemType<BlissfulBombardier>(),
+                ModContent.ItemType<TelluricGlare>(),
+                ModContent.ItemType<PurgeGuzzler>(),
+                ModContent.ItemType<DazzlingStabberStaff>(),
+                ModContent.ItemType<MoltenAmputator>(),
+                ModContent.ItemType<ElysianWings>(),
+                ModContent.ItemType<ElysianAegis>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.ProvidenceTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.PristineFury>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.StormWeaverBag>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<ProvidenceTrophy>(), new[] { ModContent.ItemType<PristineFury>() });
+            CreateCalBagRecipes(ModContent.ItemType<StormWeaverBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TheStorm>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.StormDragoon>(),
+                ModContent.ItemType<TheStorm>(),
+                ModContent.ItemType<StormDragoon>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.WeaverTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Thunderstorm>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.CeaselessVoidBag>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<WeaverTrophy>(), new[] { ModContent.ItemType<Thunderstorm>() });
+            CreateCalBagRecipes(ModContent.ItemType<CeaselessVoidBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.MirrorBlade>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.VoidConcentrationStaff>(),
+                ModContent.ItemType<MirrorBlade>(),
+                ModContent.ItemType<VoidConcentrationStaff>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.SignusBag>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<SignusBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.Cosmilamp>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.CosmicKunai>(),
+                ModContent.ItemType<Cosmilamp>(),
+                ModContent.ItemType<CosmicKunai>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.PolterghastBag>(), new int[7]
+            CreateCalBagRecipes(ModContent.ItemType<PolterghastBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TerrorBlade>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.BansheeHook>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.DaemonsFlame>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.FatesReveal>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.GhastlyVisage>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.EtherealSubjugator>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.GhoulishGouger>(),
+                ModContent.ItemType<TerrorBlade>(),
+                ModContent.ItemType<BansheeHook>(),
+                ModContent.ItemType<DaemonsFlame>(),
+                ModContent.ItemType<FatesReveal>(),
+                ModContent.ItemType<GhastlyVisage>(),
+                ModContent.ItemType<EtherealSubjugator>(),
+                ModContent.ItemType<GhoulishGouger>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.OldDukeBag>(), new int[7]
+            CreateCalBagRecipes(ModContent.ItemType<OldDukeBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.InsidiousImpaler>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.FetidEmesis>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.SepticSkewer>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.VitriolicViper>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.CadaverousCarrion>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.ToxicantTwister>(),
-                ModContent.ItemType<CalamityMod.Items.Accessories.OldDukeScales>(),
+                ModContent.ItemType<InsidiousImpaler>(),
+                ModContent.ItemType<FetidEmesis>(),
+                ModContent.ItemType<SepticSkewer>(),
+                ModContent.ItemType<VitriolicViper>(),
+                ModContent.ItemType<CadaverousCarrion>(),
+                ModContent.ItemType<ToxicantTwister>(),
+                ModContent.ItemType<OldDukeScales>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.OldDukeTrophy>(), new int[1] { ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.TheOldReaper>() });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.DevourerofGodsBag>(), new int[6]
+            CreateCalBagRecipes(ModContent.ItemType<OldDukeTrophy>(), new[] { ModContent.ItemType<TheOldReaper>() });
+            CreateCalBagRecipes(ModContent.ItemType<DevourerofGodsBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Excelsus>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TheObliterator>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Deathwind>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.DeathhailStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.StaffoftheMechworm>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.Eradicator>(),
+                ModContent.ItemType<Excelsus>(),
+                ModContent.ItemType<TheObliterator>(),
+                ModContent.ItemType<Deathwind>(),
+                ModContent.ItemType<DeathhailStaff>(),
+                ModContent.ItemType<StaffoftheMechworm>(),
+                ModContent.ItemType<Eradicator>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.DevourerofGodsTrophy>(), new int[2]
+            CreateCalBagRecipes(ModContent.ItemType<DevourerofGodsTrophy>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.CosmicDischarge>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Norfleet>()
+                ModContent.ItemType<CosmicDischarge>(),
+                ModContent.ItemType<Norfleet>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.YharonBag>(), new int[8]
+            CreateCalBagRecipes(ModContent.ItemType<YharonBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.TheBurningSky>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.DragonRage>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.DragonsBreath>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.ChickenCannon>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.PhoenixFlameBarrage>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.YharonsKindleStaff>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.Wrathwing>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.FinalDawn>(),
+                ModContent.ItemType<TheBurningSky>(),
+                ModContent.ItemType<DragonRage>(),
+                ModContent.ItemType<DragonsBreath>(),
+                ModContent.ItemType<ChickenCannon>(),
+                ModContent.ItemType<PhoenixFlameBarrage>(),
+                ModContent.ItemType<YharonsKindleStaff>(),
+                ModContent.ItemType<Wrathwing>(),
+                ModContent.ItemType<FinalDawn>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.Placeables.Furniture.Trophies.YharonTrophy>(), new int[3]
+            CreateCalBagRecipes(ModContent.ItemType<YharonTrophy>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.YharimsCrystal>(),
-                ModContent.ItemType<CalamityMod.Items.Pets.ForgottenDragonEgg>(),
-                ModContent.ItemType<CalamityMod.Items.Pets.McNuggets>()
+                ModContent.ItemType<YharimsCrystal>(),
+                ModContent.ItemType<ForgottenDragonEgg>(),
+                ModContent.ItemType<McNuggets>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.DraedonBag>(), new int[8]
+            CreateCalBagRecipes(ModContent.ItemType<DraedonBag>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.SpineOfThanatos>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.PhotonRipper>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TheJailor>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.SurgeDriver>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.AresExoskeleton>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.AtlasMunitionsBeacon>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.TheAtomSplitter>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.RefractionRotor>(),
+                ModContent.ItemType<SpineOfThanatos>(),
+                ModContent.ItemType<PhotonRipper>(),
+                ModContent.ItemType<TheJailor>(),
+                ModContent.ItemType<SurgeDriver>(),
+                ModContent.ItemType<AresExoskeleton>(),
+                ModContent.ItemType<AtlasMunitionsBeacon>(),
+                ModContent.ItemType<TheAtomSplitter>(),
+                ModContent.ItemType<RefractionRotor>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<CalamityMod.Items.TreasureBags.CalamitasCoffer>(), new int[7]
+            CreateCalBagRecipes(ModContent.ItemType<CalamitasCoffer>(), new[]
             {
-                ModContent.ItemType<CalamityMod.Items.Weapons.Melee.Violence>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Condemnation>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Heresy>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Vehemence>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.Vigilance>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.Perdition>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.Sacrifice>(),
+                ModContent.ItemType<Violence>(),
+                ModContent.ItemType<Condemnation>(),
+                ModContent.ItemType<Heresy>(),
+                ModContent.ItemType<Vehemence>(),
+                ModContent.ItemType<Vigilance>(),
+                ModContent.ItemType<Perdition>(),
+                ModContent.ItemType<Sacrifice>(),
 
             });
 
@@ -416,33 +433,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
 
-            AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Melee.BurntSienna>());
-            AddBannerToItemRecipe(ItemID.DemonBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Melee.BladecrestOathsword>());
-            AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Magic.PlasmaRod>());
-            AddBannerToItemRecipe(ModContent.ItemType<CalamityMod.Items.Placeables.Banners.BoxJellyfishBanner>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.AbyssShocker>(), 1, 1, ItemID.Bone);
-            AddBannerToItemRecipe(1682, ModContent.ItemType<CalamityMod.Items.Weapons.Summon.StaffOfNecrosteocytes>());
-            AddBannerToItemRecipe(ModContent.ItemType<CalamityMod.Items.Placeables.Banners.NuclearToadBanner>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.CausticCroakerStaff>());
+            AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ModContent.ItemType<BurntSienna>());
+            AddBannerToItemRecipe(ItemID.DemonBanner, ModContent.ItemType<BladecrestOathsword>());
+            AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ModContent.ItemType<PlasmaRod>());
+            AddBannerToItemRecipe(ModContent.ItemType<BoxJellyfishBanner>(),
+                ModContent.ItemType<AbyssShocker>(), 1, 1, ItemID.Bone);
+            AddBannerToItemRecipe(1682, ModContent.ItemType<StaffOfNecrosteocytes>());
+            AddBannerToItemRecipe(ModContent.ItemType<NuclearToadBanner>(),
+                ModContent.ItemType<CausticCroakerStaff>());
             //hardmode
-            AddBannerToItemRecipe(ItemID.MossHornetBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Needler>());
-            AddBannerToItemRecipe(ItemID.GiantCursedSkullBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Magic.Keelhaul>(), 1, 1,
-                ModContent.ItemType<CalamityMod.Items.Accessories.LeviathanAmbergris>());
-            AddBannerToItemRecipe(ModContent.ItemType<CalamityMod.Items.Placeables.Banners.AcidEelBanner>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Magic.SlitheringEels>(), 1, 1,
-                ModContent.ItemType<CalamityMod.Items.Materials.CorrodedFossil>());
-            AddBannerToItemRecipe(ItemID.NecromancerBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Magic.WrathoftheAncients>());
-            AddBannerToItemRecipe(ModContent.ItemType<CalamityMod.Items.Placeables.Banners.OrthoceraBanner>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.OrthoceraShell>());
-            AddBannerToItemRecipe(ItemID.DeadlySphereBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.DefectiveSphere>());
-            AddBannerToItemRecipe(ItemID.ClingerBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.CursedDagger>());
-            AddBannerToItemRecipe(ItemID.IchorStickerBanner, ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.IchorSpear>());
+            AddBannerToItemRecipe(ItemID.MossHornetBanner, ModContent.ItemType<Needler>());
+            AddBannerToItemRecipe(ItemID.GiantCursedSkullBanner, ModContent.ItemType<Keelhaul>(), 1, 1,
+                ModContent.ItemType<LeviathanAmbergris>());
+            AddBannerToItemRecipe(ModContent.ItemType<AcidEelBanner>(),
+                ModContent.ItemType<SlitheringEels>(), 1, 1,
+                ModContent.ItemType<CorrodedFossil>());
+            AddBannerToItemRecipe(ItemID.NecromancerBanner, ModContent.ItemType<WrathoftheAncients>());
+            AddBannerToItemRecipe(ModContent.ItemType<OrthoceraBanner>(),
+                ModContent.ItemType<OrthoceraShell>());
+            AddBannerToItemRecipe(ItemID.DeadlySphereBanner, ModContent.ItemType<DefectiveSphere>());
+            AddBannerToItemRecipe(ItemID.ClingerBanner, ModContent.ItemType<CursedDagger>());
+            AddBannerToItemRecipe(ItemID.IchorStickerBanner, ModContent.ItemType<IchorSpear>());
             //post-ml
-            AddBannerToItemRecipe(ModContent.ItemType<CalamityMod.Items.Placeables.Banners.ScryllarBanner>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.GuidelightofOblivion>(), 1, 1,
-                ModContent.ItemType<CalamityMod.Items.Materials.DivineGeode>());
-            AddBannerToItemRecipe(ModContent.ItemType<CalamityMod.Items.Placeables.Banners.ImpiousImmolatorBanner>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Summon.SanctifiedSpark>());
+            AddBannerToItemRecipe(ModContent.ItemType<ScryllarBanner>(),
+                ModContent.ItemType<GuidelightofOblivion>(), 1, 1,
+                ModContent.ItemType<DivineGeode>());
+            AddBannerToItemRecipe(ModContent.ItemType<ImpiousImmolatorBanner>(),
+                ModContent.ItemType<SanctifiedSpark>());
 
             void AddBannerToItemRecipe(int banner, int result, int bannerAmount = 1, int resultAmount = 1, int item2type = -1, int item2amount = 1, int tile = 220)
             {
@@ -523,7 +540,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (recipe.HasResult(ModContent.ItemType<BerserkerSoul>()) && recipe.HasIngredient(ItemID.StingerNecklace))
                 {
-                    if (recipe.RemoveIngredient(ItemID.SharkToothNecklace))
+                    if (recipe.RemoveIngredient(ItemID.StingerNecklace))
                         recipe.AddIngredient(ModContent.ItemType<ReaperToothNecklace>());
                     if (recipe.RemoveIngredient(ItemID.FireGauntlet))
                         recipe.AddIngredient(ModContent.ItemType<ElementalGauntlet>());
@@ -633,7 +650,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 #endregion
 
                 #region Balance and Progression Locks
-                if (CalamityConfig.Instance.BalanceRework)
+                if (DLCCalamityConfig.Instance.BalanceRework)
                 {
                     if (recipe.HasIngredient<EternalEnergy>() && !recipe.HasIngredient<Rock>())
                     {
@@ -655,7 +672,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     {
                         recipe.AddIngredient(ModContent.ItemType<AuricBar>(), 2);
                     }
-                    List<int> Tier2Souls = new List<int>() 
+                    List<int> Tier2Souls = new List<int>
                     {
                         ModContent.ItemType<TerrariaSoul>(), 
                         ModContent.ItemType<UniverseSoul>(),

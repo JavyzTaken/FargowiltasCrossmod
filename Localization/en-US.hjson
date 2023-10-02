@@ -170,25 +170,46 @@ Mods: {
 
 	FargowiltasCrossmod: {
 		EternityRevDifficulty: {
-			Name: Eternity Mode (Revengeance)
+			Name: Eternity-Revengeance Mode
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''
-				[c/ff0000:Not] intended for use with Master Mode.
-				Toggles [c/00FFFF:Eternity Mode] [c/880808:and Revengeance Mode,] and enables Master Mode drops.
-				By default, [c/00FFFF:Eternity Mode] takes priority for bosses that would be changed by both. This can be changed in the configs.
+				Toggles [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
+				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+
 				-Deviantt provides a starter pack
 				-Improves base stats
 				-Debuffs wear off faster when not attacking
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
-			Activation: Eternity Mode (Revengeance) has activated!
-			Deactivation: Eternity Mode (Revengeance) has deactivated.
+			Activation: Eternity-Revengeance Mode has activated!
+			Deactivation: Eternity-Revengeance Mode has deactivated.
+		}
+
+		EternityDeathDifficulty: {
+			Name: Eternity-Death Mode
+			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes.]"
+			ExpandedDescription:
+				'''
+				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
+				Expanded AI for some vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+
+				-Deviantt provides a starter pack
+				-Improves base stats
+				-Debuffs wear off faster when not attacking
+				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+				'''
+			Activation: Eternity-Death Mode has activated!
+			Deactivation: Eternity-Death Mode has deactivated.
 		}
 
 		Configs: {
-			CalamityConfig: {
+			DLCCalamityConfig: {
 				DisplayName: Calamity Config
 
 				Headers: {
@@ -204,7 +225,6 @@ Mods: {
 						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. 
 						Makes Souls content interact with Calamity mechanics, for example Defense Damage.
 						Recommended to keep enabled.
-						Changing requires a reload.
 						'''
 				}
 
@@ -213,7 +233,7 @@ Mods: {
 					Tooltip:
 						'''
 						Enables Eternity Mode boss behaviour to take priority over Revengeance Mode boss behaviour and other Calamity difficulties.
-						Applies to bosses that would otherwise be changed by both, such as vanilla bosses. 
+						Some Calamity bosses have Eternity Mode changes when this is enabled.
 						Disabling this makes Calamity difficulties take priority over Eternity.
 						'''
 				}
@@ -453,6 +473,34 @@ Mods: {
 					Effects of Force of Annihilation
 					'''
 			}
+		}
+
+		NPCs: {
+			FungalClump.DisplayName: Fungal Clump
+			LargePerforatorBody.DisplayName: Large Perforator Body
+			LargePerforatorBody2.DisplayName: Large Perforator Body2
+			LargePerforatorHead.DisplayName: Large Perforator Head
+			LargePerforatorTail.DisplayName: Large Perforator Tail
+		}
+
+		Projectiles: {
+			FungusBall.DisplayName: Fungus Ball
+			MushroomSpear.DisplayName: Mushroom Spear
+			ShroomGas.DisplayName: Shroom Gas
+			SandChunk.DisplayName: Sand Chunk
+			SuckedSandBlast.DisplayName: Sucked Sand Blast
+			CursedLightning.DisplayName: Cursed Lightning
+			CurvingCursedFlames.DisplayName: Curving Cursed Flames
+			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
+			ShadeLightningCloud.DisplayName: Shade Lightning Cloud
+			ToothBall.DisplayName: Tooth Ball
+			HomingRocket.DisplayName: Homing Rocket
+			HomingSickle.DisplayName: Homing Sickle
+			HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
+			BouncingFireball.DisplayName: Bouncing Fireball
+			BigLight.DisplayName: Big Light
+			DestructionBolt.DisplayName: Destruction Bolt
+			StarofDestruction.DisplayName: Starof Destruction
 		}
 	}
 }

@@ -1,15 +1,9 @@
 ﻿using CalamityMod.Systems;
 using CalamityMod.World;
-using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -22,10 +16,10 @@ namespace FargowiltasCrossmod.Core.Calamity
     {
         public override bool Enabled
         {
-            get => WorldSavingSystem.EternityRev;
+            get => DLCWorldSavingSystem.EternityRev;
             set
             {
-                WorldSavingSystem.EternityRev = value;
+                DLCWorldSavingSystem.EternityRev = value;
                 if (value)
                 {
                     CalamityWorld.revenge = true;

@@ -4,11 +4,11 @@ using Terraria.ModLoader.Config;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalamityConfig : ModConfig
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class DLCCalamityConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
-        public static CalamityConfig Instance => ModContent.GetInstance<CalamityConfig>();
+        public static DLCCalamityConfig Instance => ModContent.GetInstance<DLCCalamityConfig>();
 
         [Header("Modes")] // Title
 

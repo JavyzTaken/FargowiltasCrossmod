@@ -2,17 +2,16 @@
 using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
-using CalamityMod.Items.Accessories.Wings;
 using CalamityMod.Items.PermanentBoosters;
 using CalamityMod.Items.Potions.Alcohol;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
-using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
@@ -21,19 +20,14 @@ using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Toggler;
-using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
@@ -83,7 +77,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void SetDefaults(Item item)
         {
             //Progression balance changes
-            if (Core.Calamity.CalamityConfig.Instance.BalanceRework)
+            if (Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
                 float balance  = BalanceChange(item);
                 if (balance != 1)
@@ -118,7 +112,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 || item.type == ModContent.ItemType<StatisNinjaBelt>() || item.type == ModContent.ItemType<StatisVoidSash>() || item.type == ModContent.ItemType<ShieldoftheHighRuler>()
                 || (item.type == ModContent.ItemType<DeepDiver>() && player.wet) || player.Calamity().plaguebringerPatronSet)
             {
-                player.GetModPlayer<FargoSoulsPlayer>().HasDash = true;
+                player.FargoSouls().HasDash = true;
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -129,7 +123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (player.GetToggleValue("AsgardianAegis"))
                 {
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
-                    player.GetModPlayer<FargoSoulsPlayer>().HasDash = true;
+                    player.FargoSouls().HasDash = true;
                 }
                 
                 if (player.GetToggleValue("RampartofDeities"))
@@ -140,6 +134,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
                 }
+            }
+            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            {
+                //ModContent.GetInstance<ReaperToothNecklace>().UpdateAccessory(player, hideVisual);
+                player.GetArmorPenetration<GenericDamageClass>() += 15f;
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -215,9 +214,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return false;
             }
-            if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.CalamityConfig.Instance.BalanceRework)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
-                return player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
+                return player.FargoSouls().MutantsPactSlot;
             }
             return true;
         }
@@ -235,14 +234,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
-            if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.CalamityConfig.Instance.BalanceRework)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
 
 
             string key = "Mods.FargowiltasCrossmod.Items.AddedEffects.";
-            
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
@@ -292,7 +290,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     Language.GetTextValue(key + "CalamityTrawler")));
             }
             #region Item Balance
-            if (Core.Calamity.CalamityConfig.Instance.BalanceRework)
+            if (Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
 
@@ -315,11 +313,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalExtraSlotPlayer : ModPlayer
     {
-        public bool MutantPactShouldBeEnabled = false;
+        public bool MutantPactShouldBeEnabled;
         public override void PostUpdate()
         {
-            ref bool MutantsPactSlot = ref Player.GetModPlayer<FargoSoulsPlayer>().MutantsPactSlot;
-            if (Player.GetModPlayer<CalamityPlayer>().extraAccessoryML && Core.Calamity.CalamityConfig.Instance.BalanceRework) 
+            ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
+            if (Player.Calamity().extraAccessoryML && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
                 if (MutantsPactSlot)
                 {
@@ -347,7 +345,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //this is ugly but it has to be like this
             void DropItem(Item item)
             {
-                int i = Item.NewItem(Player.GetSource_DropAsItem(), Player.Center, item);
+                Item.NewItem(Player.GetSource_DropAsItem(), Player.Center, item);
             }
             void DropSlot(ref ModAccessorySlot slot)
             {

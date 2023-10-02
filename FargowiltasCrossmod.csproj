@@ -8,80 +8,21 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\AstralEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\AstralEnchantment_Shield.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\LunicCorpsEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\Malicious.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\TitanHeartEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\TitanHeartEnchantment_Shield.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Forces\AnnihilationForce.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Forces\DesolationForce.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Souls\TyrantSoul.png" />
-    <None Remove="Content\Thorium\Buffs\GildedSightDB.cs~RF1504f37.TMP" />
-    <None Remove="Content\Thorium\DragonMinionBody.png" />
-    <None Remove="Content\Thorium\DragonMinionBody2.png" />
-    <None Remove="Content\Thorium\DragonMinionHead.png" />
-    <None Remove="Content\Thorium\DragonMinionTail.png" />
-    <None Remove="Content\Thorium\FungusSpore.png" />
-    <None Remove="Content\Thorium\KluexBlast.png" />
-    <None Remove="Content\Thorium\KluexOrb.png" />
-    <None Remove="Content\Thorium\LivingWood_GrowRoots.png" />
-    <None Remove="Content\Thorium\LivingWood_Roots.png" />
-    <None Remove="Content\Thorium\LodeStonePlatform.png" />
-    <None Remove="Content\Thorium\Steel_Parry.png" />
-    <None Remove="Content\Thorium\Valadium_Chunk.png" />
-    <None Remove="localization\en-US.hjson" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="CalamityMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
-    </Reference>
-    <Reference Include="FargowiltasSouls">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
-    </Reference>
-    <Reference Include="Libraries\Fargowiltas.dll" />
-    <Reference Include="ThoriumMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
-    </Reference>
+    <Reference Include="Libraries\*.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\EternityDeathIcon.png" />
     <None Remove="Assets\EternityRevIcon.png" />
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Remove="Libraries\CalamityMod.dll" />
-    <Reference Remove="Libraries\FargowiltasSouls.dll" />
-    <Reference Remove="Libraries\ThoriumMod.dll" />
+    <None Remove="icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Remove="Content\Thorium\temp\**" />
-    <Compile Remove="Content\Thorium\temp\**" />
-    <EmbeddedResource Remove="Content\Thorium\temp\**" />
-    <None Remove="Content\Thorium\temp\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Remove="Libraries\CalamityMod.dll" />
-    <Reference Remove="Libraries\Fargowiltas.dll" />
-    <Reference Remove="Libraries\ThoriumMod.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CalamityMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
-    </Reference>
-    <Reference Include="Fargowiltas">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
-    </Reference>
-    <Reference Include="ThoriumMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
-    </Reference>
+    <Folder Include="Core\BaseClasses\" />
   </ItemGroup>
 </Project>

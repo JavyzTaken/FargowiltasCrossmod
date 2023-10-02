@@ -1,30 +1,26 @@
 ﻿using Fargowiltas.NPCs;
-using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Common.Systems
+namespace FargowiltasCrossmod.Core.Systems
 {
     public class WorldUpdatingSystem : ModSystem
     {
         public bool emodeOverRev => ModContent.GetInstance<CalamityConfig>().EternityPriorityOverRev;
         public override void PreUpdateWorld()
         {
-            if (ModLoader.HasMod("CalamityMod"))
-            ModLoader.GetMod(ModCompatibility.SoulsMod.Name).Call("EternityVanillaBossBehaviour", emodeOverRev);
+            if (ModCompatibility.Calamity.Loaded)
+            {
+                ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev);
+            }
+            
         }
         public override void PostUpdateWorld()
         {
-            if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out Mod cal))
+            if (ModCompatibility.Calamity.Loaded)
             {
                 if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !FargowiltasSouls.Core.Systems.WorldSavingSystem.SpawnedDevi && Main.netMode != NetmodeID.MultiplayerClient)
                 {

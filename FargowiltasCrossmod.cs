@@ -1,8 +1,4 @@
 using CalamityMod;
-using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
-using System.Linq;
-using System.Reflection;
 using Terraria.ID;
 using Terraria.ModLoader; 
 using MonoMod.RuntimeDetour;
@@ -11,10 +7,7 @@ using MonoMod.RuntimeDetour.HookGen;
 using System;
 using FargowiltasSouls.Core.Toggler;
 using System.Collections.Generic;
-using FargowiltasCrossmod.Content.Calamity.Toggles;
-using CalamityMod.Systems;
-using Terraria;
-using CalamityMod.Events;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod
 {
@@ -142,5 +135,24 @@ namespace FargowiltasCrossmod
             if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
         }
+    }
+        if (toggles.Active)
+        {
+            ModContent.GetInstance<FargowiltasCrossmod>().Logger.Info($"ToggleCollection found: {nameof(type)}");
+            List<Toggle> toggleCollectionChildren = toggles.Load();
+            foreach (Toggle toggle in toggleCollectionChildren)
+            {
+                ToggleLoader.RegisterToggle(toggle);
+            }
+        }
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public static ref List<int> pierceResistExceptionList => ref CalamityLists.pierceResistExceptionList;
+
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public override void PostSetupContent()
+    {
+        if (ModCompatibility.Calamity.Loaded)
+         pierceResistExceptionList.Add(ProjectileID.FinalFractal);
     }
 }

@@ -1,5 +1,6 @@
 using Terraria;
-using Terraria.ModLoader; using FargowiltasCrossmod.Core;
+using Terraria.ModLoader;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
 using CalamityMod.World;
@@ -7,8 +8,12 @@ using Terraria.GameInput;
 using Terraria.DataStructures;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls.Core.ModPlayers;
-using ThoriumMod.PlayerLayers;
 using System.Collections.Generic;
+//using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using System;
+using FargowiltasCrossmod.Core.Systems;
+using CalamityMod.Events;
+using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Calamity
@@ -539,9 +544,14 @@ namespace FargowiltasCrossmod.Content.Calamity
 
             //umbra
             if (UmbraCrazyRegen)
-            {
+        public override void PostUpdateBuffs()
+        {
+            if (!DLCWorldSavingSystem.EternityRev)
+                return;
+            //copied from emode player buffs, reverse effects
                 UmbraphileProjHitEffect(damageDone);
 
+            //Player.pickSpeed -= 0.25f;
             }
 
             //bloodflare
@@ -554,6 +564,8 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 StatigelProjHitEffect(proj, target, damageDone, hit.Crit);
             }
+            //Player.tileSpeed += 0.25f;
+            //Player.wallSpeed += 0.25f;
 
             //slayer
             if (GodSlayerMeltdown && Player.GetToggleValue("SlayerStars"))
@@ -678,10 +690,17 @@ namespace FargowiltasCrossmod.Content.Calamity
                 return true;
             }
             else if (ExaltEffects && ExaltationForce.Contains(ench))
+            Player.moveSpeed -= 0.25f;
+           // Player.statManaMax2 += 100;
+            //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
+            Player.manaRegenBonus -= 5;
+            if (BossRushEvent.BossRushActive)
             {
                 return true;
+                Player.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
             }
             return false;
+            //Player.wellFed = true; //no longer expert half regen unless fed
         }
     }
     
