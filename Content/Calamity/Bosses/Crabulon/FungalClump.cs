@@ -96,6 +96,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             Main.npc[(int)NPC.ai[1]].ai[1] = 0;
             Main.npc[(int)NPC.ai[1]].ai[2] = 0;
             Main.npc[(int)NPC.ai[1]].defense = 8;
+            Main.npc[(int)NPC.ai[1]].netUpdate = true;
         }
         public override void FindFrame(int frameHeight)
         {
@@ -117,6 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {   
                 NPC.TargetClosest();
+                NPC.netUpdate = true;
             }
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
@@ -145,9 +147,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     NPC.ai[2] = 1;
                     NPC.velocity = toplayer * 7;
-                    
-                    
                 }
+                NPC.netUpdate = true;
             }
             if (NPC.ai[0] % 100 == 0)
             {
@@ -166,8 +167,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     NPC.ai[2] = 0;
                     NPC.ai[3] = 0;
-                    
+                    NPC.netUpdate = true;
                 }
+
             }
             if (NPC.ai[0] == 150 && owner.GetLifePercent() < 0.25f)
             {

@@ -15,6 +15,8 @@ using CalamityMod.NPCs.DesertScourge;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using CalamityMod.Events;
+using System.IO;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -72,6 +74,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public int[] attackCycle = new int[10];
 
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            for (int i = 0; i < attackCycle.Length; i++)
+            {
+                binaryWriter.Write7BitEncodedInt(attackCycle[i]);
+            }
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            for (int i = 0; i < attackCycle.Length; i++)
+            {
+                attackCycle[i] = binaryReader.Read7BitEncodedInt();
+            }
+        }
+
         //ai[] usage:
         //ai[0]: which animation in use (1: walking, 0: idle, 3: attacking)
         //ai[1]: index of attackCycle to read
@@ -88,6 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
                 npc.TargetClosest();
+                NetSync(npc);
             }
             if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
@@ -104,6 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HealEffect(-50);
                 attackCycle = new int[] { -1, 1 };
                 npc.ai[2] = 0;
+                NetSync(npc);
             }
             //fungal clump phase 2
             if (npc.ai[3] == 2 && npc.GetLifePercent() < 0.5f)
@@ -115,6 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HealEffect(-50);
                 attackCycle = new int[] { -1, 1, -1, 2 };
                 npc.ai[2] = 0;
+                NetSync(npc);
             }
             //fungal clump phase 3
             if (npc.ai[3] == 4 && npc.GetLifePercent() < 0.2f)
@@ -126,6 +146,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HealEffect(-50);
                 attackCycle = new int[] { -1, 1, -1, 2, 1 };
                 npc.ai[2] = 0;
+                NetSync(npc);
             }
             //Attack phase 2
             if (npc.ai[3] == 2)
@@ -244,6 +265,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.MushroomSpray, (int)toplayer.X, (int)toplayer.Y, Scale:2, Alpha: 120);
                     dust.velocity = toplayer;
                     dust.noGravity = false;
+                    NetSync(npc);
                 }
             }
             if (npc.ai[2] < 60)
@@ -270,7 +292,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
             }
-            if (((((Collision.SolidTiles(npc.TopLeft, -6, npc.height - 10) || Collision.SolidTiles(npc.TopRight, 6, npc.height - 10)) || Math.Abs(npc.Center.X - target.Center.X) > 900) && ((npc.velocity.X > 0 && npc.Center.X > target.Center.X) || (npc.velocity.X < 0 && npc.Center.X < target.Center.X))) || (npc.velocity.X == 0 && npc.ai[2] > 140)) && npc.ai[2] > 140)
+            if (((Collision.SolidTiles(npc.TopLeft, -6, npc.height - 10) || Collision.SolidTiles(npc.TopRight, 6, npc.height - 10) || Math.Abs(npc.Center.X - target.Center.X) > 900) && ((npc.velocity.X > 0 && npc.Center.X > target.Center.X) || (npc.velocity.X < 0 && npc.Center.X < target.Center.X))) || (npc.velocity.X == 0 && npc.ai[2] > 140) && npc.ai[2] > 140)
             {
                 if (npc.velocity.X < 0)
                 {
@@ -353,6 +375,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     npc.velocity.X = 5;
                 }
+                NetSync(npc);
             }
 
             if (Collision.SolidCollision(npc.BottomLeft, npc.width, 10) && npc.ai[2] > 20 && target.position.Y < npc.BottomLeft.Y && npc.velocity.Y >= 0)
@@ -391,6 +414,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             {
                 npc.ai[1] = 0;
             }
+            NetSync(npc);
         }
     }
 }

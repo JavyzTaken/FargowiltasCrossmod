@@ -12,18 +12,16 @@ using FargowiltasSouls;
 using Terraria.ID;
 using FargowiltasCrossmod.Core;
 using CalamityMod.Events;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DarkHeartEternity : GlobalNPC
+    public class DarkHeartEternity : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<DarkHeart>();
-        }
-        public override bool InstancePerEntity => true;
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<DarkHeart>());
 
         public override void HitEffect(NPC npc, NPC.HitInfo hit)
         {
@@ -92,12 +90,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             base.FindFrame(npc, frameHeight);
         }
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
             if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
                 npc.TargetClosest();
+                NetSync(npc);
             }
             if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
@@ -135,6 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0).RotatedBy(MathHelper.ToRadians(i * (360 / 6))), ModContent.ProjectileType<VileClot>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
                         }
+                    NetSync(npc);
                 }
             }
             else

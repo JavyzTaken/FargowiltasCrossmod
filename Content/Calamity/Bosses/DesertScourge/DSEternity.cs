@@ -11,12 +11,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {
@@ -71,6 +73,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public float[] ai = new float[] { 0, 0, 0, 0, 0 };
         public int[] attackCycle = new int[] { 0, 1, 0, 1, 1, 0 };
         public int phase;
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            for (int i = 0; i < ai.Length; i++)
+            {
+                binaryWriter.Write(ai[i]);
+            }
+            for (int i = 0; i < attackCycle.Length; i++)
+            {
+                binaryWriter.Write7BitEncodedInt(attackCycle[i]);
+            }
+            binaryWriter.Write7BitEncodedInt(phase);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            for (int i = 0; i < ai.Length; i++)
+            {
+                ai[i] = binaryReader.ReadSingle();
+            }
+            for (int i = 0; i < attackCycle.Length; i++)
+            {
+                attackCycle[i] = binaryReader.Read7BitEncodedInt();
+            }
+            phase = binaryReader.Read7BitEncodedInt();
+        }
         public override bool SafePreAI(NPC npc)
         {
             if (npc == null || !npc.active)
@@ -103,20 +129,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                     if (Main.npc[i].type == ModContent.NPCType<DesertNuisanceHead>() && Main.npc[i].active)
                     {
                         Main.npc[i].StrikeInstantKill();
+                        Main.npc[i].netUpdate = true;
                     }
                 }
+                NetSync(npc);
             }
             if (phase == 1 && npc.GetLifePercent() <= 0.5f)
             {
                 phase++;
                 attackCycle = new int[] { 5, 0, 2, 2, 3, 4, attack };
                 npc.ai[3] = attackCycle.Length - 1;
+                NetSync(npc);
             }
             if (phase == 2 && npc.GetLifePercent() <= 0.2f)
             {
                 phase++;
                 attackCycle = new int[] { 3, 2, 3, 5, 5, 3, 5, 2, attack };
                 npc.ai[3] = attackCycle.Length - 1;
+                NetSync(npc);
             }
             if (attack == 0)
             {
@@ -160,6 +190,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 int dir = (Main.rand.NextBool() ? -1 : 1);
                 //Projectile.NewProjectile(npc.GetSource_FromAI(), target.Center + new Vector2(800 * dir, 100), new Vector2(-5 * dir, 0), ModContent.ProjectileType<Sandnado>(), DLCUtlis.RealDamage(25), 0);
                 ai[1] = 0;
+                NetSync(npc);
             }
             return false;
         }
@@ -186,7 +217,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 {
                     Vector2 pos = npc.Center + new Vector2(1300, Main.rand.Next(-300, 300)).RotatedBy(npc.rotation - MathHelper.PiOver2);
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), pos, (npc.Center - pos).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<SuckedSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:npc.whoAmI);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), pos, (npc.Center - pos).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<SuckedSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:npc.whoAmI);
                 }
             }
             if (ai[3] == -2) //telegraph spit followup
@@ -204,6 +235,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                     }
                 }
                 SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                NetSync(npc);
             }
             if (ai[3] == -150)
             {
@@ -270,6 +302,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 lungeInfo[3] = 1;
             }
             lungeInfo[4] = 1;
+            NetSync(npc);
         }
         //move to bottom right/left to be in position for lunge
         public void PrepareLunge(NPC npc, Vector2 lungePos)
@@ -285,6 +318,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 
                 lungeInfo[0] = 0;
                 lungeInfo[4] = 2;
+                NetSync(npc);
             }
         }
         public void DoLunge(NPC npc, Vector2 targetPos, Vector2 endPos)
@@ -364,6 +398,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 npc.ai[3] = 0;
             }
+            NetSync(npc);
         }
         bool canSee = false;
         public void WormMovement(NPC npc, bool collision)
@@ -670,6 +705,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             else
             {
                 npc.defense = 10;
+            }
+        }
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        {
+            if (npc.lifeRegen < 0)
+            {
+                npc.lifeRegen = (int)Math.Round(npc.lifeRegen / 4f);
             }
         }
     }

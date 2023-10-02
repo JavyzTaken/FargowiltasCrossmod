@@ -13,12 +13,14 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -146,6 +148,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public int lastAttack = 0;
         public int[] wormCycle = new int[] { 5, 5, 6, 5, 7 };
         public int attackCounter = -2;
+
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            for (int i = 0; i < wormCycle.Length; i++)
+            {
+                binaryWriter.Write7BitEncodedInt(wormCycle[i]);
+            }
+            binaryWriter.Write7BitEncodedInt(lastAttack);
+            binaryWriter.Write7BitEncodedInt(attackCounter);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            for (int i = 0; i < wormCycle.Length; i++)
+            {
+                wormCycle[i] = binaryReader.Read7BitEncodedInt();
+            }
+            lastAttack = binaryReader.Read7BitEncodedInt();
+            attackCounter = binaryReader.Read7BitEncodedInt();
+        }
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
@@ -153,6 +174,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
                 npc.TargetClosest();
+                NetSync(npc);
             }
             if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
             {
@@ -220,6 +242,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     npc.ai[0] = ChooseAttack();
                     npc.ai[1] = 0;
+                    NetSync(npc);
                 }
             }
             npc.rotation = MathHelper.ToRadians(npc.velocity.X * 2);
@@ -293,6 +316,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     attack = possibilities[Main.rand.Next(0, possibilities.Count)];
                 }
                 lastAttack = attack;
+                NetSync(npc);
                 return attack;
                 
             }
@@ -348,6 +372,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                     npc.ai[0] = 0;
                     npc.ai[1] = 0;
+                    NetSync(npc);
                 }
             }
             void MediumWorm()
@@ -366,6 +391,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                     npc.ai[0] = 0;
                     npc.ai[1] = 0;
+                    NetSync(npc);
                 }
             }
             void SmallWorm()
@@ -384,6 +410,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     npc.ai[1] = 0;
                     npc.ai[0] = 0;
+                    NetSync(npc);
                 }
             }
             void Balls()
@@ -412,6 +439,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     npc.ai[1] = 0;
                     npc.ai[0] = 0;
                     npc.ai[2] = 0;
+                    NetSync(npc);
                 }
 
             }
@@ -452,6 +480,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     npc.ai[2] = 0;
                     npc.ai[1] = 0;
                     npc.ai[0] = 0;
+                    NetSync(npc);
                 }
             }
             void Spikes()
@@ -476,6 +505,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     npc.ai[1] = 0;
                     npc.ai[0] = 0;
                     npc.ai[2] = 0;
+                    NetSync(npc);
                 }
             }
             void Slam()
@@ -514,6 +544,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         npc.ai[0] = 0;
                         npc.ai[1] = 0;
                         npc.ai[2] = 0;
+                        NetSync(npc);
                     }
                 }
             }

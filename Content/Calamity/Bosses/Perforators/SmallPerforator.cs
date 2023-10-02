@@ -78,6 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         }
                     }
                     npc.TargetClosest();
+                    NetSync(npc);
                     if (perf != null && npc.target >= 0)
                     {
                         Player target = Main.player[npc.target];
@@ -128,6 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20;
                             
                         }
+                        NetSync(npc);
                     }
                     if (npc.ai[3] >= 120 && npc.ai[2] == 0)
                     {
@@ -165,6 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;
+                                NetSync(npc);
                             }
                         }
                         npc.Center = perf.Center;
@@ -174,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
                 else
                 {
-                    
+                    //???
                 }
                 npc.ai[3]++;
                 
