@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     }
 
                     parried.alreadyParried = true;
-                    parried.explodeOnDeath = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().WizardEnchantActive;
+                    parried.explodeOnDeath = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().SteelEnchItem.type);
                     proj.friendly = true;
                     proj.hostile = false;
 

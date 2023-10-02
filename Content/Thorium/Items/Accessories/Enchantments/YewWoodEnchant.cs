@@ -67,8 +67,10 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             if (item.useAmmo == AmmoID.Arrow && type == ProjectileID.WoodenArrowFriendly)
             {
-                bool useHM = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type); // || wizard
+                bool useHM = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type);
                 type = Main.rand.NextFromCollection(useHM ? Items.Accessories.Enchantments.YewWoodEnchant.HMArrows : Items.Accessories.Enchantments.YewWoodEnchant.PreHMArrows);
+                Item arrow = new(type);
+                damage += arrow.damage;
             }
         }
     }

@@ -30,6 +30,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool SilkEnch;
         public bool WhiteKnightEnch;
         public bool LodeStoneEnch;
+        public Item LodeStoneEnchItem;
         public bool DragonEnch;
         public bool SteelEnch;
         public Item SteelEnchItem;
@@ -75,6 +76,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             SilkEnch = false;
             WhiteKnightEnch = false;
             LodeStoneEnch = false;
+            LodeStoneEnchItem = null;
             DragonEnch = false;
             SteelEnch = false;
             SteelEnchItem = null;

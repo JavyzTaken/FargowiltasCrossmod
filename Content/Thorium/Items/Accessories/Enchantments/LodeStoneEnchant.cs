@@ -30,8 +30,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
             var modplayer = player.GetModPlayer<CrossplayerThorium>();
             modplayer.LodeStoneEnch = true;
+            modplayer.LodeStoneEnchItem = Item;
 
-            int maxPlatforms = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().WizardEnchantActive ? 3 : 2;
+            int maxPlatforms = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Item.type) ? 3 : 2;
             int currentPlatforms = player.ownedProjectileCounts[ModContent.ProjectileType<LodeStonePlatform>()];
             if (currentPlatforms != maxPlatforms)
             {

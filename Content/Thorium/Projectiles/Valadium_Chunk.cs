@@ -158,7 +158,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
                 if (distSQ < 256)
                 {
-                    if (Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().WizardEnchantActive)
+                    if (Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>().ValadiumEnchItem.type))
                     {
                         Collide(Projectile, proj);
                     }

@@ -50,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public void SpawnAstroLaser(NPC target)
         {
             int Damage = 100;
-            if (Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().WizardEnchantActive) Damage += 50;
+            if (Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(AstroEnchItem.type)) Damage += 50;
             if (Player.position.Y < Main.worldSurface * 0.35 * 16) Damage += 50; // in space
             Vector2 pos = new(target.Center.X, MathHelper.Max(Player.Center.Y - Main.screenHeight, 10f));
 

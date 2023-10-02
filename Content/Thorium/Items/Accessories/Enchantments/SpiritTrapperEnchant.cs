@@ -13,8 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod("ThoriumMod")]
     public class SpiritTrapperEnchant : BaseEnchant
     {
-        public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
-        protected override Color nameColor => Color.DarkBlue;
+        protected override Color nameColor => Color.Blue;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -40,26 +39,4 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
-    public partial class CrossplayerThorium
-    {
-        public List<int>[] activeSTSpirits = new List<int>[3] { new(), new(), new() };
-        public void SpawnSpiritTrapperSpirit(Vector2 position)
-        {
-            //int MaxSpiritsPerType = 4; // more with wiz
-            //List<int> typesAvaliable = new();
-            //bool slotsFull = true;
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    if (activeSTSpirits[i].Count < MaxSpiritsPerType) { 
-            //        slotsFull = false;
-            //        typesAvaliable.Add(i);
-            //    }
-            //}
-            //if (slotsFull) return;
-
-            //int spiritType = Main.rand.NextFromCollection(typesAvaliable);
-
-            //activeSTSpirits[spiritType].Add(Projectile.NewProjectile(Player.GetSource_Accessory(SpiritTrapperEnchItem), position, Vector2.Zero, ModContent.ProjectileType<Projectiles.SpiritTrapperSpirit>(), 0, 0, Player.whoAmI, 0, spiritType));
-        }
-    }
 }

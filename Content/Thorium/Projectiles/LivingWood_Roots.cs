@@ -87,7 +87,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             if (target != null)
             {
-                bool wizard = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().WizardEnchantActive;
+                bool wizard = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().LivingWoodEnchItem.type);
                 int projType = wizard ? ProjectileID.BulletHighVelocity : ProjectileID.WoodenArrowFriendly; // Goofy ah
                 int damage = wizard ? 50 : 20;
                 Vector2 ShootOrigin = Projectile.Center + new Vector2(0, -24);

@@ -17,9 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod("ThoriumMod")]
     public class GraniteEnchant : BaseEnchant
     {
-        
         protected override Color nameColor => Color.DarkBlue;
-        public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

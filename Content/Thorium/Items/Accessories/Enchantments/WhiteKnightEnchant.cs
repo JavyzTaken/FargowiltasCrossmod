@@ -6,6 +6,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -13,17 +14,23 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class WhiteKnightEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Silver;
-        public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
-        
-        public override void SetStaticDefaults()
-        {
-
-        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<CrossplayerThorium>().WhiteKnightEnch = true;
-            player.GetDamage(DamageClass.Generic) += 0.075f * player.townNPCs;
+
+            float boost = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Type) ? 0.1f : 0.05f;
+            player.GetDamage(DamageClass.Generic) += boost * player.townNPCs;
+
+            if (Main.netMode != NetmodeID.SinglePlayer)
+            {
+                int teamPlayers = 0;
+                foreach (Player other in Main.player)
+                {
+                    if (other.team == player.team && other.Center.Distance(player.Center) < 1440f && !other.GetModPlayer<CrossplayerThorium>().WhiteKnightEnch) teamPlayers++;
+                }
+                player.GetDamage(DamageClass.Generic) += boost * teamPlayers;
+            }
         }
 
         public override void AddRecipes()

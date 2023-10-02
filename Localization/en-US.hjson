@@ -155,6 +155,131 @@ Mods: {
 					Effects of Dragon Scales and Venerated Locket
 					'''
 			}
+
+			AstroEnchant: {
+				DisplayName: Astro Enchant
+				Tooltip: ""
+			}
+
+			DarksteelEnchant: {
+				DisplayName: Darksteel Enchant
+				Tooltip: ""
+			}
+
+			DragonEnchant: {
+				DisplayName: Dragon Enchant
+				Tooltip: ""
+			}
+
+			FungusEnchant: {
+				DisplayName: Fungus Enchant
+				Tooltip: ""
+			}
+
+			GraniteEnchant: {
+				DisplayName: Granite Enchant
+				Tooltip: ""
+			}
+
+			LivingWoodEnchant: {
+				DisplayName: Living Wood Enchant
+				Tooltip: ""
+			}
+
+			LodeStoneEnchant: {
+				DisplayName: Lode Stone Enchant
+				Tooltip: ""
+			}
+
+			SilkEnchant: {
+				DisplayName: Silk Enchant
+				Tooltip: ""
+			}
+
+			SpiritTrapperEnchant: {
+				DisplayName: Spirit Trapper Enchant
+				Tooltip: ""
+			}
+
+			SteelEnchant: {
+				DisplayName: Steel Enchant
+				Tooltip: ""
+			}
+
+			TemplarEnchant: {
+				DisplayName: Templar Enchant
+				Tooltip: ""
+			}
+
+			ValadiumEnchant: {
+				DisplayName: Valadium Enchant
+				Tooltip: ""
+			}
+
+			WhiteKnightEnchant: {
+				DisplayName: White Knight Enchant
+				Tooltip: ""
+			}
+
+			YewWoodEnchant: {
+				DisplayName: Yew Wood Enchant
+				Tooltip: ""
+			}
+
+			SlingersEssence: {
+				DisplayName: Slingers Essence
+				Tooltip: ""
+			}
+
+			GildedBinoculars: {
+				DisplayName: Gilded Binoculars
+				Tooltip: ""
+			}
+
+			GildedLamp: {
+				DisplayName: Gilded Lamp
+				Tooltip: ""
+			}
+
+			GildedMonicle: {
+				DisplayName: Gilded Monicle
+				Tooltip: ""
+			}
+
+			GildedNightVision: {
+				DisplayName: Gilded Night Vision
+				Tooltip: ""
+			}
+
+			MynaAccessory: {
+				DisplayName: Myna Accessory
+				Tooltip: ""
+			}
+
+			OlympiansSoul: {
+				DisplayName: Olympians Soul
+				Tooltip: ""
+			}
+
+			TempleCore: {
+				DisplayName: Temple Core
+				Tooltip: ""
+			}
+
+			GildedSummon: {
+				DisplayName: Gilded Summon
+				Tooltip: ""
+			}
+
+			MynaSummon: {
+				DisplayName: Myna Summon
+				Tooltip: ""
+			}
+
+			KluexStaff: {
+				DisplayName: Kluex Staff
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {
@@ -183,6 +308,56 @@ Mods: {
 			BigLight.DisplayName: Big Light
 			DestructionBolt.DisplayName: Destruction Bolt
 			StarofDestruction.DisplayName: Starof Destruction
+			DmgOrbHack.DisplayName: Dmg Orb Hack
+			HealOrbHack.DisplayName: Heal Orb Hack
+			AngryGhost.DisplayName: Angry Ghost
+			DragonMinionBody.DisplayName: Dragon Minion Body
+			DragonMinionBody2.DisplayName: Dragon Minion Body2
+			DragonMinionHead.DisplayName: Dragon Minion Head
+			DragonMinionTail.DisplayName: Dragon Minion Tail
+			FungusSpore.DisplayName: Fungus Spore
+			GraniteExplosion.DisplayName: Granite Explosion
+			KluexBlast.DisplayName: Kluex Blast
+			KluexOrb.DisplayName: Kluex Orb
+			LivingWood_Roots.DisplayName: Living Wood_ Roots
+			LodeStonePlatform.DisplayName: Lode Stone Platform
+			MidExplosion.DisplayName: Mid Explosion
+			SaucerDeathrayProj.DisplayName: Saucer Deathray Proj
+			Steel_Parry.DisplayName: Steel_ Parry
+			Templar_Fire.DisplayName: Templar_ Fire
+			Valadium_Chunk.DisplayName: Valadium_ Chunk
+		}
+
+		Keybinds: {
+			"Living wood roots.DisplayName": Living wood roots
+			"Steel parry.DisplayName": Steel parry
+		}
+
+		Buffs: {
+			GildedSightDB: {
+				DisplayName: Gilded Sight D B
+				Description: Mods.FargowiltasCrossmod.Buffs.GildedSightDB.Description
+			}
+
+			LivingWood_Root_B: {
+				DisplayName: Living Wood_ Root_ B
+				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_B.Description
+			}
+
+			LivingWood_Root_DB: {
+				DisplayName: Living Wood_ Root_ D B
+				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_DB.Description
+			}
+
+			MynaDB: {
+				DisplayName: Myna D B
+				Description: Mods.FargowiltasCrossmod.Buffs.MynaDB.Description
+			}
+
+			SteelParry_CD: {
+				DisplayName: Steel Parry_ C D
+				Description: Mods.FargowiltasCrossmod.Buffs.SteelParry_CD.Description
+			}
 		}
 	}
 }

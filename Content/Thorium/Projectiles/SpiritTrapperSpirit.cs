@@ -100,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             num4 = 40f;
             float num5;
             num5 = 0.69f;
-            if (!Main.player[Projectile.owner].dead)
+            if (!Main.player[Projectile.owner].dead && !Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>().SpiritTrapperEnch)
             {
                 Projectile.timeLeft = 2;
             }
