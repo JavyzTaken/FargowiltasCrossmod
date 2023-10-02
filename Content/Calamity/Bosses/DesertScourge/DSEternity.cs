@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = 3500;
+            entity.lifeMax = 3800;
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 25000000;
