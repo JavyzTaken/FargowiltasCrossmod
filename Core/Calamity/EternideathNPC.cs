@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Systems;
+﻿using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework.Graphics;
@@ -41,7 +42,7 @@ namespace FargowiltasSouls.Core.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!(DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev))
+            if (!(DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev) || (!DLCCalamityConfig.Instance.EternityPriorityOverRev))
             {
                 return true;
             }

@@ -32,6 +32,11 @@ namespace FargowiltasCrossmod.Core.Systems
             var downed = tag.GetList<string>("downed");
             EternityRev = downed.Contains("EternityRevActive");
             EternityDeath = downed.Contains("EternityDeathActive");
+            
+            if (ModLoader.HasMod("InfernumMode"))
+            {
+                DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
+            }
         }
     }
 }

@@ -26,4 +26,11 @@ public static class ModCompatibility
         public static bool Loaded => ModLoader.HasMod(Name);
         public static Mod Mod => ModLoader.GetMod(Name);
     }
+    public static class InfernumMode
+    {
+        public const string Name = "InfernumMode";
+        public static bool Loaded => ModLoader.HasMod(Name);
+        public static Mod Mod => ModLoader.GetMod(Name);
+        public static bool InfernumDifficulty => (bool)Mod.Call("GetInfernumActive");
+    }
 }

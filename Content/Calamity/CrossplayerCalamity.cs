@@ -20,6 +20,10 @@ namespace FargowiltasCrossmod.Content.Calamity
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public partial class CrossplayerCalamity : ModPlayer
     {
+        public override void OnEnterWorld()
+        {
+           
+        }
         public override void PostUpdateBuffs()
         {
             if (!DLCWorldSavingSystem.EternityRev)
