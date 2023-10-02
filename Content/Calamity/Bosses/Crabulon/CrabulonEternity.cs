@@ -292,6 +292,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
             }
+            if (npc.ai[2] > 30 && npc.ai[2] % 40 == 0 && NPC.CountNPCS(ModContent.NPCType<CrabShroom>()) < 8) //maximum of 6 so you don't enter the CBT shroom dungeon
+            {
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    Vector2 position = npc.Center - Vector2.UnitY * npc.height / 3;
+                    NPC shroom = NPC.NewNPCDirect(npc.GetSource_FromAI(), (int)position.X, (int)position.Y, ModContent.NPCType<CrabShroom>());
+                    shroom.velocity = new Vector2(0, -5);
+                    int dir = -Math.Sign(npc.velocity.X);
+                    shroom.velocity = shroom.velocity.RotatedBy(dir * MathHelper.Pi / 4f);
+                    shroom.velocity = shroom.velocity.RotatedByRandom(MathHelper.Pi / 16f);
+                }
+                SoundEngine.PlaySound(SoundID.Item42, npc.Center); //mourning wood pew sound
+            }
             if (((Collision.SolidTiles(npc.TopLeft, -6, npc.height - 10) || Collision.SolidTiles(npc.TopRight, 6, npc.height - 10) || Math.Abs(npc.Center.X - target.Center.X) > 900) && ((npc.velocity.X > 0 && npc.Center.X > target.Center.X) || (npc.velocity.X < 0 && npc.Center.X < target.Center.X))) || (npc.velocity.X == 0 && npc.ai[2] > 140) && npc.ai[2] > 140)
             {
                 if (npc.velocity.X < 0)
