@@ -5,6 +5,11 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using FargowiltasCrossmod.Content.Common;
 using System;
+using System.Linq;
+using System.Reflection;
+using FargowiltasCrossmod.Core;
+using System.Collections.Generic;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod
 {
@@ -128,5 +133,7 @@ namespace FargowiltasCrossmod
             if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
         }
+
+        
     }
 }
