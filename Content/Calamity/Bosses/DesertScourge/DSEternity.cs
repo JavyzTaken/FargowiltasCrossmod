@@ -127,6 +127,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 attack = 0;
             }
 
+            npc.netUpdate = true; //fuck you worm mp code
+
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || npc.GetLifePercent() <= 0.75f))
             {
                 phase++;
@@ -707,6 +709,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage /= 8;
             }
+        }
+        public override bool SafePreAI(NPC npc)
+        {
+
+            npc.netUpdate = true; //fuck you worm mp code
+
+            return base.SafePreAI(npc);
         }
         public override void SafePostAI(NPC npc)
         {

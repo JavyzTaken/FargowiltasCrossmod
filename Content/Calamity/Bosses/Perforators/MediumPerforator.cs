@@ -51,6 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool SafePreAI(NPC npc)
         {
+            npc.netUpdate = true; //fuck you worm mp code
             return base.SafePreAI(npc);
         }
     }

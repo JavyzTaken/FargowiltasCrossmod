@@ -42,6 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
+            npc.netUpdate = true; //fuck you worm mp code
             if (npc.type == ModContent.NPCType<PerforatorBodySmall>() || npc.type == ModContent.NPCType<PerforatorTailSmall>())
             {
                 NPC owner = null;

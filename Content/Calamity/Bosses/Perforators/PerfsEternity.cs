@@ -153,7 +153,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public int attackCounter = -2;
         public bool HitPlayer = true;
         public Vector2 LockVector1 = Vector2.Zero;
-        /*
+        
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -177,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             HitPlayer = binaryReader.ReadBoolean();
             LockVector1 = binaryReader.ReadVector2();
         }
-        */
+        
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;

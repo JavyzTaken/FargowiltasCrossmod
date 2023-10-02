@@ -62,6 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public override void AI()
         {
+            NPC.netUpdate = true; //fuck you worm mp code
             if (!NPC.AnyNPCs(ModContent.NPCType<PerforatorHive>()))
             {
                 NPC.active = false;
@@ -190,6 +191,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override void AI()
         {
+            NPC.netUpdate = true; //fuck you worm mp code
             if (NPC.realLife >= 0)
             {
                 NPC owner = Main.npc[NPC.realLife];
@@ -260,6 +262,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override void AI()
         {
+            NPC.netUpdate = true; //fuck you worm mp code
             if (NPC.realLife >= 0)
             {
                 NPC owner = Main.npc[NPC.realLife];
@@ -333,6 +336,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override void AI()
         {
+            NPC.netUpdate = true; //fuck you worm mp code
             if (NPC.realLife >= 0)
             {
                 NPC owner = Main.npc[NPC.realLife];
