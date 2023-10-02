@@ -827,6 +827,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     npc.life = 1000;
                 }
                 if (numAI == 0)
+                {
                     if (npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<TrojanSquirrelHead>() || npc.type == ModContent.NPCType<TrojanSquirrelArms>() || npc.type == ModContent.NPCType<TrojanSquirrel>())
                     {
                         numAI++;
@@ -838,6 +839,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                             npc.position = newPos;
                         }
                     }
+                }
             }
             if (npc.type == NPCID.DukeFishron)
             {

@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 2;
             }
-            if (entity.type == ModContent.ProjectileType<DeviSparklingLove>())
+            if (BossRushEvent.BossRushActive && entity.type == ModContent.ProjectileType<DeviSparklingLove>())
             {
                 entity.extraUpdates += 1;
             }
