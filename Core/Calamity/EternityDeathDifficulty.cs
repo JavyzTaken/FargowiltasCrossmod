@@ -4,6 +4,7 @@ using FargowiltasCrossmod.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -28,8 +29,8 @@ namespace FargowiltasCrossmod.Core.Calamity
                 }
                 FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = value;
                 FargowiltasSouls.Core.Systems.WorldSavingSystem.ShouldBeEternityMode = value;
-                //if (Main.netMode != NetmodeID.SinglePlayer)
-                //PacketManager.SendPacket<InfernumModeActivityPacket>();
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                    PacketManager.SendPacket<EternityDeathPacket>();
             }
         }
 

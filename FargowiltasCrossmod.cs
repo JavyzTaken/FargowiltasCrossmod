@@ -10,9 +10,16 @@ namespace FargowiltasCrossmod;
 
 public class FargowiltasCrossmod : Mod
 {
+    internal static FargowiltasCrossmod Instance;
     public override void Load()
     {
+        Instance = this;
     }
+    public override void Unload()
+    {
+        Instance = null;
+    }
+
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static void LoadTogglesFromType(Type type)
     {
