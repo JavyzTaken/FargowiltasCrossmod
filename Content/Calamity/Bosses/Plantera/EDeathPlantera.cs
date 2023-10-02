@@ -11,6 +11,7 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls;
 using Terraria.Audio;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
 {
@@ -49,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                 if (timer >= 800 )
                 {
                     timer = 0;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<HomingGasBulb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
             }
@@ -61,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                     {
                         SoundEngine.PlaySound(SoundID.Roar, npc.Center);
                         npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15;
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                         {
                             for (int i = 0; i < 15; i++)
                             {

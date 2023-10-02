@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Buffs.DamageOverTime;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -56,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
             {
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<CalamityMod.Dusts.ShadowspecBarDust>());
             }
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (DLCUtils.HostCheck)
             {
                 for (int i = 0; i < 8; i++)
                 {

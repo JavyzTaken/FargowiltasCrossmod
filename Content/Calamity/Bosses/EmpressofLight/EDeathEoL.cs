@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
 using Terraria.Audio;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
 {
@@ -54,7 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                 {
                     SoundEngine.PlaySound(SoundID.Item163, target.Center);
                     float angle = Main.rand.NextFloat(0, MathHelper.TwoPi);
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     for (int i = -10; i < 11; i++)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), target.Center + new Vector2(i * 150, -800).RotatedBy(angle), Vector2.Zero, ProjectileID.FairyQueenLance, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: MathHelper.PiOver2 + angle, ai1:0.1f*i);

@@ -5,19 +5,15 @@ using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Systems;
-using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod;
 
 public class FargowiltasCrossmod : Mod
 {
     internal static FargowiltasCrossmod Instance;
-    
     public override void Load()
     {
         Instance = this;
-        
     }
     public override void Unload()
     {
@@ -48,6 +44,5 @@ public class FargowiltasCrossmod : Mod
     {
         if (ModCompatibility.Calamity.Loaded)
          pierceResistExceptionList.Add(ProjectileID.FinalFractal);
-        
     }
 }

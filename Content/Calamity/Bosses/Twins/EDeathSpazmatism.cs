@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -46,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
                 timer++;
                 Player target = Main.player[npc.target];
                 npc.velocity = Vector2.Lerp(npc.velocity, (target.Center + new Vector2(0, 350) - npc.Center).SafeNormalize(Vector2.Zero) * 20, 0.04f);
-                if (timer > 60 && timer % 45 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                if (timer > 60 && timer % 45 == 0 && DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.ShadowflameFireball>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage((int)(npc.damage * 0.75f)), 0, ai1: 1);
                 }

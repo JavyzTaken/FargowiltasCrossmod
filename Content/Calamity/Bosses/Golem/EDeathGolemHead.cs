@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
 {
@@ -34,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
             Player target = Main.player[npc.target];
             if (gol != null && gol.AttackTimer == 260)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:target.Center.X, ai1:target.Center.Y);
                 }

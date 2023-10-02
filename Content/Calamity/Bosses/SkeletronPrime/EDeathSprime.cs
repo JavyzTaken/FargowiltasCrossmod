@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -41,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
             {
                 for (int i = 0; i < 12; i++)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(360 / 12f * i)), ProjectileID.DeathLaser, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
             }
@@ -62,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                         rotationPoint = npc.Center + new Vector2(0, 200);
                         SoundEngine.PlaySound(SoundID.Roar, npc.Center);
                     }
-                    if (npc.ai[2] % 15 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                    if (npc.ai[2] % 15 == 0 && DLCUtils.HostCheck)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero), ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
                     }
@@ -75,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                     if (npc.ai[2] % 10 == 0)
                     {
                         
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                             Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<HomingRocket>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                         
                     }

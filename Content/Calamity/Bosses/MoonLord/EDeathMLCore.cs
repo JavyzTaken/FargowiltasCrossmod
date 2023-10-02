@@ -14,6 +14,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Systems;
 using CalamityMod;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
 {
@@ -109,7 +110,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
                     if (timer == 300)
                     {
                         timer = 0;
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                         {
                             float angle = Main.rand.NextFloat(0, MathHelper.TwoPi);
                             for (int i = 0; i < 5; i++)

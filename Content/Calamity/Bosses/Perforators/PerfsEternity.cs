@@ -4,7 +4,9 @@ using CalamityMod.NPCs;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
@@ -88,6 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         int legtime4 = 45;
         float legprog3 = 0;
         float legprog4 = 0;
+
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (!WorldSavingSystem.EternityMode) return true;
@@ -189,9 +192,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             Player target = Main.player[npc.target];
             Vector2 toTarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
+
+            //low ground
+            if (Main.LocalPlayer.active && !Main.LocalPlayer.ghost && !Main.LocalPlayer.dead && npc.Distance(Main.LocalPlayer.Center) < 2000)
+                Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
+
             //npc.velocity = Vector2.Lerp(npc.velocity, (target.Center - npc.Center + new Vector2(0, -300)).SafeNormalize(Vector2.Zero) * 10, 0.03f);
             //Movement
-            
+
             //Dust.NewDustPerfect(legpos, DustID.TerraBlade);
             //Right leg movement
             legtime++;
@@ -241,6 +249,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (npc.ai[0] == 0)
             {
                 Movement();
+                PassiveRain();
                 npc.ai[1]++;
                 int time = 150;
                 if (npc.GetLifePercent() <= 0.6f) time = 100;
@@ -362,6 +371,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     }
                 }
             }
+            void PassiveRain()
+            {
+                ref float timer = ref npc.ai[1];
+                if (timer % 25 == 0)
+                {
+                    SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, npc.Center);
+                    if (DLCUtils.HostCheck)
+                    {
+                        float shotSpeed = 6f;
+                        Vector2 shotVel = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.5f);
+                        int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + shotVel * npc.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        /*
+                        if (p != Main.maxProjectiles)
+                        {
+                            Main.projectile[p].extraUpdates = 1;
+                        }
+                        */
+                    }
+
+                }
+            }
             void LargeWorm()
             {
                 if (NPC.AnyNPCs(ModContent.NPCType<LargePerforatorHead>()))
@@ -373,7 +403,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
                 else
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<LargePerforatorHead>());
                     SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                     npc.ai[0] = 0;
@@ -392,7 +422,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
                 else
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<PerforatorHeadMedium>());
                     SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                     npc.ai[0] = 0;
@@ -409,7 +439,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (npc.GetLifePercent() <= 0.25f) time += 30;
                 if (npc.ai[1] % 30 == 0)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
                 }
                 if (npc.ai[1] >= time)
@@ -430,7 +460,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     if (npc.ai[1] % 3f == 0)
                     {
                         SoundEngine.PlaySound(SoundID.NPCHit20, npc.Center);
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                             Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center + new Vector2(0, -100).RotatedBy(MathHelper.ToRadians(i * 3)), new Vector2(0, -8).RotatedBy(MathHelper.ToRadians(i*3)), ModContent.ProjectileType<ToothBall>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                     }
                     
@@ -451,36 +481,51 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             void Ichor()
             {
-                
+                ref float timer = ref npc.ai[1];
                 npc.velocity /= 1.05f;
-                if (npc.ai[2] == 0 && npc.ai[1] == 0)
+                if (npc.ai[2] == 0 && timer == 0)
                 {
-                    npc.ai[1] = 0.5f;
+                    timer = 10;
                 }
                 if (npc.ai[2] % 2 == 0)
                 {
-                    npc.ai[1] += 0.05f;
-                    if (npc.ai[1] >= 1)
+                    timer += 1;
+                    if (timer >= 20)
                     {
                         npc.ai[2]++;
                     } 
                 }
                 if (npc.ai[2] % 2 != 0)
                 {
-                    npc.ai[1] -= 0.05f;
-                    if (npc.ai[1] <= 0)
+                    timer -= 1;
+                    if (timer <= 0)
                     {
                         npc.ai[2]++;
                     }
                 }
-                if (npc.ai[2] > 3 && Main.rand.NextBool(9))
+                if (npc.ai[2] > 3 && timer % 12 == 0)
                 {
                     Vector2 off = new Vector2(0, -70).RotatedBy(Main.rand.NextFloat(-0.9f, 0.9f));
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + off, (npc.Center + off).AngleFrom(npc.Center).ToRotationVector2() * 6, ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + off, (npc.Center + off).AngleFrom(npc.Center).ToRotationVector2() * 10, ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        
                 }
-                
-                npc.rotation = Utils.AngleLerp(-0.5f, 0.5f, -(float)(Math.Cos(Math.PI * npc.ai[1]) - 1) / 2);
+                if (npc.ai[2] > 3 && timer % 2 == 0)
+                {
+                    int shotSide = Main.rand.NextBool() ? 1 : -1;
+                    float shotSpeed = 10f;
+                    Vector2 shotVel = -Vector2.UnitY.RotatedBy(shotSide * MathHelper.Pi / 3f).RotatedByRandom(MathHelper.Pi / 8f);
+                    if (DLCUtils.HostCheck)
+                    {
+                        int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + shotVel * npc.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        if (p != Main.maxProjectiles)
+                        {
+                            Main.projectile[p].extraUpdates = 1;
+                        }
+                    }
+                }
+                float rotationTimer = timer * 0.05f;
+                npc.rotation = Utils.AngleLerp(-0.5f, 0.5f, -(float)(Math.Cos(Math.PI * rotationTimer) - 1) / 2);
                 if (npc.ai[2] >= 8)
                 {
                     npc.ai[2] = 0;
@@ -491,6 +536,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             void Spikes()
             {
+                if (npc.ai[1] <= 0)
+                {
+                    LockVector1 = Vector2.UnitX * Math.Sign(target.Center.X - npc.Center.X) * 400;
+                }
                 if (npc.ai[1] < 60 && npc.ai[1] % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.NPCHit20, npc.Center);
@@ -498,26 +547,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         Dust.NewDustDirect(npc.Center, 0, 0, DustID.CrimsonPlants, 0, 2, Scale: 1.5f);
                     }
-                    LockVector1 = Vector2.UnitX * Math.Sign(target.Center.X - npc.Center.X) * 400;
+                    
                 }
                 npc.ai[1]++;
                 if (npc.ai[1] <= 60)
                 {
-                    SpikeMovement(target.Center - LockVector1, 1f);
+                    SpikeMovement(target.Center - LockVector1, 2f);
                 }
                 else
                 {
-                    SpikeMovement(target.Center + LockVector1, 2f);
+                    SpikeMovement(target.Center + LockVector1, 2.5f);
                 }
                 if (npc.ai[1] > 60 && npc.ai[1] % 5 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10}, npc.Center);
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
                 if (npc.ai[1] > 60)
                 {
-                    npc.position += npc.velocity * 0.5f;
+                    if (Math.Abs(npc.Center.X - (target.Center.X + LockVector1.X)) < 50)
+                    {
+                        LockVector1 = -LockVector1;
+                    }
                 }
                 if (npc.ai[1] >= 180)
                 {
@@ -568,9 +620,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (npc.ai[1] == 1 && npc.ai[2] == 0)
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
-                    for (int i = 0; i < 20; i++)
+                    const int dustCount = 40;
+                    for (int i = 0; i < dustCount; i++)
                     {
-                        Dust.NewDustDirect(npc.Center, 0, 0, DustID.CrimsonPlants, 0, 2, Scale:1.5f);
+                        Vector2 vel = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * ((float)i / dustCount));
+                        int d = Dust.NewDust(npc.Center + vel * npc.width / 2, 0, 0, DustID.CrimsonTorch, vel.X, vel.Y, Scale: 2f);
+                        Main.dust[d].noGravity = true;
+                        Main.dust[d].velocity = vel * 10f;
                     }
                     
                 }

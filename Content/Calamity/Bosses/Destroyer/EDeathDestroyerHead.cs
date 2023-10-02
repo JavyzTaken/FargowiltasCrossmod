@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {
@@ -30,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
             //Main.NewText(destroyer.AttackModeTimer + ", " + destroyer.SecondaryAttackTimer + ", " + npc.ai[2]);
             if (destroyer.InPhase2 && destroyer.SecondaryAttackTimer == 5 && destroyer.AttackModeTimer > 0 && destroyer.AttackModeTimer % 100 == 0 && !destroyer.IsCoiling)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     for (int i = -2; i < 3; i++)
                     {
                         if (i != 0)

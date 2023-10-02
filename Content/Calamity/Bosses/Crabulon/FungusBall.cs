@@ -1,5 +1,6 @@
 ﻿
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -73,7 +74,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.MushroomSpray, Alpha: 120, Scale: 2).noGravity = true;
             }
             SoundEngine.PlaySound(SoundID.NPCDeath1, Projectile.Center);
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (DLCUtils.HostCheck)
             {
                 for (int i = 0; i < 8; i++)
                     Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, new Vector2(-5, 0).RotatedBy(i * MathHelper.ToRadians(25.76f)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), Projectile.damage, 0);

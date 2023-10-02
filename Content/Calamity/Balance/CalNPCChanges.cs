@@ -38,6 +38,7 @@ using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.ItemDropRules;
 using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
@@ -880,7 +881,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     BossRushEvent.HostileProjectileKillCounter = 3;
                     DownedBossSystem.downedBossRush = true;
                     CalamityNetcode.SyncWorld();
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     {
                         Projectile.NewProjectile(new EntitySource_WorldEvent(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BossRushEndEffectThing>(), 0, 0f, Main.myPlayer);
                     }

@@ -4,6 +4,7 @@ using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
@@ -216,7 +217,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (ai[3] % 20 == 0)
                 {
                     Vector2 pos = npc.Center + new Vector2(1300, Main.rand.Next(-300, 300)).RotatedBy(npc.rotation - MathHelper.PiOver2);
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), pos, (npc.Center - pos).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<SuckedSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:npc.whoAmI);
                 }
             }
@@ -226,7 +227,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             if (ai[3] % 70 == 0 && ai[3] < 0)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * 20, ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                     for (int i = -2; i < 3; i++)
@@ -338,7 +339,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 lungeInfo[0]++;
                 int j = -4;
                 if (targetPos.X == 0) j = -2;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     for (int i = j; i < (-j) + 1; i++)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
@@ -361,7 +362,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (lungeInfo[0] == 2 && lungeInfo[2] == 1)
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -8), ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
                 lungeInfo[0]++;
@@ -378,7 +379,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 lungeInfo[3]++;
                 if (lungeInfo[3] % 15 == 0)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 7), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.HorsWaterBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
             }
@@ -406,7 +407,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             Player playerTarget = Main.player[npc.target];
             if (!canSee && Collision.CanHit(npc, playerTarget) && npc.GetLifePercent() <= 0.5f)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     for (int i = -3; i < 4; i++)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 10, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);

@@ -8,6 +8,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
 {
@@ -41,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
                 {
                     
                     timer = 0;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.CursedFlameHostile, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
             }

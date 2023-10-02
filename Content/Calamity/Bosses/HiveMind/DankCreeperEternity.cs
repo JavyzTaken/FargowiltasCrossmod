@@ -10,6 +10,7 @@ using Terraria.ID;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -58,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (!WorldSavingSystem.EternityMode) return;
             Player target = Main.player[npc.target];
             NPC owner = Main.npc[(int)npc.ai[0]];
-            if (owner != null && owner.active && Main.netMode != NetmodeID.MultiplayerClient && owner.GetGlobalNPC<HMEternity>().phase < 2)
+            if (owner != null && owner.active && DLCUtils.HostCheck && owner.GetGlobalNPC<HMEternity>().phase < 2)
             Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, (target.Center + new Vector2(0, -400) - npc.Center) / 60, ModContent.ProjectileType<MovingCorruptCloud>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -110,7 +111,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 npc.StrikeInstantKill();
                 return false;
             }
-            if (owner.GetGlobalNPC<HMEternity>().phase >= 2 && Main.rand.NextBool(300) && Main.netMode != NetmodeID.MultiplayerClient)
+            if (owner.GetGlobalNPC<HMEternity>().phase >= 2 && Main.rand.NextBool(300) && DLCUtils.HostCheck)
             {
                 Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
             }

@@ -14,6 +14,7 @@ using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using CalamityMod;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Systems;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
 {
@@ -57,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
             if (owner == null || !owner.active) return true;
             if (owner.GetGlobalNPC<EDeathMLCore>().roguePhase && owner.GetGlobalNPC<MoonLordCore>().VulnerabilityState == 4 && owner.GetGlobalNPC<MoonLordCore>().EnteredPhase2 == false)
             {
-                if (Main.rand.NextBool(150) && Main.netMode != NetmodeID.MultiplayerClient && npc.type != NPCID.MoonLordHead)
+                if (Main.rand.NextBool(150) && DLCUtils.HostCheck && npc.type != NPCID.MoonLordHead)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15, ModContent.ProjectileType<StarofDestruction>(), FargoSoulsUtil.ScaledProjectileDamage(200), 0);
                 }

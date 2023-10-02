@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FargowiltasCrossmod.Core.Utils;
+using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -226,7 +227,7 @@ namespace FargowiltasCrossmod.Core.BaseClasses
 
         private void HeadAI_SpawnSegments()
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (DLCUtils.HostCheck)
             {
                 // So, we start the AI off by checking if NPC.ai[0] (the following NPC's whoAmI) is 0.
                 // This is practically ALWAYS the case with a freshly spawned NPC, so this means this is the first update.
@@ -600,7 +601,7 @@ namespace FargowiltasCrossmod.Core.BaseClasses
                 worm.NPC.timeLeft = 10;
 
             NPC following = worm.NPC.ai[1] >= Main.maxNPCs ? null : worm.FollowingNPC;
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (DLCUtils.HostCheck)
             {
                 // Some of these conditions are possble if the body/tail segment was spawned individually
                 // Kill the segment if the segment NPC it's following is no longer valid

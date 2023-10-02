@@ -1,6 +1,7 @@
 ﻿using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -30,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
                 Vector2 totarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
                 Timer = 0;
                 SoundEngine.PlaySound(SoundID.Item8, npc.Center);
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(20)) * 10, ModContent.ProjectileType<JewelProjectile>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(50), 0);
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(-20)) * 10, ModContent.ProjectileType<JewelProjectile>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(50), 0);

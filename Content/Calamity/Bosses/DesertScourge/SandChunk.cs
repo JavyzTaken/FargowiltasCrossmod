@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Audio;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {
@@ -45,7 +46,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (DLCUtils.HostCheck)
                 for (int i = 0; i < 10; i++)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, new Vector2(7, 0).RotatedBy(MathHelper.ToRadians(i * 36)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.GreatSandBlast>(), Projectile.damage, 0);

@@ -19,6 +19,7 @@ using FargowiltasSouls.Core.NPCMatching;
 using CalamityMod.Events;
 using System.IO;
 using Terraria.ModLoader.IO;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -202,7 +203,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (npc.ai[0] == 300)
                 {
                     SoundEngine.PlaySound(roar with { Pitch = -0.5f }, npc.Center);
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 5; i++)
                         {
@@ -233,7 +234,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (phase == 1)
             {
                 npc.ai[0]++;
-                if (npc.ai[0] % 10 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                if (npc.ai[0] % 10 == 0 && DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(30))*15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(-30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
@@ -278,7 +279,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     Dash(npc, toTarget.RotatedBy(MathHelper.ToRadians(90)) * 20, 60, 50);
                     if (npc.ai[0] % 15 == 0 && NPC.CountNPCS(NPCID.EaterofSouls) < 5)
                     {
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                             NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, NPCID.EaterofSouls);
                         SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                     }
@@ -288,7 +289,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     Dash(npc, (target.Center + new Vector2(0, -200) - npc.Center).SafeNormalize(Vector2.Zero) * 15, 100, 80, 0);
                     if (npc.ai[0] % 30 == 0)
                     {
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<ShadeNimbusHostile>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                     }
                 }
@@ -356,7 +357,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 npc.ai[1] = 0;
                 npc.ai[2] = 0;
                 phase++;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     for (int i = 0; i < numCreeper; i++)
                     {
@@ -416,7 +417,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 speed *= 1.7f;
                 if (npc.ai[0] == time / 2 && npc.ai[1] == 1)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
             }
