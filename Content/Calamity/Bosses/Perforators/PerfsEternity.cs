@@ -149,6 +149,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public int[] wormCycle = new int[] { 5, 5, 6, 5, 7 };
         public int attackCounter = -2;
         public bool HitPlayer = true;
+        public Vector2 LockVector1 = Vector2.Zero;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -159,6 +160,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             binaryWriter.Write7BitEncodedInt(lastAttack);
             binaryWriter.Write7BitEncodedInt(attackCounter);
             binaryWriter.Write(HitPlayer);
+            binaryWriter.WriteVector2(LockVector1);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -169,6 +171,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             lastAttack = binaryReader.Read7BitEncodedInt();
             attackCounter = binaryReader.Read7BitEncodedInt();
             HitPlayer = binaryReader.ReadBoolean();
+            LockVector1 = binaryReader.ReadVector2();
         }
         public override bool SafePreAI(NPC npc)
         {
@@ -253,7 +256,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 //Balls();
                 Spikes();
-                Movement();
+                //Movement();
             }
             if (npc.ai[0] == 2)
             {
@@ -488,7 +491,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             void Spikes()
             {
-                npc.ai[1]++;
                 if (npc.ai[1] < 60 && npc.ai[1] % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.NPCHit20, npc.Center);
@@ -496,6 +498,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         Dust.NewDustDirect(npc.Center, 0, 0, DustID.CrimsonPlants, 0, 2, Scale: 1.5f);
                     }
+                    LockVector1 = Vector2.UnitX * Math.Sign(target.Center.X - npc.Center.X) * 400;
+                }
+                npc.ai[1]++;
+                if (npc.ai[1] <= 60)
+                {
+                    SpikeMovement(target.Center - LockVector1, 1f);
+                }
+                else
+                {
+                    SpikeMovement(target.Center + LockVector1, 2f);
                 }
                 if (npc.ai[1] > 60 && npc.ai[1] % 5 == 0)
                 {
@@ -506,7 +518,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (npc.ai[1] > 60)
                 {
                     npc.position += npc.velocity * 0.5f;
-                    NetSync(npc);
                 }
                 if (npc.ai[1] >= 180)
                 {
@@ -514,6 +525,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     npc.ai[0] = 0;
                     npc.ai[2] = 0;
                     NetSync(npc);
+                }
+            }
+            void SpikeMovement(Vector2 targetPos, float Xmodifier = 1f)
+            {
+                if (targetPos.X > npc.Center.X)
+                {
+                    npc.velocity.X += 0.1f * Xmodifier;
+                    if (npc.velocity.X < 0)
+                    {
+                        npc.velocity.X += 0.2f * Xmodifier;
+                    }
+                }
+                else if (targetPos.X < npc.Center.X)
+                {
+                    npc.velocity.X -= 0.1f * Xmodifier;
+                    if (npc.velocity.X > 0)
+                    {
+                        npc.velocity.X -= 0.2f * Xmodifier;
+                    }
+                }
+                if (Math.Abs(npc.Center.Y - FindGround((int)npc.Center.X, (int)npc.Center.Y)) > 350)
+                {
+                    npc.velocity.Y += 0.2f;
+                    if (npc.velocity.Y < 0)
+                    {
+                        npc.velocity.Y += 0.2f;
+                    }
+                }
+                else
+                {
+                    npc.velocity.Y -= 0.2f;
+                    if (npc.velocity.Y > 0)
+                    {
+                        npc.velocity.Y -= 0.2f;
+                    }
                 }
             }
             void Slam()
