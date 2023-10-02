@@ -14,6 +14,7 @@ using FargowiltasCrossmod.Core;
 using CalamityMod.Events;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -123,13 +124,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 npc.ai[1]++;
                 if (Main.rand.NextBool(30) && owner.GetGlobalNPC<HMEternity>().phase <= 3)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -10).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-30, 30))), ModContent.ProjectileType<OldDukeSummonDrop>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0, ai0:1);
                 }
                 if (npc.ai[1] >= 60)
                 {
                     npc.ai[1] = 0;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         for (int i = 0; i < 6; i++)
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0).RotatedBy(MathHelper.ToRadians(i * (360 / 6))), ModContent.ProjectileType<VileClot>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);

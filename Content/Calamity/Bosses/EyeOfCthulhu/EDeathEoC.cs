@@ -16,6 +16,7 @@ using Terraria.ModLoader;
 using CalamityMod.Events;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 {
@@ -111,7 +112,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 {
                     Vector2 val14 = Vector2.Normalize(Main.player[npc.target].Center - npc.Center) * 5f;
                     Vector2 val15 = npc.Center + val14 * 10f;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     {
                         int num45 = NPC.NewNPC(npc.GetSource_FromAI(null), (int)val15.X, (int)val15.Y, 5, 0, 0f, 0f, 0f, 0f, 255);
                         Main.npc[num45].velocity.X = val14.X;
@@ -155,7 +156,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             }
             else if (npc.ai[1] == 16)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     float num51 = 6f * (0.4f - lifeRatio);
                     float num52 = 18f + num51;
@@ -180,7 +181,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 float dashTime = 40;
                 if (npc.ai[2] % (dashTime / 2) == 0 && npc.ai[2] < dashTime)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         FargoSoulsUtil.XWay(8, npc.GetSource_FromThis(), npc.Center, ModContent.ProjectileType<BloodScythe>(), 1.5f, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
                 npc.ai[2] += 1;

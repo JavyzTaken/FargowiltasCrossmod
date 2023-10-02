@@ -1,6 +1,7 @@
 ﻿
 using CalamityMod.Items.Weapons.Ranged;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -74,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 Projectile.frame = 4;
                 Projectile.velocity *= 0;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, 10), ModContent.ProjectileType<CursedLightning>(), Projectile.damage, 0, ai0: MathHelper.PiOver2, ai1: Main.rand.Next(10));
                 }

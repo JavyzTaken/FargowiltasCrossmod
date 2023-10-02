@@ -5,6 +5,7 @@ using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod;
 

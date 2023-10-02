@@ -10,6 +10,7 @@ using Terraria.ID;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -53,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override void OnKill(NPC npc)
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (DLCUtils.HostCheck)
             {
                 NPC owner = Main.npc[(int)npc.ai[0]];
                 if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>()) return;
@@ -62,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 int amount = 0;
                 if (owner.GetGlobalNPC<HMEternity>().phase < 2) amount = 2;
                 else if (Main.rand.NextBool()) amount = 1;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     for (int i = 0; i < amount; i++)
                         Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -10).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-range, range))), ModContent.ProjectileType<OldDukeGore>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
             }
@@ -133,7 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 npc.ai[2] = 0;
                 npc.ai[1] = Main.rand.NextFloat(0f, maxRadians);
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.VileClot>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
                 }

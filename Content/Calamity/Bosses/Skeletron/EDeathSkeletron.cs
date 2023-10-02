@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -60,7 +61,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                             n.position = telePos;
                         }
                     }
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                         for (int i = -2; i < 3; i++)
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(15 * i)) * 15, ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);

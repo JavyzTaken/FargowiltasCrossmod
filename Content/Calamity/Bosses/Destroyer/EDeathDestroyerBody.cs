@@ -9,6 +9,7 @@ using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {
@@ -50,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
                     if (timer == 800)
                     {
                         timer = 0;
-                        if (Main.netMode != NetmodeID.MultiplayerClient && Collision.CanHitLine(npc.Center, 1, 1, target.Center, 1, 1))
+                        if (DLCUtils.HostCheck && Collision.CanHitLine(npc.Center, 1, 1, target.Center, 1, 1))
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                     }
                 }

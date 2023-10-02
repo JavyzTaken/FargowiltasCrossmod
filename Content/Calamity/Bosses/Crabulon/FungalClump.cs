@@ -9,6 +9,7 @@ using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -137,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             NPC.ai[0]++;
             if (NPC.ai[0] >= 300)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     for (int i = 0; i < 20; i++)
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.NextFloat()/1.5f).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
                 NPC.ai[0] = 0;
@@ -152,7 +153,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             if (NPC.ai[0] % 100 == 0)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toplayer * 10, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
             }
             Player player = Main.player[NPC.target];
@@ -173,7 +174,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             if (NPC.ai[0] == 150 && owner.GetLifePercent() < 0.25f)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toplayer.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-20, 20)))*4, ModContent.ProjectileType<FungusBall>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
             }
         }

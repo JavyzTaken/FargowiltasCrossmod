@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
 {
@@ -38,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
             }
             else if (slam)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     for (int i = 0; i < 11; i++)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-10, 0).RotatedBy(MathHelper.ToRadians(180 / 10f * i)), ModContent.ProjectileType<HallowedSlimeSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);

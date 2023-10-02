@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
                 
             }
-                if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
+            if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
             {
                 if (!NPC.AnyNPCs(ModContent.NPCType<PerforatorHive>()))
                 {
@@ -143,7 +143,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         }
                         if (perf != null && perf.active && perf.type == ModContent.NPCType<PerforatorHive>())
                         {
-                            npc.velocity = Vector2.Lerp(npc.velocity, (perf.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20, 0.1f);
+                            float vel = 20; // 16 + perf.velocity.Length();
+                            npc.velocity = Vector2.Lerp(npc.velocity, (perf.Center - npc.Center).SafeNormalize(Vector2.Zero) * vel, 0.1f);
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;
@@ -163,7 +164,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         }
                         if (perf != null && perf.active && perf.type == ModContent.NPCType<PerforatorHive>())
                         {
-                            npc.velocity = Vector2.Lerp(npc.velocity, (perf.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20, 0.03f);
+                            float vel = 16 + perf.velocity.Length();
+                            npc.velocity = Vector2.Lerp(npc.velocity, (perf.Center - npc.Center).SafeNormalize(Vector2.Zero) * vel, 0.03f);
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;

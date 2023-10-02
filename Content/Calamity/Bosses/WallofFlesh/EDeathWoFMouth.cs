@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using FargowiltasSouls;
 using Terraria.Audio;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
 {
@@ -32,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
             //Main.NewText(wof.WorldEvilAttackCycleTimer);
             if (wof.WorldEvilAttackCycleTimer == 150)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(1, 0) * npc.spriteDirection, ModContent.ProjectileType<HomingSickle>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
             }

@@ -9,6 +9,7 @@ using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
 {
@@ -37,7 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
             {
                 
                 fireball = false;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(150), 0);
             }
             if (owner.ai[0] == 0)

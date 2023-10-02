@@ -17,6 +17,7 @@ using FargowiltasSouls.Content.Buffs.Masomode;
 using CalamityMod.Events;
 using System.IO;
 using Terraria.ModLoader.IO;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -116,7 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (npc.ai[3] == 0 && npc.GetLifePercent() < 0.8f)
             {
                 npc.ai[3]++;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
                 npc.ai[1] = 0;
                 npc.HealEffect(-50);
@@ -128,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (npc.ai[3] == 2 && npc.GetLifePercent() < 0.5f)
             {
                 npc.ai[3]++;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
                 npc.ai[1] = 0;
                 npc.HealEffect(-50);
@@ -140,7 +141,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (npc.ai[3] == 4 && npc.GetLifePercent() < 0.2f)
             {
                 npc.ai[3]++;
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
                 npc.ai[1] = 0;
                 npc.HealEffect(-50);
@@ -289,12 +290,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             if (npc.ai[2] > 60 && npc.ai[2] % 30 == 0)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
             }
             if (npc.ai[2] > 30 && npc.ai[2] % 40 == 0 && NPC.CountNPCS(ModContent.NPCType<CrabShroom>()) < 8) //maximum of 6 so you don't enter the CBT shroom dungeon
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     Vector2 position = npc.Center - Vector2.UnitY * npc.height / 3;
                     NPC shroom = NPC.NewNPCDirect(npc.GetSource_FromAI(), (int)position.X, (int)position.Y, ModContent.NPCType<CrabShroom>());
@@ -311,7 +312,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     for (int i = 0; i < 30; i++)
                         Dust.NewDustDirect(npc.TopLeft, 6, npc.height, DustID.MushroomSpray, Alpha: 200, Scale: 2).noGravity = true;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0).RotatedBy(MathHelper.ToRadians(-30)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
@@ -321,7 +322,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     for (int i = 0; i < 30; i++)
                         Dust.NewDustDirect(npc.TopRight, -6, npc.height, DustID.MushroomSpray, Alpha: 200, Scale: 2).noGravity = true;
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-7, 0), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-7, 0).RotatedBy(MathHelper.ToRadians(30)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
@@ -363,7 +364,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (type == 1 && npc.ai[2] % 30 == 0)
             {
                 Vector2 position = npc.TopLeft + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height));
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (DLCUtils.HostCheck)
                 {
                     NPC shroom = NPC.NewNPCDirect(npc.GetSource_FromAI(), (int)position.X, (int)position.Y, ModContent.NPCType<CrabShroom>());
                     shroom.velocity = new Vector2(0, -5);
@@ -404,7 +405,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 SoundEngine.PlaySound(SoundID.Item14, npc.Center);
                 if (type == 1)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (DLCUtils.HostCheck)
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 10);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -10);
@@ -414,7 +415,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     for (int i =0; i < 10; i++)
                     {
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        if (DLCUtils.HostCheck)
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(Main.rand.Next(0, npc.width), -5), new Vector2(Main.rand.NextFloat(), Main.rand.NextFloat()) / 5, ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                     }
                 }
