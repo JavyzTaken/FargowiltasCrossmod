@@ -20,6 +20,7 @@ using CalamityMod.Events;
 using System.IO;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core.Utils;
+using System.Linq;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -122,23 +123,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
         }
         public int phase = 0;
-        public int[] attackCycle = { 0, 0, 0, 0, 0 };
+        const int attackCycleLength = 7;
+        public int[] attackCycle = new int[attackCycleLength] { 0, 0, 0, 0, 0, -1, -1};
+        
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            for (int i = 0; i < attackCycle.Length; i++)
+            for (int i = 0; i < attackCycleLength; i++)
             {
                 binaryWriter.Write7BitEncodedInt(attackCycle[i]);
             }
             binaryWriter.Write7BitEncodedInt(phase);
+            binaryWriter.WriteVector2(sprite);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            for (int i = 0; i < attackCycle.Length; i++)
+            for (int i = 0; i < attackCycleLength; i++)
             {
                 attackCycle[i] = binaryReader.Read7BitEncodedInt();
             }
             phase = binaryReader.Read7BitEncodedInt();
+            sprite = binaryReader.ReadVector2();
         }
+        
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
         {
             if (!WorldSavingSystem.EternityMode) return base.CanHitPlayer(npc, target, ref cooldownSlot);
@@ -195,7 +201,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     Main.instance.CameraModifiers.Add(modifier);
                 }
                 npc.ai[0]++;
-                if (npc.ai[0] >= 300)
+                if (npc.ai[0] >= 300 && npc.ai[0] < 320)
                 {
                     npc.scale += 0.05f;
                     
@@ -213,8 +219,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         }
                         NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<DarkHeart>(), ai0: npc.whoAmI);
                     }
+                    NetSync(npc);
                 }
-                if (npc.ai[0] == 320)
+                if (npc.ai[0] >= 320)
                 {
                     phase = 1;
                     npc.ai[0] = 0;
@@ -230,6 +237,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     NetSync(npc);
                 }
                 
+            }
+            else
+            {
+                npc.scale = 1; //to avoid mp issues
             }
             if (phase == 1)
             {
@@ -250,7 +261,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     npc.ai[1] = 1;
                     npc.damage = 80;
                     npc.noTileCollide = true;
-                    attackCycle = new int[] { 0, 1};
+                    attackCycle = new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 };
                     foreach (NPC n in Main.npc)
                     {
                         if ((n.type == ModContent.NPCType<HiveBlob>() || n.type == ModContent.NPCType<HiveBlob2>()) && n.ai[0] == npc.whoAmI)
@@ -266,6 +277,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 npc.damage = 50;
                 int attack = attackCycle[(int)npc.ai[2]];
+                if (attack < 0)
+                {
+                    attack = 0;
+                }
+                
                 if (attack == 0)
                 {
                     Follow(npc, 3, toTarget, 180);
@@ -302,9 +318,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     
                     Teleport(npc, 30, 20, target.Center + toTarget*500);
                 }
-                RetractHeart(npc, 0.8f, 2, 7, 12, new int[] {0, 1});
-                RetractHeart(npc, 0.5f, 3, 7, 12, new int[] { 0, 1 });
-                RetractHeart(npc, 0.2f, 4, 7, 12, new int[] { 0, 3, 1 });
+                RetractHeart(npc, 0.8f, 2, 7, 12, new int[attackCycleLength] {0, 1, -1, -1, -1, -1, -1 });
+                RetractHeart(npc, 0.5f, 3, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
+                RetractHeart(npc, 0.2f, 4, 7, 12, new int[attackCycleLength] { 0, 3, 1, -1, -1, -1, -1 });
                 ReleaseHeart(npc);
                 
             }
@@ -391,15 +407,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                 if (npc.GetLifePercent() <= 0.8f)
                 {
-                    attackCycle = new int[] { 0, 1, 2 };
+                    attackCycle = new int[attackCycleLength] { 0, 1, 2, -1, -1, -1, -1 };
                 }
                 if (npc.GetLifePercent() <= 0.5f)
                 {
-                    attackCycle = new int[] { 0, 1, 5, 3, 2, 4 };
+                    attackCycle = new int[attackCycleLength] { 0, 1, 5, 3, 2, 4, -1 };
                 }
                 if (npc.GetLifePercent() <= 0.2f)
                 {
-                    attackCycle = new int[] { 0, 1, 3,5, 2, 5, 4 };
+                    attackCycle = new int[attackCycleLength] { 0, 1, 3, 5, 2, 5, 4 };
                 }
                 NetSync(npc);
             }
@@ -451,7 +467,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             npc.ai[0] = 0;
             npc.ai[2]++;
-            if (npc.ai[2] >= attackCycle.Length)
+            if (npc.ai[2] >= attackCycle.Length || attackCycle[(int)npc.ai[2]] < 0)
             {
                 npc.ai[2] = 0;
             }

@@ -72,8 +72,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         }
 
         public float[] ai = new float[] { 0, 0, 0, 0, 0 };
-        public int[] attackCycle = new int[] { 0, 1, 0, 1, 1, 0 };
+        public const int attackCycleLength = 9;
+        public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
+        
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             for (int i = 0; i < ai.Length; i++)
@@ -98,6 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             phase = binaryReader.Read7BitEncodedInt();
         }
+        
         public override bool SafePreAI(NPC npc)
         {
             if (npc == null || !npc.active)
@@ -119,12 +122,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             npc.realLife = -1;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
             int attack = attackCycle[(int)npc.ai[3]];
+            if (attack < 0)
+            {
+                attack = 0;
+            }
 
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || npc.GetLifePercent() <= 0.75f))
             {
                 phase++;
-                attackCycle = new int[] { 4, 0, 1, 3, attack };
-                npc.ai[3] = attackCycle.Length - 1;
+                attackCycle = new int[attackCycleLength] { 4, 0, 1, 3, attack, -1, -1, -1, -1 };
+                npc.ai[3] = attackCycle.Length - 5;
                 for (int i = 0; i < Main.npc.Length; i++)
                 {
                     if (Main.npc[i].type == ModContent.NPCType<DesertNuisanceHead>() && Main.npc[i].active)
@@ -138,14 +145,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (phase == 1 && npc.GetLifePercent() <= 0.5f)
             {
                 phase++;
-                attackCycle = new int[] { 5, 0, 2, 2, 3, 4, attack };
-                npc.ai[3] = attackCycle.Length - 1;
+                NetSync(npc);
+                attackCycle = new int[attackCycleLength] { 5, 0, 2, 2, 3, 4, attack, -1, -1 };
+                NetSync(npc);
+                npc.ai[3] = attackCycle.Length - 3;
                 NetSync(npc);
             }
             if (phase == 2 && npc.GetLifePercent() <= 0.2f)
             {
                 phase++;
-                attackCycle = new int[] { 3, 2, 3, 5, 5, 3, 5, 2, attack };
+                NetSync(npc);
+                attackCycle = new int[attackCycleLength] { 3, 2, 3, 5, 5, 3, 5, 2, attack };
+                NetSync(npc);
                 npc.ai[3] = attackCycle.Length - 1;
                 NetSync(npc);
             }
@@ -395,7 +406,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public void IncrementCycle(NPC npc)
         {
             npc.ai[3]++;
-            if (npc.ai[3] >= attackCycle.Length-1)
+            if (npc.ai[3] >= attackCycle.Length-1 || attackCycle[(int)npc.ai[3]] < 0)
             {
                 npc.ai[3] = 0;
             }

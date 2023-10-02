@@ -31,7 +31,7 @@ namespace FargowiltasSouls.Core.Globals
         public abstract NPCMatcher CreateMatcher();
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : target.GetGlobalNPC<EmptyGlobalNPC>();
+            return DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : target.GetGlobalNPC<EmptyGlobalNPC>();
         }
 
         public bool FirstTick = true;
@@ -40,7 +40,7 @@ namespace FargowiltasSouls.Core.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!DLCWorldSavingSystem.E_EternityRev)
+            if (!DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev)
             {
                 return true;
             }
@@ -55,7 +55,7 @@ namespace FargowiltasSouls.Core.Globals
         public virtual void SafePostAI(NPC npc) => base.PostAI(npc);
         public sealed override void PostAI(NPC npc)
         {
-            if (!DLCWorldSavingSystem.E_EternityRev)
+            if (!DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev)
             {
                 return;
             }

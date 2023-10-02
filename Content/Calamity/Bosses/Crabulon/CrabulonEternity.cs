@@ -75,6 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public int[] attackCycle = new int[10];
 
+        /*
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             for (int i = 0; i < attackCycle.Length; i++)
@@ -89,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 attackCycle[i] = binaryReader.Read7BitEncodedInt();
             }
         }
-
+        */
         //ai[] usage:
         //ai[0]: which animation in use (1: walking, 0: idle, 3: attacking)
         //ai[1]: index of attackCycle to read

@@ -19,6 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
     public class EDeathBoCClone : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<BrainClone>());
+
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             base.SendExtraAI(npc, bitWriter, binaryWriter);

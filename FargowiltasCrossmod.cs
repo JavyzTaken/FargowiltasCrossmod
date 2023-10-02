@@ -5,6 +5,8 @@ using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
+using System.IO;
 
 namespace FargowiltasCrossmod;
 
@@ -45,4 +47,6 @@ public class FargowiltasCrossmod : Mod
         if (ModCompatibility.Calamity.Loaded)
          pierceResistExceptionList.Add(ProjectileID.FinalFractal);
     }
+
+    public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
 }
