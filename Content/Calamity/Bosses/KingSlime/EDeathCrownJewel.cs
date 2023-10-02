@@ -15,6 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
     public class EDeathCrownJewel : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<KingSlimeJewel>());
+        public int Timer = 0;
        
         public override bool SafePreAI(NPC npc)
         {
@@ -22,11 +23,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
             {
                 return true;
             }
-            if (npc.ai[0] == 59)
+            npc.ai[0] = 0; //don't fire normal shots
+            if (++Timer == 90)
             {
                 Player target = Main.player[npc.target];
                 Vector2 totarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
-                npc.ai[0] = 0;
+                Timer = 0;
                 SoundEngine.PlaySound(SoundID.Item8, npc.Center);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
