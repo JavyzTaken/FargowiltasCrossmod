@@ -73,7 +73,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int phase;
         public override bool SafePreAI(NPC npc)
         {
-
+            if (npc == null || !npc.active)
+            {
+                return true;
+            }
             if (npc.ai[2] < 20)
             {
                 npc.ai[2]++;
@@ -81,6 +84,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             }
             Player target = Main.player[npc.target];
+            if (target == null || !target.active || target.dead)
+            {
+                return true;
+            }
             Vector2 toplayer = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
             npc.realLife = -1;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
