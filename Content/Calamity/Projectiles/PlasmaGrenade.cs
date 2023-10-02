@@ -133,9 +133,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             if (Projectile.ai[1] == -10 || offset == Vector2.Zero) return base.CanDamage();
             return false;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
     }
 }

@@ -160,7 +160,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             return false;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             int dustType = orbType switch
             {

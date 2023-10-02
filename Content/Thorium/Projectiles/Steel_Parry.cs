@@ -77,7 +77,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public bool explodeOnDeath;
         public override bool InstancePerEntity => true;
 
-        public override void Kill(Projectile projectile, int timeLeft)
+        public override void OnKill(Projectile projectile, int timeLeft)
         {
             if (timeLeft != 0 && explodeOnDeath)
             {

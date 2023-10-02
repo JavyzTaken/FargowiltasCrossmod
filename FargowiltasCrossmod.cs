@@ -2,7 +2,6 @@ global using FargowiltasCrossmod.Core;
 using System.Linq;
 using System.Reflection;
 using Terraria.ModLoader;
-using System.Reflection;
 using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using FargowiltasCrossmod.Content.Common;

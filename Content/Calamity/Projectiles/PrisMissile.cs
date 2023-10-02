@@ -130,9 +130,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             if (Projectile.penetrate < 0 && Projectile.timeLeft < 117) return false;
             return base.CanDamage();
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
     }
 }

@@ -11,8 +11,6 @@ using CalamityMod.NPCs;
 using Terraria;
 using Terraria.ModLoader;
 using CalamityMod.Events;
-using System.Reflection;
-using System;
 using CalamityMod.Projectiles;
 
 namespace FargowiltasCrossmod.Core.Calamity

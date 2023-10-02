@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             }
             CalamityUtils.HomeInOnNPC(Projectile, true, 150f, 12f, 20f);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(in SoundID.Item14, Projectile.position);
             for (int i = 0; i < 15; i++)

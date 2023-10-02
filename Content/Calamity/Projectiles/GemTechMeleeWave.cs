@@ -55,9 +55,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         {
             base.OnSpawn(source);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
-            base.Kill(timeLeft);
+            base.OnKill(timeLeft);
         }
         public override void AI()
         {

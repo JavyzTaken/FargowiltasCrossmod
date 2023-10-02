@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofAnnihilatio
             Projectile.timeLeft = initialTimeLeft;
             Projectile.scale = 0;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
 
         }

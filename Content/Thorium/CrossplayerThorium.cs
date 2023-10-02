@@ -24,28 +24,29 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool EbonEnch;
         public bool ClericEnch;
         public bool TemplarEnch;
+        public Item TemplarEnchItem;
         public bool LivingWoodEnch;
+        public Item LivingWoodEnchItem;
         public bool SilkEnch;
         public bool WhiteKnightEnch;
         public bool LodeStoneEnch;
         public bool DragonEnch;
         public bool SteelEnch;
+        public Item SteelEnchItem;
         public bool DarkSteelEnch;
         public bool ValadiumEnch;
+        public Item ValadiumEnchItem;
         public bool BerserkerEnch;
         public bool FungusEnch;
         public bool GraniteEnch;
-        public bool AstroEnch;
-        public bool SpiritTrapperEnch;
-        public bool YewWoodEnch;
-
-        public Item TemplarEnchItem;
-        public Item LivingWoodEnchItem;
-        public Item SteelEnchItem;
-        public Item ValadiumEnchItem;
         public Item GraniteEnchItem;
+        public bool AstroEnch;
         public Item AstroEnchItem;
+        public bool SpiritTrapperEnch;
         public Item SpiritTrapperEnchItem;
+        public bool YewWoodEnch;
+        public Item YewWoodEnchItem;
+
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -68,28 +69,29 @@ namespace FargowiltasCrossmod.Content.Thorium
             EbonEnch = false;
             ClericEnch = false;
             TemplarEnch = false;
+            TemplarEnchItem = null;
             LivingWoodEnch = false;
+            LivingWoodEnchItem = null;
             SilkEnch = false;
             WhiteKnightEnch = false;
             LodeStoneEnch = false;
             DragonEnch = false;
             SteelEnch = false;
+            SteelEnchItem = null;
             DarkSteelEnch = false;
             ValadiumEnch = false;
+            ValadiumEnchItem = null;
             BerserkerEnch = false;
             FungusEnch = false;
             GraniteEnch = false;
-            AstroEnch = false;
-            SpiritTrapperEnch = false;
-            YewWoodEnch = false;
-
-            TemplarEnchItem = null;
-            LivingWoodEnchItem = null;
-            SteelEnchItem = null;
-            ValadiumEnchItem = null;
             GraniteEnchItem = null;
+            AstroEnch = false;
             AstroEnchItem = null;
+            SpiritTrapperEnch = false;
             SpiritTrapperEnchItem = null;
+            YewWoodEnch = false;
+            YewWoodEnchItem = null;
+
 
             GildedMonicle = false;
             GildedBinoculars = false;

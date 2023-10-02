@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.ai[1] = -1;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             if (Projectile.ai[1] != -1)
             {
@@ -135,7 +135,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void Kill(Projectile projectile, int timeLeft)
         {
-            base.Kill(projectile, timeLeft);
+            base.OnKill(projectile, timeLeft);
             if (platform >= 0)
             {
                 Main.projectile[platform].ai[1] = -1;

@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExploration
 
         public override void Kill(Projectile projectile, int timeLeft)
         {
-            base.Kill(projectile, timeLeft);
+            base.OnKill(projectile, timeLeft);
         }
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {

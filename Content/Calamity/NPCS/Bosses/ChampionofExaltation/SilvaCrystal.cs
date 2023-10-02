@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.NPCS.Bosses.ChampionofExaltation
             }
             Projectile.localAI[1] = 1;
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             DoRainbowCrystalStaffExplosion(Projectile.Center);
             SoundEngine.PlaySound(SoundID.Item110, Projectile.Center);

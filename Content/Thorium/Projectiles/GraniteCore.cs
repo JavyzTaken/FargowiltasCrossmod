@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             return false;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Projectile.friendly = true;
             Projectile.damage = 50;

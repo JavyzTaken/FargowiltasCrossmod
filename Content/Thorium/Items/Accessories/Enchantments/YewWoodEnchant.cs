@@ -16,7 +16,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CrossplayerThorium>().YewWoodEnch = true;
+            var DLCPLayer = player.GetModPlayer<CrossplayerThorium>();
+            DLCPLayer.YewWoodEnch = true;
+            DLCPLayer.YewWoodEnchItem = Item;
         }
 
         public static void LoadModdedArrows()
@@ -65,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             if (item.useAmmo == AmmoID.Arrow && type == ProjectileID.WoodenArrowFriendly)
             {
-                bool useHM = Main.hardMode; // || wizard
+                bool useHM = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type); // || wizard
                 type = Main.rand.NextFromCollection(useHM ? Items.Accessories.Enchantments.YewWoodEnchant.HMArrows : Items.Accessories.Enchantments.YewWoodEnchant.PreHMArrows);
             }
         }

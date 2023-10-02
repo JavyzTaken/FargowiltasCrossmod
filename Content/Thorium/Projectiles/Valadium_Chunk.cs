@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             //Projectile.frame = (int)Projectile.ai[0] - 1;
         }
 
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             //Main.NewText($"Chunk killed: {timeLeft}");
             var DLCPlayer = Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>();
@@ -107,7 +107,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             {
                 // Chunks existing out of bounds was causing rendering issues
                 CombatText.NewText(Projectile.Hitbox, Color.Red, "Scrongbongled", true);
-                Kill(-69420);
+                Projectile.Kill();
                 return false;
             }
             return true;

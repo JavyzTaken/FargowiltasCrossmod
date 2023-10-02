@@ -80,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 
 
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             Player player = Main.player[Main.myPlayer];
             CrossplayerCalamity SBDPlayer = player.GetModPlayer<CrossplayerCalamity>();
