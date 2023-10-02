@@ -503,7 +503,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
-                if (npc.ai[1] >= 120)
+                if (npc.ai[1] > 60)
+                {
+                    npc.position += npc.velocity * 0.5f;
+                    NetSync(npc);
+                }
+                if (npc.ai[1] >= 180)
                 {
                     npc.ai[1] = 0;
                     npc.ai[0] = 0;
