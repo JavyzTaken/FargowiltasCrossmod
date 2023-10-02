@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 int teamPlayers = 0;
                 foreach (Player other in Main.player)
                 {
-                    if (other.team == player.team && other.Center.Distance(player.Center) < 1440f && !other.GetModPlayer<CrossplayerThorium>().WhiteKnightEnch) teamPlayers++;
+                    if (other.team == player.team && other.statDefense < player.statDefense && other.Center.Distance(player.Center) < 1440f) teamPlayers++;
                 }
                 player.GetDamage(DamageClass.Generic) += boost * teamPlayers;
             }

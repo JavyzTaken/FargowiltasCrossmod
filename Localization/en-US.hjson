@@ -157,73 +157,85 @@ Mods: {
 			}
 
 			AstroEnchant: {
-				DisplayName: Astro Enchant
-				Tooltip: ""
+				DisplayName: Astro Enchantment
+				Tooltip: Periodically summons an orbital laser from the sky when attacking. Effect does not work underground.
 			}
 
 			DarksteelEnchant: {
-				DisplayName: Darksteel Enchant
-				Tooltip: ""
+				DisplayName: Darksteel Enchantment
+				Tooltip:
+					'''
+					Allows you to parry projectiles with a hotkey, including your own.
+					"+Proboost"
+					'''
 			}
 
 			DragonEnchant: {
-				DisplayName: Dragon Enchant
-				Tooltip: ""
+				DisplayName: Dragon Enchantment
+				Tooltip: Summons a green dragon to aid you.
 			}
 
 			FungusEnchant: {
-				DisplayName: Fungus Enchant
-				Tooltip: ""
+				DisplayName: Fungus Enchantment
+				Tooltip: Attacking enemies can infect them with a weakening fungal virus that also spreads from spores released when killed.
 			}
 
 			GraniteEnchant: {
-				DisplayName: Granite Enchant
-				Tooltip: ""
+				DisplayName: Granite Enchantment
+				Tooltip: Killing enemies creates an explosion. Kind lame, needs a new/ extra effect
 			}
 
 			LivingWoodEnchant: {
-				DisplayName: Living Wood Enchant
+				DisplayName: Living Wood Enchantment
 				Tooltip: ""
 			}
 
 			LodeStoneEnchant: {
-				DisplayName: Lode Stone Enchant
-				Tooltip: ""
+				DisplayName: Lode Stone Enchantment
+				Tooltip: Summons lodestone platforms capable of carrying sentries.
 			}
 
 			SilkEnchant: {
-				DisplayName: Silk Enchant
+				DisplayName: Silk Enchantment
 				Tooltip: ""
 			}
 
 			SpiritTrapperEnchant: {
-				DisplayName: Spirit Trapper Enchant
-				Tooltip: ""
+				DisplayName: Spirit Trapper Enchantment
+				Tooltip: Summons an angry ghost that copys projectiles to aid you.
 			}
 
 			SteelEnchant: {
-				DisplayName: Steel Enchant
-				Tooltip: ""
+				DisplayName: Steel Enchantment
+				Tooltip:
+					'''
+					Allows you to parry projectiles with a hotkey, allowing them to deal damage to enemies
+					"Now beat P-2 with it"
+					'''
 			}
 
 			TemplarEnchant: {
-				DisplayName: Templar Enchant
+				DisplayName: Templar Enchantment
 				Tooltip: ""
 			}
 
 			ValadiumEnchant: {
-				DisplayName: Valadium Enchant
-				Tooltip: ""
+				DisplayName: Valadium Enchantment
+				Tooltip:
+					'''
+					Spawns gravitationally-attracted valadium chunks that damage enemies proportional to their momentum.
+					"glaciers melting in the dead of night..."
+					'''
 			}
 
 			WhiteKnightEnchant: {
-				DisplayName: White Knight Enchant
-				Tooltip: ""
+				DisplayName: White Knight Enchantment
+				Tooltip: Increases damage based on the number of npcs and players with less defence that you nearby.
 			}
 
 			YewWoodEnchant: {
-				DisplayName: Yew Wood Enchant
-				Tooltip: ""
+				DisplayName: Yew Wood Enchantment
+				Tooltip: Turns wooden arrows into random other arrows.
 			}
 
 			SlingersEssence: {
@@ -233,27 +245,31 @@ Mods: {
 
 			GildedBinoculars: {
 				DisplayName: Gilded Binoculars
-				Tooltip: ""
+				Tooltip: Projectiles glow
 			}
 
 			GildedLamp: {
 				DisplayName: Gilded Lamp
-				Tooltip: ""
+				Tooltip: Gives permanent shining and immumity to gilded sight.
 			}
 
 			GildedMonicle: {
 				DisplayName: Gilded Monicle
-				Tooltip: ""
+				Tooltip: Items and coins emit light
 			}
 
 			GildedNightVision: {
-				DisplayName: Gilded Night Vision
-				Tooltip: ""
+				DisplayName: Gilded Night Vision Goggles
+				Tooltip:
+					'''
+					The player, projectiles and items all emit light.
+					Immunity to gilded sight
+					'''
 			}
 
 			MynaAccessory: {
 				DisplayName: Myna Accessory
-				Tooltip: ""
+				Tooltip: Projectiles can dodge you slightly.
 			}
 
 			OlympiansSoul: {
@@ -263,22 +279,42 @@ Mods: {
 
 			TempleCore: {
 				DisplayName: Temple Core
-				Tooltip: ""
+				Tooltip: Spawns orbs around the player that target and fire on nearby enemies.
 			}
 
 			GildedSummon: {
-				DisplayName: Gilded Summon
-				Tooltip: ""
+				DisplayName: Gilded rock
+				Tooltip: Summons the gilded enemies. Can only be used at night or underground.
 			}
 
 			MynaSummon: {
-				DisplayName: Myna Summon
-				Tooltip: ""
+				DisplayName: Myna egg
+				Tooltip: Summons a harmless critter
 			}
 
 			KluexStaff: {
-				DisplayName: Kluex Staff
-				Tooltip: ""
+				DisplayName: Staff of copyrighted content
+				Tooltip: Spawns damaging orbs with left-click and healing orbs with right-click. Speed increases as it is used.
+			}
+
+			DemonBloodEnchant: {
+				DisplayName: Demon Blood Enchantment
+				Tooltip:
+					'''
+					Demon blood has a chance to appear whenever you kill an enemy, and increases your damage by 10% per splatter up to 50%.
+					Removing 10% of a bosses hp also creates blood.
+					[i:FargowiltasCrossmod/FleshEnchant] Hit enemies have a chance to drop chunks of suitable flesh, which can he picked up for healing.
+					"Do you know how far from normal, from human, this is?"
+					'''
+			}
+
+			FleshEnchant: {
+				DisplayName: Flesh Enchantment
+				Tooltip:
+					'''
+					Hit enemies have a chance to drop chunks of suitable flesh, which can he picked up for healing.
+					"Jus drein, jus daun"
+					'''
 			}
 		}
 
@@ -319,13 +355,14 @@ Mods: {
 			GraniteExplosion.DisplayName: Granite Explosion
 			KluexBlast.DisplayName: Kluex Blast
 			KluexOrb.DisplayName: Kluex Orb
-			LivingWood_Roots.DisplayName: Living Wood_ Roots
+			LivingWood_Roots.DisplayName: Living Wood Roots
 			LodeStonePlatform.DisplayName: Lode Stone Platform
 			MidExplosion.DisplayName: Mid Explosion
 			SaucerDeathrayProj.DisplayName: Saucer Deathray Proj
-			Steel_Parry.DisplayName: Steel_ Parry
-			Templar_Fire.DisplayName: Templar_ Fire
-			Valadium_Chunk.DisplayName: Valadium_ Chunk
+			Steel_Parry.DisplayName: Steel Parry
+			Templar_Fire.DisplayName: Templar Fire
+			Valadium_Chunk.DisplayName: Valadium_Chunk
+			DemonBloodSpill.DisplayName: Demon Blood Spill
 		}
 
 		Keybinds: {
@@ -335,28 +372,28 @@ Mods: {
 
 		Buffs: {
 			GildedSightDB: {
-				DisplayName: Gilded Sight D B
+				DisplayName: Gilded Sight
 				Description: Mods.FargowiltasCrossmod.Buffs.GildedSightDB.Description
 			}
 
 			LivingWood_Root_B: {
-				DisplayName: Living Wood_ Root_ B
+				DisplayName: Living Wood Root
 				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_B.Description
 			}
 
 			LivingWood_Root_DB: {
-				DisplayName: Living Wood_ Root_ D B
+				DisplayName: Living Wood Root CD
 				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_DB.Description
 			}
 
 			MynaDB: {
-				DisplayName: Myna D B
-				Description: Mods.FargowiltasCrossmod.Buffs.MynaDB.Description
+				DisplayName: Myna
+				Description: Your projectiles dodge enemies
 			}
 
 			SteelParry_CD: {
 				DisplayName: Steel Parry_ C D
-				Description: Mods.FargowiltasCrossmod.Buffs.SteelParry_CD.Description
+				Description: Wait, isn't this meant to be free?
 			}
 		}
 	}

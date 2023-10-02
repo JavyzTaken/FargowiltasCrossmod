@@ -47,7 +47,10 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item SpiritTrapperEnchItem;
         public bool YewWoodEnch;
         public Item YewWoodEnchItem;
-
+        public bool FleshEnch;
+        public Item FleshEnchItem;
+        public bool DemonBloodEnch;
+        public Item DemonBloodEnchItem;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -93,7 +96,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             SpiritTrapperEnchItem = null;
             YewWoodEnch = false;
             YewWoodEnchItem = null;
-
+            FleshEnch = false;
+            FleshEnchItem = null;
+            DemonBloodEnch = false;
+            DemonBloodEnchItem = null;
 
             GildedMonicle = false;
             GildedBinoculars = false;
@@ -121,9 +127,42 @@ namespace FargowiltasCrossmod.Content.Thorium
             {
                 SpawnAstroLaser(target);
             }
-            if (GraniteEnch && hit.Damage >= target.life && proj.type != ModContent.ProjectileType<GraniteExplosion>())
+
+            if (FleshEnch && Main.rand.NextBool(10))
             {
-                Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), target.Center, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, Player.whoAmI);
+                SpawnFlesh(target);
+            }
+
+            if (hit.Damage >= target.life) // kills
+            {
+                if (GraniteEnch && proj.type != ModContent.ProjectileType<GraniteExplosion>())
+                {
+                    Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), target.Center, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, Player.whoAmI);
+                }
+
+                if (DemonBloodEnch)
+                {
+                    SpawnDemonBlood(target.Center);
+                }
+            }
+
+            // this (should) be true if the hit moved the boss below a 10% hp increment
+            // works by checking the current life's distance to the next increment vs the life - damage distance to next incement. 
+            // may be unreliable but i think its cool.
+            if (target.boss && (target.life % (target.lifeMax / 10)) < ((target.life - hit.Damage) % (target.lifeMax / 10)))
+            {
+                if (DemonBloodEnch)
+                {
+                    SpawnDemonBlood(target.Center);
+                }
+            }
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (FleshEnch && Main.rand.NextBool(10))
+            {
+                SpawnFlesh(target);
             }
         }
 

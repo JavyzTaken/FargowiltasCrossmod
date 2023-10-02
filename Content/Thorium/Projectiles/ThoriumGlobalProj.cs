@@ -51,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 {
                     Vector2 a = player.Center - projectile.Center;
                     float angle = projectile.velocity.ToRotation() - a.ToRotation();
-                    if (MathF.Abs(angle) < MathF.PI / 6)
+                    if (MathF.Abs(angle) < MathF.PI / 8)
                     {
                         projectile.velocity = projectile.velocity.RotatedBy(MathF.PI / 240f * MathF.Sign(angle));
                     }
