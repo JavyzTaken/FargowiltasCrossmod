@@ -1,6 +1,5 @@
-global using FargowiltasCrossmod.Core;
-using System.Linq;
-using System.Reflection;
+using CalamityMod;
+using Terraria.ID;
 using Terraria.ModLoader;
 using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;

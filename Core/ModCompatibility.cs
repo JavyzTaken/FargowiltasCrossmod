@@ -2,12 +2,13 @@
 
 namespace FargowiltasCrossmod.Core;
 
-// TODO: pick a good name before it's too late
 public static class ModCompatibility
 {
     public static class SoulsMod
     {
         public const string Name = "FargowiltasSouls";
+        public static bool Loaded => ModLoader.HasMod(Name);
+        public static Mod Mod => ModLoader.GetMod(Name);
     }
     public static class Calamity
     {
@@ -16,9 +17,13 @@ public static class ModCompatibility
 
         // TODO: cache, lazy property
         public static bool Loaded => ModLoader.HasMod(Name);
+
+        public static Mod Mod => ModLoader.GetMod(Name);
     }
     public static class ThoriumMod
     {
         public const string Name = "ThoriumMod";
+        public static bool Loaded => ModLoader.HasMod(Name);
+        public static Mod Mod => ModLoader.GetMod(Name);
     }
 }

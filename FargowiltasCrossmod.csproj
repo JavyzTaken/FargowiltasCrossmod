@@ -31,8 +31,16 @@
     <Reference Include="Libraries\*.dll" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\EternityDeathIcon.png" />
+    <None Remove="Assets\EternityRevIcon.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
+    <None Remove="icon.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
+    <Folder Include="Core\BaseClasses\" />
   </ItemGroup>
   <ItemGroup>
     <AdditionalFiles Remove="Content\Thorium\temp\**" />
