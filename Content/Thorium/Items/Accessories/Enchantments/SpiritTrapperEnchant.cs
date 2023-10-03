@@ -25,18 +25,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             {
                 Projectile.NewProjectile(player.GetSource_Accessory(Item), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.AngryGhost>(), 0, 0, player.whoAmI);
             }
-
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    DLCPlayer.activeSTSpirits[i].RemoveAll(i => !Main.projectile[i].active || Main.projectile[i].type != ModContent.ProjectileType<Projectiles.SpiritTrapperSpirit>());
-            //}
-
-            //player.statDefense += DLCPlayer.activeSTSpirits[1].Count * 4;
             
         }
     }
-}
-
-namespace FargowiltasCrossmod.Content.Thorium
-{
 }

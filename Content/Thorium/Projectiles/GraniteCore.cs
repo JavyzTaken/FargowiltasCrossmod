@@ -34,13 +34,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.friendly = true;
             Projectile.damage = 50;
 
-            if (Projectile.owner == Main.myPlayer)
-            {
-                var DLCPlayer = Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>();
-                Projectile.damage += 15 * DLCPlayer.GraniteCores.Count;
-                DLCPlayer.GraniteCores.Remove(Projectile.whoAmI);
-            }
-
             Projectile.Damage();
 
             for (int i = 0; i < 16; i++)

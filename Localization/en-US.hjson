@@ -316,6 +316,16 @@ Mods: {
 					"Jus drein, jus daun"
 					'''
 			}
+
+			ConduitEnchant: {
+				Tooltip: ""
+				DisplayName: Conduit Enchant
+			}
+
+			DepthDiverEnchant: {
+				Tooltip: ""
+				DisplayName: Depth Diver Enchant
+			}
 		}
 
 		NPCs: {
@@ -363,6 +373,7 @@ Mods: {
 			Templar_Fire.DisplayName: Templar Fire
 			Valadium_Chunk.DisplayName: Valadium_Chunk
 			DemonBloodSpill.DisplayName: Demon Blood Spill
+			ConduitSaucer.DisplayName: Conduit Saucer
 		}
 
 		Keybinds: {

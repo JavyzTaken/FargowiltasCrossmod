@@ -1,14 +1,10 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Terraria.GameInput;
-
 using System;
-
 using System.Collections.Generic;
-
 using Terraria.Localization;
 using FargowiltasCrossmod.Content.Thorium.Buffs;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
@@ -51,10 +47,13 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item FleshEnchItem;
         public bool DemonBloodEnch;
         public Item DemonBloodEnchItem;
+        public bool ConduitEnch;
+        public Item ConduitEnchItem;
+        public bool DepthDiverEnchant;
+        public Item DepthDiverEnchantItem;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
-        public List<int> GraniteCores = new();
 
         internal int TemplarCD = 360;
         internal int ValadiumCD = 240;
@@ -100,6 +99,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             FleshEnchItem = null;
             DemonBloodEnch = false;
             DemonBloodEnchItem = null;
+            ConduitEnch = false;
+            ConduitEnchItem = null;
+            DepthDiverEnchant = false;
+            DepthDiverEnchantItem = null;
 
             GildedMonicle = false;
             GildedBinoculars = false;
