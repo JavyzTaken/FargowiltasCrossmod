@@ -1,27 +1,8 @@
-New Update: v1.0.1
+New Update: v1.0.1.1
 
--Fixed several multiplayer desync issues and problems
--Berserker Soul now properly requires Reaper Tooth Necklace and gives its effects
--Perforators now gives the Low Ground debuff
--Doubled maximum distance of Crabulon Low Ground debuff 
--Fixed Deviantt's giant axe attack not working as intended
-
--Eternity Desert Scourge:
-Added a general pierce damage resist to Desert Scourge
-Buffed Desert Scourge's base health from 3500 to 3800 
-
--Eternity Crabulon: 
-Added a crab shroom trail behind Crabulon during the charge attack 
-
--Increased the delay between Eternity-Death King Slime jewel attacks
-
--Eternity Perforators: 
-Added a passive ichor rain between attacks
-Removed Perforator Hive contact damage during preparation for slam attack
-Adjusted dust telegraph for slam attack
-Extended duration of spike rain attack and changed the hive's movement during it to sweep across the screen horizontally
-Added peripheral ichor shots during hive's ichor blob shake attack
-Perforator ichor blobs fall through platforms
-Added occasional ichor rain shots during the hive's state of not attacking
-Adjusted speed of small worm retreating to hive
-Fixed tooth balls not being visible and improved their visual clarity
+-More multiplayer sync improvements (difficulty modes should properly stay enabled in multiplayer now)
+-Increased the health of Eternity Hive Mind and Perforators 
+-Increased the health of Eternity-Death Skeletron
+-Made Old Lord Claymore and Bladecrest Oathsword not affected by Tungsten Enchant because it broke the weapons
+-Made Executioner's Blade not affected by Mythril Enchant because it broke the weapons
+-Fixed description of the difficulty modes

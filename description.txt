@@ -19,8 +19,16 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
+Latest Update: v1.0.1.1
 
-Latest Update: v1.0.1
+-More multiplayer sync improvements (difficulty modes should properly stay enabled in multiplayer now)
+-Increased the health of Eternity Hive Mind and Perforators 
+-Increased the health of Eternity-Death Skeletron
+-Made Old Lord Claymore and Bladecrest Oathsword not affected by Tungsten Enchant because it broke the weapons
+-Made Executioner's Blade not affected by Mythril Enchant because it broke the weapons
+-Fixed description of the difficulty modes
+
+Previous Update: v1.0.1
 
 -Fixed several multiplayer desync issues and problems
 -Berserker Soul now properly requires Reaper Tooth Necklace and gives its effects

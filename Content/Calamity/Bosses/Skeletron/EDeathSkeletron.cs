@@ -2,7 +2,9 @@
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
+using System;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -27,6 +29,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
             base.ReceiveExtraAI(npc, bitReader, binaryReader);
             telePos = binaryReader.ReadVector2();
             timer = binaryReader.Read7BitEncodedInt();
+        }
+        public override void SetDefaults(NPC npc)
+        {
+            if (!WorldSavingSystem.EternityMode) return;
+            base.SetDefaults(npc);
+            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
         }
         Vector2 telePos = Vector2.Zero;
         int timer = 0;
@@ -71,6 +79,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                 }
             }
             return base.SafePreAI(npc);
+        }
+    }
+    public class EDeathSkeletronHands : EternideathNPC
+    {
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHand);
+
+        public override void SetDefaults(NPC npc)
+        {
+            if (!WorldSavingSystem.EternityMode) return;
+            base.SetDefaults(npc);
+            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.2f);
         }
     }
 }
