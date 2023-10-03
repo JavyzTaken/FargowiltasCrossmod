@@ -29,7 +29,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;
-            
+            NPC golem = FargoSoulsUtil.NPCExists(NPC.golemBoss, NPCID.Golem);
+            if (golem != null && golem.active)
+            {
+                npc.damage = golem.damage;
+            }
+            Main.NewText(npc.damage);
             GolemHead gol = npc.GetGlobalNPC<GolemHead>();
             //Main.NewText(gol.AttackTimer);
             Player target = Main.player[npc.target];
