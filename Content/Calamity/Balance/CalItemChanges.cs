@@ -96,6 +96,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
            
         }
+        public override void ModifyItemScale(Item item, Player player, ref float scale)
+        {
+            FargoSoulsPlayer soulsPlayer = player.FargoSouls();
+            if (player.FargoSouls().TungstenEnchantItem != null && CrossplayerCalamity.TungstenExcludeWeapon.Contains(item.type))
+            {
+                float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
+                scale /= tungScale;
+            }
+        }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
             if (item.type == ModContent.ItemType<CounterScarf>() || item.type == ModContent.ItemType<EvasionScarf>() || item.type == ModContent.ItemType<OrnateShield>()

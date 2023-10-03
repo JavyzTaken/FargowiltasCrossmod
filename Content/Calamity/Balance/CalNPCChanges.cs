@@ -713,6 +713,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 pool[NPCID.PigronCorruption] = 0f;
                 pool[NPCID.PigronCrimson] = 0f;
                 pool[NPCID.PigronHallow] = 0f;
+ 
+            }
+            if (spawnInfo.Player.Calamity().ZoneSulphur)
+            {
+                pool[NPCID.IchorSticker] = 0f;
             }
             if (spawnInfo.Player.Calamity().ZoneSunkenSea)
             {

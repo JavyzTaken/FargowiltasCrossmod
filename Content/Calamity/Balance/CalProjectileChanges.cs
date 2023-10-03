@@ -3,6 +3,7 @@ using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.Projectiles.BaseProjectiles;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.Projectiles.Melee;
 using CalamityMod.World;
 using FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord;
 using FargowiltasCrossmod.Core;
@@ -19,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -58,22 +60,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 entity.extraUpdates += 1;
             }
         }
+        public static List<int> TungstenExclude = new List<int>
+        {
+            ModContent.ProjectileType<BladecrestOathswordProj>(),
+            ModContent.ProjectileType<OldLordClaymoreProj>()
+        };
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            if (TungstenExclude.Contains(projectile.type))
+            {
+                projectile.FargoSouls().TungstenScale = 1;
+            }
+        }
         public override bool PreAI(Projectile projectile)
         {
             Player player = Main.player[projectile.owner];
             FargoSoulsPlayer modPlayer = player.FargoSouls();
-            /*
-            //rogue projectiles affected by vortex jammed debuff
-            if (!projectile.hostile && !projectile.trap && !projectile.npcProj)
-            {
-                if (modPlayer.Jammed && projectile.CountsAsClass(ModContent.GetInstance<RogueDamageClass>()) && projectile.type != ProjectileID.ConfettiGun)
-                {
-                    Projectile.NewProjectile(Entity.InheritSource(projectile), projectile.Center, projectile.velocity, ProjectileID.ConfettiGun, 0, 0f, projectile.owner);
-                    projectile.active = false;
-                }
 
+            if (TungstenExclude.Contains(projectile.type))
+            {
+                projectile.FargoSouls().TungstenScale = 1;
             }
-            */
             #region Balance Changes config
             if (ModContent.GetInstance<Core.Calamity.DLCCalamityConfig>().BalanceRework)
             {

@@ -14,6 +14,8 @@ using System;
 using FargowiltasCrossmod.Core.Systems;
 using CalamityMod.Events;
 using FargowiltasSouls.Content.Buffs.Boss;
+using CalamityMod.Items.Weapons.Melee;
+using CalamityMod.Items.Weapons.Rogue;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -44,6 +46,34 @@ namespace FargowiltasCrossmod.Content.Calamity
                 Player.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
+        }
+        public static List<int> TungstenExcludeWeapon = new List<int>
+        {
+            ModContent.ItemType<OldLordClaymore>(),
+            ModContent.ItemType<BladecrestOathsword>()
+        };
+        public static List<int> AttackSpeedExcludeWeapons = new List<int>
+        {
+            ModContent.ItemType<ExecutionersBlade>()
+        };
+        public override void PostUpdateEquips()
+        {
+            if (!Player.FargoSouls().TerrariaSoul && Player.FargoSouls().TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
+            {
+                Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
+            }
+        }
+
+        public override float UseSpeedMultiplier(Item item)
+        {
+            if (AttackSpeedExcludeWeapons.Contains(item.type))
+            {
+                bool carryOverAttackSpeedCheck = Player.FargoSouls().HaveCheckedAttackSpeed;
+                float soulsAttackSpeed = Player.FargoSouls().UseSpeedMultiplier(item);
+                Player.FargoSouls().HaveCheckedAttackSpeed = carryOverAttackSpeedCheck;
+                return 1f / soulsAttackSpeed;
+            }
+            return base.UseSpeedMultiplier(item);
         }
     }
 }
