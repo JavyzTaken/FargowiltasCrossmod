@@ -4,6 +4,8 @@ Officially maintained by Fargo's Mods developers.
 Currently supports:
 Calamity Mod
 
+Note: The multiplayer compatibility of this mod is not fully ironed out. Don't expect everything to work perfectly in multiplayer. It's being worked on.
+
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
 -Adds new accessories in Fargo's accessory style that make use of Calamity items, mechanics, and the Rogue class

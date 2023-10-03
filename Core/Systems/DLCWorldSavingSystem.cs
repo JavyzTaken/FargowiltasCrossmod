@@ -1,6 +1,7 @@
 ﻿using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Core.Systems;
 using System.Collections.Generic;
+using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -12,8 +13,32 @@ namespace FargowiltasCrossmod.Core.Systems
         public static bool EternityRev { get; set; }
         public static bool EternityDeath { get; set; }
         public static bool E_EternityRev => EternityRev && WorldSavingSystem.EternityMode && DLCCalamityConfig.Instance.EternityPriorityOverRev;
-        public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev; 
-        
+        public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev;
+
+        public override void OnWorldLoad()
+        {
+            EternityRev = false;
+            EternityDeath = false;
+        }
+        public override void OnWorldUnload()
+        {
+            EternityRev = false;
+            EternityDeath = false;
+        }
+        public override void NetSend(BinaryWriter writer)
+        {
+            BitsByte flags = new();
+            flags[0] = EternityRev;
+            flags[1] = EternityDeath;
+            writer.Write(flags);
+        }
+        public override void NetReceive(BinaryReader reader)
+        {
+            BitsByte flags = reader.ReadByte();
+            EternityRev = flags[0];
+            EternityDeath = flags[1];
+
+        }
         public override void SaveWorldData(TagCompound tag)
         {
             if (WorldGen.generatingWorld)

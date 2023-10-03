@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override void SetDefaults(NPC entity)
         {
             if (!WorldSavingSystem.EternityMode) return;
-            entity.lifeMax = 25;
+            entity.lifeMax = 50;
         }
         public override void SpawnNPC(int npc, int tileX, int tileY)
         {
