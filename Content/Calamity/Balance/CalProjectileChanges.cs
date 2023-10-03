@@ -69,7 +69,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             if (TungstenExclude.Contains(projectile.type))
             {
-                projectile.FargoSouls().TungstenScale = 1;
+                //projectile.FargoSouls().TungstenScale = 1;
+                float scale = projectile.FargoSouls().TungstenScale;
+                projectile.position = projectile.Center;
+                projectile.width = (int)(projectile.width / scale);
+                projectile.height = (int)(projectile.height / scale);
+                projectile.Center = projectile.position;
+                projectile.scale /= scale;
             }
         }
         public override bool PreAI(Projectile projectile)
@@ -79,7 +85,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
             if (TungstenExclude.Contains(projectile.type))
             {
-                projectile.FargoSouls().TungstenScale = 1;
+                //projectile.FargoSouls().TungstenScale = 1;
             }
             #region Balance Changes config
             if (ModContent.GetInstance<Core.Calamity.DLCCalamityConfig>().BalanceRework)
