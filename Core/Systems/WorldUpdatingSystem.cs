@@ -37,11 +37,8 @@ namespace FargowiltasCrossmod.Core.Systems
                 if (ModCompatibility.InfernumMode.InfernumDifficulty && !InfernumStateLastFrame)
                 {
                     DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
-                    if (Main.netMode != NetmodeID.Server)
-                    {
-                        Main.NewText("[c/9c0000:Infernum Mode] detected. [c/00ffee:Eternity Priority over Calamity Bosses] has been disabled to prevent bugs.\n" +
+                    Main.NewText("[c/9c0000:Infernum Mode] detected. [c/00ffee:Eternity Priority over Calamity Bosses] has been disabled to prevent bugs.\n" +
                     "[c/00ffee:Eternity Priority over Calamity Bosses] can be re-enabled in the config, but things will break.");
-                    }
                 }
                 if (ModCompatibility.InfernumMode.InfernumDifficulty) InfernumStateLastFrame = true;
                 else InfernumStateLastFrame = false;
