@@ -6,6 +6,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -55,7 +56,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return 1.2f;
             else return 0f;
         }
-        
+        public override void UpdateHorizontalSpeeds(Player player)
+        {
+           player.runAcceleration *= 3;
+            player.maxRunSpeed *= 1.5f;
+        }
         public override void OnRefreshed(Player player)
         {
             CrossplayerCalamity cplayer = player.GetModPlayer<CrossplayerCalamity>();
@@ -67,8 +72,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 cplayer.FeatherJumpsRemaining = 2;
             }
-            cplayer.AeroCritBoost = 0;
-            base.OnRefreshed(player);
         }
         public override void OnStarted(Player player, ref bool playSound)
         {
@@ -91,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 Dust.NewDustDirect(player.BottomLeft - new Vector2(20, 0), player.width + 40, 25, DustID.UnusedWhiteBluePurple);
             }
             //feather projectiles
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Vector2 baseVelocity = player.velocity * Main.rand.NextFloat(0.9f, 1.2f);
                 if (baseVelocity.ToRotation() > -1f) baseVelocity = new Vector2(baseVelocity.Length(), 0).RotatedBy(-1f);
@@ -122,18 +125,10 @@ namespace FargowiltasCrossmod.Content.Calamity
                 if (Main.rand.NextBool())
                 Dust.NewDustDirect(Player.position, Player.width, Player.height, DustID.UnusedWhiteBluePurple, Player.velocity.X, Player.velocity.Y);
             }
-            //AeroValkyrie = true;
-            //if (Player.whoAmI == Main.myPlayer)
-            //{
-            //    if (Player.FindBuffIndex(ModContent.BuffType<AeroValkyrieBuff>()) == -1)
-            //    {
-            //        Player.AddBuff(ModContent.BuffType<AeroValkyrieBuff>(), 3000);
-            //    }
-            //    if (Player.ownedProjectileCounts[ModContent.ProjectileType<AeroValkyrie>()] < 1)
-            //    {
-            //        Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center.X, Player.Center.Y, 0f, -1f, ModContent.ProjectileType<AeroValkyrie>(), 0, 0f, Main.myPlayer);
-            //    }
-            //}
+           if (Collision.SolidCollision(Player.BottomLeft, Player.width, 6, true) && Player.velocity.Y == 0)
+            {
+                AeroCritBoost = 0;
+            }
         }
     }
 }

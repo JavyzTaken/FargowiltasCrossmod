@@ -395,7 +395,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             
             //EXALTATION 
-
+            if (UmbraCrazyRegen)
+            {
+                UmbraphileEffect();
+            }
             //silva
             if (Silva && Player.GetToggleValue("SilvaCrystal"))
             {
@@ -404,7 +407,7 @@ namespace FargowiltasCrossmod.Content.Calamity
 
 
             //ANNIHILATION 
-
+            
             if (Gemtech && Player.GetToggleValue("ChargeAttacks")){
                 GemTechEffects();
             }
@@ -461,14 +464,11 @@ namespace FargowiltasCrossmod.Content.Calamity
             
             //Exaltation
             //umbra and blood timer calculus
-            UmbraphileCalc(damageDone);
+            
             BloodflareCalc(damageDone);
 
             //Umbraphile conditions
-            if (UmbraCrazyRegen)
-            {
-                UmbraphileHitEffect(damageDone);
-            }
+            
 
             //Bloodflare conditions
             if (BFCrazierRegen && Player.GetToggleValue("BloodflareLifesteal"))
@@ -542,14 +542,11 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             //Exaltation
             //umbra blood timer
-            UmbraphileCalc(damageDone);
+           
             BloodflareCalc(damageDone);
 
             //umbra
-            if (UmbraCrazyRegen)
-            {
-                UmbraphileProjHitEffect(damageDone);
-            }
+           
             if (BFCrazierRegen)
             {
                 BloodflareProjHitEffect(target, damageDone);
@@ -619,6 +616,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (Prismatic && Player.GetToggleValue("PrismaticRocket"))
             {
                 PrismaticTrigger();
+            }
+            if (UmbraCrazyRegen)
+            {
+                UmbraphileTrigger();
             }
         }
         public static List<int> DesolationForce = new List<int>()

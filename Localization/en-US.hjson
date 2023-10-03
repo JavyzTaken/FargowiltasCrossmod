@@ -502,6 +502,8 @@ Mods: {
 			DestructionBolt.DisplayName: Destruction Bolt
 			StarofDestruction.DisplayName: Starof Destruction
 			FeatherJumpFeather.DisplayName: Feather Jump Feather
+			BloodSpirit.DisplayName: Blood Spirit
+			UmbraBat.DisplayName: Umbra Bat
 		}
 	}
 }

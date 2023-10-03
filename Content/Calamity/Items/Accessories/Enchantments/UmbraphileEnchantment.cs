@@ -7,6 +7,8 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.NPCS;
+using Terraria.Audio;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -54,41 +56,21 @@ namespace FargowiltasCrossmod.Content.Calamity
 {
     public partial class CrossplayerCalamity : ModPlayer
     {
-        public void UmbraphileCalc(int damage)
+        public void UmbraphileEffect()
         {
-            if (damage / 4 <= 180)
-            {
-                UmbraBuffTimer = damage / 4;
-            }
-            else if (damage / 4 > 180 && damage / 4 <= 300)
-            {
-                UmbraBuffTimer = 180;
-            }
-            else if (damage / 4 > 300)
-            {
-                UmbraBuffTimer = 180;
-            }
+
+            
         }
-        public void UmbraphileHitEffect(int damage)
+        public void UmbraphileTrigger()
         {
-            Player.AddBuff(ModContent.BuffType<VampiricRegeneration>(), UmbraBuffTimer);
-            if (LifestealCD <= 0)
+            if (!Player.HasCooldown("UmbraBatCD") && CalamityKeybinds.SetBonusHotKey.JustPressed && Main.myPlayer == Player.whoAmI)
             {
-                if (damage / 4 < Player.statLifeMax2 / 4)
-                    Player.Heal(damage / 4);
-                else Player.Heal(Player.statLifeMax2 / 4);
-                LifestealCD = 300;
-            }
-        }
-        public void UmbraphileProjHitEffect(int damage)
-        {
-            Player.AddBuff(ModContent.BuffType<VampiricRegeneration>(), UmbraBuffTimer);
-            if (LifestealCD <= 0)
-            {
-                if (damage / 4 < Player.statLifeMax2 / 4)
-                    Player.Heal(damage / 4);
-                else Player.Heal(Player.statLifeMax2 / 4);
-                LifestealCD = 300;
+                Player.AddCooldown("UmbraBatCD", 900);
+                SoundEngine.PlaySound(SoundID.NPCDeath6, Player.Center);
+                for (int i = 0; i < 5; i++)
+                {
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.Center, new Vector2(0, Main.rand.Next(3, 8)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<UmbraBat>(), 75, 0);
+                }
             }
         }
     }

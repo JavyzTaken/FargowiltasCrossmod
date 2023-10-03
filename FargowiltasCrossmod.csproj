@@ -16,8 +16,10 @@
   <ItemGroup>
     <None Remove="Assets\EternityDeathIcon.png" />
     <None Remove="Assets\EternityRevIcon.png" />
+    <None Remove="Content\Calamity\Cooldowns\UmbraBatCD.png" />
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
+    <None Remove="Content\Calamity\Projectiles\UmbraBat.png" />
     <None Remove="icon.png" />
   </ItemGroup>
   <ItemGroup>

@@ -49,6 +49,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                     }else if (cplayer.AeroCritBoost < 20f)
                     {
                         cplayer.AeroCritBoost += 5f;
+                        
+                    }
+                    owner.wingTime += 10;
+                    if (owner.wingTime > owner.wingTimeMax)
+                    {
+                        owner.wingTime = owner.wingTimeMax;
                     }
                 }
             }

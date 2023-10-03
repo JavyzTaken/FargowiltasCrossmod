@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod
             LoadDetours();
 
             if (ThoriumLoaded) Thorium_Load();
-
+            
 
         }
         [JITWhenModsEnabled("CalamityMod")]
@@ -68,8 +68,12 @@ namespace FargowiltasCrossmod
         [JITWhenModsEnabled("CalamityMod")]
         public override void PostSetupContent()
         {
-            if (ModLoader.HasMod("CalamityMod"))
+
+            if (ModLoader.TryGetMod("CalamityMod", out Mod cal))
+            {
                 pierceResistExceptionList.Add(ProjectileID.FinalFractal);
+                cal.Call("RegisterModCooldowns", ModLoader.GetMod("FargowiltasCrossmod"));
+            }
         }
         private struct DeviantHooks
         {
