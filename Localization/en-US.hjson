@@ -188,6 +188,8 @@ Mods: {
 				AcceleratingEbonianGlob.DisplayName: Accelerating Ebonian Glob
 				AcceleratingCrimulanGlob.DisplayName: Accelerating Crimulan Glob
 			}
+
+			SlamTelegraph.DisplayName: Slam Telegraph
 		}
 	}
 }

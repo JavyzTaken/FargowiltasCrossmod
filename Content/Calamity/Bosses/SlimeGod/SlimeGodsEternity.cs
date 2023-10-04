@@ -98,15 +98,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         }
         public override bool SafePreAI(NPC npc)
         {
-            return true;
             if (!WorldSavingSystem.EternityMode) return true;
-            #region Passives and Variables
-            CalamityGlobalNPC.slimeGodPurple = npc.whoAmI;
             NPC core = Main.npc[CalamityGlobalNPC.slimeGod];
-            #endregion
-            return false;
+            if (core != null && core.active && core.type == ModContent.NPCType<SlimeGodCore>())
+            {
+                if (core.TryGetGlobalNPC(out SlimeGodCoreEternity emodeCore) && emodeCore.AttachedSlime == npc.whoAmI)
+                {
+                    return AttachedAI(npc);
+                }
+            }
+            return true;
         }
-
+        public bool AttachedAI(NPC npc)
+        {
+            //WIP
+            ref float calState = ref npc.ai[0];
+            ref float calTimer = ref npc.ai[3];
+            if (calState == 2)
+            {
+                //npc.position += npc.velocity;
+                if (calTimer == 60)
+                {
+                    Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center + Vector2.UnitY * npc.height / 2, Vector2.UnitY, ModContent.ProjectileType<SlamTelegraph>(), 0, 0, Main.myPlayer, ai1: npc.width * 1.2f);
+                }
+            }
+            return true;
+        }
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]

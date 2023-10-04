@@ -292,7 +292,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         AttachToCrimson = !AttachToCrimson;
                         FullReset();
                     }
-                    SoundEngine.PlaySound(PossessionSound, npc.Center);
+                    SoundEngine.PlaySound(BigShotSound, npc.Center);
                 }
             }
             void TryAttaching()
@@ -308,6 +308,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     if (npc.Distance(slime.Center) <= npc.velocity.Length() * 2f)
                     {
                         phase = (int)Phases.Attached;
+                        SoundEngine.PlaySound(PossessionSound, npc.Center);
                         FullReset();
                     }
                 }
@@ -491,11 +492,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 }
                 else if (timer < DriftDuration)
                 {
-                    float modifier = 0.85f; //fraction of half circle to drift
+                    float modifier = 1.2f; //fraction of half circle to drift
                     LockVector = LockVector.RotatedBy(driftDir * MathHelper.Pi * modifier / DriftDuration);
                     npc.velocity = (player.Center + LockVector - npc.Center) * (timer / DriftDuration);
 
-                    const int shotDelay = 12;
+                    const int shotDelay = 9;
                     if (timer % shotDelay == shotDelay - 1)
                     {
                         SoundEngine.PlaySound(ShotSound, npc.Center);
