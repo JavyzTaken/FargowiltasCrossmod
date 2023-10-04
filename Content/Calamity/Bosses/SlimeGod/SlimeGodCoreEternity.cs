@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public static int CrimsonGodType => ModContent.NPCType<CrimulanPaladin>();
         public static int CorruptionGodType => ModContent.NPCType<EbonianPaladin>();
 
-        private static List<int> SlimesToKill = new List<int>
+        public static List<int> SlimesToKill = new List<int>
         {
             CrimsonGodType,
             CorruptionGodType,
@@ -73,7 +73,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             ShouldAttach,
             TryAttach,
             Attached,
-            Attacking
+            Attacking,
+            Final
         }
         public enum Attacks
         {
@@ -96,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             binaryWriter.Write(ContactDamage);
             binaryWriter.Write7BitEncodedInt(ReattachTimer);
             binaryWriter.WriteVector2(LockVector);
-            binaryWriter.Write(LatestAttack);
+            binaryWriter.Write7BitEncodedInt(LatestAttack);
 
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
@@ -126,8 +127,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             ref float timer = ref npc.ai[0];
             ref float attack = ref npc.ai[2];
             ref float phase = ref npc.ai[3];
+            if (npc.life < npc.lifeMax * 0.15f && phase != (int)Phases.Final)
+            {
+                FullReset();
+                phase = (int)Phases.Final;
+            }
 
             npc.dontTakeDamage = !(phase == (int)Phases.Attacking);
+            ContactDamage = phase == (int)Phases.Attacking;
 
             if (phase != (int)Phases.Attached)
             {
@@ -190,6 +197,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             NetSync(npc);
                             npc.netUpdate = true;
                         }
+                    }
+                    break;
+                case (int)Phases.Final:
+                    {
+                        FinalPhase();
                     }
                     break;
             }
@@ -272,7 +284,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                 {
                                     AttachedSlime = crim;
                                     phase = (int)Phases.TryAttach;
-                                        
+                                    Main.npc[crim].ai[0] = 2;
+                                    Main.npc[crim].GetGlobalNPC<SlimeGodsEternity>().Empowered = true;
                                 }
                             }
                         }
@@ -286,6 +299,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                 {
                                     AttachedSlime = corr;
                                     phase = (int)Phases.TryAttach;
+                                    Main.npc[corr].ai[0] = 2;
+                                    Main.npc[corr].GetGlobalNPC<SlimeGodsEternity>().Empowered = true;
                                 }
                             }
                         }
@@ -323,7 +338,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 ref float phase = ref npc.ai[3];
                 ref float attack = ref npc.ai[2];
                 NPC slime = Main.npc[AttachedSlime];
-                ContactDamage = false;
                 if (slime != null && slime.active && (slime.type == CrimsonGodType || slime.type == CorruptionGodType))
                 {
                     npc.velocity = (slime.Center - npc.Center) + slime.velocity;
@@ -341,6 +355,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 ref float timer = ref npc.ai[0];
                 ref float attack = ref npc.ai[2];
+                if (timer < 22)
+                {
+                    foreach (NPC minion in Main.npc.Where(n => n != null && n.active && SlimesToKill.Contains(n.type)))
+                    {
+                        if (minion.TryGetGlobalNPC(out SlimeGodMinionEternity lobotomizer))
+                        {
+                            lobotomizer.LobotomizeAndSuck = true;
+                            lobotomizer.CoreNPCID = npc.whoAmI;
+                        }
+                        else
+                        {
+                            minion.active = false;
+                        }
+                    }
+                    timer = 22;
+                }
                 if (npc.Opacity < 1)
                 {
                     npc.Opacity += 0.7f * (1 / 120f); //takes 2 seconds
@@ -348,14 +378,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 }
                 else
                 {
-                    foreach (NPC npc in Main.npc.Where(n => n != null && n.active && SlimesToKill.Contains(n.type)))
-                    {
-                        npc.active = false;
-                    }
+                    
                     npc.velocity = Vector2.Zero;
                     npc.Opacity = 1;
                     const int ShotCount = 16;
                     SoundEngine.PlaySound(ExitSound, npc.Center);
+                    npc.SimpleStrikeNPC((int)Math.Round(npc.lifeMax * 0.125f), 1);
                     //screenshake
                     if (DLCUtils.HostCheck)
                     {
@@ -383,17 +411,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 {
                     const int minDistance = 200;
                     float dir = Main.rand.NextBool() ? 1 : -1;
-                    LockVector = player.Center + (player.DirectionTo(npc.Center) * minDistance).RotatedBy(dir * MathHelper.Pi / 3f);
+                    LockVector = (player.DirectionTo(npc.Center) * minDistance).RotatedBy(dir * MathHelper.Pi / 3f);
                     NetSync(npc);
                     npc.netUpdate = true;
                     partialTimer++;
                 }
                 else
                 {
-                    npc.velocity = (partialTimer / partialAttackTime) * (LockVector - npc.Center) * 0.65f;
-
-                    if (partialTimer >= partialAttackTime / 4) //latter 3/4s of partial attack
+                    if (partialTimer < partialAttackTime / 4) //first quarter of attack
                     {
+                        npc.velocity = (partialTimer / partialAttackTime) * (player.Center + LockVector - npc.Center) * 0.65f; //go to pos, relative player
+                    }
+                    else //latter three quarters
+                    {
+                        npc.velocity *= 0.92f; //decel
                         if (partialTimer % (partialAttackTime / 4) == 1) //first frame of cycle
                         {
                             float rot = npc.DirectionTo(player.Center).ToRotation();
@@ -438,7 +469,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 ref float partialTimer = ref npc.ai[1];
                 ref float attack = ref npc.ai[2];
                 Player player = Main.player[npc.target];
-                const int DashTime = 100;
+                const int DashTime = 108; //divisible by 4 pls
                 const int Dashes = 3;
                 float speedmod = 1.2f;
                 if (partialTimer < DashTime * 0.7f)
@@ -495,7 +526,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     float modifier = 1.2f; //fraction of half circle to drift
                     LockVector = LockVector.RotatedBy(driftDir * MathHelper.Pi * modifier / DriftDuration);
                     npc.velocity = (player.Center + LockVector - npc.Center) * (timer / DriftDuration);
-
+                    
                     const int shotDelay = 9;
                     if (timer % shotDelay == shotDelay - 1)
                     {
@@ -524,6 +555,123 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         attack = LatestAttack == (int)Attacks.MettatonHeart ? (int)Attacks.SpinDash : (int)Attacks.MettatonHeart; //defaults to latter for first attack
                         AttackReset();
                     }
+                }
+            }
+            void FinalPhase()
+            {
+                ref float timer = ref npc.ai[0];
+                ref float phase = ref npc.ai[3];
+                Vector2 desiredPos = Main.player[npc.target].Center - Vector2.UnitY * 300;
+                npc.velocity = (desiredPos - npc.Center) * 0.05f;
+                if (npc.life < npc.lifeMax * 0.15f)
+                {
+                    npc.life = (int)(npc.lifeMax * 0.15f);
+                }
+                if (timer == 120)
+                {
+                    if (DLCUtils.HostCheck)
+                    {
+                        const int spawnTossSpeed = 30;
+                        if (!NPC.AnyNPCs(CrimsonGodType))
+                        {
+                            int crim = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, CrimsonGodType, Target: npc.target);
+                            if (crim != Main.maxNPCs)
+                            {
+                                Main.npc[crim].velocity = Vector2.UnitX * -spawnTossSpeed;
+                                Main.npc[crim].ai[0] = 2;
+                                Main.npc[crim].GetGlobalNPC<SlimeGodsEternity>().Empowered = true;
+                            }
+                        }
+                        if (!NPC.AnyNPCs(CorruptionGodType))
+                        {
+                            int corr = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, CorruptionGodType, Target: npc.target);
+                            if (corr != Main.maxNPCs)
+                            {
+                                Main.npc[corr].velocity = Vector2.UnitX * spawnTossSpeed;
+                                Main.npc[corr].ai[0] = 2;
+                                Main.npc[corr].GetGlobalNPC<SlimeGodsEternity>().Empowered = true;
+                            }
+                        }
+                    }
+                    SoundEngine.PlaySound(BigShotSound, npc.Center);
+                    timer = 300;
+                }
+                if (timer > 120 && !NPC.AnyNPCs(CrimsonGodType) && !NPC.AnyNPCs(CorruptionGodType))
+                {
+                    foreach (NPC minion in Main.npc.Where(n => n != null && n.active && SlimesToKill.Contains(n.type)))
+                    {
+                        if (minion.TryGetGlobalNPC(out SlimeGodMinionEternity lobotomizer))
+                        {
+                            lobotomizer.LobotomizeAndSuck = true;
+                            lobotomizer.CoreNPCID = npc.whoAmI;
+                        }
+                        else
+                        {
+                            minion.active = false;
+                        }
+                    }
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Color newColor = (Main.rand.NextBool() ? Color.Lavender : Color.Crimson);
+                        newColor.A = 150;
+                        Dust.NewDust(npc.position, npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor);
+                    }
+
+                    npc.velocity *= 0.97f;
+                    npc.rotation += (float)npc.direction * 0.3f;
+                    npc.Opacity -= 0.005f;
+                    if (!(npc.Opacity <= 0f))
+                    {
+                        return;
+                    }
+
+                    npc.Opacity = 0f;
+                    SoundEngine.PlaySound(in PossessionSound, npc.Center);
+                    npc.position.X = npc.position.X + (float)(npc.width / 2);
+                    npc.position.Y = npc.position.Y + (float)(npc.height / 2);
+                    npc.width = 40;
+                    npc.height = 40;
+                    npc.position.X = npc.position.X - (float)(npc.width / 2);
+                    npc.position.Y = npc.position.Y - (float)(npc.height / 2);
+                    for (int j = 0; j < 40; j++)
+                    {
+                        Color newColor2 = (Main.rand.NextBool() ? Color.Lavender : Color.Crimson);
+                        newColor2.A = 150;
+                        int num = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor2, 2f);
+                        Main.dust[num].velocity *= 3f;
+                        if (Main.rand.NextBool(2))
+                        {
+                            Main.dust[num].scale = 0.5f;
+                            Main.dust[num].fadeIn = 1f + (float)Main.rand.Next(10) * 0.1f;
+                        }
+                    }
+
+                    for (int k = 0; k < 70; k++)
+                    {
+                        Color newColor3 = (Main.rand.NextBool() ? Color.Lavender : Color.Crimson);
+                        newColor3.A = 150;
+                        int num2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor3, 3f);
+                        Main.dust[num2].noGravity = true;
+                        Main.dust[num2].velocity *= 5f;
+                        num2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor3, 2f);
+                        Main.dust[num2].velocity *= 2f;
+                    }
+
+                    if (!DownedBossSystem.downedSlimeGod)
+                    {
+                        Color magenta = Color.Magenta;
+                        CalamityUtils.DisplayLocalizedText("Mods.CalamityMod.Status.Boss.SlimeGodRun", magenta);
+                    }
+
+                    for (int num3 = 254; num3 >= 0; num3--)
+                    {
+                        npc.ApplyInteraction(num3);
+                    }
+
+                    npc.active = false;
+                    npc.HitEffect();
+                    npc.NPCLoot();
+                    npc.netUpdate = true;
                 }
             }
             #endregion

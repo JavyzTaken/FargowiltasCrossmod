@@ -33,7 +33,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public ref float Timer => ref Projectile.ai[0];
 
         public ref float Width => ref Projectile.ai[1];
-        public float Duration = 120;
+        public float Duration = 45;
+        public const int maxLength = 600;
         public float Length = 0;
         bool Crimson;
 
@@ -81,7 +82,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
                 Projectile.rotation = Vector2.UnitY.ToRotation();
             }
-            Length = 300f * Math.Min((float)Math.Pow(Timer / 60f, 3), 1f);
+            Length = maxLength * Math.Min((float)Math.Pow(Timer / 60f, 0.3f), 1f);
             Timer++;
         }
 
@@ -93,17 +94,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public Color ColorFunction(float progress)
         {
             float opacity = Math.Min(Timer / 30f, Math.Min(Projectile.timeLeft / 15f, 1));
-            NPC parent = FargoSoulsUtil.NPCExists(npc);
+            opacity *= 0.4f;
             Color mainColor = Crimson ? Color.Crimson : Color.Lavender;
-            return Color.Lerp(Color.Transparent, mainColor, opacity);
-        }
-
-
-        public static Matrix GetWorldViewProjectionMatrixIdioticVertexShaderBoilerplate()
-        {
-            Matrix view = Matrix.CreateLookAt(Vector3.Zero, Vector3.UnitZ, Vector3.Up) * Matrix.CreateTranslation(Main.graphics.GraphicsDevice.Viewport.Width / 2, Main.graphics.GraphicsDevice.Viewport.Height / -2, 0) * Matrix.CreateRotationZ(MathHelper.Pi) * Matrix.CreateScale(Main.GameViewMatrix.Zoom.X, Main.GameViewMatrix.Zoom.Y, 1f);
-            Matrix projection = Matrix.CreateOrthographic(Main.graphics.GraphicsDevice.Viewport.Width, Main.graphics.GraphicsDevice.Viewport.Height, 0, 1000);
-            return view * projection;
+            float modifier = 2 * Math.Abs(progress - 0.5f);
+            return Color.Lerp(Color.Transparent, mainColor, opacity * modifier);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -128,11 +122,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             VertexStrip vertexStrip = new();
             List<Vector2> positions = new();
             List<float> rotations = new();
-            float ArcAngle = MathHelper.PiOver2;
-            float initialRotation = Projectile.rotation - ArcAngle * 0.5f;
             for (float i = 0; i < 1; i += 0.005f)
             {
-                float rotation = initialRotation + ArcAngle * i;
                 positions.Add(Projectile.rotation.ToRotationVector2() * Length + Projectile.Center + Vector2.UnitX * Width * (-0.5f + i));
                 rotations.Add(Projectile.rotation + MathHelper.PiOver2);
             }

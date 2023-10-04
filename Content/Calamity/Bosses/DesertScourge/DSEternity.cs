@@ -711,7 +711,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
-            if (projectile.penetrate != projectile.maxPenetrate && !PierceResistExclude.Contains(projectile.type)) //for hits after the first
+            if ((projectile.penetrate != projectile.maxPenetrate || projectile.penetrate < 0) && !PierceResistExclude.Contains(projectile.type)) //for hits after the first, except infinite piercings
             {
                 modifiers.FinalDamage /= 8;
             }
