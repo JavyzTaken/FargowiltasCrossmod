@@ -87,6 +87,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EbonianPaladinEternity : EModeCalBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<EbonianPaladin>());

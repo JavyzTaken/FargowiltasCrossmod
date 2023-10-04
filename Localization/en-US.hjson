@@ -183,6 +183,11 @@ Mods: {
 			BigLight.DisplayName: Big Light
 			DestructionBolt.DisplayName: Destruction Bolt
 			StarofDestruction.DisplayName: Starof Destruction
+
+			Boss: {
+				AcceleratingEbonianGlob.DisplayName: Accelerating Ebonian Glob
+				AcceleratingCrimulanGlob.DisplayName: Accelerating Crimulan Glob
+			}
 		}
 	}
 }
