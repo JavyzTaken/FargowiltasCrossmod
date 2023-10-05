@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using CalamityMod.Items;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Terraria.ID;
@@ -27,32 +24,17 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
-using CalamityMod.Items.Fishing.BrimstoneCragCatches;
-using CalamityMod.Items.Fishing.SunkenSeaCatches;
-using CalamityMod.Items.Fishing.FishingRods;
-using CalamityMod.Items.Tools;
-using Microsoft.CodeAnalysis.Operations;
-
 using CalamityMod.Items.Weapons.Typeless;
 using CalamityMod.Tiles.Furniture.CraftingStations;
 using Fargowiltas.Items.Tiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
-using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Materials;
 using FargowiltasSouls.Content.Items.Summons;
-using CalamityMod.Tiles.Furniture.CraftingStations;
-using CalamityMod.Items.Placeables.Plates;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
-using CalamityMod.Items.Placeables.Furniture;
-using CalamityMod.Items;
 using Terraria.Localization;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
@@ -85,19 +67,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             tocrecipe.AddIngredient(ItemID.RedHusk);
             tocrecipe.AddTile(TileID.Furnaces);
             tocrecipe.Register();
+
             //gladiator's locket
             Recipe glrecipe = Recipe.Create(ModContent.ItemType<GladiatorsLocket>());
             glrecipe.AddIngredient(ItemID.Marble, 20);
             glrecipe.AddIngredient(ItemID.LifeCrystal, 2);
-            glrecipe.AddIngredient(ItemID.GoldWatch);
+            glrecipe.AddRecipeGroup("FargowiltasCrossmod:AnyGoldWatch");
             glrecipe.AddTile(TileID.DemonAltar);
             glrecipe.Register();
-            Recipe glrecipe2 = Recipe.Create(ModContent.ItemType<GladiatorsLocket>());
-            glrecipe2.AddIngredient(ItemID.Marble, 20);
-            glrecipe2.AddIngredient(ItemID.LifeCrystal, 2);
-            glrecipe2.AddIngredient(ItemID.PlatinumWatch);
-            glrecipe2.AddTile(TileID.DemonAltar);
-            glrecipe2.Register();
+
             //granite core recipe
             Recipe ugcrecipe = Recipe.Create(ModContent.ItemType<UnstableGraniteCore>());
             ugcrecipe.AddIngredient(ItemID.Granite, 20);
@@ -105,11 +83,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ugcrecipe.AddIngredient(ModContent.ItemType<AmidiasSpark>());
             ugcrecipe.AddTile(TileID.DemonAltar);
             ugcrecipe.Register();
+
             //symbiote recipe
             Recipe fgrecipe = Recipe.Create(ModContent.ItemType<FungalSymbiote>());
             fgrecipe.AddIngredient(ItemID.GlowingMushroom, 20);
             fgrecipe.AddIngredient(ItemID.Acorn, 2);
-            fgrecipe.AddIngredient(ItemID.ClayPot);
+            fgrecipe.AddIngredient(ItemID.TealMushroom);
             fgrecipe.AddTile(TileID.LivingLoom);
             fgrecipe.Register();
 
@@ -120,6 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             tlrecipe.AddIngredient(ItemID.Bunny);
             tlrecipe.AddTile(TileID.CookingPots);
             tlrecipe.Register();
+
             //luxor recipe
             Recipe lgrecipe = Recipe.Create(ModContent.ItemType<LuxorsGift>());
             lgrecipe.AddIngredient(ItemID.FossilOre, 20);
@@ -142,6 +122,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             crief.AddIngredient(ItemID.AngelStatue);
             crief.AddTile(TileID.DemonAltar);
             crief.Register();
+
+            //clothier's wrath recipe
+            Recipe clowra = Recipe.Create(ModContent.ItemType<ClothiersWrath>());
+            clowra.AddIngredient(ItemID.BookofSkulls);
+            clowra.AddIngredient(ItemID.SoulofNight, 5);
+            clowra.AddTile(TileID.DemonAltar);
 
             CreateCalBagRecipes(2489, new[] { ModContent.ItemType<CrownJewel>() }); //slime
             CreateCalBagRecipes(ModContent.ItemType<DesertScourgeBag>(), new[]
@@ -193,7 +179,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CryoStone>(),
                 ModContent.ItemType<FrostFlare>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CryogenTrophy>(), new[] { ModContent.ItemType<GlacialEmbrace>() });
             CreateCalBagRecipes(1368, new[] { ModContent.ItemType<Arbalest>() }); //twins 1
             CreateCalBagRecipes(1369, new[] { ModContent.ItemType<Arbalest>() }); //twins 2
             CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeBag>(), new[]
@@ -207,7 +192,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeTrophy>(), new[]
             {
-                ModContent.ItemType<SeasSearing>(),
                 ModContent.ItemType<DeepDiver>()
             });
             CreateCalBagRecipes(ModContent.ItemType<BrimstoneWaifuBag>(), new[]
@@ -220,7 +204,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<BrimstoneElementalTrophy>(), new[]
             {
-                ModContent.ItemType<Hellborn>(),
                 ModContent.ItemType<FlameLickedShell>()
             });
             CreateCalBagRecipes(ModContent.ItemType<CalamitasCloneBag>(), new[]
@@ -258,7 +241,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<BorealisBomber>(),
                 ModContent.ItemType<AuroradicalThrow>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<AstrumAureusTrophy>(), new[] { ModContent.ItemType<LeonidProgenitor>() });
             CreateCalBagRecipes(1371, new[] { ModContent.ItemType<AegisBlade>() }); //golem
             CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathBag>(), new[]
             {
@@ -276,7 +258,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathTrophy>(), new[]
             {
-                ModContent.ItemType<Malachite>(),
                 ModContent.ItemType<PlagueCaller>(),
             });
             CreateCalBagRecipes(3330, new[] { ModContent.ItemType<DukesDecapitator>() }); //fishron bag
@@ -293,7 +274,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<RavagerTrophy>(), new[]
             {
-                ModContent.ItemType<Vesuvius>(),
                 ModContent.ItemType<CorpusAvertor>()
             });
             CreateCalBagRecipes(ModContent.ItemType<AstrumDeusBag>(), new[]
@@ -320,7 +300,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<RougeSlash>(),
                 ModContent.ItemType<FollyFeed>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<DragonfollyTrophy>(), new[] { ModContent.ItemType<Swordsplosion>() });
             CreateCalBagRecipes(ModContent.ItemType<ProvidenceBag>(), new[]
             {
                 ModContent.ItemType<HolyCollider>(),
@@ -333,13 +312,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<ElysianWings>(),
                 ModContent.ItemType<ElysianAegis>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<ProvidenceTrophy>(), new[] { ModContent.ItemType<PristineFury>() });
             CreateCalBagRecipes(ModContent.ItemType<StormWeaverBag>(), new[]
             {
                 ModContent.ItemType<TheStorm>(),
                 ModContent.ItemType<StormDragoon>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<WeaverTrophy>(), new[] { ModContent.ItemType<Thunderstorm>() });
             CreateCalBagRecipes(ModContent.ItemType<CeaselessVoidBag>(), new[]
             {
                 ModContent.ItemType<MirrorBlade>(),
@@ -370,7 +347,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<ToxicantTwister>(),
                 ModContent.ItemType<OldDukeScales>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<OldDukeTrophy>(), new[] { ModContent.ItemType<TheOldReaper>() });
             CreateCalBagRecipes(ModContent.ItemType<DevourerofGodsBag>(), new[]
             {
                 ModContent.ItemType<Excelsus>(),
@@ -382,7 +358,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<DevourerofGodsTrophy>(), new[]
             {
-                ModContent.ItemType<CosmicDischarge>(),
                 ModContent.ItemType<Norfleet>()
             });
             CreateCalBagRecipes(ModContent.ItemType<YharonBag>(), new[]
@@ -398,7 +373,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<YharonTrophy>(), new[]
             {
-                ModContent.ItemType<YharimsCrystal>(),
                 ModContent.ItemType<ForgottenDragonEgg>(),
                 ModContent.ItemType<McNuggets>()
             });
@@ -438,22 +412,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ModContent.ItemType<PlasmaRod>());
             AddBannerToItemRecipe(ModContent.ItemType<BoxJellyfishBanner>(),
                 ModContent.ItemType<AbyssShocker>(), 1, 1, ItemID.Bone);
-            AddBannerToItemRecipe(1682, ModContent.ItemType<StaffOfNecrosteocytes>());
             AddBannerToItemRecipe(ModContent.ItemType<NuclearToadBanner>(),
                 ModContent.ItemType<CausticCroakerStaff>());
+
             //hardmode
             AddBannerToItemRecipe(ItemID.MossHornetBanner, ModContent.ItemType<Needler>());
+            AddBannerToItemRecipe(ModContent.ItemType<FlakCrabBanner>(),
+                ModContent.ItemType<FlakToxicannon>());
             AddBannerToItemRecipe(ItemID.GiantCursedSkullBanner, ModContent.ItemType<Keelhaul>(), 1, 1,
                 ModContent.ItemType<LeviathanAmbergris>());
             AddBannerToItemRecipe(ModContent.ItemType<AcidEelBanner>(),
                 ModContent.ItemType<SlitheringEels>(), 1, 1,
                 ModContent.ItemType<CorrodedFossil>());
-            AddBannerToItemRecipe(ItemID.NecromancerBanner, ModContent.ItemType<WrathoftheAncients>());
             AddBannerToItemRecipe(ModContent.ItemType<OrthoceraBanner>(),
                 ModContent.ItemType<OrthoceraShell>());
+            AddBannerToItemRecipe(ModContent.ItemType<SkyfinBanner>(),
+                ModContent.ItemType<SkyfinBombers>(), 1, 1,
+                ModContent.ItemType<CorrodedFossil>());
+            AddBannerToItemRecipe(ItemID.NecromancerBanner, ModContent.ItemType<WrathoftheAncients>());
             AddBannerToItemRecipe(ItemID.DeadlySphereBanner, ModContent.ItemType<DefectiveSphere>());
             AddBannerToItemRecipe(ItemID.ClingerBanner, ModContent.ItemType<CursedDagger>());
             AddBannerToItemRecipe(ItemID.IchorStickerBanner, ModContent.ItemType<IchorSpear>());
+
             //post-ml
             AddBannerToItemRecipe(ModContent.ItemType<ScryllarBanner>(),
                 ModContent.ItemType<GuidelightofOblivion>(), 1, 1,
@@ -672,7 +652,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     {
                         recipe.AddIngredient(ModContent.ItemType<AuricBar>(), 2);
                     }
-                    List<int> Tier2Souls = new List<int>
+                    List<int> Tier2Souls = new()
                     {
                         ModContent.ItemType<TerrariaSoul>(), 
                         ModContent.ItemType<UniverseSoul>(),
@@ -695,19 +675,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void AddRecipeGroups()
         {
             #region RecipeGroups
-            RecipeGroup T3WatchGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gold Watch"}",
+            RecipeGroup T3WatchGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gold Watch"}",
                 ItemID.GoldWatch,
                 ItemID.PlatinumWatch);
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGoldWatch", T3WatchGroup);
 
             //reaver head group
-            RecipeGroup ReaverHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Reaver Headpiece"}",
+            RecipeGroup ReaverHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Reaver Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadExplore>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyReaverHelms", ReaverHelmsGroup);
             //daedalus head group
-            RecipeGroup DeadalusHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Daedalus Headpiece"}",
+            RecipeGroup DeadalusHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Daedalus Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMelee>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMagic>(),
@@ -715,7 +695,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyDaedalusHelms", DeadalusHelmsGroup);
             //bloodflare head group
-            RecipeGroup BloodflareHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Bloodflare Headpiece"}",
+            RecipeGroup BloodflareHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Bloodflare Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadMelee>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadMagic>(),
@@ -723,7 +703,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyBloodflareHelms", BloodflareHelmsGroup);
             //victide head group
-            RecipeGroup VictideHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Victide Headpiece"}",
+            RecipeGroup VictideHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Victide Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMelee>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMagic>(),
@@ -731,22 +711,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyVictideHelms", VictideHelmsGroup);
             //aerospec head group
-            RecipeGroup AerospecHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Aerospec Headpiece"}",
+            RecipeGroup AerospecHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Aerospec Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelm>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHood>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHat>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelmet>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHeadgear>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyAerospecHelms", AerospecHelmsGroup);
-            RecipeGroup StatigelHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Statigel Headpiece"}",
+            //statigel head group
+            RecipeGroup StatigelHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Statigel Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMelee>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMagic>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRogue>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadSummon>());
-            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyStatisHelms", AerospecHelmsGroup);
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyStatisHelms", StatigelHelmsGroup);
             //aerospec head group
-            RecipeGroup HydrothermHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Hydrothermic Headpiece"}",
+            RecipeGroup HydrothermHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Hydrothermic Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMelee>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMagic>(),
@@ -754,30 +735,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyHydrothermHelms", HydrothermHelmsGroup);
             //statigel head group
-            RecipeGroup SlayerHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"God Slayer Headpiece"}",
+            RecipeGroup SlayerHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"God Slayer Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadMelee>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySlayerHelms", SlayerHelmsGroup);
-            RecipeGroup TarragonHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Tarragon Head Piece"}",
+            RecipeGroup TarragonHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Tarragon Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadMagic>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadRanged>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadSummon>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadRogue>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadMelee>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyTarragonHelms", TarragonHelmsGroup);
-            RecipeGroup SilvaHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Silva Head Piece"}",
+            RecipeGroup SilvaHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Silva Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Silva.SilvaHeadMagic>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Silva.SilvaHeadSummon>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySilvaHelms", SilvaHelmsGroup);
-            RecipeGroup AuricHelmsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Auric Head Piece"}",
+            RecipeGroup AuricHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Auric Headpiece"}",
                 ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaRoyalHelm>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaPlumedHelm>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaSpaceHelmet>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaWireHemmedVisage>(),
                 ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaHoodedFacemask>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyAuricHelms", AuricHelmsGroup);
-            RecipeGroup RailgunsGroup = new RecipeGroup(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Railgun"}",
+            RecipeGroup RailgunsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Railgun"}",
                 ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.AdamantiteParticleAccelerator>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TitaniumRailgun>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyRailguns", RailgunsGroup);

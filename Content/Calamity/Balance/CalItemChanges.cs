@@ -1,13 +1,8 @@
 ﻿using CalamityMod;
-using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
-using CalamityMod.Items.Potions.Alcohol;
-using CalamityMod.World;
-using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
-using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common;
@@ -18,11 +13,9 @@ using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
-using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -34,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)] [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
-        public static List<int> ChampionTierFargoWeapons = new List<int>
+        public static List<int> ChampionTierFargoWeapons = new()
         {
             ModContent.ItemType<EaterLauncher>(),
             ModContent.ItemType<FleshCannon>(),
@@ -45,7 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<ScientificRailgun>(),
             ModContent.ItemType<VortexMagnetRitual>()
         };
-        public static List<int> AbomTierFargoWeapons = new List<int>
+        public static List<int> AbomTierFargoWeapons = new()
         {
             ModContent.ItemType<DragonBreath2>(),
             ModContent.ItemType<DestroyerGun2>(),
