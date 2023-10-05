@@ -624,7 +624,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     {
                         return;
                     }
-
+                    
                     npc.Opacity = 0f;
                     SoundEngine.PlaySound(in PossessionSound, npc.Center);
                     npc.position.X = npc.position.X + (float)(npc.width / 2);

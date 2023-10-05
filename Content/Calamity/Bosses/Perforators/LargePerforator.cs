@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(20);
+            NPC.value = Item.buyPrice(silver: 20);
             NPC.SpawnWithHigherTime(30);
             NPC.aiStyle = -1;
             NPC.damage = 40;
@@ -170,7 +170,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(20);
+            NPC.value = Item.buyPrice(silver: 20);
             NPC.SpawnWithHigherTime(30);
             NPC.aiStyle = -1;
             NPC.damage = 40;
@@ -241,7 +241,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(20);
+            NPC.value = Item.buyPrice(silver: 20);
             NPC.SpawnWithHigherTime(30);
             NPC.aiStyle = -1;
             NPC.damage = 40;
@@ -315,7 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             NPC.noGravity = true;
             NPC.knockBackResist = 0f;
             NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(20);
+            NPC.value = Item.buyPrice(silver: 10);
             NPC.SpawnWithHigherTime(30);
             NPC.aiStyle = -1;
             NPC.damage = 40;
