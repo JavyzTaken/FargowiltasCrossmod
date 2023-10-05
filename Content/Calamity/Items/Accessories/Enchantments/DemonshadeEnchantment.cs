@@ -62,6 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<DemonshadeHelm>());
             recipe.AddIngredient(ModContent.ItemType<DemonshadeBreastplate>());
             recipe.AddIngredient(ModContent.ItemType<DemonshadeGreaves>());
+            recipe.AddIngredient(ModContent.ItemType<BrimflameEnchantment>());
             recipe.AddIngredient(ModContent.ItemType<ShatteredCommunity>());
             recipe.AddIngredient(ModContent.ItemType<GaelsGreatsword>());
             recipe.AddTile(TileID.CrystalBall);

@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<EmpyreanEnchantment>());
             recipe.AddIngredient(ModContent.ItemType<TheMaelstrom>());
             recipe.AddIngredient(ModContent.ItemType<LumenousAmulet>());
-            recipe.AddTile(TileID.CrystalBall);
+            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
     }

@@ -4,11 +4,7 @@ using Terraria.ModLoader; using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using CalamityMod.CalPlayer;
 using FargowiltasSouls.Core.Toggler;
-using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Calamity.Projectiles;
-using FargowiltasCrossmod.Content.Calamity;
-using FargowiltasCrossmod.Content.Calamity.NPCS;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using CalamityMod.Projectiles.Summon;
 
@@ -43,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Plaguebringer.PlaguebringerVisor>());
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Plaguebringer.PlaguebringerCarapace>());
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Plaguebringer.PlaguebringerPistons>());
-            recipe.AddIngredient(ModContent.ItemType<FargowiltasSouls.Content.Items.Accessories.Enchantments.BeeEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<BeeEnchant>());
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.PlagueHive>());
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.EpidemicShredder>());
             recipe.AddTile(TileID.CrystalBall);

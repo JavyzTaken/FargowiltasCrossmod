@@ -20,6 +20,7 @@ using Terraria.Audio;
 using rail;
 using Terraria.Localization;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using CalamityMod.Tiles.Furniture.CraftingStations;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -77,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<Karasawa>(), 1);
             recipe.AddIngredient(ModContent.ItemType<ArtAttack>(), 1);
             recipe.AddIngredient(ModContent.ItemType<WarloksMoonFist>(), 1);
-            recipe.AddTile(TileID.CrystalBall);
+            recipe.AddTile(ModContent.TileType<DraedonsForge>());
             recipe.Register();
         }
     }

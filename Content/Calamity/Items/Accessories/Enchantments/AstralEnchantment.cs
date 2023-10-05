@@ -1,14 +1,10 @@
 ﻿using Terraria;
-using Terraria.ModLoader; using FargowiltasCrossmod.Core; 
+using Terraria.ModLoader; 
+using FargowiltasCrossmod.Core; 
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Calamity.Buffs;
-using FargowiltasCrossmod.Content.Calamity.Projectiles;
-using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
-using CalamityMod.Items.Fishing.AstralCatches;
-using CalamityMod.Items.Armor.TitanHeart;
 using Terraria.GameInput;
 using Terraria.Graphics.Capture;
 using CalamityMod.Items.Armor.Astral;
@@ -47,10 +43,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient<TitanHeartEnchantment>(1);
             recipe.AddIngredient<AstralHelm>(1);
             recipe.AddIngredient<AstralBreastplate>(1);
             recipe.AddIngredient<AstralLeggings>(1);
+            recipe.AddIngredient<TitanHeartEnchantment>(1);
             recipe.AddIngredient<RadiantStar>(1);
             recipe.AddIngredient<HideofAstrumDeus>(1);
             recipe.AddTile(TileID.DemonAltar);

@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyAuricHelms");
             recipe.AddIngredient(ModContent.ItemType<AuricTeslaBodyArmor>());
             recipe.AddIngredient(ModContent.ItemType<AuricTeslaCuisses>());
-            recipe.AddIngredient(ModContent.ItemType<DraedonsHeart>());
+            recipe.AddIngredient(ModContent.ItemType<YharimsGift>());
             recipe.AddIngredient(ModContent.ItemType<Ataraxia>());
             recipe.AddIngredient(ModContent.ItemType<AuricToilet>());
             recipe.AddTile(ModContent.TileType<CalamityMod.Tiles.Furniture.CraftingStations.DraedonsForge>());

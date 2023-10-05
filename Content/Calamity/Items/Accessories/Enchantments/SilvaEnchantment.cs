@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<SarosPossession>());
             recipe.AddIngredient(ModContent.ItemType<YharimsCrystal>());
             recipe.AddIngredient(ModContent.ItemType<CrownJewel>());
-            recipe.AddTile(TileID.CrystalBall);
+            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
     }

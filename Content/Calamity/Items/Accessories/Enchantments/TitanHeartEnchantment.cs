@@ -51,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<TitanArm>(1);
             recipe.AddIngredient<GacruxianMollusk>(1);
             recipe.AddIngredient<UrsaSergeant>(1);
-            recipe.AddTile(TileID.DemonAltar);
+            recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
         }
     }

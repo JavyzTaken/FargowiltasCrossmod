@@ -10,11 +10,9 @@ using Terraria.Audio;
 using System.Collections.Generic;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Calamity.Projectiles;
-using FargowiltasCrossmod.Content.Calamity;
-using FargowiltasCrossmod.Content.Calamity.NPCS;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.Items.Weapons.Magic;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -58,6 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<BrimflameRobes>());
             recipe.AddIngredient(ModContent.ItemType<BrimflameBoots>());
             recipe.AddIngredient(ModContent.ItemType<Brimlance>());
+            recipe.AddIngredient(ModContent.ItemType<BrimroseStaff>());
             recipe.AddIngredient(ModContent.ItemType<ChaosStone>());
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();

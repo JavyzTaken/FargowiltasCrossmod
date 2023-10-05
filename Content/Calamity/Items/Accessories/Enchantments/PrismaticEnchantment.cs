@@ -61,11 +61,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<PrismaticHelmet>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PrismaticRegalia>(), 1);
             recipe.AddIngredient(ModContent.ItemType<PrismaticGreaves>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<DarkSpark>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<LunicCorpsEnchantment>());
             recipe.AddIngredient(ModContent.ItemType<HandheldTank>(), 1);
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyRailguns");
-            recipe.AddIngredient(ModContent.ItemType<LunicCorpsEnchantment>());
-            recipe.AddTile(TileID.CrystalBall);
+            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
     }

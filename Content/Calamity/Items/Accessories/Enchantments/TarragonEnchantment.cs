@@ -20,21 +20,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         
         protected override Color nameColor => new Color(200, 100, 20);
-        public override void SetStaticDefaults()
-        {
-
-
-        }
         public override void SetDefaults()
         {
             base.SetDefaults();
             Item.rare = ItemRarityID.Cyan;
-        }
-
-
-        public override void SafeModifyTooltips(List<TooltipLine> tooltips)
-        {
-
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -50,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<LifefruitScythe>());
             recipe.AddIngredient(ModContent.ItemType<BadgeofBravery>());
             recipe.AddIngredient(ModContent.ItemType<SandCloak>());
-            recipe.AddTile(TileID.CrystalBall);
+            recipe.AddTile(TileID.LunarCraftingStation);
             recipe.Register();
         }
     }

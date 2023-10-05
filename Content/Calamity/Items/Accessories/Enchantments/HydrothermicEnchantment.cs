@@ -1,14 +1,12 @@
 ﻿using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader; using FargowiltasCrossmod.Core;
+using Terraria.ModLoader;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using CalamityMod;
 using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Calamity.Projectiles;
-using FargowiltasCrossmod.Content.Calamity;
-using FargowiltasCrossmod.Content.Calamity.NPCS;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -44,9 +42,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyHydrothermHelms");
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicArmor>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicSubligar>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Magic.ForbiddenSun>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Helstorm>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.HavocsBreath>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Hellborn>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.SlagsplitterPauldron>(), 1);
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
         }
