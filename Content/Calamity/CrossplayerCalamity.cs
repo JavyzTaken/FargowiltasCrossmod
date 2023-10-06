@@ -16,6 +16,10 @@ using CalamityMod.Events;
 using FargowiltasSouls.Content.Buffs.Boss;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
+using CalamityMod.Buffs.StatDebuffs;
+using FargowiltasCrossmod.Core.Calamity;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -41,9 +45,16 @@ namespace FargowiltasCrossmod.Content.Calamity
            // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
-            if (BossRushEvent.BossRushActive)
+            if (DLCCalamityConfig.Instance.BalanceRework)
             {
-                Player.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
+                if (BossRushEvent.BossRushActive)
+                {
+                    Player.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
+                }
+                if (NPC.AnyNPCs(ModContent.NPCType<MutantBoss>()))
+                {
+                    Player.ClearBuff(ModContent.BuffType<Enraged>());
+                }
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
@@ -62,8 +73,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
             }
+            Player.Calamity().profanedCrystalStatePrevious = 0;
+            Player.Calamity().pscState = 0;
         }
-
+        
         public override float UseSpeedMultiplier(Item item)
         {
             if (AttackSpeedExcludeWeapons.Contains(item.type))

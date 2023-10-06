@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
+using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.CalPlayer;
 using CalamityMod.Events;
 using CalamityMod.Items;
@@ -110,6 +112,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 NPCID.Sets.SpecificDebuffImmunity[type][ModContent.BuffType<ClippedWingsBuff>()] = true;
             }
+            NPCID.Sets.SpecificDebuffImmunity[ModContent.NPCType<MutantBoss>()][ModContent.BuffType<Enraged>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[ModContent.NPCType<MutantBoss>()][ModContent.BuffType<BanishingFire>()] = true;
         }
         public static List<int> Champions = new List<int>
         {
@@ -321,7 +325,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //mutant
                 if (npc.type == ModContent.NPCType<MutantBoss>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 3.3f);
+                    npc.lifeMax = (int)(npc.lifeMax * 4.1f);
                 }
                 #region BRBalance
                 List<int> squirrelParts = new List<int>
@@ -403,6 +407,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     //reduce health of bosses that are either too tanky or impossible to dodge
                     //increase hp of bosses that die fast
                     //destroyer: tanky and incredibly difficult to dodge
+                    if (npc.type == NPCID.BrainofCthulhu) npc.lifeMax /= 3;
                     if (npc.type == NPCID.TheDestroyer || npc.type == NPCID.TheDestroyerBody || npc.type == NPCID.TheDestroyerTail) npc.lifeMax /= 3;
                     //golem: flies into space and deals tons of damage and is impossible to dodge
                     //if (npc.type == NPCID.Golem) npc.lifeMax /= 10;
@@ -420,21 +425,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     if (npc.type == ModContent.NPCType<Yharon>()) npc.lifeMax *= 3;
                     //too tanky eyes
                     if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead) npc.lifeMax /= 8;
+                    if (npc.type == NPCID.MoonLordCore) npc.lifeMax /= 4;
+                    if (npc.type == ModContent.NPCType<MutantBoss>()) npc.lifeMax = (int)(npc.lifeMax *0.75f);
                 }
                 #endregion BRBalance
 
             }
             #endregion
-            
-            if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
+            if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
-                if (WorldSavingSystem.EternityMode)
-                    npc.scale = 1f;
-                if (DLCWorldSavingSystem.EternityDeath)
-                    npc.scale = 1.4f;
+                if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
+                {
+                    if (WorldSavingSystem.EternityMode)
+                        npc.scale = 1f;
+                    if (DLCWorldSavingSystem.EternityDeath)
+                        npc.scale = 1.4f;
+                }
             }
             
-
         }
         //all this bullshit just so tmod doesnt JITException a method that is supposed to be ignored >:(
         public IItemDropRuleCondition PostDog => DropHelper.PostDoG();
@@ -787,22 +795,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     killedAquatic = true;
                 }
-                if (npc.type == NPCID.Golem)
-                {
-                    npc.GetGlobalNPC<Golem>().IsInTemple = true;
-                }
-                if (npc.type == NPCID.GolemHead)
-                {
-                    npc.GetGlobalNPC<GolemHead>().IsInTemple = true;
-                }
             }
             else
             {
                 killedAquatic = false;
-                if (npc.type == NPCID.AncientLight && DLCWorldSavingSystem.EternityDeath)
+                if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
                 {
-                    npc.Center += npc.velocity * 0.75f;
-                    npc.dontTakeDamage = true;
+                    if (npc.type == NPCID.AncientLight && DLCWorldSavingSystem.EternityDeath)
+                    {
+                        npc.Center += npc.velocity * 0.75f;
+                        npc.dontTakeDamage = true;
+                    }
                 }
             }
             

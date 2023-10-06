@@ -3,15 +3,20 @@ using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.Projectiles.BaseProjectiles;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.Projectiles.Magic;
 using CalamityMod.Projectiles.Melee;
+using CalamityMod.Projectiles.Summon;
+using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Projectiles;
+using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
@@ -55,9 +60,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 2;
             }
-            if (BossRushEvent.BossRushActive && entity.type == ModContent.ProjectileType<DeviSparklingLove>())
+            if (BossRushEvent.BossRushActive && (entity.type == ModContent.ProjectileType<DeviSparklingLove>() || entity.type == ModContent.ProjectileType<DeviBigDeathray>()))
             {
                 entity.extraUpdates += 1;
+               
             }
         }
         public static List<int> TungstenExclude = new List<int>
@@ -115,6 +121,61 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 modifiers.FinalDamage *= 0.2f;
             }
+            if (DLCCalamityConfig.Instance.BalanceRework)
+            {
+                if (projectile.type == ModContent.ProjectileType<BlushieStaffProj>())
+                    modifiers.FinalDamage *= 0.7f;
+                if (projectile.type == ModContent.ProjectileType<EternityCircle>() || projectile.type == ModContent.ProjectileType<EternityCrystal>()
+                    || projectile.type == ModContent.ProjectileType<EternityHex>() || projectile.type == ModContent.ProjectileType<EternityHoming>()
+                    || (projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0))
+                    modifiers.FinalDamage *= 0.4f;
+                if (projectile.type == ModContent.ProjectileType<AngelBolt>() || projectile.type == ModContent.ProjectileType<AngelicAllianceArchangel>() ||
+                    projectile.type == ModContent.ProjectileType<AngelOrb>() || projectile.type == ModContent.ProjectileType<AngelRay>())
+                {
+                    modifiers.FinalDamage *= 0.2f;
+                }
+                if ( projectile.type == ModContent.ProjectileType<AndromedaDeathRay>())
+                {
+                    modifiers.FinalDamage *= 0.45f;
+                }
+                if (projectile.type == ModContent.ProjectileType<AndromedaRegislash>())
+                {
+                    modifiers.FinalDamage *= 0.8f;
+                }
+                List<int> profanedCrystalProjs = new List<int>()
+                {
+                    ModContent.ProjectileType<ProfanedCrystalMageFireball>(),
+                    ModContent.ProjectileType<ProfanedCrystalMageFireballSplit>(),
+                    ModContent.ProjectileType<ProfanedCrystalMeleeSpear>(),
+                    ModContent.ProjectileType<ProfanedCrystalRangedHuges>(),
+                    ModContent.ProjectileType<ProfanedCrystalRangedSmalls>(),
+                    ModContent.ProjectileType<ProfanedCrystalRogueShard>(),
+                    ModContent.ProjectileType<ProfanedCrystalWhip>(),
+                    ModContent.ProjectileType<MiniGuardianAttack>(),
+                    ModContent.ProjectileType<MiniGuardianDefense>(),
+                    ModContent.ProjectileType<MiniGuardianFireball>(),
+                    ModContent.ProjectileType<MiniGuardianFireballSplit>(),
+                    ModContent.ProjectileType<MiniGuardianHealer>(),
+                    ModContent.ProjectileType<MiniGuardianHolyRay>(),
+                    ModContent.ProjectileType<MiniGuardianRock>(),
+                    ModContent.ProjectileType<MiniGuardianSpear>(),
+                    ModContent.ProjectileType<MiniGuardianStars>(),
+                };
+                if (profanedCrystalProjs.Contains(projectile.type) && Main.player[projectile.owner].Calamity().profanedCrystal)
+                {
+                    modifiers.FinalDamage *= 0.4f;
+                    for (int i = 0; i < Main.player[projectile.owner].ownedProjectileCounts.Length; i++)
+                    {
+                        if (ContentSamples.ProjectilesByType[i].minionSlots > 0 && Main.player[projectile.owner].ownedProjectileCounts[i] > 0)
+                        {
+                            modifiers.FinalDamage *= 0.3f;
+                        }
+                    }
+                    //Main.NewText(Main.player[projectile.owner].Calamity().pscState);
+                    
+                }
+            }
+            
         }
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {
@@ -157,22 +218,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void AI(Projectile projectile)
         {
-            if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && DLCWorldSavingSystem.E_EternityRev)
+            if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
-                projectile.velocity /= 1.015525f;
-            }
-            if (projectile.type == ProjectileID.CultistBossIceMist && DLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
-            {
-                int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
-                //projectile.ai[1] = 1;
-                
-                if (p >= 0)
+                if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && DLCWorldSavingSystem.E_EternityRev)
                 {
-                    if (projectile.velocity.Length() < 10)
+                    projectile.velocity /= 1.015525f;
+                }
+                if (projectile.type == ProjectileID.CultistBossIceMist && DLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
+                {
+                    int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
+                    //projectile.ai[1] = 1;
+
+                    if (p >= 0)
                     {
-                        projectile.velocity *= 1.1f;
+                        if (projectile.velocity.Length() < 10)
+                        {
+                            projectile.velocity *= 1.1f;
+                        }
+                        projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(Utils.AngleTowards(projectile.velocity.ToRotation(), projectile.AngleTo(Main.player[p].Center), 0.04f));
                     }
-                    projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(Utils.AngleTowards(projectile.velocity.ToRotation(), projectile.AngleTo(Main.player[p].Center), 0.04f));
                 }
             }
         }

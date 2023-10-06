@@ -93,11 +93,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void OnKill()
         {
-            Main.npc[(int)NPC.ai[1]].ai[3]++;
-            Main.npc[(int)NPC.ai[1]].ai[1] = 0;
-            Main.npc[(int)NPC.ai[1]].ai[2] = 0;
-            Main.npc[(int)NPC.ai[1]].defense = 8;
-            Main.npc[(int)NPC.ai[1]].netUpdate = true;
+            
         }
         public override void FindFrame(int frameHeight)
         {

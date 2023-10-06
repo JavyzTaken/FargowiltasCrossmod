@@ -573,7 +573,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     recipe.AddIngredient(ModContent.ItemType<HalleysInferno>());
                     recipe.AddIngredient(ModContent.ItemType<StormDragoon>());
                     recipe.AddIngredient(ModContent.ItemType<PridefulHuntersPlanarRipper>());
-                    recipe.AddIngredient(ModContent.ItemType<DaawnlightSpiritOrigin>());
                     recipe.AddIngredient(ModContent.ItemType<DynamoStemCells>());
                     recipe.AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
@@ -602,14 +601,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     recipe.AddIngredient(ModContent.ItemType<VagabondsSoul>());
                 }
+                if (recipe.HasResult<SupremeBaitTackleBoxFishingStation>() && recipe.HasIngredient(ItemID.LavaproofTackleBag))
+                {
+                    if (recipe.RemoveIngredient(ItemID.LavaproofTackleBag))
+                    {
+                        recipe.AddIngredient<AlluringBait>().AddIngredient<EnchantedPearl>();
+                    }
+                }
                 if (recipe.HasResult(ModContent.ItemType<TrawlerSoul>()) && recipe.HasIngredient(ItemID.ArcticDivingGear))
                 {
                     if (recipe.RemoveIngredient(ItemID.ArcticDivingGear))
                     {
                         recipe.AddIngredient(ModContent.ItemType<AbyssalDivingSuit>());
                     }
-                    recipe.AddIngredient(ModContent.ItemType<AlluringBait>())
-                        .AddIngredient(ModContent.ItemType<EnchantedPearl>())
+                    recipe.AddIngredient(ModContent.ItemType<SupremeBaitTackleBoxFishingStation>())
                         .AddIngredient(ModContent.ItemType<DragoonDrizzlefish>())
                         .AddIngredient(ModContent.ItemType<PolarisParrotfish>())
                         .AddIngredient(ModContent.ItemType<SparklingEmpress>())

@@ -35,7 +35,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
 
         public int CalamitySniperHeader = ModContent.ItemType<SnipersSoul>();
         public string ElementalQuiver;
-        public string DaawnlightSpiritOrigin;
         public string QuiverofNihility;
         public string DynamoStemCells;
 

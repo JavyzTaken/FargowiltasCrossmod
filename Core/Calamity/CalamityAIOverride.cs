@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CalamityMod.Events;
 using CalamityMod.NPCs;
+using CalamityMod.NPCs.Crabulon;
+using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.Projectiles;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
@@ -22,10 +27,13 @@ using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Core.Calamity
@@ -120,7 +128,35 @@ namespace FargowiltasCrossmod.Core.Calamity
             Entries.Add((ModContent.NPCType<MutantBoss>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<MutantBoss>());
-            }, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
+            }, -1, false, 0f, new int[] {ModContent.NPCType<MutantIllusion>()}, Array.Empty<int>()));
+            for (int i = 0; i < Entries.Count; i++)
+            {
+                if (Entries[i].Item1 == ModContent.NPCType<Crabulon>())
+                {
+                    Entries[i].Item7.Append(ModContent.NPCType<FungalClump>());
+                }
+                if (Entries[i].Item1 == ModContent.NPCType<PerforatorHive>())
+                {
+                    Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorHead>());
+                    Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorBody>());
+                    Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorBody2>());
+                    Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorTail>());
+                }
+                if (Entries[i].Item1 == NPCID.BrainofCthulhu)
+                {
+                    Entries[i].Item7.Append(ModContent.NPCType<BrainIllusion>());
+                    Entries[i].Item7.Append(ModContent.NPCType<BrainIllusion2>());
+                    Entries[i].Item7.Append(ModContent.NPCType<BrainIllusionAttack>());
+                }
+                if (Entries[i].Item1 == NPCID.QueenBee)
+                {
+                    Entries[i].Item7.Append(ModContent.NPCType<RoyalSubject>());
+                }
+                if (Entries[i].Item1 == NPCID.Plantera)
+                {
+                    Entries[i].Item7.Append(ModContent.NPCType<CrystalLeaf>());
+                }
+            }
             //set boss rush entries to new list of entries
             cal.Call("SetBossRushEntries", Entries);
             //make scal not end the event on defeat so it continues to mutant

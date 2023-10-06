@@ -165,6 +165,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             binaryWriter.Write7BitEncodedInt(attackCounter);
             binaryWriter.Write(HitPlayer);
             binaryWriter.WriteVector2(LockVector1);
+            binaryWriter.Write7BitEncodedInt(despawnTimer);
+            binaryWriter.Write7BitEncodedInt(lineOfSiteTimer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -176,8 +178,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             attackCounter = binaryReader.Read7BitEncodedInt();
             HitPlayer = binaryReader.ReadBoolean();
             LockVector1 = binaryReader.ReadVector2();
+            despawnTimer = binaryReader.Read7BitEncodedInt();
+            lineOfSiteTimer = binaryReader.Read7BitEncodedInt();
         }
-        
+        public int despawnTimer;
+        public int lineOfSiteTimer;
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
@@ -194,7 +199,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             Player target = Main.player[npc.target];
             Vector2 toTarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
-
+            
             //low ground
             if (Main.LocalPlayer.active && !Main.LocalPlayer.ghost && !Main.LocalPlayer.dead && npc.Distance(Main.LocalPlayer.Center) < 2000)
                 Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
@@ -261,6 +266,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     npc.ai[1] = 0;
                     NetSync(npc);
                 }
+            }
+            if (!target.ZoneCrimson && !BossRushEvent.BossRushActive)
+            {
+                despawnTimer++;
+                if (despawnTimer > 600)
+                {
+                    npc.velocity.Y += 0.1f;
+                    npc.EncourageDespawn(30);
+                    return false;
+                }
+            }
+            else
+            {
+                despawnTimer = 0;
             }
             npc.rotation = MathHelper.ToRadians(npc.velocity.X * 2);
             if (npc.ai[0] == 1)
@@ -339,7 +358,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             void Movement()
             {
-                
+                if (!Collision.CanHitLine(npc.Center, 1, 1, target.Center, 1, 1))
+                {
+                    if (lineOfSiteTimer < 300)
+                    lineOfSiteTimer++;
+                    if (lineOfSiteTimer >= 300)
+                    {
+                        npc.velocity = Vector2.Lerp(npc.velocity, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, 0.05f);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (lineOfSiteTimer > 0) lineOfSiteTimer -= 3;
+                }
                 if (target.Center.X > npc.Center.X)
                 {
                     npc.velocity.X += 0.1f;
@@ -371,6 +403,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         npc.velocity.Y -= 0.2f;
                     }
+                    
+                }
+                if (Math.Abs(npc.Center.Y - FindGround((int)npc.Center.X, (int)npc.Center.Y)) < 75 && npc.velocity.Y > 0)
+                {
+                    npc.velocity.Y = 0;
+                }else if (Math.Abs(npc.Center.Y - FindGround((int)npc.Center.X, (int)npc.Center.Y)) > 500 && npc.velocity.Y < 0)
+                {
+                    npc.velocity.Y = 0;
                 }
             }
             void PassiveRain()

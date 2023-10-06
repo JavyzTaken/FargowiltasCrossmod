@@ -18,6 +18,8 @@ using CalamityMod.Events;
 using System.IO;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core.Utils;
+using ThoriumMod.Items.HealerItems;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -82,6 +84,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             {
                 binaryWriter.Write7BitEncodedInt(attackCycle[i]);
             }
+            binaryWriter.Write7BitEncodedInt(enrageJumpTimer);
+            binaryWriter.Write(enrageJumping);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -89,13 +93,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             {
                 attackCycle[i] = binaryReader.Read7BitEncodedInt();
             }
+            enrageJumpTimer = binaryReader.Read7BitEncodedInt();
+            enrageJumping = binaryReader.ReadBoolean();
         }
-        
+
         //ai[] usage:
         //ai[0]: which animation in use (1: walking, 0: idle, 3: attacking)
         //ai[1]: index of attackCycle to read
         //ai[2]: timer
         //ai[3]: phase
+        public int enrageJumpTimer;
+        public bool enrageJumping;
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
@@ -114,6 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.velocity.Y += 1;
                 return false;
             }
+            
             //Fungal clump phase 1
             if (npc.ai[3] == 0 && npc.GetLifePercent() < 0.8f)
             {
@@ -124,8 +133,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HealEffect(-50);
                 attackCycle = new int[] { -1, 1 };
                 npc.ai[2] = 0;
+                npc.defense = 40;
+                npc.HitSound = SoundID.NPCHit4;
                 NetSync(npc);
             }
+            
+            
             //fungal clump phase 2
             if (npc.ai[3] == 2 && npc.GetLifePercent() < 0.5f)
             {
@@ -136,6 +149,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HealEffect(-50);
                 attackCycle = new int[] { -1, 1, -1, 2 };
                 npc.ai[2] = 0;
+                npc.defense = 40;
+                npc.HitSound = SoundID.NPCHit4;
                 NetSync(npc);
             }
             //fungal clump phase 3
@@ -148,6 +163,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HealEffect(-50);
                 attackCycle = new int[] { -1, 1, -1, 2, 1 };
                 npc.ai[2] = 0;
+                npc.defense = 40;
+                npc.HitSound = SoundID.NPCHit4;
+                NetSync(npc);
+            }
+            //exit fungal clump phases
+            if ((npc.ai[3] == 1 || npc.ai[3] == 3 || npc.ai[3] == 5) && !NPC.AnyNPCs(ModContent.NPCType<FungalClump>()))
+            {
+                npc.ai[3]++;
+                npc.ai[1] = 0;
+                npc.ai[2] = 0;
+                npc.defense = 8;
+                npc.HitSound = SoundID.NPCHit45;
                 NetSync(npc);
             }
             //Attack phase 2
@@ -169,7 +196,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             //high defense and stand still for a while (only does when fungal clump is alive)
             if (attackCycle[(int)npc.ai[1]] == -1)
             {
-                npc.defense = 40;
+                
                 npc.velocity.X = MathHelper.Lerp(npc.velocity.X, 0, 0.05f);
                 if (Math.Abs(npc.velocity.X) < 0.1f)
                 {
@@ -178,7 +205,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.ai[2]++;
                 if (npc.ai[2] == 300)
                 {
-                    npc.defense = 8;
                     IncrementCycle(npc);
                     npc.ai[2] = 0;
                 }
@@ -192,6 +218,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             else
             {
                 npc.noGravity = false;
+            }
+            //despawn on the surface
+            if (npc.Center.Y < Main.worldSurface * 16 && !BossRushEvent.BossRushActive)
+            {
+                if (npc.Center.X > Main.player[npc.target].Center.X) npc.velocity.X += 0.1f;
+                else npc.velocity.X -= 0.1f;
+                npc.EncourageDespawn(30);
+                npc.noTileCollide = true;
+                npc.ai[0] = 1;
+                return false;
+            }
+            if (target.Center.Y < npc.Top.Y)
+            {
+                
+                enrageJumpTimer++;
+                if (enrageJumpTimer == 300 && !enrageJumping)
+                {
+                    npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20;
+                    enrageJumping = true;
+                }
+                //Main.NewText(enrageJumpTimer);
+            }
+            else if (enrageJumpTimer > 0)
+            {
+                enrageJumpTimer--;
+            }
+            
+            if (enrageJumping)
+            {
+                Jump(npc, 0);
+                
+                return false;
             }
             // jump with dust and sound when landing
             if (attackCycle[(int)npc.ai[1]] == 2)
@@ -392,11 +450,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 }
                 NetSync(npc);
             }
-
+            if (enrageJumping && DLCUtils.HostCheck)
+            {
+                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), Vector2.Zero, ModContent.ProjectileType<ShroomGas>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+            }
             if (Collision.SolidCollision(npc.BottomLeft, npc.width, 10) && npc.ai[2] > 20 && target.position.Y < npc.BottomLeft.Y && npc.velocity.Y >= 0)
             {
                 npc.noTileCollide = false;
                 npc.ai[2] = 0;
+                enrageJumping = false;
+                enrageJumpTimer = 0;
                 IncrementCycle(npc);
                 npc.ai[0] = 0;
                 for (int i = 0; i < 30; i++)

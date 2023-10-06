@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             entity.lifeMax = 3800;
             if (BossRushEvent.BossRushActive)
             {
-                entity.lifeMax = 25000000;
+                entity.lifeMax = 7000000;
             }
         }
         public float[] drawInfo = new float[] { 0, 200, 200, 0 };

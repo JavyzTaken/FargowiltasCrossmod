@@ -3,6 +3,11 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Weapons.Melee;
+using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Weapons.Summon;
 using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -68,7 +73,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 return 0.8f;
             }
             
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.6f;
+            if (item.type == ModContent.ItemType<IllustriousKnives>()) return 0.8f;
+            if (item.type == ModContent.ItemType<Azathoth>()) return 0.9f;
+            if (item.type == ModContent.ItemType<RedSun>()) return 1.5f;
+            if (item.type == ModContent.ItemType<SomaPrime>()) return 1.2f;
+            if (item.type == ModContent.ItemType<Svantechnical>()) return 1.1f;
+            if (item.type == ModContent.ItemType<Voidragon>()) return 1.1f;
+            if (item.type == ModContent.ItemType<StaffofBlushie>()) return 0.7f;
+            if (item.type == ModContent.ItemType<Eternity>()) return 0.4f;
+            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.5f;
+            if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.6f;
+            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.7f;
+            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.55f;
+            if (item.type == ModContent.ItemType<TemporalUmbrella>()) return 0.35f;
+            if (item.type == ModContent.ItemType<Endogenesis>()) return 0.35f;
+            if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
+            if (item.type == ModContent.ItemType<Metastasis>()) return 0.5f;
+            if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
+            if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
+            if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
             return 1;
+            
         }
         public override void SetDefaults(Item item)
         {
@@ -163,10 +189,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (player.GetToggleValue("QuiverofNihility"))
                 {
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.GetToggleValue("DaawnlightSpiritOrigin"))
-                {
-                    ModContent.GetInstance<DaawnlightSpiritOrigin>().UpdateAccessory(player, hideVisual);
                 }
                 if (player.GetToggleValue("DynamoStemCells"))
                 {
@@ -305,6 +327,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (item.type == ItemID.MagicDagger)
                 {
                     tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by 50% in Pre-Hardmode."));
+                }
+                if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Massively reduced damage with any minions active"));
                 }
             }
             #endregion
