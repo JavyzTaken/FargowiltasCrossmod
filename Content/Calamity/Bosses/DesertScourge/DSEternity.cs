@@ -5,6 +5,7 @@ using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
@@ -12,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -698,6 +700,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 entity.lifeMax = 25000000;
             }
         }
+        public static List<int> PierceResistExclude = new List<int>
+        {
+            ModContent.ProjectileType<SproutingAcorn>()
+        };
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {
             base.ModifyHitByProjectile(npc, projectile, ref modifiers);
@@ -705,7 +711,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
-            if (projectile.maxPenetrate > 1 || projectile.maxPenetrate < 0)
+            if ((projectile.penetrate != projectile.maxPenetrate || projectile.penetrate < 0) && !PierceResistExclude.Contains(projectile.type)) //for hits after the first, except infinite piercings
             {
                 modifiers.FinalDamage /= 8;
             }

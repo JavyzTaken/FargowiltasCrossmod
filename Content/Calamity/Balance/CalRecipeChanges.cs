@@ -495,7 +495,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     recipe.AddIngredient(ModContent.ItemType<TundraLeash>())
                     .AddIngredient(ModContent.ItemType<FollyFeed>())
                     .AddIngredient(ModContent.ItemType<WulfrumAcrobaticsPack>())
-                    .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
+                    .AddIngredient(ModContent.ItemType<AuricBar>(), 10);
                 }
                 if (recipe.HasResult(ModContent.ItemType<FlightMasterySoul>()) && !recipe.HasIngredient(ModContent.ItemType<SkylineWings>()))
                 {
@@ -503,7 +503,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         .AddIngredient(ModContent.ItemType<HadarianWings>())
                         .AddIngredient(ModContent.ItemType<TarragonWings>())
                         .AddIngredient(ModContent.ItemType<SilvaWings>())
-                        .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
+                        .AddIngredient(ModContent.ItemType<AuricBar>(), 10);
 
                 }
                 if (recipe.HasResult(ModContent.ItemType<ColossusSoul>()) && recipe.HasIngredient(ItemID.WormScarf))
