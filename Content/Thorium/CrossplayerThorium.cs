@@ -51,6 +51,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item ConduitEnchItem;
         public bool DepthDiverEnchant;
         public Item DepthDiverEnchantItem;
+        public bool FallenPaladinEnch;
+        public Item FallenPaladinEnchItem;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -103,6 +105,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             ConduitEnchItem = null;
             DepthDiverEnchant = false;
             DepthDiverEnchantItem = null;
+            FallenPaladinEnch = false;
+            FallenPaladinEnchItem = null;
 
             GildedMonicle = false;
             GildedBinoculars = false;
@@ -178,6 +182,13 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (ThoriumKeybinds.SteelParryBind.JustPressed)
             {
                 ParryKey();
+            }
+            if (ThoriumMod.ThoriumHotkeySystem.AccessoryKey.JustPressed)
+            {
+                if (FallenPaladinEnch)
+                {
+                    FallenPaladinEffect();
+                }
             }
         }
 

@@ -10,6 +10,7 @@ using System.Reflection;
 using FargowiltasCrossmod.Core;
 using System.Collections.Generic;
 using FargowiltasSouls.Core.Toggler;
+using System.IO;
 
 namespace FargowiltasCrossmod
 {
@@ -41,28 +42,7 @@ namespace FargowiltasCrossmod
             LoadDetours();
 
             if (ThoriumLoaded) Thorium_Load();
-
-            if (CalamityLoaded)
-            {
-                //LoadTogglesFromType(typeof(CalamityToggles));
-            }
         }
-        //public static void LoadTogglesFromType(Type type)
-        //{
-        //    return;
-
-        //    ToggleCollection toggles = (ToggleCollection)Activator.CreateInstance(type);
-
-        //    if (toggles.Active)
-        //    {
-        //        Instance.Logger.Info($"ToggleCollection found: {nameof(type)}");
-        //        List<Toggle> toggleCollectionChildren = toggles.Load(ToggleLoader.LoadedToggles.Count - 1);
-        //        foreach (Toggle toggle in toggleCollectionChildren)
-        //        {
-        //            ToggleLoader.RegisterToggle(toggle);
-        //        }
-        //    }
-        //}
 
         private struct DeviantHooks
         {
@@ -89,11 +69,9 @@ namespace FargowiltasCrossmod
 
                 DeviantHooks.SetChatButtons = new Hook(SetChatButtons_DETOUR, DevianttPatches.SetChatButtons);
                 DeviantHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, DevianttPatches.OnChatButtonClicked);
-                //DeviantHooks.AddShops = new Hook(AddShops_DETOUR, DevianttPatches.AddShops);
 
                 DeviantHooks.SetChatButtons.Apply();
                 DeviantHooks.OnChatButtonClicked.Apply();
-                //DeviantHooks.AddShops.Apply();
             }
 
             Type lumberDetourClass = ModContent.Find<ModNPC>("Fargowiltas/LumberJack").GetType();
@@ -133,7 +111,5 @@ namespace FargowiltasCrossmod
             if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
         }
-
-        
     }
 }

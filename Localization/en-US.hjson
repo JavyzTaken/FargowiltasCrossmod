@@ -318,13 +318,29 @@ Mods: {
 			}
 
 			ConduitEnchant: {
-				Tooltip: ""
-				DisplayName: Conduit Enchant
+				DisplayName: Conduit Enchantment
+				Tooltip: 
+					'''
+					Summons a small flying saucer that shoots down nearby projectiles.
+					'''
+
 			}
 
 			DepthDiverEnchant: {
-				Tooltip: ""
-				DisplayName: Depth Diver Enchant
+				DisplayName: Depth Diver Enchantment
+				Tooltip: 
+					'''
+					Gives you and you allies increased damage, speed, and underwater breathing.
+					"Help I am under the water"
+					'''
+			}
+
+			FallenPaladinEnchant: {
+				DisplayName: Fallen Paladin Enchantment
+				Tooltip: 
+					'''
+					Pressing the accesssory ability key will transfer most debuffs from your allies to you.
+					'''
 			}
 		}
 
