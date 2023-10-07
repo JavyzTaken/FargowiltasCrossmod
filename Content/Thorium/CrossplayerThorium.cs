@@ -18,7 +18,9 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         #region enchants
         public bool EbonEnch;
-        public bool ClericEnch;
+        public Item EbonEnchItem;
+        public bool NoviceClericEnch;
+        public Item NoviceClericEnchItem;
         public bool TemplarEnch;
         public Item TemplarEnchItem;
         public bool LivingWoodEnch;
@@ -64,6 +66,10 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int TemplarCD = 360;
         internal int ValadiumCD = 240;
         internal int AstroLaserCD = 60;
+
+        internal int NoviceClericCrosses = 0;
+        internal int NoviceClericTimer = 0;
+        public Vector2 crossOrbitalRotation = Vector2.UnitY;
         #endregion
 
         public bool GildedMonicle;
@@ -76,7 +82,9 @@ namespace FargowiltasCrossmod.Content.Thorium
         public override void ResetEffects()
         {
             EbonEnch = false;
-            ClericEnch = false;
+            EbonEnchItem = null;
+            NoviceClericEnch = false;
+            NoviceClericEnchItem = null;
             TemplarEnch = false;
             TemplarEnchItem = null;
             LivingWoodEnch = false;
@@ -277,6 +285,21 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning1"), Color.Yellow);
             //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning2"), Color.Yellow);
+        }
+
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
+        {
+            if (NoviceClericCrosses > 0) mult = 0f;
+        }
+
+        public override void OnConsumeMana(Item item, int manaConsumed)
+        {
+            NoviceClericOnManaUse();
+        }
+
+        public override void PostUpdateEquips()
+        {
+            NoviceClericEffect();
         }
     }
 }

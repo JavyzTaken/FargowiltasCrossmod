@@ -28,13 +28,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 for (int j = 0; j < 12; j++)
                 {
                     Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 1f;
-                    float modifier = 0.5f + ((float)Math.Sin(drawTimer / 30f) / 6);
-                    Color glowColor = Color.Lerp(Color.Blue with { A = 0 }, Color.Silver with { A = 0 }, modifier) * 0.5f;
+                    float modifier = 0.25f + ((float)Math.Sin(drawTimer / 30f) / 2);
+                    Color glowColor = Color.Lerp(Color.Orange with { A = 0 }, Color.Black with { A = 0 }, modifier) * 0.5f;
 
                     Texture2D texture = Terraria.GameContent.TextureAssets.Item[Item.type].Value;
                     Main.EntitySpriteDraw(texture, position + afterimageOffset, null, glowColor, 0, texture.Size() * 0.5f, Item.scale, SpriteEffects.None, 0f);
                 }
             }
+            drawTimer++;
             return base.PreDrawInInventory(spriteBatch, position, frame, drawColor, itemColor, origin, scale);
         }
     }

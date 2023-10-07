@@ -26,8 +26,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 				int dustType = mode switch
 				{
 					0 => DustID.Shadowflame,
-					1 => DustID.GreenTorch,
-					2 => Main.rand.NextBool() ? DustID.Shadowflame : DustID.GreenTorch,
+					1 => DustID.CursedTorch,
+					2 => Main.rand.NextBool() ? DustID.Shadowflame : DustID.CursedTorch,
 					_ => DustID.Shadowflame
 				};
 				int num366 = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, dustType, 0f, 0f, 255, default(Color), 1.25f);
