@@ -319,16 +319,12 @@ Mods: {
 
 			ConduitEnchant: {
 				DisplayName: Conduit Enchantment
-				Tooltip: 
-					'''
-					Summons a small flying saucer that shoots down nearby projectiles.
-					'''
-
+				Tooltip: Summons a small flying saucer that shoots down nearby projectiles.
 			}
 
 			DepthDiverEnchant: {
 				DisplayName: Depth Diver Enchantment
-				Tooltip: 
+				Tooltip:
 					'''
 					Gives you and you allies increased damage, speed, and underwater breathing.
 					"Help I am under the water"
@@ -337,9 +333,30 @@ Mods: {
 
 			FallenPaladinEnchant: {
 				DisplayName: Fallen Paladin Enchantment
+				Tooltip: Pressing the accesssory ability key will transfer most debuffs from your allies to you.
+			}
+
+			EbonEnchant: {
+				DisplayName: Ebon Enchantment
 				Tooltip: 
 					'''
-					Pressing the accesssory ability key will transfer most debuffs from your allies to you.
+					Increases damage by 5% per bonus healing and corrupts some radiant attacks.
+					'''
+			}
+
+			SacredEnchant: {
+				DisplayName: Sacred Enchantment
+				Tooltip: 
+					'''
+					Critical strikes create healing wisps that can be released with the accessory ability key.
+					'''
+			}
+
+			WarlockEnchant: {
+				DisplayName: Warlock Enchantment
+				Tooltip: 
+					'''
+					Critial strikes create damaging wisps that can be released with the accessory ability key.
 					'''
 			}
 		}
@@ -390,6 +407,8 @@ Mods: {
 			Valadium_Chunk.DisplayName: Valadium_Chunk
 			DemonBloodSpill.DisplayName: Demon Blood Spill
 			ConduitSaucer.DisplayName: Conduit Saucer
+			DLCShadowWisp.DisplayName: D L C Shadow Wisp
+			DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
 		}
 
 		Keybinds: {
@@ -421,6 +440,11 @@ Mods: {
 			SteelParry_CD: {
 				DisplayName: Steel Parry_ C D
 				Description: Wait, isn't this meant to be free?
+			}
+
+			FallenPaladinBuff: {
+				DisplayName: Fallen Paladin Buff
+				Description: Mods.FargowiltasCrossmod.Buffs.FallenPaladinBuff.Description
 			}
 		}
 	}

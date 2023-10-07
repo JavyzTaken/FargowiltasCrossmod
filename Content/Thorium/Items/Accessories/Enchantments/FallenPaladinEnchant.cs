@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.Chat;
-using FargowiltasCrossmod.Core.Utilities;
 
 // TODO: this needs testing in mp with more than 1 person, but it should work (tm)
 
@@ -98,8 +97,10 @@ namespace FargowiltasCrossmod.Content.Thorium
 
 namespace FargowiltasCrossmod.Content.Thorium.Buffs
 {
+    [ExtendsFromMod("ThoriumMod")]
     public class FallenPaladinBuff : ModBuff
     {
+        public override string Texture => "FargowiltasSouls/Content/Buffs/PlaceholderBuff";
         public override void Update(Player player, ref int buffIndex)
         {
             foreach (int buffType in Items.Accessories.Enchantments.FallenPaladinEnchant.WhiteList)

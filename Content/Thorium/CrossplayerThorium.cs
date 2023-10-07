@@ -53,6 +53,10 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item DepthDiverEnchantItem;
         public bool FallenPaladinEnch;
         public Item FallenPaladinEnchItem;
+        public bool WarlockEnch;
+        public Item WarlockEnchItem;
+        public bool SacredEnch;
+        public Item SacredEnchItem;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -107,6 +111,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             DepthDiverEnchantItem = null;
             FallenPaladinEnch = false;
             FallenPaladinEnchItem = null;
+            WarlockEnch = false;
+            WarlockEnchItem = null;
+            SacredEnch = false;
+            SacredEnchItem = null;
 
             GildedMonicle = false;
             GildedBinoculars = false;
@@ -163,6 +171,33 @@ namespace FargowiltasCrossmod.Content.Thorium
                     SpawnDemonBlood(target.Center);
                 }
             }
+
+            if (hit.Crit)
+            {
+                if (WarlockEnch || SacredEnch)
+                {
+                    int projType = ModContent.ProjectileType<DLCShadowWisp>();
+
+                    if (Player.ownedProjectileCounts[projType] < 15)
+                    {
+                        int shadowWispType = WarlockEnch ? (SacredEnch ? 2 : 0) : (1);
+                        int damage = WarlockEnch ? (SacredEnch ? 24 : 16) : (0);
+                        float kb = WarlockEnch ? 1f : 0f;
+
+                        var soulsPlayer = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>();
+                        if ((WarlockEnch && soulsPlayer.ForceEffect(WarlockEnchItem.type)) || (SacredEnch && soulsPlayer.ForceEffect(SacredEnchItem.type)))
+                        {
+                            damage = 24;
+                            shadowWispType = 2;
+                            kb = 1f;
+                        }
+
+                        Item itemToUse = WarlockEnch ? WarlockEnchItem : SacredEnchItem;
+
+                        Projectile.NewProjectile(Player.GetSource_Accessory(itemToUse), target.Center, Vector2.Zero, projType, damage, kb, Player.whoAmI, 0, 0, shadowWispType);
+                    }
+                }
+            }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -188,6 +223,18 @@ namespace FargowiltasCrossmod.Content.Thorium
                 if (FallenPaladinEnch)
                 {
                     FallenPaladinEffect();
+                }
+                if (WarlockEnch || SacredEnch)
+                {
+                    int type = ModContent.ProjectileType<DLCShadowWisp>();
+                    for (int i = 0; i < 1000; i++)
+                    {
+                        Projectile projectile = Main.projectile[i];
+                        if (projectile.active && projectile.owner == Main.myPlayer && projectile.type == type)
+                        {
+                            projectile.localAI[0] = 1f;
+                        }
+                    }
                 }
             }
         }
