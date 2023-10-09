@@ -11,7 +11,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class RedStainedWormFood : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/BloodWormFood";
+        public override string Texture => "CalamityMod/Items/SummonItems/BloodyWormFood";
         public override int NPCType => ModContent.NPCType<PerforatorHive>();
         public override string NPCName => "Perforator Hive";
         public override void AddRecipes()

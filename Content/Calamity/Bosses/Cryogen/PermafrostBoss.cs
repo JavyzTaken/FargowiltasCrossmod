@@ -21,6 +21,8 @@ using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PermafrostBoss : ModNPC
     {
         public override string Texture => "CalamityMod/NPCs/TownNPCs/DILF";
