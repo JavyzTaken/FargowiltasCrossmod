@@ -22,6 +22,8 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using FargowiltasSouls;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {
@@ -33,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = 3800;
+            entity.lifeMax = 4800;
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 7000000;
@@ -77,6 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public const int attackCycleLength = 9;
         public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
+        public bool DoSlam = false;
         
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -89,6 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 binaryWriter.Write7BitEncodedInt(attackCycle[i]);
             }
             binaryWriter.Write7BitEncodedInt(phase);
+            binaryWriter.Write(DoSlam);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -101,6 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 attackCycle[i] = binaryReader.Read7BitEncodedInt();
             }
             phase = binaryReader.Read7BitEncodedInt();
+            DoSlam = binaryReader.ReadBoolean();
         }
         
         public override bool SafePreAI(NPC npc)
@@ -124,6 +129,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             npc.realLife = -1;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
             int attack = attackCycle[(int)npc.ai[3]];
+            if (DoSlam)
+            {
+                attack = 22;
+            }
             if (attack < 0)
             {
                 attack = 0;
@@ -171,14 +180,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 WormMovement(npc, collision);
 
                 ai[0]++;
+                if (ai[0] == 250 && phase > 0) //initiate slam, only after first phase (nuisances)
+                {
+                    DoSlam = true;
+                    NetSync(npc);
+                }
                 if (ai[0] == 500)
                 {
                     ai[0] = 0;
                     IncrementCycle(npc);
                 }
             }
-
-
             else if (attack == 1)
             {
                 SetupLunge(npc, true, false, false, new Vector2(700, 700), new Vector2(50, -300), new Vector2(700, 700));
@@ -199,6 +211,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             else if (attack == 5)
             {
                 SetupLunge(npc, true, false, false, new Vector2(0, 900), new Vector2(0, -400), new Vector2(0, 500));
+            }
+            else if (attack == 22)
+            {
+                Slam(npc);
             }
             ai[1]++;
             if (ai[1] >= 300)
@@ -282,6 +298,102 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 }
             }
 
+        }
+        public void Slam(NPC npc)
+        {
+            ai[0] = 251; //keep timer on this until attack ends
+            Player player = Main.player[npc.target];
+            Vector2 targetPos = player.Center - Vector2.UnitY * 100;
+            ref float timer = ref ai[3];
+            ref float attackStep = ref ai[2];
+
+            
+            switch (attackStep)
+            {
+                case 0: //fly straight towards player until close enough
+                    {
+                        if (timer == 0)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/DesertScourgeRoar") with { Volume = 0.5f, Pitch = -0.3f });
+                        }
+                        const float MaxSpeed = 25;
+                        float inertia = 15f;
+                        const float CloseEnough = 300;
+
+                        Vector2 toPlayer = targetPos - npc.Center;
+                        float distance = toPlayer.Length();
+                        if (npc.velocity == Vector2.Zero)
+                        {
+                            npc.velocity.X = -0.15f;
+                            npc.velocity.Y = -0.05f;
+                        }
+                        if (distance > CloseEnough)
+                        {
+                            toPlayer.Normalize();
+                            toPlayer *= MaxSpeed;
+                            npc.velocity = (npc.velocity * (inertia - 1f) + toPlayer) / inertia;
+                        }
+                        else
+                        {
+                            timer = 0;
+                            attackStep = 1;
+                        }
+                       
+                    }
+                    break;
+                case 1: //decelerate X, accelerate upwards Y, preparing for slam
+                    {
+                        const float accelUp = 1.5f;
+                        if (npc.velocity.Y > -25)
+                        {
+                            npc.velocity.Y -= accelUp;
+                        }
+                        npc.velocity.X *= 0.97f;
+                        if (npc.velocity.Y <= -25 && timer > 40)
+                        {
+                            timer = 0;
+                            attackStep = 2;
+                        }
+                    }
+                    break;
+                case 2: //get gravity and fall, SLIGHTLY move towards player? prepare for crash
+                    {
+                        const float gravity = 1f;
+                        const float xTracking = 0.25f;
+                        npc.velocity.Y += gravity;
+                        npc.velocity.X += Math.Sign(player.Center.X - npc.Center.X) * xTracking;
+                        if (Collision.SolidCollision(npc.position, npc.width, npc.height) || timer > 60 * 5) //end attack on collision or after safety max time
+                        {
+                            npc.velocity /= 4;
+                            SoundEngine.PlaySound(SoundID.Item62, npc.Center);
+                            const int ShotCount = 10; //per side
+                            const int MaxShotSpeed = 16;
+                            for (int i = 0; i < ShotCount; i++)
+                            {
+                                for (int side = -1; side < 2; side += 2)
+                                {
+                                    
+                                    float speed = MaxShotSpeed * (float)(i+1) / ShotCount;
+                                    Vector2 dir = (-Vector2.UnitY).RotatedBy(side * MathHelper.Pi / 9.85f);
+                                    float randfac = MathHelper.Pi / 18f;
+                                    float randrot = Main.rand.NextFloat(-randfac, randfac);
+                                    for (int j = -1; j < 2; j += 2)
+                                    {
+                                        float offset = randfac * npc.width / 5f;
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + (Vector2.UnitX * side * (offset + (npc.width / 3))), speed * dir.RotatedBy(randfac * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 2f);
+                                    }
+                                    
+                                }
+                            }
+                            timer = 0;
+                            attackStep = 0;
+                            DoSlam = false;
+                            return;
+                        }
+                    }
+                    break;
+            }
+            timer++;
         }
         public float[] lungeInfo = new float[] { 0, 0, 0, 0, 0};
         //Sets values for doing the lunge attack with configureable projectiles to accompany the attack
@@ -713,7 +825,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             if ((projectile.penetrate != projectile.maxPenetrate || projectile.penetrate < 0) && !PierceResistExclude.Contains(projectile.type)) //for hits after the first, except infinite piercings
             {
-                modifiers.FinalDamage /= 8;
+                modifiers.FinalDamage /= 3;
             }
         }
         public override bool SafePreAI(NPC npc)
