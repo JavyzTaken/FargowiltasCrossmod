@@ -79,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         
         public override float UseSpeedMultiplier(Item item)
         {
-            if (AttackSpeedExcludeWeapons.Contains(item.type))
+            if (item.DamageType == ModContent.GetInstance<RogueDamageClass>() && item.useTime < item.useAnimation)
             {
                 bool carryOverAttackSpeedCheck = Player.FargoSouls().HaveCheckedAttackSpeed;
                 float soulsAttackSpeed = Player.FargoSouls().UseSpeedMultiplier(item);

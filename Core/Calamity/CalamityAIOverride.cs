@@ -46,7 +46,11 @@ namespace FargowiltasCrossmod.Core.Calamity
         
         public override void PostSetupContent()
         {
+            #region summons
+            Mod mutant = ModLoader.GetMod("Fargowiltas");
             
+            #endregion summons
+            #region bossrush
             //EXPLANATION OF TUPLES
             //int: npc id
             //int: time to set to (1 = day, -1 = night, 0 = dont force time)
@@ -161,7 +165,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             cal.Call("SetBossRushEntries", Entries);
             //make scal not end the event on defeat so it continues to mutant
             DeathEffectsList.Remove(ModContent.NPCType<SupremeCalamitas>());
-            
+            #endregion bossrush
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it
         public ref Dictionary<int, Action<NPC>> DeathEffectsList => ref BossRushEvent.BossDeathEffects;
@@ -321,6 +325,24 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Index--;
             c.RemoveRange(16);
             #endregion RevMasterDropsRemoval
+            //remove ichor spear from ichors
+            var spr = new ILCursor(il);
+            spr.GotoNext(i => i.MatchLdcI4(25));
+            spr.Index++;
+            spr.GotoNext(i => i.MatchLdcI4(25));
+            spr.Index++;
+            spr.GotoNext(i => i.MatchLdcI4(25));
+            spr.Index++;
+            spr.GotoNext(i => i.MatchLdcI4(25));
+            spr.Index++;
+            spr.GotoNext(i => i.MatchLdcI4(25));
+            spr.Index -= 2;
+            spr.RemoveRange(8);
+            label = spr.MarkLabel();
+            spr.GotoPrev(i => i.MatchLdcI4(315));
+            labels = null;
+            spr.GotoPrev(i => i.MatchSwitch(out labels));
+            labels[26] = label;
             //remove essence of sunlight from wyverns
             var d = new ILCursor(il);
             d.GotoNext(i => i.MatchLdcI4(10));

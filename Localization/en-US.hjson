@@ -186,6 +186,10 @@ Mods: {
 			}
 
 			SlamTelegraph.DisplayName: Slam Telegraph
+			IceBomb.DisplayName: Ice Bomb
+			IceCrystal.DisplayName: Ice Crystal
+			IceChain.DisplayName: Ice Chain
+			IceTrident.DisplayName: Ice Trident
 		}
 	}
 }

@@ -469,9 +469,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 Recipe recipe = Main.recipe[i];
 
                 #region Compatibility
-                if (recipe.HasResult(ModContent.ItemType<AeolusBoots>()) && recipe.HasIngredient(ItemID.TerrasparkBoots))
+                if (recipe.HasResult<AngelTreads>() && recipe.HasIngredient(ItemID.TerrasparkBoots))
                 {
                     if (recipe.RemoveIngredient(ItemID.TerrasparkBoots))
+                    {
+                        recipe.AddIngredient<ZephyrBoots>();
+                    }
+                }
+                if (recipe.HasResult(ModContent.ItemType<AeolusBoots>()) && recipe.HasIngredient<ZephyrBoots>())
+                {
+                    if (recipe.RemoveIngredient(ModContent.ItemType<ZephyrBoots>()))
                         recipe.AddIngredient(ModContent.ItemType<AngelTreads>());
                     if (recipe.RemoveIngredient(ItemID.SoulofMight) && recipe.RemoveIngredient(ItemID.SoulofSight) && recipe.RemoveIngredient(ItemID.SoulofFright))
                         recipe.AddIngredient(ModContent.ItemType<LivingShard>(), 10);

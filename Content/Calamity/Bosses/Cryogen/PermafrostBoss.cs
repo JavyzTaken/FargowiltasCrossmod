@@ -16,6 +16,8 @@ using FargowiltasCrossmod.Core.Calamity;
 using Terraria.GameContent.Bestiary;
 using System.Threading;
 using CalamityMod;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -90,6 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 return;
             }
             Player target = Main.player[NPC.target];
+            Vector2 toTarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
             if (Phase == 0)
             {
                 Timer += 0.01f;
@@ -120,69 +123,44 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 NPC.spriteDirection = NPC.Center.X > target.Center.X ? 1 : -1;
                 if (Attack == 0)
                 {
-                    
-                    CornerMovement();
+                    Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 400 : -400, 0);
+
+                    if (NPC.Distance(targetpos) > 50)
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, (targetpos - NPC.Center).SafeNormalize(Vector2.Zero)*20, 0.05f);
+                    Timer++;
+                    if (Timer >= 200)
+                    {
+                        Timer = 0;
+                        Attack = 1;
+                    }
                 }
                 if (Attack == 1)
                 {
-                    Attack = 0;
-                    return;
                     Timer++;
-                    if (Timer >= 120)
+                    if (Timer < 60)
                     {
-                        Timer = 0;
-                        Attack = 0;
+                        Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, -400);
+
+                        if (NPC.Distance(targetpos) > 50)
+                            NPC.velocity = Vector2.Lerp(NPC.velocity, (targetpos - NPC.Center).SafeNormalize(Vector2.Zero) * 20, 0.05f);
                     }
-                    NPC.velocity *= 0.98f;
+                    else
+                    {
+                        NPC.velocity /= 1.05f;
+                        if (Timer == 100)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget * 5, ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                        }
+                        if (Timer >= 200)
+                        {
+                            Attack = 0;
+                            Timer = 0;
+                        }
+                    }
                 }
                 
             }
             base.AI();
-            void CornerMovement(float distance = 500, float maxSpeed = 30, float acceleration = 1.05f, int time = 600, int timeAtPos = 120)
-            {
-                Timer++;
-                if (Timer % timeAtPos == 0)
-                {
-                    Data++;
-                    if (Data >= 4)
-                    {
-                        Data = 0;
-                    }
-                }
-                Vector2 pos = new Vector2(-distance, -distance).RotatedBy(Data * MathHelper.PiOver2)/2;
-                //if (NPC.Distance(target.Center + pos) > 20)
-                Movement(target.Center + pos, 100, 30, acceleration);
-                if (Timer >= time)
-                {
-                    Data = 0;
-                    Timer = 0;
-                    Attack = 1;
-                }
-            }
-        }
-        public void Movement(Vector2 position, float slowdownDistance = 100, float maxSpeed = 20, float acceleration = 1.05f)
-        {
-            
-            Vector2 toPos = (position - NPC.Center).SafeNormalize(Vector2.Zero);
-            Dust.NewDustPerfect(position, DustID.TerraBlade);
-            if (NPC.Distance(position) > slowdownDistance)
-            {
-                
-                NPC.velocity += toPos * 0.5f;
-                if (NPC.velocity.Length() > maxSpeed)
-                {
-                    NPC.velocity = NPC.velocity.SafeNormalize(Vector2.Zero) * maxSpeed;
-                }
-                Main.NewText(NPC.velocity.AngleBetween(toPos));
-                if (NPC.velocity.AngleBetween(toPos) > 3f)
-                {
-                    NPC.velocity += toPos;
-                }
-            }
-            else if (NPC.velocity.Length() > 1)
-            {
-                NPC.velocity *= 0.99f;
-            }
         }
     }
 }

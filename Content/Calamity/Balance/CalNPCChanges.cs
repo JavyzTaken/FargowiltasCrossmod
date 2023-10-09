@@ -10,6 +10,7 @@ using CalamityMod.Events;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Materials;
+using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AcidRain;
 using CalamityMod.NPCs.AquaticScourge;
@@ -67,6 +68,7 @@ using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.Crimson;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
@@ -189,6 +191,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             NPCID.SantaNK1,
             NPCID.IceQueen
         };
+        public static List<int> SandstormEnemies = new List<int>
+        {
+            NPCID.SandElemental,
+            NPCID.DuneSplicerHead,
+            NPCID.Tumbleweed,
+            NPCID.WalkingAntlion,
+            NPCID.GiantWalkingAntlion,
+            NPCID.FlyingAntlion,
+            NPCID.GiantFlyingAntlion,
+            NPCID.SandShark, NPCID.SandsharkCorrupt, NPCID.SandsharkCrimson, NPCID.SandsharkHallow
+        };
         public override void SetDefaults(NPC npc)
         {
             #region Balance
@@ -220,6 +233,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if ((FrostMoonEnemies.Contains(npc.type) || PumpkinMoonEnemies.Contains(npc.type)) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
+                }
+                if ((npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye) && WorldSavingSystem.EternityMode)
+                {
+                    npc.lifeMax = (int)(npc.lifeMax *0.6f);
                 }
                 //Plantera
                 if (npc.type == NPCID.Plantera && WorldSavingSystem.EternityMode)
@@ -444,6 +461,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             
         }
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        {
+            Player player = Main.player[Main.myPlayer];
+            if (player.FargoSouls().OriEnchantItem != null && npc.lifeRegen < 0)
+            {
+                npc.lifeRegen = (int)(npc.lifeRegen * 0.75f);
+                damage = (int)(damage * 0.75f);
+            }
+            base.UpdateLifeRegen(npc, ref damage);
+        }
         //all this bullshit just so tmod doesnt JITException a method that is supposed to be ignored >:(
         public IItemDropRuleCondition PostDog => DropHelper.PostDoG();
 
@@ -650,6 +677,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npcLoot.Add(PreHMNotBalanced);
                 npcLoot.Add(hardmode);
             }
+            if (npc.type == NPCID.IchorSticker)
+            {
+                hardmode.OnSuccess(ItemDropRule.NormalvsExpert(ModContent.ItemType<IchorSpear>(), 25, 15));
+                PreHMNotBalanced.OnSuccess(ItemDropRule.NormalvsExpert(ModContent.ItemType<IchorSpear>(), 25, 15));
+                npcLoot.Add(PreHMNotBalanced);
+                npcLoot.Add(hardmode);
+            }
         }
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)
@@ -716,12 +750,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.Calamity().ZoneSulphur && AcidRainEvent.AcidRainEventIsOngoing)
+            if (spawnInfo.Player.Calamity().ZoneSulphur)
             {
-                pool[NPCID.PigronCorruption] = 0f;
-                pool[NPCID.PigronCrimson] = 0f;
-                pool[NPCID.PigronHallow] = 0f;
- 
+                pool[NPCID.PigronCorruption] = 0.0001f;
+                pool[NPCID.PigronCrimson] = 0.0001f;
+                pool[NPCID.PigronHallow] = 0.0001f;
+                for (int i = 0; i < SandstormEnemies.Count; i++)
+                {
+                    pool[SandstormEnemies[i]] = 0;
+                }
+                if (AcidRainEvent.AcidRainEventIsOngoing)
+                {
+                    pool[NPCID.PigronCorruption] = 0f;
+                    pool[NPCID.PigronCrimson] = 0f;
+                    pool[NPCID.PigronHallow] = 0f;
+                }
             }
             if (spawnInfo.Player.Calamity().ZoneSulphur)
             {

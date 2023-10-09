@@ -13,6 +13,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
@@ -29,12 +30,14 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using ThoriumMod.PlayerLayers;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
+        
         public static List<int> ChampionTierFargoWeapons = new List<int>
         {
             ModContent.ItemType<EaterLauncher>(),
@@ -130,6 +133,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
                 scale /= tungScale;
             }
+            if (player.FargoSouls().TungstenEnchantItem != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
+            {
+                float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
+                scale /= 1.75f;
+            }
+        }
+        public override float UseSpeedMultiplier(Item item, Player player)
+        {
+            if (player.FargoSouls().MythrilEnchantItem != null && item.DamageType == ModContent.GetInstance<RogueDamageClass>() && item.useTime >= item.useAnimation)
+            {
+                FargoSoulsPlayer modPlayer = player.FargoSouls();
+                float ratio = Math.Max((float)modPlayer.MythrilTimer / modPlayer.MythrilMaxTime, 0);
+                if (ratio > 0.3)
+                {
+                    return 0.75f;
+                }
+            }
+            return base.UseSpeedMultiplier(item, player);
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
@@ -139,6 +160,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 || (item.type == ModContent.ItemType<DeepDiver>() && player.wet) || player.Calamity().plaguebringerPatronSet)
             {
                 player.FargoSouls().HasDash = true;
+            }
+            if (item.type == ModContent.ItemType<AngelTreads>())
+            {
+                if (player.GetToggleValue("MasoAeolus"))
+                {
+                    player.GetJumpState(ExtraJump.FartInAJar).Enable();
+                }
+                
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -331,6 +360,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
                 {
                     tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Massively reduced damage with any minions active"));
+                }
+                if (item.type == ModContent.ItemType<TungstenEnchant>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Less effective on true melee weapons"));
+                }
+                if (item.type == ModContent.ItemType<MythrilEnchant>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Less effective on rogue weapons"));
+                }
+                if (item.type == ModContent.ItemType<OrichalcumEnchant>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]25% less effective"));
                 }
             }
             #endregion
