@@ -18,7 +18,6 @@ using CalamityMod.Events;
 using System.IO;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core.Utils;
-using ThoriumMod.Items.HealerItems;
 using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
