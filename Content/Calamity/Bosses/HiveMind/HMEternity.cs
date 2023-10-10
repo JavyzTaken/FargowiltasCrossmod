@@ -159,6 +159,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (!WorldSavingSystem.EternityMode) return true;
 
             ref float timer = ref npc.ai[0];
+            ref float attackIndex = ref npc.ai[2];
+            ref float rotDirection = ref npc.ai[3];
+            
 
             npc.dontTakeDamage = false;
             npc.defense = 200;
@@ -278,7 +281,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     npc.ai[1] = 1;
                     npc.damage = 80;
                     npc.noTileCollide = true;
-                    attackCycle = new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 };
+                    attackCycle = new int[attackCycleLength] { 0, 1, 2, -1, -1, -1, -1 };
                     foreach (NPC n in Main.npc)
                     {
                         if ((n.type == ModContent.NPCType<HiveBlob>() || n.type == ModContent.NPCType<HiveBlob2>()) && n.ai[0] == npc.whoAmI)
@@ -293,7 +296,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (phase >= 2)
             {
                 npc.damage = 50;
-                int attack = attackCycle[(int)npc.ai[2]];
+                int attack = attackCycle[(int)attackIndex];
                 if (attack < 0)
                 {
                     attack = 0;
@@ -315,11 +318,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     if (timer == 0)
                     {
                         LockVector1 = target.Center;
+                        if (Math.Abs(rotDirection) != 1)
+                        {
+                            rotDirection = Main.rand.NextBool() ? 1 : -1;
+                        }
+                        rotDirection = -rotDirection;
                     }
                     const int desiredDistance = 350;
-                    Vector2 desiredPos = LockVector1 + (LockVector1.DirectionTo(npc.Center).RotatedBy(MathHelper.Pi / 24f) * desiredDistance);
+                    Vector2 desiredPos = LockVector1 + (LockVector1.DirectionTo(npc.Center).RotatedBy(rotDirection * MathHelper.Pi / 8f) * desiredDistance);
                     Vector2 toTargetPos = npc.DirectionTo(desiredPos);
-                    Dash(npc, toTargetPos * 18, 120, 50);
+                    Dash(npc, toTargetPos * 21f, 120, 50);
                     if (timer % 15 == 0 && NPC.CountNPCS(NPCID.EaterofSouls) < 5)
                     {
                         if (DLCUtils.HostCheck)
