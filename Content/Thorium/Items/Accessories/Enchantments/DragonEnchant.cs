@@ -1,12 +1,9 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Content.Thorium.Buffs;
-using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Thorium.NPCs;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
-
 using Terraria.DataStructures;
 using System;
 
@@ -15,32 +12,38 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod("ThoriumMod")]
     public class DragonEnchant : BaseEnchant
     {
-        
         protected override Color nameColor => Color.Green;
-
-        public override void SetStaticDefaults()
-        {
-
-        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.whoAmI != Main.myPlayer) return;
-
             var modplayer = player.GetModPlayer<CrossplayerThorium>();
             modplayer.DragonEnch = true;
+            modplayer.DragonEnchItem = Item;
 
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<DragonMinionHead>()] != 1)
-            {
-                Projectile.NewProjectile(new EntitySource_ItemUse(player, Item),
-                                        player.Center,
-                                        Vector2.Zero,
-                                        ModContent.ProjectileType<DragonMinionHead>(),
-                                        45,
-                                        0,
-                                        player.whoAmI);
-            }
+            DragonEffect(player);
         }
+
+        public static void DragonEffect(Player player)
+        {
+            int numHeads = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<DragonEnchant>()) ? 2 : 1;
+            int projType = ModContent.ProjectileType<DragonHead>();
+
+            if (player.ownedProjectileCounts[projType] != numHeads)
+            {
+                player.KillOwnedProjectilesOfType(projType);
+
+                var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+                if (numHeads == 1)
+                {
+                    Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 0);
+                }
+                else
+                {
+                    Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 1);
+                    Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 2);
+                }
+            }
+        } 
 
         public override void AddRecipes()
         {

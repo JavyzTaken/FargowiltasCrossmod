@@ -172,7 +172,7 @@ Mods: {
 
 			DragonEnchant: {
 				DisplayName: Dragon Enchantment
-				Tooltip: Summons a green dragon to aid you.
+				Tooltip: Summons a green dragon head to aid you
 			}
 
 			FungusEnchant: {
@@ -353,7 +353,7 @@ Mods: {
 
 			NoviceClericEnchant: {
 				DisplayName: Novice Cleric Enchant
-				Tooltip: ""
+				Tooltip: "Holy crosses will generate over time. Using mana will cause a cross to be used instead."
 			}
 		}
 
@@ -405,6 +405,7 @@ Mods: {
 			ConduitSaucer.DisplayName: Conduit Saucer
 			DLCShadowWisp.DisplayName: D L C Shadow Wisp
 			DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
+			DragonHead.DisplayName: Dragon Head
 		}
 
 		Keybinds: {

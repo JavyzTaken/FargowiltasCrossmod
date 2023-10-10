@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             crossOrbitalRotation = Utils.RotatedBy(crossOrbitalRotation, -0.05, default);
 
             bool synergy = NoviceClericEnch && EbonEnch;
-            int maxCrosses = synergy ? 15 : 5;
+            int maxCrosses = synergy ? 8 : 5;
 
             if (NoviceClericCrosses < maxCrosses)
             {

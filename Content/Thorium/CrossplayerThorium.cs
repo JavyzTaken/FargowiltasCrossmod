@@ -30,6 +30,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool LodeStoneEnch;
         public Item LodeStoneEnchItem;
         public bool DragonEnch;
+        public Item DragonEnchItem;
         public bool SteelEnch;
         public Item SteelEnchItem;
         public bool DarkSteelEnch;
@@ -94,6 +95,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             LodeStoneEnch = false;
             LodeStoneEnchItem = null;
             DragonEnch = false;
+            DragonEnchItem = null;
             SteelEnch = false;
             SteelEnchItem = null;
             DarkSteelEnch = false;
@@ -301,5 +303,6 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             NoviceClericEffect();
         }
+
     }
 }
