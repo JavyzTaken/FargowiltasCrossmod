@@ -234,6 +234,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
                 }
+                if (npc.type == NPCID.SkeletronHead && WorldSavingSystem.EternityMode)
+                {
+                    npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
+                }
+                if (npc.type == NPCID.SkeletronHand && DLCWorldSavingSystem.E_EternityRev && WorldSavingSystem.EternityMode)
+                {
+                    npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
+                }
+                //wof
                 if ((npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye) && WorldSavingSystem.EternityMode)
                 {
                     npc.lifeMax = (int)(npc.lifeMax *0.6f);
