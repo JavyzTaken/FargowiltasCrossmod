@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             entity.scale = 0.01f;
             NPCID.Sets.TrailCacheLength[entity.type] = 10;
             NPCID.Sets.TrailingMode[entity.type] = 0;
-            entity.damage = (int)(entity.damage * 1.5f);
+            //entity.damage = (int)(entity.damage * 1.5f);
             entity.lifeMax = 8000;
             if (BossRushEvent.BossRushActive)
             {
@@ -280,7 +280,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     timer = -90;
                     npc.noGravity = true;
                     npc.ai[1] = 1;
-                    npc.damage = 80;
                     npc.noTileCollide = true;
                     attackCycle = new int[attackCycleLength] { 0, 1, 2, -1, -1, -1, -1 };
                     foreach (NPC n in Main.npc)
@@ -296,7 +295,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             if (phase >= 2)
             {
-                npc.damage = 50;
                 int attack = attackCycle[(int)attackIndex];
                 if (attack < 0)
                 {
