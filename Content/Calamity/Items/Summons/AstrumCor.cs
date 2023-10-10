@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Items.SummonItems;
-using CalamityMod.NPCs.DesertScourge;
+using CalamityMod.NPCs.AstrumDeus;
+using CalamityMod.NPCs.Cryogen;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -12,14 +13,14 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class MedallionoftheDesert : BaseSummon
+    public class AstrumCor : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/DesertMedallion";
-        public override int NPCType => ModContent.NPCType<DesertScourgeHead>();
-        public override string NPCName => "Desert Scourge";
+        public override string Texture => "CalamityMod/Items/SummonItems/Starcore";
+        public override int NPCType => ModContent.NPCType<AstrumDeusHead>();
+        public override string NPCName => "Astrum Deus";
         public override void AddRecipes()
         {
-            Recipe.Create(Type).AddIngredient<DesertMedallion>().AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(Type).AddIngredient<Starcore>().AddTile(TileID.WorkBenches).Register();
         }
         public override bool? UseItem(Player player)
         {

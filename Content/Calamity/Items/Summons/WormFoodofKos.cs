@@ -1,5 +1,5 @@
 ﻿using CalamityMod.Items.SummonItems;
-using CalamityMod.NPCs.DesertScourge;
+using CalamityMod.NPCs.StormWeaver;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -12,14 +12,14 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class MedallionoftheDesert : BaseSummon
+    public class WormFoodofKos : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/DesertMedallion";
-        public override int NPCType => ModContent.NPCType<DesertScourgeHead>();
-        public override string NPCName => "Desert Scourge";
+        public override string Texture => "CalamityMod/Items/SummonItems/RuneofKos";
+        public override int NPCType => ModContent.NPCType<StormWeaverHead>();
+        public override string NPCName => "Storm Weaver";
         public override void AddRecipes()
         {
-            Recipe.Create(Type).AddIngredient<DesertMedallion>().AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(Type).AddIngredient<RuneofKos>().AddTile(TileID.WorkBenches).Register();
         }
         public override bool? UseItem(Player player)
         {
