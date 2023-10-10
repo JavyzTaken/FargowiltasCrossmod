@@ -21,6 +21,7 @@ using System.IO;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core.Utils;
 using System.Linq;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -58,7 +59,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
-            
         }
         
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -123,6 +123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
         }
         public int phase = 0;
+        public Vector2 LockVector1 = Vector2.Zero;
         const int attackCycleLength = 7;
         public int[] attackCycle = new int[attackCycleLength] { 0, 0, 0, 0, 0, -1, -1};
         
@@ -134,6 +135,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             binaryWriter.Write7BitEncodedInt(phase);
             binaryWriter.WriteVector2(sprite);
+            binaryWriter.WriteVector2(LockVector1);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -143,6 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             phase = binaryReader.Read7BitEncodedInt();
             sprite = binaryReader.ReadVector2();
+            LockVector1 = binaryReader.ReadVector2();
         }
         
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
@@ -154,6 +157,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
+
+            ref float timer = ref npc.ai[0];
+
             npc.dontTakeDamage = false;
             npc.defense = 200;
             npc.alpha = 0;
@@ -190,30 +196,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             //ai :real:
             if (phase == 0)
             {
-                for (int i = 0; i < npc.ai[0]/100f; i++)
+                for (int i = 0; i < timer/100f; i++)
                 {
                     Dust.NewDustDirect(npc.Center - new Vector2(100, 0), 200, 0, DustID.Corruption);
                 }
                 if (Main.netMode != NetmodeID.Server)
                 {
                     Player player = Main.player[Main.myPlayer];
-                    PunchCameraModifier modifier = new(player.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), (npc.ai[0]/60f), 1f, 60, 100f, FullName);
+                    PunchCameraModifier modifier = new(player.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), (timer/60f), 1f, 60, 100f, FullName);
                     Main.instance.CameraModifiers.Add(modifier);
                 }
-                npc.ai[0]++;
-                if (npc.ai[0] >= 300 && npc.ai[0] < 320)
+                if (timer < 300)
+                {
+                    npc.Center += npc.DirectionTo(target.Center) * 5;
+                    npc.dontTakeDamage = true;
+                }
+                timer++;
+                if (timer >= 300 && timer < 320)
                 {
                     npc.scale += 0.05f;
                     
                 }
-                if (npc.ai[0] == 300)
+                if (timer == 300)
                 {
                     SoundEngine.PlaySound(roar with { Pitch = -0.5f }, npc.Center);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 5; i++)
                         {
-                            NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<DankCreeper>(), ai0: npc.whoAmI);
+                            int n = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<DankCreeper>(), ai0: npc.whoAmI);
+                            NPC creeper = Main.npc[n];
+                            if (creeper != null && creeper.active && creeper.type == ModContent.NPCType<DankCreeper>())
+                            {
+                                creeper.lifeMax *= 3;
+                                creeper.life = creeper.lifeMax;
+                            }
                             NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<HiveBlob>(), ai0: npc.whoAmI);
                             NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<HiveBlob2>(), ai0: npc.whoAmI);
                         }
@@ -221,10 +238,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     }
                     NetSync(npc);
                 }
-                if (npc.ai[0] >= 320)
+                if (timer >= 320)
                 {
                     phase = 1;
-                    npc.ai[0] = 0;
+                    timer = 0;
                     for (int i = 0; i < 100f; i++)
                     {
                         Dust.NewDustDirect(npc.Center - new Vector2(100, 0), 200, 0, DustID.Corruption, 0, -5);
@@ -244,8 +261,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             if (phase == 1)
             {
-                npc.ai[0]++;
-                if (npc.ai[0] % 10 == 0 && DLCUtils.HostCheck)
+                timer++;
+                if (timer % 10 == 0 && DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(30))*15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(-30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
@@ -256,7 +273,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     phase = 2;
                     sprite.X = 1;
                     npc.velocity.Y = -20;
-                    npc.ai[0] = -90;
+                    timer = -90;
                     npc.noGravity = true;
                     npc.ai[1] = 1;
                     npc.damage = 80;
@@ -288,12 +305,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 }
                 if (attack == 1)
                 {
-                    Dash(npc, toTarget * 10, 100, 80, 0f);
+                    const int dashDuration = 100;
+                    const float maxSpeedIncrease = 10;
+                    float speed = 10;// + (maxSpeedIncrease * Math.Min(timer / baseDashDuration, 1));
+                    Dash(npc, toTarget * speed, dashDuration, 80, 0f);
                 }
                 if (attack == 2)
                 {
-                    Dash(npc, toTarget.RotatedBy(MathHelper.ToRadians(90)) * 20, 60, 50);
-                    if (npc.ai[0] % 15 == 0 && NPC.CountNPCS(NPCID.EaterofSouls) < 5)
+                    if (timer == 0)
+                    {
+                        LockVector1 = target.Center;
+                    }
+                    const int desiredDistance = 350;
+                    Vector2 desiredPos = LockVector1 + (LockVector1.DirectionTo(npc.Center).RotatedBy(MathHelper.Pi / 24f) * desiredDistance);
+                    Vector2 toTargetPos = npc.DirectionTo(desiredPos);
+                    Dash(npc, toTargetPos * 18, 120, 50);
+                    if (timer % 15 == 0 && NPC.CountNPCS(NPCID.EaterofSouls) < 5)
                     {
                         if (DLCUtils.HostCheck)
                             NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, NPCID.EaterofSouls);
@@ -303,7 +330,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (attack == 3)
                 {
                     Dash(npc, (target.Center + new Vector2(0, -200) - npc.Center).SafeNormalize(Vector2.Zero) * 15, 100, 80, 0);
-                    if (npc.ai[0] % 30 == 0)
+                    if (timer % 30 == 0)
                     {
                         if (DLCUtils.HostCheck)
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<ShadeNimbusHostile>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
@@ -316,7 +343,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (attack == 5)
                 {
                     
-                    Teleport(npc, 30, 20, target.Center + toTarget*500);
+                    Teleport(npc, 45, 20, target.Center + toTarget*500);
                 }
                 RetractHeart(npc, 0.8f, 2, 7, 12, new int[attackCycleLength] {0, 1, -1, -1, -1, -1, -1 });
                 RetractHeart(npc, 0.5f, 3, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
@@ -328,6 +355,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public void Teleport(NPC npc, int startTime, int endTime, Vector2 location)
         {
+            ref float timer = ref npc.ai[0];
             NPC heart = null;
             foreach (NPC n in Main.npc)
             {
@@ -341,26 +369,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 Dust.NewDust(npc.position, npc.width, npc.height, DustID.Corruption);
             }
-            npc.ai[0]++;
-            if (npc.ai[0] <= startTime)
+            timer++;
+            if (timer <= startTime)
             {
-                npc.Opacity = MathHelper.Lerp(1, 0, (npc.ai[0] / startTime));
+                npc.Opacity = MathHelper.Lerp(1, 0, (timer / startTime));
                 if (heart != null) heart.Opacity = npc.Opacity;
             }
-            if (npc.ai[0] == startTime)
+            if (timer == startTime)
             {
                 npc.Center = location;
                 if (heart != null) heart.Center= npc.Center;
                 NetSync(npc);
                 npc.netUpdate = true; //doing double here for safetybecause net syncing whenever you teleport is VERY important
             }
-            if (npc.ai[0] <= startTime +endTime && npc.ai[0] > startTime)
+            if (timer <= startTime +endTime && timer > startTime)
             {
                 
-                npc.Opacity = MathHelper.Lerp(0, 1, ((npc.ai[0] - startTime) / endTime));
+                npc.Opacity = MathHelper.Lerp(0, 1, ((timer - startTime) / endTime));
                 if (heart != null) heart.Opacity = npc.Opacity;
             }
-            if (npc.ai[0] == startTime + endTime)
+            if (timer == startTime + endTime)
             {
                 IncrementCycle(npc);
             }
@@ -422,8 +450,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public void Follow(NPC npc, float speed, Vector2 toTarget, int time)
         {
-            npc.ai[0]++;
-            if (npc.ai[0] < 0)
+            ref float timer = ref npc.ai[0];
+
+            timer++;
+            if (timer < 0)
             {
                 npc.velocity /= 1.05f;
                 return;
@@ -431,7 +461,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (phase > 3)
             {
                 speed *= 1.7f;
-                if (npc.ai[0] == time / 2 && npc.ai[1] == 1)
+                if (timer == time / 2 && npc.ai[1] == 1)
                 {
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
@@ -439,33 +469,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             npc.velocity = toTarget * speed;
            
-            if (npc.ai[0] >= time)
+            if (timer >= time)
             {
                 IncrementCycle(npc);
             }
         }
         public void Dash(NPC npc, Vector2 vector, int time, int slow = 0, float force = 1)
         {
-            if (npc.ai[0] == 0)
+            ref float timer = ref npc.ai[0];
+            int attack = attackCycle[(int)npc.ai[2]];
+
+            if (timer == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/HiveMindRoar"), npc.Center);
                 npc.velocity = vector;
             }
 
-            npc.ai[0]++;
+            timer++;
             npc.velocity = Vector2.Lerp(npc.velocity, vector, force);
-            if (npc.ai[0] >= slow)
+            if (timer >= slow)
             {
-                npc.velocity = Vector2.Lerp(npc.velocity, Vector2.Zero, (npc.ai[0] - slow) / (time - slow));
+                npc.velocity = Vector2.Lerp(npc.velocity, Vector2.Zero, (timer - slow) / (time - slow));
             }
-            if (npc.ai[0] >= time)
+            else if (attack == 1) //accelerate during dash towards player
+            {
+                const float accel = 0.175f;
+                const float maxSpeed = 20;
+                npc.velocity += npc.DirectionTo(Main.player[npc.target].Center) * accel;
+                if (npc.velocity.LengthSquared() > maxSpeed * maxSpeed)
+                {
+                    npc.velocity = Vector2.Normalize(npc.velocity) * maxSpeed;
+                }
+            }
+            if (timer >= time)
             {
                 IncrementCycle(npc);
             }
         }
         public void IncrementCycle(NPC npc)
         {
-            npc.ai[0] = 0;
+            ref float timer = ref npc.ai[0];
+
+            timer = 0;
             npc.ai[2]++;
             if (npc.ai[2] >= attackCycle.Length || attackCycle[(int)npc.ai[2]] < 0)
             {
