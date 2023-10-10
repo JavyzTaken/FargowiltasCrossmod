@@ -114,6 +114,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             npc.realLife = (int)npc.ai[0];
             if (owner.ai[1] == 1)
             {
+                HMEternity ownerAI = owner.GetGlobalNPC<HMEternity>();
                 npc.dontTakeDamage = false;
                 npc.velocity.Y += 0.2f;
                 if (npc.Distance(owner.Center) >= 150)
@@ -122,7 +123,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 }
                 npc.Opacity += 0.1f;
                 npc.ai[1]++;
-                if (Main.rand.NextBool(30) && owner.GetGlobalNPC<HMEternity>().phase <= 3)
+                int ownerAttack = ownerAI.attackCycle[(int)owner.ai[2]];
+                if (Main.rand.NextBool(30) && ownerAI.phase <= 3 && ownerAttack != 1) //not during accelerating dash
                 {
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -10).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-30, 30))), ModContent.ProjectileType<OldDukeSummonDrop>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0, ai0:1);

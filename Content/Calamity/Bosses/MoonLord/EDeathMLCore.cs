@@ -15,6 +15,7 @@ using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Systems;
 using CalamityMod;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
 {
@@ -62,9 +63,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         public bool roguePhase = false;
         public override bool SafePreAI(NPC npc)
         {
-            if (!npc.HasValidTarget) return true;
+            bool result = base.SafePreAI(npc);
+            //if (!npc.HasValidTarget) return true;
             MoonLordCore ml = npc.GetGlobalNPC<MoonLordCore>();
-            Player target = Main.player[npc.target];
+            
             //Main.NewText(ml.VulnerabilityState);
             //ml.VulnerabilityState = 4;
             //Main.NewText(ml.VulnerabilityTimer);
@@ -72,11 +74,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
             ml.RunEmodeAI = true;
             if (roguePhase && ml.VulnerabilityState == 4)
             {
-                npc.GetGlobalNPC<MoonLordCore>().RunEmodeAI = false;
+                ml.RunEmodeAI = false;
+
+                //default stuff from emode AI
+                EModeGlobalNPC.moonBoss = npc.whoAmI;
+                if (WorldSavingSystem.SwarmActive)
+                {
+                    return result;
+                }
+
+                if (Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost && ml.VulnerabilityState >= 0 && ml.VulnerabilityState <= 4)
+                {
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<NullificationCurseBuff>(), 2);
+                }
+
+                npc.position -= npc.velocity * 2f / 3f;
+
+                
                 Filters.Scene.Activate("FargowiltasSouls:Vortex");
                 Filters.Scene.Activate("FargowiltasSouls:Nebula");
                 Filters.Scene.Activate("FargowiltasSouls:Solar");
                 Filters.Scene.Activate("FargowiltasSouls:Stardust");
+
                 ml.VulnerabilityTimer++;
                 
                 if (ml.VulnerabilityTimer >= 1800)
@@ -84,13 +103,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
                     roguePhase = false;
                     ml.RunEmodeAI = true;
                     ml.VulnerabilityTimer = 0;
-                    return true;
+                    npc.netUpdate = true;
+                    return result;
                 }
                 
-                if (npc.Distance(target.Center) > 50)
-                {
-                    npc.velocity = Vector2.Lerp(npc.velocity, (target.Center + new Vector2(0, 100)- npc.Center).SafeNormalize(Vector2.Zero) * 3, 0.03f);
-                }
                 bool gophase2 = true;
                 foreach (NPC n in Main.npc)
                 {
@@ -120,9 +136,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
                         }
                     }
                 }
-                return true;
+                if (npc.ai[0] == 2f) //moon lord is dead
+                {
+                    ml.VulnerabilityState = 4;
+                    ml.VulnerabilityTimer = 0;
+                    ml.AttackTimer = 0;
+                }
             }
-            return base.SafePreAI(npc);
+            return result;
         }
     }
 }

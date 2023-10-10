@@ -30,12 +30,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
             telePos = binaryReader.ReadVector2();
             timer = binaryReader.Read7BitEncodedInt();
         }
-        public override void SetDefaults(NPC npc)
-        {
-            if (!WorldSavingSystem.EternityMode) return;
-            base.SetDefaults(npc);
-            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
-        }
         Vector2 telePos = Vector2.Zero;
         int timer = 0;
         public override bool SafePreAI(NPC npc)
@@ -79,17 +73,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                 }
             }
             return base.SafePreAI(npc);
-        }
-    }
-    public class EDeathSkeletronHands : EternideathNPC
-    {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHand);
-
-        public override void SetDefaults(NPC npc)
-        {
-            if (!WorldSavingSystem.EternityMode) return;
-            base.SetDefaults(npc);
-            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.2f);
         }
     }
 }

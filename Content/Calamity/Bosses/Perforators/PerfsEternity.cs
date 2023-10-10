@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
-            entity.lifeMax = 10000;
+            //entity.lifeMax = 10000;
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 5000000;
