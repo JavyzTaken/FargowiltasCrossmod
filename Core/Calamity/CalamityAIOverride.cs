@@ -31,6 +31,7 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -45,63 +46,90 @@ namespace FargowiltasCrossmod.Core.Calamity
     public class CalamityAIOverride : ModSystem
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
-        
+        #region summonloadingbullshit
+        public static bool DownedDS => DownedBossSystem.downedDesertScourge;
+        public static bool DownedCrab => DownedBossSystem.downedCrabulon;
+        public static bool DownedHM => DownedBossSystem.downedHiveMind;
+        public  static bool DownedPerf => DownedBossSystem.downedPerforator;
+        public static bool DownedSG => DownedBossSystem.downedSlimeGod;
+        public static bool DownedCryo => DownedBossSystem.downedCryogen;
+        public static bool DownedAS => DownedBossSystem.downedAquaticScourge;
+        public static bool DownedBE => DownedBossSystem.downedBrimstoneElemental;
+        public static bool DownedCalClone => DownedBossSystem.downedCalamitasClone;
+        public  static bool DownedAA => DownedBossSystem.downedAstrumAureus;
+        public static bool DownedLevi => DownedBossSystem.downedLeviathan;
+        public static bool DownedPBG => DownedBossSystem.downedPlaguebringer;
+        public static bool DownedRav => DownedBossSystem.downedRavager;
+        public static bool DownedDeus => DownedBossSystem.downedAstrumDeus;
+        public static bool DownedFuck => DownedBossSystem.downedDragonfolly;
+        public static bool DownedGuards => DownedBossSystem.downedGuardians;
+        public static bool DownedProvi => DownedBossSystem.downedProvidence;
+        public static bool DownedCV => DownedBossSystem.downedCeaselessVoid;
+        public static bool DownedSignus => DownedBossSystem.downedSignus;
+        public static bool DownedSW => DownedBossSystem.downedStormWeaver;
+        public static bool DownedPolter => DownedBossSystem.downedPolterghast;
+        public static bool DownedOD => DownedBossSystem.downedBoomerDuke;
+        public static bool DownedDoG => DownedBossSystem.downedDoG;
+        public static bool DownedYharon => DownedBossSystem.downedYharon;
+        public static bool DownedExos => DownedBossSystem.downedExoMechs;
+        public static bool DownedScal => DownedBossSystem.downedCalamitas;
+        #endregion summonloadingbullshit
         public override void PostSetupContent()
         {
             #region summons
             Mod mutant = ModLoader.GetMod("Fargowiltas");
             mutant.Call("AddSummon", 1.5f, "FargowiltasCrossmod", "MedallionoftheDesert",
-                () => DownedBossSystem.downedDesertScourge, Item.buyPrice(gold:6));
+                () => DownedDS, Item.buyPrice(gold:6));
             mutant.Call("AddSummon", 2.5f, "FargowiltasCrossmod", "OphiocordycipitaceaeSprout",
-                () => DownedBossSystem.downedCrabulon, Item.buyPrice(gold: 9));
+                () => DownedCrab, Item.buyPrice(gold: 9));
             mutant.Call("AddSummon", 3.5f, "FargowiltasCrossmod", "HiveTumor",
-                () => DownedBossSystem.downedHiveMind, Item.buyPrice(gold: 11));
+                () => DownedHM, Item.buyPrice(gold: 11));
             mutant.Call("AddSummon", 3.5f, "FargowiltasCrossmod", "RedStainedWormFood",
-                () => DownedBossSystem.downedPerforator, Item.buyPrice(gold: 11));
+                () => DownedPerf, Item.buyPrice(gold: 11));
             mutant.Call("AddSummon", 6.5f, "FargowiltasCrossmod", "MurkySludge",
-                () => DownedBossSystem.downedSlimeGod, Item.buyPrice(gold: 17));
+                () => DownedSG, Item.buyPrice(gold: 17));
             mutant.Call("AddSummon", 8.5f, "FargowiltasCrossmod", "CryingKey",
-                () => DownedBossSystem.downedCryogen, Item.buyPrice(gold: 11));
+                () => DownedCryo, Item.buyPrice(gold: 30));
             mutant.Call("AddSummon", 9.5f, "FargowiltasCrossmod", "SeeFood",
-                () => DownedBossSystem.downedAquaticScourge, Item.buyPrice(gold: 11));
+                () => DownedAS, Item.buyPrice(gold: 40));
             mutant.Call("AddSummon", 10.5f, "FargowiltasCrossmod", "FriedDoll",
-                () => DownedBossSystem.downedBrimstoneElemental, Item.buyPrice(gold: 11));
+                () => DownedBE, Item.buyPrice(gold: 40));
             mutant.Call("AddSummon", 11.5f, "FargowiltasCrossmod", "BlightedEye",
-                () => DownedBossSystem.downedCalamitasClone, Item.buyPrice(gold: 11));
+                () => DownedCalClone, Item.buyPrice(gold: 45));
             mutant.Call("AddSummon", 12.5f, "FargowiltasCrossmod", "SirensPearl",
-                () => DownedBossSystem.downedLeviathan, Item.buyPrice(gold: 11));
+                () => DownedLevi, Item.buyPrice(gold: 55));
             mutant.Call("AddSummon", 12.75f, "FargowiltasCrossmod", "ChunkyStardust",
-                () => DownedBossSystem.downedAstrumAureus, Item.buyPrice(gold: 11));
+                () => DownedAA, Item.buyPrice(gold: 55));
             mutant.Call("AddSummon", 13.5f, "FargowiltasCrossmod", "ABombInMyNation",
-                () => DownedBossSystem.downedPlaguebringer, Item.buyPrice(gold: 11));
+                () => DownedPBG, Item.buyPrice(gold: 60));
             mutant.Call("AddSummon", 13.75f, "FargowiltasCrossmod", "NoisyWhistle",
-                () => DownedBossSystem.downedRavager, Item.buyPrice(gold: 11));
+                () => DownedRav, Item.buyPrice(gold: 60));
             mutant.Call("AddSummon", 17.5f, "FargowiltasCrossmod", "AstrumCor",
-                () => DownedBossSystem.downedAstrumDeus, Item.buyPrice(gold: 11));
+                () => DownedDeus, Item.buyPrice(gold: 85));
             mutant.Call("AddSummon", 18.006f, "FargowiltasCrossmod", "BirbPheromones",
-                () => DownedBossSystem.downedDragonfolly, Item.buyPrice(gold: 11));
+                () => DownedFuck, Item.buyPrice(platinum: 1, gold: 10));
             mutant.Call("AddSummon", 18.007f, "FargowiltasCrossmod", "DefiledShard",
-                () => DownedBossSystem.downedGuardians, Item.buyPrice(gold: 11));
+                () => DownedGuards, Item.buyPrice(platinum: 1, gold: 10));
             mutant.Call("AddSummon", 18.008f, "FargowiltasCrossmod", "DefiledCore",
-                () => DownedBossSystem.downedProvidence, Item.buyPrice(gold: 11));
+                () => DownedProvi, Item.buyPrice(platinum: 1, gold: 20));
             mutant.Call("AddSummon", 18.0091f, "FargowiltasCrossmod", "RiftofKos",
-                () => DownedBossSystem.downedCeaselessVoid, Item.buyPrice(gold: 11));
+                () => DownedCV, Item.buyPrice(platinum: 1, gold: 30));
             mutant.Call("AddSummon", 18.0092f, "FargowiltasCrossmod", "WormFoodofKos",
-                () => DownedBossSystem.downedStormWeaver, Item.buyPrice(gold: 11));
+                () => DownedSW, Item.buyPrice(platinum: 1, gold: 30));
             mutant.Call("AddSummon", 18.0093f, "FargowiltasCrossmod", "LetterofKos",
-                () => DownedBossSystem.downedSignus, Item.buyPrice(gold: 11));
+                () => DownedSignus, Item.buyPrice(platinum: 1, gold: 30));
             mutant.Call("AddSummon", 18.0094f, "FargowiltasCrossmod", "PolterplasmicBeacon",
-                () => DownedBossSystem.downedPolterghast, Item.buyPrice(gold: 11));
+                () => DownedPolter, Item.buyPrice(platinum: 1, gold: 40));
             mutant.Call("AddSummon", 18.0095, "FargowiltasCrossmod", "BloodyWorm",
-                () => DownedBossSystem.downedBoomerDuke, Item.buyPrice(gold: 11));
+                () => DownedOD, Item.buyPrice(platinum: 1, gold: 40));
             mutant.Call("AddSummon", 18.0096, "FargowiltasCrossmod", "SomeKindofSpaceWorm",
-                () => DownedBossSystem.downedDoG, Item.buyPrice(gold: 11));
+                () => DownedDoG, Item.buyPrice(platinum: 2));
             mutant.Call("AddSummon", 18.0097f, "FargowiltasCrossmod", "DragonEgg",
-                () => DownedBossSystem.downedYharon, Item.buyPrice(gold: 11));
+                () => DownedYharon, Item.buyPrice(platinum: 2, gold: 50));
             mutant.Call("AddSummon", 18.012f, "FargowiltasCrossmod", "ExoBattery",
-                () => DownedBossSystem.downedExoMechs, Item.buyPrice(gold: 11));
+                () => DownedExos, Item.buyPrice(platinum: 3));
             mutant.Call("AddSummon", 18.014f, "FargowiltasCrossmod", "EyeofExtinction",
-                () => DownedBossSystem.downedCalamitas, Item.buyPrice(gold: 11));
+                () => DownedScal, Item.buyPrice(platinum: 3));
             #endregion summons
             #region bossrush
             //EXPLANATION OF TUPLES

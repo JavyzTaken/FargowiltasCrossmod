@@ -14,22 +14,32 @@ using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AcidRain;
 using CalamityMod.NPCs.AquaticScourge;
+using CalamityMod.NPCs.AstrumAureus;
 using CalamityMod.NPCs.AstrumDeus;
+using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.NPCs.Bumblebirb;
+using CalamityMod.NPCs.CalClone;
 using CalamityMod.NPCs.CeaselessVoid;
+using CalamityMod.NPCs.Crabulon;
+using CalamityMod.NPCs.Cryogen;
 using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.NPCs.DevourerofGods;
 using CalamityMod.NPCs.DraedonLabThings;
+using CalamityMod.NPCs.ExoMechs;
 using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
+using CalamityMod.NPCs.HiveMind;
+using CalamityMod.NPCs.Leviathan;
 using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.NPCs.OldDuke;
 using CalamityMod.NPCs.Perforator;
+using CalamityMod.NPCs.PlaguebringerGoliath;
 using CalamityMod.NPCs.Polterghast;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
+using CalamityMod.NPCs.Ravager;
 using CalamityMod.NPCs.Signus;
 using CalamityMod.NPCs.SlimeGod;
 using CalamityMod.NPCs.StormWeaver;
@@ -835,8 +845,116 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
         }
+        public bool droppedSummon = false;
         public override bool PreAI(NPC npc)
         {
+            #region SummonDrops
+            if (npc.type == ModContent.NPCType<DesertScourgeHead>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "MedallionoftheDesert", DownedBossSystem.downedDesertScourge, ref droppedSummon);
+            }
+            else if (npc.type == ModContent.NPCType<Crabulon>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "OphiocordycipitaceaeSprout", DownedBossSystem.downedCrabulon, ref droppedSummon);
+
+            }
+            else if (npc.type == ModContent.NPCType<HiveMind>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "HiveTumor", DownedBossSystem.downedHiveMind, ref droppedSummon);
+            }
+            else if (npc.type == ModContent.NPCType<PerforatorHive>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "RedStainedWormFood", DownedBossSystem.downedPerforator, ref droppedSummon);
+            }
+            else if (npc.type == ModContent.NPCType<SlimeGodCore>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "MurkySludge", DownedBossSystem.downedSlimeGod, ref droppedSummon);
+            }
+            else if (npc.type == ModContent.NPCType<Cryogen>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "CryingKey", DownedBossSystem.downedCryogen, ref droppedSummon, Main.hardMode);
+            }
+            else if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SeeFood", DownedBossSystem.downedAquaticScourge, ref droppedSummon);
+            }
+            else if (npc.type == ModContent.NPCType<BrimstoneElemental>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "FriedDoll", DownedBossSystem.downedBrimstoneElemental, ref droppedSummon, Main.hardMode);
+            }
+            else if (npc.type == ModContent.NPCType<CalamitasClone>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BlightedEye", DownedBossSystem.downedCalamitasClone, ref droppedSummon, Main.hardMode);
+            }
+            else if (npc.type == ModContent.NPCType<Anahita>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SirensPearl", DownedBossSystem.downedLeviathan, ref droppedSummon);
+            }
+            else if (npc.type == ModContent.NPCType<AstrumAureus>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ChunkyStardust", DownedBossSystem.downedAstrumAureus, ref droppedSummon, Main.hardMode);
+            }
+            else if (npc.type == ModContent.NPCType<PlaguebringerGoliath>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ABombInMyNation", DownedBossSystem.downedPlaguebringer, ref droppedSummon, NPC.downedGolemBoss);
+            }
+            else if (npc.type == ModContent.NPCType<RavagerBody>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "NoisyWhistle", DownedBossSystem.downedRavager, ref droppedSummon, Main.hardMode);
+            }
+            else if (npc.type == ModContent.NPCType<AstrumDeusHead>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
+            }
+            else if (npc.type == ModContent.NPCType<Bumblefuck>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BirbPheromones", DownedBossSystem.downedDragonfolly, ref droppedSummon, NPC.downedAncientCultist);
+            }
+            else if (npc.type == ModContent.NPCType<ProfanedGuardianCommander>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DefiledShard", DownedBossSystem.downedGuardians, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<Providence>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DefiledCore", DownedBossSystem.downedProvidence, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<CeaselessVoid>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "RiftofKos", DownedBossSystem.downedCeaselessVoid, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<StormWeaverHead>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "WormFoodofKos", DownedBossSystem.downedStormWeaver, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<Signus>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "LetterofKos", DownedBossSystem.downedSignus, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<Polterghast>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PolterplasmicBeacon", DownedBossSystem.downedPolterghast, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<OldDuke>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BloodyWorm", DownedBossSystem.downedBoomerDuke, ref droppedSummon, DownedBossSystem.downedPolterghast);
+            }
+            else if (npc.type == ModContent.NPCType<DevourerofGodsHead>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SomeKindofSpaceWorm", DownedBossSystem.downedDoG, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<Yharon>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DragonEgg", DownedBossSystem.downedYharon, ref droppedSummon, NPC.downedMoonlord);
+            }
+            else if (npc.type == ModContent.NPCType<Draedon>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ExoBattery", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
+            }
+            else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
+            {
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
+            }
+            #endregion SummonDrops
             if (BossRushEvent.BossRushActive)
             {
                 if (!killedAquatic && BossRushEvent.BossRushStage > 19)

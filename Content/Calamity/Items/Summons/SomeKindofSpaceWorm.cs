@@ -21,6 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CosmicWorm>().AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(ModContent.ItemType<CosmicWorm>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
         }
         public override bool? UseItem(Player player)
         {

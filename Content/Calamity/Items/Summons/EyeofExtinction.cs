@@ -19,6 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<AshesofCalamity>(10).AddIngredient<AuricBar>(4).AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(ModContent.ItemType<AshesofCalamity>(), 10).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CalamityMod;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Accessories.Wings;
@@ -13,6 +14,7 @@ using CalamityMod.Items.Placeables.Furniture;
 using CalamityMod.Items.Placeables.Furniture.BossRelics;
 using CalamityMod.Items.Placeables.Furniture.Trophies;
 using CalamityMod.Items.Placeables.Plates;
+using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Tools;
 using CalamityMod.Items.TreasureBags;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
@@ -25,6 +27,7 @@ using CalamityMod.Items.Weapons.Typeless;
 using CalamityMod.Tiles.Furniture.CraftingStations;
 using Fargowiltas.Items.Tiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
@@ -467,7 +470,64 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             for (int i = 0; i < Recipe.numRecipes; i++)
             {
                 Recipe recipe = Main.recipe[i];
+                #region SummonRecipeNerfs
+                if (recipe.HasResult<DesertMedallion>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<StormlionMandible>(), 1);
+                    recipe.ChangeIngredientStack(ItemID.SandBlock, 10);
+                    recipe.ChangeIngredientStack(ItemID.AntlionMandible, 2);
+                }
+                if (recipe.HasResult<DecapoditaSprout>())
+                {
+                    recipe.ChangeIngredientStack(ItemID.GlowingMushroom, 25);
+                }
+                if (recipe.HasResult<OverloadedSludge>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<BlightedGel>(), 15);
+                }
+                if (recipe.HasResult<CryoKey>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<EssenceofEleum>(), 4);
+                    recipe.ChangeIngredientStack(ItemID.SoulofNight, 2);
+                    recipe.ChangeIngredientStack(ItemID.SoulofLight, 2);
+                }
+                if (recipe.HasResult<Seafood>())
+                {
+                    recipe.ChangeIngredientStack(ItemID.Starfish, 5);
+                    recipe.ChangeIngredientStack(ItemID.SharkFin, 1);
+                }
+                if (recipe.HasResult<AstralChunk>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<Stardust>(), 15);
+                    recipe.ChangeIngredientStack(ItemID.FallenStar, 7);
+                }
+                if (recipe.HasResult<DeathWhistle>())
+                {
+                    recipe.ChangeIngredientStack(ItemID.LunarTabletFragment, 6);
+                }
+                if (recipe.HasResult<ProfanedShard>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<UnholyEssence>(), 15);
+                }
+                if (recipe.HasResult<RuneofKos>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<UnholyEssence>(), 20);
+                }
+                if (recipe.HasResult<NecroplasmicBeacon>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<Polterplasm>(), 15);
+                }
+                if (recipe.HasResult<CosmicWorm>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<Polterplasm>(), 20);
+                    recipe.ChangeIngredientStack(ItemID.LunarBar, 20);
+                }
+                if (recipe.HasResult<YharonEgg>())
+                {
+                    recipe.ChangeIngredientStack(ModContent.ItemType<LifeAlloy>(), 5);
+                }
 
+                #endregion SummonRecipeNerfs
                 #region Compatibility
                 if (recipe.HasResult<AngelTreads>() && recipe.HasIngredient(ItemID.TerrasparkBoots))
                 {

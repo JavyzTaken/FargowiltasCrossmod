@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<Teratoma>(),
             ModContent.ItemType<BloodyWormFood>(),
             ModContent.ItemType<OverloadedSludge>(),
-            ModContent.ItemType<CryingKey>(),
+            ModContent.ItemType<CryoKey>(),
             ModContent.ItemType<Seafood>(),
             ModContent.ItemType<CharredIdol>(),
             ModContent.ItemType<EyeofDesolation>(),
@@ -308,6 +308,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            for (int i = 0; i < tooltips.Count; i++)
+            {
+                if (tooltips[i].Text.Equals("Not consumable"))
+                {
+                    tooltips[i].Text = "Consumable";
+                }
+            }
+
             if (item.type == ModContent.ItemType<Rock>())
             {
                 tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));
