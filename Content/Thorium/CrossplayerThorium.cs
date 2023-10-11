@@ -60,6 +60,10 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item WarlockEnchItem;
         public bool SacredEnch;
         public Item SacredEnchItem;
+        public bool DreadEnch;
+        public Item DreadEnchItem;
+
+        public bool HelheimForce;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -125,6 +129,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             WarlockEnchItem = null;
             SacredEnch = false;
             SacredEnchItem = null;
+            DreadEnch = false;
+            DreadEnchItem = null;
+
+            HelheimForce = false;
 
             GildedMonicle = false;
             GildedBinoculars = false;

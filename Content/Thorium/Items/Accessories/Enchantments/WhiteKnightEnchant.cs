@@ -19,7 +19,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         {
             player.GetModPlayer<CrossplayerThorium>().WhiteKnightEnch = true;
 
-            float boost = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Type) ? 0.1f : 0.05f;
+            WhiteKnightEffect(player);
+        }
+
+        public static void WhiteKnightEffect(Player player)
+        {
+            float boost = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<WhiteKnightEnchant>()) ? 0.1f : 0.05f;
             player.GetDamage(DamageClass.Generic) += boost * player.townNPCs;
 
             if (Main.netMode != NetmodeID.SinglePlayer)

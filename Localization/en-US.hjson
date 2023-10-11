@@ -187,7 +187,7 @@ Mods: {
 
 			LivingWoodEnchant: {
 				DisplayName: Living Wood Enchantment
-				Tooltip: ""
+				Tooltip: "[c/ff0000]Broken, awaiting rework"
 			}
 
 			LodeStoneEnchant: {
@@ -353,7 +353,17 @@ Mods: {
 
 			NoviceClericEnchant: {
 				DisplayName: Novice Cleric Enchant
-				Tooltip: "Holy crosses will generate over time. Using mana will cause a cross to be used instead."
+				Tooltip: Holy crosses will generate over time. Using mana will cause a cross to be used instead.
+			}
+
+			DreadEnchant: {
+				DisplayName: Dread Enchant
+				Tooltip: ""
+			}
+
+			HelheimForce: {
+				Tooltip: ""
+				DisplayName: Force of Helheim
 			}
 		}
 
@@ -406,6 +416,7 @@ Mods: {
 			DLCShadowWisp.DisplayName: D L C Shadow Wisp
 			DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
 			DragonHead.DisplayName: Dragon Head
+			DragonScale.DisplayName: Dragon Scale
 		}
 
 		Keybinds: {

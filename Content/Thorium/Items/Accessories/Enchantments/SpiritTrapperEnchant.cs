@@ -21,11 +21,15 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPlayer.SpiritTrapperEnch = true;
             DLCPlayer.SpiritTrapperEnchItem = Item;
 
+            SpiritTrapperEffect(player, Item);
+        }
+
+        public static void SpiritTrapperEffect(Player player, Item item)
+        {
             if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.AngryGhost>()] < 1)
             {
-                Projectile.NewProjectile(player.GetSource_Accessory(Item), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.AngryGhost>(), 0, 0, player.whoAmI);
+                Projectile.NewProjectile(player.GetSource_Accessory(item), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.AngryGhost>(), 0, 0, player.whoAmI);
             }
-            
         }
     }
 }

@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 // god this is such a mess
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    
     public struct DragonData
     {
         public int parent = -1, child = -1, head = -1, position = -1;
@@ -33,6 +32,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             child = c;
         }
     }
+
     [ExtendsFromMod("ThoriumMod")]
     public abstract class DragonMinion : ModProjectile
     {
@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             }
 
             // kill if player dies or doesnt have the enchant on
-            if (modPlayer.DragonEnch && player.active && !player.dead)
+            if (modPlayer.DreadEnch && player.active && !player.dead)
             {
                 Projectile.timeLeft = 2;
             }
@@ -99,9 +99,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             int num17 = 30; // some kind of width scaling factor
 
             // ?
-            if (Projectile.ai[1] == 1f)
+            if (Projectile.ai[0] == 1f)
             {
-                Projectile.ai[1] = 0f;
+                Projectile.ai[0] = 0f;
                 Projectile.netUpdate = true;
             }
 
@@ -198,7 +198,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             }
             else
             {
-                int length = Head.Bonuses[DamageClass.Summon] >= minimumBonus ? 4 : 6;
+                int length = 6;
                 if (data.position >= length)
                 {
                     SpawnSegment(TailType);
@@ -232,12 +232,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.position.X = MathHelper.Clamp(Projectile.position.X, 160f, Main.maxTilesX * 16 - 160);
             Projectile.position.Y = MathHelper.Clamp(Projectile.position.Y, 160f, Main.maxTilesY * 16 - 160);
         }
-
-        //     public override void ModifyDamageScaling(ref float damageScale)
-        //     {
-        //damageScale += (Head.Bonuses[DamageClass.Generic] - 1);
-        //     }
     }
+    
     [ExtendsFromMod("ThoriumMod")]
     public class DragonSpawnSource : EntitySource_Parent
     {
@@ -247,28 +243,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             this.data = data;
         }
     }
+    
     [ExtendsFromMod("ThoriumMod")]
     public partial class DragonMinionHead : DragonMinion
     {
-        // sheinanigans to make it not have to get mod player and get damage as much
-        private Dictionary<DamageClass, float> _modes = null;
-        public Dictionary<DamageClass, float> Bonuses
-        {
-            get
-            {
-                if (_modes == null)
-                {
-                    Player player = Main.player[Projectile.owner];
-                    _modes = new();
-                    _modes.Add(DamageClass.Melee, player.GetDamage(DamageClass.Melee).Additive);
-                    _modes.Add(DamageClass.Magic, player.GetDamage(DamageClass.Magic).Additive);
-                    _modes.Add(DamageClass.Summon, player.GetDamage(DamageClass.Summon).Additive);
-                    _modes.Add(DamageClass.Ranged, player.GetDamage(DamageClass.Ranged).Additive);
-                }
-                return _modes;
-            }
-        }
-
         public override void AI()
         {
             CommonAI();
@@ -276,15 +254,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             Projectile.position.X = MathHelper.Clamp(Projectile.position.X, 160f, Main.maxTilesX * 16 - 160);
             Projectile.position.Y = MathHelper.Clamp(Projectile.position.Y, 160f, Main.maxTilesY * 16 - 160);
-
-            _modes = null;
-        }
-
-        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
-        {
-            base.ModifyHitNPC(target, ref modifiers);
-
-            if (Head.Bonuses[DamageClass.Melee] >= minimumBonus) modifiers.ScalingBonusDamage += Head.Bonuses[DamageClass.Melee] - 1;
         }
 
         public override void OnSpawn(IEntitySource source)
@@ -293,38 +262,67 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             SpawnSegment(BodyType1);
         }
 
-        bool retreating;
-        Vector2 targetPos;
+        // ai[0] = attack switch timer
+        // ai[1] = shoot timer
+        // ai[2] = dive state 
+
+        public Vector2 targetPos;
+        public bool retreating;
+        public enum AttackMode : byte
+        {
+            idle,
+            meleeAttack,
+            fireballDiveAttack,
+            scaleCircleAttack
+        };
+        public AttackMode currentAttack;
+
+        public void SelectAttack()
+        {
+            var list = new List<AttackMode>() { AttackMode.meleeAttack, AttackMode.scaleCircleAttack, AttackMode.fireballDiveAttack };
+            list.Remove(currentAttack);
+            currentAttack = Main.rand.NextFromList(list.ToArray());
+        }
+
         public void HeadAI()
         {
             Player player = Main.player[Projectile.owner];
             Vector2 playerPos = player.Center;
 
-            // snap back to player
+            // snap back to player if out of a range
             if (Projectile.Distance(playerPos) > 2000f)
             {
                 Projectile.Center = playerPos;
-                retreating = false;
+                retreating = true;
                 Projectile.netUpdate = true;
+                return;
             }
-
 
             if (retreating)
             {
-                if (Projectile.Center.Distance(targetPos) < 128) retreating = false;
+                if (Projectile.Center.Distance(targetPos) < 128)
+                {
+                    retreating = false;
+                    SelectAttack();
+                }
+
                 if (targetPos.Distance(playerPos) > 2000f) SetRetreatPos();
+
                 targetPos += targetPos.DirectionTo(playerPos) * 16; // curves
-                HeadAttack();
+
+                //HeadAttack();
             }
             else
             {
                 HeadTarget();
+
                 if (targetPos != Vector2.Zero)
                 {
                     HeadAttack();
                 }
                 else
                 {
+                    currentAttack = AttackMode.idle;
                     HeadIdle();
                 }
             }
@@ -375,6 +373,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Vector2 toTarget = targetPos - Projectile.Center;
             float distanceToTarget = toTarget.Length();
 
+            if (Projectile.ai[0]++ >= 300 || currentAttack == AttackMode.idle)
+            {
+                Projectile.ai[0] = 0;
+                SelectAttack();
+            }
+
             // velocity multiplier depending on how far it is from target
             float scaleFactor;
             scaleFactor = 0.4f;
@@ -387,18 +391,91 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             //	scaleFactor = 0.8f;
             //}
 
-            // general movement
-            if (distanceToTarget > 16f)
+            float maxVelocity = 15f;
+            switch (currentAttack)
             {
-                Projectile.velocity += Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
-                // slower if the dragon isn't going directly towards the target
-                if (Vector2.Dot(Projectile.velocity, toTarget) < 0.25f)
-                {
-                    Projectile.velocity *= 0.6f;
-                }
+                case AttackMode.meleeAttack:
+                    if (distanceToTarget > 16f)
+                    {
+                        Projectile.velocity += Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
+
+                        // slower if the dragon isn't going directly towards the target
+                        if (Vector2.Dot(Projectile.velocity, toTarget) < 0.25f)
+                        {
+                            Projectile.velocity *= 0.6f;
+                        }
+                    }
+                    break;
+                case AttackMode.scaleCircleAttack:
+
+                    float orbitRadius = 16f * 8f;
+                    if (distanceToTarget > orbitRadius + 8f)
+                    {
+                        Projectile.velocity += Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
+
+                        if (Vector2.Dot(Projectile.velocity, toTarget) < 0.25f)
+                        {
+                            Projectile.velocity *= 0.6f;
+                        }
+                    }
+                    else if (distanceToTarget < orbitRadius - 8f)
+                    {
+                        Projectile.velocity -= Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
+                    }
+
+                    if (MathF.Abs(distanceToTarget - orbitRadius) < 20)
+                    {
+                        Vector2 relativeTargetPos = Projectile.Center - targetPos;
+                        Projectile.velocity = new Vector2(relativeTargetPos.Y, -relativeTargetPos.X) / 10f;
+                    }
+
+                    break;
+                case AttackMode.fireballDiveAttack:
+                    switch ((int)Projectile.ai[2]) // nested switch oh god no
+                    {
+                        case 0: // get to dive distance
+                            const float diveDist = 16f * 24;
+                            if (distanceToTarget < diveDist)
+                            {
+                                Projectile.velocity -= Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
+                            }
+                            else
+                            {
+                                Projectile.ai[2] = 1f;
+                            }
+                            break;
+                        case 1: // dive
+                            Projectile.velocity += Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
+                            //Projectile.velocity += Vector2.Normalize(Projectile.velocity).RotatedBy(MathHelper.PiOver2);
+
+                            if (distanceToTarget < 16f)
+                            {
+                                Projectile.ai[2] = 2;
+                                break;
+                            }
+
+                            if (Vector2.Dot(Projectile.velocity, toTarget) < 0.25f)
+                            {
+                                Projectile.velocity *= 0.6f;
+                            }
+
+                            if (Projectile.ai[0] % 10 == 0 && Vector2.Dot(Projectile.velocity, toTarget) > distanceToTarget * Projectile.velocity.Length() * 0.95f)
+                            {
+                                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Projectile.velocity) * 12f, ProjectileID.Flames, 25, 0.1f, Projectile.owner);
+                            }
+                            break;
+                        case 2: // continue movement without fire
+                            Projectile.velocity -= Vector2.Normalize(toTarget) * scaleFactor * 1.5f;
+                            Projectile.velocity += Vector2.Normalize(Projectile.velocity).RotatedBy(MathHelper.PiOver2);
+                            if (distanceToTarget > diveDist * 0.8f)
+                            {
+                                Projectile.ai[2] = 0;
+                            }
+                            break;
+                    }
+                    break;
             }
 
-            float maxVelocity = 15f;
             if (Projectile.velocity.Length() > maxVelocity)
             {
                 Projectile.velocity = Vector2.Normalize(Projectile.velocity) * maxVelocity;
@@ -496,8 +573,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.hide = false;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
+            Projectile.minion = true;
         }
     }
+
     [ExtendsFromMod("ThoriumMod")]
     public class DragonMinionBody : DragonMinion
     {
@@ -512,8 +591,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.hide = false;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
+            Projectile.minion = true;
         }
     }
+
     [ExtendsFromMod("ThoriumMod")]
     public class DragonMinionBody2 : DragonMinion
     {
@@ -528,6 +609,16 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.hide = false;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
+            Projectile.minion = true;
+        }
+
+        public override void PostAI()
+        {
+            if (Head.currentAttack == DragonMinionHead.AttackMode.scaleCircleAttack && (Head.Projectile.ai[0] + 2 * data.position) % 10 == 0 && Projectile.Distance(Head.targetPos) < 16f * 8f * 1.2f)
+            {
+                Projectile.ai[1] = 0f;
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Head.targetPos - Projectile.Center) * 8f, ModContent.ProjectileType<DragonScale>(), 25, 0.5f, Projectile.owner);
+            }
         }
     }
 
@@ -544,6 +635,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.hide = false;
             Projectile.penetrate = -1;
             Projectile.friendly = true;
+            Projectile.minion = true;
         }
     }
 }
