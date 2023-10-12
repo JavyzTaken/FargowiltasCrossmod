@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             if (source is EntitySource_Parent parent && parent.Entity is NPC parentNpc && (parentNpc.type == ModContent.NPCType<CrimulanPaladin>() || parentNpc.type == ModContent.NPCType<EbonianPaladin>()))
             {
                 npc = parentNpc.whoAmI;
-                Projectile.rotation = Vector2.UnitY.ToRotation();
+                Projectile.rotation = Projectile.velocity.ToRotation();
                 Crimson = parentNpc.type == ModContent.NPCType<CrimulanPaladin>();
             }
         }
@@ -80,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             if (parent != null)
             {
                 Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
-                Projectile.rotation = Vector2.UnitY.ToRotation();
+                Projectile.rotation = Projectile.velocity.ToRotation();
             }
             Length = maxLength * Math.Min((float)Math.Pow(Timer / 60f, 0.3f), 1f);
             Timer++;
@@ -96,7 +96,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             float opacity = Math.Min(Timer / 30f, Math.Min(Projectile.timeLeft / 15f, 1));
             opacity *= 0.4f;
             Color mainColor = Crimson ? Color.Crimson : Color.Lavender;
-            float modifier = 2 * Math.Abs(progress - 0.5f);
+            float modifier = 1-progress;//2 * Math.Abs(progress - 0.5f);
             return Color.Lerp(Color.Transparent, mainColor, opacity * modifier);
         }
 
@@ -124,7 +124,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             List<float> rotations = new();
             for (float i = 0; i < 1; i += 0.005f)
             {
-                positions.Add(Projectile.rotation.ToRotationVector2() * Length + Projectile.Center + Vector2.UnitX * Width * (-0.5f + i));
+                positions.Add(Projectile.rotation.ToRotationVector2() * Length + Projectile.Center + Projectile.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * Width * (-0.5f + i));
                 rotations.Add(Projectile.rotation + MathHelper.PiOver2);
             }
             vertexStrip.PrepareStrip(positions.ToArray(), rotations.ToArray(), ColorFunction, WidthFunction, -Main.screenPosition, includeBacksides: true);

@@ -263,6 +263,8 @@ Mods: {
 			Boss: {
 				AcceleratingEbonianGlob.DisplayName: Accelerating Ebonian Glob
 				AcceleratingCrimulanGlob.DisplayName: Accelerating Crimulan Glob
+				SlimeHomingEbonianGlob.DisplayName: Slime Homing Ebonian Glob
+				SlimeHomingCrimuleanGlob.DisplayName: Slime Homing Crimulean Glob
 			}
 
 			SlamTelegraph.DisplayName: Slam Telegraph
@@ -270,6 +272,7 @@ Mods: {
 			IceCrystal.DisplayName: Ice Crystal
 			IceChain.DisplayName: Ice Chain
 			IceTrident.DisplayName: Ice Trident
+			CrimsonPaladinSpike.DisplayName: Crimson Paladin Spike
 		}
 	}
 }

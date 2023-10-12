@@ -9,6 +9,7 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
+using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
@@ -566,6 +567,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 if (npc.life < npc.lifeMax * 0.15f)
                 {
                     npc.life = (int)(npc.lifeMax * 0.15f);
+                }
+                if (timer < 120)
+                {
+                    if (timer == 10)
+                    {
+                        SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center);
+                    }
+                    if (timer % 30 == 10)
+                    {
+                        Color color = (timer % 60 == 10 ? Color.Crimson : Color.Magenta);
+                        FargowiltasSouls.Common.Graphics.Particles.Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, color, Vector2.One, Vector2.One * 60, 30, true, Color.Transparent);
+                        p.Spawn();
+                    }
                 }
                 if (timer == 120)
                 {

@@ -50,7 +50,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR0
     else if (coords.y < 0.1)
         bloomOpacity *= pow(coords.y / 0.1, 1);
 
-    return lerp(color, float4(mainColor, color.a), coords.y) * bloomOpacity * 0.6;
+    return lerp(color, float4(mainColor, color.a), 1-coords.y) * bloomOpacity * 0.6;
     
 }
 
