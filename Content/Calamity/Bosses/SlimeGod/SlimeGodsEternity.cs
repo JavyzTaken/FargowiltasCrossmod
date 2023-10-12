@@ -593,7 +593,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         npc.noTileCollide = true;
                     }
                     bool inTiles = Collision.SolidCollision(npc.position, npc.width, npc.height + 10);
-                    if (inTiles || Timer > TelegraphTime + 40)
+                    if (inTiles || Timer > TelegraphTime + 55) //extra safety max time
                     {
                         SoundEngine.PlaySound(in SlimeGodCore.BigShotSound, npc.Center);
                         /*

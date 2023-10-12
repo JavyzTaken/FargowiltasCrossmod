@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             NPCID.Sets.TrailCacheLength[entity.type] = 10;
             NPCID.Sets.TrailingMode[entity.type] = 0;
             //entity.damage = (int)(entity.damage * 1.5f);
-            entity.lifeMax = 8000;
+            entity.lifeMax = (int)Math.Ceiling(entity.lifeMax * 0.76593137254); //funny number results in 12500
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 5000000;
