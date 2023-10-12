@@ -17,6 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CryoKey>().AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(ModContent.ItemType<CryoKey>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
         }
     }
 }

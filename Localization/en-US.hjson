@@ -151,84 +151,134 @@ Mods: {
 					'''
 			}
 
-			BlightedEye: {
-				DisplayName: Blighted Eye
-				Tooltip: ""
+			ABombInMyNation: {
+				DisplayName: A Bomb In My Nation
+				Tooltip: Summons the Plaguebringer Goliath
+			}
+
+			AstrumCor: {
+				DisplayName: Astrum Cor
+				Tooltip: Summons Astrum Deus
 			}
 
 			BirbPheromones: {
-				Tooltip: ""
 				DisplayName: Birb Pheromones
+				Tooltip: Summons the Dragonfolly
 			}
 
-			ABombInMyNation: {
-				Tooltip: ""
-				DisplayName: A Bomb In My Nation
+			BlightedEye: {
+				DisplayName: Blighted Eye
+				Tooltip: Summons the Calamitas Clone
+			}
+
+			BloodyWorm: {
+				DisplayName: Bloody Worm
+				Tooltip: Summons the Old Duke
 			}
 
 			ChunkyStardust: {
 				DisplayName: Chunky Stardust
-				Tooltip: ""
+				Tooltip: Summons Astrum Aureus
 			}
 
 			CryingKey: {
 				DisplayName: Crying Key
-				Tooltip: ""
+				Tooltip: Summons Cryogen
 			}
 
 			DefiledCore: {
 				DisplayName: Defiled Core
-				Tooltip: ""
+				Tooltip: Summons Providence
 			}
 
 			DefiledShard: {
 				DisplayName: Defiled Shard
-				Tooltip: ""
+				Tooltip: Summons the Profaned Guardians
+			}
+
+			DragonEgg: {
+				DisplayName: Dragon Egg
+				Tooltip: Summons Yharon
+			}
+
+			ExoBattery: {
+				DisplayName: Exo Battery
+				Tooltip: Summons Draedon
+			}
+
+			EyeofExtinction: {
+				DisplayName: Eye of Extinction
+				Tooltip: Summons Supreme Calamitas
 			}
 
 			FriedDoll: {
 				DisplayName: Fried Doll
-				Tooltip: ""
+				Tooltip: Summons Brimstone Elemental
 			}
 
 			HiveTumor: {
 				DisplayName: Hive Tumor
-				Tooltip: ""
+				Tooltip: Summons Hive Mind
+			}
+
+			LetterofKos: {
+				DisplayName: Letter of Kos
+				Tooltip: Summons Signus
 			}
 
 			MedallionoftheDesert: {
-				DisplayName: Medallionofthe Desert
-				Tooltip: ""
+				DisplayName: Medallion of the Desert
+				Tooltip: Summons Desert Scourge
 			}
 
 			MurkySludge: {
 				DisplayName: Murky Sludge
-				Tooltip: ""
+				Tooltip: Summons the Slime God
 			}
 
 			NoisyWhistle: {
 				DisplayName: Noisy Whistle
-				Tooltip: ""
+				Tooltip: Summons Ravager
 			}
 
 			OphiocordycipitaceaeSprout: {
 				DisplayName: Ophiocordycipitaceae Sprout
-				Tooltip: ""
+				Tooltip: Summons Crabulon
+			}
+
+			PolterplasmicBeacon: {
+				DisplayName: Polterplasmic Beacon
+				Tooltip: Summons Polterghast
 			}
 
 			RedStainedWormFood: {
 				DisplayName: Red Stained Worm Food
-				Tooltip: ""
+				Tooltip: Summons the Perforator Hive
+			}
+
+			RiftofKos: {
+				DisplayName: Rift of Kos
+				Tooltip: Summons Ceaseless Void
 			}
 
 			SeeFood: {
 				DisplayName: See Food
-				Tooltip: ""
+				Tooltip: Summons Aquatic Scourge
 			}
 
 			SirensPearl: {
-				DisplayName: Sirens Pearl
-				Tooltip: ""
+				DisplayName: Siren's Pearl
+				Tooltip: Summons Anahita
+			}
+
+			SomeKindofSpaceWorm: {
+				DisplayName: Some Kind of Space Worm
+				Tooltip: Summons the Devourer of Gods
+			}
+
+			WormFoodofKos: {
+				DisplayName: Worm Food of Kos
+				Tooltip: Summons Storm Weaver
 			}
 		}
 

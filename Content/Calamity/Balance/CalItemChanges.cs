@@ -3,12 +3,15 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using CalamityMod.Items.SummonItems;
+using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
 using Fargowiltas.Common.Configs;
+using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common;
@@ -59,6 +62,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<NukeFishron>(),
             ModContent.ItemType<StaffOfUnleashedOcean>(),
         };
+        public static List<int> CalSummons = new List<int>
+        {
+            ModContent.ItemType<DesertMedallion>(),
+            ModContent.ItemType<DecapoditaSprout>(),
+            ModContent.ItemType<Teratoma>(),
+            ModContent.ItemType<BloodyWormFood>(),
+            ModContent.ItemType<OverloadedSludge>(),
+            ModContent.ItemType<CryoKey>(),
+            ModContent.ItemType<Seafood>(),
+            ModContent.ItemType<CharredIdol>(),
+            ModContent.ItemType<EyeofDesolation>(),
+            ModContent.ItemType<AstralChunk>(),
+            ModContent.ItemType<Abombination>(),
+            ModContent.ItemType<DeathWhistle>(),
+            ModContent.ItemType<Starcore>(),
+            ModContent.ItemType<ProfanedShard>(),
+            ModContent.ItemType<ExoticPheromones>(),
+            ModContent.ItemType<ProfanedCore>(),
+            ModContent.ItemType<RuneofKos>(),
+            ModContent.ItemType<NecroplasmicBeacon>(),
+            ModContent.ItemType<CosmicWorm>(),
+            ModContent.ItemType<YharonEgg>(),
+
+            ModContent.ItemType<EidolonTablet>(),
+            ModContent.ItemType<Portabulb>(),
+            ModContent.ItemType<SandstormsCore>(),
+            ModContent.ItemType<CausticTear>(),
+            ModContent.ItemType<MartianDistressRemote>(),
+        };
         public float BalanceChange(Item item)
         {
             
@@ -108,7 +140,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     item.damage = (int)(item.damage * balance);
                 }
-                
+                if (CalSummons.Contains(item.type))
+                {
+                    item.consumable = true;
+                    item.maxStack = 9999;
+                }
             }
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
@@ -272,6 +308,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            for (int i = 0; i < tooltips.Count; i++)
+            {
+                if (tooltips[i].Text.Equals("Not consumable"))
+                {
+                    tooltips[i].Text = "Consumable";
+                }
+            }
+
             if (item.type == ModContent.ItemType<Rock>())
             {
                 tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));

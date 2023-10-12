@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Items.SummonItems;
-using CalamityMod.NPCs.AquaticScourge;
+using CalamityMod.NPCs.AstrumDeus;
+using CalamityMod.NPCs.Cryogen;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -12,15 +13,15 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SeeFood : BaseSummon
+    public class AstrumCor : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/Seafood";
-        public override int NPCType => ModContent.NPCType<AquaticScourgeHead>();
-        public override string NPCName => "Aquatic Scourge";
+        public override string Texture => "CalamityMod/Items/SummonItems/Starcore";
+        public override int NPCType => ModContent.NPCType<AstrumDeusHead>();
+        public override string NPCName => "Astrum Deus";
         public override void AddRecipes()
         {
-            Recipe.Create(Type).AddIngredient<Seafood>().AddTile(TileID.WorkBenches).Register();
-            Recipe.Create(ModContent.ItemType<Seafood>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(Type).AddIngredient<Starcore>().AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(ModContent.ItemType<Starcore>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
         }
         public override bool? UseItem(Player player)
         {
