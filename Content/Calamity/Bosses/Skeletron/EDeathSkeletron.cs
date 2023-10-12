@@ -72,6 +72,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                     
                 }
             }
+            if (npc.ai[1] == 2)
+            {
+                if (timer <= 0)
+                {
+                    telePos = target.Center + (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
+                    timer = 120;
+                }
+            }
             return base.SafePreAI(npc);
         }
     }
