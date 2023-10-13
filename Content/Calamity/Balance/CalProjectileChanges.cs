@@ -185,6 +185,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {
+            /*
             if (projectile.type == ModContent.ProjectileType<FragmentRitual>())
             {
                 EDeathMLCore ml = Main.npc[(int)projectile.ai[1]].GetGlobalNPC<EDeathMLCore>();
@@ -206,20 +207,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                             continue;
                         Vector2 drawOffset = new(600 * projectile.scale / 2f, 0);//.RotatedBy(Projectile.ai[0]);
                         drawOffset = drawOffset.RotatedBy(2f * Math.PI / max * (x + 1) - Math.PI / 2);
-                        /*const int max = 4;
-                        for (int i = 0; i < max; i++)
-                        {
-                            Color color27 = color26;
-                            color27 *= (float)(max - i) / max;
-                            Vector2 value4 = Projectile.Center + drawOffset.RotatedBy(-rotationPerTick * i);
-                            float num165 = Projectile.rotation;
-                            Main.EntitySpriteDraw(texture2D13, value4 - Main.screenPosition + new Vector2(0, Projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(rectangle), color27, num165, origin2, Projectile.scale, SpriteEffects.None, 0);
-                        }*/
                         Main.EntitySpriteDraw(texture2D13, projectile.Center + drawOffset - Main.screenPosition + new Vector2(0f, projectile.gfxOffY), new Microsoft.Xna.Framework.Rectangle?(rectangle), color26, projectile.rotation, origin2, projectile.scale, SpriteEffects.None, 0);
                     }
                     return false;
                 }
             }
+            */
             return base.PreDraw(projectile, ref lightColor);
         }
         public override void AI(Projectile projectile)

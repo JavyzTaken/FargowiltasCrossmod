@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader.IO;
 using FargowiltasCrossmod.Core;
+/*
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using Microsoft.Xna.Framework;
@@ -147,3 +148,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         }
     }
 }
+*/
