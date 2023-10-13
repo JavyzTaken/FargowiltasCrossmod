@@ -9,6 +9,10 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Events;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
+using CalamityMod.Items.Fishing.AstralCatches;
+using CalamityMod.Items.Fishing.BrimstoneCragCatches;
+using CalamityMod.Items.Fishing.SulphurCatches;
+using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Materials;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs.Abyss;
@@ -103,7 +107,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.NPCType<Sunskater>(),
             ModContent.NPCType<AeroSlime>(),
             ModContent.NPCType<RepairUnitCritter>(),
-            
+
 
         };
         private static List<int> ClippedWingsImmune = new List<int>
@@ -115,7 +119,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         };
         public override void SetStaticDefaults()
         {
-            
+
             foreach (int type in SuffocationImmune)
             {
                 NPCID.Sets.SpecificDebuffImmunity[type][BuffID.Suffocation] = true;
@@ -255,7 +259,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //wof
                 if ((npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye) && WorldSavingSystem.EternityMode)
                 {
-                    npc.lifeMax = (int)(npc.lifeMax *0.6f);
+                    npc.lifeMax = (int)(npc.lifeMax * 0.6f);
                 }
                 //Plantera
                 if (npc.type == NPCID.Plantera && WorldSavingSystem.EternityMode)
@@ -385,10 +389,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     };
                 List<int> bossworms = new List<int>
                 {
-                    
+
                     ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
                     NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
-                    
+
                     ModContent.NPCType<AquaticScourgeHead>(), ModContent.NPCType<AquaticScourgeBody>(),ModContent.NPCType<AquaticScourgeBodyAlt>(), ModContent.NPCType<AquaticScourgeTail>(),
                     NPCID.TheDestroyer, NPCID.TheDestroyerBody, NPCID.TheDestroyerTail,
                     ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),
@@ -418,10 +422,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     {
                         npc.lifeMax += 500000;
                     }
-                    if (SlimeGod.Contains(npc.type)){
+                    if (SlimeGod.Contains(npc.type)) {
                         npc.lifeMax += 400000;
                     }
-                    if (bossworms.Contains(npc.type) && !Eater.Contains(npc.type)){
+                    if (bossworms.Contains(npc.type) && !Eater.Contains(npc.type)) {
                         npc.lifeMax += 15000000;
                     }
                     else if (minionworms.Contains(npc.type) && !Eater.Contains(npc.type))
@@ -462,7 +466,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     //too tanky eyes
                     if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead) npc.lifeMax /= 8;
                     if (npc.type == NPCID.MoonLordCore) npc.lifeMax /= 4;
-                    if (npc.type == ModContent.NPCType<MutantBoss>()) npc.lifeMax = (int)(npc.lifeMax *0.75f);
+                    if (npc.type == ModContent.NPCType<MutantBoss>()) npc.lifeMax = (int)(npc.lifeMax * 0.75f);
                 }
                 #endregion BRBalance
 
@@ -478,7 +482,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npc.scale = 1.4f;
                 }
             }
-            
+
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
@@ -514,7 +518,68 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             LeadingConditionRule fMoon = new LeadingConditionRule(new Conditions.FrostMoonDropGatingChance());
             LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
             LeadingConditionRule hardmode = new LeadingConditionRule(Condition.Hardmode.ToDropCondition(ShowItemDropInUI.Always));
-            
+
+            #region Crates
+            if (npc.type == ModContent.NPCType<DesertScourgeHead>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunkenCrate>(), 1, 3, 3));
+            }
+            if (npc.type == ModContent.NPCType<Crabulon>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ItemID.IronCrate, 1, 3, 3));
+            }
+            if (npc.type == ModContent.NPCType<HiveMind>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ItemID.CorruptFishingCrate, 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<PerforatorHive>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ItemID.CrimsonFishingCrate, 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<SlimeGodCore>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SulphurousCrate>(), 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<Cryogen>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ItemID.FrozenCrateHard, 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SulphurousCrate>(), 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<BrimstoneElemental>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<CalamitasClone>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
+            }
+            Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
+            LeadingConditionRule levidroprule = npcLoot.DefineConditionalDropSet(what);
+            if (npc.type == ModContent.NPCType<Leviathan>() || npc.type == ModContent.NPCType<Anahita>())
+            {
+                levidroprule.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ItemID.OceanCrateHard, 1, 5, 5, 1));
+            }
+            if (npc.type == ModContent.NPCType<AstrumAureus>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AstralCrate>(), 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<PlaguebringerGoliath>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ItemID.JungleFishingCrateHard, 1, 5, 5));
+            }
+            if (npc.type == ModContent.NPCType<RavagerBody>())
+            {
+                emodeRule.OnSuccess(ItemDropRule.Common(ItemID.GoldenCrateHard, 1, 5, 5));
+            }
+            LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHead.ShouldNotDropThings(info.npc));
+            if (npc.type == ModContent.NPCType<AstrumDeusHead>())
+            {
+                lastWorm.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ModContent.ItemType<AstralCrate>(), 1, 5, 5, 1));
+            }
+            #endregion Crates
             #region MasterModeDropsInRev
             if (npc.type == NPCID.DD2DarkMageT3)
             {

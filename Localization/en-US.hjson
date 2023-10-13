@@ -323,6 +323,7 @@ Mods: {
 			IceChain.DisplayName: Ice Chain
 			IceTrident.DisplayName: Ice Trident
 			CrimsonPaladinSpike.DisplayName: Crimson Paladin Spike
+			PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
 		}
 	}
 }

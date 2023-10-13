@@ -81,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ref float data = ref npc.ai[2];
             ref float data2 = ref npc.ai[3];
             npc.scale = 1.5f;
-            
+            npc.dontTakeDamage = false;
             if (shieldDrawCounter == 0)
             {
                 shieldDrawTimer++;
@@ -93,13 +93,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 if (shieldDrawTimer <= 0) shieldDrawCounter = 0;
             }
             //move towards player
-            if (npc.ai[0] == 0)
+            if (npc.ai[0] == 0 || npc.ai[0] == 1)
             {
+                npc.ai[0] = 0;
                 npc.rotation = npc.velocity.X / 15f;
                 timer++;
                 if (timer == 1)
                 {
-                    Main.NewText("j");
+                    //Main.NewText("j");
                     Vector2 pos = target.Center + new Vector2(0, -400);
                     data = pos.X; data2 = pos.Y;
                     NetSync(npc);

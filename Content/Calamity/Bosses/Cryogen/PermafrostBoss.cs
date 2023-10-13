@@ -18,6 +18,7 @@ using System.Threading;
 using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls;
+using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -127,8 +128,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 400 : -400, 0);
 
-                    if (NPC.Distance(targetpos) > 50)
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, (targetpos - NPC.Center).SafeNormalize(Vector2.Zero)*20, 0.05f);
+                    Movement(targetpos);
                     Timer++;
                     if (Timer >= 200)
                     {
@@ -141,17 +141,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Timer++;
                     if (Timer < 60)
                     {
-                        Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, -400);
+                        Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 400 : -400, -300);
 
-                        if (NPC.Distance(targetpos) > 50)
-                            NPC.velocity = Vector2.Lerp(NPC.velocity, (targetpos - NPC.Center).SafeNormalize(Vector2.Zero) * 20, 0.05f);
+                        Movement(targetpos, slowdown: 100, decel: 0.05f);
                     }
                     else
                     {
                         NPC.velocity /= 1.05f;
+                        if (Timer == 70 && DLCUtils.HostCheck) {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, ai0: 0, ai1: toTarget.ToRotation(), ai2: NPC.whoAmI);
+                        }
                         if (Timer == 100)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget * 5, ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+
+                            SoundEngine.PlaySound(SoundID.Item28, NPC.Center);
+                            if (DLCUtils.HostCheck)
+                            {
+                                
+                                for (int i = -5; i < 6; i++)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, Vector2.Zero, ModContent.ProjectileType<IceTrident>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai0: i * 5, ai2: toTarget.ToRotation());
+                                }
+                            }
                         }
                         if (Timer >= 200)
                         {
@@ -161,6 +172,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     }
                 }
                 
+            }
+            void Movement( Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
+            {
+                if (NPC.Distance(pos) > slowdown)
+                {
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, (pos - NPC.Center).SafeNormalize(Vector2.Zero) * maxSpeed, accel);
+                }
+                else
+                {
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, (pos - NPC.Center).SafeNormalize(Vector2.Zero) * lowspeed, decel);
+                }
             }
             base.AI();
         }
