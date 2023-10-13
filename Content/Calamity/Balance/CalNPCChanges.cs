@@ -14,10 +14,12 @@ using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SulphurCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Materials;
+using CalamityMod.Items.Potions;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AcidRain;
 using CalamityMod.NPCs.AquaticScourge;
+using CalamityMod.NPCs.Astral;
 using CalamityMod.NPCs.AstrumAureus;
 using CalamityMod.NPCs.AstrumDeus;
 using CalamityMod.NPCs.BrimstoneElemental;
@@ -25,6 +27,7 @@ using CalamityMod.NPCs.Bumblebirb;
 using CalamityMod.NPCs.CalClone;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.NPCs.Crabulon;
+using CalamityMod.NPCs.Crags;
 using CalamityMod.NPCs.Cryogen;
 using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.NPCs.DevourerofGods;
@@ -47,6 +50,8 @@ using CalamityMod.NPCs.Ravager;
 using CalamityMod.NPCs.Signus;
 using CalamityMod.NPCs.SlimeGod;
 using CalamityMod.NPCs.StormWeaver;
+using CalamityMod.NPCs.SulphurousSea;
+using CalamityMod.NPCs.SunkenSea;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Typeless;
@@ -509,6 +514,77 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             return DropHelper.If(lambda, ui, dec);
         }
+
+        public static List<int> DropsBoundingPotion = new List<int>
+        {
+            ModContent.NPCType<AeroSlime>(),
+            ModContent.NPCType<EbonianBlightSlime>(),
+            ModContent.NPCType<CrimulanBlightSlime>(),
+            NPCID.SpikedJungleSlime
+        };
+        public static List<int> DropsCalciumPotion = new List<int>
+        {
+            NPCID.Skeleton,
+            NPCID.ArmoredSkeleton,
+            NPCID.SkeletonTopHat,
+            NPCID.SkeletonAstonaut,
+            NPCID.SkeletonAlien,
+            NPCID.BigSkeleton,
+            NPCID.SmallSkeleton,
+        };
+        public static List<int> DropsPhotosynthesisPotion = new List<int>
+        {
+            NPCID.AngryNimbus,
+            ModContent.NPCType<ThiccWaifu>(), //fuck you fabsol
+            NPCID.WyvernHead
+        };
+        public static List<int> DropsShadowPotion = new List<int>
+        {
+            ModContent.NPCType<Scryllar>(),
+            ModContent.NPCType<SoulSlurper>(),
+            ModContent.NPCType<HeatSpirit>(),
+            ModContent.NPCType<DespairStone>(),
+            ModContent.NPCType<CalamityEye>(),
+            ModContent.NPCType<RenegadeWarlock>()
+        };
+        public static List<int> DropsSoaringPotion = new List<int>
+        {
+            ModContent.NPCType<EutrophicRay>(),
+            ModContent.NPCType<GhostBell>(),
+            ModContent.NPCType<SeaFloaty>(),
+        };
+        public static List<int> DropsSulphurskinPotion = new List<int>
+        {
+            ModContent.NPCType<AquaticUrchin>(),
+            ModContent.NPCType<Sulflounder>(),
+            ModContent.NPCType<Gnasher>(),
+            ModContent.NPCType<Toxicatfish>(),
+            ModContent.NPCType<Trasher>(),
+        };
+        public static List<int> DropsTeslaPotion = new List<int>
+        {
+            NPCID.GreenJellyfish,
+            ModContent.NPCType<BlindedAngler>(),
+            ModContent.NPCType<ShockstormShuttle>(),
+        };
+        public static List<int> DropsZenPotion = new List<int>
+        {
+            ModContent.NPCType<Atlas>(),
+            ModContent.NPCType<AstralachneaGround>(),
+            ModContent.NPCType<AstralachneaWall>(),
+            ModContent.NPCType<SightseerCollider>(),
+            ModContent.NPCType<StellarCulex>(),
+            ModContent.NPCType<AstralSlime>()
+        };
+        public static List<int> DropsZergPotion = new List<int>
+        {
+            ModContent.NPCType<Hadarian>(),
+            ModContent.NPCType<SightseerSpitter>(),
+            ModContent.NPCType<SightseerCollider>(),
+            ModContent.NPCType<StellarCulex>(),
+            ModContent.NPCType<FusionFeeder>(),
+            ModContent.NPCType<MantisShrimp>()
+        };
         [JITWhenModsEnabled("CalamityMod")]
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
@@ -727,6 +803,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordPetItem, 4));
             }
             #endregion MasterModeDropsInRev
+            #region PreHM progression break fixes
             LeadingConditionRule PreHMNotBalanced = new LeadingConditionRule(CalamityConditions.PreHardmodeAndNotBalance.ToDropCondition(ShowItemDropInUI.Always));
             if (npc.type == NPCID.WyvernHead)
             {
@@ -768,6 +845,57 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npcLoot.Add(PreHMNotBalanced);
                 npcLoot.Add(hardmode);
             }
+            #endregion
+            #region Tim's Concoction drops
+            void TimsConcoctionDrop(IItemDropRule rule)
+            {
+                TimsConcoctionDropCondition dropCondition = new();
+                IItemDropRule conditionalRule = new LeadingConditionRule(dropCondition);
+                conditionalRule.OnSuccess(rule);
+                npcLoot.Add(conditionalRule);
+            }
+            if (DropsBoundingPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<BoundingPotion>(), 1, 1, 6));
+            }
+            if (npc.type == NPCID.BlueSlime && (npc.netID == NPCID.GreenSlime || npc.netID == NPCID.JungleSlime))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<BoundingPotion>(), 1, 1, 2));
+            }
+            if (DropsCalciumPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<CalciumPotion>(), 1, 1, 6));
+            }
+            if (DropsPhotosynthesisPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<PhotosynthesisPotion>(), 1, 2, 6));
+            }
+            if (DropsShadowPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<ShadowPotion>(), 1, 1, 3));
+            }
+            if (DropsSoaringPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<SoaringPotion>(), 1, 1, 6));
+            }
+            if (DropsSulphurskinPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<SulphurskinPotion>(), 1, 1, 6));
+            }
+            if (DropsTeslaPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<TeslaPotion>(), 1, 2, 6));
+            }
+            if (DropsZenPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<ZenPotion>(), 1, 1, 1));
+            }
+            if (DropsZergPotion.Contains(npc.type))
+            {
+                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<ZergPotion>(), 1, 1, 1));
+            }
+            //if (npc.type == ModContent.NPCType<>)
+            #endregion
         }
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)

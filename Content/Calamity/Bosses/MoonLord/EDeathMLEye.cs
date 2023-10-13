@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using System.IO;
@@ -67,3 +67,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         }
     }
 }
+*/
