@@ -83,6 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 projectile.Center = projectile.position;
                 projectile.scale /= scale;
             }
+            
         }
         public override bool PreAI(Projectile projectile)
         {
