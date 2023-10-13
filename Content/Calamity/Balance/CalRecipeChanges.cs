@@ -92,9 +92,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ugcrecipe.Register();
             //symbiote recipe
             Recipe fgrecipe = Recipe.Create(ModContent.ItemType<FungalSymbiote>());
-            fgrecipe.AddIngredient(ItemID.GlowingMushroom, 20);
-            fgrecipe.AddIngredient(ItemID.Acorn, 2);
-            fgrecipe.AddIngredient(ItemID.ClayPot);
+            fgrecipe.AddIngredient(ItemID.GlowingMushroom, 50);
+            fgrecipe.AddIngredient(ModContent.ItemType<MurkyPaste>(), 2);
+            fgrecipe.AddIngredient(ItemID.JungleSpores, 4);
             fgrecipe.AddTile(TileID.LivingLoom);
             fgrecipe.Register();
 
