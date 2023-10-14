@@ -315,6 +315,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 ref float timer = ref npc.ai[0];
                 ref float phase = ref npc.ai[3];
+                ref float attack = ref npc.ai[2];
+
                 NPC slime = Main.npc[AttachedSlime];
                 ContactDamage = false;
                 if (slime != null && slime.active)
@@ -331,6 +333,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 else
                 {
                     FullReset();
+                    phase = (int)Phases.Attacking;
+                    attack = (int)Attacks.SlimeBreakout;
                 }
             }
             void Attached()
