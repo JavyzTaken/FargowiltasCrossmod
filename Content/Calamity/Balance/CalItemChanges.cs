@@ -36,6 +36,7 @@ using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {

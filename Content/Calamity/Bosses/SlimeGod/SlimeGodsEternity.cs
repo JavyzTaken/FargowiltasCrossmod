@@ -64,7 +64,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             DidSpecial = binaryReader.ReadBoolean();
             CrimsonSlamPos = binaryReader.ReadVector2();
         }
-        
         //Slimes have much less health because of the phase and respawn mechanic
         public override void SetDefaults(NPC npc)
         {
@@ -711,7 +710,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             return false;
         }
         */
-        
+        public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => npc.ai[0] != 2; //not while winding up slam
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]

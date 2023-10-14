@@ -1,4 +1,6 @@
-﻿using CalamityMod.NPCs.SlimeGod;
+﻿/*
+using CalamityMod.NPCs.SlimeGod;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +15,8 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CrimsonPaladinSpike : ModProjectile
     {
         public const int TotalTime = 180;
@@ -86,3 +90,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         }
     }
 }
+*/

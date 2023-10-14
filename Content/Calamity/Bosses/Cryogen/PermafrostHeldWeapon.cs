@@ -11,7 +11,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+/*
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -56,6 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             NPC owner = Main.npc[(int)Projectile.ai[2]];
+
             if (owner == null || !owner.active || owner.type != ModContent.NPCType<PermafrostBoss>())
             {
                 Projectile.Kill();
@@ -88,3 +89,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
+*/
