@@ -36,10 +36,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             base.SetDefaults(entity);
             entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.6f);
-            if (BossRushEvent.BossRushActive)
-            {
-                entity.lifeMax = 7000000;
-            }
         }
         public float[] drawInfo = new float[] { 0, 200, 200, 0 };
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

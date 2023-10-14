@@ -118,8 +118,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (item.type == ModContent.ItemType<Eternity>()) return 0.4f;
             if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.5f;
             if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.6f;
-            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.7f;
-            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.55f;
+            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
+            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
             if (item.type == ModContent.ItemType<TemporalUmbrella>()) return 0.35f;
             if (item.type == ModContent.ItemType<Endogenesis>()) return 0.35f;
             if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
@@ -210,13 +210,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     ModContent.GetInstance<TheAmalgam>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("AsgardianAegis"))
+                if (player.GetToggleValue("AsgardianAegis", false))
                 {
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
                     player.FargoSouls().HasDash = true;
                 }
                 
-                if (player.GetToggleValue("RampartofDeities"))
+                if (player.GetToggleValue("RampartofDeities", false))
                 {
                     ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
                 }
@@ -232,21 +232,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("ElementalGauntlet"))
+                if (player.GetToggleValue("ElementalGauntlet", false))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<ArchWizardsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("EtherealTalisman"))
+                if (player.GetToggleValue("EtherealTalisman", false))
                 {
                     ModContent.GetInstance<EtherealTalisman>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<SnipersSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("ElementalQuiver"))
+                if (player.GetToggleValue("ElementalQuiver", false))
                 {
                     ModContent.GetInstance<ElementalQuiver>().UpdateAccessory(player, hideVisual);
                 }
@@ -261,7 +261,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("Nucleogenesis"))
+                if (player.GetToggleValue("Nucleogenesis", false))
                 {
                     ModContent.GetInstance<Nucleogenesis>().UpdateAccessory(player, hideVisual);
                 }
@@ -269,11 +269,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
                 player.Calamity().rogueVelocity += 0.15f;
-                if (player.GetToggleValue("Nanotech"))
+                if (player.GetToggleValue("Nanotech", false))
                 {
                     ModContent.GetInstance<Nanotech>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("EclipseMirror"))
+                if (player.GetToggleValue("EclipseMirror", false))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
                 }

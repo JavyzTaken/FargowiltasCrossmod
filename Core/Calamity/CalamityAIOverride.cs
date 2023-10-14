@@ -241,6 +241,11 @@ namespace FargowiltasCrossmod.Core.Calamity
                 {
                     Entries[i].Item7.Append(ModContent.NPCType<CrystalLeaf>());
                 }
+                //if (Entries[i].Item1 == NPCID.HallowBoss)
+                //{
+                //    Entries.RemoveAt(i);
+                //    Entries.Insert(i, (NPCID.HallowBoss, 0, delegate { NPC.SpawnOnPlayer(0, NPCID.HallowBoss); }, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
+                //}
             }
             //set boss rush entries to new list of entries
             cal.Call("SetBossRushEntries", Entries);
@@ -490,9 +495,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label = null;
             c.GotoPrev(i => i.MatchBrtrue(out label));
             c.Index += 3;
-            c.EmitDelegate(() => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev && WorldSavingSystem.EternityMode && !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard));
+            c.EmitDelegate(() => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev && WorldSavingSystem.EternityMode /*&& !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard)*/);
             c.Emit(OpCodes.Brfalse, label);
-            c.EmitDelegate(() => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev && WorldSavingSystem.EternityMode && !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard));
+            c.EmitDelegate(() => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev && WorldSavingSystem.EternityMode /*&& !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard)*/);
             c.Emit(OpCodes.Ret);
             c.Index -= 9;
             var label2 = il.DefineLabel(c.Prev);
@@ -537,7 +542,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             ILLabel label = null;
             c.GotoNext(i => i.MatchBrfalse(out label));
             c.Index -= 3;
-            c.EmitDelegate(() => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev && WorldSavingSystem.EternityMode && !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard));
+            c.EmitDelegate(() => ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev && WorldSavingSystem.EternityMode /*&& !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard)*/);
             c.Emit(OpCodes.Brtrue, label);
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);
