@@ -24,6 +24,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using FargowiltasSouls;
 using System.Security.Cryptography.X509Certificates;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {
@@ -76,6 +77,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
         public bool DoSlam = false;
+
+        public float curMusicFade;
         
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -133,7 +136,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 attack = 0;
             }
-
             npc.netUpdate = true; //fuck you worm mp code
 
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || npc.GetLifePercent() <= 0.75f))
@@ -212,6 +214,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 Slam(npc);
             }
+
+            ManageMusicFade(attack == 22);
+            if (attack != 22)
+            {
+                curMusicFade = Main.musicFade[Main.curMusic];
+            }
+
             ai[1]++;
             if (ai[1] >= 300)
             {
@@ -303,7 +312,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             ref float timer = ref ai[3];
             ref float attackStep = ref ai[2];
 
-            
             switch (attackStep)
             {
                 case 0: //fly straight towards player until close enough
@@ -354,6 +362,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                     break;
                 case 2: //get gravity and fall, SLIGHTLY move towards player? prepare for crash
                     {
+                        
                         const float gravity = 1f;
                         const float xTracking = 0.25f;
                         npc.velocity.Y += gravity;
@@ -362,6 +371,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                         {
                             npc.velocity /= 4;
                             SoundEngine.PlaySound(SoundID.Item62, npc.Center);
+                            Main.LocalPlayer.Calamity().GeneralScreenShakePower = 20f;
                             const int ShotCount = 10; //per side
                             const int MaxShotSpeed = 16;
                             for (int i = 0; i < ShotCount; i++)
@@ -794,7 +804,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             return collision;
         }
+        public void ManageMusicFade(bool fade)
+        {
+            if (fade)
+            {
+                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0, 0.05f);
+            }
+            else
+            {
+                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 1, 0.01f);
+            }
+        }
     }
+
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DSBodyBuff : EModeCalBehaviour

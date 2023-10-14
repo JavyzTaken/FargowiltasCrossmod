@@ -387,34 +387,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
-
+                const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
+                const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
                 if (balance > 1)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceUp", $"[c/00A36C:{BalanceLine}]Damage increased by {Math.Round((balance - 1) * 100)}%."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
                 }
                 else if (balance < 1)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
                 }
                 if (item.type == ItemID.MagicDagger)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Damage decreased by 50% in Pre-Hardmode."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
                 }
                 if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Massively reduced damage with any minions active"));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
                 }
                 if (item.type == ModContent.ItemType<TungstenEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Less effective on true melee weapons"));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}Less effective on true melee weapons"));
                 }
                 if (item.type == ModContent.ItemType<MythrilEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]Less effective on rogue weapons"));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
                 }
                 if (item.type == ModContent.ItemType<OrichalcumEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"[c/FF0000:{BalanceLine}]25% less effective"));
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}25% less effective"));
+                }
+                if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "DamageBalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
                 }
             }
             #endregion
