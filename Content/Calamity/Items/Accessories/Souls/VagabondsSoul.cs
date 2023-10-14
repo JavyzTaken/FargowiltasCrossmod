@@ -21,11 +21,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
             player.GetDamage<RogueDamageClass>() += 0.3f;
             player.Calamity().rogueVelocity += 0.15f;
             player.GetCritChance<RogueDamageClass>() += 0.15f;
-            if (player.GetToggleValue("Nanotech"))
+            if (player.GetToggleValue("Nanotech", false))
             {
                 ModContent.GetInstance<Nanotech>().UpdateAccessory(player, hideVisual);
             }
-            if (player.GetToggleValue("EclipseMirror"))
+            if (player.GetToggleValue("EclipseMirror", false))
             {
                 ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
             }

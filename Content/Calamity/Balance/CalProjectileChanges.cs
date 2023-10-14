@@ -60,7 +60,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 2;
             }
-            if (BossRushEvent.BossRushActive && (entity.type == ModContent.ProjectileType<DeviSparklingLove>() || entity.type == ModContent.ProjectileType<DeviBigDeathray>()))
+            if (BossRushEvent.BossRushActive && new List<int> { ModContent.ProjectileType<DeviSparklingLove>(), ModContent.ProjectileType<DeviBigDeathray>(), ModContent.ProjectileType<PlanteraTentacle>(), ProjectileID.PhantasmalDeathray }.Contains(entity.type))
             {
                 entity.extraUpdates += 1;
                
@@ -105,13 +105,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
                     }
                 }
-                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 100 && projectile.damage != 0)
+                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
+                {
+                    projectile.damage = 75;
+                }
+                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 100 && NPC.AnyNPCs(NPCID.HallowBoss))
                 {
                     projectile.damage = 100;
-                }
-                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 500)
-                {
-                    projectile.damage = 500;
                 }
             }
             return true;

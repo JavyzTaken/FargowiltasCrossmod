@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override void OnKill(NPC npc)
         {
-            if (DLCUtils.HostCheck)
+            if (DLCUtils.HostCheck && WorldSavingSystem.EternityMode)
             {
                 NPC owner = Main.npc[(int)npc.ai[0]];
                 if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>()) return;

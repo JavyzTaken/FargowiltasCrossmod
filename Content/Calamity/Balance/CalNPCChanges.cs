@@ -348,7 +348,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //yhar
                 if (npc.type == ModContent.NPCType<Yharon>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.5f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.3f);
                 }
                 //abom
                 if (npc.type == ModContent.NPCType<AbomBoss>())
@@ -371,7 +371,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //mutant
                 if (npc.type == ModContent.NPCType<MutantBoss>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 4.1f);
+                    npc.lifeMax = (int)(npc.lifeMax * 4.4f);
                 }
                 #region BRBalance
                 List<int> squirrelParts = new List<int>
@@ -417,12 +417,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     if (!npc.boss && npc.type != ModContent.NPCType<CreeperGutted>())
                     {
-                        npc.lifeMax += 100000;
+                        npc.lifeMax += 50000;
 
                     }
-                    else
+                    else if (npc.type != ModContent.NPCType<CreeperGutted>())
                     {
-                        npc.lifeMax += 2000000;
+                        npc.lifeMax += 1700000;
                     }
                     if (npc.type == ModContent.NPCType<DeviBoss>())
                     {
@@ -432,15 +432,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npc.lifeMax += 400000;
                     }
                     if (bossworms.Contains(npc.type) && !Eater.Contains(npc.type)) {
-                        npc.lifeMax += 15000000;
+                        npc.lifeMax += 7500000;
                     }
                     else if (minionworms.Contains(npc.type) && !Eater.Contains(npc.type))
                     {
-                        npc.lifeMax += 2500000;
+                        npc.lifeMax += 1500000;
                     }
                     if (Eater.Contains(npc.type))
                     {
-                        npc.lifeMax += 100000;
+                        //npc.lifeMax += 100000;
                     }
                     if (npc.damage < 200 && npc.damage != 0)
                     {
@@ -472,7 +472,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     //too tanky eyes
                     if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead) npc.lifeMax /= 8;
                     if (npc.type == NPCID.MoonLordCore) npc.lifeMax /= 4;
-                    if (npc.type == ModContent.NPCType<MutantBoss>()) npc.lifeMax = (int)(npc.lifeMax * 0.75f);
+                    if (npc.type == ModContent.NPCType<MutantBoss>()) npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                    if (npc.type == ModContent.NPCType<DesertScourgeHead>() || npc.type == ModContent.NPCType<DesertScourgeBody>() || npc.type == ModContent.NPCType<DesertScourgeTail>())
+                    {
+                        npc.lifeMax /= 4;
+                    }
                 }
                 #endregion BRBalance
 
@@ -993,6 +997,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 pool[NPCID.PigronCorruption] = 0.0001f;
                 pool[NPCID.PigronCrimson] = 0.0001f;
                 pool[NPCID.PigronHallow] = 0.0001f;
+                pool[NPCID.IchorSticker] = 0;
                 for (int i = 0; i < SandstormEnemies.Count; i++)
                 {
                     pool[SandstormEnemies[i]] = 0;
@@ -1003,10 +1008,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     pool[NPCID.PigronCrimson] = 0f;
                     pool[NPCID.PigronHallow] = 0f;
                 }
-            }
-            if (spawnInfo.Player.Calamity().ZoneSulphur)
-            {
-                pool[NPCID.IchorSticker] = 0f;
             }
             if (spawnInfo.Player.Calamity().ZoneSunkenSea)
             {
@@ -1065,6 +1066,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
         }
         public bool droppedSummon = false;
+        public static List<int> HyperNPCs = new List<int>()
+        {
+            ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrel>(),
+            NPCID.KingSlime, NPCID.EyeofCthulhu, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
+            NPCID.BrainofCthulhu, ModContent.NPCType<BrainIllusion>(), NPCID.Creeper, NPCID.QueenBee, ModContent.NPCType<RoyalSubject>(),
+            NPCID.SkeletronHead, NPCID.SkeletronHand, ModContent.NPCType<DeviBoss>(), NPCID.WallofFlesh,
+             NPCID.QueenSlimeBoss, NPCID.Retinazer, NPCID.Spazmatism, NPCID.SkeletronPrime,
+            NPCID.PrimeCannon, NPCID.PrimeLaser, NPCID.PrimeSaw, NPCID.PrimeVice, NPCID.TheDestroyer, NPCID.TheDestroyerBody,
+            NPCID.TheDestroyerTail, NPCID.Probe, NPCID.Plantera, NPCID.PlanterasHook, NPCID.PlanterasTentacle, NPCID.GolemFistLeft,
+            NPCID.GolemFistRight, NPCID.GolemHead, NPCID.Golem, NPCID.GolemHeadFree,
+            NPCID.CultistBoss, NPCID.MoonLordCore, NPCID.MoonLordFreeEye, NPCID.MoonLordHand, NPCID.MoonLordHead
+        };
         public override bool PreAI(NPC npc)
         {
             #region SummonDrops
@@ -1190,7 +1203,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 killedAquatic = false;
                 if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
                 {
-                    if (npc.type == NPCID.AncientLight && DLCWorldSavingSystem.EternityDeath)
+                    if (npc.type == NPCID.AncientLight && DLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
                     {
                         npc.Center += npc.velocity * 0.75f;
                         npc.dontTakeDamage = true;
@@ -1202,6 +1215,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //BossRushEvent.BossRushStage = 36;
             if (BossRushEvent.BossRushActive)
             {
+                
+                if (npc.type == NPCID.HallowBoss && npc.ai[0] == 13) {
+                    Main.dayTime = true;
+                }
                 if (npc.type == ModContent.NPCType<BanishedBaron>())
                 {
                     //Fix for floppy fish in p1
@@ -1226,11 +1243,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (numAI == 0)
                 {
-                    if (npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<TrojanSquirrelHead>() || npc.type == ModContent.NPCType<TrojanSquirrelArms>() || npc.type == ModContent.NPCType<TrojanSquirrel>())
+                    if (HyperNPCs.Contains(npc.type) && WorldSavingSystem.EternityMode && npc.type != NPCID.WallofFleshEye)
                     {
                         numAI++;
                         npc.AI();
-                        float speedToAdd = 0.5f;
+                        float speedToAdd = 0.8f;
                         Vector2 newPos = npc.position + npc.velocity * speedToAdd;
                         if (!Collision.SolidCollision(newPos, npc.width, npc.height))
                         {
@@ -1239,7 +1256,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     }
                 }
             }
-            if (npc.type == NPCID.DukeFishron)
+            if (npc.type == NPCID.DukeFishron && BossRushEvent.BossRushActive)
             {
                 Main.player[Main.myPlayer].ZoneBeach = true;
             }
@@ -1325,12 +1342,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npc.dontTakeDamage = true;
             }
             //make destroyer not invincible and normal scale
-            if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail)
+            List<int> bossworms = new List<int>
+                {
+
+                    ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
+                    NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
+
+                    ModContent.NPCType<AquaticScourgeHead>(), ModContent.NPCType<AquaticScourgeBody>(),ModContent.NPCType<AquaticScourgeBodyAlt>(), ModContent.NPCType<AquaticScourgeTail>(),
+                    NPCID.TheDestroyer, NPCID.TheDestroyerBody, NPCID.TheDestroyerTail,
+                    /*ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),*/
+                    ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>(),
+
+                };
+            if (bossworms.Contains(npc.type) && WorldSavingSystem.EternityMode)
             {
                 Mod calamity = ModCompatibility.Calamity.Mod;
                 
                 calamity.Call("SetCalamityAI", npc, 1, 600f);
                 calamity.Call("SetCalamityAI", npc, 2, 0f);
+                npc.SyncExtraAI();
             }
             //make plantera not summon free tentacles
             if (npc.type == ModContent.NPCType<PlanterasFreeTentacle>())
