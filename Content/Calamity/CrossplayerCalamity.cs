@@ -20,6 +20,9 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using CalamityMod.Buffs.StatDebuffs;
 using FargowiltasCrossmod.Core.Calamity;
 using CalamityMod;
+using CalamityMod.Items.Weapons.DraedonsArsenal;
+using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Weapons.Ranged;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -67,6 +70,20 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             ModContent.ItemType<ExecutionersBlade>()
         };
+        public static List<int> AdamantiteIgnoreItem = new List<int>
+        {
+            ModContent.ItemType<HeavenlyGale>(),
+            ModContent.ItemType<TheSevensStriker>(),
+            ModContent.ItemType<Phangasm>(),
+            ModContent.ItemType<TheJailor>(),
+            ModContent.ItemType<AetherfluxCannon>(),
+            ModContent.ItemType<TheAnomalysNanogun>(),
+            ModContent.ItemType<ClockworkBow>(),
+            ModContent.ItemType<GrandStaffoftheNebulaMage>(),
+            ModContent.ItemType<Eternity>(), //fargo reference
+            ModContent.ItemType<Vehemence>(),
+            ModContent.ItemType<Phaseslayer>()
+        };
         public override void PostUpdateEquips()
         {
             if (!Player.FargoSouls().TerrariaSoul && Player.FargoSouls().TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
@@ -75,6 +92,15 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             Player.Calamity().profanedCrystalStatePrevious = 0;
             Player.Calamity().pscState = 0;
+
+            if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type))
+            {
+                Player.FargoSouls().AdamantiteEnchantItem = null;
+            }
+            if (Player.FargoSouls().TinEnchantItem != null)
+            {
+                Player.Calamity().spiritOrigin = false;
+            }
         }
         
         public override float UseSpeedMultiplier(Item item)
