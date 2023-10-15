@@ -120,7 +120,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             }
             Player target = Main.player[npc.target];
-            if (target == null || !target.active || target.dead)
+            if (!Targeting())
             {
                 return true;
             }
@@ -230,6 +230,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 NetSync(npc);
             }
             return false;
+
+            bool Targeting()
+            {
+                const float despawnRange = 5000f;
+                Player p = Main.player[npc.target];
+                if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                {
+                    npc.TargetClosest();
+                    p = Main.player[npc.target];
+                    if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                    {
+                        npc.noTileCollide = true;
+                        if (npc.timeLeft > 30)
+                            npc.timeLeft = 30;
+                        npc.velocity.Y += 1f;
+                        if (npc.timeLeft == 1)
+                        {
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                            {
+                                FargoSoulsUtil.ClearHostileProjectiles(2, npc.whoAmI);
+                            }
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
         public void suck(NPC npc)
         {
@@ -306,7 +333,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         }
         public void Slam(NPC npc)
         {
-            ai[0] = 251; //keep timer on this until attack ends
+            ai[0] = 255; //keep timer on this until attack ends
             Player player = Main.player[npc.target];
             Vector2 targetPos = player.Center - Vector2.UnitY * 100;
             ref float timer = ref ai[3];

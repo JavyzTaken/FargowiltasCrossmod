@@ -92,6 +92,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<CausticTear>(),
             ModContent.ItemType<MartianDistressRemote>(),
         };
+        //this is cloned from cal because lazy
+        public static bool VanillaSummonItem(Item item) => 
+            (item.type == 560 || item.type == 43 || item.type == 4271 || item.type == 361 || item.type == 70 || item.type == 1331 || item.type == 1133 || item.type == 5120 || item.type == 4988 || item.type == 1315 || item.type == 602 || item.type == 544 || item.type == 556 || item.type == 557 || item.type == 1958 || item.type == 1844 || item.type == 2767 || item.type == 2767 || item.type == 3601);
+        
         public float BalanceChange(Item item)
         {
             
@@ -141,7 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     item.damage = (int)(item.damage * balance);
                 }
-                if (CalSummons.Contains(item.type))
+                if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
                 {
                     item.consumable = true;
                     item.maxStack = 9999;
@@ -311,10 +315,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             for (int i = 0; i < tooltips.Count; i++)
             {
-                if (tooltips[i].Text.Equals("Not consumable"))
+                tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
+                /*
+                if (tooltips[i].Text.Contains("Not consumable"))
                 {
-                    tooltips[i].Text = "Consumable";
+                    tooltips[i].Text = "";
                 }
+                */
             }
 
             if (item.type == ModContent.ItemType<Rock>())
