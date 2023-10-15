@@ -19,7 +19,14 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
-Latest Update: v1.0.3
+Latest Update: v1.0.3.1
+
+Fixed Hive Mind and Slime God not despawning properly
+Fixed Medallion of the Desert not summoning Nuisances
+Fixed Dune Splicers spawning abnormally in the Sunken Sea
+Improvements to Slime God multiplayer sync
+
+Previous Update: v1.0.3
 
 Added full Eternity rework for Slime God
 
@@ -70,13 +77,3 @@ Blacklisted some broken items from Adamantite Enchant
 Tin Enchantment effect disables Daawnlight Spirit Origin effect 
 Fixed sandstorm enemy spam and reduced pigron spawnrates in the sulphur sea
 Ichor Spear no longer drops in pre hardmode
-
-Previous Update: v1.0.2
-
--More multiplayer sync improvements (difficulty modes should properly stay enabled in multiplayer now)
--Increased the health of Eternity Hive Mind and Perforators 
--Increased the health of Eternity-Death Skeletron
--Increased the health of Eternity-Death Deerclops
--Made Old Lord Claymore and Bladecrest Oathsword not affected by Tungsten Enchant because it broke the weapons
--Made Executioner's Blade not affected by Mythril Enchant because it broke the weapons
--Fixed description of the difficulty modes
