@@ -203,6 +203,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                     Timer = 0;
                                     DidSpecial = false;
                                     npc.netUpdate = true;
+                                    
                                     return false;
                                 }
                                 else
@@ -210,6 +211,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                     DidSpecial = true;
                                     npc.netUpdate = true;
                                 }
+                                NetSync(npc);
                             }
                             SoundEngine.PlaySound(SoundID.Item154, npc.Center);
                         }
@@ -232,6 +234,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             calState = 2.05f;
                             Timer = 0;
                             npc.netUpdate = true;
+                            NetSync(npc);
                             return false;
                         }
 
@@ -258,6 +261,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             npc.velocity = Vector2.UnitY * 30;
                             Timer = 0;
                             npc.netUpdate = true;
+                            NetSync(npc);
                         }
                     }
                     break;
@@ -279,12 +283,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             calState = 22;
                             DidSpecial = true;
                             npc.netUpdate = true;
+                            NetSync(npc);
                         }
                         else
                         {
                             calState = 2;
                             DidSpecial = false;
                             npc.netUpdate = true;
+                            NetSync(npc);
                         }
                     }
                     return false;
@@ -367,6 +373,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 npc.ai[2] = 1f;
                 npc.netUpdate = true;
+                NetSync(npc);
             }
             const int shootDelay = 5;
             if (++Timer % shootDelay == 0)
@@ -398,6 +405,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     npc.ai[3] = 0f;
                     Timer = 0;
                     npc.netUpdate = true;
+                    NetSync(npc);
                 }
             }
             else if (npc.ai[2] == 0f)
@@ -428,6 +436,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 npc.ai[2] = 1f;
                 npc.netUpdate = true;
+                NetSync(npc);
             }
             if ((below || npc.velocity.Y <= 0f) || collision)
             {
@@ -460,6 +469,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     npc.ai[3] = 0f;
                     Timer = 0;
                     npc.netUpdate = true;
+                    NetSync(npc);
                 }
             }
             else if (npc.ai[2] == 0f)
@@ -550,6 +560,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         npc.velocity.X = 0;
                     }
                     Timer = 55;
+                    NetSync(npc);
+                    npc.netUpdate = true;
                 }
 
                 npc.noGravity = true;
@@ -563,6 +575,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 npc.ai[3] = 0f;
                 Timer = 0;
                 npc.netUpdate = true;
+                NetSync(npc);
                 return false;
             }
             Timer++;
@@ -602,6 +615,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, slamAngle.ToRotationVector2(), ModContent.ProjectileType<SlamTelegraph>(), 0, 0, Main.myPlayer, ai1: npc.height * 1.2f);
                 }
                 npc.netUpdate = true;
+                NetSync(npc);
             }
             if (Timer > StartTime && slams < TotalSlams)
             {
@@ -613,6 +627,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 else if (Timer == TelegraphTime)
                 {
                     npc.velocity = slamAngle.ToRotationVector2() * 40;
+                    npc.netUpdate = true;
+                    NetSync(npc);
                 }
                 else
                 {
@@ -646,6 +662,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         npc.velocity.Y = -npc.velocity.Y / 2;
                         slams++;
                         Timer = 30;
+                        npc.netUpdate = true;
+                        NetSync(npc);
                     }
                     
                 }
@@ -658,6 +676,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 npc.ai[3] = 0f;
                 Timer = 0;
                 npc.netUpdate = true;
+                NetSync(npc);
                 return false;
             }
             Timer++;

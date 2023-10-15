@@ -24,6 +24,7 @@
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
     <None Remove="icon.png" />
+    <None Remove="WorkshopIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\Calamity\NPCS\" />

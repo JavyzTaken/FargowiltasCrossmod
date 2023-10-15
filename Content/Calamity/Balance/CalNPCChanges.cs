@@ -1009,9 +1009,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     pool[NPCID.PigronHallow] = 0f;
                 }
             }
-            if (spawnInfo.Player.Calamity().ZoneSunkenSea)
+            if (!Main.hardMode && spawnInfo.Player.Calamity().ZoneSunkenSea)
             {
                 pool[NPCID.Mimic] = 0f;
+                pool[NPCID.DuneSplicerHead] = 0f;
             }
         }
         public override bool InstancePerEntity => true;
