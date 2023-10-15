@@ -27,12 +27,14 @@ using CalamityMod.Items.Weapons.Ranged;
 namespace FargowiltasCrossmod.Content.Calamity
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public partial class CrossplayerCalamity : ModPlayer
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class CrossplayerCalamity : ModPlayer
     {
         public override void OnEnterWorld()
         {
            
         }
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
             if (!DLCWorldSavingSystem.EternityRev)
@@ -84,6 +86,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             ModContent.ItemType<Vehemence>(),
             ModContent.ItemType<Phaseslayer>()
         };
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
         {
             if (!Player.FargoSouls().TerrariaSoul && Player.FargoSouls().TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
@@ -102,7 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 Player.Calamity().spiritOrigin = false;
             }
         }
-        
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override float UseSpeedMultiplier(Item item)
         {
             if (item.DamageType == ModContent.GetInstance<RogueDamageClass>() && item.useTime < item.useAnimation)

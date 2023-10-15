@@ -132,6 +132,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 return true;
             }
+
+            if (!Targeting())
+                return false;
+
             NPC core = Main.npc[CalamityGlobalNPC.slimeGod];
             if (core != null && core.active && core.type == ModContent.NPCType<SlimeGodCore>())
             {
@@ -141,7 +145,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 }
             }
             return true;
+
+            bool Targeting()
+            {
+                const float despawnRange = 5000f;
+                Player p = Main.player[npc.target];
+                if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                {
+                    npc.TargetClosest();
+                    p = Main.player[npc.target];
+                    if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                    {
+                        npc.noTileCollide = true;
+                        if (npc.timeLeft > 30)
+                            npc.timeLeft = 30;
+                        npc.velocity.Y -= 1f;
+                        if (npc.timeLeft == 1)
+                        {
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                            {
+                                FargoSoulsUtil.ClearHostileProjectiles(2, npc.whoAmI);
+                            }
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
+
         public bool EmpoweredAI(NPC npc)
         {
             ref float calState = ref npc.ai[0];

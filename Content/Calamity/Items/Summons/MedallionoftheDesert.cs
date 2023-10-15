@@ -24,7 +24,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         }
         public override bool? UseItem(Player player)
         {
-            FargoSoulsUtil.SpawnBossNetcoded(player, NPCType);
+            ModContent.GetInstance<DesertMedallion>().UseItem(player);
+            //FargoSoulsUtil.SpawnBossNetcoded(player, NPCType);
             return true;
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

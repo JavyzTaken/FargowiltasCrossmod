@@ -167,14 +167,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             npc.dontTakeDamage = false;
             npc.defense = 200;
             npc.alpha = 0;
-            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            if (!Targeting())
             {
-                npc.TargetClosest();
-                NetSync(npc);
-            }
-            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
-            {
-                npc.velocity.Y += 1;
                 return false;
             }
             Player target = Main.player[npc.target];
@@ -359,6 +353,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 
             }
             return false;
+
+            bool Targeting()
+            {
+                const float despawnRange = 5000f;
+                Player p = Main.player[npc.target];
+                if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                {
+                    npc.TargetClosest();
+                    p = Main.player[npc.target];
+                    if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                    {
+                        npc.noTileCollide = true;
+                        if (npc.timeLeft > 30)
+                            npc.timeLeft = 30;
+                        npc.velocity.Y += 1f;
+                        if (npc.timeLeft == 1)
+                        {
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
+                            {
+                                FargoSoulsUtil.ClearHostileProjectiles(2, npc.whoAmI);
+                            }
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
         }
         public void Teleport(NPC npc, int startTime, int endTime, Vector2 location)
         {
