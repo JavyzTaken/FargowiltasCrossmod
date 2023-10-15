@@ -29,8 +29,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
-using static Terraria.GameContent.Animations.On_Actions.NPCs;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
