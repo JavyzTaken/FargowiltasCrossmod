@@ -27,6 +27,7 @@
     <None Remove="WorkshopIcon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\Sounds\" />
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
     <Folder Include="Core\BaseClasses\" />

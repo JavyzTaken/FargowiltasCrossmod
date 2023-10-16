@@ -34,7 +34,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
             {
                 npc.damage = golem.damage;
             }
-            Main.NewText(npc.damage);
             GolemHead gol = npc.GetGlobalNPC<GolemHead>();
             //Main.NewText(gol.AttackTimer);
             Player target = Main.player[npc.target];
