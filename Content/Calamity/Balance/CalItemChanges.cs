@@ -315,6 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             for (int i = 0; i < tooltips.Count; i++)
             {
+                tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
                 tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
                 /*
                 if (tooltips[i].Text.Contains("Not consumable"))

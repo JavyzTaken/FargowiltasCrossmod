@@ -329,6 +329,12 @@ Mods: {
 			IceTrident.DisplayName: Ice Trident
 			CrimsonPaladinSpike.DisplayName: Crimson Paladin Spike
 			PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
+			MutantOldDuke.DisplayName: Mutant Old Duke
+			DLCMutantSpearSpin.DisplayName: D L C Mutant Spear Spin
+			DLCMutantSpearDash.DisplayName: D L C Mutant Spear Dash
+			MutantAresNuke.DisplayName: Mutant Ares Nuke
+			MutantAresBomb.DisplayName: Mutant Ares Bomb
+			DLCMutantFishronRitual.DisplayName: D L C Mutant Fishron Ritual
 		}
 	}
 }
