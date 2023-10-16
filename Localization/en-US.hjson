@@ -324,6 +324,9 @@ Mods: {
 			IceTrident.DisplayName: Ice Trident
 			CrimsonPaladinSpike.DisplayName: Crimson Paladin Spike
 			PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
+			ArcticPaw.DisplayName: Arctic Paw
+			Blizzard.DisplayName: Blizzard
+			CrystalShard.DisplayName: Crystal Shard
 		}
 	}
 }

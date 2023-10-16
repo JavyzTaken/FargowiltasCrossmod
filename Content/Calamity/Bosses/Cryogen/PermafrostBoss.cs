@@ -133,7 +133,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     if (Timer >= 200)
                     {
                         Timer = 0;
-                        Attack = 1;
+                        Attack = 3;
                     }
                 }
                 if (Attack == 1)
@@ -171,7 +171,49 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                     }
                 }
-                
+                if (Attack == 2)
+                {
+                    Timer++;
+                    if (Timer == 1 && DLCUtils.HostCheck) 
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai0: 2);
+                    if (Timer < 60)
+                    {
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 1, 0.03f);
+                    }
+                    if (Timer == 60)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/SCalSounds/SCalDash"), NPC.Center);
+                        NPC.velocity = toTarget * 30;
+                    }
+                    if (Timer > 60 && Timer < 160)
+                    {
+                        if (Timer % 5 == 0 && DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.Next(2, 5)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ArcticPaw>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 30, 0.03f);
+                    }
+                    if (Timer == 160)
+                    {
+                        Timer = 0;
+                        Attack = 0;
+                    }
+                }
+                if (Attack == 3)
+                {
+                    float angle = Main.rand.NextFloat(0, MathHelper.TwoPi);
+                    if (DLCUtils.HostCheck && Timer == 0)
+                    {
+                        Vector2 off = new Vector2(0, 1700).RotatedBy(angle);
+                        off.Y /= 1.5f;
+                        Vector2 pos = target.Center + off;
+                        
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, (target.Center - pos).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<Blizzard>(), 0, 0);
+                    }
+                    Timer++;
+                    if (Timer >= 60)
+                    {
+                        Timer = 0;
+                        Attack = 0;
+                    }
+                }
             }
             void Movement( Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
             {
