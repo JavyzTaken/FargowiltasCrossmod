@@ -21,6 +21,7 @@ Features several configs to customize your Fargo's/Calamity cross-mod experience
 
 Latest Update: v1.0.3.1
 
+New icon
 Fixed Hive Mind and Slime God not despawning properly
 Fixed Medallion of the Desert not summoning Nuisances
 Fixed Dune Splicers spawning abnormally in the Sunken Sea
