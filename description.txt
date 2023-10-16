@@ -19,40 +19,62 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
-Latest Update: v1.0.1.1
+Latest Update: v1.0.3.1
 
--More multiplayer sync improvements (difficulty modes should properly stay enabled in multiplayer now)
--Increased the health of Eternity Hive Mind and Perforators 
--Increased the health of Eternity-Death Skeletron
--Increased the health of Eternity-Death Deerclops
--Made Old Lord Claymore and Bladecrest Oathsword not affected by Tungsten Enchant because it broke the weapons
--Made Executioner's Blade not affected by Mythril Enchant because it broke the weapons
--Fixed description of the difficulty modes
+New icon
+Fixed Hive Mind and Slime God not despawning properly
+Fixed Medallion of the Desert not summoning Nuisances
+Fixed Dune Splicers spawning abnormally in the Sunken Sea
+Improvements to Slime God multiplayer sync
 
-Previous Update: v1.0.1
+Previous Update: v1.0.3
 
--Fixed several multiplayer desync issues and problems
--Berserker Soul now properly requires Reaper Tooth Necklace and gives its effects
--Perforators now gives the Low Ground debuff
--Doubled maximum distance of Crabulon Low Ground debuff 
--Fixed Deviantt's giant axe attack not working as intended
+Added full Eternity rework for Slime God
 
--Eternity Desert Scourge:
-Added a general pierce damage resist to Desert Scourge
-Buffed Desert Scourge's base health from 3500 to 3800 
+Eternity Desert Scourge:
+-Added new attack
+-Increased base health to 4800
+-Decreased severity of pierce resistance
+-Pierce resistance no longer applies to the first hit of weapons with finite pierce
 
--Eternity Crabulon: 
-Added a crab shroom trail behind Crabulon during the charge attack 
+Eternity Hive Mind:
+-Creeps towards your position while spawning
+-Immune while spawning
+-Tripled health of initial Dank Creepers
+-Dash towards player accelerates
+-Heart doesn't shoot arcing projectiles while hive is doing the dash towards player
+-Increased startup time for teleport
+-Reworked spin attack
+-Spin attack starts occuring immediately when boss is moving
 
--Increased the delay between Eternity-Death King Slime jewel attacks
+Tweaked and standardized health of Eternity Calamity bosses
+Boss Rush vanilla bosses are now Fargo hyper moded instead of Malice-Eternity AI
+Reduced Yharon and Boss Rush HPs
+Reduced Wall of Flesh HP
+Increased Mutant HP
+Eternity-Death Skeletron now teleports a lot during Dungeon Guardian phase
+Eternity Large Perforator drops less gold
+Tweaked Skeletron head and hand health and moved Skeletron health changes to Balance config
+Fixed Golem Head and its projectiles not dealing damage 
+Removed Eternity-Death Moon Lord rogue phase until bugs are solved. Rogue can now deal damage to Solar phase
+Added anti-cheese AI to Crabulon and Perforators
 
--Eternity Perforators: 
-Added a passive ichor rain between attacks
-Removed Perforator Hive contact damage during preparation for slam attack
-Adjusted dust telegraph for slam attack
-Extended duration of spike rain attack and changed the hive's movement during it to sweep across the screen horizontally
-Added peripheral ichor shots during hive's ichor blob shake attack
-Perforator ichor blobs fall through platforms
-Added occasional ichor rain shots during the hive's state of not attacking
-Adjusted speed of small worm retreating to hive
-Fixed tooth balls not being visible and improved their visual clarity
+Added Tim's Concoction drops for Calamity potions
+Added crate drops for all Pre-Moon Lord Calamity bosses
+Added mutant versions of all cal boss summons and added summon items for bosses that dont have one
+-mutant sells these summons
+-all cal summons are now consumable and stack up to 9999
+-you get a free boss summon item when summoning a cal boss in emode
+
+Added balance changes for Shadowspec items
+Reduced effectiveness of tungsten enchantment on true melee weapons
+Reduces effectiveness of mythril enchantment on rogue weapons
+Reduced effectiveness of orichalcum enchantment
+Removed Daawnlight Spirit Origin from Sniper Soul
+Changed the recipe of Supreme Bait Tackle Box Fishing Station so it can be included in trawler soul without requiring the player to get 2 lavaproof tackle bags
+Changed the recipe of Fungal Symbiote
+Changed recipe of Angel Treads to use Zephyr Boots instead of Terraspark Boots and fixed the Aeolus Boots recipe to properly take Angel Treads over Zephyr Boots
+Blacklisted some broken items from Adamantite Enchant
+Tin Enchantment effect disables Daawnlight Spirit Origin effect 
+Fixed sandstorm enemy spam and reduced pigron spawnrates in the sulphur sea
+Ichor Spear no longer drops in pre hardmode

@@ -93,6 +93,11 @@ Mods: {
 						Disabling this makes Calamity difficulties take priority over Eternity.
 						'''
 				}
+
+				MutantDLC: {
+					Tooltip: ""
+					Label: Mutant D L C
+				}
 			}
 		}
 

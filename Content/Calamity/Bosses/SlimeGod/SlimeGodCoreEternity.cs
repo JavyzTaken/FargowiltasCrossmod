@@ -401,6 +401,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         }
                     }
                     attack = Main.rand.NextFromCollection(AttackCycle);
+                    npc.netUpdate = true;
+                    NetSync(npc);
                 }
             }
             void MettatonHeart()
@@ -611,6 +613,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             }
                         }
                     }
+                    NetSync(npc);
+                    npc.netUpdate = true;
                     SoundEngine.PlaySound(BigShotSound, npc.Center);
                     timer = 300;
                 }

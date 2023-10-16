@@ -101,6 +101,7 @@ using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.DLCCalamityConfig;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalNPCChanges : GlobalNPC
     {
@@ -589,16 +590,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.NPCType<FusionFeeder>(),
             ModContent.NPCType<MantisShrimp>()
         };
-        [JITWhenModsEnabled("CalamityMod")]
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
+            if (!ModCompatibility.Calamity.Loaded)
+            {
+                return;
+            }
+            
             LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(PostDog);
             LeadingConditionRule emodeRule = new(new EModeDropCondition());
             LeadingConditionRule pMoon = new LeadingConditionRule(new Conditions.PumpkinMoonDropGatingChance());
             LeadingConditionRule fMoon = new LeadingConditionRule(new Conditions.FrostMoonDropGatingChance());
             LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
             LeadingConditionRule hardmode = new LeadingConditionRule(Condition.Hardmode.ToDropCondition(ShowItemDropInUI.Always));
-
+            
             #region Crates
             if (npc.type == ModContent.NPCType<DesertScourgeHead>())
             {
@@ -636,12 +642,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
             }
+            
             Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
             LeadingConditionRule levidroprule = npcLoot.DefineConditionalDropSet(what);
             if (npc.type == ModContent.NPCType<Leviathan>() || npc.type == ModContent.NPCType<Anahita>())
             {
                 levidroprule.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ItemID.OceanCrateHard, 1, 5, 5, 1));
             }
+            
             if (npc.type == ModContent.NPCType<AstrumAureus>())
             {
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AstralCrate>(), 1, 5, 5));
@@ -654,13 +662,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 emodeRule.OnSuccess(ItemDropRule.Common(ItemID.GoldenCrateHard, 1, 5, 5));
             }
-            LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHead.ShouldNotDropThings(info.npc));
+            bool AstrumDeusHeadShouldNotDropThings(NPC npc) //this being needed is crazy (jit exception when cal not loaded otherwise)
+            {
+                if (npc.Calamity().newAI[0] != 0f)
+                {
+                    if (CalamityWorld.death || BossRushEvent.BossRushActive)
+                    {
+                        return npc.Calamity().newAI[0] != 3f;
+                    }
+
+                    return false;
+                }
+                return true;
+            }
+            LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
             if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
                 lastWorm.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ModContent.ItemType<AstralCrate>(), 1, 5, 5, 1));
             }
+            
             #endregion Crates
+            
             #region MasterModeDropsInRev
+            
             if (npc.type == NPCID.DD2DarkMageT3)
             {
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DarkMageMasterTrophy));
@@ -806,7 +830,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordMasterTrophy));
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordPetItem, 4));
             }
+            
             #endregion MasterModeDropsInRev
+            
             #region PreHM progression break fixes
             LeadingConditionRule PreHMNotBalanced = new LeadingConditionRule(CalamityConditions.PreHardmodeAndNotBalance.ToDropCondition(ShowItemDropInUI.Always));
             if (npc.type == NPCID.WyvernHead)
@@ -983,9 +1009,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     pool[NPCID.PigronHallow] = 0f;
                 }
             }
-            if (spawnInfo.Player.Calamity().ZoneSunkenSea)
+            if (!Main.hardMode && spawnInfo.Player.Calamity().ZoneSunkenSea)
             {
                 pool[NPCID.Mimic] = 0f;
+                pool[NPCID.DuneSplicerHead] = 0f;
             }
         }
         public override bool InstancePerEntity => true;

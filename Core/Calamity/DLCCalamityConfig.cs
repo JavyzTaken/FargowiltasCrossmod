@@ -21,5 +21,8 @@ namespace FargowiltasCrossmod.Core.Calamity
         [DefaultValue(true)] // This sets the configs default value.
         public bool BalanceRework;
 
+        [DefaultValue(true)] // This sets the configs default value.
+        public bool MutantDLC;
+
     }
 }

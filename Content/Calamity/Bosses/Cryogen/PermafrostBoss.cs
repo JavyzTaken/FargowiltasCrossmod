@@ -19,7 +19,7 @@ using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Utils;
-
+/*
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -230,3 +230,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
+*/
