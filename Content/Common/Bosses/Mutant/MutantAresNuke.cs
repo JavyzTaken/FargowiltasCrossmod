@@ -18,6 +18,8 @@ using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class MutantAresNuke : MutantNuke
     {
         public override string Texture => "CalamityMod/Projectiles/Boss/AresGaussNukeProjectile";

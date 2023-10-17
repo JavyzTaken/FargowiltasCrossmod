@@ -17,9 +17,12 @@ using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework.Graphics;
 using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantSpearSpin : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Melee/Spears/GildedProboscisProj";

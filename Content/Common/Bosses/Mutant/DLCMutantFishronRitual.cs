@@ -11,9 +11,12 @@ using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantFishronRitual : ModProjectile
     {
         public override string Texture => "FargowiltasSouls/Content/Projectiles/Masomode/FishronRitual";

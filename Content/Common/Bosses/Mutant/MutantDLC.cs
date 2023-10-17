@@ -23,11 +23,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     public class MutantDLC : GlobalNPC
     {
         public override bool InstancePerEntity => true;
-        private static bool ShouldDoDLC()
+        private static bool Thorium => ModCompatibility.ThoriumMod.Loaded;
+        private static bool Calamity => ModCompatibility.Calamity.Loaded;
+        private static bool ShouldDoDLC 
         {
-            return ModCompatibility.Calamity.Loaded;
+            get => Calamity;
         }
-        public override bool AppliesToEntity(NPC npc, bool lateInstantiation) => npc.type == ModContent.NPCType<MutantBoss>() && DLCCalamityConfig.Instance.MutantDLC && ShouldDoDLC();
+        public override bool AppliesToEntity(NPC npc, bool lateInstantiation) => npc.type == ModContent.NPCType<MutantBoss>() && ShouldDoDLC  && DLCCalamityConfig.Instance.MutantDLC;
 
         public static void ManageMusic(NPC npc)
         {
@@ -71,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
         public override bool PreAI(NPC npc)
         {
-            if (!ShouldDoDLC())
+            if (!ShouldDoDLC)
             {
                 return true;
             }
@@ -88,22 +90,29 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             switch (attackChoice) //attack reroutes
             {
                 case 4:
-                    DLCAttackChoice = DLCAttack.PBGDrift;
-                    npc.netUpdate = true;
+                    if (Calamity)
+                    {
+                        DLCAttackChoice = DLCAttack.PBGDrift;
+                        npc.netUpdate = true;
+                    }
                     break;
 
                 case 33:
-                    DLCAttackChoice = DLCAttack.PrepareAresNuke;
-                    npc.netUpdate = true;
+                    if (Calamity)
+                    {
+                        DLCAttackChoice = DLCAttack.PrepareAresNuke;
+                        npc.netUpdate = true;
+                    }
                     break;
             }
             switch (attackChoice) //additions to normal attacks
             {
                 case 38:
                 case 30:
-                    CalamityFishron(); break;
+                    if (Calamity) CalamityFishron(); break;
             }
             #region Attack Additions
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void CalamityFishron()
             {
                 const int fishronDelay = 3;
@@ -359,6 +368,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             #endregion
             #region Phase 1 Attacks
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void PBGDrift()
             {
                 if (!AliveCheck(player))
@@ -393,6 +403,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 Timer++;
             }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void PBGDash()
             {
                 const int WindupTime = 30;
@@ -434,6 +445,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             #endregion
             #region Phase 2 Attacks
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void PrepareAresNuke()
             {
                 if (!AliveCheck(player))
@@ -443,7 +455,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 targetPos.X += 400 * (npc.Center.X < targetPos.X ? -1 : 1);
                 targetPos.Y -= 400;
                 */
-                int nukeTime = (Counter > 0 ? 80 : 180);
+                int nukeTime = (Counter > 0 ? 90 : 180);
                 if (Timer == 0)
                 {
                     MutantBoss mutantBoss = (npc.ModNPC as MutantBoss);
@@ -525,6 +537,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     //NPC.TargetClosest();
                 }
             }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void AresNuke()
             {
                 if (!AliveCheck(player))

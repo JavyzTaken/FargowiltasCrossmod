@@ -18,9 +18,12 @@ using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantSpearDash : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Melee/Spears/GildedProboscisProj";
