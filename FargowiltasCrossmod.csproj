@@ -12,8 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Libraries\Fargowiltas.dll" />
-    <Reference Include="Libraries\FargowiltasSouls.dll" />
+	  <Reference Include="Libraries\FargowiltasSouls.dll" />
 	<Reference Include="Libraries\CalamityMod.dll" />
+	  <Reference Include="Libraries\BossChecklist.dll" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\EternityDeathIcon.png" />

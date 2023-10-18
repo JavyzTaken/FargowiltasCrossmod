@@ -33,4 +33,10 @@ public static class ModCompatibility
         public static Mod Mod => ModLoader.GetMod(Name);
         public static bool InfernumDifficulty => (bool)Mod.Call("GetInfernumActive");
     }
+    public static class BossChecklist
+    {
+        public const string Name = "BossChecklist";
+        public static bool Loaded => ModLoader.HasMod(Name);
+        public static Mod Mod => ModLoader.GetMod(Name);
+    }
 }

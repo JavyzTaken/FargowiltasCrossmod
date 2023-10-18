@@ -10,6 +10,8 @@ using System.IO;
 using Terraria.Graphics.Effects;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod;
 
@@ -19,6 +21,23 @@ public class FargowiltasCrossmod : Mod
     public override void Load()
     {
         Instance = this;
+
+        #region Boss Checklist edits
+        if (ModCompatibility.Calamity.Loaded && ModCompatibility.BossChecklist.Loaded)
+        {
+            ref Dictionary<string, float> soulsChecklistValues = ref (ModCompatibility.SoulsMod.Mod as FargowiltasSouls.FargowiltasSouls).BossChecklistValues;
+            //cal values are internal. thanks cal!
+            soulsChecklistValues["AbomBoss"] = 22.6f;
+            soulsChecklistValues["MutantBoss"] = 25.9f;
+            foreach (string entry in soulsChecklistValues.Keys)
+            {
+                if (entry.Contains("Champion"))
+                {
+                    soulsChecklistValues[entry] += 1; //ends up being 19.x, aka post provi
+                }
+            }
+        }
+        #endregion
     }
     public override void Unload()
     {
@@ -54,7 +73,7 @@ public class FargowiltasCrossmod : Mod
         {
             SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
         }
-        
+
     }
 
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
