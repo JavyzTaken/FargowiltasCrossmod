@@ -7,15 +7,9 @@ using System.Collections.Generic;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using System.IO;
-using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasSouls;
-using System.Reflection;
-using Terraria;
-using System.Linq;
-using CalamityMod.Items.Weapons.Ranged;
-using CalamityMod.Items.Weapons.Magic;
-using CalamityMod.Items.Weapons.DraedonsArsenal;
-using FargowiltasSouls.Content.Projectiles;
+using Terraria.Graphics.Effects;
+using FargowiltasCrossmod.Content.Common.Sky;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 
 namespace FargowiltasCrossmod;
 
@@ -56,6 +50,11 @@ public class FargowiltasCrossmod : Mod
         {
             pierceResistExceptionList.Add(ProjectileID.FinalFractal);
         }
+        if (MutantDLC.ShouldDoDLC)
+        {
+            SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
+        }
+        
     }
 
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);

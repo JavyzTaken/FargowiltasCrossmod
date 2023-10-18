@@ -335,6 +335,9 @@ Mods: {
 			MutantAresNuke.DisplayName: Mutant Ares Nuke
 			MutantAresBomb.DisplayName: Mutant Ares Bomb
 			DLCMutantFishronRitual.DisplayName: D L C Mutant Fishron Ritual
+			MutantSlimeGod.DisplayName: Mutant Slime God
+			DLCBloomLine.DisplayName: D L C Bloom Line
+			MutantSCal.DisplayName: Mutant S Cal
 		}
 	}
 }

@@ -1,23 +1,19 @@
-﻿using CalamityMod.NPCs.TownNPCs;
-using FargowiltasSouls;
+﻿using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Primitives;
 using FargowiltasSouls.Common.Graphics.Shaders;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.Graphics;
 using Terraria;
 using Terraria.ModLoader;
-using FargowiltasSouls.Content.Bosses.Lifelight;
 using System.IO;
 using Terraria.DataStructures;
 using Terraria.ID;
 using CalamityMod.NPCs.SlimeGod;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
@@ -56,31 +52,51 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write7BitEncodedInt(npc);
+            writer.Write7BitEncodedInt(owner);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            npc = reader.Read7BitEncodedInt();
+            owner = reader.Read7BitEncodedInt();
         }
-        int npc;
+        int owner;
+        bool npc = true;
         public override void OnSpawn(IEntitySource source)
         {
             if (source is EntitySource_Parent parent && parent.Entity is NPC parentNpc && (parentNpc.type == ModContent.NPCType<CrimulanPaladin>() || parentNpc.type == ModContent.NPCType<EbonianPaladin>()))
             {
-                npc = parentNpc.whoAmI;
+                owner = parentNpc.whoAmI;
                 Projectile.rotation = Projectile.velocity.ToRotation();
                 Crimson = parentNpc.type == ModContent.NPCType<CrimulanPaladin>();
+                npc = true;
+            }
+            else if (source is EntitySource_Parent parent2 && parent2.Entity is Projectile parentProj && parentProj.type == ModContent.ProjectileType<MutantSlimeGod>())
+            {
+                owner = parentProj.whoAmI;
+                Crimson = parentProj.ai[0] == 1;
+                npc = false;
             }
         }
 
         public override void AI()
         {
-            NPC parent = FargoSoulsUtil.NPCExists(npc);
-            if (parent != null)
+            if (npc)
             {
-                Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
-                Projectile.rotation = Projectile.velocity.ToRotation();
+                NPC parent = FargoSoulsUtil.NPCExists(owner);
+                if (parent != null)
+                {
+                    Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
+                    Projectile.rotation = Projectile.velocity.ToRotation();
+                }
+            }
+            else
+            {
+                Projectile parent = FargoSoulsUtil.ProjectileExists(owner);
+                if (parent != null)
+                {
+                    Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
+                    Projectile.rotation = Projectile.velocity.ToRotation();
+                }
             }
             Length = maxLength * Math.Min((float)Math.Pow(Timer / 60f, 0.3f), 1f);
             Timer++;

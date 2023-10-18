@@ -1,4 +1,7 @@
 ﻿using CalamityMod;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
+using FargowiltasCrossmod.Content.Common.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
@@ -14,6 +17,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -25,31 +29,83 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         public override bool InstancePerEntity => true;
         private static bool Thorium => ModCompatibility.ThoriumMod.Loaded;
         private static bool Calamity => ModCompatibility.Calamity.Loaded;
-        private static bool ShouldDoDLC 
+        public static bool ShouldDoDLC 
         {
             get => Calamity;
         }
-        public override bool AppliesToEntity(NPC npc, bool lateInstantiation) => npc.type == ModContent.NPCType<MutantBoss>() && ShouldDoDLC  && DLCCalamityConfig.Instance.MutantDLC;
+        public override bool AppliesToEntity(NPC npc, bool lateInstantiation) => npc.type == ModContent.NPCType<MutantBoss>() && ShouldDoDLC;
 
-        public static void ManageMusic(NPC npc)
+        private bool PlayStoria = false;
+        public void ManageMusicAndSky(NPC npc)
         {
             
             if (npc.localAI[3] >= 3 || npc.ai[0] == 10) //p2 or phase transition
             {
-                npc.ModNPC.Music = MusicLoader.GetMusicSlot("FargowiltasCrossmod/Assets/Music/IrondustRePrologue");
+                
+                if (npc.life < npc.lifeMax / 2 && npc.ai[0] != 10) //play storia under half health
+                {
+                    PlayStoria = true;
+                }
+                if (PlayStoria && ModLoader.TryGetMod("FargowiltasMusic", out Mod musicMod) && musicMod.Version >= Version.Parse("0.1.1"))
+                {
+                    if (npc.ai[0] < 0) //desperation
+                    {
+                        npc.ModNPC.Music = MusicLoader.GetMusicSlot(musicMod, "Assets/Music/StoriaShort");
+                    }
+                    else
+                    {
+                        npc.ModNPC.Music = MusicLoader.GetMusicSlot(musicMod, "Assets/Music/Storia");
+                    }
+                }
+                else
+                {
+                    npc.ModNPC.Music = MusicLoader.GetMusicSlot("FargowiltasCrossmod/Assets/Music/IrondustRePrologue");
+                }
             }
-            else
+            else //p1
             {
                 
             }
+            if (DLCAttackChoice == DLCAttack.Calamitas)
+            {
+                ManageMusicFade(true);
+            }
+            else
+            {
+                ManageMusicFade(false);
+            }
+
+            void ManageMusicFade(bool fade)
+            {
+                if (fade)
+                {
+                    Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0, 0.05f);
+                }
+                else
+                {
+                    Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 1, 0.01f);
+                }
+            }
+            /*
+            if (npc.ai[0] == 10)
+            {
+                if (!SkyManager.Instance["FargowiltasCrossmod:MutantDLC"].IsActive())
+                    SkyManager.Instance.Activate("FargowiltasCrossmod:MutantDLC");
+            }
+
+            if (SkyManager.Instance["FargowiltasSouls:MutantBoss"].IsActive())
+                SkyManager.Instance.Deactivate("FargowiltasSouls:MutantBoss");
+            */
         }
         public enum DLCAttack
         {
-            PBGDrift = -2,
-            PBGDash = -1,
+            BumbleDrift = -2,
+            BumbleDash = -1,
             None = 0,
             PrepareAresNuke,
-            AresNuke
+            AresNuke,
+            SlimeGodSlam,
+            Calamitas
         };
         public DLCAttack DLCAttackChoice = 0;
         public Vector2 LockVector1;
@@ -70,7 +126,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             Timer = binaryReader.Read();
             Counter = binaryReader.Read();
         }
-
         public override bool PreAI(NPC npc)
         {
             if (!ShouldDoDLC)
@@ -89,18 +144,32 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             switch (attackChoice) //attack reroutes
             {
-                case 4:
+                case 4: //straight dash spam
                     if (Calamity)
                     {
-                        DLCAttackChoice = DLCAttack.PBGDrift;
+                        DLCAttackChoice = DLCAttack.BumbleDrift;
                         npc.netUpdate = true;
                     }
                     break;
 
-                case 33:
+                case 20: //eoc star
+                    if (Calamity)
+                    {
+                        DLCAttackChoice = DLCAttack.Calamitas;
+                        npc.netUpdate = true;
+                    }
+                    break;
+                case 33: //nuke
                     if (Calamity)
                     {
                         DLCAttackChoice = DLCAttack.PrepareAresNuke;
+                        npc.netUpdate = true;
+                    }
+                    break;
+                case 35: //slime rain
+                    if (Calamity)
+                    {
+                        DLCAttackChoice = DLCAttack.SlimeGodSlam;
                         npc.netUpdate = true;
                     }
                     break;
@@ -136,17 +205,25 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 attackChoice = 6; //p1 "while dashing", has very few effects
                 npc.ai[1]--; //negate normal timer
             }
-            if (DLCAttackChoice > DLCAttack.None) //p2
+            else if (DLCAttackChoice > DLCAttack.None) //p2
             {
                 attackChoice = 28; //empty normal attack
             }
             switch (DLCAttackChoice) //new attacks
             {
-                case DLCAttack.PBGDrift: PBGDrift(); break;
-                case DLCAttack.PBGDash: PBGDash(); break;
+                case DLCAttack.BumbleDrift: BumbleDrift(); break;
+                case DLCAttack.BumbleDash: BumbleDash(); break;
                 case DLCAttack.PrepareAresNuke: PrepareAresNuke(); break;
                 case DLCAttack.AresNuke: AresNuke(); break;
-                //case DLCAttack.PBGDash: PBGDash() break;
+                case DLCAttack.SlimeGodSlam: SlimeGodSlam(); break;
+                case DLCAttack.Calamitas: Calamitas(); break;
+                default: //reset variables
+                    {
+                        Timer = 0;
+                        Counter = 0;
+                    }
+                    break;
+
             }
             return base.PreAI(npc);
 
@@ -366,10 +443,16 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     text += f.ToString() + " ";
                 Main.NewText($"after: {text}");*/
             }
+            void Reset()
+            {
+                DLCAttackChoice = DLCAttack.None;
+                Timer = 0;
+                Counter = 0;
+            }
             #endregion
             #region Phase 1 Attacks
             [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-            void PBGDrift()
+            void BumbleDrift()
             {
                 if (!AliveCheck(player))
                     return;
@@ -398,13 +481,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 if (Timer > WindupTime + DriftTime)
                 {
                     Timer = 0;
-                    DLCAttackChoice = DLCAttack.PBGDash;
+                    DLCAttackChoice = DLCAttack.BumbleDash;
                     return;
                 }
                 Timer++;
             }
             [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-            void PBGDash()
+            void BumbleDash()
             {
                 const int WindupTime = 30;
 
@@ -435,8 +518,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 if (Timer > WindupTime + 30)
                 {
-                    DLCAttackChoice = 0;
-                    Timer = 0;
+                    Reset();
                     npc.ai[0] = 5;
                     npc.ai[2] = 5;
                     return;
@@ -589,13 +671,143 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     
                 }
             }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+            void SlimeGodSlam()
+            {
+                if (!AliveCheck(player))
+                    return;
+                ref float side = ref npc.ai[2];
+                if (Counter == 0 && Timer == 0)
+                {
+                    SoundEngine.PlaySound(SlimeGodCoreEternity.ExitSound, npc.Center);
+                    side = Math.Sign(npc.Center.X - player.Center.X);
+                }
+                float distance = 500f;
+                Vector2 desiredPos = player.Center + Vector2.UnitX * side * distance - Vector2.UnitY * 100;
+                Movement(desiredPos, 1.2f);
+                if (Timer == 30)
+                {
+                    SoundEngine.PlaySound(SlimeGodCoreEternity.BigShotSound, npc.Center);
+                    if (DLCUtils.HostCheck)
+                    {
+                        float random = (Main.rand.NextFloat() - 0.5f) / 3;
+                        for (int i = -8; i < 2; i++)
+                        {
+                            float iX = i + 0.5f;
+                            float xModifier = 6f;
+                            float speedX = (iX - random) * xModifier * side;
+                            float speedY = -20;
+
+                            int crimson = i % 2 == 0 ? 1 : -1; //every other slime is crimulean, every other is ebonian
+                            crimson = (int)(crimson * side);
+
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, speedX * Vector2.UnitX + speedY * Vector2.UnitY, ModContent.ProjectileType<MutantSlimeGod>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 1f), 1f, Main.myPlayer, crimson);
+                        }
+                    }
+                    side = -side; //switch side
+                }
+                if (++Timer >= MutantSlimeGod.SlamTime)
+                {
+                    Timer = 0;
+                    if (++Counter >= 3)
+                    {
+                        ChooseNextAttack(11, 16, 19, 20, WorldSavingSystem.MasochistModeReal ? 26 : 29, 31, 33, 37, 39, 41, 42, 45);
+                        Reset();
+                        return;
+                    }
+                }
+            }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+            void Calamitas()
+            {
+                const int Startup = 20;
+                const int Distance = 450;
+                int brimstoneMonster = -1;
+                if (ModContent.TryFind(ModCompatibility.Calamity.Name, "BrimstoneMonster", out ModProjectile monster))
+                {
+                    brimstoneMonster = monster.Type;
+                }
+                
+                if (Timer < Startup)
+                {
+                    Vector2 targetPos = player.Center + Vector2.UnitX * Math.Sign(npc.Center.X - player.Center.X) * Distance;
+                    Movement(targetPos, 1.2f);
+                }
+                if (Timer == Startup)
+                {
+                    if (DLCUtils.HostCheck)
+                    {
+                        MutantBoss mutantBoss = (npc.ModNPC as MutantBoss);
+                        Vector2 pos = FargoSoulsUtil.ProjectileExists(mutantBoss.ritualProj, ModContent.ProjectileType<MutantRitual>()) == null ? npc.Center : Main.projectile[mutantBoss.ritualProj].Center;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            Vector2 offset = Vector2.UnitX.RotatedBy(i * MathHelper.TwoPi / 4);
+                            Vector2 targetPos = pos + (offset * 1300f);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), targetPos, targetPos.DirectionTo(player.Center), brimstoneMonster, FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, 0f, 2f, 0f);
+                        }
+                        
+                    }
+                }
+                if (Timer > Startup)
+                {
+                    Vector2 dir = Utils.SafeNormalize(npc.Center - player.Center, -Vector2.UnitY);
+                    Vector2 targetPos = player.Center + dir * Distance;
+                    Movement(targetPos, 1.2f);
+
+                    const int CalamitasTime = 80;
+                    const int TelegraphTime = 40;
+                    const int Attacks = 3;
+                    if ((Timer - Startup) % CalamitasTime == CalamitasTime - 1)
+                    {
+                        
+                        int calamiti = 8;
+
+                        int[] rotations = Enumerable.Range(1, calamiti).ToArray();
+                        rotations = rotations.OrderBy(a => Main.rand.Next()).ToArray(); //randomize list
+                        Vector2 random = Main.rand.NextVector2Unit();
+                        for (int i = 0; i < calamiti; i++)
+                        {
+                            int spawnDistance = Main.rand.Next(500, 700);
+                            int aimDistance = Main.rand.Next(80, 400);
+
+                            float spawnRot = MathHelper.TwoPi * ((float)i / calamiti);
+                            Vector2 spawnPos = player.Center + random.RotatedBy(spawnRot) * spawnDistance;
+                            float aimRot = (float)rotations[i] / calamiti;
+                            Vector2 predict = player.velocity * TelegraphTime / 2;
+                            Vector2 aimPos = player.Center + predict + aimRot.ToRotationVector2() * aimDistance;
+                            Vector2 aim = spawnPos.DirectionTo(aimPos);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, aim, ModContent.ProjectileType<DLCBloomLine>(), 0, 0, Main.myPlayer, 1, npc.whoAmI, TelegraphTime + 10);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, aim, ModContent.ProjectileType<MutantSCal>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, TelegraphTime);
+                        }
+                    }
+                    if (Timer > Startup + (CalamitasTime * Attacks) + 40)
+                    {
+                        
+                        foreach (Projectile projectile in Main.projectile.Where(p => p != null && p.active && p.type == brimstoneMonster))
+                        {
+                            SoundEngine.PlaySound(SoundID.Item14, projectile.Center);
+                            for (int i = 0; i < 30; i++)
+                            {
+                                Vector2 pos = projectile.Center + Main.rand.NextVector2Circular(projectile.width / 2, projectile.height / 2);
+                                Dust.NewDust(pos, 1, 1, DustID.LifeDrain, 0f, 0f, 100, default(Color), 2f);
+                            }
+                            projectile.Kill();
+                        }
+                        
+                        Reset();
+                        ChooseNextAttack(11, 13, 16, 21, 26, 29, 31, 33, 35, 37, 41, 44, 45);
+                        return;
+                    }
+                }
+                Timer++;
+            }
             #endregion
 
         }
 
         public override void PostAI(NPC npc)
         {
-            ManageMusic(npc);
+            ManageMusicAndSky(npc);
             if (DLCAttackChoice < DLCAttack.None) //p1, negate "while dashing" code that makes him face his velocity
             {
                 npc.direction = npc.spriteDirection = npc.Center.X < Main.player[npc.target].Center.X ? 1 : -1;

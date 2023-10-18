@@ -78,7 +78,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int phase;
         public bool DoSlam = false;
 
-        public float curMusicFade;
         
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -216,10 +215,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
 
             ManageMusicFade(attack == 22);
-            if (attack != 22)
-            {
-                curMusicFade = Main.musicFade[Main.curMusic];
-            }
 
             ai[1]++;
             if (ai[1] >= 300)

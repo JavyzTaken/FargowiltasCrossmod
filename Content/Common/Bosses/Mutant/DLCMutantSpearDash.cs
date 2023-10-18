@@ -95,7 +95,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             NPC mutant = Main.npc[(int)Projectile.ai[0]];
             MutantDLC mutantDLC = mutant.GetGlobalNPC<MutantDLC>();
-            if (mutant.active && mutant.type == ModContent.NPCType<MutantBoss>() && (mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.PBGDash))
+            if (mutant.active && mutant.type == ModContent.NPCType<MutantBoss>() && (mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.BumbleDash))
             {
                 if (mutantDLC.Timer < 30)
                 {
