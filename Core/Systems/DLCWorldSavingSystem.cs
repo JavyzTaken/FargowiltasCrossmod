@@ -10,8 +10,16 @@ namespace FargowiltasCrossmod.Core.Systems
 {
     public class DLCWorldSavingSystem : ModSystem
     {
-        public static bool EternityRev { get; set; }
-        public static bool EternityDeath { get; set; }
+        private static bool eternityRev;
+        private static bool eternityDeath;
+        public static bool EternityRev {
+            get => eternityRev; 
+            set => eternityRev = value; 
+        }
+        public static bool EternityDeath { 
+            get => eternityDeath; 
+            set => eternityDeath = value; 
+        }
         public static bool E_EternityRev => EternityRev && WorldSavingSystem.EternityMode && DLCCalamityConfig.Instance.EternityPriorityOverRev;
         public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev;
 
