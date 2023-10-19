@@ -78,5 +78,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
             }
         }
+        
     }
 }

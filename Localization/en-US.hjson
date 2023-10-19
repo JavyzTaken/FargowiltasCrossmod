@@ -338,6 +338,8 @@ Mods: {
 			MutantSlimeGod.DisplayName: Mutant Slime God
 			DLCBloomLine.DisplayName: D L C Bloom Line
 			MutantSCal.DisplayName: Mutant S Cal
+			MutantPBG.DisplayName: Mutant P B G
+			MutantAureusSpawn.DisplayName: Mutant Aureus Spawn
 		}
 	}
 }

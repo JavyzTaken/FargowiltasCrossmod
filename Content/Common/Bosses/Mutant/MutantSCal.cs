@@ -23,6 +23,12 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     {
         public static SoundStyle SCalDashSound = new SoundStyle("CalamityMod/Sounds/Custom/SCalSounds/SCalDash", (SoundType)0);
         public override string Texture => "CalamityMod/NPCs/SupremeCalamitas/SupremeShieldTop";
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 10;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
+            base.SetStaticDefaults();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 75;
@@ -50,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             if (timer > telegraphTime)
             {
-                if (Projectile.velocity.Length() < 40)
+                if (Projectile.velocity.Length() < 50)
                 {
                     Projectile.velocity *= 1.2f;
                 }
@@ -65,8 +71,15 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
         public override bool PreDraw(ref Color lightColor)
         {
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Projectile.type]; i++)
+            {
+                float opacity = Projectile.Opacity * ((float)ProjectileID.Sets.TrailCacheLength[Projectile.type] - i) / ProjectileID.Sets.TrailCacheLength[Projectile.type];
+                Vector2 pos = Projectile.oldPos[i];
+                float rot = Projectile.oldRot[i];
+                DrawShield(pos, rot, opacity);
+            }
             //DrawScal(lightColor);
-            DrawShield();
+            DrawShield(Projectile.Center, Projectile.rotation, Projectile.Opacity);
 
             return false;
         }
@@ -89,9 +102,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), new Rectangle?(rectangle), Projectile.GetAlpha(lightColor), 0, origin2, Projectile.scale, effects, 0);
         }
         */
-        private void DrawShield()
+        private void DrawShield(Vector2 center, float rotation, float opacity)
         {
-            float shieldOpacity = Projectile.Opacity;
+            float shieldOpacity = opacity;
             float shieldRotation = Projectile.velocity.ToRotation();
 
             float jawRotation = shieldRotation;
@@ -102,7 +115,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             Color shieldColor = Color.White * shieldOpacity;
             Texture2D shieldSkullTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/SupremeCalamitas/SupremeShieldTop", (AssetRequestMode)2).Value;
             Texture2D shieldJawTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/SupremeCalamitas/SupremeShieldBottom", (AssetRequestMode)2).Value;
-            Vector2 drawPosition = Projectile.Center + Utils.ToRotationVector2(shieldRotation) * 24f - Main.screenPosition;
+            Vector2 drawPosition = center + Utils.ToRotationVector2(shieldRotation) * 24f - Main.screenPosition;
             Vector2 jawDrawPosition = drawPosition;
             SpriteEffects direction = (SpriteEffects)((!(Math.Cos((double)shieldRotation) > 0.0)) ? 2 : 0);
             if ((int)direction == 2)

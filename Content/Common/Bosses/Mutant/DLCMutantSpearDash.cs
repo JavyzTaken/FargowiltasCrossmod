@@ -95,9 +95,10 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             NPC mutant = Main.npc[(int)Projectile.ai[0]];
             MutantDLC mutantDLC = mutant.GetGlobalNPC<MutantDLC>();
-            if (mutant.active && mutant.type == ModContent.NPCType<MutantBoss>() && (mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.BumbleDash))
+            if (mutant.active && mutant.type == ModContent.NPCType<MutantBoss>() && (mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.BumbleDash || mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.BumbleDash2))
             {
-                if (mutantDLC.Timer < 30)
+                int threshold = 30;
+                if (mutantDLC.Timer < threshold)
                 {
                     Player player = Main.player[mutant.target];
                     if (player != null && player.active && !player.dead)
@@ -113,7 +114,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 Projectile.position -= Projectile.velocity;
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(135f);
                 Projectile.Center = mutant.Center + Projectile.velocity;
-                if (mutantDLC.Timer >= 30 && (Projectile.ai[1] <= 0f || WorldSavingSystem.MasochistModeReal) && --Projectile.localAI[0] < 0)
+                if (mutantDLC.Timer >= threshold && (Projectile.ai[1] <= 0f || WorldSavingSystem.MasochistModeReal) && --Projectile.localAI[0] < 0)
                 {
                     if (Projectile.ai[1] == -2)
                     {
