@@ -340,6 +340,7 @@ Mods: {
 			MutantSCal.DisplayName: Mutant S Cal
 			MutantPBG.DisplayName: Mutant P B G
 			MutantAureusSpawn.DisplayName: Mutant Aureus Spawn
+			MutantHolyRay.DisplayName: Mutant Holy Ray
 		}
 	}
 }

@@ -27,6 +27,9 @@ namespace FargowiltasCrossmod.Content.Common.Sky
         private readonly int[] xPos = new int[50];
         private readonly int[] yPos = new int[50];
 
+        private readonly Color ProvidenceColor = new Color(172, 122, 85);
+        private readonly Color AresColor = new Color(154, 164, 174);
+
         public override void Update(GameTime gameTime)
         {
             const float increment = 0.01f;
@@ -82,6 +85,14 @@ namespace FargowiltasCrossmod.Content.Common.Sky
                     case MutantDLC.DLCAttack.Calamitas:
                         ChangeColorIfDefault(Color.Black);
                         break;
+                    case MutantDLC.DLCAttack.Providence:
+                        ChangeColorIfDefault(ProvidenceColor);
+                        break;
+                    case MutantDLC.DLCAttack.PrepareAresNuke:
+                    case MutantDLC.DLCAttack.AresNuke:
+                        ChangeColorIfDefault(AresColor);
+                        break;
+
                 }
 
                 if (intensity > 1f)
