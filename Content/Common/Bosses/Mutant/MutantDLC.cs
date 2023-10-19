@@ -1,5 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.NPCs.ProfanedGuardians;
+using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using FargowiltasCrossmod.Content.Common.Projectiles;
@@ -23,6 +24,7 @@ using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static Humanizer.On;
 using static Mono.CompilerServices.SymbolWriter.CodeBlockEntry;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
@@ -102,6 +104,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
         public enum DLCAttack
         {
+            CryogenP1 = -3,
             BumbleDrift = -2,
             BumbleDash = -1,
             None = 0,
@@ -111,10 +114,19 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             Calamitas,
             BumbleDrift2,
             BumbleDash2,
-            Providence
+            Providence,
+            YharonBH
         };
+        public enum Variant
+        {
+            Vanilla,
+            Calamity
+        }
+        public Variant VariantChoice = 0;
+        public bool FirstFrame = true;
         public DLCAttack DLCAttackChoice = 0;
         public Vector2 LockVector1;
+        public float OldAttackChoice = 0;
         public int Timer = 0;
         public int Counter = 0;
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
@@ -123,6 +135,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             binaryWriter.WriteVector2(LockVector1);
             binaryWriter.Write(Timer);
             binaryWriter.Write(Counter);
+            binaryWriter.Write(OldAttackChoice);
+            binaryWriter.Write(FirstFrame);
         }
 
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
@@ -131,7 +145,10 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             LockVector1 = binaryReader.ReadVector2();
             Timer = binaryReader.Read();
             Counter = binaryReader.Read();
+            OldAttackChoice = binaryReader.Read();
+            FirstFrame = binaryReader.ReadBoolean();
         }
+        
         public override bool PreAI(NPC npc)
         {
             if (!ShouldDoDLC)
@@ -148,9 +165,32 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             ref float attackChoice = ref npc.ai[0];
             //DO NOT TOUCH npc.ai[1] DURING PHASE 1 CUSTOM ATTACKS
 
+            if (OldAttackChoice != attackChoice) //every state switch
+            {
+                FirstFrame = true;
+                npc.netUpdate = true;
+                
+            }
+            else
+            {
+                FirstFrame = false;
+            }
+            OldAttackChoice = attackChoice;
+
             switch (attackChoice) 
             {
                 #region Attack Reroutes
+                case 1: //p1 funny spheres
+                    if (FirstFrame)
+                    {
+                        SwitchVariant();
+                    }
+                    if (VariantChoice == Variant.Calamity)
+                    {
+                        DLCAttackChoice = DLCAttack.CryogenP1;
+                        npc.netUpdate = true;
+                    }
+                    break;
                 case 4: //straight dash spam
                     if (Calamity)
                     {
@@ -158,7 +198,18 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.netUpdate = true;
                     }
                     break;
-
+                case 17: //boundary bullet hell
+                case 39: //okuu spheres p2
+                    if (FirstFrame)
+                    {
+                        SwitchVariant();
+                    }
+                    if (VariantChoice == Variant.Calamity)
+                    {
+                        DLCAttackChoice = DLCAttack.YharonBH;
+                        npc.netUpdate = true;
+                    }
+                    break;
                 case 20: //eoc star
                     if (Calamity)
                     {
@@ -221,6 +272,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             switch (DLCAttackChoice) //new attacks
             {
+                case DLCAttack.CryogenP1: CryogenP1(); break;
                 case DLCAttack.BumbleDrift: BumbleDrift(); break;
                 case DLCAttack.BumbleDash: BumbleDash(); break;
                 case DLCAttack.PrepareAresNuke: PrepareAresNuke(); break;
@@ -230,6 +282,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 case DLCAttack.BumbleDrift2: BumbleDrift2(); break;
                 case DLCAttack.BumbleDash2: BumbleDash2(); break;
                 case DLCAttack.Providence: Providence(); break;
+                case DLCAttack.YharonBH: YharonBH(); break;
                 default: //reset variables
                     {
                         Timer = 0;
@@ -289,8 +342,10 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             bool Phase2Check()
             {
+                
                 if (Main.expertMode && npc.life < npc.lifeMax / 2)
                 {
+                    Reset();
                     if (DLCUtils.HostCheck)
                     {
                         npc.ai[0] = 10;
@@ -303,6 +358,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                     return true;
                 }
+                
                 return false;
             }
             void EdgyBossText(string text) //because it's FUCKING private
@@ -456,6 +512,16 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     text += f.ToString() + " ";
                 Main.NewText($"after: {text}");*/
             }
+            void SwitchVariant()
+            {
+                List<Variant> variantList = new List<Variant>() { Variant.Vanilla };
+                if (Calamity)
+                {
+                    variantList.Add(Variant.Calamity);
+                }
+                variantList.Remove(VariantChoice);
+                VariantChoice = Main.rand.NextFromCollection(variantList);
+            }
             void Reset()
             {
                 DLCAttackChoice = DLCAttack.None;
@@ -500,6 +566,85 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             #endregion
             #region Phase 1 Attacks
+            void CryogenP1()
+            {
+                if (!AliveCheck(player))
+                    return;
+                if (Phase2Check())
+                    return;
+                if (Timer == 40)
+                {
+                    int max = WorldSavingSystem.MasochistModeReal ? 9 : 6;
+                    float speed = WorldSavingSystem.MasochistModeReal ? 10 : 9;
+                    int sign = Counter % 2 == 0 ? 1 : -1;
+                    SpawnSphereRing(max, speed, (int)(0.8 * FargoSoulsUtil.ScaledProjectileDamage(npc.damage)), 1f * sign);
+                    SpawnSphereRing(max, speed, (int)(0.8 * FargoSoulsUtil.ScaledProjectileDamage(npc.damage)), -0.5f * sign);
+                    npc.netUpdate = true;
+
+                    void SpawnSphereRing(int max, float speed, int damage, float rotationModifier, float offset = 0)
+                    {
+                        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+                        float rotation = 2f * (float)Math.PI / max;
+                        int type = ModContent.ProjectileType<MutantSphereRing>();
+                        for (int i = 0; i < max; i++)
+                        {
+                            Vector2 vel = speed * Vector2.UnitY.RotatedBy(rotation * i + offset);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, type, damage, 0f, Main.myPlayer, rotationModifier * npc.spriteDirection, speed);
+                        }
+                        SoundEngine.PlaySound(SoundID.Item84, npc.Center);
+                    }
+                }
+                if (--Timer < 0)
+                {
+                    npc.netUpdate = true;
+                    Timer = 80;
+                    if (++Counter > 4)
+                    {
+                        Reset();
+                        npc.ai[0] = 2;
+                        npc.ai[1] = 0;
+                        npc.ai[2] = 0;
+                        npc.ai[3] = 0;
+                        npc.localAI[0] = 0;
+                        npc.localAI[1] = 0;
+                        //NPC.localAI[2] = 0; //excluded because boundary-sword logic
+                        npc.netUpdate = true;
+                        return;
+                    }
+                    else
+                    {
+                        void FireCryogenThingy(Vector2 velocity)
+                        {
+                            int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, velocity, ModContent.ProjectileType<IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, 0f, 0f, 0f);
+                            if (p.WithinBounds(Main.maxProjectiles))
+                            {
+                                Main.projectile[p].extraUpdates += 2;
+                            }
+                        }
+
+                        SoundEngine.PlaySound(SoundID.Item28, npc.Center);
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = 0; i < 2; i++)
+                            {
+                                Vector2 vel = -npc.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver2);
+                                vel *= 3;
+                                FireCryogenThingy(vel);
+                                Vector2 vel2 = npc.DirectionTo(player.Center).RotatedBy(i * MathHelper.PiOver2 / 3);
+                                vel2 *= 6;
+                                FireCryogenThingy(vel2);
+                            }
+                            for (int i = 0; i < 4; i++)
+                            {
+                                Vector2 vel = Vector2.UnitX.RotatedBy(MathHelper.PiOver4).RotatedBy(MathHelper.PiOver2 * i);
+                                vel *= 30;
+                                FireCryogenThingy(vel);
+                            }
+                        }
+                        
+                    }
+                }
+            }
             [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void BumbleDrift()
             {
@@ -1052,6 +1197,91 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                 }
                 Timer++;
+            }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+            void YharonBH()
+            {
+                void DoFlareDustBulletHell(int attackType, int timer, int projectileDamage, int totalProjectiles, float projectileVelocity, float radialOffset, bool phase2)
+                {
+                    SoundEngine.PlaySound(SoundID.Item20, npc.Center, (SoundUpdateCallback)null);
+                    if (!DLCUtils.HostCheck)
+                    {
+                        return;
+                    }
+                    float aiVariableUsed = Timer;
+                    switch (attackType)
+                    {
+                        case 0:
+                            {
+                                float offsetAngle = 360 / totalProjectiles;
+                                int totalSpaces = totalProjectiles / 5;
+                                int spaceStart = Main.rand.Next(totalProjectiles - totalSpaces);
+                                float ai0 = ((aiVariableUsed % (float)(timer * 2) == 0f) ? 1f : 0f);
+                                int spacesMade = 0;
+                                for (int i = 0; i < totalProjectiles; i++)
+                                {
+                                    if (i >= spaceStart && spacesMade < totalSpaces)
+                                    {
+                                        spacesMade++;
+                                    }
+                                    else
+                                    {
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<FlareDust>(), projectileDamage, 0f, Main.myPlayer, ai0, (float)i * offsetAngle, 0f);
+                                    }
+                                }
+                                break;
+                            }
+                        case 1:
+                            {
+                                double radians = (float)Math.PI * 2f / (float)totalProjectiles;
+                                Vector2 spinningPoint = Vector2.Normalize(new Vector2(0f - npc.localAI[2], 0f - projectileVelocity));
+                                for (int j = 0; j < totalProjectiles; j++)
+                                {
+                                    Vector2 vector2 = Utils.RotatedBy(spinningPoint, radians * (double)j, default(Vector2)) * projectileVelocity;
+                                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vector2, ModContent.ProjectileType<FlareDust>(), projectileDamage, 0f, Main.myPlayer, 2f, 0f, 0f);
+                                }
+                                float newRadialOffset = (((float)((int)aiVariableUsed / (timer / 4)) % 2f == 0f) ? radialOffset : (0f - radialOffset));
+                                npc.localAI[2] += newRadialOffset;
+                                break;
+                            }
+                    }
+                }
+                const int WindupTime = 40;
+                const int bhTime = 180;
+                const int EndTime = MutantYharonVortex.ThrowTime;
+                if (Timer < WindupTime)
+                {
+                    npc.velocity *= 0.9f;
+                }
+                if (Timer >= WindupTime - 20)
+                {
+                    if (npc.velocity.Length() < 1)
+                    {
+                        npc.velocity = npc.DirectionTo(player.Center) * (npc.velocity.Length() + 0.05f);
+                    }
+                }
+                if (Timer == WindupTime)
+                {
+                    SoundEngine.PlaySound(Yharon.RoarSound, npc.Center);
+                    int type = ModContent.ProjectileType<MutantYharonVortex>();
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, bhTime, npc.whoAmI, 0f);
+                }
+                if (Timer > WindupTime && Timer <= WindupTime + bhTime)
+                {
+                    int flareDustSpawnDivisor = 30;
+                    int totalProjectiles = 38;
+                    if (Timer % flareDustSpawnDivisor == 0)
+                    {
+                        DoFlareDustBulletHell(0, flareDustSpawnDivisor, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), totalProjectiles, 0f, 0f, phase2: true);
+                    }
+
+                }
+                if (++Timer > WindupTime + bhTime + EndTime)
+                {
+                    ChooseNextAttack(11, 13, 19, 20, 21, 24, WorldSavingSystem.MasochistModeReal ? 31 : 26, 33, 41, 44);
+                    Reset();
+                    return;
+                }
             }
             #endregion
             #endregion

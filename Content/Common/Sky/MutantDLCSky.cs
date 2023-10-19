@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Common.Sky
 
         private readonly Color ProvidenceColor = new Color(172, 122, 85);
         private readonly Color AresColor = new Color(154, 164, 174);
-
+        private readonly Color YharonColor = new Color(60, 22, 2);
         public override void Update(GameTime gameTime)
         {
             const float increment = 0.01f;
@@ -91,6 +91,9 @@ namespace FargowiltasCrossmod.Content.Common.Sky
                     case MutantDLC.DLCAttack.PrepareAresNuke:
                     case MutantDLC.DLCAttack.AresNuke:
                         ChangeColorIfDefault(AresColor);
+                        break;
+                    case MutantDLC.DLCAttack.YharonBH:
+                        ChangeColorIfDefault(YharonColor);
                         break;
 
                 }

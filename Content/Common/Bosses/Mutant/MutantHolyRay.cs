@@ -20,9 +20,12 @@ using static Terraria.Player;
 using static Terraria.Utils;
 using Terraria.ID;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class MutantHolyRay : ModProjectile
     {
         [CompilerGenerated]
