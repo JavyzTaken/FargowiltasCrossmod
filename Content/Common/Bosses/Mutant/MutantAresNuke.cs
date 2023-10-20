@@ -54,17 +54,11 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
         public override void OnKill(int timeLeft)
         {
-            base.OnKill(timeLeft);
             SoundEngine.PlaySound(AresGaussNuke.NukeExplosionSound with { MaxInstances = 0}, Projectile.Center, null);
             if (Main.netMode != 2)
             {
                 Gore.NewGore(Projectile.GetSource_Death((string)null), Projectile.position, Projectile.velocity, ModCompatibility.Calamity.Mod.Find<ModGore>("AresGaussNuke1").Type, 1f);
                 Gore.NewGore(Projectile.GetSource_Death((string)null), Projectile.position, Projectile.velocity, ModCompatibility.Calamity.Mod.Find<ModGore>("AresGaussNuke3").Type, 1f);
-            }
-            ExoMechsSky.CreateLightningBolt(12);
-            if (Main.myPlayer != ((ModProjectile)this).Projectile.owner || ((ModProjectile)this).Projectile.ai[0] == -1f)
-            {
-                return;
             }
             for (int i = 0; i < 3; i++)
             {
