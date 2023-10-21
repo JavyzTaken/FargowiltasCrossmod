@@ -698,8 +698,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     return;
                 if (Phase2Check())
                     return;
-                const int WindupTime = 60;
-                const int DriftTime = 200;
+                const int WindupTime = 120;
+                const int DriftTime = 260;
                 const float TotalDriftAngle = MathHelper.TwoPi * 2f;
                 if (Timer == 0)
                 {
@@ -732,7 +732,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             {
                 if (Phase2Check())
                     return;
-                const int WindupTime = 30;
+                const int WindupTime = 40;
 
                 if (Timer == 1)
                 {
