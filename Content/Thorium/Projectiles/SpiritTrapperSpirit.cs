@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.hostile = false;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
-            //Projectile.timeLeft = 600;
+            Projectile.penetrate = -1;
             Projectile.minion = true;
         }
 
@@ -100,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             num4 = 40f;
             float num5;
             num5 = 0.69f;
-            if (!Main.player[Projectile.owner].dead && !Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>().SpiritTrapperEnch)
+            if (!Main.player[Projectile.owner].dead && Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>().SpiritTrapperEnch)
             {
                 Projectile.timeLeft = 2;
             }

@@ -10,6 +10,7 @@ using FargowiltasCrossmod.Content.Thorium.Buffs;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
+using FargowiltasCrossmod.Content.Thorium.PlayerLayers;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
@@ -62,6 +63,9 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item SacredEnchItem;
         public bool DreadEnch;
         public Item DreadEnchItem;
+        public bool NagaSkinEnch;
+        public bool LifeBloomEnch;
+        public Item LifeBloomEnchItem;
 
         public bool HelheimForce;
 
@@ -75,6 +79,9 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int NoviceClericCrosses = 0;
         internal int NoviceClericTimer = 0;
         public Vector2 crossOrbitalRotation = Vector2.UnitY;
+
+        internal Vector2[] nagaSkinLegs = new Vector2[4];
+        internal Vector2[] nagaSkinLegTargets = new Vector2[4];
         #endregion
 
         public bool GildedMonicle;
@@ -131,6 +138,9 @@ namespace FargowiltasCrossmod.Content.Thorium
             SacredEnchItem = null;
             DreadEnch = false;
             DreadEnchItem = null;
+            NagaSkinEnch = false;
+            LifeBloomEnch = false;
+            LifeBloomEnchItem = null;
 
             HelheimForce = false;
 

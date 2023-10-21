@@ -362,8 +362,26 @@ Mods: {
 			}
 
 			HelheimForce: {
-				Tooltip: ""
 				DisplayName: Force of Helheim
+				Tooltip:
+					'''
+					[i:FargowiltasCrossmod/DreadEnchant] Summons a cursed dragon to fight for you.
+					[i:FargowiltasCrossmod/DragonEnchant] Summons two green dragon heads.
+					[i:FargowiltasCrossmod/FleshEnchant] Hit enemies have a chance to drop chunks of suitable flesh.
+					[i:FargowiltasCrossmod/DemonBloodEnchant] Demon blood has a chance to appear whenever you kill an enemy or remove 10% of a boss's hp.
+					[i:FargowiltasCrossmod/SpiritTrapperEnchant] Summons an angry red ghost.
+					[i:FargowiltasCrossmod/WhiteKnightEnchant] Increases your defence and damage based on the number of npcs and weaker players nearby.
+					'''
+			}
+
+			NagaSkinEnchant: {
+				DisplayName: Naga Skin Enchantment
+				Tooltip: Currently missing visuals
+			}
+
+			LifeBloomEnchant: {
+				DisplayName: Life Bloom Enchant
+				Tooltip: ""
 			}
 		}
 
@@ -417,6 +435,9 @@ Mods: {
 			DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
 			DragonHead.DisplayName: Dragon Head
 			DragonScale.DisplayName: Dragon Scale
+			LifeBloomBallista.DisplayName: Life Bloom Ballista
+			LifeBloomTree.DisplayName: Life Bloom Tree
+			LifeBloomWard.DisplayName: Life Bloom Ward
 		}
 
 		Keybinds: {

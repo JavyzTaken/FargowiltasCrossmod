@@ -74,7 +74,7 @@ namespace FargowiltasCrossmod.Content.Common
         {
             UITextPanel<string> textBox = new("Switch Mod");
             textBox.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) => DevianttPatches.CycleShop();
-            textBox.Left.Set(600, 0);
+            textBox.Left.Set(550, 0);
             textBox.Top.Set(200, 0);
             textBox.IgnoresMouseInteraction = false;
             Append(textBox);
