@@ -24,6 +24,7 @@ using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
+using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
@@ -145,12 +146,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     item.damage = (int)(item.damage * balance);
                 }
+                /*
                 if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
                 {
                     item.consumable = true;
                     item.maxStack = 9999;
                 }
+                */
             }
+        }
+        public override void UpdateInventory(Item item, Player player)
+        {
+            if ((CalSummons.Contains(item.type) || VanillaSummonItem(item)))
+            {
+                item.consumable = WorldSavingSystem.EternityMode;
+                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
+            }
+            base.UpdateInventory(item, player);
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
@@ -313,17 +325,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            for (int i = 0; i < tooltips.Count; i++)
+            if (WorldSavingSystem.EternityMode)
             {
-                tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
-                tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                /*
-                if (tooltips[i].Text.Contains("Not consumable"))
+                for (int i = 0; i < tooltips.Count; i++)
                 {
-                    tooltips[i].Text = "";
+                    tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
+                    tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
+                    /*
+                    if (tooltips[i].Text.Contains("Not consumable"))
+                    {
+                        tooltips[i].Text = "";
+                    }
+                    */
                 }
-                */
             }
+            
 
             if (item.type == ModContent.ItemType<Rock>())
             {

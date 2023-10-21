@@ -163,7 +163,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         
         public override bool PreAI(NPC npc)
         {
-            if (!ShouldDoDLC)
+            ref float attackChoice = ref npc.ai[0];
+
+            if (!ShouldDoDLC || attackChoice < 0)
             {
                 return true;
             }
@@ -174,7 +176,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 return true;
             }
 
-            ref float attackChoice = ref npc.ai[0];
+            
 
             if (attackChoice < 10 && attackChoice >= 0) //in phase 1, apply presence because fuck you
             {

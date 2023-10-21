@@ -1,11 +1,4 @@
-New Update: v1.0.4
+New Update: v1.0.4.4
 
-Mutant Boss now receives new AI based on the enabled supported mods. 
-Added Mutant Boss AI based on Calamity Mod bosses.
-
-Added the Calamitous Presence debuff, which has the effects of Mutant's Presence except for turning off toggles
-Calamitous Presence is inflicted by Supreme Calamitas and Draedon
-Calamitous Presence is now inflicted by Phase 1 Mutant below Masochist Mode 
-
-Added sprites for several of the new Mutant summon items
-Fixed Boss Checklist values (will apply after the next Souls Mod update)
+Boss summon items are only consumable in Eternity Mode
+Reminder: boss summons are refunded by the boss before beating them in Eternity Mode, and are sold by the Mutant after beating them
