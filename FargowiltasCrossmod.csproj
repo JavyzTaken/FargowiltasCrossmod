@@ -25,6 +25,11 @@
     <None Remove="Content\Calamity\Buffs\CalamitousPresenceBuff.png" />
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
+    <None Remove="Content\Calamity\Items\Summons\AstrumCor.png" />
+    <None Remove="Content\Calamity\Items\Summons\LetterofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\RiftofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\SirensPearl.png" />
+    <None Remove="Content\Calamity\Items\Summons\WormFoodofKos.png" />
     <None Remove="Content\Common\Bosses\Mutant\MutantAresBomb.png" />
     <None Remove="Content\Common\Bosses\Mutant\MutantAtlantis.png" />
     <None Remove="icon.png" />

@@ -11,7 +11,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class SirensPearl : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/Pets/StrangeOrb";
         public override int NPCType => ModContent.NPCType<Anahita>();
         public override string NPCName => "Anahita and the Leviathan";
         public override void AddRecipes()

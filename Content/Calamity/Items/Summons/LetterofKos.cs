@@ -11,7 +11,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class LetterofKos : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/RuneofKos";
         public override int NPCType => ModContent.NPCType<Signus>();
         public override string NPCName => "Signus";
         public override void AddRecipes()
