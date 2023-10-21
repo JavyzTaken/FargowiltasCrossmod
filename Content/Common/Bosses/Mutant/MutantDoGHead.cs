@@ -119,6 +119,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 Player p = Main.player[foundTarget];
                 float speed = 40f;
                 Projectile.velocity = Projectile.DirectionTo(p.Center) * speed;
+
+                SoundEngine.PlaySound(DevourerofGodsHead.AttackSound, Projectile.Center);
                 /*
                 Vector2 desiredVelocity = Projectile.DirectionTo(p.Center) * desiredFlySpeedInPixelsPerFrame;
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 1f / amountOfFramesToLerpBy);

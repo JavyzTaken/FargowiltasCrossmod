@@ -28,8 +28,6 @@ using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static Humanizer.On;
-using static Mono.CompilerServices.SymbolWriter.CodeBlockEntry;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -200,6 +198,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             switch (attackChoice) 
             {
                 #region Attack Reroutes
+                /*
                 case 1: //p1 funny spheres
                     if (FirstFrame)
                     {
@@ -211,6 +210,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.netUpdate = true;
                     }
                     break;
+                */
                 case 4: //straight dash spam
                     if (Calamity)
                     {
@@ -922,11 +922,20 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     return;
                 ref float side = ref npc.ai[2];
                 const int Windup = 40;
+                const int ParticleTime = 30;
                 if (Counter == 0 && Timer == 0)
                 {
                     SoundEngine.PlaySound(SlimeGodCoreEternity.ExitSound, npc.Center);
                     side = Math.Sign(npc.Center.X - player.Center.X);
                     npc.netUpdate = true;
+
+                    Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Magenta, Vector2.One * 40f, Vector2.Zero, ParticleTime, true, Color.Transparent);
+                    p.Spawn();
+                }
+                if (Counter == 0 && Timer == ParticleTime)
+                {
+                    Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Crimson, Vector2.One * 40f, Vector2.Zero, ParticleTime, true, Color.Transparent);
+                    p.Spawn();
                 }
                 float distance = 500f;
                 Vector2 desiredPos = player.Center + Vector2.UnitX * side * distance - Vector2.UnitY * 100;
@@ -991,10 +1000,12 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     {
                         MutantBoss mutantBoss = (npc.ModNPC as MutantBoss);
                         Vector2 pos = FargoSoulsUtil.ProjectileExists(mutantBoss.ritualProj, ModContent.ProjectileType<MutantRitual>()) == null ? npc.Center : Main.projectile[mutantBoss.ritualProj].Center;
-                        for (int i = 0; i < 4; i++)
+                        Vector2 rot = Utils.SafeNormalize(player.velocity, Vector2.UnitY);
+                        const int moons = 7;
+                        for (int i = 0; i < moons; i++)
                         {
-                            Vector2 offset = Vector2.UnitX.RotatedBy(i * MathHelper.TwoPi / 4);
-                            Vector2 targetPos = pos + (offset * 1300f);
+                            Vector2 offset = rot.RotatedBy(i * MathHelper.TwoPi / moons);
+                            Vector2 targetPos = pos + (offset * 1450f);
                             Projectile.NewProjectile(npc.GetSource_FromAI(), targetPos, targetPos.DirectionTo(player.Center), brimstoneMonster, FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, 0f, 2f, 0f);
                         }
                         
@@ -1035,7 +1046,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             }
                         }
                     }
-                    if (Timer > Startup + (CalamitasTime * Attacks) + 40)
+                    if (Timer > Startup + (CalamitasTime * (Attacks + 1) - 10))
                     {
                         
                         foreach (Projectile projectile in Main.projectile.Where(p => p != null && p.active && p.type == brimstoneMonster))
@@ -1189,6 +1200,21 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
                     SoundEngine.PlaySound(ProfanedGuardianCommander.DashSound, npc.Center);
                     npc.netUpdate = true;
+
+                    //register values for providence ray
+                    int dirX = -Math.Sign(npc.Center.X - player.Center.X);
+                    int dirY = -Math.Sign(npc.Center.Y - player.Center.Y);
+
+                    if (dirX == 0)
+                        dirX = 1;
+                    if (dirY == 0)
+                        dirY = 1;
+
+                    int distanceX = 400;
+                    int distanceY = 500;
+                    npc.ai[2] = dirX * distanceX;
+                    npc.ai[3] = dirY * distanceY;
+                    npc.netUpdate = true;
                 }
                 else if (Timer - PrepareTime < DashTime)
                 {
@@ -1202,27 +1228,10 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         }
                     }
                 }
-                else if (Timer - PrepareTime == DashTime)
-                {
-                    
-                    int dirX = Math.Sign(npc.Center.X - player.Center.X);
-                    int dirY = -Math.Sign(npc.Center.Y - player.Center.Y);
-
-                    if (dirX == 0)
-                        dirX = 1;
-                    if (dirY == 0)
-                        dirY = 1;
-
-                    int distanceX = 400;
-                    int distanceY = 500;
-                    npc.ai[2] = dirX * distanceX; 
-                    npc.ai[3] = dirY * distanceY;
-                    npc.netUpdate = true;
-                }
                 else if (Timer - PrepareTime - DashTime < LaserPrepareTime) //move to deathray position
                 {
                     Vector2 pos = npc.ai[2] * Vector2.UnitX + npc.ai[3] * Vector2.UnitY;
-                    Movement(player.Center + LockVector1, 1.2f);
+                    Movement(player.Center + pos, 1.2f);
                 }
                 else if (Timer - PrepareTime - DashTime == LaserPrepareTime)
                 {
@@ -1238,6 +1247,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         {
                             beamDirection = 1f;
                         }
+                        beamDirection *= Math.Sign(npc.ai[3]);
                         velocity2 = Utils.RotatedBy(velocity2, (0.0 - (double)beamDirection) * 6.2831854820251465 / 6.0, default(Vector2));
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y, velocity2.X, velocity2.Y, ModContent.ProjectileType<MutantHolyRay>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 3f / 2), 0f, Main.myPlayer, beamDirection * ((float)Math.PI * 2f) / rotation, npc.whoAmI, 0f);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y, 0f - velocity2.X, 0f - velocity2.Y, ModContent.ProjectileType<MutantHolyRay>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 3f / 2), 0f, Main.myPlayer, (0f - beamDirection) * ((float)Math.PI * 2f) / rotation, npc.whoAmI, 0f);

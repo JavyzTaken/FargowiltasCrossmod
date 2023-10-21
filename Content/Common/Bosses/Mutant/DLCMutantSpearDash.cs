@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantSpearDash : ModProjectile
     {
-        public override string Texture => "CalamityMod/Items/Weapons/Magic/Atlantis";
+        public override string Texture => "FargowiltasCrossmod/Content/Common/Bosses/Mutant/MutantAtlantis";
 
         public override void SetStaticDefaults()
         {
@@ -97,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             MutantDLC mutantDLC = mutant.GetGlobalNPC<MutantDLC>();
             if (mutant.active && mutant.type == ModContent.NPCType<MutantBoss>() && (mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.BumbleDash || mutantDLC.DLCAttackChoice == MutantDLC.DLCAttack.BumbleDash2))
             {
-                int threshold = 30;
+                int threshold = 40;
                 if (mutantDLC.Timer < threshold)
                 {
                     Player player = Main.player[mutant.target];

@@ -26,6 +26,7 @@
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
     <None Remove="Content\Common\Bosses\Mutant\MutantAresBomb.png" />
+    <None Remove="Content\Common\Bosses\Mutant\MutantAtlantis.png" />
     <None Remove="icon.png" />
     <None Remove="WorkshopIcon.png" />
   </ItemGroup>

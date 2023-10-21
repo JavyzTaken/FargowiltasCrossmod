@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantSpearSpin : ModProjectile
     {
-        public override string Texture => "CalamityMod/Items/Weapons/Magic/Atlantis";
+        public override string Texture => "FargowiltasCrossmod/Content/Common/Bosses/Mutant/MutantAtlantis";
 
         public override void SetStaticDefaults()
         {
@@ -144,7 +144,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 else
                 {
-                    Projectile.alpha = 255;
+                    Projectile.alpha = 0;
                 }
             }
             else
