@@ -595,6 +595,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                 }
             }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void CalamityMechRayFan()
             {
                 float timer = npc.ai[3];
@@ -612,6 +613,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             #endregion
             #region Phase 1 Attacks
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void CryogenP1()
             {
                 if (!AliveCheck(player))
@@ -659,6 +661,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                     else
                     {
+                        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
                         void FireCryogenThingy(Vector2 velocity)
                         {
                             int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, velocity, ModContent.ProjectileType<IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, 0f, 0f, 0f);
@@ -1269,6 +1272,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void YharonBH()
             {
+                [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
                 void DoFlareDustBulletHell(int attackType, int timer, int projectileDamage, int totalProjectiles, float projectileVelocity, float radialOffset, bool phase2)
                 {
                     SoundEngine.PlaySound(SoundID.Item20, npc.Center, (SoundUpdateCallback)null);
@@ -1415,7 +1419,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     {
                         Counter++;
                         SoundEngine.PlaySound(DevourerofGodsHead.SpawnSound, npc.Center);
-                        if (FargoSoulsUtil.HostCheck) //spawn worm
+                        if (DLCUtils.HostCheck) //spawn worm
                         {
                             Vector2 vel = npc.DirectionFrom(player.Center).RotatedByRandom(MathHelper.ToRadians(120)) * 10f;
                             float ai1 = 0.8f + 0.4f * npc.ai[2] / 5f;

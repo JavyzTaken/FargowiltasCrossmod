@@ -21,7 +21,7 @@ public class FargowiltasCrossmod : Mod
     public override void Load()
     {
         Instance = this;
-
+        /*
         #region Boss Checklist edits
         if (ModCompatibility.SoulsMod.Mod.Version >= Version.Parse("1.6.1") && ModCompatibility.Calamity.Loaded && ModCompatibility.BossChecklist.Loaded)
         {
@@ -38,6 +38,7 @@ public class FargowiltasCrossmod : Mod
             }
         }
         #endregion
+        */
     }
     public override void Unload()
     {

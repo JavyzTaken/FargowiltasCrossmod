@@ -94,10 +94,6 @@ Mods: {
 						'''
 				}
 
-				MutantDLC: {
-					Tooltip: ""
-					Label: Mutant D L C
-				}
 			}
 		}
 

@@ -1,7 +1,11 @@
-New Update: v1.0.3.1
+New Update: v1.0.4
 
-New icon
-Fixed Hive Mind and Slime God not despawning properly
-Fixed Medallion of the Desert not summoning Nuisances
-Fixed Dune Splicers spawning abnormally in the Sunken Sea
-Improvements to Slime God multiplayer sync
+Mutant Boss now receives new AI based on the enabled supported mods. 
+Added Mutant Boss AI based on Calamity Mod bosses.
+
+Added the Calamitous Presence debuff, which has the effects of Mutant's Presence except for turning off toggles
+Calamitous Presence is inflicted by Supreme Calamitas and Draedon
+Calamitous Presence is now inflicted by Phase 1 Mutant below Masochist Mode 
+
+Added sprites for several of the new Mutant summon items
+Fixed Boss Checklist values (will apply after the next Souls Mod update)
