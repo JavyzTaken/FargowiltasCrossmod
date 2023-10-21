@@ -1,7 +1,10 @@
-﻿using CalamityMod.NPCs.SupremeCalamitas;
+﻿using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.NPCs.SupremeCalamitas;
 using FargowiltasCrossmod.Content.Common.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -67,6 +70,15 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
             timer++;
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+            target.AddBuff(ModContent.BuffType<BrimstoneFlames>(), 60 * 5);
+            target.AddBuff(ModContent.BuffType<VulnerabilityHex>(), 60 * 5);
+            base.OnHitPlayer(target, info);
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantSpearSpin : ModProjectile
     {
-        public override string Texture => "CalamityMod/Projectiles/Melee/Spears/GildedProboscisProj";
+        public override string Texture => "CalamityMod/Items/Weapons/Magic/Atlantis";
 
         public override void SetStaticDefaults()
         {
@@ -80,11 +80,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                                 speed *= -1f;
                             float ai1 = Projectile.timeLeft + Main.rand.Next(Projectile.timeLeft / 2);
                             int p = Projectile.NewProjectile(Terraria.Entity.InheritSource(Projectile), Projectile.position + Main.rand.NextVector2Square(0f, Projectile.width),
-                                speed, ModContent.ProjectileType<RedLightningFeather>(), Projectile.damage, 0f, Projectile.owner, 250);
+                                speed, ModContent.ProjectileType<FrostMist>(), Projectile.damage, 0f, Projectile.owner, ai1: 55);
+                            /*
                             if (p != Main.maxProjectiles && mutant.GetGlobalNPC<MutantDLC>().DLCAttackChoice != MutantDLC.DLCAttack.BumbleDrift2)
                             {
                                 Main.projectile[p].extraUpdates++;
                             }
+                            */
                         }
                     }
 

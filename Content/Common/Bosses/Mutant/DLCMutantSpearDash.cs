@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DLCMutantSpearDash : ModProjectile
     {
-        public override string Texture => "CalamityMod/Projectiles/Melee/Spears/GildedProboscisProj";
+        public override string Texture => "CalamityMod/Items/Weapons/Magic/Atlantis";
 
         public override void SetStaticDefaults()
         {

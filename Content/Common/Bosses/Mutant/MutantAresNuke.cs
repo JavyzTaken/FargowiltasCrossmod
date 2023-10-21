@@ -15,6 +15,9 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using FargowiltasCrossmod.Core;
+using CalamityMod.Buffs.DamageOverTime;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -46,6 +49,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 Projectile.frame = 0;
             }
             base.AI();
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+            target.AddBuff(ModContent.BuffType<MiracleBlight>(), 60 * 5);
+            base.OnHitPlayer(target, info);
         }
         public override void PostAI()
         {

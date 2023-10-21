@@ -3,6 +3,8 @@ using CalamityMod.NPCs.SlimeGod;
 using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -76,6 +78,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 Projectile.Kill();
             }
             
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+            base.OnHitPlayer(target, info);
         }
         public override void OnKill(int timeLeft)
         {

@@ -53,11 +53,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write7BitEncodedInt(owner);
+            writer.Write(npc);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             owner = reader.Read7BitEncodedInt();
+            npc = reader.ReadBoolean();
         }
         int owner;
         bool npc = true;
@@ -72,10 +74,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             }
             else if (source is EntitySource_Parent parent2 && parent2.Entity is Projectile parentProj && parentProj.type == ModContent.ProjectileType<MutantSlimeGod>())
             {
+                Projectile.rotation = Projectile.velocity.ToRotation();
                 owner = parentProj.whoAmI;
                 Crimson = parentProj.ai[0] == 1;
                 npc = false;
             }
+            Projectile.netUpdate = true;
         }
 
         public override void AI()

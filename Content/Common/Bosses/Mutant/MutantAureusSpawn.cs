@@ -12,6 +12,9 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
+using CalamityMod.Buffs.DamageOverTime;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -87,7 +90,12 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             Projectile.spriteDirection = Math.Sign(Projectile.velocity.X);
         }
-
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+            target.AddBuff(ModContent.BuffType<AstralInfectionDebuff>(), 60 * 3);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteEffects spriteEffects = (SpriteEffects)0;

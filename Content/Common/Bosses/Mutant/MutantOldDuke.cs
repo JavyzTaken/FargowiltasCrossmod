@@ -1,5 +1,9 @@
-﻿using FargowiltasCrossmod.Core;
+﻿using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Buffs.StatDebuffs;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -26,6 +30,11 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         public override bool PreAI()
         {
             return true;
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<Irradiated>(), 60 * 10);
+            base.OnHitPlayer(target, info);
         }
     }
 }

@@ -23,6 +23,10 @@ using CalamityMod;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Cooldowns;
+using CalamityMod.CalPlayer;
+using FargowiltasSouls.Content.Projectiles;
+using FargowiltasCrossmod.Content.Calamity.Buffs;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -30,6 +34,13 @@ namespace FargowiltasCrossmod.Content.Calamity
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CrossplayerCalamity : ModPlayer
     {
+        public bool CalamitousPresence;
+
+        public override void ResetEffects()
+        {
+            CalamitousPresence = CalamitousPresence && Player.HasBuff(ModContent.BuffType<CalamitousPresenceBuff>());
+            base.ResetEffects();
+        }
         public override void OnEnterWorld()
         {
            
@@ -89,21 +100,52 @@ namespace FargowiltasCrossmod.Content.Calamity
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
         {
-            if (!Player.FargoSouls().TerrariaSoul && Player.FargoSouls().TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
+            FargoSoulsPlayer fargo = Player.FargoSouls();
+            CalamityPlayer calamity = Player.Calamity();
+
+            if (!fargo.TerrariaSoul && fargo.TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
             {
                 Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
             }
-            Player.Calamity().profanedCrystalStatePrevious = 0;
-            Player.Calamity().pscState = 0;
+            calamity.profanedCrystalStatePrevious = 0;
+            calamity.pscState = 0;
 
             if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type))
             {
-                Player.FargoSouls().AdamantiteEnchantItem = null;
+                fargo.AdamantiteEnchantItem = null;
             }
-            if (Player.FargoSouls().TinEnchantItem != null)
+            if (fargo.TinEnchantItem != null)
             {
-                Player.Calamity().spiritOrigin = false;
+                calamity.spiritOrigin = false;
             }
+
+            if (fargo.noDodge)
+            {
+                if (!Player.HasCooldown(GlobalDodge.ID))
+                {
+                    Player.AddCooldown(GlobalDodge.ID, 60, true);
+                }
+                
+            }
+        }
+        public override void PostUpdateMiscEffects()
+        {
+            if (CalamitousPresence && !Player.FargoSouls().MutantPresence)
+            {
+                Player.statDefense /= 2;
+                Player.endurance /= 2;
+                Player.shinyStone = false;
+            }
+            base.PostUpdateMiscEffects();
+        }
+        public override void UpdateBadLifeRegen()
+        {
+            if (CalamitousPresence)
+            {
+                if (Player.lifeRegen > 5)
+                    Player.lifeRegen = 5;
+            }
+            base.UpdateBadLifeRegen();
         }
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override float UseSpeedMultiplier(Item item)

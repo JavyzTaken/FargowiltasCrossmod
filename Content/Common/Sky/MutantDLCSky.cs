@@ -27,9 +27,10 @@ namespace FargowiltasCrossmod.Content.Common.Sky
         private readonly int[] xPos = new int[50];
         private readonly int[] yPos = new int[50];
 
-        private readonly Color ProvidenceColor = new Color(172, 122, 85);
-        private readonly Color AresColor = new Color(154, 164, 174);
-        private readonly Color YharonColor = new Color(60, 22, 2);
+        private static readonly Color ProvidenceColor = new Color(172, 122, 85);
+        private static readonly Color AresColor = new Color(154, 164, 174);
+        private static readonly Color YharonColor = new Color(60, 22, 2);
+        private static readonly Color PolterColor = new Color(24, 43, 60);
         public override void Update(GameTime gameTime)
         {
             const float increment = 0.01f;
@@ -95,7 +96,18 @@ namespace FargowiltasCrossmod.Content.Common.Sky
                     case MutantDLC.DLCAttack.YharonBH:
                         ChangeColorIfDefault(YharonColor);
                         break;
+                    case MutantDLC.DLCAttack.SpawnDoG:
+                        ChangeColorIfDefault(Color.Purple);
+                        break;
+                    case MutantDLC.DLCAttack.Polterghast:
+                        ChangeColorIfDefault(PolterColor);
+                        break;
 
+                }
+                if (Main.projectile.Any(p => p != null && p.active && 
+                (p.type == ModContent.ProjectileType<MutantDoGHead>() || p.type == ModContent.ProjectileType<MutantDoGBody>() || p.type == ModContent.ProjectileType<MutantDoGTail>())))
+                {
+                    ChangeColorIfDefault(Color.Purple);
                 }
 
                 if (intensity > 1f)

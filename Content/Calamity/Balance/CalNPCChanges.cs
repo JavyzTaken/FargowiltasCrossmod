@@ -57,6 +57,7 @@ using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.ItemDropRules;
 using FargowiltasCrossmod.Core.Systems;
@@ -1181,10 +1182,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             else if (npc.type == ModContent.NPCType<Draedon>())
             {
+                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ExoBattery", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
             }
             else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
             {
+                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
             }
             #endregion SummonDrops

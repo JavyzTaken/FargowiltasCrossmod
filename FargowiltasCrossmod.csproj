@@ -22,6 +22,7 @@
     <None Remove="changelog.txt" />
     <None Remove="Content\Calamity\Bosses\Cryogen\IceChain.png" />
     <None Remove="Content\Calamity\Bosses\SlimeGod\CrimsonPaladinSpike.png" />
+    <None Remove="Content\Calamity\Buffs\CalamitousPresenceBuff.png" />
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
     <None Remove="Content\Common\Bosses\Mutant\MutantAresBomb.png" />

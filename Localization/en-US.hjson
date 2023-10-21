@@ -289,11 +289,11 @@ Mods: {
 
 		NPCs: {
 			FungalClump.DisplayName: Fungal Clump
-			LargePerforatorBody.DisplayName: Large Perforator Body
-			LargePerforatorBody2.DisplayName: Large Perforator Body2
-			LargePerforatorHead.DisplayName: Large Perforator Head
-			LargePerforatorTail.DisplayName: Large Perforator Tail
-			PermafrostBoss.DisplayName: Permafrost Boss
+			LargePerforatorBody.DisplayName: Large Perforator
+			LargePerforatorBody2.DisplayName: Large Perforator
+			LargePerforatorHead.DisplayName: Large Perforator
+			LargePerforatorTail.DisplayName: Large Perforator
+			PermafrostBoss.DisplayName: Permafrost
 		}
 
 		Projectiles: {
@@ -301,7 +301,7 @@ Mods: {
 			MushroomSpear.DisplayName: Mushroom Spear
 			ShroomGas.DisplayName: Shroom Gas
 			SandChunk.DisplayName: Sand Chunk
-			SuckedSandBlast.DisplayName: Sucked Sand Blast
+			SuckedSandBlast.DisplayName: Sand Blast
 			CursedLightning.DisplayName: Cursed Lightning
 			CurvingCursedFlames.DisplayName: Curving Cursed Flames
 			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
@@ -313,14 +313,14 @@ Mods: {
 			BouncingFireball.DisplayName: Bouncing Fireball
 			BigLight.DisplayName: Big Light
 			DestructionBolt.DisplayName: Destruction Bolt
-			StarofDestruction.DisplayName: Starof Destruction
+			StarofDestruction.DisplayName: Star of Destruction
 
 			Boss: {
-				AcceleratingEbonianGlob.DisplayName: Accelerating Ebonian Glob
-				AcceleratingCrimulanGlob.DisplayName: Accelerating Crimulan Glob
-				SlimeHomingEbonianGlob.DisplayName: Slime Homing Ebonian Glob
-				SlimeHomingCrimuleanGlob.DisplayName: Slime Homing Crimulean Glob
-				MutantYharonVortex.DisplayName: Mutant Yharon Vortex
+				AcceleratingEbonianGlob.DisplayName: Ebonian Glob
+				AcceleratingCrimulanGlob.DisplayName: Crimulan Glob
+				SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
+				SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
+				MutantYharonVortex.DisplayName: The Sun
 			}
 
 			SlamTelegraph.DisplayName: Slam Telegraph
@@ -328,20 +328,31 @@ Mods: {
 			IceCrystal.DisplayName: Ice Crystal
 			IceChain.DisplayName: Ice Chain
 			IceTrident.DisplayName: Ice Trident
-			CrimsonPaladinSpike.DisplayName: Crimson Paladin Spike
+			CrimsonPaladinSpike.DisplayName: Crimson Spike
 			PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
-			MutantOldDuke.DisplayName: Mutant Old Duke
-			DLCMutantSpearSpin.DisplayName: D L C Mutant Spear Spin
-			DLCMutantSpearDash.DisplayName: D L C Mutant Spear Dash
-			MutantAresNuke.DisplayName: Mutant Ares Nuke
-			MutantAresBomb.DisplayName: Mutant Ares Bomb
-			DLCMutantFishronRitual.DisplayName: D L C Mutant Fishron Ritual
-			MutantSlimeGod.DisplayName: Mutant Slime God
-			DLCBloomLine.DisplayName: D L C Bloom Line
-			MutantSCal.DisplayName: Mutant S Cal
-			MutantPBG.DisplayName: Mutant P B G
-			MutantAureusSpawn.DisplayName: Mutant Aureus Spawn
-			MutantHolyRay.DisplayName: Mutant Holy Ray
+			MutantOldDuke.DisplayName: Old Duke
+			DLCMutantSpearSpin.DisplayName: Mutant's Atlantis
+			DLCMutantSpearDash.DisplayName: Mutant's Atlantis
+			MutantAresNuke.DisplayName: Mutant's Gauss Nuke
+			MutantAresBomb.DisplayName: Mutant's Gauss Nuke
+			DLCMutantFishronRitual.DisplayName: Mutant Gauss Ritual
+			MutantSlimeGod.DisplayName: Slime God
+			DLCBloomLine.DisplayName: Telegraph Line
+			MutantSCal.DisplayName: Calamitas' Skullshield
+			MutantPBG.DisplayName: Plaguebringer Goliath
+			MutantAureusSpawn.DisplayName: Aureus Spawn
+			MutantHolyRay.DisplayName: Holy Ray
+			MutantDoGBody.DisplayName: The Devourer of Gods
+			MutantDoGHead.DisplayName: The Devourer of Gods
+			MutantDoGTail.DisplayName: The Devourer of Gods
+			MutantPolter.DisplayName: Necroplasm
+		}
+
+		Buffs: {
+			CalamitousPresenceBuff: {
+				Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
+				DisplayName: Calamitous Presence
+			}
 		}
 	}
 }

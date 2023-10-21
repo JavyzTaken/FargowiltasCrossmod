@@ -1,7 +1,10 @@
 ﻿using CalamityMod;
+using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.NPCs.PlaguebringerGoliath;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Common.Graphics.Particles;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -67,7 +70,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             #region AI
             if (timer == 0)
             {
-                SoundEngine.PlaySound(PlaguebringerGoliath.AttackSwitchSound, Projectile.Center);
                 Particle p = new ExpandingBloomParticle(Projectile.Center, Vector2.Zero, Color.DarkGreen, Vector2.One * 40f, Vector2.Zero, TelegraphTime, true, Color.LimeGreen);
                 p.Spawn();
             }
@@ -91,6 +93,14 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             timer++;
             #endregion
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+            target.AddBuff(ModContent.BuffType<Plague>(), 60 * 5);
+            base.OnHitPlayer(target, info);
         }
 
         private int curTex = 1;

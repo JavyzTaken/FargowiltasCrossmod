@@ -21,6 +21,9 @@ using static Terraria.Utils;
 using Terraria.ID;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
+using CalamityMod.Buffs.DamageOverTime;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -258,6 +261,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
         public override void OnHitPlayer(Player target, HurtInfo info)
         {
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+            target.AddBuff(ModContent.BuffType<HolyFlames>(), 60 * 5);
             if ((info.Damage > 0 || Projectile.maxPenetrate >= 1) && !target.creativeGodMode)
             {
                 ProvUtils.ApplyHitEffects(target, Projectile.maxPenetrate, 400, 20);

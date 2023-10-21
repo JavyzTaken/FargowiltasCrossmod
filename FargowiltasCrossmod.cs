@@ -23,7 +23,7 @@ public class FargowiltasCrossmod : Mod
         Instance = this;
 
         #region Boss Checklist edits
-        if (ModCompatibility.Calamity.Loaded && ModCompatibility.BossChecklist.Loaded)
+        if (ModCompatibility.SoulsMod.Mod.Version >= Version.Parse("1.6.1") && ModCompatibility.Calamity.Loaded && ModCompatibility.BossChecklist.Loaded)
         {
             ref Dictionary<string, float> soulsChecklistValues = ref (ModCompatibility.SoulsMod.Mod as FargowiltasSouls.FargowiltasSouls).BossChecklistValues;
             //cal values are internal. thanks cal!
