@@ -17,6 +17,8 @@ namespace FargowiltasCrossmod.Content.Thorium
     public partial class CrossplayerThorium : ModPlayer
     {
         #region enchants
+        public bool IcyEnch;
+        public Item IcyEnchItem;
         public bool EbonEnch;
         public Item EbonEnchItem;
         public bool NoviceClericEnch;
@@ -131,6 +133,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             SacredEnchItem = null;
             DreadEnch = false;
             DreadEnchItem = null;
+            IcyEnch = false;
+            IcyEnchItem = null;
 
             HelheimForce = false;
 
