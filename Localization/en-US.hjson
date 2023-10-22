@@ -166,7 +166,7 @@ Mods: {
 				Tooltip:
 					'''
 					Allows you to parry projectiles with a hotkey, including your own.
-					"+Proboost"
+					"Blood is fuel"
 					'''
 			}
 
@@ -209,8 +209,8 @@ Mods: {
 				DisplayName: Steel Enchantment
 				Tooltip:
 					'''
-					Allows you to parry projectiles with a hotkey, allowing them to deal damage to enemies
-					"Now beat P-2 with it"
+					Allows you to parry projectiles with a hotkey, reflecting them and letting them deal damage to enemies
+					"Mankind is dead"
 					'''
 			}
 
@@ -391,12 +391,16 @@ Mods: {
 
 			TitanEnchant: {
 				DisplayName: Titan Enchant
-				Tooltip: ""
+				Tooltip: Increases your armor peircing by 10% of your defence.
 			}
 
 			DurasteelEnchant: {
-				Tooltip: ""
 				DisplayName: Durasteel Enchant
+				Tooltip: 
+					'''
+					Allows you to parry projectiles with a hotkey, including your own, sending them in the direction of your cursor, increasing their damage and granting them an explosion on collision.
+					"Hell is full"
+					'''
 			}
 		}
 

@@ -18,8 +18,7 @@ namespace FargowiltasCrossmod.Content.Thorium
     public partial class CrossplayerThorium : ModPlayer
     {
         #region enchants
-        public bool IcyEnch;
-        public Item IcyEnchItem;
+        // dont reorder these, they are in the order they were coded and i think thats cool
         public bool EbonEnch;
         public Item EbonEnchItem;
         public bool NoviceClericEnch;
@@ -68,6 +67,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool NagaSkinEnch;
         public bool LifeBloomEnch;
         public Item LifeBloomEnchItem;
+        public bool IcyEnch;
+        public Item IcyEnchItem;
         public bool TitanEnch;
         public bool DuraSteelEnch;
 
