@@ -12,6 +12,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
     public class ThoriumGlobalProj : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
+        int IcySnowflakeCD;
+        Random IcySnowFlakeRand = new Random();
         public override void PostDraw(Projectile projectile, Color lightColor)
         {
             if (Main.netMode != NetmodeID.MultiplayerClient)
