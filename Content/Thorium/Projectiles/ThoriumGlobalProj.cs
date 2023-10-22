@@ -57,18 +57,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     }
                 }
             }
-            else
-            {
-                if ((Main.player[projectile.owner]).GetModPlayer<CrossplayerThorium>().IcyEnch && projectile.damage > 0 && projectile.velocity.Length() > 1 && projectile.minionSlots == 0 && projectile.type != ProjectileID.NorthPoleSnowflake)
-                {
-                    if (IcySnowflakeCD >= 15 + IcySnowFlakeRand.Next(25))
-                    {
-                        IcySnowflakeCD = 0;
-                        int p = Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, new Vector2(0, IcySnowFlakeRand.Next(5)), ProjectileID.NorthPoleSnowflake, projectile.damage, projectile.knockBack / 2, projectile.owner); // projectile.velocity - projectile.velocity is there becuase IDK how to resolve the conflict between Microsoft.Xna.Framework and System.Numerics
-                    }
-                    IcySnowflakeCD++;
-                }
-            }
             return base.PreAI(projectile);
         }
     }

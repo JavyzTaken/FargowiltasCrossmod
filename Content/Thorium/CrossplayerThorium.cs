@@ -244,7 +244,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             if (ThoriumKeybinds.LivingWoodBind.JustPressed)
             {
-                LivingWoodKey();
+                if (!LifeBloomEnch) LivingWoodKey();
+                else LifeBloomKeyPress();
             }
             if (ThoriumKeybinds.SteelParryBind.JustPressed)
             {
