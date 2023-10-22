@@ -9,9 +9,8 @@ using Terraria.Audio;
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class Steel_Parry : ModProjectile
+    public class SteelParry : ModProjectile
     {
-        public bool IsDarkSteel = false;
         public override void SetDefaults()
         {
             Projectile.penetrate = -1;
@@ -23,9 +22,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void OnSpawn(IEntitySource source)
         {
-            IsDarkSteel = Projectile.ai[0] != 0f;
             Projectile.rotation = Projectile.ai[1];
         }
+
+        public int Teir => (int)Projectile.ai[0];
 
         public override void AI()
         {
@@ -39,13 +39,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 if (i == Projectile.whoAmI) continue;
 
                 Projectile proj = Main.projectile[i];
-                if (proj.friendly && !IsDarkSteel) continue;
+                if (proj.friendly && Teir < 2) continue;
 
                 if (player.Center.Distance(proj.Center) < maxDist && proj.TryGetGlobalProjectile(out ParriedProjectile parried) && !parried.alreadyParried)
                 {
                     if (proj.friendly)
                     {
-                        if (IsDarkSteel)
+                        if (Teir >= 2)
                         {
                             CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+ProBoost");
                             proj.damage = (int)(proj.damage * 2f);
@@ -54,18 +54,28 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     else
                     {
                         CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parried", true);
-                        proj.velocity = player.Center.DirectionTo(Main.MouseWorld) * proj.velocity.Length();
-                        proj.damage *= IsDarkSteel ? 8 : 5;
+                        proj.damage *= 3 * Teir;
+                        if (Teir < 3)
+                        {
+                            proj.velocity *= -2f;
+                        }
+                        else
+                        {
+                            proj.velocity = player.Center.DirectionTo(Main.MouseWorld) * proj.velocity.Length();
+                        }
                     }
 
                     parried.alreadyParried = true;
-                    parried.explodeOnDeath = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().SteelEnchItem.type);
+                    parried.parryTeir = Teir;
                     proj.friendly = true;
                     proj.hostile = false;
 
-                    // if the parry was succesful, the player gets a bonus to their cooldown.
-                    //int buffType = ModContent.BuffType<Buffs.SteelParry_CD>();
-                    //if (player.HasBuff(buffType) && player.buffTime[player.FindBuffIndex(buffType)] > 300) player.buffTime[player.FindBuffIndex(buffType)] -= 60;
+                    if (Teir >= 3)
+                    {
+                        // if the parry was succesful, the player gets a bonus to their cooldown.
+                        int buffType = ModContent.BuffType<Buffs.SteelParry_CD>();
+                        if (player.HasBuff(buffType) && player.buffTime[player.FindBuffIndex(buffType)] > 300) player.buffTime[player.FindBuffIndex(buffType)] -= 60;
+                    }
                 }
             }
         }
@@ -74,14 +84,15 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
     public class ParriedProjectile : GlobalProjectile
     {
         public bool alreadyParried;
-        public bool explodeOnDeath;
+        public int parryTeir;
         public override bool InstancePerEntity => true;
 
         public override void OnKill(Projectile projectile, int timeLeft)
         {
-            if (timeLeft != 0 && explodeOnDeath)
+            if (timeLeft != 0 && parryTeir >= 3)
             {
-                Projectile.NewProjectileDirect(projectile.GetSource_Death(), projectile.Center, Vector2.Zero, ModContent.ProjectileType<MidExplosion>(), (int)(projectile.damage * 0.75f), 5f, projectile.owner);
+                int type = parryTeir > 3 ? ProjectileID.InfernoFriendlyBlast : ModContent.ProjectileType<MidExplosion>();
+                Projectile.NewProjectileDirect(projectile.GetSource_Death(), projectile.Center, Vector2.Zero, type, (int)(projectile.damage * 0.75f), 5f, projectile.owner);
             }
         }
 

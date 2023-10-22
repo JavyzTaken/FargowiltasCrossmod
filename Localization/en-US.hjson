@@ -393,6 +393,11 @@ Mods: {
 				DisplayName: Titan Enchant
 				Tooltip: ""
 			}
+
+			DurasteelEnchant: {
+				Tooltip: ""
+				DisplayName: Durasteel Enchant
+			}
 		}
 
 		NPCs: {
@@ -448,6 +453,7 @@ Mods: {
 			LifeBloomBallista.DisplayName: Life Bloom Ballista
 			LifeBloomTree.DisplayName: Life Bloom Tree
 			LifeBloomWard.DisplayName: Life Bloom Ward
+			SteelParry.DisplayName: Steel Parry
 		}
 
 		Keybinds: {

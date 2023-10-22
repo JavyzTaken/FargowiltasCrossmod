@@ -69,6 +69,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool LifeBloomEnch;
         public Item LifeBloomEnchItem;
         public bool TitanEnch;
+        public bool DuraSteelEnch;
 
         public bool HelheimForce;
 
@@ -147,6 +148,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             LifeBloomEnch = false;
             LifeBloomEnchItem = null;
             TitanEnch = false;
+            DuraSteelEnch = false;
 
             HelheimForce = false;
 
@@ -177,7 +179,7 @@ namespace FargowiltasCrossmod.Content.Thorium
                 SpawnAstroLaser(target);
             }
 
-            if (FleshEnch && Main.rand.NextBool(10))
+            if (FleshEnch && Main.rand.NextBool(20))
             {
                 SpawnFlesh(target);
             }
@@ -200,7 +202,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             // may be unreliable but i think its cool.
             if (target.boss && (target.life % (target.lifeMax / 10)) < ((target.life - hit.Damage) % (target.lifeMax / 10)))
             {
-                if (DemonBloodEnch)
+                if (DemonBloodEnch && Main.rand.NextBool(5))
                 {
                     SpawnDemonBlood(target.Center);
                 }
