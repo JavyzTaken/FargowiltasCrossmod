@@ -10,7 +10,7 @@ using FargowiltasCrossmod.Content.Thorium.Projectiles;
 namespace FargowiltasCrossmod.Content.Thorium.Items.Weapons
 {
     // Todo: Fix rotation when held to be like a normal staff
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class KluexStaff : ModItem
     {
 

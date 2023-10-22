@@ -10,7 +10,7 @@ using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class WhiteKnightEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Silver;

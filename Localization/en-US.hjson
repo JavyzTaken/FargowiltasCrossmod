@@ -386,7 +386,7 @@ Mods: {
 
 			IcyEnchant: {
 				DisplayName: Icy Enchant
-				Tooltip: "Damaging snowflakes fall from your projectiles. Projectile damage is reduced by 20% to compensate."
+				Tooltip: Damaging snowflakes fall from your projectiles. Projectile damage is reduced by 20% to compensate.
 			}
 		}
 

@@ -9,7 +9,7 @@ using FargowiltasCrossmod.Content.Thorium.Projectiles;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class TempleCore : SoulsItem
     {
         public override bool Eternity => true;

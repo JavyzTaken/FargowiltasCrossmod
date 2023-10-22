@@ -14,7 +14,7 @@ using FargowiltasCrossmod.Content.Thorium.PlayerLayers;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public partial class CrossplayerThorium : ModPlayer
     {
         #region enchants

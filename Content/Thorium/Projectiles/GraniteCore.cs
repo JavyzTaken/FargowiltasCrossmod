@@ -8,7 +8,7 @@ using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GraniteExplosion : ModProjectile
     {
         public override string Texture => "ThoriumMod/Projectiles/Boss/GraniteCharge";

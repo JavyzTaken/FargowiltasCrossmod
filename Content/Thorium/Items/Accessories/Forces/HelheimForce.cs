@@ -5,7 +5,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class HelheimForce : BaseForce
     {
         public override void UpdateAccessory(Player player, bool hideVisual)

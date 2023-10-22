@@ -12,7 +12,7 @@ using Terraria.Chat;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class FallenPaladinEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Beige;
@@ -97,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
 namespace FargowiltasCrossmod.Content.Thorium.Buffs
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class FallenPaladinBuff : ModBuff
     {
         public override string Texture => "FargowiltasSouls/Content/Buffs/PlaceholderBuff";

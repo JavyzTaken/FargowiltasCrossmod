@@ -26,7 +26,7 @@ using FargowiltasSouls.Content.Items.Accessories.Souls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class OlympiansSoul : BaseSoul
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

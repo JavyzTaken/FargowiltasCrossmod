@@ -8,7 +8,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class AstroEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.LightBlue;

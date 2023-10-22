@@ -16,7 +16,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments // shortest crossmod namespace
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class TemplarEnchant : BaseEnchant
     {
         

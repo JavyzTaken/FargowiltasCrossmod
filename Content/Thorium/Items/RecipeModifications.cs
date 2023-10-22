@@ -35,7 +35,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls;
 namespace FargowiltasCrossmod.Content.Thorium.Items
 {
     //for putting mod stuff into souls recipes or vice versa
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumRecipesModifications : ModSystem
     {
         //for when 

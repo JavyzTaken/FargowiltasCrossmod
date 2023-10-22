@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Enemy
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class Myna : EModeNPCBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(

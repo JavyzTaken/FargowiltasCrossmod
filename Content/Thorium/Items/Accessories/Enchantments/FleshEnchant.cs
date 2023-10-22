@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class FleshEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.IndianRed;

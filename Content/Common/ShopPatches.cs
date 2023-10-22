@@ -50,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Common
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public static class MiscThoriumMethods
     {
         internal static void ThoriumBiomeBugs(Player player, ref string quote)

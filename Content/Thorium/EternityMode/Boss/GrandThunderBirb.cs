@@ -18,7 +18,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Weapons;
 
 namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GrandThunderBirb : EModeNPCBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());

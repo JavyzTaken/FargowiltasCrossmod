@@ -14,10 +14,11 @@ using Terraria.ModLoader;
 using static FargowiltasCrossmod.Core.ModCompatibility;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
+using Terraria.DataStructures;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class IcyEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.DarkBlue;
@@ -64,6 +65,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, new Vector2(0, Main.rand.Next(5)), ProjectileID.NorthPoleSnowflake, projectile.damage / 10, 0.4f, projectile.owner);
                 }
             }
+        }
+
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            icySnowflackTimer = Main.rand.Next(30);
         }
 
         public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)

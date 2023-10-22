@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public abstract class DragonMinion : ModProjectile
     {
         public static int HeadType => ModContent.ProjectileType<DragonMinionHead>();
@@ -234,7 +234,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
     
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class DragonSpawnSource : EntitySource_Parent
     {
         public readonly DragonData data;
@@ -244,7 +244,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
     
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public partial class DragonMinionHead : DragonMinion
     {
         public override void AI()
@@ -577,7 +577,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class DragonMinionBody : DragonMinion
     {
         public override void SetDefaults()
@@ -595,7 +595,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class DragonMinionBody2 : DragonMinion
     {
         public override void SetDefaults()

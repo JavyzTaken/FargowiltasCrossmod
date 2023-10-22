@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumKeybinds : ModSystem
     {
         internal static ModKeybind LivingWoodBind;

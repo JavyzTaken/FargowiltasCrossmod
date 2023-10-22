@@ -10,7 +10,7 @@ using ThoriumMod.NPCs;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Summons
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GildedSummon : ModItem
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

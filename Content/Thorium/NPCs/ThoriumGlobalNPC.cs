@@ -6,7 +6,7 @@ using ThoriumMod.NPCs;
 
 namespace FargowiltasCrossmod.Content.Thorium.NPCs
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumGlobalNPC : GlobalNPC
     {
         public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => true;

@@ -8,7 +8,7 @@ using Terraria.Audio;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class Steel_Parry : ModProjectile
     {
         public bool IsDarkSteel = false;
@@ -70,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             }
         }
     }
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ParriedProjectile : GlobalProjectile
     {
         public bool alreadyParried;

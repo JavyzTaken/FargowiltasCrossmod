@@ -20,7 +20,7 @@ using FargowiltasSouls.Content.Items.Accessories.Essences;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Essences
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SlingersEssence : BaseEssence
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

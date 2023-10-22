@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class Templar_Fire : ThoriumMod.Projectiles.Healer.HolyFirePro
     {
         public override bool OnTileCollide(Vector2 oldVelocity)

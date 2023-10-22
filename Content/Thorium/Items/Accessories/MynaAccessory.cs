@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class MynaAccessory : SoulsItem
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";

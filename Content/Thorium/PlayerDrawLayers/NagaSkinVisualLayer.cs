@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class NagaSkinVisualLayer : PlayerDrawLayer
     {
         public override Position GetDefaultPosition() => new Between(PlayerDrawLayers.JimsCloak, PlayerDrawLayers.MountBack);

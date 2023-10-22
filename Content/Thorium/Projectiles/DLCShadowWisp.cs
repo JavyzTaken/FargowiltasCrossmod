@@ -8,7 +8,7 @@ using ThoriumMod.Utilities;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-	[ExtendsFromMod("ThoriumMod")]
+	[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 	public class DLCShadowWisp : ThoriumMod.Projectiles.Healer.ShadowWisp
 	{
 		public override bool PreDraw(ref Color lightColor)

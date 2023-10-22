@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GildedLamp : SoulsItem // slime drop
     {
         public override bool Eternity => true;
@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GildedMonicle : SoulsItem // bat drop
     {
         public override bool Eternity => true;
@@ -62,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GildedBinoculars : SoulsItem // lycan drop
     {
         public override bool Eternity => true;
@@ -89,7 +89,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GildedNightVision : SoulsItem
     {
         public override bool Eternity => true;

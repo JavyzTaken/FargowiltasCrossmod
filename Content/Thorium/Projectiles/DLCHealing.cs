@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public static class DLCHealing
     {
         public delegate void CustomHealing(Player player, Player target, ref int heals, ref int selfHeals);

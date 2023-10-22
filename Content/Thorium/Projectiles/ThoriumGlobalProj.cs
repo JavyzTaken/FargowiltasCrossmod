@@ -8,7 +8,7 @@ using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumGlobalProj : GlobalProjectile
     {
         public override bool InstancePerEntity => true;

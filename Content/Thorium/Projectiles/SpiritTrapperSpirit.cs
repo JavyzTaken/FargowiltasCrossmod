@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class AngryGhost : ModProjectile
     {
         public override string Texture => "ThoriumMod/Items/Misc/SpiritDroplet";

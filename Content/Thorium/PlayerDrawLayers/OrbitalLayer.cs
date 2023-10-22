@@ -11,18 +11,18 @@ using ThoriumMod.Utilities;
 namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 {
 	// This layout of making orbital player layers for drawing is stolen from Thorium btw
-	[ExtendsFromMod("ThoriumMod")]
+	[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 	public class OrbitalLayerFront : OrbitalLayerBase
 	{
 		public override bool Front => true;
 	}
-	[ExtendsFromMod("ThoriumMod")]
+	[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 	public class OrbitalLayerBack : OrbitalLayerBase
 	{
 		public override bool Front => false;
 	}
 
-	[ExtendsFromMod("ThoriumMod")]
+	[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 	public abstract class OrbitalLayerBase : PlayerDrawLayer
     {
 		public abstract bool Front { get; }

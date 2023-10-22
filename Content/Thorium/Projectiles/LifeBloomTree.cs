@@ -7,7 +7,7 @@ using System;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LifeBloomTree : ModProjectile
     {
         public override void SetDefaults()
@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 		}
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LifeBloomBallista : ModProjectile
     {
         public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.DD2BallistraTowerT3}";
@@ -56,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
 
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LifeBloomWard : ModProjectile
     {
         public override void SetDefaults()

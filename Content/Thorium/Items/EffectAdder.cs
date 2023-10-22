@@ -31,7 +31,7 @@ using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumEffectAdder : GlobalItem
     {
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)

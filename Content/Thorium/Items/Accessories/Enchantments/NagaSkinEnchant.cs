@@ -8,7 +8,7 @@ using FargowiltasCrossmod.Content.Thorium.PlayerLayers;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     [AutoloadEquip(EquipType.Wings)]
     public class NagaSkinEnchant : BaseEnchant
     {

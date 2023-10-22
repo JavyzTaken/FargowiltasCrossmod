@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     internal static class ValaChunkCollisions
     {
         private static Dictionary<int, Action<Projectile, Projectile>> Collisions = new()

@@ -9,7 +9,7 @@ using Terraria.Utilities;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumGlobalItem : GlobalItem
     {
         public override bool InstancePerEntity => true;

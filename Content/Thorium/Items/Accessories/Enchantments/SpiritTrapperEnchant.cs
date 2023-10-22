@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SpiritTrapperEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Blue;

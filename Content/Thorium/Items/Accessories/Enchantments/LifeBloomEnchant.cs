@@ -7,7 +7,7 @@ using FargowiltasCrossmod.Content.Thorium.Projectiles;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LifeBloomEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Green;

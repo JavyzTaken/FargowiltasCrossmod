@@ -10,7 +10,7 @@ using System;
 
 namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Enemy
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GFBHatling : EModeNPCBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<StormHatchling>());

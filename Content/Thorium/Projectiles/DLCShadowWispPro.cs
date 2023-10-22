@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-	[ExtendsFromMod("ThoriumMod")]
+	[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 	public class DLCShadowWispPro : ThoriumMod.Projectiles.Healer.ShadowWispPro
 	{
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

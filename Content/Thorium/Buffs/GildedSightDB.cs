@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Buffs
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GildedSightDB : ModBuff
     {
         public override string Texture => "FargowiltasSouls/Content/Buffs/PlaceholderDebuff";

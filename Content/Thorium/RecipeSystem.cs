@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumRecipeSystem : ModSystem
     {
         public static Recipe GetRecipeWithResult(int type) { return Main.recipe.First(new(r => r.createItem.type == type)); }
