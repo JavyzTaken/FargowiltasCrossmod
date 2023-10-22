@@ -33,28 +33,28 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.Center = player.Center;
             Projectile.velocity = Projectile.oldVelocity;
 
-            int maxDist = IsDarkSteel ? 2304 : 4096; // 3 block : 4 blocks (squared)
+            int maxDist = 48; 
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 if (i == Projectile.whoAmI) continue;
+
                 Projectile proj = Main.projectile[i];
                 if (proj.friendly && !IsDarkSteel) continue;
 
-                if (player.Center.DistanceSQ(proj.Center) < maxDist && proj.TryGetGlobalProjectile(out ParriedProjectile parried) && !parried.alreadyParried)
+                if (player.Center.Distance(proj.Center) < maxDist && proj.TryGetGlobalProjectile(out ParriedProjectile parried) && !parried.alreadyParried)
                 {
                     if (proj.friendly)
                     {
                         if (IsDarkSteel)
                         {
                             CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+ProBoost");
-                            proj.velocity *= 2;
                             proj.damage = (int)(proj.damage * 2f);
                         }
                     }
                     else
                     {
                         CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parried", true);
-                        proj.velocity *= -2;
+                        proj.velocity = player.Center.DirectionTo(Main.MouseWorld) * proj.velocity.Length();
                         proj.damage *= IsDarkSteel ? 8 : 5;
                     }
 
@@ -64,8 +64,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     proj.hostile = false;
 
                     // if the parry was succesful, the player gets a bonus to their cooldown.
-                    int buffType = ModContent.BuffType<Buffs.SteelParry_CD>();
-                    if (player.HasBuff(buffType) && player.buffTime[player.FindBuffIndex(buffType)] > 300) player.buffTime[player.FindBuffIndex(buffType)] -= 60;
+                    //int buffType = ModContent.BuffType<Buffs.SteelParry_CD>();
+                    //if (player.HasBuff(buffType) && player.buffTime[player.FindBuffIndex(buffType)] > 300) player.buffTime[player.FindBuffIndex(buffType)] -= 60;
                 }
             }
         }

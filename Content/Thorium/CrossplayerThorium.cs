@@ -68,6 +68,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool NagaSkinEnch;
         public bool LifeBloomEnch;
         public Item LifeBloomEnchItem;
+        public bool TitanEnch;
 
         public bool HelheimForce;
 
@@ -145,6 +146,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             NagaSkinEnch = false;
             LifeBloomEnch = false;
             LifeBloomEnchItem = null;
+            TitanEnch = false;
 
             HelheimForce = false;
 

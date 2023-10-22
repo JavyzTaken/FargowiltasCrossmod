@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void ParryKey()
         {
-            if (SteelEnchItem == null || Main.myPlayer != Player.whoAmI) return;
+            if (SteelEnchItem == null || Main.myPlayer != Player.whoAmI || Player.dead || !Player.active) return;
 
             if (!Player.HasBuff<SteelParry_CD>())
             {
