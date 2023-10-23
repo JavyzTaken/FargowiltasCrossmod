@@ -22,11 +22,24 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.penetrate = -1;
             Projectile.damage = 32;
             Projectile.timeLeft = 6;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             return false;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(ModContent.BuffType<ThoriumMod.Buffs.GraniteSurge>(), 240);
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.scale = Projectile.ai[0];
+            Projectile.Center = Projectile.position;
         }
 
         public override void OnKill(int timeLeft)

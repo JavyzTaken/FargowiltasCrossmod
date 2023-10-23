@@ -12,21 +12,20 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SilkEnchant : BaseEnchant
     {
-        
         protected override Color nameColor => Color.BlueViolet;
-
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-
-        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CrossplayerThorium>().SilkEnch = true;
-            if (player.statMana >= player.statManaMax * 0.95) return; // so you dont get boosts with just full mana
-            player.GetDamage(DamageClass.Generic) += 0.0025f * player.statMana;
-            if (player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Type)) player.GetDamage(DamageClass.Generic) += 0.0025f * player.statMana;
+            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            DLCPlayer.SilkEnch = true;
+
+            var ThoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+
+            ThoriumPlayer.accArtificersShield = true;
+            player.statDefense += 2 * (ThoriumPlayer.statEnchantersEnergy / 20);
+            ThoriumPlayer.accArtificersFocus = true;
+
+            // increasing the max artificer energy requires IL editing
         }
 
         public override void AddRecipes()

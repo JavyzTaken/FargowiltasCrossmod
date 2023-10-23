@@ -71,8 +71,11 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item IcyEnchItem;
         public bool TitanEnch;
         public bool DuraSteelEnch;
+        public bool BronzeEnch;
+        public Item BronzeEnchItem;
 
         public bool HelheimForce;
+        public bool SvartalfheimForce;
 
         public List<int> LodeStonePlatforms = new();
         public List<int> ActiveValaChunks = new();
@@ -150,8 +153,11 @@ namespace FargowiltasCrossmod.Content.Thorium
             LifeBloomEnchItem = null;
             TitanEnch = false;
             DuraSteelEnch = false;
+            BronzeEnch = false;
+            BronzeEnchItem = null;
 
             HelheimForce = false;
+            SvartalfheimForce = false;
 
             GildedMonicle = false;
             GildedBinoculars = false;
@@ -185,11 +191,11 @@ namespace FargowiltasCrossmod.Content.Thorium
                 SpawnFlesh(target);
             }
 
-            if (hit.Damage >= target.life) // kills
+            if (damageDone >= target.life) // kills
             {
-                if (GraniteEnch && proj.type != ModContent.ProjectileType<GraniteExplosion>())
+                if (GraniteEnch)
                 {
-                    Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), target.Center, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, Player.whoAmI);
+                    GraniteEffect(target.Center, proj);
                 }
 
                 if (DemonBloodEnch)
@@ -313,6 +319,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void OnEnterWorld()
         {
+            bronzeSynergyCD = 0;
             //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning1"), Color.Yellow);
             //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning2"), Color.Yellow);
         }
@@ -330,7 +337,16 @@ namespace FargowiltasCrossmod.Content.Thorium
         public override void PostUpdateEquips()
         {
             NoviceClericEffect();
+            if (GraniteEnch && BronzeEnch) bronzeSynergyCD++;
         }
 
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (BronzeEnch)
+            {
+                BronzeEffect(item, position, damage);
+            }
+            return base.Shoot(item, source, position, velocity, type, damage, knockback);
+        }
     }
 }

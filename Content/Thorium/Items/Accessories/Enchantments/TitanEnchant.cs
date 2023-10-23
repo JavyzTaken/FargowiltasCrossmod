@@ -15,6 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         {
             player.GetModPlayer<CrossplayerThorium>().TitanEnch = true;
             player.GetArmorPenetration(DamageClass.Generic) += (player.statDefense * EffectMult);
+            player.statDefense *= 0.8f;
         }
     }
 }

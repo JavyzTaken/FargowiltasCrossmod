@@ -19,8 +19,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 return DLCPlayer.WarlockEnchItem == Item && DLCPlayer.SacredEnch;
             }
         }
-        protected override Color SynergyColor1 => Color.Orange with { A = 0 };
-        protected override Color SynergyColor2 => Color.Black with { A = 0 };
+        protected override Color SynergyColor1 => Color.Black with { A = 0 };
+        protected override Color SynergyColor2 => Color.Orange with { A = 0 };
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

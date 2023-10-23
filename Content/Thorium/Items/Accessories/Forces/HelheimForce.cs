@@ -29,7 +29,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
             DLCPlayer.WhiteKnightEnch = true;
             WhiteKnightEnchant.WhiteKnightEffect(player);
 
-            DLCPlayer.SilkEnch = true; // no effect rn
+            DLCPlayer.SilkEnch = true; 
+            var ThoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+            ThoriumPlayer.accArtificersShield = true;
+            player.statDefense += 2 * (ThoriumPlayer.statEnchantersEnergy / 10);
+            ThoriumPlayer.accArtificersFocus = true;
 
             DLCPlayer.FleshEnch = true;
             DLCPlayer.FleshEnchItem = Item;

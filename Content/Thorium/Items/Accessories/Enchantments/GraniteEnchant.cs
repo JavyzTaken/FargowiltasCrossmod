@@ -15,14 +15,19 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class GraniteEnchant : BaseEnchant
+    public class GraniteEnchant : BaseSynergyEnchant
     {
         protected override Color nameColor => Color.DarkBlue;
-        public override void SetStaticDefaults()
+        protected override bool SynergyActive
         {
-            base.SetStaticDefaults();
-
+            get
+            {
+                var DLCPlayer = Main.LocalPlayer.GetModPlayer<CrossplayerThorium>();
+                return DLCPlayer.GraniteEnchItem == Item && DLCPlayer.BronzeEnch;
+            }
         }
+        protected override Color SynergyColor1 => Color.DarkBlue with { A = 0 };
+        protected override Color SynergyColor2 => Color.Gold with { A = 0 };
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -44,4 +49,16 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
+    public partial class CrossplayerThorium
+    {
+        public void GraniteEffect(Vector2 pos, Projectile proj)
+        {
+            if (BronzeEnch && !Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(GraniteEnchItem.type)) return;
+
+            if (proj.type != ModContent.ProjectileType<GraniteExplosion>() || !Main.rand.NextBool(3))
+            {
+                Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), pos, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, Player.whoAmI, 1f);
+            }
+        }
+    }
 }

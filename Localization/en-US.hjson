@@ -396,10 +396,31 @@ Mods: {
 
 			DurasteelEnchant: {
 				DisplayName: Durasteel Enchant
-				Tooltip: 
+				Tooltip:
 					'''
 					Allows you to parry projectiles with a hotkey, including your own, sending them in the direction of your cursor, increasing their damage and granting them an explosion on collision.
 					"Hell is full"
+					'''
+			}
+
+			BronzeEnchant: {
+				DisplayName: Bronze Enchant
+				Tooltip: 
+					'''
+					Attacking has a 20% chance to release a damaging burst of light.
+					"Ensure only the finest quality copper ingots be used in its creation."
+					'''
+			}
+
+			SvartalfheimForce: {
+				DisplayName: Force of Svartalfheim
+				Tooltip:
+					'''
+					[i:FargowiltasCrossmod/DurasteelEnchant] Allows you to parry projectiles, granting them increased damage and an explosion on collision.
+					[i:FargowiltasCrossmod/ConduitEnchant] Summons a small flying saucer that shoots down nearby projectiles.
+					[i:FargowiltasCrossmod/TitanEnchant] Increases armor penetration by 15% of your defence, but reduces your defence's effectiveness.
+					[i:FargowiltasCrossmod/GraniteEnchant] Killing an enemy creates an explosion that inflicts granite surge on enemies.
+					[i:FargowiltasCrossmod/BronzeEnchant] Every 5 seconds when attacking a powerful burst of light will be realesed that bounces between enemies and causes granite explosions on it.
 					'''
 			}
 		}
@@ -458,6 +479,7 @@ Mods: {
 			LifeBloomTree.DisplayName: Life Bloom Tree
 			LifeBloomWard.DisplayName: Life Bloom Ward
 			SteelParry.DisplayName: Steel Parry
+			DLCLightStrike.DisplayName: D L C Light Strike
 		}
 
 		Keybinds: {
