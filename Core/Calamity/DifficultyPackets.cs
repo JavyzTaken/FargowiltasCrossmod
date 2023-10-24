@@ -1,11 +1,8 @@
-﻿using FargowiltasCrossmod.Core.Systems;
-using FargowiltasSouls.Core.Systems;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

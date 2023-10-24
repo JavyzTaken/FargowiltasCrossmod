@@ -1,20 +1,16 @@
-﻿using CalamityMod;
+﻿using System;
+using CalamityMod;
+using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.NPCs.AstrumAureus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using Terraria.GameContent;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.Systems;
-using CalamityMod.Buffs.DamageOverTime;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {

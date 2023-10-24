@@ -1,5 +1,4 @@
-﻿
-using CalamityMod.Items.SummonItems;
+﻿using CalamityMod.Items.SummonItems;
 using CalamityMod.NPCs.Providence;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;

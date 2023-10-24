@@ -1,5 +1,4 @@
-﻿using CalamityMod;
-using CalamityMod.Buffs.DamageOverTime;
+﻿using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.NPCs.PlaguebringerGoliath;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Common.Graphics.Particles;
@@ -8,7 +7,6 @@ using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System.Threading;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -45,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             ref float frameX = ref Projectile.localAI[0];
             int width = ((!charging) ? 266 : 322);
 
-            
+
             Projectile.frameCounter += 1;
             if (Projectile.frameCounter > 4.0)
             {
@@ -85,7 +83,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             else
             {
-                
+
             }
             if (timer > TelegraphTime * 3)
             {

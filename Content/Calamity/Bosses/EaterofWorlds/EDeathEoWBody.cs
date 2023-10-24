@@ -1,14 +1,13 @@
-﻿
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
 {
@@ -18,13 +17,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(time);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             timer = binaryReader.Read7BitEncodedInt();
             time = binaryReader.Read7BitEncodedInt();
         }
@@ -40,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
                 timer++;
                 if (timer >= time)
                 {
-                    
+
                     timer = 0;
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.CursedFlameHostile, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);

@@ -56,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 .AddIngredient<Valediction>()
                 .AddIngredient<ExecutionersBlade>()
                 .AddIngredient<EclipsesFall>()
-                
+
                 .AddTile<CrucibleCosmosSheet>()
                 .Register();
         }

@@ -1,14 +1,13 @@
-﻿
-using Terraria.ModLoader;
-using Terraria;
-using Terraria.ID;
-using Terraria.DataStructures;
+﻿using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using Terraria.GameContent;
+using Terraria;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {
@@ -25,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             Projectile.friendly = false;
             Projectile.tileCollide = false;
             Projectile.scale = 2;
-            
+
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -49,7 +48,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             if (Projectile.timeLeft % 5 == 0)
             {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt, Scale:Projectile.scale).noGravity = true;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt, Scale: Projectile.scale).noGravity = true;
             }
             NPC owner = Main.npc[(int)Projectile.ai[0]];
             if (owner == null || !owner.active)

@@ -57,9 +57,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             ActivationTextKey = "Mods.FargowiltasCrossmod.EternityDeathDifficulty.Activation";
             DeactivationTextKey = "Mods.FargowiltasCrossmod.EternityDeathDifficulty.Deactivation";
 
-            ActivationSound = SoundID.Roar with { Pitch = -0.5f};
+            ActivationSound = SoundID.Roar with { Pitch = -0.5f };
             ChatTextColor = Color.DarkRed;
-            
+
             //MostAlternateDifficulties = 1;
             //Difficulties = new DifficultyMode[] { new NoDifficulty(), new RevengeanceDifficulty(), new DeathDifficulty(), this };
             //Difficulties = Difficulties.OrderBy(d => d.DifficultyScale).ToArray();

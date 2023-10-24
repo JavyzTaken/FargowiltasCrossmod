@@ -1,17 +1,15 @@
-using CalamityMod;
-using Terraria.ID;
-using Terraria.ModLoader;
-using FargowiltasSouls.Core.Toggler;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using CalamityMod;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using System.IO;
+using FargowiltasSouls.Core.Toggler;
 using Terraria.Graphics.Effects;
-using FargowiltasCrossmod.Content.Common.Sky;
-using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
-using FargowiltasCrossmod.Core.Utils;
-using FargowiltasSouls;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod;
 

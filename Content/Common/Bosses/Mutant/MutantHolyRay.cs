@@ -1,29 +1,22 @@
-﻿using CalamityMod.NPCs.ProfanedGuardians;
-using CalamityMod.NPCs.Providence;
-using CalamityMod.NPCs;
-using CalamityMod.World;
-using CalamityMod;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Enums;
+using CalamityMod;
+using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.NPCs.Providence;
+using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
+using Terraria.Enums;
+using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.Player;
 using static Terraria.Utils;
-using Terraria.ID;
-using FargowiltasSouls.Content.Bosses.MutantBoss;
-using FargowiltasCrossmod.Core;
-using FargowiltasSouls.Content.Buffs.Boss;
-using FargowiltasSouls.Core.Systems;
-using CalamityMod.Buffs.DamageOverTime;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {

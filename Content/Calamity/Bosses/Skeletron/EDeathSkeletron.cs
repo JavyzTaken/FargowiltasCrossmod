@@ -1,11 +1,9 @@
-﻿using FargowiltasCrossmod.Core;
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -20,13 +18,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHead);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.WriteVector2(telePos);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             telePos = binaryReader.ReadVector2();
             timer = binaryReader.Read7BitEncodedInt();
         }
@@ -48,12 +44,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
             {
                 timer--;
                 for (int i = 0; i < 2; i++)
-                Dust.NewDustDirect(telePos, npc.width, npc.height, DustID.Shadowflame, Scale:2);
+                    Dust.NewDustDirect(telePos, npc.width, npc.height, DustID.Shadowflame, Scale: 2);
                 if (timer == 0)
                 {
                     for (int i = 0; i < 100; i++)
                     {
-                        Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Shadowflame, Scale:2);
+                        Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Shadowflame, Scale: 2);
                     }
                     npc.position = telePos;
                     foreach (NPC n in Main.npc)
@@ -69,7 +65,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(15 * i)) * 15, ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item66, npc.Center);
-                    
+
                 }
             }
             if (npc.ai[1] == 2)
