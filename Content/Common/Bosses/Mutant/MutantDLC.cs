@@ -1159,7 +1159,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 const int PrepareTime = 65;
                 const int DashTime = 60;
                 const int LaserPrepareTime = 30;
-                const int LaserTime = 80;
+                const int LaserTime = 95;
 
                 if (Timer < PrepareTime)
                 {
@@ -1206,23 +1206,20 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     SoundEngine.PlaySound(ProfanedGuardianCommander.DashSound, npc.Center);
                     npc.netUpdate = true;
 
-                    //register values for providence ray
-                    int dirX = -Math.Sign(npc.Center.X - player.Center.X);
-                    int dirY = -Math.Sign(npc.Center.Y - player.Center.Y);
-
-                    if (dirX == 0)
-                        dirX = 1;
-                    if (dirY == 0)
-                        dirY = 1;
-
-                    int distanceX = 400;
-                    int distanceY = 500;
-                    npc.ai[2] = dirX * distanceX;
-                    npc.ai[3] = dirY * distanceY;
-                    npc.netUpdate = true;
+                    
                 }
                 else if (Timer - PrepareTime < DashTime)
                 {
+                    //register values for providence ray
+                    int dirY = Math.Sign(player.Center.Y - npc.Center.Y);
+
+                    if (dirY == 0)
+                        dirY = 1;
+
+                    int distanceY = 900;
+                    npc.ai[3] = player.Center.Y + dirY * distanceY;
+                    npc.netUpdate = true;
+
                     if (Timer % 3 == 0)
                     {
                         if (DLCUtils.HostCheck)
@@ -1236,7 +1233,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 else if (Timer - PrepareTime - DashTime < LaserPrepareTime) //move to deathray position
                 {
                     Vector2 pos = npc.ai[2] * Vector2.UnitX + npc.ai[3] * Vector2.UnitY;
-                    Movement(player.Center + pos, 1.2f);
+                    npc.velocity.X *= 0.97f;
+                    npc.velocity.Y = (pos.Y - npc.Center.Y) * 0.025f;
+                    //Movement(player.Center + pos, 1.2f);
                 }
                 else if (Timer - PrepareTime - DashTime == LaserPrepareTime)
                 {
@@ -1289,6 +1288,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             {
                                 float offsetAngle = 360 / totalProjectiles;
                                 int totalSpaces = totalProjectiles / 5;
+
+                                totalSpaces = 0;
+
                                 int spaceStart = Main.rand.Next(totalProjectiles - totalSpaces);
                                 float ai0 = ((aiVariableUsed % (float)(timer * 2) == 0f) ? 1f : 0f);
                                 int spacesMade = 0;
@@ -1348,7 +1350,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 if (Timer > WindupTime && Timer <= WindupTime + bhTime)
                 {
                     int flareDustSpawnDivisor = 30;
-                    int totalProjectiles = 38;
+                    int totalProjectiles = WorldSavingSystem.MasochistModeReal ? 36 : 30;
                     if (Timer % flareDustSpawnDivisor == 0)
                     {
                         DoFlareDustBulletHell(0, flareDustSpawnDivisor, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), totalProjectiles, 0f, 0f, phase2: true);

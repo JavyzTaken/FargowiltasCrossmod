@@ -64,9 +64,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             if (Projectile.ai[2] > SlamTime / 2)
             {
                 Projectile.velocity.X *= 0.85f;
-                if (Projectile.ai[2] > SlamTime + 10)
+                if (Projectile.ai[2] > SlamTime / 2 + SlamTime / 4)
                 {
-                    gravity *= 4;
+                    gravity *= 2.5f;
                 }
                 
             }

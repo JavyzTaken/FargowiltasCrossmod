@@ -58,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             float distanceFraction = (distance / StartDistance);
 
             float circumference = distance * MathHelper.TwoPi;
-            float maxRotationSpeed = circumference / 100;
+            float maxRotationSpeed = circumference / 120;
             float rotationSpeed = maxRotationSpeed * distanceFraction;
             Vector2 velRotation = Vector2.Normalize(ToCenter).RotatedBy(MathHelper.PiOver2 * rotDir) * rotationSpeed;
 
