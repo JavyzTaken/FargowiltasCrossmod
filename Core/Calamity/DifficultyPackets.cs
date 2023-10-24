@@ -124,7 +124,7 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         public abstract void Read(BinaryReader reader);
     }
-    public abstract class EternityRevPacket : BaseDLCPacket
+    public class EternityRevPacket : BaseDLCPacket
     {
         public override void Write(ModPacket packet, params object[] context)
         {
@@ -145,7 +145,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[2];
         }
     }
-    public abstract class EternityDeathPacket : BaseDLCPacket
+    public class EternityDeathPacket : BaseDLCPacket
     {
         public override void Write(ModPacket packet, params object[] context)
         {
