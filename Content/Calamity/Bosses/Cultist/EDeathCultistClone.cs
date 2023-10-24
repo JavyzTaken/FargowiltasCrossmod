@@ -19,12 +19,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.CultistBossClone);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(fireball);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             fireball = binaryReader.ReadBoolean();
         }
         public bool fireball = false;

@@ -76,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write7BitEncodedInt(npc is NPC ? npc.whoAmI : -1);
+            writer.Write7BitEncodedInt(npc is not null ? npc.whoAmI : -1);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)

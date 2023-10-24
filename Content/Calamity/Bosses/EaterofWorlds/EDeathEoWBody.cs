@@ -18,13 +18,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(time);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             timer = binaryReader.Read7BitEncodedInt();
             time = binaryReader.Read7BitEncodedInt();
         }

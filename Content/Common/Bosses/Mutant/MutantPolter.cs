@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            Projectile.localAI[0] = reader.Read();
+            Projectile.localAI[0] = reader.ReadSingle();
         }
         public const int StartDistance = 1000;
         public override void AI()

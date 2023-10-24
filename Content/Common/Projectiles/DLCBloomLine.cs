@@ -24,13 +24,11 @@ namespace FargowiltasCrossmod.Content.Common.Projectiles
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write(counter);
-            base.SendExtraAI(writer);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             counter = reader.ReadInt32();
-            base.ReceiveExtraAI(reader);
         }
         private int counter;
         public override void AI()

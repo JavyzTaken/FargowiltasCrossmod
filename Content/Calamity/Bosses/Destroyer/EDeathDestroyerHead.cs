@@ -16,14 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
     public class EDeathDestroyerHead : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.TheDestroyer);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-        {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
-        }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-        {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
-        }
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;

@@ -32,8 +32,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
-
             binaryWriter.Write7BitEncodedInt(TeleportCounter);
             binaryWriter.Write7BitEncodedInt(Side);
             binaryWriter.Write(CheckedTeleport);
@@ -42,8 +40,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
-
             TeleportCounter = binaryReader.Read7BitEncodedInt();
             Side = binaryReader.Read7BitEncodedInt();
             CheckedTeleport = binaryReader.ReadBoolean();

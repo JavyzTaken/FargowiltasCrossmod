@@ -103,8 +103,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            AttachToCrimson = binaryReader.ReadBoolean();
             AttachedSlime = binaryReader.Read7BitEncodedInt();
+            AttachToCrimson = binaryReader.ReadBoolean();
             ContactDamage = binaryReader.ReadBoolean();
             ReattachTimer = binaryReader.Read7BitEncodedInt();
             LockVector = binaryReader.ReadVector2();

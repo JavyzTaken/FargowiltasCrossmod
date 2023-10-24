@@ -21,14 +21,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Plantera);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(dashTimer);
             binaryWriter.Write(dashing);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             timer = binaryReader.Read7BitEncodedInt();
             dashTimer = binaryReader.Read7BitEncodedInt();
             dashing = binaryReader.ReadBoolean();

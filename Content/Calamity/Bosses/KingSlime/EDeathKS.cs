@@ -18,12 +18,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.KingSlime);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(summonedJewel);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             summonedJewel = binaryReader.ReadBoolean();
         }
         public bool summonedJewel = false;

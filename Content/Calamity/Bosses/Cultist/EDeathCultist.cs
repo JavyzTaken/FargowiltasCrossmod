@@ -14,14 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
     public class EDeathCultist : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.CultistBoss);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-        {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
-        }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-        {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
-        }
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;

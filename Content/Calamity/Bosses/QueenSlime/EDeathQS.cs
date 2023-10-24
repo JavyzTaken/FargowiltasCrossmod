@@ -19,12 +19,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.QueenSlimeBoss);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(slam);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             slam = binaryReader.ReadBoolean();
         }
         public bool slam = false;

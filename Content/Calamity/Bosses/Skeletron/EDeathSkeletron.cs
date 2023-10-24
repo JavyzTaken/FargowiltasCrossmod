@@ -20,13 +20,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHead);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.WriteVector2(telePos);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             telePos = binaryReader.ReadVector2();
             timer = binaryReader.Read7BitEncodedInt();
         }

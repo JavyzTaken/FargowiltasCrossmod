@@ -19,14 +19,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Spazmatism);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(Fireballs);
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(FireballTime);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             Fireballs = binaryReader.ReadBoolean();
             timer = binaryReader.Read7BitEncodedInt();
             FireballTime = binaryReader.Read7BitEncodedInt(); 

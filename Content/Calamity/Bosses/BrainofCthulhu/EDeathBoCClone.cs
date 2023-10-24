@@ -22,12 +22,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             timer = binaryReader.Read7BitEncodedInt();
         }
         int timer;

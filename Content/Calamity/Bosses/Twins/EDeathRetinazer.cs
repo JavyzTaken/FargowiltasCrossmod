@@ -21,7 +21,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Retinazer);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(DashAttack);
             binaryWriter.Write7BitEncodedInt(dashTime);
             binaryWriter.Write7BitEncodedInt(timer);
@@ -29,7 +28,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             DashAttack = binaryReader.ReadBoolean();
             dashTime = binaryReader.Read7BitEncodedInt();
             timer = binaryReader.Read7BitEncodedInt();

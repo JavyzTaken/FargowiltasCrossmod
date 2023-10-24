@@ -146,7 +146,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             binaryWriter.Write(OldAttackChoice);
             binaryWriter.Write(FirstFrame);
             binaryWriter.Write(PlayStoria);
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
         }
 
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
@@ -155,10 +154,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             LockVector1 = binaryReader.ReadVector2();
             Timer = binaryReader.Read7BitEncodedInt();
             Counter = binaryReader.Read7BitEncodedInt();
-            OldAttackChoice = binaryReader.Read();
+            OldAttackChoice = binaryReader.ReadSingle();
             FirstFrame = binaryReader.ReadBoolean();
             PlayStoria = binaryReader.ReadBoolean();
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
         }
         
         public override bool PreAI(NPC npc)

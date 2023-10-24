@@ -21,12 +21,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronPrime);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.WriteVector2(rotationPoint);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             rotationPoint = binaryReader.ReadVector2();
         }
         public Vector2 rotationPoint = Vector2.Zero;

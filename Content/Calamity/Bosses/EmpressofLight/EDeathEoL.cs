@@ -20,13 +20,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.HallowBoss);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(wallAttack);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             wallAttack = binaryReader.ReadBoolean();
             timer = binaryReader.Read7BitEncodedInt();
         }
