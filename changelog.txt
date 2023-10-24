@@ -1,4 +1,9 @@
-New Update: v1.0.4.4
+New Update: v1.0.4.5
 
-Boss summon items are only consumable in Eternity Mode
-Reminder: boss summons are refunded by the boss before beating them in Eternity Mode, and are sold by the Mutant after beating them
+Fixed the multiplayer difficulty desync issue
+Improved multiplayer sync in various regions
+
+Made Mutant's Yharon bullet hell more lenient below Masochist Mode, but removed large openings
+Adjusted Mutant's movement before Providence ray attack
+Increased Mutant's Slime God's slam speed
+Slightly decreased Mutant's Necroplasm rotation speed
