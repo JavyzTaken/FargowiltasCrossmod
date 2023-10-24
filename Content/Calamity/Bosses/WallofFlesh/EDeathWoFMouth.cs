@@ -1,16 +1,13 @@
-﻿
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using FargowiltasSouls;
+using Terraria;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
 {
@@ -18,14 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
     public class EDeathWoFMouth : EternideathNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.WallofFlesh);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-        {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
-        }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-        {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
-        }
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;

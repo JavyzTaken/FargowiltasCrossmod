@@ -1,19 +1,19 @@
-﻿using FargowiltasSouls;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using CalamityMod.NPCs.SlimeGod;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Primitives;
 using FargowiltasSouls.Common.Graphics.Shaders;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using Terraria.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using System.IO;
 using Terraria.DataStructures;
+using Terraria.Graphics;
 using Terraria.ID;
-using CalamityMod.NPCs.SlimeGod;
-using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
@@ -109,14 +109,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public override bool ShouldUpdatePosition() => false;
 
         public float WidthFunction(float progress) => Length;
-        
+
 
         public Color ColorFunction(float progress)
         {
             float opacity = Math.Min(Timer / 30f, Math.Min(Projectile.timeLeft / 15f, 1));
             opacity *= 0.4f;
             Color mainColor = Crimson ? Color.Crimson : Color.Lavender;
-            float modifier = 1-progress;//2 * Math.Abs(progress - 0.5f);
+            float modifier = 1 - progress;//2 * Math.Abs(progress - 0.5f);
             return Color.Lerp(Color.Transparent, mainColor, opacity * modifier);
         }
 
@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 shader.SetMainColor(Color.Lerp(Color.Lavender, Color.Purple, 0.7f));
             }
-            
+
             shader.Apply();
 
             VertexStrip vertexStrip = new();

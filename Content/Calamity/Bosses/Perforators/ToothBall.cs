@@ -1,14 +1,10 @@
-﻿using CalamityMod.Projectiles.Boss;
+﻿using System;
+using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -71,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override void AI()
         {
-            Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.X*3 + Math.Abs(Projectile.velocity.Y));
+            Projectile.rotation += MathHelper.ToRadians(Projectile.velocity.X * 3 + Math.Abs(Projectile.velocity.Y));
             Projectile.velocity.Y += 0.15f;
         }
         public override bool OnTileCollide(Vector2 oldVelocity)

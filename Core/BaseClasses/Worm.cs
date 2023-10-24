@@ -1,6 +1,6 @@
-﻿using FargowiltasCrossmod.Core.Utils;
+﻿using System;
+using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Core.BaseClasses
     /// <summary>
     /// The base class for non-separating Worm enemies.
     /// </summary>
-    
+
     public abstract class Worm : ModNPC
     {
         /*  ai[] usage:
@@ -128,8 +128,8 @@ namespace FargowiltasCrossmod.Core.BaseClasses
     /// <summary>
     /// The base class for head segment NPCs of Worm enemies
     /// </summary>
-    
-    
+
+
     public abstract class WormHead : Worm
     {
         public sealed override WormSegmentType SegmentType => WormSegmentType.Head;
@@ -581,8 +581,8 @@ namespace FargowiltasCrossmod.Core.BaseClasses
                 NPC.netUpdate = true;
         }
     }
-    
-    
+
+
     public abstract class WormBody : Worm
     {
         public sealed override WormSegmentType SegmentType => WormSegmentType.Body;
@@ -639,7 +639,7 @@ namespace FargowiltasCrossmod.Core.BaseClasses
     }
 
     // Since the body and tail segments share the same AI
-    
+
     public abstract class WormTail : Worm
     {
         public sealed override WormSegmentType SegmentType => WormSegmentType.Tail;

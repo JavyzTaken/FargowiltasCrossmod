@@ -9,7 +9,6 @@ using CalamityMod.NPCs.Crabulon;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.Projectiles;
-using CalamityMod.World;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
@@ -29,9 +28,7 @@ using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
-using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
-using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -50,13 +47,13 @@ namespace FargowiltasCrossmod.Core.Calamity
         public static bool DownedDS => DownedBossSystem.downedDesertScourge;
         public static bool DownedCrab => DownedBossSystem.downedCrabulon;
         public static bool DownedHM => DownedBossSystem.downedHiveMind;
-        public  static bool DownedPerf => DownedBossSystem.downedPerforator;
+        public static bool DownedPerf => DownedBossSystem.downedPerforator;
         public static bool DownedSG => DownedBossSystem.downedSlimeGod;
         public static bool DownedCryo => DownedBossSystem.downedCryogen;
         public static bool DownedAS => DownedBossSystem.downedAquaticScourge;
         public static bool DownedBE => DownedBossSystem.downedBrimstoneElemental;
         public static bool DownedCalClone => DownedBossSystem.downedCalamitasClone;
-        public  static bool DownedAA => DownedBossSystem.downedAstrumAureus;
+        public static bool DownedAA => DownedBossSystem.downedAstrumAureus;
         public static bool DownedLevi => DownedBossSystem.downedLeviathan;
         public static bool DownedPBG => DownedBossSystem.downedPlaguebringer;
         public static bool DownedRav => DownedBossSystem.downedRavager;
@@ -79,7 +76,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             #region summons
             Mod mutant = ModLoader.GetMod("Fargowiltas");
             mutant.Call("AddSummon", 1.5f, "FargowiltasCrossmod", "MedallionoftheDesert",
-                () => DownedDS, Item.buyPrice(gold:6));
+                () => DownedDS, Item.buyPrice(gold: 6));
             mutant.Call("AddSummon", 2.5f, "FargowiltasCrossmod", "OphiocordycipitaceaeSprout",
                 () => DownedCrab, Item.buyPrice(gold: 9));
             mutant.Call("AddSummon", 3.5f, "FargowiltasCrossmod", "HiveTumor",
@@ -143,14 +140,14 @@ namespace FargowiltasCrossmod.Core.Calamity
             //int[]: list of other npc ids that need to die to continue event
 
             //Adding bosses to boss rush
-            Mod cal = ModCompatibility.Calamity.Mod; 
+            Mod cal = ModCompatibility.Calamity.Mod;
             //get the list of boss entries
             var Entries = cal.Call("GetBossRushEntries") as List<(int, int, Action<int>, int, bool, float, int[], int[])>;
             //insert trojan squirrel at the beginning
             Entries!.Insert(0, (ModContent.NPCType<TrojanSquirrel>(), 0, delegate
             {
                 FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TrojanSquirrel>());
-            }, -1, false, 0f, new[] {ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelLimb>(), ModContent.NPCType<TrojanSquirrelPart>() }, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelLimb>(), ModContent.NPCType<TrojanSquirrelPart>() }, Array.Empty<int>()));
             //insert deviantt before sg
             Entries.Insert(12, (ModContent.NPCType<DeviBoss>(), 0, delegate
             {
@@ -177,11 +174,11 @@ namespace FargowiltasCrossmod.Core.Calamity
             Entries.Insert(39, (ModContent.NPCType<ShadowChampion>(), -1, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<ShadowChampion>());
-            }, -1, false, 0f, new[] {ModContent.NPCType<ShadowOrbNPC>(),  }, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<ShadowOrbNPC>(), }, Array.Empty<int>()));
             Entries.Insert(39, (ModContent.NPCType<SpiritChampion>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<SpiritChampion>());
-            }, -1, false, 0f, new[] {ModContent.NPCType<SpiritChampionHand>() }, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<SpiritChampionHand>() }, Array.Empty<int>()));
             Entries.Insert(39, (ModContent.NPCType<LifeChampion>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChampion>());
@@ -189,31 +186,31 @@ namespace FargowiltasCrossmod.Core.Calamity
             Entries.Insert(39, (ModContent.NPCType<NatureChampion>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<NatureChampion>());
-            }, -1, false, 0f, new[] {ModContent.NPCType<NatureChampionHead>() }, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<NatureChampionHead>() }, Array.Empty<int>()));
             Entries.Insert(39, (ModContent.NPCType<EarthChampion>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<EarthChampion>());
-            }, -1, false, 0f, new[] {ModContent.NPCType<EarthChampionHand>() }, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<EarthChampionHand>() }, Array.Empty<int>()));
             Entries.Insert(39, (ModContent.NPCType<TerraChampion>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<TerraChampion>());
 
-            }, -1, false, 0f, new[] {ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>() }, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>() }, Array.Empty<int>()));
             Entries.Insert(39, (ModContent.NPCType<TimberChampion>(), 0, delegate
             {
                 FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TimberChampion>());
-                
-            }, -1, false, 0f, new[] {ModContent.NPCType<TimberChampionHead>() }, new[] {ModContent.NPCType<TimberChampionHead>() }));
+
+            }, -1, false, 0f, new[] { ModContent.NPCType<TimberChampionHead>() }, new[] { ModContent.NPCType<TimberChampionHead>() }));
             //add abom before draedon
             Entries.Insert(55, (ModContent.NPCType<AbomBoss>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<AbomBoss>());
-            }, -1, false, 0f, new[] { ModContent.NPCType<AbomSaucer>()}, Array.Empty<int>()));
+            }, -1, false, 0f, new[] { ModContent.NPCType<AbomSaucer>() }, Array.Empty<int>()));
             //add mutant boss entry to the end
             Entries.Add((ModContent.NPCType<MutantBoss>(), 0, delegate
             {
                 NPC.SpawnOnPlayer(0, ModContent.NPCType<MutantBoss>());
-            }, -1, false, 0f, new int[] {ModContent.NPCType<MutantIllusion>()}, Array.Empty<int>()));
+            }, -1, false, 0f, new int[] { ModContent.NPCType<MutantIllusion>() }, Array.Empty<int>()));
             for (int i = 0; i < Entries.Count; i++)
             {
                 if (Entries[i].Item1 == ModContent.NPCType<Crabulon>())
@@ -296,7 +293,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             //flying dutchman
             c.GotoNext(i => i.MatchLdcI4(4940));
             c.Index--;
-            
+
             c.RemoveRange(16);
             label = c.MarkLabel();
             ILLabel[] labels = null;
@@ -470,7 +467,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             labels[0] = label;
             //remove elemental in a bottles from sand elemental
             e.GotoNext(i => i.MatchLdcI4(5));
-            
+
             e.Index -= 2;
             e.RemoveRange(14);
             label = e.MarkLabel();
@@ -535,7 +532,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             Mod calamity = ModCompatibility.Calamity.Mod;
             Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent")!;
             FieldInfo BossRushEvent_BossRushActive = BossRushEvent.GetField("BossRushActive", BindingFlags.Public | BindingFlags.Static)!;
-            
+
             var c = new ILCursor(il);
             c.GotoNext(i => i.MatchLdsfld(BossRushEvent_BossRushActive));
             c.Index++;
@@ -571,7 +568,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Emit(OpCodes.Brfalse, label2);
             //MonoModHooks.DumpIL(mod: Mod, il);
 
-            
+
         }
         //private static void CalamityProjectileAI_ILEdit(ILContext il)
         //{

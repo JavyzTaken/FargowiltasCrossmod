@@ -1,9 +1,9 @@
-﻿using CalamityMod.NPCs.NormalNPCs;
+﻿using System.IO;
+using CalamityMod.NPCs.NormalNPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -18,12 +18,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.KingSlime);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(summonedJewel);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             summonedJewel = binaryReader.ReadBoolean();
         }
         public bool summonedJewel = false;
@@ -43,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
                     Dust.NewDustDirect(npc.Center + new Vector2(0, -50), 0, 0, DustID.GemRuby).noGravity = true;
                 }
             }
-            
+
             return base.SafePreAI(npc);
         }
     }

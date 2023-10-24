@@ -7,17 +7,10 @@ using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -68,16 +61,16 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
                     gravity *= 4;
                 }
-                
+
             }
-            
+
             Projectile.velocity += gravity * Vector2.UnitY;
-            
+
             if (++Projectile.ai[2] > SlamTime * 3)
             {
                 Projectile.Kill();
             }
-            
+
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -88,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
         public override void OnKill(int timeLeft)
         {
-            
+
             Color dustColor = Crimson ? Color.Crimson : Color.Lavender;
             dustColor.A = 150;
             for (int i = 0; i < 20; i++)
@@ -99,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         public override bool PreDraw(ref Color lightColor)
         {
             string texName = Crimson ? "CrimulanPaladin" : "EbonianPaladin";
-            
+
             Texture2D texture = ModContent.Request<Texture2D>($"CalamityMod/NPCs/SlimeGod/{texName}", ReLogic.Content.AssetRequestMode.ImmediateLoad).Value;
             //draw projectile 
             int num156 = texture.Height / Main.projFrames[Projectile.type]; //ypos of lower right corner of sprite to draw

@@ -1,15 +1,8 @@
 ﻿using CalamityMod;
-using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Boss;
-using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -27,12 +20,12 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             {
                 if (TimeCountdown > 0f)
                 {
-                    
+
                     if (Projectile.scale < 1f)
                     {
                         Projectile.scale = MathHelper.Clamp(Projectile.scale + 0.05f, 0f, 1f);
                     }
-                    
+
                     Projectile.velocity = (mutant.Center - Projectile.Center);
                 }
                 else

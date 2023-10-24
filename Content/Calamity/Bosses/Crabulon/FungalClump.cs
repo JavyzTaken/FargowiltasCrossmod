@@ -1,15 +1,14 @@
-﻿
-using Terraria.ModLoader;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
-using Terraria.Audio;
-using Terraria.GameContent;
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -46,18 +45,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
-            
+
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            
+
         }
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 5; i++)
-                Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, Main.rand.Next(375, 378), 1.5f);
+                    Gore.NewGore(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, Main.rand.Next(375, 378), 1.5f);
             }
         }
         public override void OnSpawn(IEntitySource source)
@@ -83,17 +82,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 spriteBatch.Draw(slash.Value, NPC.Center - Main.screenPosition, new Rectangle(0, (int)NPC.localAI[0] * 64, 68, 64), new Color(250, 250, 250), NPC.AngleTo(target.Center), new Vector2(10, 32), NPC.scale * 1.4f, SpriteEffects.None, 0);
             }
             return base.PreDraw(spriteBatch, screenPos, drawColor);
-            
+
         }
-        
+
         public override bool ModifyCollisionData(Rectangle victimHitbox, ref int immunityCooldownSlot, ref MultipliableFloat damageMultiplier, ref Rectangle npcHitbox)
         {
-            
+
             return base.ModifyCollisionData(victimHitbox, ref immunityCooldownSlot, ref damageMultiplier, ref npcHitbox);
         }
         public override void OnKill()
         {
-            
+
         }
         public override void FindFrame(int frameHeight)
         {
@@ -108,12 +107,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 NPC.frameCounter = 0;
             }
         }
-        
+
         public override void AI()
         {
-            
+
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
-            {   
+            {
                 NPC.TargetClosest();
                 NPC.netUpdate = true;
             }
@@ -128,15 +127,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (Main.rand.NextBool(10))
                 Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.GlowingMushroom, Alpha: 100).noGravity = true;
             Lighting.AddLight(NPC.Center, new Vector3(0.2f, 0.2f, 0.6f));
-            
+
             NPC.velocity = Vector2.Lerp(NPC.velocity, toplayer * 4, 0.03f);
-            NPC.rotation = MathHelper.ToRadians(NPC.velocity.X*3);
+            NPC.rotation = MathHelper.ToRadians(NPC.velocity.X * 3);
             NPC.ai[0]++;
             if (NPC.ai[0] >= 300)
             {
                 if (DLCUtils.HostCheck)
                     for (int i = 0; i < 20; i++)
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.NextFloat()/1.5f).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.NextFloat() / 1.5f).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
                 NPC.ai[0] = 0;
                 SoundEngine.PlaySound(SoundID.Item16, NPC.Center);
 
@@ -171,7 +170,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (NPC.ai[0] == 150 && owner.GetLifePercent() < 0.25f)
             {
                 if (DLCUtils.HostCheck)
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toplayer.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-20, 20)))*4, ModContent.ProjectileType<FungusBall>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toplayer.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-20, 20))) * 4, ModContent.ProjectileType<FungusBall>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
             }
         }
     }

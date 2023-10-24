@@ -1,27 +1,24 @@
-﻿
-using System;
-using Terraria.DataStructures;
-using Terraria;
-using Terraria.ModLoader;
+﻿using System;
+using System.IO;
+using CalamityMod.Events;
 using CalamityMod.NPCs.HiveMind;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.Graphics.CameraModifiers;
-using Terraria.ID;
-using Terraria.Audio;
-using ReLogic.Content;
 using CalamityMod.Projectiles.Boss;
-using FargowiltasSouls.Core.Systems;
-using FargowiltasSouls;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using CalamityMod.Events;
-using System.IO;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.Graphics.CameraModifiers;
+using Terraria.ID;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core.Utils;
-using System.Linq;
-using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -56,12 +53,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
         {
-            
+
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
         }
-        
+
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npc, npcLoot);
@@ -81,12 +78,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 for (int i = 0; i < (int)npc.localAI[1]; i++)
                 {
-                    
-                    Main.EntitySpriteDraw(fly.Value, npc.oldPos[i]+ new Vector2(npc.width / 2, npc.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), drawColor * (1 - i/10f), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
+
+                    Main.EntitySpriteDraw(fly.Value, npc.oldPos[i] + new Vector2(npc.width / 2, npc.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), drawColor * (1 - i / 10f), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
                 }
-                Main.EntitySpriteDraw(fly.Value, npc.Center - Main.screenPosition + new Vector2(0, 10), new Rectangle(178*((int)sprite.X-1), 142 * (int)sprite.Y, 178, 142), drawColor * npc.Opacity, npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(fly.Value, npc.Center - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), drawColor * npc.Opacity, npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
             }
-            
+
             return false;
         }
         public override void DrawBehind(NPC npc, int index)
@@ -126,8 +123,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public int phase = 0;
         public Vector2 LockVector1 = Vector2.Zero;
         const int attackCycleLength = 7;
-        public int[] attackCycle = new int[attackCycleLength] { 0, 0, 0, 0, 0, -1, -1};
-        
+        public int[] attackCycle = new int[attackCycleLength] { 0, 0, 0, 0, 0, -1, -1 };
+
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             for (int i = 0; i < attackCycleLength; i++)
@@ -148,13 +145,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             sprite = binaryReader.ReadVector2();
             LockVector1 = binaryReader.ReadVector2();
         }
-        
+
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
         {
             if (!WorldSavingSystem.EternityMode) return base.CanHitPlayer(npc, target, ref cooldownSlot);
             return true;
         }
-        
+
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
@@ -162,7 +159,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             ref float timer = ref npc.ai[0];
             ref float attackIndex = ref npc.ai[2];
             ref float rotDirection = ref npc.ai[3];
-            
+
 
             npc.dontTakeDamage = false;
             npc.defense = 200;
@@ -187,21 +184,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (npc.localAI[0] > npc.localAI[1])
             {
                 npc.localAI[1] += 1f;
-            }else if (npc.localAI[0] < npc.localAI[1])
+            }
+            else if (npc.localAI[0] < npc.localAI[1])
             {
                 npc.localAI[1] -= 1f;
             }
             //ai :real:
             if (phase == 0)
             {
-                for (int i = 0; i < timer/100f; i++)
+                for (int i = 0; i < timer / 100f; i++)
                 {
                     Dust.NewDustDirect(npc.Center - new Vector2(100, 0), 200, 0, DustID.Corruption);
                 }
                 if (Main.netMode != NetmodeID.Server)
                 {
                     Player player = Main.player[Main.myPlayer];
-                    PunchCameraModifier modifier = new(player.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), (timer/60f), 1f, 60, 100f, FullName);
+                    PunchCameraModifier modifier = new(player.Center, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2(), (timer / 60f), 1f, 60, 100f, FullName);
                     Main.instance.CameraModifiers.Add(modifier);
                 }
                 if (timer < 300)
@@ -213,7 +211,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (timer >= 300 && timer < 320)
                 {
                     npc.scale += 0.05f;
-                    
+
                 }
                 if (timer == 300)
                 {
@@ -247,11 +245,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     Vector2 center = npc.Center;
                     npc.width = 150;
                     npc.height = 100;
-                    npc.Center = center - new Vector2(0, npc.height/2);
+                    npc.Center = center - new Vector2(0, npc.height / 2);
                     npc.scale = 1;
                     NetSync(npc);
                 }
-                
+
             }
             else
             {
@@ -262,7 +260,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 timer++;
                 if (timer % 10 == 0 && DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(30))*15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(-30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
                 }
                 if (!NPC.AnyNPCs(ModContent.NPCType<DankCreeper>()))
@@ -294,7 +292,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 {
                     attack = 0;
                 }
-                
+
                 if (attack == 0)
                 {
                     Follow(npc, 3, toTarget, 180);
@@ -343,14 +341,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 }
                 if (attack == 5)
                 {
-                    
-                    Teleport(npc, 45, 20, target.Center + toTarget*500);
+
+                    Teleport(npc, 45, 20, target.Center + toTarget * 500);
                 }
-                RetractHeart(npc, 0.8f, 2, 7, 12, new int[attackCycleLength] {0, 1, -1, -1, -1, -1, -1 });
+                RetractHeart(npc, 0.8f, 2, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
                 RetractHeart(npc, 0.5f, 3, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
                 RetractHeart(npc, 0.2f, 4, 7, 12, new int[attackCycleLength] { 0, 3, 1, -1, -1, -1, -1 });
                 ReleaseHeart(npc);
-                
+
             }
             return false;
 
@@ -406,13 +404,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (timer == startTime)
             {
                 npc.Center = location;
-                if (heart != null) heart.Center= npc.Center;
+                if (heart != null) heart.Center = npc.Center;
                 NetSync(npc);
                 npc.netUpdate = true; //doing double here for safetybecause net syncing whenever you teleport is VERY important
             }
-            if (timer <= startTime +endTime && timer > startTime)
+            if (timer <= startTime + endTime && timer > startTime)
             {
-                
+
                 npc.Opacity = MathHelper.Lerp(0, 1, ((timer - startTime) / endTime));
                 if (heart != null) heart.Opacity = npc.Opacity;
             }
@@ -496,7 +494,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 }
             }
             npc.velocity = toTarget * speed;
-           
+
             if (timer >= time)
             {
                 IncrementCycle(npc);

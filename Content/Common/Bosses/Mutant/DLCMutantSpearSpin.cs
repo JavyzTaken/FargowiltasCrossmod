@@ -1,23 +1,19 @@
-﻿using FargowiltasSouls;
-using FargowiltasSouls.Content.Bosses.MutantBoss;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria;
+﻿using System;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
-using Microsoft.Xna.Framework;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using CalamityMod.Projectiles.Boss;
-using FargowiltasCrossmod.Core;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {

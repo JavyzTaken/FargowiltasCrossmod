@@ -1,16 +1,16 @@
 ﻿using CalamityMod.NPCs.HiveMind;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Terraria.ID;
-using FargowiltasSouls;
-using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -60,7 +60,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Player target = Main.player[npc.target];
             NPC owner = Main.npc[(int)npc.ai[0]];
             if (owner != null && owner.active && DLCUtils.HostCheck && owner.GetGlobalNPC<HMEternity>().phase < 2)
-            Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, (target.Center + new Vector2(0, -400) - npc.Center) / 60, ModContent.ProjectileType<MovingCorruptCloud>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
+                Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, (target.Center + new Vector2(0, -400) - npc.Center) / 60, ModContent.ProjectileType<MovingCorruptCloud>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
         }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             return true;
         }
-        
+
         public override void FindFrame(NPC npc, int frameHeight)
         {
             base.FindFrame(npc, frameHeight);

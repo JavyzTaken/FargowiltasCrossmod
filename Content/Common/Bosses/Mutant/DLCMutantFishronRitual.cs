@@ -1,17 +1,13 @@
-﻿using FargowiltasSouls;
+﻿using System;
+using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using FargowiltasCrossmod.Core;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -139,6 +135,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         {
             return Color.White;
         }
-        
+
     }
 }

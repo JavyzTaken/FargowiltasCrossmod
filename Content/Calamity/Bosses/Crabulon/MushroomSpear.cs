@@ -1,5 +1,4 @@
-﻿
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -16,14 +15,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class MushroomSpear : ModProjectile
     {
-        
+
         public override void SetStaticDefaults()
         {
-            
+
         }
         public override void SetDefaults()
         {
-            
+
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.height = 22;
@@ -40,13 +39,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         {
             Asset<Texture2D> head = TextureAssets.Projectile[Type];
             Asset<Texture2D> stick = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/Crabulon/MushroomSpearStick");
-            
-            for (int i = 0; i < Projectile.Center.Distance(new Vector2(Projectile.Center.X, Projectile.ai[2]))/12 + 1; i++)
+
+            for (int i = 0; i < Projectile.Center.Distance(new Vector2(Projectile.Center.X, Projectile.ai[2])) / 12 + 1; i++)
             {
                 Main.EntitySpriteDraw(stick.Value, Projectile.Center - Main.screenPosition + new Vector2(0, i * 12), null, lightColor * Projectile.Opacity, Projectile.rotation, stick.Size() / 2, Projectile.scale, SpriteEffects.None);
             }
             Main.EntitySpriteDraw(head.Value, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + MathHelper.PiOver4, head.Size() / 2, Projectile.scale, SpriteEffects.None);
-            
+
             return false;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -66,10 +65,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void OnSpawn(IEntitySource source)
         {
-            
+
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.MushroomSpray, Alpha: 120, Scale: 2, SpeedY:Main.rand.Next(-10, 0)).noGravity = true;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.MushroomSpray, Alpha: 120, Scale: 2, SpeedY: Main.rand.Next(-10, 0)).noGravity = true;
             }
             Projectile.Center = new Vector2(Projectile.Center.X, FindGround(Projectile.Center));
             Projectile.ai[2] = Projectile.Center.Y;
@@ -80,12 +79,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (Projectile.ai[1] == 60)
             {
                 Projectile.velocity.Y = -25;
-                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot with { Pitch = 0.5f}, Projectile.Center);
+                SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot with { Pitch = 0.5f }, Projectile.Center);
             }
             if (Projectile.ai[1] == 70)
             {
                 Projectile.velocity.Y = 0;
-                
+
             }
             if (Projectile.ai[1] == 90) Projectile.velocity.Y = 25;
             if (Projectile.ai[1] == 100) Projectile.Kill();
@@ -97,7 +96,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     Vector2 pos = new Vector2(Projectile.Center.X - 150, Projectile.ai[2]);
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                         Projectile.NewProjectile(Projectile.GetSource_FromAI(), pos, Vector2.Zero, Type, Projectile.damage, 0, ai0: Projectile.ai[0] + 1);
-                }else if (Projectile.ai[0] > 0)
+                }
+                else if (Projectile.ai[0] > 0)
                 {
                     Vector2 pos = new Vector2(Projectile.Center.X + 150, Projectile.ai[2]);
                     if (Main.netMode != NetmodeID.MultiplayerClient)
