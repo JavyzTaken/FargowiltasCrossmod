@@ -3,11 +3,6 @@ using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -22,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.FairyQueenSunDance;
         public override void SetStaticDefaults()
         {
-            
+
         }
         public override void SetDefaults()
         {
@@ -37,15 +32,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, t.Width(), t.Height()/2), new Color(255, 255, 255), Projectile.rotation, new Vector2(0, t.Height()/4), Projectile.scale, SpriteEffects.None);
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, t.Height()/2, t.Width(), t.Height()/2), new Color(255, 255, 255), Projectile.rotation, new Vector2(0, t.Height()/4), Projectile.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 0, t.Width(), t.Height() / 2), new Color(255, 255, 255), Projectile.rotation, new Vector2(0, t.Height() / 4), Projectile.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, t.Height() / 2, t.Width(), t.Height() / 2), new Color(255, 255, 255), Projectile.rotation, new Vector2(0, t.Height() / 4), Projectile.scale, SpriteEffects.None);
             return false;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(ModContent.BuffType<Nightwither>(), 800);
         }
-        
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float collisionPoint5 = 0f;
@@ -75,7 +70,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
             if (Projectile.ai[1] >= 0)
             {
                 NPC owner = Main.npc[(int)Projectile.ai[1]];
-                if (owner != null && owner.active && owner.type == NPCID.MoonLordCore) {
+                if (owner != null && owner.active && owner.type == NPCID.MoonLordCore)
+                {
                     Projectile.Center = owner.Center;
                 }
             }
@@ -87,14 +83,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
             if (Projectile.ai[0] > 100 && Projectile.ai[0] < 250)
             {
                 if (Projectile.ai[0] == 101)
-                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Item/TeslaCannonFire"), Projectile.Center);
+                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Item/TeslaCannonFire"), Projectile.Center);
                 Projectile.scale = MathHelper.Lerp(Projectile.scale, 1.5f, 0.03f);
             }
             if (Projectile.ai[0] > 250)
             {
                 Projectile.scale = MathHelper.Lerp(Projectile.scale, 0, 0.08f);
             }
-            
+
             base.AI();
         }
     }

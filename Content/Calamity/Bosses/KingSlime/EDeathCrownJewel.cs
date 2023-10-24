@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<KingSlimeJewel>());
         public int Timer = 0;
-       
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget)

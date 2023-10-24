@@ -1,23 +1,15 @@
-﻿using CalamityMod.NPCs.ExoMechs.Ares;
-using CalamityMod;
-using CalamityMod.Projectiles.Boss;
-using CalamityMod.Skies;
-using FargowiltasSouls.Content.Bosses.MutantBoss;
-using Microsoft.CodeAnalysis;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using FargowiltasCrossmod.Core;
+﻿using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.NPCs.ExoMechs.Ares;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -64,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(AresGaussNuke.NukeExplosionSound with { MaxInstances = 0}, Projectile.Center, null);
+            SoundEngine.PlaySound(AresGaussNuke.NukeExplosionSound with { MaxInstances = 0 }, Projectile.Center, null);
             if (Main.netMode != 2)
             {
                 Gore.NewGore(Projectile.GetSource_Death((string)null), Projectile.position, Projectile.velocity, ModCompatibility.Calamity.Mod.Find<ModGore>("AresGaussNuke1").Type, 1f);
@@ -82,6 +74,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
             }
         }
-        
+
     }
 }

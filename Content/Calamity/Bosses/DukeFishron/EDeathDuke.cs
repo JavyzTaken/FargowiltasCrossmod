@@ -1,11 +1,8 @@
-﻿
+﻿using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DukeFishron
@@ -22,11 +19,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DukeFishron
             {
                 npc.Center = Main.player[npc.target].Center + Main.player[npc.target].velocity * 100;
                 if (npc.ai[2] == 25)
-                npc.ai[3] = 5;
+                    npc.ai[3] = 5;
             }
             if (npc.ai[3] == 1 && npc.GetLifePercent() <= 0.1f)
             {
-                
+
                 npc.ai[3] = 5;
             }
             return base.SafePreAI(npc);

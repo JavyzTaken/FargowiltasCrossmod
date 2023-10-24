@@ -1,24 +1,20 @@
-﻿using FargowiltasSouls.Content.Bosses.MutantBoss;
+﻿using System;
+using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Core.Systems;
-using FargowiltasSouls;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Core.Utils;
-using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -110,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
                     Projectile.velocity = Vector2.Normalize(mutant.velocity);
                 }
-                
+
                 Projectile.position -= Projectile.velocity;
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(135f);
                 Projectile.Center = mutant.Center + Projectile.velocity;

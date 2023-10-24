@@ -1,11 +1,8 @@
-﻿
+﻿using System;
+using System.IO;
 using CalamityMod;
-using CalamityMod.Events;
 using CalamityMod.NPCs;
-using CalamityMod.NPCs.DesertScourge;
-using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.SlimeGod;
-using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
@@ -16,15 +13,8 @@ using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Numerics;
-using System.Reflection.Metadata;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -83,10 +73,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     modifiers.FinalDamage /= 2;
                 }
             }
-            
+
         }
         //Slime the Core is attached to draws a glow aura
-        
+
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (CalamityGlobalNPC.slimeGod < 0 || CalamityGlobalNPC.slimeGod >= Main.maxNPCs)
@@ -181,7 +171,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 case 2:
                     {
-                        
+
                         npc.noTileCollide = true;
                         npc.noGravity = true;
                         if (npc.velocity.X < 0f)
@@ -203,7 +193,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                     Timer = 0;
                                     DidSpecial = false;
                                     npc.netUpdate = true;
-                                    
+
                                     return false;
                                 }
                                 else
@@ -303,7 +293,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         }
                         else
                         {
-                            
+
                             type = ModContent.ProjectileType<SlimeHomingCrimuleanGlob>();
                         }
                         if (calOtherTimer % 3 == 0)
@@ -552,7 +542,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 
                     }
                     npc.velocity.X /= 2f;
-                    
+
                     npc.velocity.Y = 0;
                     bounces++;
                     if (bounces >= 3)
@@ -665,7 +655,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         npc.netUpdate = true;
                         NetSync(npc);
                     }
-                    
+
                 }
             }
             if (slams >= TotalSlams && Timer >= 90)

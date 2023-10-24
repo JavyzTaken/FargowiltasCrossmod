@@ -1,4 +1,8 @@
-﻿using CalamityMod;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using CalamityMod;
 using CalamityMod.NPCs.DevourerofGods;
 using CalamityMod.NPCs.PlaguebringerGoliath;
 using CalamityMod.NPCs.ProfanedGuardians;
@@ -8,23 +12,14 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Common.Projectiles;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
-using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -36,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         public override bool InstancePerEntity => true;
         private static bool Thorium => ModCompatibility.ThoriumMod.Loaded;
         private static bool Calamity => ModCompatibility.Calamity.Loaded;
-        public static bool ShouldDoDLC 
+        public static bool ShouldDoDLC
         {
             get => Calamity;
         }
@@ -45,10 +40,10 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         private bool PlayStoria = false;
         public void ManageMusicAndSky(NPC npc)
         {
-            
+
             if (npc.localAI[3] >= 3 || npc.ai[0] == 10) //p2 or phase transition
             {
-                
+
                 if (npc.life < npc.lifeMax / 2 && npc.ai[0] != 10) //play storia under half health
                 {
                     if (!PlayStoria)
@@ -75,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             else //p1
             {
-                
+
             }
             if (DLCAttackChoice == DLCAttack.Calamitas)
             {
@@ -158,7 +153,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             FirstFrame = binaryReader.ReadBoolean();
             PlayStoria = binaryReader.ReadBoolean();
         }
-        
+
         public override bool PreAI(NPC npc)
         {
             ref float attackChoice = ref npc.ai[0];
@@ -174,7 +169,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 return true;
             }
 
-            
+
 
             if (attackChoice < 10 && attackChoice >= 0) //in phase 1, apply presence because fuck you
             {
@@ -187,7 +182,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             {
                 FirstFrame = true;
                 npc.netUpdate = true;
-                
+
             }
             else
             {
@@ -195,7 +190,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             OldAttackChoice = attackChoice;
 
-            switch (attackChoice) 
+            switch (attackChoice)
             {
                 #region Attack Reroutes
                 /*
@@ -294,8 +289,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                     break;
                 #endregion
-                        #region Attack Additions
-                        //attack additions
+                #region Attack Additions
+                //attack additions
 
                 case 38:
                 case 30:
@@ -304,7 +299,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 case 27:
                     if (Calamity) CalamityMechRayFan(); break;
 
-                #endregion
+                    #endregion
             }
             if (npc.life <= 1) //kill attack and go to desp
             {
@@ -386,7 +381,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             bool Phase2Check()
             {
-                
+
                 if (Main.expertMode && npc.life < npc.lifeMax / 2)
                 {
                     Reset();
@@ -402,7 +397,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                     return true;
                 }
-                
+
                 return false;
             }
             void EdgyBossText(string text) //because it's FUCKING private
@@ -690,7 +685,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                                 FireCryogenThingy(vel);
                             }
                         }
-                        
+
                     }
                 }
             }
@@ -711,7 +706,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 if (Timer == WindupTime)
                 {
-                    
+
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearSpin>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, npc.whoAmI, DriftTime);
                 }
@@ -719,7 +714,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
                     LockVector1 = LockVector1.RotatedBy(TotalDriftAngle / DriftTime);
                 }
-                
+
                 Vector2 targetPos = player.Center + LockVector1;
                 Movement(targetPos, 2f, player.velocity.Length() / 2 + 30, false);
                 if (Timer > WindupTime + DriftTime)
@@ -788,7 +783,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
                     MutantBoss mutantBoss = (npc.ModNPC as MutantBoss);
                     Vector2 pos = FargoSoulsUtil.ProjectileExists(mutantBoss.ritualProj, ModContent.ProjectileType<MutantRitual>()) == null ? npc.Center : Main.projectile[mutantBoss.ritualProj].Center;
-                    
+
                     if (Counter <= 0)
                     {
                         SoundEngine.PlaySound(SoundID.Roar, npc.Center);
@@ -820,7 +815,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         {
                             Main.npc[nuke].timeLeft = nukeTime;
                         }
-                        
+
                     }
                 }
                 for (int i = 0; i < 20; i++)
@@ -861,7 +856,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.velocity.Y *= -1f;
                     npc.velocity.Normalize();
                     npc.velocity *= 3f;
-                    
+
                     npc.netUpdate = true;
                     //NPC.TargetClosest();
                 }
@@ -991,7 +986,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
                     brimstoneMonster = monster.Type;
                 }
-                
+
                 if (Timer < Startup)
                 {
                     Vector2 targetPos = player.Center + Vector2.UnitX * Math.Sign(npc.Center.X - player.Center.X) * Distance;
@@ -1011,7 +1006,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             Vector2 targetPos = pos + (offset * 1450f);
                             Projectile.NewProjectile(npc.GetSource_FromAI(), targetPos, targetPos.DirectionTo(player.Center), brimstoneMonster, FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, 0f, 2f, 0f);
                         }
-                        
+
                     }
                 }
                 if (Timer > Startup)
@@ -1051,7 +1046,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     }
                     if (Timer > Startup + (CalamitasTime * (Attacks + 1) - 10))
                     {
-                        
+
                         foreach (Projectile projectile in Main.projectile.Where(p => p != null && p.active && p.type == brimstoneMonster))
                         {
                             SoundEngine.PlaySound(SoundID.Item14, projectile.Center);
@@ -1062,7 +1057,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             }
                             projectile.Kill();
                         }
-                        
+
                         Reset();
                         ChooseNextAttack(11, 13, 16, 21, 26, 29, 31, 33, 35, 37, 41, 44, 45);
                         return;
@@ -1111,7 +1106,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 if (Timer == WindupTime)
                 {
-                    
+
                     foreach (Projectile projectile in Main.projectile.Where(p => p != null && p.active && p.type == ModContent.ProjectileType<DLCMutantSpearDash>()))
                     {
                         projectile.Kill();
@@ -1176,7 +1171,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Goldenrod, Vector2.One * 40f, Vector2.Zero, PrepareTime, true, Color.White);
                     p.Spawn();
                 }
-                if (Timer < PrepareTime * 2f/3)
+                if (Timer < PrepareTime * 2f / 3)
                 {
                     int dirX = Math.Sign(npc.Center.X - player.Center.X);
                     int dirY = Math.Sign(npc.Center.Y - player.Center.Y);
@@ -1341,7 +1336,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     {
                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, bhTime, npc.whoAmI, 0f);
                     }
-                   
+
                 }
                 if (Timer > WindupTime && Timer <= WindupTime + bhTime)
                 {

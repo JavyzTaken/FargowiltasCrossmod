@@ -1,16 +1,13 @@
-﻿
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using FargowiltasSouls;
+using Terraria;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
 {

@@ -1,4 +1,5 @@
-﻿using CalamityMod;
+﻿using System.Collections.Generic;
+using CalamityMod;
 using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.Projectiles.BaseProjectiles;
@@ -8,23 +9,17 @@ using CalamityMod.Projectiles.Melee;
 using CalamityMod.Projectiles.Summon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
-using FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
-using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -63,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (BossRushEvent.BossRushActive && new List<int> { ModContent.ProjectileType<DeviSparklingLove>(), ModContent.ProjectileType<DeviBigDeathray>(), ModContent.ProjectileType<PlanteraTentacle>(), ProjectileID.PhantasmalDeathray }.Contains(entity.type))
             {
                 entity.extraUpdates += 1;
-               
+
             }
         }
         public static List<int> TungstenExclude = new List<int>
@@ -83,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 projectile.Center = projectile.position;
                 projectile.scale /= scale;
             }
-            
+
         }
         public override bool PreAI(Projectile projectile)
         {
@@ -141,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     modifiers.FinalDamage *= 0.2f;
                 }
-                if ( projectile.type == ModContent.ProjectileType<AndromedaDeathRay>())
+                if (projectile.type == ModContent.ProjectileType<AndromedaDeathRay>())
                 {
                     modifiers.FinalDamage *= 0.45f;
                 }
@@ -179,10 +174,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         }
                     }
                     //Main.NewText(Main.player[projectile.owner].Calamity().pscState);
-                    
+
                 }
             }
-            
+
         }
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {

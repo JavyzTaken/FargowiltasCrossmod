@@ -1,11 +1,8 @@
-﻿
-using CalamityMod.Items.Weapons.Ranged;
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -43,9 +40,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, new Rectangle(0, 28 * Projectile.frame, 54, 28), new Color(200, 200, 200, 200) * (2f/(i+1)), Projectile.rotation, new Vector2(54, 28) / 2, Projectile.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, new Rectangle(0, 28 * Projectile.frame, 54, 28), new Color(200, 200, 200, 200) * (2f / (i + 1)), Projectile.rotation, new Vector2(54, 28) / 2, Projectile.scale, SpriteEffects.None);
             }
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 28*Projectile.frame, 54, 28), lightColor, Projectile.rotation, new Vector2(54, 28)/2, Projectile.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 28 * Projectile.frame, 54, 28), lightColor, Projectile.rotation, new Vector2(54, 28) / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
         public override void AI()
@@ -70,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, (target.Center + new Vector2(target.velocity.X * 26, -400) - Projectile.Center).SafeNormalize(Vector2.Zero) * 20, 0.05f);
             }
-            
+
             else if (Projectile.ai[1] == 120)
             {
                 Projectile.frame = 4;

@@ -1,9 +1,9 @@
-﻿using CalamityMod.NPCs.NormalNPCs;
+﻿using System.IO;
+using CalamityMod.NPCs.NormalNPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
                     Dust.NewDustDirect(npc.Center + new Vector2(0, -50), 0, 0, DustID.GemRuby).noGravity = true;
                 }
             }
-            
+
             return base.SafePreAI(npc);
         }
     }

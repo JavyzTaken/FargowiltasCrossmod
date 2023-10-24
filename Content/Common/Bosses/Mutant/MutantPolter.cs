@@ -1,14 +1,9 @@
-﻿using CalamityMod.NPCs.Polterghast;
+﻿using System.IO;
+using CalamityMod.NPCs.Polterghast;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

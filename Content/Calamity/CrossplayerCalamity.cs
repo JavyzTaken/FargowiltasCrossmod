@@ -1,32 +1,24 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using FargowiltasCrossmod.Core;
-using Microsoft.Xna.Framework;
-using FargowiltasSouls;
-using CalamityMod.World;
-using Terraria.GameInput;
-using Terraria.DataStructures;
-using FargowiltasSouls.Core.Toggler;
-using FargowiltasSouls.Core.ModPlayers;
-using System.Collections.Generic;
-//using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
-using System;
-using FargowiltasCrossmod.Core.Systems;
-using CalamityMod.Events;
-using FargowiltasSouls.Content.Buffs.Boss;
-using CalamityMod.Items.Weapons.Melee;
-using CalamityMod.Items.Weapons.Rogue;
-using FargowiltasSouls.Content.Bosses.MutantBoss;
-using CalamityMod.Buffs.StatDebuffs;
-using FargowiltasCrossmod.Core.Calamity;
+﻿using System.Collections.Generic;
 using CalamityMod;
+using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.CalPlayer;
+using CalamityMod.Cooldowns;
+using CalamityMod.Events;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
-using CalamityMod.Cooldowns;
-using CalamityMod.CalPlayer;
-using FargowiltasSouls.Content.Projectiles;
+using CalamityMod.Items.Weapons.Rogue;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.ModPlayers;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -43,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void OnEnterWorld()
         {
-           
+
         }
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
@@ -58,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             //Player.wallSpeed += 0.25f;
 
             Player.moveSpeed -= 0.25f;
-           // Player.statManaMax2 += 100;
+            // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
             if (DLCCalamityConfig.Instance.BalanceRework)
@@ -125,7 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 {
                     Player.AddCooldown(GlobalDodge.ID, 60, true);
                 }
-                
+
             }
         }
         public override void PostUpdateMiscEffects()

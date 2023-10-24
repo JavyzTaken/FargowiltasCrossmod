@@ -1,17 +1,16 @@
-﻿
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
-using FargowiltasSouls;
-using FargowiltasSouls.Content.Projectiles;
+using Terraria;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
 {
@@ -34,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
             if (!npc.HasValidTarget) return true;
             NPC brain = FargoSoulsUtil.NPCExists(EModeGlobalNPC.brainBoss, NPCID.BrainofCthulhu);
             if (brain == null) return true;
-            
+
             if (brain.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu>().ConfusionTimer == 300 && !Main.player[npc.target].HasBuff(BuffID.Confused) && timer == 0)
             {
                 timer++;

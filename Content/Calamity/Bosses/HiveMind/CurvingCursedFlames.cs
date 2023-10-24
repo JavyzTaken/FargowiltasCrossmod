@@ -1,5 +1,4 @@
-﻿
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -27,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Projectile.hostile = true;
             Projectile.timeLeft = 228;
             Projectile.tileCollide = false;
-            
+
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
@@ -38,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, new Color(200, 200, 200, 100) * (2f/(i+1)), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + Projectile.Size / 2 - Main.screenPosition, null, new Color(200, 200, 200, 100) * (2f / (i + 1)), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             }
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, new Color(200, 200, 200, 100), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
@@ -46,13 +45,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public override void AI()
         {
             Projectile.rotation += 0.2f;
-            
-                Projectile.ai[1]++;
-                if (Projectile.ai[1] > 40 && Projectile.ai[1] < 140)
-                {
-                    Projectile.velocity = Projectile.velocity.RotatedBy(0.04f * Projectile.ai[0]);
-                }
-            
+
+            Projectile.ai[1]++;
+            if (Projectile.ai[1] > 40 && Projectile.ai[1] < 140)
+            {
+                Projectile.velocity = Projectile.velocity.RotatedBy(0.04f * Projectile.ai[0]);
+            }
+
         }
     }
 }

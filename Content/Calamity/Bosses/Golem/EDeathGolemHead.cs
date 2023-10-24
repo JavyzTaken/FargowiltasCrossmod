@@ -1,16 +1,14 @@
 ﻿
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using FargowiltasSouls.Content.Bosses.VanillaEternity;
-using Microsoft.Xna.Framework;
-using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
 {
@@ -34,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
             {
                 if (DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:target.Center.X, ai1:target.Center.Y);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: target.Center.X, ai1: target.Center.Y);
                 }
             }
             return base.SafePreAI(npc);

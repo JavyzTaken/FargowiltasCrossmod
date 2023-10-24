@@ -1,5 +1,4 @@
 ﻿using CalamityMod.Items.SummonItems;
-using CalamityMod.NPCs.Cryogen;
 using CalamityMod.NPCs.DevourerofGods;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;

@@ -1,10 +1,8 @@
-﻿
+﻿using System;
 using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -15,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CursedLightning: ModProjectile
+    public class CursedLightning : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.CultistBossLightningOrbArc;
         public override void SetStaticDefaults()

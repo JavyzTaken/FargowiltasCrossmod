@@ -1,17 +1,16 @@
-﻿
-using FargowiltasSouls.Core.Globals;
-using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
+﻿using System.IO;
 using CalamityMod.Projectiles.Boss;
-using FargowiltasSouls;
-using Terraria.Audio;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
 {
@@ -31,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
             dashTimer = binaryReader.Read7BitEncodedInt();
             dashing = binaryReader.ReadBoolean();
         }
-        
+
         public int timer = 0;
         public int dashTimer = 0;
         public bool dashing = false;
@@ -40,12 +39,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
             if (!npc.HasValidTarget) return true;
             Player target = Main.player[npc.target];
             FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera plant = npc.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera>();
-            
+
             if (npc.localAI[0] == 1)
             {
-                
+
                 timer++;
-                if (timer >= 800 )
+                if (timer >= 800)
                 {
                     timer = 0;
                     if (DLCUtils.HostCheck)

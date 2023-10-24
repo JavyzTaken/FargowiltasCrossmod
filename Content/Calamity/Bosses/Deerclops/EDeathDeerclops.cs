@@ -1,23 +1,11 @@
-﻿
-using CalamityMod.World;
-using CalamityMod;
-using FargowiltasSouls;
+﻿using System;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using Microsoft.Xna.Framework;
-using System;
-using System.IO;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core;
-using Terraria.ModLoader;
-using CalamityMod.Events;
-using FargowiltasSouls.Content.Projectiles.Masomode;
-using FargowiltasSouls.Content.Bosses.VanillaEternity;
-using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Systems;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 {

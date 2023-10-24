@@ -1,18 +1,14 @@
-﻿using FargowiltasSouls.Content.Bosses.MutantBoss;
+﻿using System.Linq;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.Systems;
-using FargowiltasSouls;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 
 namespace FargowiltasCrossmod.Content.Common.Sky
 {
@@ -104,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Common.Sky
                         break;
 
                 }
-                if (Main.projectile.Any(p => p != null && p.active && 
+                if (Main.projectile.Any(p => p != null && p.active &&
                 (p.type == ModContent.ProjectileType<MutantDoGHead>() || p.type == ModContent.ProjectileType<MutantDoGBody>() || p.type == ModContent.ProjectileType<MutantDoGTail>())))
                 {
                     ChangeColorIfDefault(Color.Purple);

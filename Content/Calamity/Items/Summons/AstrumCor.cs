@@ -1,6 +1,5 @@
 ﻿using CalamityMod.Items.SummonItems;
 using CalamityMod.NPCs.AstrumDeus;
-using CalamityMod.NPCs.Cryogen;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;

@@ -1,15 +1,13 @@
 ﻿
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
 {
@@ -25,12 +23,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
             if (npc.ai[0] == 0 && npc.ai[1] == 0 && npc.GetLifePercent() <= 0.75f)
             {
                 if (DLCUtils.HostCheck)
-                for (int i = 0; i < 3; i++)
-                {
+                    for (int i = 0; i < 3; i++)
+                    {
                         Projectile fireball = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.BottomRight + new Vector2(0, -10), new Vector2(5, 0).RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<BouncingFireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
                         Projectile fireball2 = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(0, -10), new Vector2(-5, 0).RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<BouncingFireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
-                        
-                }
+
+                    }
             }
             return base.SafePreAI(npc);
         }

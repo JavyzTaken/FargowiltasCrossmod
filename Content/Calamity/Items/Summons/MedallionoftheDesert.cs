@@ -2,7 +2,6 @@
 using CalamityMod.NPCs.DesertScourge;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
-using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;

@@ -1,13 +1,10 @@
-﻿
+﻿using CalamityMod.Events;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using CalamityMod.Events;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
 {
@@ -20,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
         {
             if (!npc.HasValidTarget) return true;
             if (!BossRushEvent.BossRushActive)
-            npc.position += npc.velocity * 0.75f;
+                npc.position += npc.velocity * 0.75f;
             return base.SafePreAI(npc);
         }
     }

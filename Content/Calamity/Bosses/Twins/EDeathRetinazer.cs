@@ -1,11 +1,11 @@
-﻿using CalamityMod.Projectiles.Boss;
+﻿using System.IO;
+using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             if (npc.GetGlobalNPC<Retinazer>().DeathrayState == 3)
             {
                 DashAttack = true;
-                
+
             }
             return base.SafePreAI(npc);
         }

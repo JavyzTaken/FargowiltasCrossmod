@@ -1,14 +1,11 @@
-﻿
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Core.Utils;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {

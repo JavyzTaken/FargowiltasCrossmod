@@ -1,11 +1,10 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using CalamityMod;
-using CalamityMod.Events;
 using CalamityMod.NPCs;
-using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.NPCs.SlimeGod;
-using CalamityMod.Particles;
-using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
@@ -14,16 +13,8 @@ using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -84,8 +75,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             MettatonHeart,
             SpinDash,
         }
-        public List<int> AttackCycle = new List<int> 
-        { 
+        public List<int> AttackCycle = new List<int>
+        {
             (int)Attacks.Drift,
             (int)Attacks.MettatonHeart,
             (int)Attacks.SpinDash
@@ -383,7 +374,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 }
                 else
                 {
-                    
+
                     npc.velocity = Vector2.Zero;
                     npc.Opacity = 1;
                     const int ShotCount = 16;
@@ -439,7 +430,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             {
                                 int dir = partialTimer >= partialAttackTime * 0.7f ? 1 : -1;
                                 rot = rot + dir * MathHelper.Pi / 7.65f; //funny weird number
-                                
+
                             }
                             npc.rotation = rot;
                         }
@@ -533,7 +524,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     float modifier = 1.2f; //fraction of half circle to drift
                     LockVector = LockVector.RotatedBy(driftDir * MathHelper.Pi * modifier / DriftDuration);
                     npc.velocity = (player.Center + LockVector - npc.Center) * (timer / DriftDuration);
-                    
+
                     const int shotDelay = 9;
                     if (timer % shotDelay == shotDelay - 1)
                     {
@@ -543,7 +534,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             int shotSide = -Math.Sign(FargoSoulsUtil.RotationDifference(npc.DirectionTo(player.Center), npc.velocity));
                             Vector2 dir = Vector2.Normalize(npc.velocity).RotatedBy(MathHelper.PiOver2 * shotSide);
                             float speed = 3.25f;
-                            bool crim = timer % (shotDelay * 2 ) >= shotDelay;
+                            bool crim = timer % (shotDelay * 2) >= shotDelay;
                             int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 3f, Main.myPlayer);
                         }
@@ -646,7 +637,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     {
                         return;
                     }
-                    
+
                     npc.Opacity = 0f;
                     SoundEngine.PlaySound(in PossessionSound, npc.Center);
                     npc.position.X = npc.position.X + (float)(npc.width / 2);
