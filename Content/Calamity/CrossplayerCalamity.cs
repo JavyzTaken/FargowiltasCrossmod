@@ -9,6 +9,7 @@ using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
+using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
@@ -18,6 +19,7 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.ModPlayers;
 using Terraria;
+using Terraria.GameInput;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity
@@ -118,6 +120,13 @@ namespace FargowiltasCrossmod.Content.Calamity
                     Player.AddCooldown(GlobalDodge.ID, 60, true);
                 }
 
+            }
+        }
+        public override void ProcessTriggers(TriggersSet triggersSet)
+        {
+            if (ModContent.GetInstance<FargoClientConfig>().DoubleTapDashDisabled)
+            {
+                Player.GetModPlayer<CalamityPlayer>().dashTimeMod = 0;
             }
         }
         public override void PostUpdateMiscEffects()
