@@ -154,6 +154,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             PlayStoria = binaryReader.ReadBoolean();
         }
 
+        public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => DLCAttackChoice == DLCAttack.PrepareAresNuke ? false : base.CanHitPlayer(npc, target, ref cooldownSlot);
         public override bool PreAI(NPC npc)
         {
             ref float attackChoice = ref npc.ai[0];
@@ -594,7 +595,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             void CalamityMechRayFan()
             {
                 float timer = npc.ai[3];
-                if (timer % 90 == 0 && timer > 90)
+                int startTime = WorldSavingSystem.MasochistModeReal ? 90 * 2 : 90;
+                if (timer % 90 == 0 && timer > startTime)
                 {
                     int distance = 550;
                     Vector2 pos = player.Center + distance * Vector2.UnitX.RotatedBy(MathHelper.Pi * (((Main.rand.NextBool() ? 1f : -1f) / 8f) + Main.rand.Next(2)));
@@ -850,13 +852,14 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     DLCAttackChoice = DLCAttack.AresNuke;
                     Timer = 0;
 
+                    /*
                     if (Math.Sign(player.Center.X - npc.Center.X) == Math.Sign(npc.velocity.X))
                         npc.velocity.X *= -1f;
                     if (npc.velocity.Y < 0)
                         npc.velocity.Y *= -1f;
                     npc.velocity.Normalize();
                     npc.velocity *= 3f;
-
+                    */
                     npc.netUpdate = true;
                     //NPC.TargetClosest();
                 }
@@ -866,7 +869,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             {
                 if (!AliveCheck(player))
                     return;
-
+                /*
                 if (WorldSavingSystem.MasochistModeReal)
                 {
                     Vector2 target = npc.Bottom.Y < player.Top.Y
@@ -876,6 +879,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     if (npc.velocity.Length() > 2f)
                         npc.velocity = Vector2.Normalize(npc.velocity) * 2f;
                 }
+                */
                 if (!Main.dedServ && Main.LocalPlayer.active)
                     Main.LocalPlayer.FargoSouls().Screenshake = 2;
 

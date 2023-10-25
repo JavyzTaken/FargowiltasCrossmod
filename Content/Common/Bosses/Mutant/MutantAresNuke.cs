@@ -42,6 +42,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             base.AI();
         }
+        public override bool? CanDamage() => false;
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             if (WorldSavingSystem.EternityMode)
