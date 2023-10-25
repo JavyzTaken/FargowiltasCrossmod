@@ -1462,7 +1462,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
                 if (Timer == 0)
                 {
-                    SoundEngine.PlaySound(CalamityMod.NPCs.Polterghast.Polterghast.P2Sound, npc.Center);
+                    SoundEngine.PlaySound(CalamityMod.NPCs.Polterghast.Polterghast.P2Sound with { Volume = 3f }, npc.Center);
                     npc.ai[3] = Main.rand.NextFloat(MathHelper.TwoPi);
                     npc.netUpdate = true;
                     Counter = 1;
@@ -1470,7 +1470,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
                 if (Timer % PolterTime == (PolterTime / 2))
                 {
-                    SoundEngine.PlaySound(CalamityMod.NPCs.Polterghast.Polterghast.PhantomSound, npc.Center);
+                    SoundEngine.PlaySound(CalamityMod.NPCs.Polterghast.Polterghast.PhantomSound with { Volume = 3f }, npc.Center);
                     if (DLCUtils.HostCheck)
                     {
                         const int Polters = 7;

@@ -108,7 +108,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 return 0.8f;
             }
 
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.6f;
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.5f;
             if (item.type == ModContent.ItemType<IllustriousKnives>()) return 0.8f;
             if (item.type == ModContent.ItemType<Azathoth>()) return 0.9f;
             if (item.type == ModContent.ItemType<RedSun>()) return 1.5f;
@@ -128,6 +128,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
             if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
             if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
+            if (item.type == ModContent.ItemType<Fabstaff>()) return 0.6f;
             return 1;
 
         }
