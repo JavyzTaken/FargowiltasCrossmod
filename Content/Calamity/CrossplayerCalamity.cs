@@ -102,6 +102,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public int BloodBuffTimer;
         public int LifestealCD;
         public int kunaiKuldown;
+        public int SlayerHeadCD;
 
         public Vector2 bubbleOffset;
 
@@ -144,6 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             StatigelNinjaStyle = false;
             if (kunaiKuldown > 0) kunaiKuldown--;
             GodSlayerMeltdown = false;
+            if (SlayerHeadCD > 0) SlayerHeadCD--;
             SlayerCD = false;
             Auric = false;
             //force of annihilation
@@ -190,60 +192,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
             }
         }
-        /*private bool CalamityPreHurt()
-        {
-            if (SBDHandleDodges())
-            {
-                Player.GetModPlayer<CalamityPlayer>().justHitByDefenseDamage = false;
-                Player.GetModPlayer<CalamityPlayer>().defenseDamageToTake = 0;
-                return false;
-            }
-            return true;
-        }
-        private bool SBDHandleDodges()
-        {
-            if (Player.whoAmI != Main.myPlayer || Player.GetModPlayer<CalamityPlayer>().disableAllDodges) return false;
-            if (SBDHandleDashDodges()) 
-            {
-                Main.NewText("HandleDodges works!");
-                return true;
-            }
-            return false;
-        }
-        private bool SBDHandleDashDodges()
-        {
-            bool dashFlag = Player.pulley || (Player.grappling[0] == -1 && !Player.tongued);
-            if (dashFlag && Player.GetModPlayer<CalamityPlayer>().DashID == Slayer_Dash.ID && GodSlayerMeltdown && Player.dashDelay < 0 && !SlayerCD) 
-            {
-                Main.NewText("HandleDashDodges works!");
-                CounterDodge();
-                return true;
-            }
-            return false;
-        }
-        private void CounterDodge()
-        {
-            Player.AddBuff(ModContent.BuffType<Slayer_Cooldown>(), 1800);
-            Player.GiveIFrames(Player.longInvince ? 100 : 60, blink: true);
-            for (int i = 0; i < 100; i++)
-            {
-                int dodgeDustType = Main.rand.Next(new int[3] { 180, 173, 244 });
-                int num = Dust.NewDust(Player.position, Player.width, Player.height, dodgeDustType, 0f, 0f, 100, default, 2f);
-                Dust dodgeDust = Main.dust[num];
-                dodgeDust.position.X += Main.rand.Next(-20, 21);
-                dodgeDust.position.Y += Main.rand.Next(-20, 21);
-                dodgeDust.velocity *= 0.4f;
-                dodgeDust.scale *= 1f + Main.rand.Next(40) * 0.01f;
-                dodgeDust.shader = GameShaders.Armor.GetSecondaryShader(Player.cWaist, Player);
-                if (Main.rand.NextBool(2))
-                {
-                    dodgeDust.scale *= 1f + Main.rand.Next(40) * 0.01f;
-                    dodgeDust.noGravity = true;
-                }
-            }
-            NetMessage.SendData(MessageID.Dodge, -1, -1, null, Player.whoAmI, 1f);
-        }*/
-
+        
         public override void OnHurt(Player.HurtInfo info)
         {
             //Devastion
@@ -288,6 +237,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             ButterBeeCD = 0;
             AtaxiaCooldown = 0;
             kunaiKuldown = 0;
+            SlayerHeadCD = 0;
             DemonshadeLevel = 0;
             DemonshadeXP = 0;
         }
@@ -481,12 +431,6 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 StatigelHitEffect(target, damageDone);
             }
-
-            //God Slayer star
-            if (GodSlayerMeltdown && Player.GetToggleValue("SlayerStars"))
-            {
-                GodSlayerHitEffect(target, damageDone);
-            }
             //Annihilation
             if (Demonshade && Player.GetToggleValue("RageBuff"))
             {
@@ -555,10 +499,6 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 StatigelProjHitEffect(proj, target, damageDone, hit.Crit);
             }
-            if (GodSlayerMeltdown && Player.GetToggleValue("SlayerStars"))
-            {
-                GodSlayerProjHitEffect(proj, target, damageDone, hit.Crit);
-            }
             //Annihilation
             if (Demonshade && Player.GetToggleValue("RageBuff"))
             {
@@ -607,6 +547,10 @@ namespace FargowiltasCrossmod.Content.Calamity
             if (Silva && Player.GetToggleValue("SilvaCrystal"))
             {
                 SilvaTrigger();
+            }
+            if (GodSlayerMeltdown && Player.GetToggleValue("SlayerDash"))
+            {
+                SlayerTrigger();
             }
             //Annihilation
             if (Lunic && Player.GetToggleValue("RageBuff"))
