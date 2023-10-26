@@ -184,8 +184,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             if (player.FargoSouls().TungstenEnchantItem != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
             {
-                float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
-                scale /= 1.75f;
+                scale /= 1.3f;
             }
         }
         public override float UseSpeedMultiplier(Item item, Player player)
@@ -320,6 +319,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             return true;
         }
+        public enum EModeChange
+        {
+            None,
+            Nerf,
+            Buff,
+            Neutral
+        }
+        //Identical to Eternity nerfs from Souls Mod
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, int amount = 0)
+        {
+            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}", amount == 0 ? null : amount);
+            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf}"));
+        }
+
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, string extra)
+        {
+            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}");
+            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf} {extra}"));
+        }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             if (WorldSavingSystem.EternityMode)
@@ -334,6 +354,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         tooltips[i].Text = "";
                     }
                     */
+                }
+
+                if (item.type == ModContent.ItemType<NormalityRelocator>())
+                {
+                   ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
                 }
             }
 

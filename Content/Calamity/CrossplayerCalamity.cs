@@ -18,7 +18,9 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.ModPlayers;
+using FargowiltasSouls.Core.Systems;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ModLoader;
 
@@ -94,26 +96,26 @@ namespace FargowiltasCrossmod.Content.Calamity
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
         {
-            FargoSoulsPlayer fargo = Player.FargoSouls();
-            CalamityPlayer calamity = Player.Calamity();
+            FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
+            CalamityPlayer calamityPlayer = Player.Calamity();
 
-            if (!fargo.TerrariaSoul && fargo.TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
+            if (!soulsPlayer.TerrariaSoul && soulsPlayer.TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
             {
                 Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
             }
-            calamity.profanedCrystalStatePrevious = 0;
-            calamity.pscState = 0;
+            calamityPlayer.profanedCrystalStatePrevious = 0;
+            calamityPlayer.pscState = 0;
 
             if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type))
             {
-                fargo.AdamantiteEnchantItem = null;
+                soulsPlayer.AdamantiteEnchantItem = null;
             }
-            if (fargo.TinEnchantItem != null)
+            if (soulsPlayer.TinEnchantItem != null)
             {
-                calamity.spiritOrigin = false;
+                calamityPlayer.spiritOrigin = false;
             }
 
-            if (fargo.noDodge)
+            if (soulsPlayer.noDodge)
             {
                 if (!Player.HasCooldown(GlobalDodge.ID))
                 {
@@ -124,6 +126,23 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            
+            if (CalamityKeybinds.NormalityRelocatorHotKey.JustPressed && WorldSavingSystem.EternityMode && FargoSoulsUtil.AnyBossAlive())
+            {
+                //copied from vanilla chaos state damage
+                Player.statLife -= Player.statLifeMax2 / 7;
+                PlayerDeathReason damageSource = PlayerDeathReason.ByOther(13);
+                if (Main.rand.NextBool(2))
+                {
+                    damageSource = PlayerDeathReason.ByOther(Player.Male ? 14 : 15);
+                }
+                if (Player.statLife <= 0)
+                {
+                    Player.KillMe(damageSource, 1.0, 0);
+                }
+                Player.lifeRegenCount = 0;
+                Player.lifeRegenTime = 0f;
+            }
             if (ModContent.GetInstance<FargoClientConfig>().DoubleTapDashDisabled)
             {
                 Player.GetModPlayer<CalamityPlayer>().dashTimeMod = 0;
@@ -131,11 +150,16 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void PostUpdateMiscEffects()
         {
-            if (CalamitousPresence && !Player.FargoSouls().MutantPresence)
+            FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
+            if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
                 Player.statDefense /= 2;
                 Player.endurance /= 2;
                 Player.shinyStone = false;
+            }
+            if (soulsPlayer.MutantFang) //faster life reduction
+            {
+                soulsPlayer.LifeReductionUpdateTimer++;
             }
             base.PostUpdateMiscEffects();
         }
