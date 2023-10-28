@@ -1,11 +1,12 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using FargowiltasCrossmod.Content.Thorium.Buffs;
+using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using System.Collections.Generic;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -18,14 +19,29 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         {
             var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
             DLCPlayer.SilkEnch = true;
+        }
 
-            var ThoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+        public override void SafeModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.SafeModifyTooltips(tooltips);
 
-            ThoriumPlayer.accArtificersShield = true;
-            player.statDefense += 2 * (ThoriumPlayer.statEnchantersEnergy / 20);
-            ThoriumPlayer.accArtificersFocus = true;
+            FargoSoulsPlayer soulsPlayer = Main.LocalPlayer.GetModPlayer<FargoSoulsPlayer>();
+            CrossplayerThorium DLCPlayer = Main.LocalPlayer.GetModPlayer<CrossplayerThorium>();
 
-            // increasing the max artificer energy requires IL editing
+            foreach (BaseEnchant enchant in soulsPlayer.EquippedEnchants)
+            {
+                if (enchant.Type == Type || enchant is not BaseSynergyEnchant synEnchant)
+                {
+                    continue;
+                }
+
+                if (DLCPlayer.SynergyEffect(enchant.Type))
+                {
+                    tooltips.Add(new TooltipLine(Mod, "silk", $"[i:{enchant.Item.type}] [i:{synEnchant.SynergyEnch}]"));
+                }
+            }
+
+            tooltips.RemoveAll(line => line.Name == "wizard");
         }
 
         public override void AddRecipes()

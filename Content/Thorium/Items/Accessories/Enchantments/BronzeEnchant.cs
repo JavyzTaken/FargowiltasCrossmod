@@ -8,16 +8,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class BronzeEnchant : BaseSynergyEnchant
     {
         protected override Color nameColor => Color.Gold;
-        protected override bool SynergyActive
-        {
-            get
-            {
-                var DLCPlayer = Main.LocalPlayer.GetModPlayer<CrossplayerThorium>();
-                return DLCPlayer.BronzeEnchItem == Item && DLCPlayer.GraniteEnch;
-            }
-        }
+        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.BronzeEnch && DLCPlayer.GraniteEnch;
+
         protected override Color SynergyColor1 => Color.Gold with { A = 0 };
         protected override Color SynergyColor2 => Color.DarkBlue with { A = 0 };
+        internal override int SynergyEnch => ModContent.ItemType<GraniteEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -45,12 +40,12 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int bronzeSynergyCD;
         public void BronzeEffect(Item item, Vector2 pos, int damage)
         {
-            if (GraniteEnch)
+            if (SynergyEffect(BronzeEnchItem.type))
             {
                 if (bronzeSynergyCD >= 300)
                 {
                     bronzeSynergyCD = 0;
-                    Projectile.NewProjectile(Player.GetSource_Accessory(BronzeEnchItem), pos, Vector2.Normalize(Main.MouseWorld - pos) * 8f, ModContent.ProjectileType<Projectiles.DLCLightStrike>(), damage / 2, 0.5f, Player.whoAmI, 5f, 1f);
+                    Projectile.NewProjectile(Player.GetSource_Accessory(BronzeEnchItem), pos, Vector2.Normalize(Main.MouseWorld - pos) * 8f, ModContent.ProjectileType<Projectiles.DLCLightStrike>(), damage / 2, 0.5f, Player.whoAmI, 3f, 1f);
                 }
             }
             else
@@ -79,8 +74,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 Vector2 direction = nextTarget == null ? Main.rand.NextVector2CircularEdge(1, 1) : Projectile.Center.DirectionTo(nextTarget.Center);
                 direction *= Projectile.velocity.Length();
 
+                Projectile.ai[0]--;
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, direction, Projectile.type, (int)(Projectile.damage * 0.8f), Projectile.knockBack * 0.8f, Projectile.owner, Projectile.ai[0], Projectile.ai[1]);
-                //Projectile.ai[0]--;
             }
 
             if (Projectile.ai[1] == 1f)

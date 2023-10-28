@@ -197,7 +197,7 @@ Mods: {
 
 			SilkEnchant: {
 				DisplayName: Silk Enchantment
-				Tooltip: ""
+				Tooltip: Upgrades other enchantments to their synergy effects.
 			}
 
 			SpiritTrapperEnchant: {

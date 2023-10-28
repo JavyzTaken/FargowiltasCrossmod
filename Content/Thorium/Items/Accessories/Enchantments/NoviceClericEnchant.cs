@@ -1,26 +1,21 @@
 using Terraria;
 using Terraria.ModLoader;
-using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
-    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
     public class NoviceClericEnchant : BaseSynergyEnchant
     {
         protected override Color nameColor => Color.Yellow;
-        protected override bool SynergyActive
-        {
-            get
-            {
-                var DLCPlayer = Main.LocalPlayer.GetModPlayer<CrossplayerThorium>();
-                return DLCPlayer.NoviceClericEnchItem == Item && DLCPlayer.EbonEnch;
-            }
-        }
+        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.NoviceClericEnchItem == Item && DLCPlayer.EbonEnch;
+
         protected override Color SynergyColor1 => Color.White with { A = 0 };
         protected override Color SynergyColor2 => Color.Purple with { A = 0 };
+        internal override int SynergyEnch => ModContent.ItemType<EbonEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -28,8 +23,17 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPlayer.NoviceClericEnch = true;
             DLCPlayer.NoviceClericEnchItem = Item;
         }
+
+        //public override void Load()
+        //{
+        //    new EnchantSynergy(
+        //        new Func<CrossplayerThorium, bool>((CrossplayerThorium DLCPlayer) => DLCPlayer.NoviceClericEnch && DLCPlayer.EbonEnch),
+        //        new Action<CrossplayerThorium>((CrossplayerThorium DLCPlayer) => DLCPlayer.clericEbonSynergy = true)
+        //        ).Register();
+        //}
     }
 }
+
 namespace FargowiltasCrossmod.Content.Thorium
 {
     public partial class CrossplayerThorium
@@ -46,12 +50,11 @@ namespace FargowiltasCrossmod.Content.Thorium
             NoviceClericTimer++;
             crossOrbitalRotation = Utils.RotatedBy(crossOrbitalRotation, -0.05, default);
 
-            bool synergy = NoviceClericEnch && EbonEnch;
-            int maxCrosses = synergy ? 8 : 5;
+            int maxCrosses = SynergyEffect(NoviceClericEnchItem.type) ? 8 : 5;
 
             if (NoviceClericCrosses < maxCrosses)
             {
-                if (NoviceClericTimer > (synergy ? 180 : 300))
+                if (NoviceClericTimer > (SynergyEffect(NoviceClericEnchItem.type) ? 180 : 300))
                 {
                     NoviceClericCrosses++;
                     NoviceClericTimer = 0;
@@ -68,10 +71,10 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (NoviceClericCrosses <= 0 || !NoviceClericEnch) return;
 
             NoviceClericCrosses--;
-            bool synergy = NoviceClericEnch && EbonEnch;
+            bool synergy = SynergyEffect(NoviceClericEnchItem.type);
             int burstNum = (synergy && NoviceClericCrosses > 0) ? 5 : 3;
 
-            if (synergy && NoviceClericCrosses % 2 == 0 || !synergy)
+            if ((synergy && NoviceClericCrosses % 2 == 0) || !synergy)
             {
                 // holy crux
                 Vector2 vector = Utils.RotatedBy(Player.Center.DirectionTo(Main.MouseWorld), MathF.PI / burstNum) * 8f;

@@ -18,16 +18,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class GraniteEnchant : BaseSynergyEnchant
     {
         protected override Color nameColor => Color.DarkBlue;
-        protected override bool SynergyActive
-        {
-            get
-            {
-                var DLCPlayer = Main.LocalPlayer.GetModPlayer<CrossplayerThorium>();
-                return DLCPlayer.GraniteEnchItem == Item && DLCPlayer.BronzeEnch;
-            }
-        }
+        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.GraniteEnch && DLCPlayer.BronzeEnch;
+
         protected override Color SynergyColor1 => Color.DarkBlue with { A = 0 };
         protected override Color SynergyColor2 => Color.Gold with { A = 0 };
+        internal override int SynergyEnch => ModContent.ItemType<BronzeEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -53,7 +48,7 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void GraniteEffect(Vector2 pos, Projectile proj)
         {
-            if (BronzeEnch && !Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(GraniteEnchItem.type)) return;
+            if (SynergyEffect(GraniteEnchItem.type) && !Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(GraniteEnchItem.type)) return;
 
             if (proj.type != ModContent.ProjectileType<GraniteExplosion>() || !Main.rand.NextBool(3))
             {

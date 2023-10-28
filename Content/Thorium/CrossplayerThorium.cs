@@ -10,7 +10,7 @@ using FargowiltasCrossmod.Content.Thorium.Buffs;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
-using FargowiltasCrossmod.Content.Thorium.PlayerLayers;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
@@ -227,19 +227,21 @@ namespace FargowiltasCrossmod.Content.Thorium
 
                     if (Player.ownedProjectileCounts[projType] < 15)
                     {
-                        int shadowWispType = WarlockEnch ? (SacredEnch ? 2 : 0) : (1);
-                        int damage = WarlockEnch ? (SacredEnch ? 24 : 16) : (0);
+                        Item itemToUse = WarlockEnch ? WarlockEnchItem : SacredEnchItem;
+                        bool synergy = SynergyEffect(itemToUse.type);
+
+                        int shadowWispType = synergy ? 2 : WarlockEnch ? 0 : 1;
+
+                        int damage = synergy ? 24 : WarlockEnch ? 16 : 0;
                         float kb = WarlockEnch ? 1f : 0f;
 
-                        var soulsPlayer = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>();
-                        if ((WarlockEnch && soulsPlayer.ForceEffect(WarlockEnchItem.type)) || (SacredEnch && soulsPlayer.ForceEffect(SacredEnchItem.type)))
-                        {
-                            damage = 24;
-                            shadowWispType = 2;
-                            kb = 1f;
-                        }
-
-                        Item itemToUse = WarlockEnch ? WarlockEnchItem : SacredEnchItem;
+                        //var soulsPlayer = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>();
+                        //if ((WarlockEnch && soulsPlayer.ForceEffect(WarlockEnchItem.type)) || (SacredEnch && soulsPlayer.ForceEffect(SacredEnchItem.type)))
+                        //{
+                        //    damage = 24;
+                        //    shadowWispType = 2;
+                        //    kb = 1f;
+                        //}
 
                         Projectile.NewProjectile(Player.GetSource_Accessory(itemToUse), target.Center, Vector2.Zero, projType, damage, kb, Player.whoAmI, 0, 0, shadowWispType);
                     }
@@ -272,6 +274,7 @@ namespace FargowiltasCrossmod.Content.Thorium
                 {
                     FallenPaladinEffect();
                 }
+
                 if (WarlockEnch || SacredEnch)
                 {
                     int type = ModContent.ProjectileType<DLCShadowWisp>();
@@ -324,8 +327,6 @@ namespace FargowiltasCrossmod.Content.Thorium
         public override void OnEnterWorld()
         {
             bronzeSynergyCD = 0;
-            //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning1"), Color.Yellow);
-            //Main.NewText(Language.GetTextValue($"Mods.{Mod.Name}.Message.ThoriumBuggyWarning2"), Color.Yellow);
         }
 
         public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
@@ -340,8 +341,18 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void PostUpdateEquips()
         {
+            //foreach (EnchantSynergy s in EnchantSynergy.Synergies)
+            //{
+            //    Main.NewText("test a");
+            //    if (s.Active(this))
+            //    {
+            //        Main.NewText("test b");
+            //        s.Effect(this);
+            //    }
+            //}
+
             NoviceClericEffect();
-            if (GraniteEnch && BronzeEnch) bronzeSynergyCD++;
+            if (BronzeEnch && SynergyEffect(BronzeEnchItem.type)) bronzeSynergyCD++;
         }
 
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -351,6 +362,24 @@ namespace FargowiltasCrossmod.Content.Thorium
                 BronzeEffect(item, position, damage);
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
+        }
+
+        public bool SynergyEffect(int enchType)
+        {
+            ModItem item = ModContent.GetModItem(enchType);
+            if (item == null || item.Item.IsAir)
+            {
+                Main.NewText("You shouldn't be seeing this. Taller Ghoose");
+            }
+
+            if (item is BaseSynergyEnchant synEnch)
+            {
+                if (SilkEnch) return true;
+
+                return synEnch.SynergyActive(this);
+            }
+
+            return false;
         }
     }
 }

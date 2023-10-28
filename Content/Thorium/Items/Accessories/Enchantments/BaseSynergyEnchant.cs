@@ -4,19 +4,21 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     public abstract class BaseSynergyEnchant : BaseEnchant
     {
-        protected abstract bool SynergyActive { get; }
+        internal abstract bool SynergyActive(CrossplayerThorium DLCPlayer);
         protected abstract Color SynergyColor1 { get; }
         protected abstract Color SynergyColor2 { get; }
+        internal abstract int SynergyEnch { get; }
 
         int drawTimer = 0;
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            if (SynergyActive)
+            if (Main.LocalPlayer.GetModPlayer<CrossplayerThorium>().SynergyEffect(Item.type) && Main.LocalPlayer.armor.Contains(Item))
             {
                 for (int j = 0; j < 12; j++)
                 {

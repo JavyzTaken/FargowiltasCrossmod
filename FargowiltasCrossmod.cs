@@ -1,4 +1,5 @@
 using CalamityMod;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using MonoMod.RuntimeDetour;
@@ -11,6 +12,7 @@ using FargowiltasCrossmod.Core;
 using System.Collections.Generic;
 using FargowiltasSouls.Core.Toggler;
 using System.IO;
+using FargowiltasCrossmod.Content.Thorium;
 
 namespace FargowiltasCrossmod
 {
