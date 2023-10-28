@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 				Vector2 rotation = DLCPlayer.crossOrbitalRotation;
 				float addrotation4 = MathF.Tau / DLCPlayer.NoviceClericCrosses;
 
-				bool alternating = DLCPlayer.NoviceClericEnch && DLCPlayer.EbonEnch;
+				bool alternating = DLCPlayer.SynergyEffect(DLCPlayer.NoviceClericEnchItem.type);
 
 				for (int n = 0; n < DLCPlayer.NoviceClericCrosses; n++)
 				{
