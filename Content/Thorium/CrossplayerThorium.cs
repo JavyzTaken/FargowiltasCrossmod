@@ -73,6 +73,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool DuraSteelEnch;
         public bool BronzeEnch;
         public Item BronzeEnchItem;
+        public bool BiotechEnch;
+        public Item BiotechEnchItem;
 
         public bool HelheimForce;
         public bool SvartalfheimForce;
@@ -155,6 +157,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             DuraSteelEnch = false;
             BronzeEnch = false;
             BronzeEnchItem = null;
+            BiotechEnch = false;
+            BiotechEnchItem = null;
 
             HelheimForce = false;
             SvartalfheimForce = false;

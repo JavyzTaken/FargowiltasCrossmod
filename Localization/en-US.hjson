@@ -405,7 +405,7 @@ Mods: {
 
 			BronzeEnchant: {
 				DisplayName: Bronze Enchant
-				Tooltip: 
+				Tooltip:
 					'''
 					Attacking has a 20% chance to release a damaging burst of light.
 					"Ensure only the finest quality copper ingots be used in its creation."
@@ -422,6 +422,11 @@ Mods: {
 					[i:FargowiltasCrossmod/GraniteEnchant] Killing an enemy creates an explosion that inflicts granite surge on enemies.
 					[i:FargowiltasCrossmod/BronzeEnchant] Every 5 seconds when attacking a powerful burst of light will be realesed that bounces between enemies and causes granite explosions on it.
 					'''
+			}
+
+			BiotechEnchant: {
+				DisplayName: Biotech Enchant
+				Tooltip: ""
 			}
 		}
 
@@ -480,6 +485,7 @@ Mods: {
 			LifeBloomWard.DisplayName: Life Bloom Ward
 			SteelParry.DisplayName: Steel Parry
 			DLCLightStrike.DisplayName: D L C Light Strike
+			BiotechNanomachine.DisplayName: Biotech Nanomachine
 		}
 
 		Keybinds: {
