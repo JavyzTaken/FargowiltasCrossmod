@@ -25,9 +25,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void PostAI()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, 74, Vector2.Zero);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center - Projectile.velocity / 2f * i, 74, Vector2.Zero);
+                dust.scale /= 2;
             }
 
             if (++Projectile.frameCounter > 15)
@@ -72,46 +73,53 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 float ownerDist = Projectile.Distance(owner.Center);
                 if (ownerDist > 2000)
                 {
-                    Main.NewText("1");
+                    // too far, teleport
                     Projectile.Center = owner.Center;
                 }
                 else if (ownerDist < 8f)
                 {
-                    Main.NewText("2");
-                    Projectile.position += Main.rand.NextVector2CircularEdge(1, 1) * 8f ;
+                    // too close, give random direction
+                    Projectile.velocity += Main.rand.NextVector2CircularEdge(1, 1) * 8f ;
                 }
                 else if (ownerDist < 56)
                 {
-                    Main.NewText("3");
+                    // closer than valid range, move away 
                     Projectile.velocity -= (owner.Center - Projectile.Center) / ownerDist;
                 }
                 else if (ownerDist > 72)
                 {
-                    Main.NewText("4");
+                    // further than valid range, move closer
                     Projectile.velocity += 2 * (owner.Center - Projectile.Center) / ownerDist;
 
-                    //float dot = Vector2.Dot(Projectile.velocity, owner.Center - Projectile.Center);
-                    //if (dot < 0f)
-                    //{
-                    //}
+                    float dot = Vector2.Dot(Projectile.velocity, owner.Center - Projectile.Center);
+                    if (dot < 0f)
+                    {
+                        Projectile.velocity *= 0.95f;
+                    }
                 }
                 else
                 {
-                    Main.NewText("5");
-                    Projectile.velocity = ((owner.Center - Projectile.Center) / ownerDist).RotatedBy(MathHelper.PiOver2);
+                    // in valid range, orbit
+                    Projectile.velocity += ((owner.Center - Projectile.Center) / ownerDist).RotatedBy(((Projectile.whoAmI % 2 * 2) - 1) * MathHelper.PiOver2);
+
+                    float speed = Projectile.velocity.Length();
+                    if (speed > 12)
+                    {
+                        Projectile.velocity *= (12 / speed);
+                    }
                 }
             }
             else
             {
                 Player target = Main.player[(int)Projectile.ai[0]];
-                if (!target.active || target.dead)
+                if (!target.active || target.dead || Projectile.ai[0] == Projectile.owner)
                 {
                     Projectile.ai[0] = -1f;
                     return;
                 }
 
                 Projectile.penetrate = 1;
-                Projectile.velocity += Projectile.DirectionTo(target.Center + target.velocity * 8f);
+                Projectile.velocity = Projectile.DirectionTo(target.Center + target.velocity * 8f);
 
                 Projectile.DLCHeal(5);
             }

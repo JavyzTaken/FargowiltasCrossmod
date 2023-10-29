@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
             else
             {
-                Projectile.NewProjectile(Player.GetSource_Accessory(LifeBloomEnchItem), Player.Center, Vector2.Zero, ModContent.ProjectileType<LifeBloomTree>(), 0, 0f, Player.whoAmI);
+                Projectile.NewProjectileDirect(Player.GetSource_Accessory(LifeBloomEnchItem), Player.Center, Vector2.Zero, ModContent.ProjectileType<LifeBloomTree>(), 0, 0f, Player.whoAmI); 
             }
         }
     }

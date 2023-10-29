@@ -341,16 +341,6 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void PostUpdateEquips()
         {
-            //foreach (EnchantSynergy s in EnchantSynergy.Synergies)
-            //{
-            //    Main.NewText("test a");
-            //    if (s.Active(this))
-            //    {
-            //        Main.NewText("test b");
-            //        s.Effect(this);
-            //    }
-            //}
-
             NoviceClericEffect();
             if (BronzeEnch && SynergyEffect(BronzeEnchItem.type)) bronzeSynergyCD++;
         }
