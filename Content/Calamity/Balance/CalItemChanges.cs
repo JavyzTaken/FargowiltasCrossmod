@@ -145,8 +145,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 
                 if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
                 {
-                    item.consumable = true;
-                    item.maxStack = 9999;
+                    item.consumable = WorldSavingSystem.EternityMode;
+                    item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
                 }
                 
             }
