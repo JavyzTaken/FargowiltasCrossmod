@@ -142,13 +142,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     item.damage = (int)(item.damage * balance);
                 }
-                /*
+                
                 if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
                 {
                     item.consumable = true;
                     item.maxStack = 9999;
                 }
-                */
+                
             }
         }
         public override void UpdateInventory(Item item, Player player)

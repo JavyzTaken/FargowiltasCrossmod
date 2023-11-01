@@ -30,6 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
 
             //just. copied from desert medallion code
             SoundEngine.PlaySound(in SoundID.Roar, player.Center);
+            /*
             if (Main.netMode != 1)
             {
                 NPC.SpawnOnPlayer(player.whoAmI, ModContent.NPCType<DesertScourgeHead>());
@@ -38,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
             {
                 NetMessage.SendData(61, -1, -1, null, player.whoAmI, ModContent.NPCType<DesertScourgeHead>());
             }
-
+            */
             if (CalamityWorld.revenge)
             {
                 if (Main.netMode != 1)
