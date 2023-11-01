@@ -19,7 +19,12 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
-Latest Update: v1.0.4.5
+Latest Update: v1.0.4.6
+Fixed several NPC loot issues
+Fixed Medallion of the Desert not working correctly in multiplayer
+Fixed Desert Scourge rarely repeating slam attack
+
+Previous Update: v1.0.4.5
 Fixed the multiplayer difficulty desync issue
 Improved multiplayer sync in various regions
 
@@ -27,7 +32,3 @@ Made Mutant's Yharon bullet hell more lenient below Masochist Mode, but removed 
 Adjusted Mutant's movement before Providence ray attack
 Increased Mutant's Slime God's slam speed
 Slightly decreased Mutant's Necroplasm rotation speed
-
-Previous Update: v1.0.4.4
--Boss summon items are only consumable in Eternity Mode
-Reminder: boss summons are refunded by the boss before beating them in Eternity Mode, and are sold by the Mutant after beating them

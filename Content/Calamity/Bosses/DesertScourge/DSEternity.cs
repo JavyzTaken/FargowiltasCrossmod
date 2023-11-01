@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
         public bool DoSlam = false;
-
+        public bool CanDoSlam = true;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -85,6 +85,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             binaryWriter.Write7BitEncodedInt(phase);
             binaryWriter.Write(DoSlam);
+            binaryWriter.Write(CanDoSlam);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -98,6 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             phase = binaryReader.Read7BitEncodedInt();
             DoSlam = binaryReader.ReadBoolean();
+            CanDoSlam = binaryReader.ReadBoolean();
         }
 
         public override bool SafePreAI(NPC npc)
@@ -171,8 +173,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 WormMovement(npc, collision);
 
                 ai[0]++;
-                if (ai[0] == 250 && phase > 0) //initiate slam, only after first phase (nuisances)
+                if (ai[0] == 250 && phase > 0 && CanDoSlam) //initiate slam, only after first phase (nuisances)
                 {
+                    CanDoSlam = false;
                     DoSlam = true;
                     NetSync(npc);
                 }
@@ -548,6 +551,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 npc.ai[3] = 0;
             }
+            CanDoSlam = true;
             NetSync(npc);
         }
         bool canSee = false;

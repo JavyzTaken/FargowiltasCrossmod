@@ -598,11 +598,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 return;
             }
 
-            LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(PostDog);
+            //LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(PostDog);
             LeadingConditionRule emodeRule = new(new EModeDropCondition());
             LeadingConditionRule pMoon = new LeadingConditionRule(new Conditions.PumpkinMoonDropGatingChance());
             LeadingConditionRule fMoon = new LeadingConditionRule(new Conditions.FrostMoonDropGatingChance());
-            LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
+            //LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
             LeadingConditionRule hardmode = new LeadingConditionRule(Condition.Hardmode.ToDropCondition(ShowItemDropInUI.Always));
 
             #region Crates
@@ -643,11 +643,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
             }
 
-            Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
-            LeadingConditionRule levidroprule = npcLoot.DefineConditionalDropSet(what);
+            
             if (npc.type == ModContent.NPCType<Leviathan>() || npc.type == ModContent.NPCType<Anahita>())
             {
+                Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
+                LeadingConditionRule levidroprule = npcLoot.DefineConditionalDropSet(what);
                 levidroprule.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ItemID.OceanCrateHard, 1, 5, 5, 1));
+                npcLoot.Add(levidroprule);
             }
 
             if (npc.type == ModContent.NPCType<AstrumAureus>())
@@ -675,10 +677,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 return true;
             }
-            LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
+            
             if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
+                LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
                 lastWorm.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ModContent.ItemType<AstralCrate>(), 1, 5, 5, 1));
+                npcLoot.Add(lastWorm);
             }
 
             #endregion Crates
@@ -747,6 +751,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 LeadingConditionRule lastEater = new(new Conditions.LegacyHack_IsABoss());
                 lastEater.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterofWorldsMasterTrophy));
                 lastEater.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterOfWorldsPetItem, 4));
+                npcLoot.Add(lastEater);
 
             }
             if (npc.type == NPCID.BrainofCthulhu)
@@ -789,6 +794,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 LeadingConditionRule noTwin = new(new Conditions.MissingTwin());
                 noTwin.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsMasterTrophy));
                 noTwin.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsPetItem, 4));
+                npcLoot.Add(noTwin);
             }
             if (npc.type == NPCID.SkeletronPrime)
             {
@@ -926,6 +932,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             //if (npc.type == ModContent.NPCType<>)
             #endregion
+
+            npcLoot.Add(emodeRule);
+            npcLoot.Add(pMoon);
+            npcLoot.Add(fMoon);
         }
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)
