@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using ReLogic.Content;
+using Terraria.GameContent;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LivingWood_Roots : ModProjectile
     {
-        public int FireCD;
         public override void SetDefaults()
         {
             Projectile.width = 90;
@@ -23,7 +23,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             //Projectile.damage = 0;
             Projectile.timeLeft = 3600;
             Projectile.penetrate = -1;
-            FireCD = 300;
         }
 
         public override void AI()
@@ -41,12 +40,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             Projectile.frame = 1;
 
-            if (FireCD > 0)
-            {
-                FireCD--;
-                return;
-            }
-            FireCD = 120;
 
             #region Behavior
             float targetDistance = 700f;
@@ -85,12 +78,22 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 }
             }
 
+            Vector2 ShootOrigin = Projectile.Center + new Vector2(0, -24);
             if (target != null)
             {
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, (target.Center - ShootOrigin).ToRotation(), 0.5f);
+            }
+            else
+            {
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, 1f, 0.5f);
+            }
+
+            if (target != null && ++Projectile.ai[0] >= 90)
+            {
+                Projectile.ai[0] = 0;
                 bool wizard = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().LivingWoodEnchItem.type);
-                int projType = wizard ? ProjectileID.BulletHighVelocity : ProjectileID.WoodenArrowFriendly; // Goofy ah
+                int projType = wizard ? ProjectileID.BulletHighVelocity : ProjectileID.WoodenArrowFriendly; 
                 int damage = wizard ? 50 : 20;
-                Vector2 ShootOrigin = Projectile.Center + new Vector2(0, -24);
                 Vector2 ShootVec = Vector2.Normalize(target.Center - ShootOrigin) * (wizard ? 12 : 12); // Note: adjust these
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootOrigin, ShootVec, projType, damage, 5f, Projectile.owner);
@@ -107,11 +110,18 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             if (Projectile.frame == 0) return false;
+
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Rectangle rect = new(0, 0, 90, 90);
             Vector2 origin = rect.Size() / 2f;
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, rect, drawColor, 0f, origin, 1f, SpriteEffects.None, 0);
+
+            bool force = Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.YewWoodEnchant>());
+            Texture2D gunTexture = force ? TextureAssets.Item[ItemID.SniperRifle].Value : TextureAssets.Item[ItemID.WoodenBow].Value;
+            Rectangle source = gunTexture.Bounds;
+            SpriteEffects effect = MathF.Abs(Projectile.rotation) > MathHelper.PiOver2 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            Main.EntitySpriteDraw(gunTexture, Projectile.Center - Main.screenPosition + new Vector2(0, -24), source, drawColor, Projectile.rotation, source.Size() / 2, 1f, effect);
             return false;
         }
     }
