@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPLayer.YewWoodEnchItem = Item;
         }
 
-        public static void LoadModdedArrows()
+        public static void LoadModdedAmmo()
         {
             PreHMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.IcyArrow>());
             PreHMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.SteelArrow>());
@@ -31,6 +31,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             HMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.DurasteelArrow>());
             HMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.GhostPulseArrowPro>());
             HMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.SpiritArrowPro>());
+
+            HMBullets.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.IllumiteBullet>()); // add more
         }
 
         internal static readonly List<int> PreHMArrows = new()
@@ -42,7 +44,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             ProjectileID.BoneArrow,
             ProjectileID.FrostburnArrow,
             ProjectileID.BoneArrow,
-            ProjectileID.ShimmerArrow
+            ProjectileID.ShimmerArrow,
+
+            ProjectileID.HolyArrow,
+            ProjectileID.CursedArrow,
+            ProjectileID.IchorArrow,
+            ProjectileID.VenomArrow,
+            ProjectileID.ChlorophyteArrow,
         };
 
         internal static readonly List<int> HMArrows = new()
@@ -52,6 +60,26 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             ProjectileID.IchorArrow,
             ProjectileID.VenomArrow,
             ProjectileID.ChlorophyteArrow,
+        };
+
+        internal static readonly List<int> PreHMBullets = new()
+        {
+            ProjectileID.SilverBullet,
+            ProjectileID.PartyBullet,
+            ProjectileID.MeteorShot
+        };
+
+        internal static readonly List<int> HMBullets = new()
+        {
+            ProjectileID.CrystalBullet,
+            ProjectileID.IchorBullet,
+            ProjectileID.CrystalBullet,
+            ProjectileID.ExplosiveBullet,
+            ProjectileID.GoldenBullet,
+            ProjectileID.BulletHighVelocity,
+            ProjectileID.ChlorophyteBullet,
+            ProjectileID.NanoBullet,
+            ProjectileID.MoonlordBullet
         };
     }
 }
@@ -67,10 +95,18 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             if (item.useAmmo == AmmoID.Arrow && type == ProjectileID.WoodenArrowFriendly)
             {
-                bool useHM = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type);
+                bool useHM = Main.hardMode;
                 type = Main.rand.NextFromCollection(useHM ? Items.Accessories.Enchantments.YewWoodEnchant.HMArrows : Items.Accessories.Enchantments.YewWoodEnchant.PreHMArrows);
                 Item arrow = new(type);
                 damage += arrow.damage;
+            }
+
+            if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type))
+            {
+                bool useHM = Main.hardMode;
+                type = Main.rand.NextFromCollection(useHM ? Items.Accessories.Enchantments.YewWoodEnchant.HMBullets : Items.Accessories.Enchantments.YewWoodEnchant.PreHMBullets);
+                Item bullet = new(type);
+                damage += bullet.damage;
             }
         }
     }

@@ -428,6 +428,11 @@ Mods: {
 				DisplayName: Biotech Enchant
 				Tooltip: ""
 			}
+
+			WhisperingEnchant: {
+				DisplayName: Whispering Enchant
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {
@@ -486,6 +491,9 @@ Mods: {
 			SteelParry.DisplayName: Steel Parry
 			DLCLightStrike.DisplayName: D L C Light Strike
 			BiotechNanomachine.DisplayName: Biotech Nanomachine
+			WhisperingVision.DisplayName: Whispering Vision
+			WhisperingBeam.DisplayName: Whispering Beam
+			WhisperingLeech.DisplayName: Whispering Leech
 		}
 
 		Keybinds: {

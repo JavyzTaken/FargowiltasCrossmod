@@ -55,7 +55,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             Player player = Main.player[Projectile.owner];
             var (Sin, Cos) = MathF.SinCos(Projectile.ai[0]);
-            float orbitRadius = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().ValadiumEnchItem.type) ? 100 : 80;
+            float orbitRadius = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.LodeStoneEnchant>()) ? 100 : 80;
             Projectile.Center = player.Center + new Vector2(Cos, Sin) * orbitRadius;
             Projectile.ai[0] += MathF.PI / 360;
             Projectile.ai[0] %= MathF.Tau;

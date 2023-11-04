@@ -75,6 +75,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item BronzeEnchItem;
         public bool BiotechEnch;
         public Item BiotechEnchItem;
+        public bool WhisperingEnch;
+        public Item WhisperingEnchItem;
 
         public bool HelheimForce;
         public bool SvartalfheimForce;
@@ -159,6 +161,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             BronzeEnchItem = null;
             BiotechEnch = false;
             BiotechEnchItem = null;
+            WhisperingEnch = false;
+            WhisperingEnchItem = null;
 
             HelheimForce = false;
             SvartalfheimForce = false;
@@ -360,6 +364,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (item == null || item.Item.IsAir)
             {
                 Main.NewText("You shouldn't be seeing this. Taller Ghoose");
+                return false;
             }
 
             if (item is BaseSynergyEnchant synEnch)
