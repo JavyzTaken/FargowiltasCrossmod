@@ -89,18 +89,16 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             if (item.useAmmo == AmmoID.Arrow && type == ProjectileID.WoodenArrowFriendly)
             {
-                bool useHM = Main.hardMode;
-                type = Main.rand.NextFromCollection(useHM ? Items.Accessories.Enchantments.YewWoodEnchant.HMArrows : Items.Accessories.Enchantments.YewWoodEnchant.PreHMArrows);
+                type = Main.rand.NextFromCollection(Main.hardMode ? Items.Accessories.Enchantments.YewWoodEnchant.HMArrows : Items.Accessories.Enchantments.YewWoodEnchant.PreHMArrows);
                 Item arrow = new(type);
-                damage += arrow.damage;
+                damage += arrow.damage - 5;
             }
 
             if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type))
             {
-                bool useHM = Main.hardMode;
-                type = Main.rand.NextFromCollection(useHM ? Items.Accessories.Enchantments.YewWoodEnchant.HMBullets : Items.Accessories.Enchantments.YewWoodEnchant.PreHMBullets);
+                type = Main.rand.NextFromCollection(Main.hardMode ? Items.Accessories.Enchantments.YewWoodEnchant.HMBullets : Items.Accessories.Enchantments.YewWoodEnchant.PreHMBullets);
                 Item bullet = new(type);
-                damage += bullet.damage;
+                damage += bullet.damage - 7;
             }
         }
     }

@@ -194,11 +194,6 @@ namespace FargowiltasCrossmod.Content.Thorium
                 SpawnAstroLaser(target);
             }
 
-            if (FleshEnch && Main.rand.NextBool(20))
-            {
-                SpawnFlesh(target);
-            }
-
             if (damageDone >= target.life) // kills
             {
                 if (GraniteEnch)
@@ -211,6 +206,9 @@ namespace FargowiltasCrossmod.Content.Thorium
                     SpawnDemonBlood(target.Center);
                 }
             }
+
+            Main.NewText("Test a");
+            SpawnFlesh(target);
 
             // this (should) be true if the hit moved the boss below a 10% hp increment
             // works by checking the current life's distance to the next increment vs the life - damage distance to next incement. 
@@ -255,10 +253,8 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (FleshEnch && Main.rand.NextBool(10))
-            {
-                SpawnFlesh(target);
-            }
+            Main.NewText("Test b");
+            SpawnFlesh(target);
         }
 
         public override void ProcessTriggers(TriggersSet triggersSet)
@@ -346,7 +342,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public override void PostUpdateEquips()
         {
             NoviceClericEffect();
-            if (BronzeEnch && SynergyEffect(BronzeEnchItem.type)) bronzeSynergyCD++;
+            EbonEnchant.EbonEffect(Player, this);
         }
 
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

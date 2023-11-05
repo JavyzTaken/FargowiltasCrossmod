@@ -30,7 +30,10 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void SpawnFlesh(NPC target)
         {
-            Item.NewItem(Player.GetSource_Accessory(FleshEnchItem), target.Hitbox, ModContent.ItemType<ThoriumMod.Items.Flesh.GreatFlesh>(), 1, false, 0, false, false);
+            if (FleshEnch && Main.rand.NextBool(20))
+            {
+                Item.NewItem(Player.GetSource_Accessory(FleshEnchItem), target.Hitbox, ModContent.ItemType<ThoriumMod.Items.Flesh.GreatFlesh>(), 1, false, 0, false, false);
+            }
         }
     }
 }

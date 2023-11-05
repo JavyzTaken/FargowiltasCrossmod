@@ -39,13 +39,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 if (i == Projectile.whoAmI) continue;
 
                 Projectile proj = Main.projectile[i];
+
                 if (proj.friendly && Teir < 2) continue;
 
                 if (player.Center.Distance(proj.Center) < maxDist && proj.TryGetGlobalProjectile(out ParriedProjectile parried) && !parried.alreadyParried)
                 {
                     if (proj.friendly)
                     {
-                        if (Teir >= 2)
+                        if (Teir >= 2 && proj.aiStyle == 1)
                         {
                             CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+ProBoost");
                             proj.damage = (int)(proj.damage * 2f);
@@ -53,7 +54,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     }
                     else
                     {
-                        CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parried", true);
+			if (proj.damage > 200) continue;
+                        
+			CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parried", true);
                         proj.damage *= 3 * Teir;
                         if (Teir < 3)
                         {

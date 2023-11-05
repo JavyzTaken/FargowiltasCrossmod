@@ -22,12 +22,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
             DLCPlayer.EbonEnch = true;
             DLCPlayer.EbonEnchItem = Item;
-
-            EbonEffect(player, DLCPlayer);
         }
 
         public static void EbonEffect(Player player, CrossplayerThorium DLCPlayer)
         {
+            if (!DLCPlayer.EbonEnch) return;
+
             var thoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
             thoriumPlayer.darkAura = true;
 
