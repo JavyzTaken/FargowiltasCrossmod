@@ -37,7 +37,6 @@ namespace FargowiltasCrossmod.Content.Thorium
 {
     public partial class CrossplayerThorium
     {
-        internal int bronzeSynergyCD;
         public void BronzeEffect(Item item, Vector2 pos, int damage)
         {
             Vector2 spawnPos = Player.Center + Vector2.Normalize(Main.MouseWorld - Player.Center).RotatedBy(MathHelper.PiOver2 * (Main.rand.NextBool() ? 1 : -1)) * Main.rand.Next(32, 64);

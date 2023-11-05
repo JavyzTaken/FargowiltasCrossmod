@@ -207,9 +207,6 @@ namespace FargowiltasCrossmod.Content.Thorium
                 }
             }
 
-            Main.NewText("Test a");
-            SpawnFlesh(target);
-
             // this (should) be true if the hit moved the boss below a 10% hp increment
             // works by checking the current life's distance to the next increment vs the life - damage distance to next incement. 
             // may be unreliable but i think its cool.
@@ -253,7 +250,6 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Main.NewText("Test b");
             SpawnFlesh(target);
         }
 
