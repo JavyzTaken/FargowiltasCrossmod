@@ -15,6 +15,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
         public override bool Eternity => true;
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override void SetStaticDefaults()
         {
 

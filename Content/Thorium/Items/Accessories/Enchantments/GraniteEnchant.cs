@@ -24,6 +24,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         protected override Color SynergyColor2 => Color.Gold with { A = 0 };
         internal override int SynergyEnch => ModContent.ItemType<BronzeEnchant>();
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();

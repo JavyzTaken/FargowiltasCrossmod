@@ -67,6 +67,9 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             if (!Player.HasBuff<LivingWood_Root_DB>() && !Player.HasBuff<LivingWood_Root_B>())
             {
+                Player.ClearBuff(ModContent.BuffType<LivingWood_Root_B>());
+                LivingWoodEnchant.KillLivingWoodRoots(Player.whoAmI);
+
                 Player.AddBuff(ModContent.BuffType<LivingWood_Root_DB>(), 1200);
                 Player.AddBuff(ModContent.BuffType<LivingWood_Root_B>(), 300);
 

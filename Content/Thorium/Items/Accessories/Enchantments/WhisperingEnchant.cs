@@ -10,6 +10,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 	{
 		protected override Color nameColor => Color.Purple;
 
+		public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
 		public override void UpdateAccessory(Player player, bool hideVisuals) 
 		{
 			var DLCPLayer = player.GetModPlayer<CrossplayerThorium>();

@@ -7,6 +7,7 @@ using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
+    [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
     public class DreadEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.DarkOliveGreen;

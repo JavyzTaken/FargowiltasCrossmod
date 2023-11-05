@@ -8,6 +8,7 @@ using System.Linq;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public abstract class BaseSynergyEnchant : BaseEnchant
     {
         internal abstract bool SynergyActive(CrossplayerThorium DLCPlayer);

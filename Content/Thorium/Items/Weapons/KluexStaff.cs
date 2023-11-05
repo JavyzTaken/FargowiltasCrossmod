@@ -14,6 +14,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Weapons
     public class KluexStaff : ModItem
     {
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override void SetStaticDefaults()
         {
             Terraria.GameContent.Creative.CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;

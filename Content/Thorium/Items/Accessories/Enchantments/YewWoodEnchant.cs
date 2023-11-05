@@ -45,12 +45,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             ProjectileID.FrostburnArrow,
             ProjectileID.BoneArrow,
             ProjectileID.ShimmerArrow,
-
-            ProjectileID.HolyArrow,
-            ProjectileID.CursedArrow,
-            ProjectileID.IchorArrow,
-            ProjectileID.VenomArrow,
-            ProjectileID.ChlorophyteArrow,
         };
 
         internal static readonly List<int> HMArrows = new()

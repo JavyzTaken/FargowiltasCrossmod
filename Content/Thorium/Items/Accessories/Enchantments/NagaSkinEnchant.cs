@@ -14,6 +14,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         protected override Color nameColor => Color.Teal;
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override void SetStaticDefaults()
         {
             ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new(100);

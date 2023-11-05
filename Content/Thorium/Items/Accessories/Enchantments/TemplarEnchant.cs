@@ -14,12 +14,14 @@ using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 
-namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments // shortest crossmod namespace
+namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class TemplarEnchant : BaseEnchant
     {
-        
+
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         protected override Color nameColor => Color.PaleVioletRed;
 
         public override void SetStaticDefaults()

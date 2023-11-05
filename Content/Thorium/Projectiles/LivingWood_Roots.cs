@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.tileCollide = false;
             //Projectile.minion = true;
             //Projectile.damage = 0;
-            Projectile.timeLeft = 3600;
+            Projectile.timeLeft = 36000;
             Projectile.penetrate = -1;
         }
 
@@ -81,11 +81,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Vector2 ShootOrigin = Projectile.Center + new Vector2(0, -24);
             if (target != null)
             {
-                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, (target.Center - ShootOrigin).ToRotation(), 0.5f);
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, (target.Center - ShootOrigin).ToRotation(), 0.02f);
             }
             else
             {
-                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, 1f, 0.5f);
+                Projectile.rotation = MathHelper.Lerp(Projectile.rotation, MathF.Abs(Projectile.rotation % MathF.Tau) < MathHelper.PiOver2 ? 0f : MathF.PI, 0.02f);
             }
 
             if (target != null && ++Projectile.ai[0] >= 90)
@@ -93,9 +93,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 Projectile.ai[0] = 0;
                 bool wizard = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().LivingWoodEnchItem.type);
                 int projType = wizard ? ProjectileID.BulletHighVelocity : ProjectileID.WoodenArrowFriendly; 
-                int damage = wizard ? 50 : 20;
-                Vector2 ShootVec = Vector2.Normalize(target.Center - ShootOrigin) * (wizard ? 12 : 12); // Note: adjust these
+                int damage = wizard ? 80 : 20;
+                Vector2 ShootVec = Vector2.Normalize(target.Center - ShootOrigin) * (wizard ? 16 : 12); 
 
+                // I couldn't get the math for aiming the arrow correct so it has a tendency to miss in non-force mode.
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), ShootOrigin, ShootVec, projType, damage, 5f, Projectile.owner);
 
                 if (ShootVec.X > 0)
@@ -112,16 +113,17 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             if (Projectile.frame == 0) return false;
 
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
-            Rectangle rect = new(0, 0, 90, 90);
+            Rectangle rect = new(0, 0, 90, 88);
             Vector2 origin = rect.Size() / 2f;
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, rect, drawColor, 0f, origin, 1f, SpriteEffects.None, 0);
 
-            bool force = Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.YewWoodEnchant>());
-            Texture2D gunTexture = force ? TextureAssets.Item[ItemID.SniperRifle].Value : TextureAssets.Item[ItemID.WoodenBow].Value;
-            Rectangle source = gunTexture.Bounds;
+            bool force = Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.LivingWoodEnchant>());
+            Texture2D gunTexture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}").Value;
+            Texture2D bowTexture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.WoodenBow}").Value;
+            Rectangle source = force ? gunTexture.Bounds : bowTexture.Bounds;
             SpriteEffects effect = MathF.Abs(Projectile.rotation) > MathHelper.PiOver2 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-            Main.EntitySpriteDraw(gunTexture, Projectile.Center - Main.screenPosition + new Vector2(0, -24), source, drawColor, Projectile.rotation, source.Size() / 2, 1f, effect);
+            Main.EntitySpriteDraw(force ? gunTexture : bowTexture, Projectile.Center - Main.screenPosition + new Vector2(0, -24), source, drawColor, Projectile.rotation, source.Size() / 2, 1f, effect);
             return false;
         }
     }
@@ -149,7 +151,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             Vector2 position = drawInfo.drawPlayer.Center - Main.screenPosition;
             position = new Vector2((int)position.X, (int)position.Y + 20);
-            Rectangle rect = new(0, frame * 92 + 1, 90, 89); // has pink line if dont do this idk why
+            Rectangle rect = new(0, frame * 92 + 1, 90, 89); 
 
             drawInfo.DrawDataCache.Add(new DrawData(
                 GrowingRoots.Value,

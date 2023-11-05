@@ -23,13 +23,19 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPlayer.EbonEnch = true;
             DLCPlayer.EbonEnchItem = Item;
 
-            EbonEffect(player);
+            EbonEffect(player, DLCPlayer);
         }
 
-        public static void EbonEffect(Player player)
+        public static void EbonEffect(Player player, CrossplayerThorium DLCPlayer)
         {
             var thoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
             thoriumPlayer.darkAura = true;
+
+            if (thoriumPlayer.totalHealingDarkHeart > 40)
+            {
+                Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.EbonEnchItem), player.Center - 50f * Vector2.UnitY, Vector2.Zero, ModContent.ProjectileType<ThoriumMod.Projectiles.Healer.DarkHeartPro>(), 40, 5f, player.whoAmI, 0f, 0f);
+                thoriumPlayer.totalHealingDarkHeart = 0;
+            }
             player.GetDamage(DamageClass.Generic) += 0.05f * thoriumPlayer.healBonus;
         }
     }

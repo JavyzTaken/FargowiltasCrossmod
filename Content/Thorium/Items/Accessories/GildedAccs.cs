@@ -12,6 +12,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
     {
         public override bool Eternity => true;
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
 
         public override void SetStaticDefaults()
@@ -40,6 +42,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
     {
         public override bool Eternity => true;
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
 
         public override void SetStaticDefaults()
@@ -67,6 +71,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
     {
         public override bool Eternity => true;
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
 
         public override void SetStaticDefaults()
@@ -93,6 +99,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
     public class GildedNightVision : SoulsItem
     {
         public override bool Eternity => true;
+
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
 

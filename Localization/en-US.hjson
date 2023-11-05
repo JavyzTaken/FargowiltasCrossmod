@@ -95,6 +95,12 @@ Mods: {
 						'''
 				}
 			}
+
+			ThoriumConfig: {
+				DisplayName: Thorium Config
+				HideDevThorium: Hide WIP Thorium content
+				HideDevThoriumDescription: ""
+			}
 		}
 
 		Items: {
@@ -182,12 +188,16 @@ Mods: {
 
 			GraniteEnchant: {
 				DisplayName: Granite Enchantment
-				Tooltip: Killing enemies creates an explosion. Kind lame, needs a new/ extra effect
+				Tooltip: Killing enemies creates an explosion. Kind lame, needs a new/ extra effect other than synergy.
 			}
 
 			LivingWoodEnchant: {
 				DisplayName: Living Wood Enchantment
-				Tooltip: "[c/ff0000]Broken, awaiting rework"
+				Tooltip:
+					'''
+					Press a key to grow roots from your player. These roots will restrict your movement and leave you vunerable until they finish growing.
+					When grown, they will attack nearby enemies.
+					'''
 			}
 
 			LodeStoneEnchant: {
@@ -338,7 +348,7 @@ Mods: {
 
 			EbonEnchant: {
 				DisplayName: Ebon Enchantment
-				Tooltip: Increases damage by 5% per bonus healing and corrupts some radiant attacks.
+				Tooltip: Increases damage by 5% per bonus healing and corrupts some radiant attacks. Effect of dark heart.
 			}
 
 			SacredEnchant: {
@@ -358,7 +368,11 @@ Mods: {
 
 			DreadEnchant: {
 				DisplayName: Dread Enchant
-				Tooltip: ""
+				Tooltip:
+					'''
+					Summons a powerful green dragon minion that cycles through different attacks.
+					"And that's how I trained my dragon"
+					'''
 			}
 
 			HelheimForce: {
@@ -426,12 +440,43 @@ Mods: {
 
 			BiotechEnchant: {
 				DisplayName: Biotech Enchant
-				Tooltip: ""
+				Tooltip:
+					'''
+					you generate several healing nanomachines over time that orbit you until they locate an injured ally.
+					"And that's how I lost my medical license"
+					'''
 			}
 
 			WhisperingEnchant: {
 				DisplayName: Whispering Enchant
 				Tooltip: ""
+			}
+
+			MendersEssence: {
+				DisplayName: Menders Essence
+				Tooltip:
+					'''
+					"This is only the begining.."
+					Increases radiant damage by 18%.
+					Increases radiant critical strike chance by 5%.
+					Increases bonus healing by 3.
+					'''
+			}
+
+			ArchangelSoul: {
+				DisplayName: Guardian Angel's Soul
+				Tooltip:
+					'''
+					"Turn your head and cough"
+					Increases radiant damage by 30% and crit chance by 15%
+					Increases radiant attack and casting speed by 15%
+					Increases healing speed by 15% and bonus healing by 6
+
+					Increases you maximum life by 50 an enpowers some radiant attacks with a dark aura.
+					Effects of Medical bag and grave goods.
+					Enemies are less likely to target you.
+					Effects of nirvana statuette.
+					'''
 			}
 		}
 

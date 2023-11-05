@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 
 // god this is such a mess
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
@@ -57,6 +58,23 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 }
                 return _head;
             }
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(data.parent);
+            writer.Write(data.child);
+            writer.Write(data.head);
+            writer.Write(data.position);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            int parent = reader.ReadInt32();
+            int child = reader.ReadInt32();
+            int head = reader.ReadInt32();
+            int position = reader.ReadInt32();
+            data = new(head, position, parent, child);
         }
 
         public void CommonAI()
@@ -187,12 +205,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             if (Projectile.type == TailType)
             {
-                Main.NewText("tail spawned");
                 return;
             }
             else if (Projectile.type == HeadType)
             {
-                Main.NewText("head spawned");
                 data = new(Projectile.whoAmI, 0);
                 SpawnSegment(BodyType1);
             }
@@ -207,12 +223,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
                 if (Projectile.type == BodyType1)
                 {
-                    Main.NewText("body1 spawned");
                     SpawnSegment(BodyType2);
                 }
                 else if (Projectile.type == BodyType2)
                 {
-                    Main.NewText("body2 spawned");
                     SpawnSegment(BodyType1);
                 }
             }
@@ -260,6 +274,22 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             data = new(Projectile.whoAmI, 0);
             SpawnSegment(BodyType1);
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            base.SendExtraAI(writer);
+            writer.WriteVector2(targetPos);
+            writer.Write(retreating);
+            writer.Write((byte)currentAttack);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            base.ReceiveExtraAI(reader);
+            targetPos = reader.ReadVector2();
+            retreating = reader.ReadBoolean();
+            currentAttack = (AttackMode)reader.ReadByte();
         }
 
         // ai[0] = attack switch timer
@@ -461,7 +491,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
                             if (Projectile.ai[0] % 10 == 0 && Vector2.Dot(Projectile.velocity, toTarget) > distanceToTarget * Projectile.velocity.Length() * 0.95f)
                             {
-                                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Projectile.velocity) * 12f, ProjectileID.Flames, 25, 0.1f, Projectile.owner);
+                                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Projectile.velocity) * 12f, ProjectileID.Flames, 35, 0.1f, Projectile.owner);
                             }
                             break;
                         case 2: // continue movement without fire
@@ -616,8 +646,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             if (Head.currentAttack == DragonMinionHead.AttackMode.scaleCircleAttack && (Head.Projectile.ai[0] + 2 * data.position) % 10 == 0 && Projectile.Distance(Head.targetPos) < 16f * 8f * 1.2f)
             {
-                Projectile.ai[1] = 0f;
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Head.targetPos - Projectile.Center) * 8f, ModContent.ProjectileType<DragonScale>(), 25, 0.5f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Head.targetPos - Projectile.Center) * 8f, ModContent.ProjectileType<DragonScale>(), 12, 0.5f, Projectile.owner);
             }
         }
     }
