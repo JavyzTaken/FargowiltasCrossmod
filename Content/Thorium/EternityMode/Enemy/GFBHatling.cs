@@ -13,7 +13,8 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Enemy
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GFBHatling : EModeNPCBehaviour
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<StormHatchling>());
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
+        //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<StormHatchling>());
 
         const int OrbAttSpeed = 100;
         const int WaitTime = 60;

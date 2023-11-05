@@ -21,7 +21,8 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GrandThunderBirb : EModeNPCBehaviour
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
+        //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
 
         internal enum AIMode
         {

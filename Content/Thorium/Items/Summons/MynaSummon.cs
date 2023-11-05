@@ -14,6 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Summons
     public class MynaSummon : ModItem
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 
         public override void SetStaticDefaults()
         {

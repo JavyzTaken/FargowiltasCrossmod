@@ -14,9 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Enemy
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class Myna : EModeNPCBehaviour
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
-            ModLoader.GetMod("ThoriumMod").Find<ModNPC>("Myna").Type
-        );
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
 
         public bool DroppedSummon;
 
