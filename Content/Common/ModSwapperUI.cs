@@ -36,8 +36,8 @@ namespace FargowiltasCrossmod.Content.Common
         public override void UpdateUI(GameTime gameTime)
         {
             _lastUpdateUiGameTime = gameTime;
-            // Update this when we add more shop patches
-            if (Main.LocalPlayer.talkNPC != -1 && !Main.playerInventory && Main.npc[Main.LocalPlayer.talkNPC].ModNPC.Type == ModContent.NPCType<Fargowiltas.NPCs.Deviantt>())
+
+            if (Main.LocalPlayer.talkNPC != -1 && !Main.playerInventory && Main.npc[Main.LocalPlayer.talkNPC].ModNPC != null && Main.npc[Main.LocalPlayer.talkNPC].ModNPC.Type == ModContent.NPCType<Fargowiltas.NPCs.Deviantt>())
             {
                 if (SwapperInterface?.CurrentState != null)
                 {
