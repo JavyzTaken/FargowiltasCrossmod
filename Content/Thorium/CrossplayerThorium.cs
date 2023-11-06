@@ -77,7 +77,9 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item BiotechEnchItem;
         public bool WhisperingEnch;
         public Item WhisperingEnchItem;
-
+        public bool TideHunterEnch;
+        public Item TideHunterEnchItem;
+        
         public bool HelheimForce;
         public bool SvartalfheimForce;
 
@@ -87,7 +89,10 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int TemplarCD = 360;
         internal int ValadiumCD = 240;
         internal int AstroLaserCD = 60;
-
+        
+        public bool WasInDashState=false; //for tide hunter
+        //public int PreviousSpecialDashCD=0; //decided against making tide hunter work with special dashes, un-comment it if that was abad idea
+        
         internal int NoviceClericCrosses = 0;
         internal int NoviceClericTimer = 0;
         public Vector2 crossOrbitalRotation = Vector2.UnitY;
@@ -163,7 +168,9 @@ namespace FargowiltasCrossmod.Content.Thorium
             BiotechEnchItem = null;
             WhisperingEnch = false;
             WhisperingEnchItem = null;
-
+            TideHunterEnch = false;
+            TideHunterEnchItem = null;
+            
             HelheimForce = false;
             SvartalfheimForce = false;
 
