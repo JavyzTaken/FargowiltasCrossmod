@@ -15,8 +15,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         protected override Color nameColor => Color.Red;
 
-        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             var DLCPlayer = player.ThoriumDLC();
@@ -39,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 proj.timeLeft--;
                 bloodProjs++;
 
-                for (int j = 0; j < 3; j++)
+                for (int j = 0; j < 2; j++)
                 {
                     Dust dust = Dust.NewDustDirect(proj.position, proj.width, proj.height, DustID.Blood);
                     dust.velocity = dust.position.DirectionTo(player.Center) * 8;

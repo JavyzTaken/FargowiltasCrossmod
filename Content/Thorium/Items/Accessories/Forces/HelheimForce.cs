@@ -18,7 +18,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
 
             DLCPlayer.SpiritTrapperEnch = true;
             DLCPlayer.SpiritTrapperEnchItem = Item;
-            SpiritTrapperEnchant.SpiritTrapperEffect(player, Item);
 
             DLCPlayer.DragonEnch = true;
             DLCPlayer.DragonEnchItem = Item;

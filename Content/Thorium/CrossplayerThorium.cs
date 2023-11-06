@@ -194,27 +194,11 @@ namespace FargowiltasCrossmod.Content.Thorium
                 SpawnAstroLaser(target);
             }
 
-            if (damageDone >= target.life) // kills
+            if (hit.Damage >= target.life) // kills
             {
                 if (GraniteEnch)
                 {
                     GraniteEffect(target.Center, proj);
-                }
-
-                if (DemonBloodEnch)
-                {
-                    SpawnDemonBlood(target.Center);
-                }
-            }
-
-            // this (should) be true if the hit moved the boss below a 10% hp increment
-            // works by checking the current life's distance to the next increment vs the life - damage distance to next incement. 
-            // may be unreliable but i think its cool.
-            if (target.boss && (target.life % (target.lifeMax / 10)) < ((target.life - hit.Damage) % (target.lifeMax / 10)))
-            {
-                if (DemonBloodEnch && Main.rand.NextBool(5))
-                {
-                    SpawnDemonBlood(target.Center);
                 }
             }
 
@@ -251,6 +235,24 @@ namespace FargowiltasCrossmod.Content.Thorium
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SpawnFlesh(target);
+
+            if (hit.Damage >= target.life) // kills
+            {
+                if (DemonBloodEnch && Main.rand.NextBool(4))
+                {
+                    SpawnDemonBlood(target.Center);
+                }
+            }
+
+            // this (should) be true if the hit moved the boss below a 10% hp increment
+            // works by checking the current life's distance to the next increment vs the life - damage distance to next incement. 
+            if (target.boss && (target.life % (target.lifeMax / 10)) < ((target.life - hit.Damage) % (target.lifeMax / 10)))
+            {
+                if (DemonBloodEnch)
+                {
+                    SpawnDemonBlood(target.Center);
+                }
+            }
         }
 
         public override void ProcessTriggers(TriggersSet triggersSet)

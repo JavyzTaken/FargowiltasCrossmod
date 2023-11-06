@@ -539,6 +539,7 @@ Mods: {
 			WhisperingVision.DisplayName: Whispering Vision
 			WhisperingBeam.DisplayName: Whispering Beam
 			WhisperingLeech.DisplayName: Whispering Leech
+			HungryGhost.DisplayName: Hungry Ghost
 		}
 
 		Keybinds: {

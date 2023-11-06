@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SpiritTrapperEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.Blue;
+        protected override Color nameColor => Color.Red;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 
@@ -22,16 +22,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.SpiritTrapperEnch = true;
             DLCPlayer.SpiritTrapperEnchItem = Item;
-
-            SpiritTrapperEffect(player, Item);
-        }
-
-        public static void SpiritTrapperEffect(Player player, Item item)
-        {
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.AngryGhost>()] < 1)
-            {
-                Projectile.NewProjectile(player.GetSource_Accessory(item), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.AngryGhost>(), 0, 0, player.whoAmI);
-            }
         }
     }
 }
