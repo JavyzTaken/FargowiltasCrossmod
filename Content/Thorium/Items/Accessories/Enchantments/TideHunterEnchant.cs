@@ -34,7 +34,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             {
                 Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity, ModContent.ProjectileType<TideHunter_Wave>(), 100, 50);
             }
-            DLCPlayer.WasInDashState = IsDashing;
 
             /*
             int SpecialDashCD = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.AccessoryEffectsPlayer>().SpecialDashCD;

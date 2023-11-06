@@ -11,6 +11,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
@@ -79,7 +80,9 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item WhisperingEnchItem;
         public bool TideHunterEnch;
         public Item TideHunterEnchItem;
-        
+        public bool TideTurnerEnch;
+        public Item TideTurnerEnchItem;
+
         public bool HelheimForce;
         public bool SvartalfheimForce;
 
@@ -90,7 +93,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int ValadiumCD = 240;
         internal int AstroLaserCD = 60;
         
-        public bool WasInDashState=false; //for tide hunter
+        public bool WasInDashState = false; //for tide hunter
         //public int PreviousSpecialDashCD=0; //decided against making tide hunter work with special dashes, un-comment it if that was abad idea
         
         internal int NoviceClericCrosses = 0;
@@ -170,6 +173,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             WhisperingEnchItem = null;
             TideHunterEnch = false;
             TideHunterEnchItem = null;
+            TideTurnerEnch = false;
+            TideTurnerEnchItem = null;
             
             HelheimForce = false;
             SvartalfheimForce = false;
@@ -183,11 +188,6 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (TemplarEnch && TemplarCD == 0)
-            {
-                TemplarCD = 360;
-                TemplarEnchant.summonHolyFire(Player);
-            }
             if (FungusEnch)
             {
                 if (target.TryGetGlobalNPC(out FungusEnemy funguy) && !funguy.Infected && !target.boss && Main.rand.NextBool(10))
@@ -262,6 +262,28 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
         }
 
+        public bool soulEssenceHit;
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (SpiritTrapperEnch && !soulEssenceHit)
+            {
+                soulEssenceHit = true;
+                var thoriumPlayer = Player.Thorium();
+                int charge = Player.FargoSouls().ForceEffect(SpiritTrapperEnchItem.type) ? 2 : 1;
+                Player.AddBuff(ModContent.BuffType<ThoriumMod.Buffs.Healer.SoulEssence>(), 1800, true, false);
+                CombatText.NewText(target.Hitbox, new Color(100, 255, 200), charge, false, true);
+                thoriumPlayer.soulEssence += charge;
+            }
+        }
+
+        public override void UpdateLifeRegen()
+        {
+            if (DepthBubble > 0)
+            {
+                Player.lifeRegen += 4;
+            }
+        }
+
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             if (ThoriumKeybinds.LivingWoodBind.JustPressed)
@@ -295,6 +317,11 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
         }
 
+        public override void OnHitAnything(float x, float y, Entity victim)
+        {
+            base.OnHitAnything(x, y, victim);
+        }
+
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
             if (Player.HasBuff<LivingWood_Root_B>())
@@ -302,6 +329,8 @@ namespace FargowiltasCrossmod.Content.Thorium
                 Player.ClearBuff(ModContent.BuffType<LivingWood_Root_B>());
                 LivingWoodEnchant.KillLivingWoodRoots(Player.whoAmI);
             }
+
+            DepthDiverHit();
         }
 
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
@@ -311,6 +340,8 @@ namespace FargowiltasCrossmod.Content.Thorium
                 Player.ClearBuff(ModContent.BuffType<LivingWood_Root_B>());
                 LivingWoodEnchant.KillLivingWoodRoots(Player.whoAmI);
             }
+
+            DepthDiverHit();
         }
 
         public override void PreUpdate()
@@ -346,7 +377,9 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void PostUpdateEquips()
         {
+            WasInDashState = Player.FargoSouls().IsInADashState;
             NoviceClericEffect();
+            DepthDiverEffect();
             EbonEnchant.EbonEffect(Player, this);
         }
 
@@ -357,6 +390,10 @@ namespace FargowiltasCrossmod.Content.Thorium
                 BronzeEffect(item, position, damage);
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
+        }
+
+        public override void PostUpdate()
+        {
         }
 
         public bool SynergyEffect(int enchType)

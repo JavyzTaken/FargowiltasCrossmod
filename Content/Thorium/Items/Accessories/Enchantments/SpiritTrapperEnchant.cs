@@ -25,3 +25,16 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         }
     }
 }
+
+namespace FargowiltasCrossmod.Content.Thorium.Items
+{
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class SpiritTrapperGlobalItem : GlobalItem
+    {
+        public override void UseAnimation(Item item, Player player)
+        {
+            var DLCPlayer = player.ThoriumDLC();
+            DLCPlayer.soulEssenceHit = false;
+        }
+    }
+}

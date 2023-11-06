@@ -478,6 +478,16 @@ Mods: {
 					Effects of nirvana statuette.
 					'''
 			}
+
+			TideHunterEnchant: {
+				DisplayName: Tide Hunter Enchant
+				Tooltip: ""
+			}
+
+			TideTurnerEnchant: {
+				Tooltip: ""
+				DisplayName: Tide Turner Enchant
+			}
 		}
 
 		NPCs: {
@@ -540,6 +550,8 @@ Mods: {
 			WhisperingBeam.DisplayName: Whispering Beam
 			WhisperingLeech.DisplayName: Whispering Leech
 			HungryGhost.DisplayName: Hungry Ghost
+			TideHunter_Wave.DisplayName: Tide Hunter_ Wave
+			TideTurnerWave.DisplayName: Tide Turner Wave
 		}
 
 		Keybinds: {

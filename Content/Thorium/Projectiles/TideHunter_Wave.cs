@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             Projectile.width = 10;
             Projectile.height = 40;
-            Projectile.aiStyle = 0;
+            Projectile.aiStyle = -1;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = 5;
@@ -33,11 +33,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.tileCollide = true;
             Projectile.alpha = 0;
             Projectile.netImportant = true;
-            Projectile.usesLocalNPCImmunity = true;
         }
         public override void AI()
         {
-            Projectile.position += Projectile.velocity;
+            Projectile.direction = MathF.Sign(Projectile.velocity.X);
             Projectile.velocity.X = Math.Max(Math.Abs(Projectile.velocity.X)-0.5f, 7) * Math.Sign(Projectile.velocity.X);
         }
     }
