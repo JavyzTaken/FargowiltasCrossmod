@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var thoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+            var thoriumPlayer = player.Thorium();
             player.GetDamage<ThoriumMod.HealerDamage>() += 0.30f;
             player.GetCritChance<ThoriumMod.HealerDamage>() += 0.15f;
             player.GetAttackSpeed<ThoriumMod.HealerDamage>() += 0.15f;
@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls
             thoriumPlayer.headMirror.Set(Item);
             if (Main.myPlayer != player.whoAmI && Main.netMode != NetmodeID.Server)
             {
-                Main.LocalPlayer.GetModPlayer<ThoriumMod.ThoriumPlayer>().needsOutOfCombatSync = true;
+                Main.LocalPlayer.Thorium().needsOutOfCombatSync = true;
             }
 
             player.aggro -= 400;

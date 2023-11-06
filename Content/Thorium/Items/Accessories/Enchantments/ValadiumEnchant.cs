@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             modPlayer.ValadiumEnch = true;
             modPlayer.ValadiumEnchItem = Item;
 
@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public static void SummonChunk(Player player)
         {
             //Main.NewText("chunk spawned");
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             float oneOnSqrt2 = 0.707106781187f;
             // doing this gives an elipse that surrounds the edge of the screen.
             Vector2 spawnPos = Main.rand.NextVector2CircularEdge(oneOnSqrt2 * Main.screenWidth, oneOnSqrt2 * Main.screenHeight);

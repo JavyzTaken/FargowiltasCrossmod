@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
@@ -55,13 +56,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             Player player = Main.player[Projectile.owner];
             var (Sin, Cos) = MathF.SinCos(Projectile.ai[0]);
-            float orbitRadius = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.LodeStoneEnchant>()) ? 100 : 80;
+            float orbitRadius = player.FargoSouls().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.LodeStoneEnchant>()) ? 100 : 80;
             Projectile.Center = player.Center + new Vector2(Cos, Sin) * orbitRadius;
             Projectile.ai[0] += MathF.PI / 360;
             Projectile.ai[0] %= MathF.Tau;
             Projectile.velocity = MathF.PI * orbitRadius / 180 * new Vector2(Sin, Cos);
 
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             if (player.dead || !player.active || !modPlayer.LodeStoneEnch || !modPlayer.LodeStonePlatforms.Contains(Projectile.whoAmI))
             {
                 Projectile.Kill();
@@ -89,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             Player player = Main.player[Projectile.owner];
-            Rectangle rect = new(0, player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().LodeStoneEnchItem.type) ? 32 : 0, 60, 32);
+            Rectangle rect = new(0, player.FargoSouls().ForceEffect(player.ThoriumDLC().LodeStoneEnchItem.type) ? 32 : 0, 60, 32);
             Vector2 origin = rect.Size() / 2f;
             Color drawColor = Projectile.GetAlpha(lightColor);                          // removes gap
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition - Vector2.UnitY * 2, rect, drawColor, 0f, origin, 1f, SpriteEffects.None, 0);
@@ -121,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             base.OnSpawn(projectile, source);
             if (source is EntitySource_ItemUse itemSource && itemSource.Entity is Player player && player.whoAmI == Main.myPlayer)
             {
-                var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+                var modPlayer = player.ThoriumDLC();
                 if (!modPlayer.LodeStoneEnch) return;
 
                 modPlayer.LodeStonePlatforms.Sort(new Comparison<int>((a, b) => Main.projectile[a].position.Y < Main.projectile[b].position.Y ? -1 : 1));

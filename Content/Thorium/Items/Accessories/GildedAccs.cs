@@ -62,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CrossplayerThorium>().GildedMonicle = true;
+            player.ThoriumDLC().GildedMonicle = true;
         }
     }
 
@@ -91,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CrossplayerThorium>().GildedBinoculars = true;
+            player.ThoriumDLC().GildedBinoculars = true;
         }
     }
 
@@ -120,7 +120,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             player.AddBuff(BuffID.Shine, 2);
             DLCPlayer.GildedBinoculars = true;
             DLCPlayer.GildedMonicle = true;

@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             Player player = Main.player[Projectile.owner];
 
-            if (player.dead || !player.GetModPlayer<CrossplayerThorium>().DragonEnch)
+            if (player.dead || !player.ThoriumDLC().DragonEnch)
             {
                 return;
             }

@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using FargowiltasCrossmod.Content.Thorium.Buffs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -14,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.SteelEnch = true;
             DLCPlayer.SteelEnchItem = Item;
         }
@@ -39,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (SteelEnchItem == null || Main.myPlayer != Player.whoAmI || Player.dead || !Player.active) return;
             int teir = DuraSteelEnch ? 3 : (DarkSteelEnch ? 2 : (SteelEnch ? 1 : 0));
 
-            if (Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(SteelEnchItem.type)) teir++;
+            if (Player.FargoSouls().ForceEffect(SteelEnchItem.type)) teir++;
 
             if (teir == 0) return;
 

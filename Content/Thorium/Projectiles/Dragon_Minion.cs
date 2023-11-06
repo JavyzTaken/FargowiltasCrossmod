@@ -80,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public void CommonAI()
         {
             Player player = Main.player[Projectile.owner];
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             if ((int)Main.timeForVisualEffects % 120 == 0)
             {
                 Projectile.netUpdate = true;

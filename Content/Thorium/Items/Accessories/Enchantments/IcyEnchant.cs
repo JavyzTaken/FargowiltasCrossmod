@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.IcyEnch = true;
             DLCPlayer.IcyEnchItem = Item;
         }
@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void PostAI(Projectile projectile)
         {
-            if (projectile.active && projectile.damage > 0 && projectile.velocity.LengthSquared() > 1f && (Main.player[projectile.owner]).GetModPlayer<CrossplayerThorium>().IcyEnch)
+            if (projectile.active && projectile.damage > 0 && projectile.velocity.LengthSquared() > 1f && (Main.player[projectile.owner]).ThoriumDLC().IcyEnch)
             {
                 if (++icySnowflackTimer > SpawnInterval)
                 {
@@ -76,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (projectile.active && projectile.damage > 0 && (Main.player[projectile.owner]).GetModPlayer<CrossplayerThorium>().IcyEnch)
+            if (projectile.active && projectile.damage > 0 && (Main.player[projectile.owner]).ThoriumDLC().IcyEnch)
             {
                 modifiers.FinalDamage *= 0.8f;
             }

@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.DreadEnch = true;
             DLCPlayer.DreadEnchItem = Item;
 

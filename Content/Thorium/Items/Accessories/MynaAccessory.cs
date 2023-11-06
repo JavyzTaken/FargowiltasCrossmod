@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.MynaAccessory = true;
         }
     }

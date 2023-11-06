@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -16,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPLayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPLayer = player.ThoriumDLC();
             DLCPLayer.YewWoodEnch = true;
             DLCPLayer.YewWoodEnchItem = Item;
         }
@@ -94,7 +95,7 @@ namespace FargowiltasCrossmod.Content.Thorium
                 damage += arrow.damage - 5;
             }
 
-            if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(YewWoodEnchItem.type))
+            if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Player.FargoSouls().ForceEffect(YewWoodEnchItem.type))
             {
                 type = Main.rand.NextFromCollection(Main.hardMode ? Items.Accessories.Enchantments.YewWoodEnchant.HMBullets : Items.Accessories.Enchantments.YewWoodEnchant.PreHMBullets);
                 Item bullet = new(type);

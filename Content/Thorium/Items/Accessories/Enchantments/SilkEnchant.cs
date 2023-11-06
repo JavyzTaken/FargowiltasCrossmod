@@ -2,9 +2,7 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls.Core.ModPlayers;
-using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Thorium.NPCs;
-using FargowiltasCrossmod.Content.Thorium.Projectiles;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using System.Collections.Generic;
 
@@ -17,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.SilkEnch = true;
         }
 
@@ -25,8 +23,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         {
             base.SafeModifyTooltips(tooltips);
 
-            FargoSoulsPlayer soulsPlayer = Main.LocalPlayer.GetModPlayer<FargoSoulsPlayer>();
-            CrossplayerThorium DLCPlayer = Main.LocalPlayer.GetModPlayer<CrossplayerThorium>();
+            FargoSoulsPlayer soulsPlayer = Main.LocalPlayer.FargoSouls();
+            CrossplayerThorium DLCPlayer = Main.LocalPlayer.ThoriumDLC();
 
             foreach (BaseEnchant enchant in soulsPlayer.EquippedEnchants)
             {

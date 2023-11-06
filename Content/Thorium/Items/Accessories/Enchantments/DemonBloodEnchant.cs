@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -18,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.FleshEnch = true;
             DLCPlayer.DemonBloodEnch = true;
             DLCPlayer.FleshEnchItem = Item;
@@ -37,6 +38,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 if (proj.type != bloodType || !proj.active || proj.Center.DistanceSQ(player.Center) > 25600f) continue;
                 proj.timeLeft--;
                 bloodProjs++;
+
+                for (int j = 0; j < 3; j++)
+                {
+                    Dust dust = Dust.NewDustDirect(proj.position, proj.width, proj.height, DustID.Blood);
+                    dust.velocity = dust.position.DirectionTo(player.Center) * 8;
+                }
             }
 
             if (bloodProjs == 0) return;

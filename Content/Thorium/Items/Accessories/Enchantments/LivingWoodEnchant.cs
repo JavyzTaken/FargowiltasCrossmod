@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             modPlayer.LivingWoodEnch = true;
             modPlayer.LivingWoodEnchItem = Item;
         }

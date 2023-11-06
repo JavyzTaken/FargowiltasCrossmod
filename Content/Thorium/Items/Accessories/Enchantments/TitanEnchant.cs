@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CrossplayerThorium>().TitanEnch = true;
+            player.ThoriumDLC().TitanEnch = true;
             player.GetArmorPenetration(DamageClass.Generic) += (player.statDefense * EffectMult);
             player.statDefense *= 0.8f;
         }

@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             modPlayer.TemplarEnch = true;
             modPlayer.TemplarEnchItem = Item;
 
@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public static void summonHolyFire(Player player)
         {
-            var modPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var modPlayer = player.ThoriumDLC();
             Projectile.NewProjectile(player.GetSource_Accessory(modPlayer.TemplarEnchItem),
                                      Main.MouseWorld.X,
                                      player.Center.Y - 500,

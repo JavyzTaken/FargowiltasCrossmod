@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 			float num5;
 			num5 = 0.69f;
 			num4 = 5f;
-			if (!Main.player[Projectile.owner].dead && !Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>().ConduitEnch)
+			if (!Main.player[Projectile.owner].dead && !Main.player[Projectile.owner].ThoriumDLC().ConduitEnch)
 			{
 				Projectile.timeLeft = 2;
 			}

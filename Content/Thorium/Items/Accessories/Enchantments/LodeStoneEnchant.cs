@@ -6,6 +6,7 @@ using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
+using FargowiltasSouls;
 
 using Terraria.DataStructures;
 using System;
@@ -28,11 +29,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         {
             if (player.whoAmI != Main.myPlayer) return;
 
-            var modplayer = player.GetModPlayer<CrossplayerThorium>();
+            var modplayer = player.ThoriumDLC();
             modplayer.LodeStoneEnch = true;
             modplayer.LodeStoneEnchItem = Item;
 
-            int maxPlatforms = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Item.type) ? 3 : 2;
+            int maxPlatforms = player.FargoSouls().ForceEffect(Item.type) ? 3 : 2;
             int currentPlatforms = player.ownedProjectileCounts[ModContent.ProjectileType<LodeStonePlatform>()];
             if (currentPlatforms != maxPlatforms)
             {

@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -12,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.BiotechEnch = true;
             DLCPlayer.BiotechEnchItem = Item;
 
@@ -25,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             {
                 DLCPlayer.BiotechSpawnTimer = 0;
 
-                int maxMachines = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<BiotechEnchant>()) ? 10 : 5;
+                int maxMachines = player.FargoSouls().ForceEffect(ModContent.ItemType<BiotechEnchant>()) ? 10 : 5;
                 int nanomachineType = ModContent.ProjectileType<Projectiles.BiotechNanomachine>();
 
                 if (player.ownedProjectileCounts[nanomachineType] < maxMachines)

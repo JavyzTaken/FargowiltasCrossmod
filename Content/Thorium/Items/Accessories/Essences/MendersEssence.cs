@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Essences
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var thoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+            var thoriumPlayer = player.Thorium();
             player.GetDamage<ThoriumMod.HealerDamage>() += 0.18f;
             player.GetCritChance<ThoriumMod.HealerDamage>() += 0.05f;
             thoriumPlayer.healBonus += 3;

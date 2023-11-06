@@ -106,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (!player.active || player.dead || !player.GetModPlayer<CrossplayerThorium>().WhisperingEnch)
+            if (!player.active || player.dead || !player.ThoriumDLC().WhisperingEnch)
             {
                 return;
             }

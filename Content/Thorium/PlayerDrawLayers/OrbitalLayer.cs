@@ -43,14 +43,14 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 			{
 				return false;
 			}
-			var DLCPlayer = drawPlayer.GetModPlayer<CrossplayerThorium>();
+			var DLCPlayer = drawPlayer.ThoriumDLC();
 			return DLCPlayer.NoviceClericCrosses > 0;
 		}
 
         protected override void Draw(ref PlayerDrawSet drawInfo)
 		{
 			Player drawPlayer = drawInfo.drawPlayer;
-			var DLCPlayer = drawPlayer.GetModPlayer<CrossplayerThorium>();
+			var DLCPlayer = drawPlayer.ThoriumDLC();
 
 			if (DLCPlayer.NoviceClericCrosses > 0 && (DLCPlayer.NoviceClericEnch || DLCPlayer.EbonEnch))
 			{

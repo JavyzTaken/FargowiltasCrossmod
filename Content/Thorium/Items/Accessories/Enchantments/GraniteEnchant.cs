@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -28,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.GraniteEnch = true;
             DLCPlayer.GraniteEnchItem = Item;
         }
@@ -50,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void GraniteEffect(Vector2 pos, Projectile proj)
         {
-            if (SynergyEffect(GraniteEnchItem.type) && !Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(GraniteEnchItem.type)) return;
+            if (SynergyEffect(GraniteEnchItem.type) && !Player.FargoSouls().ForceEffect(GraniteEnchItem.type)) return;
 
             if (proj.type != ModContent.ProjectileType<GraniteExplosion>() || !Main.rand.NextBool(3))
             {

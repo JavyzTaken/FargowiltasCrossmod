@@ -23,7 +23,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.NagaSkinEnch = true;
 
             NagaSkinEffect(player);
@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public static void NagaSkinEffect(Player player)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
 
             for (int l = 0; l < DLCPlayer.nagaSkinLegs.Length; l++)
             {

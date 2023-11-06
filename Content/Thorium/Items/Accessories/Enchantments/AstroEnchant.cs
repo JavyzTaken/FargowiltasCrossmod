@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using FargowiltasCrossmod.Content.Thorium;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -28,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             {
                 DLCPlayer.AstroEnch = true;
                 DLCPlayer.AstroEnchItem = Item;
-                player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().StabilizedGravity = true;
+                player.FargoSouls().StabilizedGravity = true;
                 if (DLCPlayer.AstroLaserCD > 0) DLCPlayer.AstroLaserCD--;
             }
         }
@@ -51,7 +52,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public void SpawnAstroLaser(NPC target)
         {
             int Damage = 100;
-            if (Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(AstroEnchItem.type)) Damage += 50;
+            if (Player.FargoSouls().ForceEffect(AstroEnchItem.type)) Damage += 50;
             if (Player.position.Y < Main.worldSurface * 0.35 * 16) Damage += 50; // in space
             Vector2 pos = new(target.Center.X, MathHelper.Max(Player.Center.Y - Main.screenHeight, 10f));
 

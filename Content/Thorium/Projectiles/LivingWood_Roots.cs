@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using ReLogic.Content;
 using Terraria.GameContent;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
@@ -35,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 return;
             }
 
-            if (!player.GetModPlayer<CrossplayerThorium>().LivingWoodEnch)
+            if (!player.ThoriumDLC().LivingWoodEnch)
                 Projectile.Kill();
 
             Projectile.frame = 1;
@@ -91,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             if (target != null && ++Projectile.ai[0] >= 90)
             {
                 Projectile.ai[0] = 0;
-                bool wizard = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(player.GetModPlayer<CrossplayerThorium>().LivingWoodEnchItem.type);
+                bool wizard = player.FargoSouls().ForceEffect(player.ThoriumDLC().LivingWoodEnchItem.type);
                 int projType = wizard ? ProjectileID.BulletHighVelocity : ProjectileID.WoodenArrowFriendly; 
                 int damage = wizard ? 80 : 20;
                 Vector2 ShootVec = Vector2.Normalize(target.Center - ShootOrigin) * (wizard ? 16 : 12); 
@@ -118,7 +119,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, rect, drawColor, 0f, origin, 1f, SpriteEffects.None, 0);
 
-            bool force = Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.LivingWoodEnchant>());
+            bool force = Main.player[Projectile.owner].FargoSouls().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.LivingWoodEnchant>());
             Texture2D gunTexture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.SniperRifle}").Value;
             Texture2D bowTexture = ModContent.Request<Texture2D>($"Terraria/Images/Item_{ItemID.WoodenBow}").Value;
             Rectangle source = force ? gunTexture.Bounds : bowTexture.Bounds;

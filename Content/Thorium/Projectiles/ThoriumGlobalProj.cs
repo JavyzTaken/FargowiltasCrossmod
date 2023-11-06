@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 Player player = Main.player[Main.myPlayer];
-                if (player.GetModPlayer<CrossplayerThorium>().GildedBinoculars)
+                if (player.ThoriumDLC().GildedBinoculars)
                 {
                     Lighting.AddLight(projectile.Center, new Vector3(0.6f, 0.6f, 0.6f));
                 }
@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             if (projectile.hostile)
             {
                 var player = Main.player[Main.myPlayer];
-                if (player.GetModPlayer<CrossplayerThorium>().MynaAccessory && projectile.Center.Distance(player.Center) <= 192f)
+                if (player.ThoriumDLC().MynaAccessory && projectile.Center.Distance(player.Center) <= 192f)
                 {
                     Vector2 a = player.Center - projectile.Center;
                     float angle = projectile.velocity.ToRotation() - a.ToRotation();

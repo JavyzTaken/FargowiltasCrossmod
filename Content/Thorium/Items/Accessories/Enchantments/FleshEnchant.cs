@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.FleshEnch = true;
             DLCPlayer.FleshEnchItem = Item;
         }
@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void SpawnFlesh(NPC target)
         {
-            if (FleshEnch && Main.rand.NextBool(20))
+            if (FleshEnch && Main.rand.NextBool(15))
             {
                 Item.NewItem(Player.GetSource_Accessory(FleshEnchItem), target.Hitbox, ModContent.ItemType<ThoriumMod.Items.Flesh.GreatFlesh>(), 1, false, 0, false, false);
             }

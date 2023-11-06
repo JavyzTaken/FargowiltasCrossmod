@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
 		public override void UpdateAccessory(Player player, bool hideVisuals) 
 		{
-			var DLCPLayer = player.GetModPlayer<CrossplayerThorium>();
+			var DLCPLayer = player.ThoriumDLC();
 			DLCPLayer.WhisperingEnch = true;
 			DLCPLayer.WhisperingEnchItem = Item;
 

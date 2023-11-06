@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             if (Projectile.ai[0] == -1)
             {
-                var thoriumOwner = owner.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+                var thoriumOwner = owner.Thorium();
                 if (thoriumOwner.pocketTarget != -1)
                 {
                     if (Main.player[thoriumOwner.pocketTarget].statLife < Main.player[thoriumOwner.pocketTarget].statLifeMax)

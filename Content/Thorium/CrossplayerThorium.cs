@@ -234,7 +234,7 @@ namespace FargowiltasCrossmod.Content.Thorium
                         int damage = synergy ? 24 : WarlockEnch ? 16 : 0;
                         float kb = WarlockEnch ? 1f : 0f;
 
-                        //var soulsPlayer = Player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>();
+                        //var soulsPlayer = Player.FargoSouls();
                         //if ((WarlockEnch && soulsPlayer.ForceEffect(WarlockEnchItem.type)) || (SacredEnch && soulsPlayer.ForceEffect(SacredEnchItem.type)))
                         //{
                         //    damage = 24;
@@ -322,7 +322,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void OnEnterWorld()
         {
-            bronzeSynergyCD = 0;
+
         }
 
         public override void ModifyManaCost(Item item, ref float reduce, ref float mult)

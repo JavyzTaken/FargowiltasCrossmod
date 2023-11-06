@@ -6,6 +6,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -16,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modplayer = player.GetModPlayer<CrossplayerThorium>();
+            var modplayer = player.ThoriumDLC();
             modplayer.DragonEnch = true;
             modplayer.DragonEnchItem = Item;
 
@@ -25,14 +26,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public static void DragonEffect(Player player)
         {
-            int numHeads = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<DragonEnchant>()) ? 2 : 1;
+            int numHeads = player.FargoSouls().ForceEffect(ModContent.ItemType<DragonEnchant>()) ? 2 : 1;
             int projType = ModContent.ProjectileType<DragonHead>();
 
             if (player.ownedProjectileCounts[projType] != numHeads)
             {
                 player.KillOwnedProjectilesOfType(projType);
 
-                var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+                var DLCPlayer = player.ThoriumDLC();
                 if (numHeads == 1)
                 {
                     Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 0);

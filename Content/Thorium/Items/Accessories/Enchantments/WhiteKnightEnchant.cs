@@ -7,6 +7,7 @@ using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Terraria.ID;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -17,14 +18,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CrossplayerThorium>().WhiteKnightEnch = true;
+            player.ThoriumDLC().WhiteKnightEnch = true;
 
             WhiteKnightEffect(player);
         }
 
         public static void WhiteKnightEffect(Player player)
         {
-            float boost = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(ModContent.ItemType<WhiteKnightEnchant>()) ? 0.1f : 0.05f;
+            float boost = player.FargoSouls().ForceEffect(ModContent.ItemType<WhiteKnightEnchant>()) ? 0.1f : 0.05f;
             player.GetDamage(DamageClass.Generic) += boost * player.townNPCs;
 
             if (Main.netMode != NetmodeID.SinglePlayer)

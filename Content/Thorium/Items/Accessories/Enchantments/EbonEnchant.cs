@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.EbonEnch = true;
             DLCPlayer.EbonEnchItem = Item;
         }
@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         {
             if (!DLCPlayer.EbonEnch) return;
 
-            var thoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+            var thoriumPlayer = player.Thorium();
             thoriumPlayer.darkAura = true;
 
             if (thoriumPlayer.totalHealingDarkHeart > 40)

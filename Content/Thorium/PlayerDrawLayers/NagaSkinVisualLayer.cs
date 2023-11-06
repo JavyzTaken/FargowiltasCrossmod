@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
         {
             Player player = drawInfo.drawPlayer;
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
 
             return !player.dead && DLCPlayer.NagaSkinEnch;
         }
@@ -22,7 +22,7 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             Player player = drawInfo.drawPlayer;
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
 
             Texture2D texture = ModContent.Request<Texture2D>("Terraria/Images/Chains_0").Value;
             Vector2 origin = new(texture.Width / 2, 0);

@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using static FargowiltasCrossmod.Content.Thorium.Projectiles.ValaChunkCollisions;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
@@ -62,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public override void OnSpawn(IEntitySource source)
         {
             if (Projectile.ai[0] == 0f) return;
-            var DLCPlayer = Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = Main.player[Projectile.owner].ThoriumDLC();
             DLCPlayer.ActiveValaChunks.Add(Projectile.whoAmI);
             Projectile.ai[1] = Mass;
             Projectile.width = Radius * 2;
@@ -74,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public override void OnKill(int timeLeft)
         {
             //Main.NewText($"Chunk killed: {timeLeft}");
-            var DLCPlayer = Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = Main.player[Projectile.owner].ThoriumDLC();
             DLCPlayer.ActiveValaChunks.Remove(Projectile.whoAmI);
             if (timeLeft >= 0) Split();
         }
@@ -124,7 +125,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             if (hitCD > 0) hitCD--;
 
             Player player = Main.player[Projectile.owner];
-            if (!player.dead && player.active && player.GetModPlayer<CrossplayerThorium>().ValadiumEnch)
+            if (!player.dead && player.active && player.ThoriumDLC().ValadiumEnch)
             {
                 Projectile.timeLeft = Main.rand.Next(3, 10);
             }
@@ -144,7 +145,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 return;
             }
 
-            var DLCPlayer = Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = Main.player[Projectile.owner].ThoriumDLC();
             if (DLCPlayer.ActiveValaChunks.Count <= 1) return;
 
             // chunk attraction
@@ -158,7 +159,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
                 if (distSQ < 256)
                 {
-                    if (Main.player[Projectile.owner].GetModPlayer<FargowiltasSouls.Core.ModPlayers.FargoSoulsPlayer>().ForceEffect(Main.player[Projectile.owner].GetModPlayer<CrossplayerThorium>().ValadiumEnchItem.type))
+                    if (Main.player[Projectile.owner].FargoSouls().ForceEffect(Main.player[Projectile.owner].ThoriumDLC().ValadiumEnchItem.type))
                     {
                         Collide(Projectile, proj);
                     }

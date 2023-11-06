@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
+            var DLCPlayer = player.ThoriumDLC();
 
             DLCPlayer.HelheimForce = true;
 
@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
             WhiteKnightEnchant.WhiteKnightEffect(player);
 
             DLCPlayer.SilkEnch = true; 
-            var ThoriumPlayer = player.GetModPlayer<ThoriumMod.ThoriumPlayer>();
+            var ThoriumPlayer = player.Thorium();
             ThoriumPlayer.accArtificersShield = true;
             player.statDefense += 2 * (ThoriumPlayer.statEnchantersEnergy / 10);
             ThoriumPlayer.accArtificersFocus = true;
