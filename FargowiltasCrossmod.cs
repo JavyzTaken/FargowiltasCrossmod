@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using FargowiltasSouls.Core.Toggler;
 using System.IO;
 using FargowiltasCrossmod.Content.Thorium;
+using ThoriumMod.Items.Consumable;
+using ThoriumMod.Items.Donate;
+using ThoriumMod.Items.NPCItems;
 
 namespace FargowiltasCrossmod
 {
@@ -43,7 +46,7 @@ namespace FargowiltasCrossmod
             CalamityLoaded = ModLoader.HasMod("CalamityMod");
             LoadDetours();
 
-            if (ThoriumLoaded) Thorium_Load();
+            if (ThoriumLoaded) ThoriumLoad();
         }
 
         private struct DeviantHooks
@@ -57,6 +60,8 @@ namespace FargowiltasCrossmod
             internal static Hook OnChatButtonClicked;
             internal static Hook AddShops;
         }
+
+        private static Hook TryUnlimBuff;
 
         private static void LoadDetours()
         {
@@ -89,9 +94,19 @@ namespace FargowiltasCrossmod
                 LumberHooks.OnChatButtonClicked.Apply();
                 LumberHooks.AddShops.Apply();
             }
+
+            Type fargoGlobalItemClass = ModContent.Find<GlobalItem>("Fargowiltas/FargoGlobalItem").GetType();
+
+            if (fargoGlobalItemClass != null)
+            {
+                MethodInfo TryUnlimBuff_DETOUR = fargoGlobalItemClass.GetMethod("TryUnlimBuff", BindingFlags.Public | BindingFlags.Static);
+                TryUnlimBuff = new Hook(TryUnlimBuff_DETOUR, TryUnlimBuffPatch);
+
+                TryUnlimBuff.Apply();
+            }
         }
 
-        public void Thorium_Load()
+        public void ThoriumLoad()
         {
             Assembly ThoriumAssembly = ModLoader.GetMod("ThoriumMod").GetType().Assembly;
             Type thoriumProjExtensions = ThoriumAssembly.GetType("ThoriumMod.Utilities.ProjectileHelper", true);
@@ -102,6 +117,22 @@ namespace FargowiltasCrossmod
             Content.Thorium.Items.Accessories.Enchantments.YewWoodEnchant.LoadModdedAmmo();
 
             DevianttPatches.AddThoriumDeviShop();
+
+            unlimitedBlackList.Add(ModContent.ItemType<KineticPotion>());
+            unlimitedBlackList.Add(ModContent.ItemType<InsectRepellent>());
+            unlimitedBlackList.Add(ModContent.ItemType<BatRepellent>());
+            unlimitedBlackList.Add(ModContent.ItemType<FishRepellent>());
+            unlimitedBlackList.Add(ModContent.ItemType<SkeletonRepellent>());
+            unlimitedBlackList.Add(ModContent.ItemType<ZombieRepellent>());
+            unlimitedBlackList.Add(ModContent.ItemType<CactusFruit>());
+        }
+
+        public static readonly List<int> unlimitedBlackList = new();
+        internal delegate void orig_TryUnlimBuff(Item item, Player player);
+        internal static void TryUnlimBuffPatch(orig_TryUnlimBuff orig, Item item, Player player)
+        {
+            if (item == null || item.IsAir || unlimitedBlackList.Contains(item.type)) return;
+            orig(item, player);
         }
 
         public override void Unload()
