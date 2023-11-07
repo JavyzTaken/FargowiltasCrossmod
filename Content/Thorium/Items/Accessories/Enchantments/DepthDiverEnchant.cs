@@ -11,8 +11,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class DepthDiverEnchant : BaseSynergyEnchant
     {
         protected override Color nameColor => new(11, 86, 255);
-        protected override Color SynergyColor1 => Color.White; 
-        protected override Color SynergyColor2 => Color.White;
         internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.DepthDiverEnchant && DLCPlayer.IcyEnch;
         internal override int SynergyEnch => ModContent.ItemType<IcyEnchant>();
 

@@ -12,8 +12,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public abstract class BaseSynergyEnchant : BaseEnchant
     {
         internal abstract bool SynergyActive(CrossplayerThorium DLCPlayer);
-        protected abstract Color SynergyColor1 { get; }
-        protected abstract Color SynergyColor2 { get; }
         internal abstract int SynergyEnch { get; }
 
         int drawTimer = 0;
