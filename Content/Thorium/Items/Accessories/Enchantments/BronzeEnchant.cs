@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         protected override Color nameColor => Color.Gold;
         internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.BronzeEnch && DLCPlayer.GraniteEnch;
 
-        protected override Color SynergyColor1 => Color.Gold with { A = 0 };
+        protected override Color SynergyColor1 => Color.DarkBlue;
         protected override Color SynergyColor2 => Color.DarkBlue with { A = 0 };
         internal override int SynergyEnch => ModContent.ItemType<GraniteEnchant>();
 

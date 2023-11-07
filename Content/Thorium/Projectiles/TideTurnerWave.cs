@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Sharknado;
         public override void SetDefaults()
         {
-            Projectile.width = 42;
+            Projectile.width = 162;
             Projectile.height = 42;
             Projectile.tileCollide = true;
             Projectile.friendly = true;
@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.scale = Projectile.ai[0] / 6;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             Projectile.frame = (int)Projectile.ai[0] % 6;
+            //Projectile.velocity += Vector2.Normalize(Projectile.velocity) * Projectile.height * 0.005f * Projectile.ai[0];
         }
 
         public override void PostAI()
@@ -69,11 +70,20 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     Projectile.ai[1] = 1f;
                 }
             }
+            else
+            {
+                //Projectile.velocity *= 1.0025f;
 
+            }
 
-            Projectile.position += Vector2.Normalize(Projectile.velocity) * Projectile.width * 0.0025f * Projectile.ai[0];
+            Projectile.position += Vector2.Normalize(Projectile.velocity) * Projectile.height * 0.01f * Projectile.ai[0];
             Projectile.scale += 0.01f;
-            Projectile.velocity *= 1.0025f;
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            Vector2 lineOffset = (Vector2.UnitX * Projectile.width * 0.5f * Projectile.scale).RotatedBy(Projectile.rotation);
+            return Collision.CheckAABBvLineCollision(new Vector2(targetHitbox.X, targetHitbox.Y), new Vector2(targetHitbox.Width, targetHitbox.Height), Projectile.Center + lineOffset, Projectile.Center - lineOffset);
         }
     }
 }

@@ -25,10 +25,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 {
                     Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 1f;
                     float modifier = 0.25f + ((float)Math.Sin(drawTimer / 30f) / 2);
-                    Color glowColor = Color.Lerp(SynergyColor1, SynergyColor2, modifier) * 0.5f;
+                    //Color glowColor = Color.Lerp(SynergyColor1, SynergyColor2, modifier) * 0.5f;
 
                     Texture2D texture = Terraria.GameContent.TextureAssets.Item[Item.type].Value;
-                    Main.EntitySpriteDraw(texture, position + afterimageOffset, null, glowColor, 0, texture.Size() * 0.5f, Item.scale, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(texture, position + afterimageOffset, null, nameColor with {A = 100}, 0, texture.Size() * 0.5f, Item.scale, SpriteEffects.None, 0f);
                 }
             }
             drawTimer++;

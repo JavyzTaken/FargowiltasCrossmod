@@ -10,11 +10,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
     public class NoviceClericEnchant : BaseSynergyEnchant
     {
-        protected override Color nameColor => Color.Yellow;
-        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.NoviceClericEnchItem == Item && DLCPlayer.EbonEnch;
+        protected override Color nameColor => Color.White;
+        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.NoviceClericEnch && DLCPlayer.EbonEnch;
 
-        protected override Color SynergyColor1 => Color.White with { A = 0 };
-        protected override Color SynergyColor2 => Color.Purple with { A = 0 };
+        protected override Color SynergyColor1 => new(107, 17, 216);
+        protected override Color SynergyColor2 => Color.Purple;
         internal override int SynergyEnch => ModContent.ItemType<EbonEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -77,12 +77,12 @@ namespace FargowiltasCrossmod.Content.Thorium
             if ((synergy && NoviceClericCrosses % 2 == 0) || !synergy)
             {
                 // holy crux
-                Vector2 vector = Utils.RotatedBy(Player.Center.DirectionTo(Main.MouseWorld), MathF.PI / burstNum) * 8f;
-                for (int i = 0; i < burstNum; i++)
-                {
-                    vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
-                    Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 0, 0, Player.whoAmI, 0f, 0f, 1f);
-                }
+                //Vector2 vector = Utils.RotatedBy(Player.Center.DirectionTo(Main.MouseWorld), MathF.PI / burstNum) * 8f;
+                //for (int i = 0; i < burstNum; i++)
+                //{
+                //    vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
+                //    Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 0, 0, Player.whoAmI, 0f, 0f, 1f);
+                //}
             }
             else
             {
@@ -91,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Thorium
                 for (int i = 0; i < burstNum; i++)
                 {
                     vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
-                    Projectile.NewProjectile(Player.GetSource_Accessory(EbonEnchItem), Player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 15, 2f, Player.whoAmI, 0f, 0f, 0f);
+                    Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 15, 2f, Player.whoAmI, 0f, 0f, 0f);
                 }
             }
         }

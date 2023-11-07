@@ -8,14 +8,14 @@ using System;
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class EbonEnchant : BaseSynergyEnchant
+    public class EbonEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Purple;
-        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.EbonEnch && DLCPlayer.NoviceClericEnch;
+        //internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.EbonEnch && DLCPlayer.NoviceClericEnch;
         
-        protected override Color SynergyColor1 => Color.White with { A = 0 };
-        protected override Color SynergyColor2 => Color.Purple with { A = 0 };
-        internal override int SynergyEnch => ModContent.ItemType<NoviceClericEnchant>();
+        //protected override Color SynergyColor1 => Color.White with { A = 0 };
+        //protected override Color SynergyColor2 => Color.Purple with { A = 0 };
+        //internal override int SynergyEnch => ModContent.ItemType<NoviceClericEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

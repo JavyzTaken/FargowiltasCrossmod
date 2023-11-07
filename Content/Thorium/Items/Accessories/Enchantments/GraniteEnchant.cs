@@ -16,16 +16,14 @@ using FargowiltasSouls;
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class GraniteEnchant : BaseSynergyEnchant
+    public class GraniteEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.DarkBlue;
-        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.GraniteEnch && DLCPlayer.BronzeEnch;
+        //internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.GraniteEnch && DLCPlayer.BronzeEnch;
 
-        protected override Color SynergyColor1 => Color.DarkBlue with { A = 0 };
-        protected override Color SynergyColor2 => Color.Gold with { A = 0 };
-        internal override int SynergyEnch => ModContent.ItemType<BronzeEnchant>();
-
-        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+        //protected override Color SynergyColor1 => Color.DarkBlue with { A = 0 };
+        //protected override Color SynergyColor2 => Color.Gold with { A = 0 };
+        //internal override int SynergyEnch => ModContent.ItemType<BronzeEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
