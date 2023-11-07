@@ -4,6 +4,10 @@ using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using ThoriumMod.Items.HealerItems;
+using ThoriumMod.Items.Donate;
+using ThoriumMod.Items.BossMini;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -22,13 +26,18 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPlayer.NoviceClericEnchItem = Item;
         }
 
-        //public override void Load()
-        //{
-        //    new EnchantSynergy(
-        //        new Func<CrossplayerThorium, bool>((CrossplayerThorium DLCPlayer) => DLCPlayer.NoviceClericEnch && DLCPlayer.EbonEnch),
-        //        new Action<CrossplayerThorium>((CrossplayerThorium DLCPlayer) => DLCPlayer.clericEbonSynergy = true)
-        //        ).Register();
-        //}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<NoviceClericCowl>()
+                .AddIngredient<NoviceClericTabard>()
+                .AddIngredient<NoviceClericPants>()
+                .AddIngredient<PalmCross>()
+                .AddIngredient<HereticBreaker>()
+                .AddIngredient<TheGoodBook>()
+                .AddTile(TileID.DemonAltar)
+                .Register();
+        }
     }
 }
 

@@ -4,6 +4,10 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using ThoriumMod.Items.HealerItems;
+using ThoriumMod.Items.Donate;
+using ThoriumMod.Items.BossMini;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -37,6 +41,19 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 thoriumPlayer.totalHealingDarkHeart = 0;
             }
             player.GetDamage(DamageClass.Generic) += 0.05f * thoriumPlayer.healBonus;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<EbonHood>()
+                .AddIngredient<EbonCloak>()
+                .AddIngredient<EbonLeggings>()
+                .AddIngredient<LeechBolt>()
+                .AddIngredient<GraveBuster>()
+                .AddIngredient<DarkHeart>()
+                .AddTile(TileID.DemonAltar)
+                .Register();
         }
     }
 }

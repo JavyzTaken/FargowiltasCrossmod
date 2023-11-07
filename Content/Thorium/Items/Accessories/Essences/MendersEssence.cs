@@ -23,7 +23,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Essences
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<HereticBreaker>()
+                .AddIngredient<ThoriumMod.Items.Donate.LifeQuartzClaymore>()
                 .AddIngredient<TemplarsGrace>()
                 .AddIngredient<GraniteIonStaff>()
                 .AddIngredient<AquaiteScythe>()
@@ -33,7 +33,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Essences
                 .AddIngredient<HeartWand>()
                 .AddIngredient(ItemID.HallowedBar, 5)
                 .AddIngredient<ClericEmblem>()
-                .AddTile(TileID.TinkerersWorkbench);
+                .AddTile(TileID.TinkerersWorkbench)
+                .Register();
         }
     }
 }

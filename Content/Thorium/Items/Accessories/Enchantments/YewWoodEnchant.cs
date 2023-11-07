@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
+using ThoriumMod.Items.ArcaneArmor;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -20,6 +21,19 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             var DLCPLayer = player.ThoriumDLC();
             DLCPLayer.YewWoodEnch = true;
             DLCPLayer.YewWoodEnchItem = Item;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<YewWoodHelmet>()
+                .AddIngredient<YewWoodBreastguard>()
+                .AddIngredient<YewWoodLeggings>()
+                .AddIngredient<YewWoodFlintlock>()
+                .AddIngredient<FalconeerCane>()
+                .AddIngredient<ShadowflameStaff>()
+                .AddTile(TileID.DemonAltar)
+                .Register();
         }
 
         public static void LoadModdedAmmo()

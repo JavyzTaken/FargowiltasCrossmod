@@ -163,6 +163,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items
                 {
                     UniverseEdited = true;
                     recipe.AddIngredient(ModContent.ItemType<OlympiansSoul>());
+                    recipe.AddIngredient(ModContent.ItemType<ArchangelSoul>());
 
                 }
                 if (recipe.HasResult(ModContent.ItemType<TerrariumParticleSprinters>()) && recipe.HasIngredient(ItemID.TerrasparkBoots))

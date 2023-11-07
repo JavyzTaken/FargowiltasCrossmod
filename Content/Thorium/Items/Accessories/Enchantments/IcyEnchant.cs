@@ -4,17 +4,14 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
-using static FargowiltasCrossmod.Core.ModCompatibility;
-using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.DataStructures;
+using ThoriumMod.Items.HealerItems;
+using ThoriumMod.Items.EarlyMagic;
+using ThoriumMod.Items.Icy;
+using ThoriumMod.Items.BardItems;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -35,11 +32,18 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPlayer.IcyEnchItem = Item;
         }
 
-        //public override void AddRecipes()
-        //{
-        //    CreateRecipe()
-        //        .Register();
-        //}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<IcyHeadgear>()
+                .AddIngredient<IcyMail>()
+                .AddIngredient<IcyGreaves>()
+                .AddIngredient<Flurry>()
+                .AddIngredient<IceShaver>()
+                .AddIngredient<IcyPiccolo>()
+                .AddTile(TileID.DemonAltar)
+                .Register();
+        }
     }
 }
 

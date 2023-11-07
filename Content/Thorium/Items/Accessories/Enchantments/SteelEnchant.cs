@@ -5,6 +5,9 @@ using FargowiltasCrossmod.Content.Thorium.Buffs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls;
+using ThoriumMod.Items.Steel;
+using ThoriumMod.Items.Donate;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -23,9 +26,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<ThoriumMod.Items.Steel.SteelHelmet>()
-                .AddIngredient<ThoriumMod.Items.Steel.SteelChestplate>()
-                .AddIngredient<ThoriumMod.Items.Steel.SteelGreaves>()
+                .AddIngredient<SteelHelmet>()
+                .AddIngredient<SteelChestplate>()
+                .AddIngredient<SteelGreaves>()
+                .AddIngredient<ThoriumMod.Items.NPCItems.EbonHammer>()
+                .AddIngredient<BlacksmithsBarrier>()
+                .AddIngredient<ThoriumMod.Items.HealerItems.WarForger>()
+                .AddTile(TileID.DemonAltar)
                 .Register();
         }
     }

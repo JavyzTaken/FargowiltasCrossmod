@@ -13,6 +13,9 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using ThoriumMod.Items.SummonItems;
+using ThoriumMod.Items.ThrownItems;
+using ThoriumMod.Items.Consumable;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -21,11 +24,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         
         protected override Color nameColor => Color.Brown;
-
-        public override void SetStaticDefaults()
-        {
-
-        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -37,9 +35,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<ThoriumMod.Items.SummonItems.LivingWoodMask>()
-                .AddIngredient<ThoriumMod.Items.SummonItems.LivingWoodChestguard>()
-                .AddIngredient<ThoriumMod.Items.SummonItems.LivingWoodBoots>()
+                .AddIngredient<LivingWoodMask>()
+                .AddIngredient<LivingWoodChestguard>()
+                .AddIngredient<LivingWoodBoots>()
+                .AddIngredient<LivingWoodAcorn>()
+                .AddIngredient<ChiTea>(5)
+                .AddIngredient<Wreath>()
+                .AddTile(TileID.DemonAltar)
                 .Register();
         }
 
