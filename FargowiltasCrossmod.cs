@@ -16,6 +16,7 @@ using FargowiltasCrossmod.Content.Thorium;
 using ThoriumMod.Items.Consumable;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.NPCItems;
+using ThoriumMod.NPCs;
 
 namespace FargowiltasCrossmod
 {
@@ -23,6 +24,8 @@ namespace FargowiltasCrossmod
 	{
 		internal static bool CalamityLoaded;
 		internal static bool ThoriumLoaded;
+
+        internal static FargowiltasCrossmod Instance;
 
 
         private class ClassPreJitFilter : PreJITFilter
@@ -42,6 +45,10 @@ namespace FargowiltasCrossmod
 
         public override void Load()
         {
+            Instance = this;
+
+            DLCCaughtNPCItem.RegisterItems();
+
             ThoriumLoaded = ModLoader.HasMod("ThoriumMod");
             CalamityLoaded = ModLoader.HasMod("CalamityMod");
             LoadDetours();
@@ -94,7 +101,10 @@ namespace FargowiltasCrossmod
                 LumberHooks.OnChatButtonClicked.Apply();
                 LumberHooks.AddShops.Apply();
             }
+        }
 
+        public override void PostSetupContent()
+        {
             Type fargoGlobalItemClass = ModContent.Find<GlobalItem>("Fargowiltas/FargoGlobalItem").GetType();
 
             if (fargoGlobalItemClass != null)
@@ -125,14 +135,33 @@ namespace FargowiltasCrossmod
             unlimitedBlackList.Add(ModContent.ItemType<SkeletonRepellent>());
             unlimitedBlackList.Add(ModContent.ItemType<ZombieRepellent>());
             unlimitedBlackList.Add(ModContent.ItemType<CactusFruit>());
+
+            thoriumBuffNPCs.Add(ModContent.Find<ModItem>("FargowiltasCrossmod/Cobbler").Type, ModContent.BuffType<ThoriumMod.Buffs.CobblerBuff>());
         }
 
+        private static readonly Dictionary<int, int> thoriumBuffNPCs = new();
         public static readonly List<int> unlimitedBlackList = new();
         internal delegate void orig_TryUnlimBuff(Item item, Player player);
         internal static void TryUnlimBuffPatch(orig_TryUnlimBuff orig, Item item, Player player)
         {
-            if (item == null || item.IsAir || unlimitedBlackList.Contains(item.type)) return;
-            orig(item, player);
+            if (item.IsAir || !ModContent.GetInstance<Fargowiltas.Common.Configs.FargoServerConfig>().UnlimitedPotionBuffsOn120  || unlimitedBlackList.Contains(item.type)) return;
+
+            if (thoriumBuffNPCs.ContainsKey(item.type) && item.stack >= 5)
+            {
+                player.AddBuff(thoriumBuffNPCs[item.type], 2);
+            }
+
+            // calling Fargowiltas.Items.FargoGlobalItem.TryUnlimBuff(item, player); causes a crash so here's this
+            if (item.stack >= 30 && item.buffType != 0)
+            {
+                player.AddBuff(item.buffType, 2);
+
+                //compensate to account for luck potion being weaker based on remaining duration wtf
+                if (item.type == ItemID.LuckPotion)
+                    player.GetModPlayer<Fargowiltas.FargoPlayer>().luckPotionBoost = Math.Max(player.GetModPlayer<Fargowiltas.FargoPlayer>().luckPotionBoost, 0.1f);
+                else if (item.type == ItemID.LuckPotionGreater)
+                    player.GetModPlayer<Fargowiltas.FargoPlayer>().luckPotionBoost = Math.Max(player.GetModPlayer<Fargowiltas.FargoPlayer>().luckPotionBoost, 0.2f);
+            }
         }
 
         public override void Unload()
@@ -143,6 +172,10 @@ namespace FargowiltasCrossmod
 
             if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
+            if (TryUnlimBuff != null) TryUnlimBuff.Undo();
+
+            thoriumBuffNPCs.Clear();
+            unlimitedBlackList.Clear();
         }
     }
 }
