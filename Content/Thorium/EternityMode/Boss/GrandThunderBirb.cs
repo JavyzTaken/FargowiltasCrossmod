@@ -15,265 +15,234 @@ using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.ItemDropRules;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories;
 using FargowiltasCrossmod.Content.Thorium.Items.Weapons;
+using FargowiltasCrossmod.Content.Thorium.Projectiles;
+using ThoriumMod.Projectiles.Boss;
 
 namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GrandThunderBirb : EModeNPCBehaviour
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
-        //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
+        //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
 
-        internal enum AIMode
+        internal enum AIMode : byte
         {
-            None,
-            KluexMoving,
-            HorizontalDashs,
-            //Storm,
+            Dash,
+            Storm,
+            Diamond,
+            Circle,
+            Follow,
+            FollowC,
+            FollowS,
         }
 
         AIMode currentMode;
-        List<AIMode> AvaliableModes = new();
-        bool p1;
-        int hatlingSpawnTimer;
 
-        // Kluex attack
-        int redAttackNum;
-        const int RedAttSpeed = 48;
-        Vector2? NextPosition = null;
-        Vector2 LastPosition;
+        /* 
+         * ai[0]: animation state
+         * ai[1]: attack timer
+         * Mode:  Follow        | Dash          | Storm         | Diamond 
+         * ai[2]: zap timer     | wait timer    |               |
+         * ai[3]: unused        | orb drop timer|               |
+         */
 
-        // Dashes attack
-        bool firstDash;
-        bool waitingForDash;
-        int dashWaitTimer;
-        int dashTimer;
-
-        // Storm attack
+        public bool hasDashed;
+        public bool dashDir;
 
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
-            base.OnSpawn(npc, source);
-            p1 = true;
-            CycleMode();
+            currentMode = AIMode.Dash;
         }
 
-        private void CycleMode()
+        private void CycleMode(NPC npc)
         {
-            if (AvaliableModes.Count == 0)
-            {
-                AvaliableModes = new()
-                {
-                    AIMode.KluexMoving,
-                    AIMode.HorizontalDashs,
-                };
-            }
-            currentMode = AvaliableModes[Main.rand.Next(0, AvaliableModes.Count)];
-            AvaliableModes.Remove(currentMode);
             switch (currentMode)
             {
-                case AIMode.KluexMoving:
-                    NextPosition = null;
-                    redAttackNum = 24;
+                case AIMode.Follow:
+                    currentMode = AIMode.Dash;
+                    dashDir = npc.Center.X - Main.player[npc.target].Center.X < 0;
+                    hasDashed = false;
+                    npc.ai[1] = 1600f;
+                    npc.ai[2] = -120f;
                     break;
-                case AIMode.HorizontalDashs:
-                    firstDash = true;
-                    waitingForDash = true;
-                    dashWaitTimer = 60;
+                default:
+                    currentMode = AIMode.Follow;
+                    npc.ai[1] = 120f; 
                     break;
             }
         }
 
-        const float MinDistSQFromPlayer = 16384f;
-        const float MinDistSQFromLastPos = 36864f;
-        private Vector2 GetNextPosition(Player target, NPC npc)
+        public override void SafePostAI(NPC npc)
         {
-            Vector2 vec = new(Main.rand.NextFloat(target.Center.X - Main.ScreenSize.X / 3, target.Center.X + Main.ScreenSize.X / 3),
-                              Main.rand.NextFloat(target.Center.Y - Main.ScreenSize.Y / 2, target.Center.Y));
-            if (vec.DistanceSQ(target.Center) <= MinDistSQFromPlayer || vec.DistanceSQ(npc.Center) <= MinDistSQFromLastPos) return GetNextPosition(target, npc);
-            Vector2 closestPointToPlr = Vector2.Dot(target.Center - npc.Center, vec - npc.Center) / (vec - npc.Center).LengthSquared() * (vec - npc.Center);
-            if (closestPointToPlr.X > (vec - npc.Center).X) return vec;
-            if ((target.Center - npc.Center).LengthSquared() <= MinDistSQFromPlayer) return GetNextPosition(target, npc);
-            return vec;
+            if (--npc.ai[1] <= 0)
+            {
+                CycleMode(npc);
+            }
         }
-
         public override bool SafePreAI(NPC npc)
         {
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (!npc.HasValidTarget)
             {
-                if (p1 && npc.life <= npc.lifeMax * 0.5)
-                {
-                    // phase change
-                    p1 = false;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<StormHatchling>(), Target: npc.target, ai0: npc.whoAmI);
-                    }
-                    hatlingSpawnTimer = 600;
-                }
-
-                if (!p1 && hatlingSpawnTimer == 0)
-                {
-                    hatlingSpawnTimer = npc.life <= npc.lifeMax * 0.2 ? 300 : 600;
-                    NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<StormHatchling>(), Target: npc.target, ai0: npc.whoAmI);
-                }
-
-                hatlingSpawnTimer--;
+                npc.TargetClosest(true);
             }
+
+            Player target = Main.player[npc.target];
+
             switch (currentMode)
             {
-                case AIMode.KluexMoving:
+                case AIMode.Follow:
                     {
-                        npc.TargetClosest();
-                        if (NextPosition.HasValue && npc.Center.DistanceSQ(NextPosition.Value) > 64f)
+                        npc.spriteDirection = MathF.Sign(npc.velocity.X);
+                            //npc.velocity = new(4f * npc.direction, MathF.Sign(target.Center.Y - npc.Center.Y - 240) * 2f);
+                            if (++npc.ai[2] >= 90f)
                         {
-                            // go towards chosen location
-                        }
-                        else if (redAttackNum > 0 && npc.HasPlayerTarget && npc.HasValidTarget)
-                        {
-                            // choose new location if the attack is not finished
-                            LastPosition = npc.Center;
-                            NextPosition = GetNextPosition(Main.player[npc.target], npc);
-                            npc.velocity = (NextPosition.Value - LastPosition) / RedAttSpeed;
+                            npc.ai[2] = -20f;
 
-                            // spawn projectile
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 16, 3f, Main.myPlayer, Projectiles.KluexOrb.GFBOrb);
-                            redAttackNum--;
-                        }
-                        else if (redAttackNum == 0)
-                        {
-                            // finished spawning orbs
-                            NextPosition = null;
-                            npc.velocity = Vector2.Zero;
-                            CycleMode();
-                        }
-                        npc.spriteDirection = npc.velocity.X > 0 ? 1 : -1;
-                        break;
-                    }
-                case AIMode.HorizontalDashs:
-                    {
-                        // phase 1: dash once from right to left, then once from left to right, leaving orbs as it goes.
-                        if (p1)
-                        {
-                            if (npc.HasPlayerTarget && npc.HasValidTarget)
+                            npc.ai[0] = 1;
+                            if (Main.netMode != NetmodeID.MultiplayerClient)
                             {
-                                Player target = Main.player[npc.target];
-                                int dashDir = firstDash ? -1 : 1;
-                                npc.spriteDirection = -dashDir;
-                                if (waitingForDash)
+                                int zapType = ModContent.ProjectileType<GrandThunderBirdZap>();
+                                var source = npc.GetSource_FromAI();
+                                int safeZoneMiddle = Main.rand.Next(160, 320) * (Main.rand.NextBool(2) ? -1 : 1);
+                                for (int j = 0; j < 24; j++)
                                 {
-                                    if (dashWaitTimer > 0)
-                                    {
-                                        // hover relative to player plus their vertical velocity
-                                        npc.Center = target.Center + new Vector2((Main.ScreenSize.X / 2 - npc.width) * dashDir, target.velocity.Y * 16);
-                                        dashWaitTimer--;
-                                    }
-                                    else
-                                    {
-                                        // initiate dash
-                                        waitingForDash = false;
-                                        dashTimer = Main.ScreenSize.X / 16;
-                                        npc.velocity = new(16 * -dashDir, 0);
-                                    }
+                                    float offset = Main.rand.Next(-600, 600);
+                                    if (MathF.Abs(offset - safeZoneMiddle) < 80f) continue;
+                                    Projectile.NewProjectile(source, target.Center.X + offset, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 10f, zapType, 12, 0f, Main.myPlayer, 0f, 0f, 0f);
                                 }
-                                else
-                                {
-                                    if (dashTimer > 0)
-                                    {
-                                        // move in dash, spawning orbs every 3 blocks
-                                        if (dashTimer % 3 == 0)
-                                        {
-                                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 16, 3f, Main.myPlayer, Projectiles.KluexOrb.GFBOrb);
-                                        }
-                                        dashTimer--;
-                                    }
-                                    else
-                                    {
-                                        // switch dashes or attacks
-                                        if (firstDash)
-                                        {
-                                            dashDir *= -1;
-                                            firstDash = false;
-                                            waitingForDash = true;
-                                            dashWaitTimer = 60;
-                                        }
-                                        else
-                                        {
-                                            CycleMode();
-                                        }
-                                    }
+                                Projectile.NewProjectile(source, target.Center.X, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 8f, zapType, 12, 0f, Main.myPlayer, 0f, 0f, 0f);
+                                float speedX = -0.05f * Utils.ToDirectionInt(npc.velocity.X > 0f);
+                                Projectile.NewProjectile(source, npc.Center.X, npc.Center.Y - 34f, speedX, 0f, ModContent.ProjectileType<ThunderBirdScreech>(), 0, 0f, Main.myPlayer, npc.rotation, 0f, 0f);
+
+                                Projectile.NewProjectile(source, npc.Center + Vector2.UnitX * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 30, 3f, target.whoAmI, 0f, 180f);
+                                Projectile.NewProjectile(source, npc.Center - Vector2.UnitX * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 30, 3f, target.whoAmI, 0f, 140f);
+                                Projectile.NewProjectile(source, npc.Center - Vector2.UnitY * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 30, 3f, target.whoAmI, 0f, 100f);
                                 }
+                                npc.TargetClosest(true);
                             }
+                        if (npc.ai[2] < 0f)
+                        {
+                            npc.velocity = Vector2.Zero;
                         }
-                        // phase 2 version: look like its about to do normal p1 attack, then do a diamond shape around the player's position instead.
                         else
                         {
-                            const int dashnum = 3;
-                            if (npc.HasPlayerTarget && npc.HasValidTarget)
-                            {
-                                Player target = Main.player[npc.target];
-                                npc.spriteDirection = -1;
-                                if (waitingForDash)
-                                {
-                                    if (dashWaitTimer > 0)
-                                    {
-                                        // hover relative to player, not predictive 
-                                        npc.Center = target.Center + new Vector2(Main.ScreenSize.X / dashnum, 0);
-                                        dashWaitTimer--;
-                                    }
-                                    else
-                                    {
-                                        // initiate dash
-                                        waitingForDash = false;
-                                        dashTimer = Main.ScreenSize.X / (dashnum * 4);
-                                        npc.velocity = new(-16, -16);
-                                    }
-                                }
-                                else
-                                {
-                                    if (dashTimer > 0)
-                                    {
-                                        // move in dash, spawning orbs every 3 blocks
-                                        if (dashTimer % 3 == 0)
-                                        {
-                                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 16, 3f, Main.myPlayer, Projectiles.KluexOrb.GFBOrb);
-                                        }
-                                        if (dashTimer % (Main.ScreenSize.X / (dashnum * 16)) == 0)
-                                        {
-                                            switch (dashTimer / (Main.ScreenSize.X / (dashnum * 16)))
-                                            {
-                                                case 3:
-                                                    npc.velocity = new(-16, 16);
-                                                    break;
-                                                case 2:
-                                                    npc.velocity = new(16, 16);
-                                                    break;
-                                                case 1:
-                                                    npc.velocity = new(16, -16);
-                                                    break;
-                                            }
-                                        }
-                                        dashTimer--;
-                                    }
-                                    else
-                                    {
-                                        CycleMode();
-                                    }
-                                }
-                            }
+                            npc.ai[0] = 0;
                         }
 
+                        if (target.Center.X + 850f < npc.Center.X)
+                        {
+                            npc.velocity.X = ((npc.velocity.X < 0f) ? -6f : -4f);
+                        }
+                        if (target.Center.X - 850f > npc.Center.X)
+                        {
+                            npc.velocity.X = ((npc.velocity.X < 0f) ? 6f : 4f);
+                        }
+
+                        if (target.Center.Y < npc.Center.Y + 300f)
+                        {
+                            npc.velocity.Y -= (npc.velocity.Y > 0f) ? 0.8f : 0.07f;
+                        }
+                        if (target.Center.Y > npc.Center.Y + 300f)
+                        {
+                            npc.velocity.Y += (npc.velocity.Y < 0f) ? 0.8f : 0.07f;
+                        }
+
+                        npc.rotation = npc.velocity.X * 0.05f;
+                        if (target.Center.X < npc.Center.X && npc.velocity.X > -4f)
+                        {
+                            npc.velocity.X -= 0.1f;
+                            if (npc.velocity.X > 4f)
+                            {
+                                npc.velocity.X -= 0.1f;
+                            }
+                            else if (npc.velocity.X > 0f)
+                            {
+                                npc.velocity.X += 0.05f;
+                            }
+                            if (npc.velocity.X < -4f)
+                            {
+                                npc.velocity.X = -4f;
+                            }
+                        }
+                        else if (target.Center.X > npc.Center.X && npc.velocity.X < 4f)
+                        {
+                            npc.velocity.X += 0.1f;
+                            if (npc.velocity.X < -4f)
+                            {
+                                npc.velocity.X += 0.1f;
+                            }
+                            else if (npc.velocity.X < 0f)
+                            {
+                                npc.velocity.X -= 0.05f;
+                            }
+                            if (npc.velocity.X > 4f)
+                            {
+                                npc.velocity.X = 4f;
+                            }
+                        }
                         break;
                     }
-                //case AIMode.Storm:
-                //    {
-                //        npc.TargetClosest();
-                //        break;
-                //    }
-                default: break;
+                case AIMode.Dash:
+                    {
+                        Vector2 seekPos = target.Center + Vector2.UnitX * 800f * (dashDir ? -1 : 1);
+                        npc.direction = dashDir ? 1 : -1;
+                        npc.spriteDirection = npc.direction;
+                        //if (!dashDir) seekPos.Y += 48;
+                        if (++npc.ai[2] < 0f)
+                        {
+                            //float dist = npc.Distance(seekPos);
+                            npc.velocity = npc.DirectionTo(seekPos) * 8;
+                            npc.velocity *= (120 + npc.ai[2]) / 30f;
+
+                            npc.ai[0] = 0;
+                            if (npc.Distance(seekPos) <= 16f || npc.ai[2] == -1f)
+                            {
+                                npc.ai[2] = 0f;
+                                npc.Center = seekPos;
+                            }
+                        }
+                        else
+                        {
+                            const int dashSpeed = 24;
+                            if (npc.ai[2] >= 90f)
+                            {
+                                npc.velocity = new Vector2(dashDir ? dashSpeed : -dashSpeed, 0f);
+                                npc.ai[0] = 3;
+
+                                if (npc.ai[2] % 2 == 0) Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 25, 3f, target.whoAmI, 0, 300);
+
+                                if (npc.ai[2] - 90f >= 1600 / dashSpeed)
+                                {
+                                    if (hasDashed)
+                                    {
+                                        npc.ai[1] = 0f;
+                                        break;
+                                    }
+
+                                    npc.ai[2] = -120;
+                                    dashDir = !dashDir;
+                                    hasDashed = true;
+                                }
+                            }
+                            else
+                            {
+                                //npc.Center = seekPos;
+                                seekPos.Y += target.velocity.Y * (800f / dashSpeed);
+                                npc.velocity = Vector2.Zero;
+                                npc.Center = new(seekPos.X, MathHelper.Lerp(npc.Center.Y, seekPos.Y, 0.1f));
+                            }
+                        }
+                        break;
+                    }
             }
             return false;
         }
+
+        //public override void SafeOnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
+        //{
+        //    base.SafeOnHitByItem(npc, player, item, hit, damageDone);
+        //}
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {

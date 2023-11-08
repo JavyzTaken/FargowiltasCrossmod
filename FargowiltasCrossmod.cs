@@ -151,7 +151,7 @@ namespace FargowiltasCrossmod
                 player.AddBuff(thoriumBuffNPCs[item.type], 2);
             }
 
-            // calling Fargowiltas.Items.FargoGlobalItem.TryUnlimBuff(item, player); causes a crash so here's this
+            // calling orig causes a crash so here's this
             if (item.stack >= 30 && item.buffType != 0)
             {
                 player.AddBuff(item.buffType, 2);

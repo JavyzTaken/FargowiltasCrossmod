@@ -32,8 +32,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.damage = 0;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.width = 17;
-            Projectile.height = 17;
+            Projectile.width = 34;
+            Projectile.height = 34;
             Projectile.friendly = false;
             Projectile.hostile = true;
         }
@@ -45,6 +45,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 case GFBOrb:
                     Projectile.friendly = false;
                     Projectile.hostile = true;
+                    Projectile.timeLeft = (int)Projectile.ai[1];
                     break;
                 case StaffDmg:
                 case StaffHeal:
@@ -153,7 +154,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
             int Yframe = Projectile.timeLeft <= 70 ? Projectile.timeLeft < 60 ? 2 : 1 : 0;
             Rectangle rect = new(orbType == StaffHeal ? 42 : 0, Yframe * 36, 40, 34);
-            Vector2 origin = new(Projectile.width, Projectile.height);
+            Vector2 origin = new Vector2(Projectile.width, Projectile.height) / 2f;
             Color drawColor = Projectile.GetAlpha(lightColor);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), rect, drawColor, Projectile.rotation, origin, 1f, SpriteEffects.None, 0);
 
