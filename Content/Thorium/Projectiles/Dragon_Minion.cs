@@ -491,7 +491,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
                             if (Projectile.ai[0] % 10 == 0 && Vector2.Dot(Projectile.velocity, toTarget) > distanceToTarget * Projectile.velocity.Length() * 0.95f)
                             {
-                                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Projectile.velocity) * 12f, ProjectileID.Flames, 35, 0.1f, Projectile.owner);
+                                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Projectile.velocity) * 12f, ProjectileID.Flames, 40, 0.1f, Projectile.owner);
                             }
                             break;
                         case 2: // continue movement without fire
@@ -644,9 +644,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void PostAI()
         {
-            if (Head.currentAttack == DragonMinionHead.AttackMode.scaleCircleAttack && (Head.Projectile.ai[0] + 2 * data.position) % 10 == 0 && Projectile.Distance(Head.targetPos) < 16f * 8f * 1.2f)
+            if (Head.currentAttack == DragonMinionHead.AttackMode.scaleCircleAttack && (Head.Projectile.ai[0] + 2 * data.position) % 15 == 0 && Projectile.Distance(Head.targetPos) < 16f * 8f * 1.2f)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Head.targetPos - Projectile.Center) * 8f, ModContent.ProjectileType<DragonScale>(), 12, 0.5f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Normalize(Head.targetPos - Projectile.Center) * 8f, ModContent.ProjectileType<DragonScale>(), 24, 0.5f, Projectile.owner);
             }
         }
     }

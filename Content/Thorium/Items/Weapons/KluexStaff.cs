@@ -82,7 +82,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Weapons
             public override string Texture => "FargowiltasCrossmod/Content/Thorium/Projectiles/KluexOrb";
             public override void OnSpawn(IEntitySource source)
             {
-                Projectile.ai[0] = StaffHeal;
+                //Projectile.ai[0] = StaffHeal;
                 base.OnSpawn(source);
             }
         }
@@ -91,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Weapons
             public override string Texture => "FargowiltasCrossmod/Content/Thorium/Projectiles/KluexOrb";
             public override void OnSpawn(IEntitySource source)
             {
-                Projectile.ai[0] = StaffDmg;
+                //Projectile.ai[0] = StaffDmg;
                 base.OnSpawn(source);
             }
         }

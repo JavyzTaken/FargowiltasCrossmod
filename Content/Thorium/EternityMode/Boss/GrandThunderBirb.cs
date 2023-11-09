@@ -23,8 +23,8 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GrandThunderBirb : EModeNPCBehaviour
     {
-        //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
+        //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
 
         internal enum AIMode : byte
         {
@@ -42,17 +42,23 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
         /* 
          * ai[0]: animation state
          * ai[1]: attack timer
-         * Mode:  Follow        | Dash          | Storm         | Diamond 
-         * ai[2]: zap timer     | wait timer    |               |
-         * ai[3]: unused        | orb drop timer|               |
+         * Mode:   Follow       | Dash          | Storm         | Diamond 
+         * ai[2]:  zap timer    | wait timer    | cloud timer   | attack center X
+         * ai[3]:  unused       | orb drop timer|               | attack center Y
+         * Lai[0]: unused       | unused        | range timer   | attack state
+         * Lai[1]:                                              | attack time
+         * Lai[2]:                                              | 
          */
 
         public bool hasDashed;
         public bool dashDir;
+        public bool wasInP2;
 
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
-            currentMode = AIMode.Dash;
+            currentMode = AIMode.Follow;
+            npc.ai[1] = 600f;
+            wasInP2 = false;
         }
 
         private void CycleMode(NPC npc)
@@ -66,9 +72,37 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     npc.ai[1] = 1600f;
                     npc.ai[2] = -120f;
                     break;
+                case AIMode.Dash:
+                    currentMode = AIMode.Storm;
+                    npc.ai[1] = 900f;
+                    npc.ai[2] = -1;
+                    npc.localAI[0] = 0f;
+                    break;
+                case AIMode.Storm:
+                    int cloudType = ModContent.ProjectileType<GTBCloud>();
+                    for (int i = 0; i < Main.maxProjectiles; i++)
+                    {
+                        Projectile proj = Main.projectile[i];
+                        if (proj.active && proj.type == cloudType)
+                        {
+                            proj.timeLeft = (int)MathF.Min(proj.timeLeft, 100);
+                        }
+                    }
+                    //if (npc.life <= npc.lifeMax / 2)
+                    //{
+                    //    currentMode = AIMode.Diamond;
+                    //    npc.ai[1] = 1200f;
+                    //    npc.localAI[0] = 0f;
+                    //}
+                    //else
+                    //{
+                        currentMode = AIMode.Follow;
+                        npc.ai[1] = 600f;
+                    //}
+                    break;
                 default:
                     currentMode = AIMode.Follow;
-                    npc.ai[1] = 120f; 
+                    npc.ai[1] = 600f; 
                     break;
             }
         }
@@ -79,7 +113,27 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             {
                 CycleMode(npc);
             }
+
+            //if (npc.life <= npc.lifeMax / 2 && !wasInP2)
+            //{
+            //    int cloudType = ModContent.ProjectileType<GTBCloud>();
+            //    for (int i = 0; i < Main.maxProjectiles; i++)
+            //    {
+            //        Projectile proj = Main.projectile[i];
+            //        if (proj.active && proj.type == cloudType)
+            //        {
+            //            proj.timeLeft = (int)MathF.Min(proj.timeLeft, 100);
+            //        }
+            //    }
+            //    currentMode = AIMode.Diamond;
+            //    npc.ai[1] = 1200f;
+            //    npc.localAI[0] = 0f;
+            //    wasInP2 = true;
+            //}
         }
+
+        public int rangePunishVisualCD;
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget)
@@ -88,6 +142,10 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             }
 
             Player target = Main.player[npc.target];
+            if (target.dead)
+            {
+                npc.EncourageDespawn(1);
+            }
 
             switch (currentMode)
             {
@@ -115,9 +173,9 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                                 float speedX = -0.05f * Utils.ToDirectionInt(npc.velocity.X > 0f);
                                 Projectile.NewProjectile(source, npc.Center.X, npc.Center.Y - 34f, speedX, 0f, ModContent.ProjectileType<ThunderBirdScreech>(), 0, 0f, Main.myPlayer, npc.rotation, 0f, 0f);
 
-                                Projectile.NewProjectile(source, npc.Center + Vector2.UnitX * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 30, 3f, target.whoAmI, 0f, 180f);
-                                Projectile.NewProjectile(source, npc.Center - Vector2.UnitX * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 30, 3f, target.whoAmI, 0f, 140f);
-                                Projectile.NewProjectile(source, npc.Center - Vector2.UnitY * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 30, 3f, target.whoAmI, 0f, 100f);
+                                //Projectile.NewProjectile(source, npc.Center + Vector2.UnitX * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 15, 3f, target.whoAmI, 0f, 180f);
+                                //Projectile.NewProjectile(source, npc.Center - Vector2.UnitX * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 15, 3f, target.whoAmI, 0f, 140f);
+                                //Projectile.NewProjectile(source, npc.Center - Vector2.UnitY * 48f, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 15, 3f, target.whoAmI, 0f, 100f);
                                 }
                                 npc.TargetClosest(true);
                             }
@@ -210,10 +268,11 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                                 npc.velocity = new Vector2(dashDir ? dashSpeed : -dashSpeed, 0f);
                                 npc.ai[0] = 3;
 
-                                if (npc.ai[2] % 2 == 0) Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 25, 3f, target.whoAmI, 0, 300);
+                                //if (npc.ai[2] % 2 == 0) Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 15, 3f, target.whoAmI, 0, 300);
 
                                 if (npc.ai[2] - 90f >= 1600 / dashSpeed)
                                 {
+                                    npc.ai[0] = 0f;
                                     if (hasDashed)
                                     {
                                         npc.ai[1] = 0f;
@@ -227,22 +286,237 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                             }
                             else
                             {
-                                //npc.Center = seekPos;
-                                seekPos.Y += target.velocity.Y * (800f / dashSpeed);
-                                npc.velocity = Vector2.Zero;
-                                npc.Center = new(seekPos.X, MathHelper.Lerp(npc.Center.Y, seekPos.Y, 0.1f));
+                                if (npc.ai[2] >= 75)
+                                {
+                                    npc.velocity = Vector2.Zero;
+                                }
+                                else
+                                {
+                                    seekPos.Y += target.velocity.Y * (800f / dashSpeed);
+                                    npc.velocity = Vector2.Zero;
+                                    npc.Center = new(seekPos.X, MathHelper.Lerp(npc.Center.Y, seekPos.Y, 0.1f));
+                                }
                             }
                         }
+                        break;
+                    }
+                case AIMode.Storm:
+                    {
+                        Vector2 seekPos = target.Center - Vector2.UnitY * 450f;
+                        if (npc.ai[2] == -1)
+                        {
+                            npc.velocity = npc.DirectionTo(seekPos) * 8;
+
+                            if (npc.Distance(seekPos) < 16f)
+                            {
+                                npc.velocity = Vector2.Zero;
+                                npc.ai[0] = 1;
+                                npc.ai[2] = 0;
+                            }
+                        }
+                        if (npc.ai[2] >= 0)
+                        {
+                            npc.ai[0] = 0;
+                            if (++npc.ai[2] == 30f && Main.netMode != NetmodeID.MultiplayerClient)
+                            {
+                                npc.ai[2] = 0f;
+
+                                Vector2 cloudVel = Main.rand.NextVector2CircularEdge(2, 0.125f);
+                                cloudVel.Y = MathF.Abs(cloudVel.Y);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + Vector2.UnitY * 128f, cloudVel, ModContent.ProjectileType<GTBCloud>(), 20, 1.5f, Main.myPlayer, target.whoAmI);
+                            }
+                        }
+
+                        if (Main.netMode != NetmodeID.Server)
+                        {
+                            npc.localAI[0]--;
+                            int targetXDist = (int)MathF.Abs(Main.LocalPlayer.Center.X - npc.Center.X);
+                            if (targetXDist > 1000)
+                            {
+                                if (npc.localAI[0] <= 0)
+                                {
+                                    npc.localAI[0] = 90;
+                                    float speedX = -0.05f * Utils.ToDirectionInt(npc.velocity.X > 0f);
+                                    Projectile.NewProjectile(npc.GetSource_FromAI(), Main.LocalPlayer.Center.X, Main.LocalPlayer.Center.Y - 34f, speedX, 0f, ModContent.ProjectileType<ThunderBirdScreech>(), 0, 0f, Main.myPlayer, npc.rotation, 0f, 0f);
+                                }
+                                npc.ai[0] = 1f;
+                                if (Main.rand.NextBool((int)MathF.Max(30 - ((npc.localAI[0]) / 30), 1)))
+                                {
+                                    Vector2 random = Main.rand.NextVector2CircularEdge(128f, 128f);
+                                    if (MathF.Sign(random.X) != MathF.Sign(Main.LocalPlayer.Center.X - npc.Center.X)) random.X *= -1f;
+                                    Vector2 spawnPos = Main.LocalPlayer.Center + Main.LocalPlayer.velocity * 15f + random;
+
+                                    Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 25, 3f, Main.myPlayer, 0, 180f);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+                case AIMode.Diamond:
+                    {
+                        const float playerOffset = 600f;
+                        const float offsetDiagonal = 840f;
+                        const float diamondSpeed = 12f;
+                        if (npc.ai[1] == 1200f)
+                        {
+                            npc.velocity = Vector2.Zero;
+                            npc.ai[0] = 1f;
+                            float speedX = -0.05f * Utils.ToDirectionInt(npc.velocity.X > 0f);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y - 34f, speedX, 0f, ModContent.ProjectileType<ThunderBirdScreech>(), 0, 0f, Main.myPlayer, npc.rotation, 0f, 0f);
+                        }
+                        if (npc.ai[1] > 1140f)
+                        {
+                            npc.velocity = Vector2.Zero;
+                            npc.alpha = (int)((1200f - npc.ai[1]) * 4.25f);
+                            if (npc.ai[1] >= 1180f)
+                            {
+                                npc.ai[0] = 0f;
+                            }
+                        }
+                        else if (npc.ai[1] == 1140f)
+                        {
+                            npc.velocity = Vector2.Zero;
+                            npc.Center = target.Center - Vector2.UnitX * 600f;
+                            npc.ai[2] = target.Center.X;
+                            npc.ai[3] = target.Center.Y;
+                            npc.netUpdate = true;
+                        }
+                        else if (npc.ai[1] >= 1080f)
+                        {
+                            npc.velocity = Vector2.Zero;
+                            npc.alpha = (int)((npc.ai[1] - 1080f) * 4.25f);
+                        }
+
+                        if (npc.ai[1] <= 1050f)
+                        {
+                            if (npc.ai[1] == 1050f)
+                            {
+                                npc.localAI[0] = 1f;
+                                npc.localAI[1] = 1050f;
+                                npc.localAI[2] = 0f;
+                            }
+
+                            if (npc.localAI[2] == 0f && npc.localAI[0] == 1)
+                            {
+                                switch ((int)((npc.localAI[1] - npc.ai[1]) / (playerOffset / diamondSpeed)))
+                                {
+                                    case 0:
+                                        npc.velocity = new Vector2(1, -1) * diamondSpeed;
+                                        break;
+                                    case 1:
+                                        npc.velocity = new Vector2(1, 1) * diamondSpeed;
+                                        break;
+                                    case 2:
+                                        npc.velocity = new Vector2(-1, 1) * diamondSpeed;
+                                        break;
+                                    case 3:
+                                        npc.velocity = new Vector2(-1, -1) * diamondSpeed;
+                                        break;
+                                    case 4:
+                                        npc.velocity = Vector2.Normalize(new(180, -420)) * diamondSpeed;
+                                        npc.localAI[0]++;
+                                        npc.localAI[2] = 1f;
+                                        break;
+                                }
+                            }
+
+                            if (npc.localAI[2] == 0f && npc.localAI[0] == 2)
+                            {
+                                switch ((int)(npc.localAI[1] - (int)npc.ai[1]) / (int)(offsetDiagonal / (diamondSpeed * 1.4f)))
+                                {
+                                    case 0:
+                                        npc.velocity = new Vector2(1, 0) * diamondSpeed * 1.4f;
+                                        break;
+                                    case 1:
+                                        npc.velocity = new Vector2(0, 1) * diamondSpeed * 1.4f;
+                                        break;
+                                    case 2:
+                                        npc.velocity = new Vector2(-1, 0) * diamondSpeed * 1.4f;
+                                        break;
+                                    case 3:
+                                        npc.velocity = new Vector2(0, -1) * diamondSpeed * 1.4f;
+                                        break;
+                                    case 4:
+                                        npc.velocity = Vector2.Normalize(new(420, -180)) * diamondSpeed;
+                                        npc.localAI[0]++;
+                                        npc.localAI[2] = 2f;
+                                        break;
+                                }
+                            }
+
+                            if (npc.localAI[2] == 0f && npc.localAI[0] == 3)
+                            {
+                                switch ((int)((npc.localAI[1] - npc.ai[1]) / (playerOffset / diamondSpeed)))
+                                {
+                                    case 0:
+                                        npc.velocity = new Vector2(1, 1) * diamondSpeed;
+                                        break;
+                                    case 1:
+                                        npc.velocity = new Vector2(-1, 1) * diamondSpeed;
+                                        break;
+                                    case 2:
+                                        npc.velocity = new Vector2(-1, -1) * diamondSpeed;
+                                        break;
+                                    case 3:
+                                        npc.velocity = new Vector2(1, -1) * diamondSpeed;
+                                        break;
+                                    case 4:
+                                        if (target.Distance(new(npc.ai[2], npc.ai[3])) > playerOffset)
+                                        {
+                                            npc.ai[1] = 0f;
+                                        }
+                                        else
+                                        {
+                                            npc.ai[1] = 300f;
+                                            npc.localAI[2] = -1f;
+                                        }
+                                        npc.velocity = Vector2.Zero;
+                                        break;
+                                }
+                            }
+
+                            //if (npc.localAI[2] == 0f && npc.ai[1] % 2 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                            //{
+                            //    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 12, 2f, Main.myPlayer, 0f, 420f, 0.75f);
+                            //}
+
+                            if (npc.localAI[2] == 1f)
+                            {
+                                if (npc.Distance(new(npc.ai[2] - 420f, npc.ai[3] - 420f)) < 32f)
+                                {
+                                    npc.velocity = Vector2.Zero;
+                                    npc.localAI[1] = npc.ai[1];
+                                    npc.localAI[2] = 0f;
+                                    npc.Center = new(npc.ai[2] - 420f, npc.ai[3] - 420f);
+                                }
+                            }
+                            else if (npc.localAI[2] == 2f)
+                            {
+                                if (npc.Distance(new(npc.ai[2], npc.ai[3] - 600f)) < 32f)
+                                {
+                                    npc.velocity = Vector2.Zero;
+                                    npc.localAI[1] = npc.ai[1];
+                                    npc.localAI[2] = 0f;
+                                    npc.Center = new(npc.ai[2], npc.ai[3] - 600f);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            npc.localAI[0] = 0f;
+                        }
+                        
                         break;
                     }
             }
             return false;
         }
 
-        //public override void SafeOnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
-        //{
-        //    base.SafeOnHitByItem(npc, player, item, hit, damageDone);
-        //}
+        public override void SafeOnHitByItem(NPC npc, Player player, Item item, NPC.HitInfo hit, int damageDone)
+        {
+            base.SafeOnHitByItem(npc, player, item, hit, damageDone);
+        }
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {

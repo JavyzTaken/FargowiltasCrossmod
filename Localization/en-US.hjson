@@ -602,6 +602,8 @@ Mods: {
 			HungryGhost.DisplayName: Hungry Ghost
 			TideHunter_Wave.DisplayName: Tide Hunter_ Wave
 			TideTurnerWave.DisplayName: Tide Turner Wave
+			GTBCloud.DisplayName: G T B Cloud
+			GFBZapTelegraph.DisplayName: G F B Zap Telegraph
 		}
 
 		Keybinds: {

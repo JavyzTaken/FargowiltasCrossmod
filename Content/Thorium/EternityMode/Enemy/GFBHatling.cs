@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Enemy
                 npc.velocity = (NextPosition.Value - LastPosition) / OrbAttSpeed;
 
                 // spawn projectile
-                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 16, 3f, Main.myPlayer, Projectiles.KluexOrb.GFBOrb);
+                //Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.KluexOrb>(), 16, 3f, Main.myPlayer, Projectiles.KluexOrb.GFBOrb);
                 WaitingTimer = WaitTime;
             }
             npc.spriteDirection = npc.velocity.X > 0 ? 1 : -1;

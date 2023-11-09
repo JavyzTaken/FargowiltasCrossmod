@@ -55,25 +55,25 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
 
 
-            if (TempleCoreCounter % 120 == 0)
-            {
-                int orbProjType = ModContent.ProjectileType<KluexOrb>();
-                var currentOrbs = Main.projectile.Take(Main.maxProjectiles).Where(p => p.active && p.owner == Player.whoAmI && p.ai[0] == KluexOrb.TempleCore && p.type == orbProjType);
-                int num = TempleCoreCounter / 120;
-                if (currentOrbs.Count() < 5)
-                {
-                    while (num < 5)
-                    {
-                        if (currentOrbs.Count(p => p.ai[1] == CoreOrder[num]) == 0)
-                        {
-                            Projectile.NewProjectile(Player.GetSource_Accessory(TempleCoreItem), Player.Center, Vector2.Zero, orbProjType, 0, 0, Player.whoAmI, KluexOrb.TempleCore, CoreOrder[num]);
-                            break;
-                        }
-                        num++;
-                    }
-                }
+            //if (TempleCoreCounter % 120 == 0)
+            //{
+            //    int orbProjType = ModContent.ProjectileType<KluexOrb>();
+            //    var currentOrbs = Main.projectile.Take(Main.maxProjectiles).Where(p => p.active && p.owner == Player.whoAmI && p.ai[0] == KluexOrb.TempleCore && p.type == orbProjType);
+            //    int num = TempleCoreCounter / 120;
+            //    if (currentOrbs.Count() < 5)
+            //    {
+            //        while (num < 5)
+            //        {
+            //            if (currentOrbs.Count(p => p.ai[1] == CoreOrder[num]) == 0)
+            //            {
+            //                Projectile.NewProjectile(Player.GetSource_Accessory(TempleCoreItem), Player.Center, Vector2.Zero, orbProjType, 0, 0, Player.whoAmI, KluexOrb.TempleCore, CoreOrder[num]);
+            //                break;
+            //            }
+            //            num++;
+            //        }
+            //    }
 
-            }
+            //}
         }
     }
 }
