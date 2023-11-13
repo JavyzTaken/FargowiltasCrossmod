@@ -19,6 +19,9 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
+Fargo Discord: https://discord.gg/Rgen4Vv
+Fargo Wiki: https://terrariamods.wiki.gg/wiki/Fargo%27s_Mod
+
 Latest Update: v1.0.4.6
 Fixed several NPC loot issues
 Fixed Medallion of the Desert not working correctly in multiplayer
