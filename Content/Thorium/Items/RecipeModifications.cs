@@ -10,6 +10,7 @@ using Terraria.ID;
 using FargowiltasSouls.Content.Items.Materials;
 using ThoriumMod.Items.Terrarium;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using ThoriumMod.Items.BossThePrimordials;
 using ThoriumMod.Items.BasicAccessories;
 using Terraria.GameContent.ItemDropRules;
@@ -31,6 +32,7 @@ using ThoriumMod.Items.Misc;
 using ThoriumMod.Items.HealerItems;
 using ThoriumMod.Items.TransformItems;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items
 {
@@ -158,6 +160,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items
                 {
                     ShaperEdited = true;
                     recipe.AddIngredient(ModContent.ItemType<TerrariumCanyonSplitter>());
+                    recipe.RemoveIngredient(ModContent.ItemType<MinerEnchant>());
+                    recipe.AddIngredient<GeodeEnchant>();
                 }
                 if (recipe.HasResult(ModContent.ItemType<UniverseSoul>()) && !UniverseEdited)
                 {

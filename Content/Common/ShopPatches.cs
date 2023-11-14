@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Content.Common
     public static class DevianttPatches
     {
         internal static int DevianttShopCurrent = 0;
-        private static readonly List<string> ModShopNames = new() { Deviantt.ShopName };
+        private static readonly List<string> ModShopNames = new() { "Shop" };
 
         public static void CycleShop()
         {

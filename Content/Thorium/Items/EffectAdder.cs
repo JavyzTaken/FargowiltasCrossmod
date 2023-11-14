@@ -28,6 +28,7 @@ using ThoriumMod.Items.MagicItems;
 using ThoriumMod.Items.SummonItems;
 using ThoriumMod.Items.ThrownItems;
 using Terraria.Localization;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items
 {
@@ -37,58 +38,58 @@ namespace FargowiltasCrossmod.Content.Thorium.Items
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
             
-                //Add aeolus boots effects to terrarium boots
-                if (item.type == ModContent.ItemType<TerrariumParticleSprinters>())
-                {
-                    ModContent.GetInstance<AeolusBoots>().UpdateAccessory(player, hideVisual);
-                }
-                //add air walker boots, survivalist boots, and weighted winglets effects to super sonic soul
-                if (item.type == ModContent.ItemType<SupersonicSoul>())
-                {
-                    ModContent.GetInstance<AirWalkers>().UpdateAccessory(player, hideVisual);
-                    ModContent.GetInstance<SurvivalistBoots>().UpdateAccessory(player, hideVisual);
-                    ModContent.GetInstance<WeightedWinglets>().UpdateAccessory(player, hideVisual);
-                }
-                if (item.type == ModContent.ItemType<ColossusSoul>())
-                {
-
-                    
-                        ModContent.GetInstance<SweetVengeance>().UpdateAccessory(player, hideVisual);
-                        ModContent.GetInstance<ObsidianScale>().UpdateAccessory(player, hideVisual);
-                        ModContent.GetInstance<TerrariumDefender>().UpdateAccessory(player, hideVisual);
-                        ModContent.GetInstance<Phylactery>().UpdateAccessory(player, hideVisual);
-                        ModContent.GetInstance<HeartOfStone>().UpdateAccessory(player, hideVisual);
-                        ModContent.GetInstance<SpinyShell>().UpdateAccessory(player, hideVisual);
-                    
-                }
-                if (item.type == ModContent.ItemType<BerserkerSoul>())
-                {
-                    ModContent.GetInstance<RapierBadge>().UpdateAccessory(player, hideVisual);
-                }
-                if (item.type == ModContent.ItemType<ArchWizardsSoul>())
-                {
-                    ModContent.GetInstance<MurkyCatalyst>().UpdateAccessory(player, hideVisual);
-
-                }
-                if (item.type == ModContent.ItemType<SnipersSoul>())
-                {
-                    ModContent.GetInstance<ConcussiveWarhead>().UpdateAccessory(player, hideVisual);
-
-                }
-                if (item.type == ModContent.ItemType<ConjuristsSoul>())
-                {
-
-                    ModContent.GetInstance<CrystalScorpion>().UpdateAccessory(player, hideVisual);
-                    ModContent.GetInstance<YumasPendant>().UpdateAccessory(player, hideVisual);
-                }
-                if (item.type == ModContent.ItemType<UniverseSoul>())
-                {
-                    player.ThrownVelocity += 0.15f;
-                    ModContent.GetInstance<ThrowingGuideVolume3>().UpdateAccessory(player, hideVisual);
-                    ModContent.GetInstance<MermaidCanteen>().UpdateAccessory(player, hideVisual);
-                    ModContent.GetInstance<DeadEyePatch>().UpdateAccessory(player, hideVisual);
-                }
+            //Add aeolus boots effects to terrarium boots
+            if (item.type == ModContent.ItemType<TerrariumParticleSprinters>())
+            {
+                ModContent.GetInstance<AeolusBoots>().UpdateAccessory(player, hideVisual);
             }
+            //add air walker boots, survivalist boots, and weighted winglets effects to super sonic soul
+            if (item.type == ModContent.ItemType<SupersonicSoul>())
+            {
+                ModContent.GetInstance<AirWalkers>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<SurvivalistBoots>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<WeightedWinglets>().UpdateAccessory(player, hideVisual);
+            }
+            if (item.type == ModContent.ItemType<ColossusSoul>())
+            {
+                    ModContent.GetInstance<SweetVengeance>().UpdateAccessory(player, hideVisual);
+                    ModContent.GetInstance<ObsidianScale>().UpdateAccessory(player, hideVisual);
+                    ModContent.GetInstance<TerrariumDefender>().UpdateAccessory(player, hideVisual);
+                    ModContent.GetInstance<Phylactery>().UpdateAccessory(player, hideVisual);
+                    ModContent.GetInstance<HeartOfStone>().UpdateAccessory(player, hideVisual);
+                    ModContent.GetInstance<SpinyShell>().UpdateAccessory(player, hideVisual);
+            }
+            if (item.type == ModContent.ItemType<BerserkerSoul>())
+            {
+                ModContent.GetInstance<RapierBadge>().UpdateAccessory(player, hideVisual);
+            }
+            if (item.type == ModContent.ItemType<ArchWizardsSoul>())
+            {
+                ModContent.GetInstance<MurkyCatalyst>().UpdateAccessory(player, hideVisual);
+
+            }
+            if (item.type == ModContent.ItemType<SnipersSoul>())
+            {
+                ModContent.GetInstance<ConcussiveWarhead>().UpdateAccessory(player, hideVisual);
+
+            }
+            if (item.type == ModContent.ItemType<ConjuristsSoul>())
+            {
+                ModContent.GetInstance<CrystalScorpion>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<YumasPendant>().UpdateAccessory(player, hideVisual);
+            }
+            if (item.type == ModContent.ItemType<UniverseSoul>())
+            {
+                player.ThrownVelocity += 0.15f;
+                ModContent.GetInstance<ThrowingGuideVolume3>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<MermaidCanteen>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<DeadEyePatch>().UpdateAccessory(player, hideVisual);
+            }
+            if (item.type == ModContent.ItemType<WorldShaperSoul>())
+            {
+                ModContent.GetInstance<GeodeEnchant>().UpdateAccessory(player, hideVisual);
+            }
+        }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             

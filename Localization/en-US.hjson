@@ -488,6 +488,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Tide Turner Enchant
 			}
+
+			GeodeEnchant: {
+				DisplayName: Geode Enchant
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {

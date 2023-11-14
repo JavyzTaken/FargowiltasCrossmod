@@ -82,6 +82,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public Item TideHunterEnchItem;
         public bool TideTurnerEnch;
         public Item TideTurnerEnchItem;
+        public bool GeodeEnch;
 
         public bool HelheimForce;
         public bool SvartalfheimForce;
@@ -175,6 +176,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             TideHunterEnchItem = null;
             TideTurnerEnch = false;
             TideTurnerEnchItem = null;
+            GeodeEnch = false;
             
             HelheimForce = false;
             SvartalfheimForce = false;
