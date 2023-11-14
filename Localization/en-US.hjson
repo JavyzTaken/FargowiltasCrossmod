@@ -488,56 +488,6 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Tide Turner Enchant
 			}
-
-			Cobbler: {
-				DisplayName: Cobbler
-				Tooltip: ""
-			}
-
-			"Desert Acolyte": {
-				DisplayName: Desert  Acolyte
-				Tooltip: ""
-			}
-
-			Cook: {
-				DisplayName: Cook
-				Tooltip: ""
-			}
-
-			"Confused Zombie": {
-				DisplayName: Confused  Zombie
-				Tooltip: ""
-			}
-
-			Blacksmith: {
-				DisplayName: Blacksmith
-				Tooltip: ""
-			}
-
-			Tracker: {
-				DisplayName: Tracker
-				Tooltip: ""
-			}
-
-			Diverman: {
-				DisplayName: Diverman
-				Tooltip: ""
-			}
-
-			Druid: {
-				DisplayName: Druid
-				Tooltip: ""
-			}
-
-			Spiritualist: {
-				DisplayName: Spiritualist
-				Tooltip: ""
-			}
-
-			"Weapon master": {
-				DisplayName: Weapon master
-				Tooltip: ""
-			}
 		}
 
 		NPCs: {
