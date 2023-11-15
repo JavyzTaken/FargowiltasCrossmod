@@ -1,5 +1,4 @@
-﻿
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -17,11 +16,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         public override string Texture => "FargowiltasCrossmod/Content/Calamity/Bosses/Crabulon/ShroomGas1";
         public override void SetStaticDefaults()
         {
-            
+
         }
         public override void SetDefaults()
         {
-            
+
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.height = 22;
@@ -32,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            
+
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -55,7 +54,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void AI()
         {
-            if (Projectile.timeLeft <= 30) {
+            if (Projectile.timeLeft <= 30)
+            {
                 Projectile.Opacity -= 0.0334f;
             }
             if (Projectile.velocity.Length() > 1)

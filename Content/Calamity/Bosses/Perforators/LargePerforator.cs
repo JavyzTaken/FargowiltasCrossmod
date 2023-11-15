@@ -1,13 +1,10 @@
-﻿using Terraria.ModLoader;
+﻿using CalamityMod.NPCs.Perforator;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.BaseClasses;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using CalamityMod.NPCs.Perforator;
-using System;
-using Mono.Cecil;
-using CalamityMod;
-using FargowiltasCrossmod.Core.BaseClasses;
-using FargowiltasCrossmod.Core;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -68,7 +65,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 NPC.active = false;
             }
             NPC.ai[3]++;
-            
+
             if (NPC.ai[3] >= 600 && NPC.ai[2] == 0)
             {
                 NPC perf = null;
@@ -98,8 +95,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         perf = n;
                     }
-                    if (n != null && n.active && (n.type == ModContent.NPCType<LargePerforatorBody>() || n.type == ModContent.NPCType<LargePerforatorBody2>()||
-                        n.type == ModContent.NPCType<LargePerforatorTail>())){
+                    if (n != null && n.active && (n.type == ModContent.NPCType<LargePerforatorBody>() || n.type == ModContent.NPCType<LargePerforatorBody2>() ||
+                        n.type == ModContent.NPCType<LargePerforatorTail>()))
+                    {
                         n.velocity = (NPC.Center - n.Center).SafeNormalize(Vector2.Zero) * 20;
                         if (n.type == ModContent.NPCType<LargePerforatorTail>() && n.Distance(NPC.Center) <= 20)
                         {
@@ -118,21 +116,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 NPC.Center = perf.Center;
             }
         }
-        
+
         public override int BodyType => ModContent.NPCType<LargePerforatorBody>();
         public override void Init()
         {
             MinSegmentLength = 11;
             MaxSegmentLength = 11;
             CommonWormInit(this);
-            
+
         }
         internal static void CommonWormInit(Worm worm)
         {
             worm.MoveSpeed = 12f;
             worm.Acceleration = 0.2f;
         }
-        
+
         public override int TailType => ModContent.NPCType<LargePerforatorTail>();
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -195,7 +193,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (NPC.realLife >= 0)
             {
                 NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1) {
+                if (owner != null && owner.ai[2] == 1)
+                {
                     return;
                 }
             }
@@ -273,7 +272,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             base.AI();
         }
-        
+
         public override void Init()
         {
             LargePerforatorHead.CommonWormInit(this);

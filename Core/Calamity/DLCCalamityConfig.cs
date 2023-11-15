@@ -13,16 +13,13 @@ namespace FargowiltasCrossmod.Core.Calamity
         [Header("Modes")] // Title
 
         [DefaultValue(true)] // This sets the configs default value.
-        public bool EternityPriorityOverRev; 
+        public bool EternityPriorityOverRev;
 
         [Header("Balance")] // Title
 
         [ReloadRequired]
         [DefaultValue(true)] // This sets the configs default value.
         public bool BalanceRework;
-
-        [DefaultValue(true)] // This sets the configs default value.
-        public bool MutantDLC;
 
     }
 }

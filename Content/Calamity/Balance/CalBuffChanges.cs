@@ -1,10 +1,4 @@
 ﻿using FargowiltasCrossmod.Core;
-using FargowiltasSouls.Content.Buffs.Masomode;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance

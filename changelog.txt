@@ -1,7 +1,5 @@
-New Update: v1.0.3.1
+New Update: v1.0.4.6
 
-New icon
-Fixed Hive Mind and Slime God not despawning properly
-Fixed Medallion of the Desert not summoning Nuisances
-Fixed Dune Splicers spawning abnormally in the Sunken Sea
-Improvements to Slime God multiplayer sync
+Fixed several NPC loot issues
+Fixed Medallion of the Desert not working correctly in multiplayer
+Fixed Desert Scourge rarely repeating slam attack

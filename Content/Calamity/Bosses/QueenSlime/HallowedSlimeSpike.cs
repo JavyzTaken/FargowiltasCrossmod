@@ -1,5 +1,4 @@
-﻿
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -28,9 +27,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + new Vector2(Projectile.width, Projectile.height)/2 - Main.screenPosition, new Rectangle(0, 22 * Projectile.frame, 10, 22), lightColor * (1 - (i/5f)), Projectile.rotation, new Vector2(10, 22) / 2, Projectile.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + new Vector2(Projectile.width, Projectile.height) / 2 - Main.screenPosition, new Rectangle(0, 22 * Projectile.frame, 10, 22), lightColor * (1 - (i / 5f)), Projectile.rotation, new Vector2(10, 22) / 2, Projectile.scale, SpriteEffects.None);
             }
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 22*Projectile.frame, 10, 22), lightColor, Projectile.rotation, new Vector2(10, 22)/2, Projectile.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 22 * Projectile.frame, 10, 22), lightColor, Projectile.rotation, new Vector2(10, 22) / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
         public override void AI()
@@ -41,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
                 Projectile.frame = Main.rand.Next(0, 3);
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            
+
             base.AI();
         }
     }

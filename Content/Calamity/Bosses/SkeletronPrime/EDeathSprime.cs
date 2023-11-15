@@ -1,11 +1,10 @@
-﻿using CalamityMod.Projectiles.Boss;
+﻿using System.IO;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -21,12 +20,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronPrime);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.WriteVector2(rotationPoint);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             rotationPoint = binaryReader.ReadVector2();
         }
         public Vector2 rotationPoint = Vector2.Zero;
@@ -37,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                 return true;
             }
             npc.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.SkeletronPrime>().RunEmodeAI = true;
-            
+
             if (npc.ai[0] == 1 && npc.ai[1] == 1 && npc.ai[2] % 120 == 0 && npc.ai[2] > 0)
             {
                 for (int i = 0; i < 12; i++)
@@ -75,10 +72,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                 {
                     if (npc.ai[2] % 10 == 0)
                     {
-                        
+
                         if (DLCUtils.HostCheck)
                             Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<HomingRocket>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
-                        
+
                     }
                 }
             }

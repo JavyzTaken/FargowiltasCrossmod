@@ -1,6 +1,4 @@
 ﻿using CalamityMod.Items.Materials;
-using CalamityMod.Items.SummonItems;
-using CalamityMod.NPCs.Cryogen;
 using CalamityMod.NPCs.SupremeCalamitas;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;

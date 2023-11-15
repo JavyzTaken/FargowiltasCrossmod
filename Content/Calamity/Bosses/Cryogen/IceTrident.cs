@@ -1,15 +1,10 @@
-﻿using CalamityMod;
+﻿using System.Collections.Generic;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -48,8 +43,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                Vector2 pos = Projectile.oldPos[i] + Projectile.Size/2;
-                float scale = MathHelper.Lerp(Projectile.scale, Projectile.scale * 0.4f, i/(float)Projectile.oldPos.Length);
+                Vector2 pos = Projectile.oldPos[i] + Projectile.Size / 2;
+                float scale = MathHelper.Lerp(Projectile.scale, Projectile.scale * 0.4f, i / (float)Projectile.oldPos.Length);
                 for (int j = 0; j < 12; j++)
                 {
                     Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 1f;

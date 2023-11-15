@@ -1,10 +1,9 @@
-﻿
+﻿using System;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -21,11 +20,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         public override string Texture => "CalamityMod/Projectiles/Summon/PuffWarrior";
         public override void SetStaticDefaults()
         {
-            
+
         }
         public override void SetDefaults()
         {
-            
+
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.height = 22;
@@ -36,9 +35,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
-            
+
         }
-        
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
@@ -65,7 +64,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void OnSpawn(IEntitySource source)
         {
-            
+
         }
         public override void OnKill(int timeLeft)
         {

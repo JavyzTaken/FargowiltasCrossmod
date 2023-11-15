@@ -1,10 +1,8 @@
-﻿using FargowiltasCrossmod.Core.Systems;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -123,14 +121,15 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         public abstract void Read(BinaryReader reader);
     }
-    public abstract class EternityRevPacket : BaseDLCPacket
+    public class EternityRevPacket : BaseDLCPacket
     {
-        public override bool ResendFromServer => true;
         public override void Write(ModPacket packet, params object[] context)
         {
             BitsByte containmentFlagWrapper = new()
             {
-                [0] = DLCWorldSavingSystem.EternityRev
+                [0] = DLCWorldSavingSystem.EternityRev,
+                [1] = WorldSavingSystem.EternityMode,
+                [2] = WorldSavingSystem.ShouldBeEternityMode
             };
             packet.Write(containmentFlagWrapper);
         }
@@ -139,16 +138,20 @@ namespace FargowiltasCrossmod.Core.Calamity
         {
             BitsByte containmentFlagWrapper = reader.ReadByte();
             DLCWorldSavingSystem.EternityRev = containmentFlagWrapper[0];
+            WorldSavingSystem.EternityMode = containmentFlagWrapper[1];
+            WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[2];
         }
     }
-    public abstract class EternityDeathPacket : BaseDLCPacket
+    public class EternityDeathPacket : BaseDLCPacket
     {
-        public override bool ResendFromServer => true;
         public override void Write(ModPacket packet, params object[] context)
         {
             BitsByte containmentFlagWrapper = new()
             {
-                [0] = DLCWorldSavingSystem.EternityDeath
+                [0] = DLCWorldSavingSystem.EternityDeath,
+                [1] = DLCWorldSavingSystem.EternityRev,
+                [2] = WorldSavingSystem.EternityMode,
+                [3] = WorldSavingSystem.ShouldBeEternityMode
             };
             packet.Write(containmentFlagWrapper);
         }
@@ -157,6 +160,9 @@ namespace FargowiltasCrossmod.Core.Calamity
         {
             BitsByte containmentFlagWrapper = reader.ReadByte();
             DLCWorldSavingSystem.EternityDeath = containmentFlagWrapper[0];
+            DLCWorldSavingSystem.EternityRev = containmentFlagWrapper[1];
+            WorldSavingSystem.EternityMode = containmentFlagWrapper[2];
+            WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[3];
         }
     }
 }

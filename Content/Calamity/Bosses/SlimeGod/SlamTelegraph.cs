@@ -1,23 +1,19 @@
-﻿using CalamityMod.NPCs.TownNPCs;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using CalamityMod.NPCs.SlimeGod;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Primitives;
 using FargowiltasSouls.Common.Graphics.Shaders;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using FargowiltasSouls.Content.Bosses.Lifelight;
-using System.IO;
 using Terraria.DataStructures;
+using Terraria.Graphics;
 using Terraria.ID;
-using CalamityMod.NPCs.SlimeGod;
-using FargowiltasCrossmod.Core;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
@@ -56,31 +52,55 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.Write7BitEncodedInt(npc);
+            writer.Write7BitEncodedInt(owner);
+            writer.Write(npc);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            npc = reader.Read7BitEncodedInt();
+            owner = reader.Read7BitEncodedInt();
+            npc = reader.ReadBoolean();
         }
-        int npc;
+        int owner;
+        bool npc = true;
         public override void OnSpawn(IEntitySource source)
         {
             if (source is EntitySource_Parent parent && parent.Entity is NPC parentNpc && (parentNpc.type == ModContent.NPCType<CrimulanPaladin>() || parentNpc.type == ModContent.NPCType<EbonianPaladin>()))
             {
-                npc = parentNpc.whoAmI;
+                owner = parentNpc.whoAmI;
                 Projectile.rotation = Projectile.velocity.ToRotation();
                 Crimson = parentNpc.type == ModContent.NPCType<CrimulanPaladin>();
+                npc = true;
             }
+            else if (source is EntitySource_Parent parent2 && parent2.Entity is Projectile parentProj && parentProj.type == ModContent.ProjectileType<MutantSlimeGod>())
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation();
+                owner = parentProj.whoAmI;
+                Crimson = parentProj.ai[0] == 1;
+                npc = false;
+            }
+            Projectile.netUpdate = true;
         }
 
         public override void AI()
         {
-            NPC parent = FargoSoulsUtil.NPCExists(npc);
-            if (parent != null)
+            if (npc)
             {
-                Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
-                Projectile.rotation = Projectile.velocity.ToRotation();
+                NPC parent = FargoSoulsUtil.NPCExists(owner);
+                if (parent != null)
+                {
+                    Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
+                    Projectile.rotation = Projectile.velocity.ToRotation();
+                }
+            }
+            else
+            {
+                Projectile parent = FargoSoulsUtil.ProjectileExists(owner);
+                if (parent != null)
+                {
+                    Projectile.Center = parent.Center;// + Vector2.UnitY * parent.height / 2;
+                    Projectile.rotation = Projectile.velocity.ToRotation();
+                }
             }
             Length = maxLength * Math.Min((float)Math.Pow(Timer / 60f, 0.3f), 1f);
             Timer++;
@@ -89,14 +109,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public override bool ShouldUpdatePosition() => false;
 
         public float WidthFunction(float progress) => Length;
-        
+
 
         public Color ColorFunction(float progress)
         {
             float opacity = Math.Min(Timer / 30f, Math.Min(Projectile.timeLeft / 15f, 1));
             opacity *= 0.4f;
             Color mainColor = Crimson ? Color.Crimson : Color.Lavender;
-            float modifier = 1-progress;//2 * Math.Abs(progress - 0.5f);
+            float modifier = 1 - progress;//2 * Math.Abs(progress - 0.5f);
             return Color.Lerp(Color.Transparent, mainColor, opacity * modifier);
         }
 
@@ -116,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 shader.SetMainColor(Color.Lerp(Color.Lavender, Color.Purple, 0.7f));
             }
-            
+
             shader.Apply();
 
             VertexStrip vertexStrip = new();

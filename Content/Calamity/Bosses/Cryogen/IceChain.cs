@@ -1,13 +1,8 @@
-﻿using FargowiltasCrossmod.Core;
+﻿using System.Collections.Generic;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -40,16 +35,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             NPC owner = Main.npc[(int)Projectile.ai[0]];
             if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>())
             {
-                
+
                 Projectile.Kill();
                 return false;
 
             }
-            
+
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             Main.instance.LoadProjectile(ProjectileID.CultistBossIceMist);
             Asset<Texture2D> ice = TextureAssets.Projectile[ProjectileID.CultistBossIceMist];
-           
+
             ref float timer = ref Projectile.ai[2];
             if (true)
             {
@@ -64,8 +59,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                         Main.EntitySpriteDraw(t.Value, pos + afterimageOffset - Main.screenPosition, null, glowColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
                     }
-                    Main.EntitySpriteDraw(t.Value,  pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
-                    
+                    Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+
                 }
             }
             if (timer > 300)
@@ -82,7 +77,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         Main.EntitySpriteDraw(ice.Value, pos + afterimageOffset - Main.screenPosition, null, glowColor * 0.5f, Projectile.rotation + i, ice.Size() / 2, Projectile.scale * 0.6f, SpriteEffects.None);
                     }
                     Main.EntitySpriteDraw(ice.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()) * 0.5f, Projectile.rotation + i, ice.Size() / 2, (Projectile.scale * 0.6f), SpriteEffects.None);
-                    
+
                 }
             }
             return false;
@@ -115,15 +110,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Projectile.hide = true;
-            if (Projectile.ai[0] < 0) {
-                
+            if (Projectile.ai[0] < 0)
+            {
+
                 Projectile.Kill();
                 return;
             }
             NPC owner = Main.npc[(int)Projectile.ai[0]];
             ref float timer = ref Projectile.ai[2];
-            if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>()) {
-                
+            if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>())
+            {
+
                 Projectile.Kill();
                 return;
 
@@ -133,7 +130,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Projectile.timeLeft = 2;
             }
             Projectile.rotation = Projectile.AngleFrom(owner.Center);
-            
+
             if (timer < 50)
             {
                 timer++;
@@ -149,14 +146,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             if (timer >= 200 && timer <= 300)
             {
-                
+
                 for (int i = 0; i < 5; i++)
-                Dust.NewDustDirect(owner.Center - Projectile.Size/2 + new Vector2(0, -((timer - 200) * Projectile.Distance(owner.Center)/100)).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width, Projectile.height, DustID.SnowflakeIce, Scale: 2).noGravity = true;
-                
+                    Dust.NewDustDirect(owner.Center - Projectile.Size / 2 + new Vector2(0, -((timer - 200) * Projectile.Distance(owner.Center) / 100)).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width, Projectile.height, DustID.SnowflakeIce, Scale: 2).noGravity = true;
+
             }
             if (timer == 300)
             {
-                for (int i = 0; i < Projectile.Distance(owner.Center); i+= 3)
+                for (int i = 0; i < Projectile.Distance(owner.Center); i += 3)
                 {
                     Dust.NewDustDirect(owner.Center - Projectile.Size / 2 + new Vector2(0, -i).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width, Projectile.height, DustID.SnowflakeIce, Scale: 2).noGravity = true;
                 }
@@ -167,13 +164,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 timer = 100;
                 for (int i = 0; i < Projectile.Distance(owner.Center); i += 3)
                 {
-                    Dust.NewDustDirect(owner.Center - Projectile.Size + new Vector2(0, -i).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width*2, Projectile.height*2, DustID.SnowflakeIce, Scale: 2).noGravity = true;
+                    Dust.NewDustDirect(owner.Center - Projectile.Size + new Vector2(0, -i).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width * 2, Projectile.height * 2, DustID.SnowflakeIce, Scale: 2).noGravity = true;
                 }
                 SoundEngine.PlaySound(SoundID.Item27, owner.Center);
             }
 
             for (int i = 0; i < 5; i++)
-            Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce, Scale:2).noGravity = true;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce, Scale: 2).noGravity = true;
             base.AI();
         }
     }

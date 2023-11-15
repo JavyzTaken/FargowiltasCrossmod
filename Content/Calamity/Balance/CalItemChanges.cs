@@ -1,5 +1,6 @@
-﻿using CalamityMod;
-using CalamityMod.CalPlayer;
+﻿using System;
+using System.Collections.Generic;
+using CalamityMod;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
@@ -10,8 +11,6 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
-using Fargowiltas.Common.Configs;
-using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common;
@@ -24,10 +23,8 @@ using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.ModPlayers;
+using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -40,7 +37,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
-        
         public static List<int> ChampionTierFargoWeapons = new List<int>
         {
             ModContent.ItemType<EaterLauncher>(),
@@ -93,12 +89,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<MartianDistressRemote>(),
         };
         //this is cloned from cal because lazy
-        public static bool VanillaSummonItem(Item item) => 
+        public static bool VanillaSummonItem(Item item) =>
             (item.type == 560 || item.type == 43 || item.type == 4271 || item.type == 361 || item.type == 70 || item.type == 1331 || item.type == 1133 || item.type == 5120 || item.type == 4988 || item.type == 1315 || item.type == 602 || item.type == 544 || item.type == 556 || item.type == 557 || item.type == 1958 || item.type == 1844 || item.type == 2767 || item.type == 2767 || item.type == 3601);
-        
+
         public float BalanceChange(Item item)
         {
-            
+
             if (item.type == ModContent.ItemType<MechanicalLeashOfCthulhu>())
                 return 0.5f;
             if (item.type == ModContent.ItemType<Blender>())
@@ -111,8 +107,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return 0.8f;
             }
-            
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.6f;
+
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.5f;
             if (item.type == ModContent.ItemType<IllustriousKnives>()) return 0.8f;
             if (item.type == ModContent.ItemType<Azathoth>()) return 0.9f;
             if (item.type == ModContent.ItemType<RedSun>()) return 1.5f;
@@ -132,25 +128,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
             if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
             if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
+            if (item.type == ModContent.ItemType<Fabstaff>()) return 0.6f;
             return 1;
-            
+
         }
         public override void SetDefaults(Item item)
         {
             //Progression balance changes
             if (Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {
-                float balance  = BalanceChange(item);
+                float balance = BalanceChange(item);
                 if (balance != 1)
                 {
                     item.damage = (int)(item.damage * balance);
                 }
+                
                 if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
                 {
-                    item.consumable = true;
-                    item.maxStack = 9999;
+                    item.consumable = WorldSavingSystem.EternityMode;
+                    item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
                 }
+                
             }
+        }
+        public override void UpdateInventory(Item item, Player player)
+        {
+            if ((CalSummons.Contains(item.type) || VanillaSummonItem(item)))
+            {
+                item.consumable = WorldSavingSystem.EternityMode;
+                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
+            }
+            base.UpdateInventory(item, player);
         }
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
@@ -159,11 +167,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 damage *= 0.51f;
                 item.shootSpeed = 12;
-            }else if (item.type == ItemID.MagicDagger)
+            }
+            else if (item.type == ItemID.MagicDagger)
             {
                 item.shootSpeed = 30;
             }
-           
+
         }
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
@@ -175,8 +184,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             if (player.FargoSouls().TungstenEnchantItem != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
             {
-                float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
-                scale /= 1.75f;
+                scale /= 1.3f;
             }
         }
         public override float UseSpeedMultiplier(Item item, Player player)
@@ -207,7 +215,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     player.GetJumpState(ExtraJump.FartInAJar).Enable();
                 }
-                
+
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -220,7 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
                     player.FargoSouls().HasDash = true;
                 }
-                
+
                 if (player.GetToggleValue("RampartofDeities", false))
                 {
                     ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
@@ -311,18 +319,49 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             return true;
         }
+        public enum EModeChange
+        {
+            None,
+            Nerf,
+            Buff,
+            Neutral
+        }
+        //Identical to Eternity nerfs from Souls Mod
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, int amount = 0)
+        {
+            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}", amount == 0 ? null : amount);
+            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf}"));
+        }
+
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, string extra)
+        {
+            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}");
+            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf} {extra}"));
+        }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            for (int i = 0; i < tooltips.Count; i++)
+            if (WorldSavingSystem.EternityMode)
             {
-                tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                /*
-                if (tooltips[i].Text.Contains("Not consumable"))
+                for (int i = 0; i < tooltips.Count; i++)
                 {
-                    tooltips[i].Text = "";
+                    tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
+                    tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
+                    /*
+                    if (tooltips[i].Text.Contains("Not consumable"))
+                    {
+                        tooltips[i].Text = "";
+                    }
+                    */
                 }
-                */
+
+                if (item.type == ModContent.ItemType<NormalityRelocator>())
+                {
+                   ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
+                }
             }
+
 
             if (item.type == ModContent.ItemType<Rock>())
             {
@@ -330,7 +369,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             if (item.type == ModContent.ItemType<Masochist>())
             {
-                
+
                 tooltips.RemoveAll(t => t.Text != item.Name);
                 tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", $"[c/FF0000:Calamity Crossmod Support:] Disabled. Use Calamity's difficulty UI instead!"));
             }
@@ -485,7 +524,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModAccessorySlot eSlot2 = LoaderManager.Get<AccessorySlotLoader>().Get(ModContent.GetInstance<EModeAccessorySlot2>().Type, Player);
             DropSlot(ref eSlot0);
             DropSlot(ref eSlot1);
-            DropSlot(ref eSlot2); 
+            DropSlot(ref eSlot2);
         }
     }
 }

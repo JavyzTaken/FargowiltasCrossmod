@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
@@ -57,6 +56,7 @@ using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.ItemDropRules;
 using FargowiltasCrossmod.Core.Systems;
@@ -80,14 +80,12 @@ using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
-using FargowiltasSouls.Content.Buffs.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Ammos;
 using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
-using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.Crimson;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
@@ -229,10 +227,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
             {
                 //champions
-                //if (Champions.Contains(npc.type))
-                //{
-                //npc.lifeMax = (int)(npc.lifeMax * 0.8f);
-                //}
+                if (Champions.Contains(npc.type))
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 0.9f);
+                }
                 //Events/Minibosses
 
                 if (AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
@@ -317,43 +315,43 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //signus
                 if (npc.type == ModContent.NPCType<Signus>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.7f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.2f);
                 }
                 //ceaseless void & dark energy
                 if (npc.type == ModContent.NPCType<CeaselessVoid>() || npc.type == ModContent.NPCType<DarkEnergy>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.4f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.1f);
                 }
                 //storm weaver
                 //sw is weird yes i need to set all segments
                 if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverTail>() || npc.type == ModContent.NPCType<StormWeaverBody>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.7f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.4f);
                 }
                 //polterghast and polterclone
                 if (npc.type == ModContent.NPCType<Polterghast>() || npc.type == ModContent.NPCType<PolterPhantom>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 3.5f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.2f);
                 }
                 //overdose
                 if (npc.type == ModContent.NPCType<OldDuke>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 3.2f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.2f);
                 }
                 //dog
                 if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 3.2f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2.2f);
                 }
                 //yhar
                 if (npc.type == ModContent.NPCType<Yharon>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 2.3f);
+                    npc.lifeMax = (int)(npc.lifeMax * 2f);
                 }
                 //abom
                 if (npc.type == ModContent.NPCType<AbomBoss>())
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 3.8f);
+                    npc.lifeMax = (int)(npc.lifeMax * 3.5f);
                 }
                 //exos
                 if (npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosHead>()
@@ -428,10 +426,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     {
                         npc.lifeMax += 500000;
                     }
-                    if (SlimeGod.Contains(npc.type)) {
+                    if (SlimeGod.Contains(npc.type))
+                    {
                         npc.lifeMax += 400000;
                     }
-                    if (bossworms.Contains(npc.type) && !Eater.Contains(npc.type)) {
+                    if (bossworms.Contains(npc.type) && !Eater.Contains(npc.type))
+                    {
                         npc.lifeMax += 7500000;
                     }
                     else if (minionworms.Contains(npc.type) && !Eater.Contains(npc.type))
@@ -597,14 +597,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return;
             }
-            
-            LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(PostDog);
+
+            //LeadingConditionRule postDoG = npcLoot.DefineConditionalDropSet(PostDog);
             LeadingConditionRule emodeRule = new(new EModeDropCondition());
             LeadingConditionRule pMoon = new LeadingConditionRule(new Conditions.PumpkinMoonDropGatingChance());
             LeadingConditionRule fMoon = new LeadingConditionRule(new Conditions.FrostMoonDropGatingChance());
-            LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
+            //LeadingConditionRule rev = npcLoot.DefineConditionalDropSet(Revenge);
             LeadingConditionRule hardmode = new LeadingConditionRule(Condition.Hardmode.ToDropCondition(ShowItemDropInUI.Always));
-            
+
             #region Crates
             if (npc.type == ModContent.NPCType<DesertScourgeHead>())
             {
@@ -642,14 +642,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
             }
+
             
-            Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
-            LeadingConditionRule levidroprule = npcLoot.DefineConditionalDropSet(what);
             if (npc.type == ModContent.NPCType<Leviathan>() || npc.type == ModContent.NPCType<Anahita>())
             {
+                Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
+                LeadingConditionRule levidroprule = npcLoot.DefineConditionalDropSet(what);
                 levidroprule.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ItemID.OceanCrateHard, 1, 5, 5, 1));
+                npcLoot.Add(levidroprule);
             }
-            
+
             if (npc.type == ModContent.NPCType<AstrumAureus>())
             {
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<AstralCrate>(), 1, 5, 5));
@@ -675,16 +677,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 return true;
             }
-            LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
+            
             if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
+                LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
                 lastWorm.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ModContent.ItemType<AstralCrate>(), 1, 5, 5, 1));
+                npcLoot.Add(lastWorm);
             }
-            
+
             #endregion Crates
-            
+
             #region MasterModeDropsInRev
-            
+
             if (npc.type == NPCID.DD2DarkMageT3)
             {
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DarkMageMasterTrophy));
@@ -694,7 +698,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.OgreMasterTrophy));
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DD2OgrePetItem, 4));
-                
+
             }
             if (npc.type == NPCID.MourningWood)
             {
@@ -740,14 +744,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EyeofCthulhuMasterTrophy));
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EyeOfCthulhuPetItem, 4));
-                
+
             }
             if (npc.type >= NPCID.EaterofWorldsHead && npc.type <= NPCID.EaterofWorldsTail)
             {
                 LeadingConditionRule lastEater = new(new Conditions.LegacyHack_IsABoss());
                 lastEater.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterofWorldsMasterTrophy));
                 lastEater.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterOfWorldsPetItem, 4));
-                
+                npcLoot.Add(lastEater);
+
             }
             if (npc.type == NPCID.BrainofCthulhu)
             {
@@ -789,6 +794,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 LeadingConditionRule noTwin = new(new Conditions.MissingTwin());
                 noTwin.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsMasterTrophy));
                 noTwin.OnSuccess(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsPetItem, 4));
+                npcLoot.Add(noTwin);
             }
             if (npc.type == NPCID.SkeletronPrime)
             {
@@ -830,9 +836,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordMasterTrophy));
                 npcLoot.Add(ItemDropRule.ByCondition(CalamityConditions.RevNotEmodeCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordPetItem, 4));
             }
-            
+
             #endregion MasterModeDropsInRev
-            
+
             #region PreHM progression break fixes
             LeadingConditionRule PreHMNotBalanced = new LeadingConditionRule(CalamityConditions.PreHardmodeAndNotBalance.ToDropCondition(ShowItemDropInUI.Always));
             if (npc.type == NPCID.WyvernHead)
@@ -926,13 +932,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             //if (npc.type == ModContent.NPCType<>)
             #endregion
+
+            npcLoot.Add(emodeRule);
+            npcLoot.Add(pMoon);
+            npcLoot.Add(fMoon);
         }
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)
         {
             //the thing
-            
-            
+
+
             if (npc.type == ModContent.NPCType<TimberChampionHead>() && BossRushEvent.BossRushActive)
             {
                 for (int playerIndex = 0; playerIndex < 255; playerIndex++)
@@ -941,7 +951,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     if (p != null && p.active)
                     {
                         p.Calamity().BossRushReturnPosition = p.Center;
-                        Vector2 underworld = new Vector2((Main.maxTilesX*16)/2, Main.maxTilesY*16 - 2400);
+                        Vector2 underworld = new Vector2((Main.maxTilesX * 16) / 2, Main.maxTilesY * 16 - 2400);
                         CalamityPlayer.ModTeleport(p, underworld, false, 2);
                         SoundStyle teleportSound = BossRushEvent.TeleportSound;
                         teleportSound.Volume = 1.6f;
@@ -977,7 +987,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return false;
             }
-            if (SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.eclipse) {
+            if (SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.eclipse)
+            {
                 return false;
             }
             if (FrostMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.snowMoon)
@@ -1181,10 +1192,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             else if (npc.type == ModContent.NPCType<Draedon>())
             {
+                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ExoBattery", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
             }
             else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
             {
+                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
             }
             #endregion SummonDrops
@@ -1211,13 +1226,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     }
                 }
             }
-            
+
             //BossRushEvent.BossRushStage = 18;
             //BossRushEvent.BossRushStage = 36;
             if (BossRushEvent.BossRushActive)
             {
-                
-                if (npc.type == NPCID.HallowBoss && npc.ai[0] == 13) {
+
+                if (npc.type == NPCID.HallowBoss && npc.ai[0] == 13)
+                {
                     Main.dayTime = true;
                 }
                 if (npc.type == ModContent.NPCType<BanishedBaron>())
@@ -1232,7 +1248,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                             npc.position.Y -= 4f;
                         }
                     }
-                    
+
                     foreach (Player player in Main.player)
                     {
                         if (player.active) player.buffImmune[ModContent.BuffType<BaronsBurdenBuff>()] = true;
@@ -1283,7 +1299,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (npc.type == ModContent.NPCType<NatureChampion>() && BossRushEvent.BossRushActive)
             {
                 Main.player[Main.myPlayer].ZoneUnderworldHeight = false;
-                
+
             }
             if (npc.type == ModContent.NPCType<MutantBoss>() && BossRushEvent.BossRushActive)
             {
@@ -1358,7 +1374,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (bossworms.Contains(npc.type) && WorldSavingSystem.EternityMode)
             {
                 Mod calamity = ModCompatibility.Calamity.Mod;
-                
+
                 calamity.Call("SetCalamityAI", npc, 1, 600f);
                 calamity.Call("SetCalamityAI", npc, 2, 0f);
                 npc.SyncExtraAI();
@@ -1372,7 +1388,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void PostAI(NPC npc)
         {
-            
+
             if (numAI > 0)
             {
                 numAI = 0;

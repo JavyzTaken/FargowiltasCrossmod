@@ -1,7 +1,7 @@
-﻿using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasSouls.Core.Systems;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -10,8 +10,18 @@ namespace FargowiltasCrossmod.Core.Systems
 {
     public class DLCWorldSavingSystem : ModSystem
     {
-        public static bool EternityRev { get; set; }
-        public static bool EternityDeath { get; set; }
+        private static bool eternityRev;
+        private static bool eternityDeath;
+        public static bool EternityRev
+        {
+            get => eternityRev;
+            set => eternityRev = value;
+        }
+        public static bool EternityDeath
+        {
+            get => eternityDeath;
+            set => eternityDeath = value;
+        }
         public static bool E_EternityRev => EternityRev && WorldSavingSystem.EternityMode && DLCCalamityConfig.Instance.EternityPriorityOverRev;
         public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev;
 
@@ -58,7 +68,7 @@ namespace FargowiltasCrossmod.Core.Systems
             var downed = tag.GetList<string>("downed");
             EternityRev = downed.Contains("EternityRevActive");
             EternityDeath = downed.Contains("EternityDeathActive");
-            
+
             if (ModLoader.HasMod("InfernumMode"))
             {
                 DLCCalamityConfig.Instance.EternityPriorityOverRev = false;

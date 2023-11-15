@@ -1,24 +1,23 @@
 ﻿using System;
-using Terraria.ModLoader;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using CalamityMod.NPCs.Crabulon;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
-using Terraria.Audio;
-using FargowiltasSouls.Core.Systems;
-using FargowiltasCrossmod.Core;
-using FargowiltasSouls.Core.Globals;
-using CalamityMod.NPCs.DesertScourge;
-using FargowiltasSouls.Core.NPCMatching;
-using FargowiltasSouls.Content.Buffs.Masomode;
-using CalamityMod.Events;
 using System.IO;
-using Terraria.ModLoader.IO;
+using CalamityMod.Events;
+using CalamityMod.NPCs.Crabulon;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 {
@@ -28,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.Crabulon.Crabulon>());
         public override bool InstancePerEntity => true;
-        
+
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
@@ -42,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         {
             if (!WorldSavingSystem.EternityMode) return;
             attackCycle = new int[] { 0, 1, 1, 2 };
-            
+
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -62,9 +61,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 return false;
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
-            
+
         }
-        
+
         public override void FindFrame(NPC npc, int frameHeight)
         {
             if (!WorldSavingSystem.EternityMode) return;
@@ -76,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public int[] attackCycle = new int[10];
 
-        
+
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             for (int i = 0; i < attackCycle.Length; i++)
@@ -121,7 +120,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.velocity.Y += 1;
                 return false;
             }
-            
+
             //Fungal clump phase 1
             if (npc.ai[3] == 0 && npc.GetLifePercent() < 0.8f)
             {
@@ -136,8 +135,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HitSound = SoundID.NPCHit4;
                 NetSync(npc);
             }
-            
-            
+
+
             //fungal clump phase 2
             if (npc.ai[3] == 2 && npc.GetLifePercent() < 0.5f)
             {
@@ -195,7 +194,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             //high defense and stand still for a while (only does when fungal clump is alive)
             if (attackCycle[(int)npc.ai[1]] == -1)
             {
-                
+
                 npc.velocity.X = MathHelper.Lerp(npc.velocity.X, 0, 0.05f);
                 if (Math.Abs(npc.velocity.X) < 0.1f)
                 {
@@ -230,7 +229,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             if (target.Center.Y < npc.Top.Y)
             {
-                
+
                 enrageJumpTimer++;
                 if (enrageJumpTimer == 300 && !enrageJumping)
                 {
@@ -243,11 +242,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             {
                 enrageJumpTimer--;
             }
-            
+
             if (enrageJumping)
             {
                 Jump(npc, 0);
-                
+
                 return false;
             }
             // jump with dust and sound when landing
@@ -321,7 +320,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     toplayer.Y = 0;
                     toplayer = toplayer.SafeNormalize(Vector2.Zero);
                     toplayer = toplayer.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-20, 20))) * Main.rand.Next(3, 10);
-                    Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.MushroomSpray, (int)toplayer.X, (int)toplayer.Y, Scale:2, Alpha: 120);
+                    Dust dust = Dust.NewDustDirect(npc.Center, 0, 0, DustID.MushroomSpray, (int)toplayer.X, (int)toplayer.Y, Scale: 2, Alpha: 120);
                     dust.velocity = toplayer;
                     dust.noGravity = false;
                     NetSync(npc);
@@ -476,7 +475,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 }
                 if (type == 2)
                 {
-                    for (int i =0; i < 10; i++)
+                    for (int i = 0; i < 10; i++)
                     {
                         if (DLCUtils.HostCheck)
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(Main.rand.Next(0, npc.width), -5), new Vector2(Main.rand.NextFloat(), Main.rand.NextFloat()) / 5, ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);

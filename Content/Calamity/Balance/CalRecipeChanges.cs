@@ -27,7 +27,6 @@ using CalamityMod.Items.Weapons.Typeless;
 using CalamityMod.Tiles.Furniture.CraftingStations;
 using Fargowiltas.Items.Tiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
-using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
@@ -696,7 +695,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         .AddIngredient(ModContent.ItemType<OnyxExcavatorKey>())
                         .AddIngredient(ModContent.ItemType<AbomEnergy>(), 10);
                 }
-                
+
                 #endregion
 
                 #region Balance and Progression Locks
@@ -724,12 +723,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     }
                     List<int> Tier2Souls = new List<int>
                     {
-                        ModContent.ItemType<TerrariaSoul>(), 
+                        ModContent.ItemType<TerrariaSoul>(),
                         ModContent.ItemType<UniverseSoul>(),
                         ModContent.ItemType<DimensionSoul>(),
                         ModContent.ItemType<MasochistSoul>()
                     };
-                    
+
                     if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ModContent.ItemType<ShadowspecBar>()))
                     {
                         recipe.AddIngredient(ModContent.ItemType<ShadowspecBar>(), 5);

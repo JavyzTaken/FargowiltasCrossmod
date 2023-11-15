@@ -19,62 +19,19 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
-Latest Update: v1.0.3.1
+Fargo Discord: https://discord.gg/Rgen4Vv
+Fargo Wiki: https://terrariamods.wiki.gg/wiki/Fargo%27s_Mod
 
-New icon
-Fixed Hive Mind and Slime God not despawning properly
-Fixed Medallion of the Desert not summoning Nuisances
-Fixed Dune Splicers spawning abnormally in the Sunken Sea
-Improvements to Slime God multiplayer sync
+Latest Update: v1.0.4.6
+Fixed several NPC loot issues
+Fixed Medallion of the Desert not working correctly in multiplayer
+Fixed Desert Scourge rarely repeating slam attack
 
-Previous Update: v1.0.3
+Previous Update: v1.0.4.5
+Fixed the multiplayer difficulty desync issue
+Improved multiplayer sync in various regions
 
-Added full Eternity rework for Slime God
-
-Eternity Desert Scourge:
--Added new attack
--Increased base health to 4800
--Decreased severity of pierce resistance
--Pierce resistance no longer applies to the first hit of weapons with finite pierce
-
-Eternity Hive Mind:
--Creeps towards your position while spawning
--Immune while spawning
--Tripled health of initial Dank Creepers
--Dash towards player accelerates
--Heart doesn't shoot arcing projectiles while hive is doing the dash towards player
--Increased startup time for teleport
--Reworked spin attack
--Spin attack starts occuring immediately when boss is moving
-
-Tweaked and standardized health of Eternity Calamity bosses
-Boss Rush vanilla bosses are now Fargo hyper moded instead of Malice-Eternity AI
-Reduced Yharon and Boss Rush HPs
-Reduced Wall of Flesh HP
-Increased Mutant HP
-Eternity-Death Skeletron now teleports a lot during Dungeon Guardian phase
-Eternity Large Perforator drops less gold
-Tweaked Skeletron head and hand health and moved Skeletron health changes to Balance config
-Fixed Golem Head and its projectiles not dealing damage 
-Removed Eternity-Death Moon Lord rogue phase until bugs are solved. Rogue can now deal damage to Solar phase
-Added anti-cheese AI to Crabulon and Perforators
-
-Added Tim's Concoction drops for Calamity potions
-Added crate drops for all Pre-Moon Lord Calamity bosses
-Added mutant versions of all cal boss summons and added summon items for bosses that dont have one
--mutant sells these summons
--all cal summons are now consumable and stack up to 9999
--you get a free boss summon item when summoning a cal boss in emode
-
-Added balance changes for Shadowspec items
-Reduced effectiveness of tungsten enchantment on true melee weapons
-Reduces effectiveness of mythril enchantment on rogue weapons
-Reduced effectiveness of orichalcum enchantment
-Removed Daawnlight Spirit Origin from Sniper Soul
-Changed the recipe of Supreme Bait Tackle Box Fishing Station so it can be included in trawler soul without requiring the player to get 2 lavaproof tackle bags
-Changed the recipe of Fungal Symbiote
-Changed recipe of Angel Treads to use Zephyr Boots instead of Terraspark Boots and fixed the Aeolus Boots recipe to properly take Angel Treads over Zephyr Boots
-Blacklisted some broken items from Adamantite Enchant
-Tin Enchantment effect disables Daawnlight Spirit Origin effect 
-Fixed sandstorm enemy spam and reduced pigron spawnrates in the sulphur sea
-Ichor Spear no longer drops in pre hardmode
+Made Mutant's Yharon bullet hell more lenient below Masochist Mode, but removed large openings
+Adjusted Mutant's movement before Providence ray attack
+Increased Mutant's Slime God's slam speed
+Slightly decreased Mutant's Necroplasm rotation speed
