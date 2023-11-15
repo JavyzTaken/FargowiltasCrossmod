@@ -285,6 +285,101 @@ Mods: {
 				DisplayName: Worm Food of Kos
 				Tooltip: Summons Storm Weaver
 			}
+
+			AbandonedRemote: {
+				DisplayName: Abandoned Remote
+				Tooltip:
+					'''
+					Summons Armored Digger
+					Can only be used underground
+					'''
+			}
+
+			ClamPearl: {
+				DisplayName: Clam Pearl
+				Tooltip:
+					'''
+					Summons Giant Clam
+					Can only be used in the Sunken Sea
+					'''
+			}
+
+			ColossalTentacle: {
+				DisplayName: Colossal Tentacle
+				Tooltip:
+					'''
+					Summons Colossal Squid
+					Can only be used in the Abyss
+					'''
+			}
+
+			DeepseaProteinShake: {
+				DisplayName: Deepsea Protein Shake
+				Tooltip:
+					'''
+					Summons Reapear Shark
+					Can only be used in the Abyss
+					'''
+			}
+
+			MaulerSkull: {
+				DisplayName: Mauler Skull
+				Tooltip:
+					'''
+					Summons Mauler
+					Can only be used in the Sulphuric Sea
+					'''
+			}
+
+			NuclearChunk: {
+				DisplayName: Nuclear Chunk
+				Tooltip:
+					'''
+					Summons Nuclear Terror
+					Can only be used in the Sulphuric Sea
+					'''
+			}
+
+			PlaguedWalkieTalkie: {
+				DisplayName: Plagued Walkie Talkie
+				Tooltip:
+					'''
+					Summons Plaguebringer
+					Can only be used in the Jungle
+					'''
+			}
+
+			QuakeIdol: {
+				DisplayName: Quake Idol
+				Tooltip:
+					'''
+					Summons Earth Elemental
+					Can only be used underground
+					'''
+			}
+
+			StormIdol: {
+				DisplayName: Storm Idol
+				Tooltip: Summons Cloud Elemental
+			}
+
+			SulphurBearTrap: {
+				DisplayName: Sulphur Bear Trap
+				Tooltip:
+					'''
+					Summons Cragmaw Mire
+					Can only be used in the Sulphuric Sea
+					'''
+			}
+
+			WyrmTablet: {
+				DisplayName: Wyrm Tablet
+				Tooltip:
+					'''
+					Summons Eidolon Wyrm
+					Can only be used in the abyss
+					'''
+			}
 		}
 
 		NPCs: {
@@ -332,6 +427,12 @@ Mods: {
 			ArcticPaw.DisplayName: Arctic Paw
 			Blizzard.DisplayName: Blizzard
 			CrystalShard.DisplayName: Crystal Shard
+			DarkIceCrystal.DisplayName: Dark Ice Crystal
+			IceShot.DisplayName: Ice Shot
+			FrostShard.DisplayName: Frost Shard
+			FrostFlare.DisplayName: Frost Flare
+			IceArrow.DisplayName: Ice Arrow
+			IceStar.DisplayName: Ice Star
 		}
 	}
 }

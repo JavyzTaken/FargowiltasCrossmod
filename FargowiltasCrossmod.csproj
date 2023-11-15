@@ -23,6 +23,22 @@
     <None Remove="Content\Calamity\Bosses\SlimeGod\CrimsonPaladinSpike.png" />
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
+    <None Remove="Content\Calamity\Items\Summons\AbandonedRemote.png" />
+    <None Remove="Content\Calamity\Items\Summons\AstrumCor.png" />
+    <None Remove="Content\Calamity\Items\Summons\ClamPearl.png" />
+    <None Remove="Content\Calamity\Items\Summons\ColossalTentacle.png" />
+    <None Remove="Content\Calamity\Items\Summons\DeepseaProteinShake.png" />
+    <None Remove="Content\Calamity\Items\Summons\LetterofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\MaulerSkull.png" />
+    <None Remove="Content\Calamity\Items\Summons\NuclearChunk.png" />
+    <None Remove="Content\Calamity\Items\Summons\PlaguedWalkieTalkie.png" />
+    <None Remove="Content\Calamity\Items\Summons\QuakeIdol.png" />
+    <None Remove="Content\Calamity\Items\Summons\RiftofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\SirensPearl.png" />
+    <None Remove="Content\Calamity\Items\Summons\StormIdol.png" />
+    <None Remove="Content\Calamity\Items\Summons\SulphurBearTrap.png" />
+    <None Remove="Content\Calamity\Items\Summons\WormFoodofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\WyrmTablet.png" />
     <None Remove="icon.png" />
     <None Remove="WorkshopIcon.png" />
   </ItemGroup>

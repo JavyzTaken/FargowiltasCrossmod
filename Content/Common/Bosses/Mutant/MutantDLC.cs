@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 return true;
             }
             ManageMusic(npc);
-            switch ()
+            //switch ()
             return base.PreAI(npc);
 
             void CalamityFishron()

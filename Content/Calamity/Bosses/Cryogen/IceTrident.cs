@@ -81,19 +81,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (Projectile.ai[1] == 0)
             {
                 Projectile.ai[1] = 1;
-                Projectile.velocity = new Vector2(0, -Projectile.ai[0]).RotatedBy(Projectile.ai[2]);
+                //Projectile.velocity = new Vector2(0, -Projectile.ai[0]).RotatedBy(Projectile.ai[2]);
             }
             Projectile.ai[1]++;
-            if (Projectile.ai[1] == 100)
+            if (Projectile.ai[1] == 50)
             {
                 SoundEngine.PlaySound(SoundID.Item28, Projectile.Center);
-                Projectile.velocity = new Vector2(15, 0).RotatedBy(Projectile.ai[2]);
+                Projectile.velocity = new Vector2(25, 0).RotatedBy(Projectile.ai[2]);
             }
-            if (Projectile.ai[1] < 100)
+            if (Projectile.ai[1] < 50)
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero, 0.03f);
             if (Projectile.ai[1] > 100 && DLCUtils.HostCheck && Projectile.ai[1] % 10 == 0)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, 1), ModContent.ProjectileType<IceRain>(), Projectile.damage, 0, ai0: 1);
+                //Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, 1), ModContent.ProjectileType<IceRain>(), Projectile.damage, 0, ai0: 1);
             }
             Projectile.rotation = Projectile.ai[2] + MathHelper.PiOver4;
             base.AI();

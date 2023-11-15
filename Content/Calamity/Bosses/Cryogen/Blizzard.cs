@@ -31,10 +31,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.width = Projectile.height = 40;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 150;
             ProjectileID.Sets.TrailCacheLength[Type] = 7;
             ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3000;
+            Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -47,13 +49,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            for (int i = 0; i < 60; i++)
-            {
-                SpriteEffects se = SpriteEffects.None;
-                if (i % 5 == 0) se = SpriteEffects.FlipHorizontally;
-                if (i % 7 == 0) se = SpriteEffects.FlipVertically;
-                Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition + new Vector2((float)Math.Cos(i)*200, (float)Math.Sin(Projectile.ai[1] + i / 10f) * 1000).RotatedBy(Projectile.rotation), null, new Color(200, 200, 200, 50) * Projectile.Opacity, Projectile.rotation, t.Size() / 2, Projectile.scale, se);
-            }
+            SpriteEffects se = SpriteEffects.None;
+            if (Projectile.ai[0] == 1) se = SpriteEffects.FlipHorizontally;
+            if (Projectile.ai[0] == 2) se = SpriteEffects.FlipVertically;
+            if (Projectile.ai[0] == 3) se = SpriteEffects.FlipVertically | SpriteEffects.FlipHorizontally;
+            //for (int i = 0; i < 60; i++)
+            //{
+            //    SpriteEffects se = SpriteEffects.None;
+            //    if (i % 5 == 0) se = SpriteEffects.FlipHorizontally;
+            //    if (i % 7 == 0) se = SpriteEffects.FlipVertically;
+            //    Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition + new Vector2((float)Math.Cos(i)*200, (float)Math.Sin(Projectile.ai[1] + i / 10f) * 1000).RotatedBy(Projectile.rotation), null, new Color(200, 200, 200, 50) * Projectile.Opacity, Projectile.rotation, t.Size() / 2, Projectile.scale, se);
+            //}
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, new Color(200, 200, 200, 50) * Projectile.Opacity * 0.3f, Projectile.rotation, t.Size() / 2, Projectile.scale, se);
             return false;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -63,9 +70,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
-            Projectile.velocity /= 1.02f;
+            //Projectile.velocity /= 1.02f;
             if (Projectile.timeLeft < 60) Projectile.Opacity -= 1 / 30f;
-            Projectile.ai[1] += 0.01f;
+            //Projectile.ai[1] += 0.01f;
             base.AI();
         }
     }

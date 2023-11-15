@@ -1,5 +1,8 @@
-﻿using CalamityMod.Items.SummonItems;
-using CalamityMod.NPCs.StormWeaver;
+﻿using CalamityMod;
+using CalamityMod.Items.Materials;
+using CalamityMod.Items.Placeables;
+using CalamityMod.NPCs.Abyss;
+using CalamityMod.NPCs.SunkenSea;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -12,19 +15,22 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class WormFoodofKos : BaseSummon
+    public class WyrmTablet : BaseSummon
     {
-        public override int NPCType => ModContent.NPCType<StormWeaverHead>();
-        public override string NPCName => "Storm Weaver";
+        public override int NPCType => ModContent.NPCType<EidolonWyrmHead>();
+        public override string NPCName => "Eidolon Wyrm";
         public override void AddRecipes()
         {
-            Recipe.Create(Type).AddIngredient<RuneofKos>().AddTile(TileID.WorkBenches).Register();
-            Recipe.Create(ModContent.ItemType<RuneofKos>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
+        }
+        public override bool CanUseItem(Player player)
+        {
+            if (!player.Calamity().ZoneAbyss) return false;
+            return base.CanUseItem(player);
         }
         public override bool? UseItem(Player player)
         {
             FargoSoulsUtil.SpawnBossNetcoded(player, NPCType);
-            return true;
+            return base.UseItem(player);
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {

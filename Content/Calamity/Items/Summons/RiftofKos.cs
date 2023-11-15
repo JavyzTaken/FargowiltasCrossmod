@@ -11,7 +11,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class RiftofKos : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/RuneofKos";
         public override int NPCType => ModContent.NPCType<CeaselessVoid>();
         public override string NPCName => "Ceaseless Void";
         public override void AddRecipes()

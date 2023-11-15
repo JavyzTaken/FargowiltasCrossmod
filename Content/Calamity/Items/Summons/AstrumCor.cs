@@ -15,7 +15,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class AstrumCor : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/Starcore";
         public override int NPCType => ModContent.NPCType<AstrumDeusHead>();
         public override string NPCName => "Astrum Deus";
         public override void AddRecipes()

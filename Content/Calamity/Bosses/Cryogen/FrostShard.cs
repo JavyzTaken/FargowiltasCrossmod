@@ -14,20 +14,20 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
-    public class IceShot : ModProjectile
+    public class FrostShard : ModProjectile
     {
-        public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Blizzard;
+        public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.FrostShard;
         public override void SetStaticDefaults()
         {
-            
+
         }
         public override void SetDefaults()
         {
-            Projectile.height = Projectile.width = 12;
             Main.projFrames[Type] = 5;
+            Projectile.width = Projectile.height = 10;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 400;
         }
         public override void OnKill(int timeLeft)
         {
@@ -35,19 +35,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override void OnSpawn(IEntitySource source)
         {
-            Projectile.ai[0] = Main.rand.Next(0, 5);
+            Projectile.frame = Main.rand.Next(0, 5);
             base.OnSpawn(source);
         }
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 36 * (int)Projectile.ai[0], 14, 36), lightColor, Projectile.rotation, new Vector2(7, 18), Projectile.scale, SpriteEffects.None);
+            if (Projectile.localAI[0] >= 5) lightColor.A += 50;
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 30 * Projectile.frame, 12, 30), lightColor, Projectile.rotation, new Vector2(12, 30) / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.SnowflakeIce).noGravity = true;
+            Projectile.localAI[0]++;
+            if (Projectile.localAI[0] > 10) Projectile.localAI[0] = 0;
             base.AI();
         }
     }
