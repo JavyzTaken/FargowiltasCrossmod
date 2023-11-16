@@ -12,6 +12,7 @@ using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Utils;
 using CalamityMod.CalPlayer;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -94,6 +95,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             IceArrows,
             FrostFlares,
             IceStar
+        };
+        static List<Attacks> SetupAttacks = new List<Attacks>
+        {
+            Attacks.TridentToss,
+            Attacks.Blizzard,
+            Attacks.FrostFlares,
+            Attacks.IceStar
+        };
+        static List<Attacks> FollowupAttacks = new List<Attacks>
+        {
+            Attacks.PawCharge,
+            Attacks.IceShotgun,
+            Attacks.IceArrows,
+            Attacks.PredictiveToss
         };
         public override void AI()
         {
@@ -199,7 +214,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Timer = 0;
 
-                    Attack = Main.rand.Next(1, 9);
+                    if (!SetupAttacks.Contains((Attacks)Attack))
+                    {
+                        Attack = (float)Main.rand.NextFromCollection(SetupAttacks);
+                    }
+                    else
+                    {
+                        Attack = (float)Main.rand.NextFromCollection(FollowupAttacks);
+                    }
                     //Attack = 8;
                 }
             }
@@ -405,7 +427,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
             }
             #endregion
-            base.AI();
         }
         
     }
