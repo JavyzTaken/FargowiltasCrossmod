@@ -1,6 +1,7 @@
 ﻿using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
+using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -11,14 +12,16 @@ namespace FargowiltasCrossmod.Core.Systems
     public class WorldUpdatingSystem : ModSystem
     {
         public static bool InfernumStateLastFrame = false;
+
         public override void PreUpdateWorld()
         {
             if (ModCompatibility.Calamity.Loaded)
             {
                 ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", ModContent.GetInstance<DLCCalamityConfig>().EternityPriorityOverRev);
             }
-        }
 
+        }
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateWorld()
         {
             if (ModCompatibility.Calamity.Loaded)

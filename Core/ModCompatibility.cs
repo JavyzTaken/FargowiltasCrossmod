@@ -4,6 +4,12 @@ namespace FargowiltasCrossmod.Core;
 
 public static class ModCompatibility
 {
+    public static class MutantMod
+    {
+        public const string Name = "Fargowiltas";
+        public static bool Loaded => ModLoader.HasMod(Name);
+        public static Mod Mod => ModLoader.GetMod(Name);
+    }
     public static class SoulsMod
     {
         public const string Name = "FargowiltasSouls";

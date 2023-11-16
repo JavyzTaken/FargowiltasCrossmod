@@ -6,7 +6,9 @@ using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Toggler;
+using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -43,18 +45,33 @@ public class FargowiltasCrossmod : Mod
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static ref List<int> pierceResistExceptionList => ref CalamityLists.pierceResistExceptionList;
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+
     public override void PostSetupContent()
     {
         if (ModCompatibility.Calamity.Loaded)
         {
-            pierceResistExceptionList.Add(ProjectileID.FinalFractal);
+            PostSetupContent_Calamity();
         }
+
         if (MutantDLC.ShouldDoDLC)
         {
             SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
         }
+    }
 
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public void PostSetupContent_Calamity()
+    {
+        pierceResistExceptionList.Add(ProjectileID.FinalFractal);
+
+        #region Stat Sheet
+        double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
+        int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
+
+        //int rogueItem = ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.WulfrumKnife>();
+        //Func<string> rogueDamage = () => $"Rogue Damage: {Damage(ModContent.GetInstance<RogueDamageClass>())}%";
+        //ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueDamage);
+        #endregion
     }
 
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
