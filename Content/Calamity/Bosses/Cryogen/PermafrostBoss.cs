@@ -3,23 +3,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Core.Calamity;
-using Terraria.GameContent.Bestiary;
-using System.Threading;
-using CalamityMod;
-using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Utils;
-/*
+using CalamityMod.CalPlayer;
+using System.Diagnostics;
+
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -35,12 +28,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             NPC.width = 100;
             NPC.height = 100;
-            NPC.lifeMax = 20000;
+            NPC.lifeMax = 50000;
             NPC.knockBackResist = 0;
             NPC.HitSound = new SoundStyle("CalamityMod/Sounds/NPCHit/CryogenHit", 3);
             NPC.DeathSound = SoundID.NPCDeath6;
             NPC.noGravity = true;
             NPC.noTileCollide = true;
+            NPC.boss = true;
+            NPC.damage = 50;
+        }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            if (Attack != 2) return false;
+            return base.CanHitPlayer(target, ref cooldownSlot);
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -119,6 +119,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Phase = 1;
                     Timer = 0;
+                    Music = MusicLoader.GetMusicSlot("CalamityMod/Sounds/Custom/ORDER");
                 }
             }
             if (Phase == 1)
@@ -130,16 +131,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                     Movement(targetpos);
                     Timer++;
-                    if (Timer >= 200)
+                    if (Timer >= 20)
                     {
                         Timer = 0;
-                        Attack = 1;
+                        
+                        Attack = Main.rand.Next(1, 9);
+                        //Attack = 8;
                     }
                 }
                 if (Attack == 1)
                 {
                     Timer++;
-                    if (Timer < 60)
+                    if (Timer < 30)
                     {
                         Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 400 : -400, -300);
 
@@ -148,30 +151,204 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     else
                     {
                         NPC.velocity /= 1.05f;
-                        if (Timer == 70 && DLCUtils.HostCheck) {
+                        if (Timer == 30 && DLCUtils.HostCheck) {
                             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, ai0: 0, ai1: toTarget.ToRotation(), ai2: NPC.whoAmI);
                         }
-                        if (Timer == 100)
+                        if (Timer == 60)
                         {
-
+                            NPC.velocity = -toTarget * 20;
                             SoundEngine.PlaySound(SoundID.Item28, NPC.Center);
                             if (DLCUtils.HostCheck)
                             {
                                 
                                 for (int i = -5; i < 6; i++)
                                 {
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, Vector2.Zero, ModContent.ProjectileType<IceTrident>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai0: i * 5, ai2: toTarget.ToRotation());
+                                    Vector2 vel = toTarget;
+                                    if (i < 0) vel = vel.RotatedBy(MathHelper.PiOver2 - 1f);
+                                    if (i > 0) vel = vel.RotatedBy(MathHelper.PiOver2 + 1f);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, vel * i * 15, ModContent.ProjectileType<IceTrident>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai0: i * 5, ai2: toTarget.ToRotation());
                                 }
                             }
                         }
-                        if (Timer >= 200)
+                        if (Timer >= 100)
                         {
                             Attack = 0;
                             Timer = 0;
                         }
                     }
                 }
-                
+                if (Attack == 2)
+                {
+                    Timer++;
+                    if (Timer == 1 && DLCUtils.HostCheck) 
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai0: 2);
+                    if (Timer < 60)
+                    {
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 1, 0.03f);
+                    }
+                    if (Timer == 60)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/SCalSounds/SCalDash"), NPC.Center);
+                        NPC.velocity = toTarget * 30;
+                    }
+                    if (Timer > 60 && Timer < 160)
+                    {
+                        if (Timer % 5 == 0 && DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.Next(2, 5)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ArcticPaw>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 30, 0.03f);
+                    }
+                    if (Timer == 160)
+                    {
+                        Timer = 0;
+                        Attack = 0;
+                    }
+                }
+                if (Attack == 3)
+                {
+                    Movement(target.Center + new Vector2(0, 400));
+                    
+                    if (Timer == 0)
+                    {
+                        Data = Main.rand.NextBool() ? 1 : -1;
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, ai0: 3);
+                    }
+                    Vector2 pos = new Vector2(0, -1600).RotatedBy(MathHelper.Lerp(-0.9f * Data, 0.9f * Data, Timer / 180f));
+                    pos.Y /= 1.78f;
+                    if (DLCUtils.HostCheck)
+                    {
+                        Vector2 position = target.Center + pos + pos.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.PiOver2) * Main.rand.Next(-500, 500);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 30, ModContent.ProjectileType<Blizzard>(), 0, 0, ai0: Main.rand.Next(0, 4));
+                        if (Timer % 5 == 0)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 12, ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
+                        }
+                    }
+                    if (Timer % 5 == 0 && Main.player[Main.myPlayer].Distance(NPC.Center) < 5000)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item9, target.Center + pos);
+                    }
+                        Timer += 2;
+                    if (Timer >= 180)
+                    {
+                        Timer = 0;
+                        Attack = 0;
+                        Data = 0;
+                    }
+                }
+                if (Attack == 4)
+                {
+                    Movement(target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, 200));
+                    Timer++;
+                    if (Timer == 1 && DLCUtils.HostCheck)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, ai0: 1);
+                    } 
+                    if (Timer == 40)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item36, NPC.Center);
+                        if (DLCUtils.HostCheck)
+                        {
+                            for (int i = 0; i < 10; i++)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Main.rand.NextFloat(-0.25f, 0.25f)) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                            }
+                        }
+                    }
+                    if (Timer == 60)
+                    {
+                        Timer = 0;
+                        Attack = 0;
+                    }
+                }
+                if (Attack == 5)
+                {
+                    Movement(target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, 0), maxSpeed: 35, slowdown: 100);
+                    Timer++;
+                    if (Timer == 1 && DLCUtils.HostCheck)
+                    {
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, Main.myPlayer, ai0: 4);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DarkIceCrystal>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI, ai1: target.whoAmI);
+                    }
+                    if (Timer == 100)
+                    {
+                        NPC.velocity = toTarget * 30;
+                    }
+                    if (Timer >= 120)
+                    {
+                        Attack = 0;
+                        Timer = 0;
+                    }
+                }
+                if (Attack == 6)
+                {
+                    Movement(target.Center, lowspeed: 0, slowdown: 300);
+                    Timer++;
+                    if (Timer == 1 && DLCUtils.HostCheck)
+                    {
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, Main.myPlayer, ai0: 5);
+                    }
+                    if (Timer % 15 == 0)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item5, NPC.Center);
+                        if (DLCUtils.HostCheck)
+                        {
+                            for (int i = 0; i < 2; i++)
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget.RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f))* Main.rand.NextFloat(13, 20), ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
+                        }
+                    }
+                    if (Timer >= 150)
+                    {
+                        Timer = 0;
+                        Attack = 0;
+                    }
+                }
+                if (Attack == 7)
+                {
+                    if (Data == 0 && NPC.Center.Distance(new Vector2(NPC.Center.X, target.Center.Y - 300)) > 50)
+                    {
+                        Movement(new Vector2(NPC.Center.X, target.Center.Y - 300), maxSpeed: 35);
+                    }else if (Data == 0)
+                    {
+                        Data = NPC.Center.X > target.Center.X ? -1 : 1;
+                    }
+                    if (Data != 0)
+                    {
+                        Movement(target.Center + new Vector2(500 * Data, -300), maxSpeed:50);
+                        Timer++;
+                        if (Timer % 30 == 0)
+                        {
+                            SoundEngine.PlaySound(SoundID.Item92, NPC.Center);
+                            if (DLCUtils.HostCheck)
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, toTarget * 15, ModContent.ProjectileType<FrostFlare>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                        }
+                        if (Timer > 200 || NPC.Distance(target.Center + new Vector2(500 * Data, -300)) < 50)
+                        {
+                            Timer = 0;
+                            Data = 0;
+                            Attack = 0;
+                        }
+                    }
+                }
+                if (Attack == 8)
+                {
+                    Timer++;
+                    Movement(target.Center, lowspeed: 0, slowdown: 300);
+                    if (Timer > 0 && Timer % 10 == 0)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item1, NPC.Center);
+                        if (DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                    }
+                    if (Timer >= 30)
+                    {
+                        Timer = -30;
+                        Data++;
+                    }
+                    if (Data >= 1)
+                    {
+                        Data = 0;
+                        Timer = 0;
+                        Attack = 0;
+                    }
+                }
             }
             void Movement( Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
             {
@@ -188,4 +365,3 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
-*/
