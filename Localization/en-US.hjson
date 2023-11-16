@@ -436,6 +436,14 @@ Mods: {
 			MutantDoGHead.DisplayName: The Devourer of Gods
 			MutantDoGTail.DisplayName: The Devourer of Gods
 			MutantPolter.DisplayName: Necroplasm
+			ArcticPaw.DisplayName: Arctic Paw
+			Blizzard.DisplayName: Blizzard
+			DarkIceCrystal.DisplayName: Dark Ice Crystal
+			FrostFlare.DisplayName: Frost Flare
+			FrostShard.DisplayName: Frost Shard
+			IceArrow.DisplayName: Ice Arrow
+			IceShot.DisplayName: Ice Shot
+			IceStar.DisplayName: Ice Star
 		}
 
 		Buffs: {
@@ -443,6 +451,7 @@ Mods: {
 				Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
 				DisplayName: Calamitous Presence
 			}
+
 			ArcticPaw.DisplayName: Arctic Paw
 			Blizzard.DisplayName: Blizzard
 			CrystalShard.DisplayName: Crystal Shard
