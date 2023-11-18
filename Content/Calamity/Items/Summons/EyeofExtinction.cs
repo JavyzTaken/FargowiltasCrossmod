@@ -11,7 +11,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EyeofExtinction : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/SummonItems/EyeofDesolation";
         public override int NPCType => ModContent.NPCType<SupremeCalamitas>();
         public override string NPCName => "Supreme Calamitas";
         public override void AddRecipes()

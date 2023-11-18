@@ -25,6 +25,7 @@
     <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
     <None Remove="Content\Calamity\Items\Summons\AstrumCor.png" />
+    <None Remove="Content\Calamity\Items\Summons\EyeofExtinction.png" />
     <None Remove="Content\Calamity\Items\Summons\LetterofKos.png" />
     <None Remove="Content\Calamity\Items\Summons\RiftofKos.png" />
     <None Remove="Content\Calamity\Items\Summons\SirensPearl.png" />
