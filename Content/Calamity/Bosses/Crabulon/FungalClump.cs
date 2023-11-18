@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         {
             NPC.width = 40;
             NPC.height = 40;
-            NPC.lifeMax = 500;
+            NPC.lifeMax = 1000;
             NPC.HitSound = SoundID.NPCHit1;
             NPC.DeathSound = SoundID.NPCDeath1;
             NPC.defense = 5;
@@ -167,7 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 }
 
             }
-            if (NPC.ai[0] == 150 && owner.GetLifePercent() < 0.25f)
+            if (NPC.ai[0] == 150)// && owner.GetLifePercent() < 0.25f)
             {
                 if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toplayer.RotatedBy(MathHelper.ToRadians(Main.rand.Next(-20, 20))) * 4, ModContent.ProjectileType<FungusBall>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);

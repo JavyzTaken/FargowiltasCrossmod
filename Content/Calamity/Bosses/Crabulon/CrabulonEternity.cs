@@ -121,6 +121,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 return false;
             }
 
+            /*
             //Fungal clump phase 1
             if (npc.ai[3] == 0 && npc.GetLifePercent() < 0.8f)
             {
@@ -151,8 +152,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 npc.HitSound = SoundID.NPCHit4;
                 NetSync(npc);
             }
-            //fungal clump phase 3
-            if (npc.ai[3] == 4 && npc.GetLifePercent() < 0.2f)
+            */
+            //fungal clump phase
+            if (npc.ai[3] == 4 && npc.GetLifePercent() < 0.5f)
             {
                 npc.ai[3]++;
                 if (DLCUtils.HostCheck)
