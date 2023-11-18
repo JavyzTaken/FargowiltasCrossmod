@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Utils;
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,8 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class FrostFlare : ModProjectile
     {
         public override string Texture => "CalamityMod/Items/Weapons/Rogue/FrostyFlare";

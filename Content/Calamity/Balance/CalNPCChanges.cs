@@ -604,6 +604,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 RecursiveDropRemove(rule);
             }
+            [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
             void RecursiveDropRemove(IItemDropRule dropRule)
             {
                 if (--allowedRecursionDepth > 0)

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CalamityMod;
+using CalamityMod.Items.Weapons.Rogue;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
@@ -58,7 +59,8 @@ public class FargowiltasCrossmod : Mod
             SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
         }
     }
-
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public DamageClass rogueDamageClass => ModContent.GetInstance<RogueDamageClass>();
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public void PostSetupContent_Calamity()
     {
@@ -68,9 +70,13 @@ public class FargowiltasCrossmod : Mod
         double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
         int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
 
-        //int rogueItem = ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.WulfrumKnife>();
-        //Func<string> rogueDamage = () => $"Rogue Damage: {Damage(ModContent.GetInstance<RogueDamageClass>())}%";
-        //ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueDamage);
+
+        int rogueItem = ModContent.ItemType<WulfrumKnife>();
+        Func<string> rogueDamage = () => $"Rogue Damage: {Damage(rogueDamageClass)}%";
+        Func<string> rogueCrit = () => $"Rogue Critical: {Crit(rogueDamageClass)}%";
+        ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueDamage);
+        ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueCrit);
+
         #endregion
     }
 

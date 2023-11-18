@@ -12,7 +12,6 @@ namespace FargowiltasCrossmod.Core.Systems
     public class WorldUpdatingSystem : ModSystem
     {
         public static bool InfernumStateLastFrame = false;
-
         public override void PreUpdateWorld()
         {
             if (ModCompatibility.Calamity.Loaded)
