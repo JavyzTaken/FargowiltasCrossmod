@@ -1,4 +1,5 @@
-﻿using CalamityMod;
+﻿/*
+using CalamityMod;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
@@ -96,3 +97,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
+*/
