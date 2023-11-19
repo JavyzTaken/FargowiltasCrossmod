@@ -7,10 +7,6 @@ Removed nuke contact damage on maso
 
 Eternity Crabulon: Increased Fungal Clump HP and condensed to single phase at 50% hp
 
-Added Calamity Rogue damage and crit to Mutant Mod stat sheet
-Made Calamity dashes disabled by Mutant Mod doubletap config 
-Normality Relocator now self-inflicts damage in Emode while a boss is alive, like Rod of Discord
-Mutant Fang maximum life reduction ticks twice as fast
 Health multipliers (compensation for Universe Core nerf):
 Devourer of Gods  3.2 -> 2.4
 Storm Weaver  2.7 -> 2.4
@@ -21,6 +17,11 @@ Polterghast 3.5 -> 2.4
 Champions: 1 -> 0.9
 Yharon: 2.3 -> 2
 Abom: 3.8 -> 3.5 
+
+Added Calamity Rogue damage and crit to Mutant Mod stat sheet
+Made Calamity dashes disabled by Mutant Mod doubletap config 
+Normality Relocator now self-inflicts damage in Emode while a boss is alive, like Rod of Discord
+Mutant Fang maximum life reduction ticks twice as fast
 Fixed several NPC loot issues 
 """Resprited""" Eye of Extinction 
 Fixed functionality of Eye of Extinction
