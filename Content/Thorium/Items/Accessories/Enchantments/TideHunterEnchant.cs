@@ -27,22 +27,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public static void TideHunterEffect(Player player)
         {
+            var DLCPlayer = player.ThoriumDLC();
+            if (!player.FargoSouls().IsInADashState) return;
 
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
-            bool IsDashing = player.FargoSouls().IsInADashState;
-            if (!DLCPlayer.WasInDashState && IsDashing && (player.velocity.X != 0))
+            if (!DLCPlayer.WasInDashState)
             {
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity, ModContent.ProjectileType<TideHunter_Wave>(), 100, 50);
+                Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.TideHunterEnchItem), player.Center, player.velocity, ModContent.ProjectileType<Projectiles.TideTurnerWave>(), 125, 3f, player.whoAmI, 6);
             }
-
-            /*
-            int SpecialDashCD = player.GetModPlayer<FargowiltasSouls.Core.ModPlayers.AccessoryEffectsPlayer>().SpecialDashCD;
-            if (SpecialDashCD > DLCPlayer.PreviousSpecialDashCD)
-            {
-                Projectile.NewProjectile(player.GetSource_FromThis(), player.Center, player.velocity, ProjectileID.WaterBolt, 100, 50);
-            }
-            DLCPlayer.PreviousSpecialDashCD = SpecialDashCD;
-            */
         }
     }
 }

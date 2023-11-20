@@ -42,18 +42,18 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             const int chargeTime = 180;
 
-            int leechType = ModContent.ProjectileType<WhisperingLeech>();
-            if (Main.player[Projectile.owner].ownedProjectileCounts[leechType] <= 0)
-            {
-                if (Projectile.ai[2] <= 0 && Main.npc.Any(npc => npc.active && !npc.friendly && npc.Distance(Main.player[Projectile.owner].Center) < 640f))
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + 30 * Vector2.UnitY, Vector2.Zero, leechType, 20, 0f, Projectile.owner);
-                }
-                else
-                {
-                    Projectile.ai[2]--;
-                }
-            }
+            //int leechType = ModContent.ProjectileType<WhisperingLeech>();
+            //if (Main.player[Projectile.owner].ownedProjectileCounts[leechType] <= 0)
+            //{
+            //    if (Projectile.ai[2] <= 0 && Main.npc.Any(npc => npc.active && !npc.friendly && npc.Distance(Main.player[Projectile.owner].Center) < 640f))
+            //    {
+            //        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + 30 * Vector2.UnitY, Vector2.Zero, leechType, 20, 0f, Projectile.owner);
+            //    }
+            //    else
+            //    {
+            //        Projectile.ai[2]--;
+            //    }
+            //}
 
             Projectile.ai[0]++;
 
@@ -149,7 +149,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 Main.NewText("test");
                 return;
             }
-            Projectile.position -= Projectile.velocity;
+            Projectile.position = Main.projectile[(int)Projectile.ai[1]].Center - Vector2.UnitY * 70f - Projectile.velocity;
             //Projectile.Center = Main.projectile[num830].Center - Projectile.velocity;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathF.PI / 2f;
         }

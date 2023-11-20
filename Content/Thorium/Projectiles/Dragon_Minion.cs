@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
+using FargowiltasSouls;
 
 // god this is such a mess
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
@@ -214,7 +215,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             }
             else
             {
-                int length = 6;
+                int length = Main.player[Projectile.owner].FargoSouls().ForceEffect(ModContent.ItemType<Items.Accessories.Enchantments.DreadEnchant>()) ? 12 : 6;
                 if (data.position >= length)
                 {
                     SpawnSegment(TailType);
@@ -234,7 +235,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         internal void SpawnSegment(int type)
         {
-            data.child = Projectile.NewProjectile(new DragonSpawnSource(Projectile, data.Next(Projectile.whoAmI)), Projectile.position, Vector2.Zero, type, 45, 0, Projectile.owner);
+            if (Main.myPlayer == Projectile.owner)
+            {
+                data.child = Projectile.NewProjectile(new DragonSpawnSource(Projectile, data.Next(Projectile.whoAmI)), Projectile.position, Vector2.Zero, type, 45, 0, Projectile.owner);
+            }
+            else
+            {
+                Projectile.netUpdate = true;
+            }
         }
 
         public override void AI()
@@ -328,6 +336,15 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 return;
             }
 
+            float playerSpeed = player.velocity.Length();
+            if (playerSpeed < 1f)
+            {
+                currentAttack = AttackMode.idle;
+                Projectile.friendly = false;
+                HeadMovement();
+                return;
+            }
+
             if (retreating)
             {
                 if (Projectile.Center.Distance(targetPos) < 128)
@@ -367,7 +384,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             targetPos += Main.rand.NextVector2CircularEdge(768, 768);
         }
 
-        // sets targetposition to where we want to go
+        // sets targetposition 
         void HeadTarget()
         {
             targetPos = Vector2.Zero;

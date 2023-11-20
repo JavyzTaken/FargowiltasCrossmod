@@ -24,38 +24,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         protected override Color nameColor => Color.PaleVioletRed;
 
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-
-        }
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             var modPlayer = player.ThoriumDLC();
             modPlayer.TemplarEnch = true;
             modPlayer.TemplarEnchItem = Item;
-
-            if (modPlayer.TemplarCD > 0)
-            {
-                modPlayer.TemplarCD--;
-            }
-        }
-
-        public static void summonHolyFire(Player player)
-        {
-            var modPlayer = player.ThoriumDLC();
-            Projectile.NewProjectile(player.GetSource_Accessory(modPlayer.TemplarEnchItem),
-                                     Main.MouseWorld.X,
-                                     player.Center.Y - 500,
-                                     0f,
-                                     10f,
-                                     ModContent.ProjectileType<Projectiles.Templar_Fire>(),
-                                     FargoSoulsUtil.HighestDamageTypeScaling(player, 20),
-                                     0f,
-                                     player.whoAmI,
-                                     Main.MouseWorld.X,
-                                     Main.MouseWorld.Y);
         }
 
         public override void AddRecipes()
