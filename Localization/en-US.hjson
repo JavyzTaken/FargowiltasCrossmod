@@ -493,6 +493,61 @@ Mods: {
 				DisplayName: Geode Enchant
 				Tooltip: ""
 			}
+
+			BloomingEnchant: {
+				DisplayName: Blooming Enchant
+				Tooltip: ""
+			}
+
+			Cook: {
+				Tooltip: ""
+				DisplayName: Cook
+			}
+
+			WeaponMaster: {
+				Tooltip: ""
+				DisplayName: Weapon Master
+			}
+
+			Spiritualist: {
+				Tooltip: ""
+				DisplayName: Spiritualist
+			}
+
+			Druid: {
+				Tooltip: ""
+				DisplayName: Druid
+			}
+
+			Diverman: {
+				Tooltip: ""
+				DisplayName: Diverman
+			}
+
+			Tracker: {
+				Tooltip: ""
+				DisplayName: Tracker
+			}
+
+			Blacksmith: {
+				Tooltip: ""
+				DisplayName: Blacksmith
+			}
+
+			ConfusedZombie: {
+				Tooltip: ""
+				DisplayName: Confused Zombie
+			}
+
+			DesertAcolyte: {
+				Tooltip: ""
+				DisplayName: Desert Acolyte
+			}
+
+			Cobbler: {
+				Tooltip: ""
+				DisplayName: Cobbler
+			}
 		}
 
 		NPCs: {

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using FargowiltasSouls.Core.Toggler;
 using System.IO;
 using FargowiltasCrossmod.Content.Thorium;
+using ThoriumMod.NPCs;
 
 namespace FargowiltasCrossmod
 {
@@ -58,7 +59,7 @@ namespace FargowiltasCrossmod
             internal static Hook AddShops;
         }
 
-        private static void LoadDetours()
+        private void LoadDetours()
         {
             Type deviDetourClass = ModContent.Find<ModNPC>("Fargowiltas/Deviantt").GetType();
 
@@ -89,6 +90,14 @@ namespace FargowiltasCrossmod
                 LumberHooks.OnChatButtonClicked.Apply();
                 LumberHooks.AddShops.Apply();
             }
+
+            //Type CaughtNPCType = ModContent.Find<ModItem>("Fargowiltas/Items/CaughtNPCs/CaughtNPCItem").GetType();
+            Type CaughtNPCType = ModCompatibility.MutantMod.Mod.GetType().Assembly.GetType("Fargowiltas.Items.CaughtNPCs.CaughtNPCItem", true);
+
+            if (CaughtNPCType != null)
+            {
+                CaughtTownies = (Dictionary<int, int>)CaughtNPCType.GetField("CaughtTownies", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+            }
         }
 
         public static readonly List<int> UnlimitedPotionBlacklist = new();
@@ -100,12 +109,35 @@ namespace FargowiltasCrossmod
 
             Content.Thorium.Projectiles.DLCHealing.HealMethod = thoriumProjExtensions.GetMethod("ThoriumHeal", BindingFlags.Static | BindingFlags.NonPublic);
             Content.Thorium.Projectiles.DLCHealing.CustomHealingType = thoriumProjExtensions.GetNestedType("CustomHealing", BindingFlags.NonPublic);
+            MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Content.Thorium.Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
 
             Content.Thorium.Items.Accessories.Enchantments.YewWoodEnchant.LoadModdedAmmo();
 
-            MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Content.Thorium.Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
+            RegisterThoriumCaughtNPCs();
 
             DevianttPatches.AddThoriumDeviShop();
+        }
+
+        internal Dictionary<int, int> CaughtTownies;
+        public void RegisterThoriumCaughtNPCs()
+        {
+            void Add(string internalName, int id, string quote)
+            {
+                Fargowiltas.Items.CaughtNPCs.CaughtNPCItem item = new(internalName, id, quote);
+                this.AddContent(item);
+                CaughtTownies.Add(id, item.Type);
+            }
+
+            Add("Cobbler", ModContent.NPCType<Cobbler>(), "''");
+            Add("DesertAcolyte", ModContent.NPCType<DesertAcolyte>(), "''");
+            Add("Cook", ModContent.NPCType<Cook>(), "'I am the danger'");
+            Add("ConfusedZombie", ModContent.NPCType<ConfusedZombie>(), "'Guh?!'");
+            Add("Blacksmith", ModContent.NPCType<Blacksmith>(), "''");
+            Add("Tracker", ModContent.NPCType<Tracker>(), "''");
+            Add("Diverman", ModContent.NPCType<Diverman>(), "'Sam?'");
+            Add("Druid", ModContent.NPCType<Druid>(), "''");
+            Add("Spiritualist", ModContent.NPCType<Spiritualist>(), "''");
+            Add("WeaponMaster", ModContent.NPCType<WeaponMaster>(), "''");
         }
 
         public override void PostSetupContent()
