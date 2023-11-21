@@ -91,6 +91,8 @@ namespace FargowiltasCrossmod
             }
         }
 
+        public static readonly List<int> UnlimitedPotionBlacklist = new();
+        public static bool PotionTypeInBlacklist(int type) => UnlimitedPotionBlacklist.Contains(type);
         public void Thorium_Load()
         {
             Assembly ThoriumAssembly = ModLoader.GetMod("ThoriumMod").GetType().Assembly;
@@ -104,6 +106,30 @@ namespace FargowiltasCrossmod
             MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Content.Thorium.Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
 
             DevianttPatches.AddThoriumDeviShop();
+        }
+
+        public override void PostSetupContent()
+        {
+            Mod mutantMod = ModCompatibility.MutantMod.Mod;
+            double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
+            int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
+
+            void Add<T>(Func<string> func) where T : ModItem => mutantMod.Call("AddStat", ModContent.ItemType<T>(), func);
+
+            Add<ThoriumMod.Items.HealerItems.WoodenBaton>(() => $"Radiant Damage: {Damage(ModContent.GetInstance<ThoriumMod.HealerDamage>())}%");
+            Add<ThoriumMod.Items.HealerItems.WoodenBaton>(() => $"Radiant Critical: {Crit(ModContent.GetInstance<ThoriumMod.HealerDamage>())}%");
+
+            Add<ThoriumMod.Items.BardItems.WoodenWhistle>(() => $"Synphonic Damage: {Damage(ModContent.GetInstance<ThoriumMod.BardDamage>())}%");
+            Add<ThoriumMod.Items.BardItems.WoodenWhistle>(() => $"Synphonic Critical: {Crit(ModContent.GetInstance<ThoriumMod.BardDamage>())}%");
+
+            Add<ThoriumMod.Items.ThrownItems.StoneThrowingSpear>(() => $"Throwing Damage: {Damage(DamageClass.Throwing)}%");
+            Add<ThoriumMod.Items.ThrownItems.StoneThrowingSpear>(() => $"Throwing Critical: {Crit(DamageClass.Throwing)}%");
+
+            Add<ThoriumMod.Items.BossMini.TheGoodBook>(() => $"Bonus Healing: {Main.LocalPlayer.Thorium().healBonus}");
+            Add<ThoriumMod.Items.HealerItems.HoneyHeart>(() => $"Life recovery: {Main.LocalPlayer.Thorium().lifeRecovery}/ sec");
+
+            Add<ThoriumMod.Items.BardItems.InspirationFragment>(() => $"Inspiration: {Main.LocalPlayer.Thorium().bardResourceMax2}");
+            Add<ThoriumMod.Items.BardItems.InspirationNote>(() => $"Inspiration Regen: {Main.LocalPlayer.Thorium().inspirationRegenBonus}/ sec");
         }
 
         public override void Unload()
