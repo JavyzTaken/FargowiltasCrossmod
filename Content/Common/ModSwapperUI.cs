@@ -73,11 +73,28 @@ namespace FargowiltasCrossmod.Content.Common
         public override void OnInitialize()
         {
             UITextPanel<string> textBox = new("Switch Mod");
-            textBox.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) => DevianttPatches.CycleShop();
+            textBox.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) =>
+            {
+                Core.Globals.DevianttGlobalNPC.CycleShop();
+                int currentShop = Core.Globals.DevianttGlobalNPC.currentShop;
+                if (currentShop == 0)
+                {
+                    (listeningElement as UITextPanel<string>).SetText("Vanilla");
+                }
+                else
+                {
+                    (listeningElement as UITextPanel<string>).SetText(Core.Globals.DevianttGlobalNPC.ModShops[currentShop - 1].Name);
+                }
+            };
             textBox.Left.Set(550, 0);
             textBox.Top.Set(200, 0);
             textBox.IgnoresMouseInteraction = false;
             Append(textBox);
+        }
+
+        public override void OnActivate()
+        {
+            RecalculateChildren();
         }
     }
 }

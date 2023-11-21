@@ -500,7 +500,7 @@ Mods: {
 			}
 
 			Cook: {
-				Tooltip: ""
+				Tooltip: "'I am the danger'"
 				DisplayName: Cook
 			}
 
@@ -520,7 +520,7 @@ Mods: {
 			}
 
 			Diverman: {
-				Tooltip: ""
+				Tooltip: "Sam?"
 				DisplayName: Diverman
 			}
 
@@ -535,7 +535,7 @@ Mods: {
 			}
 
 			ConfusedZombie: {
-				Tooltip: ""
+				Tooltip: "'Guh?!'"
 				DisplayName: Confused Zombie
 			}
 

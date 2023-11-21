@@ -47,12 +47,6 @@ namespace FargowiltasCrossmod
             if (ThoriumLoaded) Thorium_Load();
         }
 
-        private struct DeviantHooks
-        {
-            internal static Hook SetChatButtons;
-            internal static Hook OnChatButtonClicked;
-            //internal static Hook AddShops;
-        }
         private struct LumberHooks
         {
             internal static Hook OnChatButtonClicked;
@@ -61,22 +55,6 @@ namespace FargowiltasCrossmod
 
         private void LoadDetours()
         {
-            Type deviDetourClass = ModContent.Find<ModNPC>("Fargowiltas/Deviantt").GetType();
-
-            if (deviDetourClass != null)
-            {
-                MethodInfo SetChatButtons_DETOUR = deviDetourClass.GetMethod("SetChatButtons", BindingFlags.Public | BindingFlags.Instance);
-                MethodInfo OnChatButtonClicked_DETOUR = deviDetourClass.GetMethod("OnChatButtonClicked", BindingFlags.Public | BindingFlags.Instance);
-                MethodInfo AddShops_DETOUR = deviDetourClass.GetMethod("AddShops", BindingFlags.Public | BindingFlags.Instance);
-
-
-                DeviantHooks.SetChatButtons = new Hook(SetChatButtons_DETOUR, DevianttPatches.SetChatButtons);
-                DeviantHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, DevianttPatches.OnChatButtonClicked);
-
-                DeviantHooks.SetChatButtons.Apply();
-                DeviantHooks.OnChatButtonClicked.Apply();
-            }
-
             Type lumberDetourClass = ModContent.Find<ModNPC>("Fargowiltas/LumberJack").GetType();
 
             if (lumberDetourClass != null)
@@ -91,7 +69,7 @@ namespace FargowiltasCrossmod
                 LumberHooks.AddShops.Apply();
             }
 
-            //Type CaughtNPCType = ModContent.Find<ModItem>("Fargowiltas/Items/CaughtNPCs/CaughtNPCItem").GetType();
+            //Type CaughtNPCType = ModContent.Find<ModItem>("Fargowiltas/Items/CaughtNPCs/CaughtNPCItem").GetType(); Doesn't work because this is in load
             Type CaughtNPCType = ModCompatibility.MutantMod.Mod.GetType().Assembly.GetType("Fargowiltas.Items.CaughtNPCs.CaughtNPCItem", true);
 
             if (CaughtNPCType != null)
@@ -101,7 +79,6 @@ namespace FargowiltasCrossmod
         }
 
         public static readonly List<int> UnlimitedPotionBlacklist = new();
-        public static bool PotionTypeInBlacklist(int type) => UnlimitedPotionBlacklist.Contains(type);
         public void Thorium_Load()
         {
             Assembly ThoriumAssembly = ModLoader.GetMod("ThoriumMod").GetType().Assembly;
@@ -115,7 +92,6 @@ namespace FargowiltasCrossmod
 
             RegisterThoriumCaughtNPCs();
 
-            DevianttPatches.AddThoriumDeviShop();
         }
 
         internal Dictionary<int, int> CaughtTownies;
@@ -124,7 +100,7 @@ namespace FargowiltasCrossmod
             void Add(string internalName, int id, string quote)
             {
                 Fargowiltas.Items.CaughtNPCs.CaughtNPCItem item = new(internalName, id, quote);
-                this.AddContent(item);
+                AddContent(item);
                 CaughtTownies.Add(id, item.Type);
             }
 
@@ -142,11 +118,19 @@ namespace FargowiltasCrossmod
 
         public override void PostSetupContent()
         {
-            Mod mutantMod = ModCompatibility.MutantMod.Mod;
+            if (ThoriumLoaded) 
+            {
+                AddThoriumStats();
+                Core.Globals.DevianttGlobalNPC.AddThoriumShop();
+            }
+        }
+
+        public void AddThoriumStats()
+        {
             double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
             int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
 
-            void Add<T>(Func<string> func) where T : ModItem => mutantMod.Call("AddStat", ModContent.ItemType<T>(), func);
+            void Add<T>(Func<string> func) where T : ModItem => ModCompatibility.MutantMod.Mod.Call("AddStat", ModContent.ItemType<T>(), func);
 
             Add<ThoriumMod.Items.HealerItems.WoodenBaton>(() => $"Radiant Damage: {Damage(ModContent.GetInstance<ThoriumMod.HealerDamage>())}%");
             Add<ThoriumMod.Items.HealerItems.WoodenBaton>(() => $"Radiant Critical: {Crit(ModContent.GetInstance<ThoriumMod.HealerDamage>())}%");
@@ -166,10 +150,6 @@ namespace FargowiltasCrossmod
 
         public override void Unload()
         {
-            if (DeviantHooks.SetChatButtons != null) DeviantHooks.SetChatButtons.Undo();
-            if (DeviantHooks.OnChatButtonClicked != null) DeviantHooks.OnChatButtonClicked.Undo();
-            //DeviantHooks.AddShops.Undo();
-
             if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
         }

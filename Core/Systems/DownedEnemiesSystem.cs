@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Core.Systems
 {
     public class DownedEnemiesSystem : ModSystem
     {
-        internal static Dictionary<string, bool> DLCDownedBools = new Dictionary<string, bool>();
+        internal static Dictionary<string, bool> DLCDownedBools = new();
 
         // Add clamity rare enemies here too as they are implemented
         // Note: use class names for consistency
@@ -51,7 +51,7 @@ namespace FargowiltasCrossmod.Core.Systems
 
         public override void SaveWorldData(TagCompound tag)
         {
-            List<string> downed = new List<string>();
+            List<string> downed = new();
 
             foreach (string downedTag in DLCTags)
             {
