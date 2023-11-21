@@ -101,6 +101,8 @@ namespace FargowiltasCrossmod
 
             Content.Thorium.Items.Accessories.Enchantments.YewWoodEnchant.LoadModdedAmmo();
 
+            MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Content.Thorium.Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
+
             DevianttPatches.AddThoriumDeviShop();
         }
 
