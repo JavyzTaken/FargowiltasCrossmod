@@ -83,13 +83,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             if ((synergy && NoviceClericCrosses % 2 == 0) || !synergy)
             {
-                // holy crux
-                //Vector2 vector = Utils.RotatedBy(Player.Center.DirectionTo(Main.MouseWorld), MathF.PI / burstNum) * 8f;
-                //for (int i = 0; i < burstNum; i++)
-                //{
-                //    vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
-                //    Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 0, 0, Player.whoAmI, 0f, 0f, 1f);
-                //}
+                Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.HealPulse>(), 0, 0, Player.whoAmI, 5);
             }
             else
             {

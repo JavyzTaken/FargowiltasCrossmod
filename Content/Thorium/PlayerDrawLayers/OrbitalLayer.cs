@@ -70,8 +70,9 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 
 					if ((!Front && rotation.Y < 0f) || (Front && rotation.Y >= 0f))
 					{
-						Vector2 position5 = drawInfo.Position + drawPlayer.Size * 0.5f + new Vector2(-2f + rotation.X * (drawPlayer.width + texture5.Width * 0.3f) + rotation.X * (alternating ? 16f : 1f), drawPlayer.mount.PlayerOffsetHitbox * 2);
-						position5.Y += 4f;
+						Vector2 rotationPos = new(rotation.X * (drawPlayer.width + texture5.Width * 0.3f + (alternating ? 16f : 1f)) - 2f, drawPlayer.mount.PlayerOffsetHitbox * 2 + rotation.Y * 15f);
+						Vector2 drawPos = drawInfo.Position + drawPlayer.Size / 2f + rotationPos;
+						drawPos.Y += 4f;
 						float scale5 = 0.87f + rotation.Y * 0.13f;
 						Vector2 origin5 = new Vector2(7, 9) * scale5;
 						SpriteEffects effect = (drawPlayer.gravDir == -1f) ? SpriteEffects.FlipVertically : SpriteEffects.None;
@@ -80,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 						color5.A = 190;
 						bool crossType = !alternating || n % 2 == 0;
 						Rectangle rect = new(crossType ? 0 : 14, 0, 14, 18);
-						DrawData data5 = new(texture5, position5 - Main.screenPosition, rect, color5, 0f, origin5, scale5, effect, 0);
+						DrawData data5 = new(texture5, drawPos - Main.screenPosition, rect, color5, 0f, origin5, scale5, effect, 0);
 						drawInfo.DrawDataCache.Add(data5);
 					}
 				}
