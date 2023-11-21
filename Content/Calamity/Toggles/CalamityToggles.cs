@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityToggles : ToggleCollection
     {
-        public override string Mod => ModCompatibility.Calamity.Name;
+        public override string Mod => "FargowiltasCrossmod";
         public override string SortCategory => "Enchantments";
         public override int Priority => 1;
         public override bool Active => true;
