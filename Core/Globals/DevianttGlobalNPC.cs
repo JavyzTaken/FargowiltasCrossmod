@@ -50,6 +50,7 @@ namespace FargowiltasCrossmod.Core.Globals
             Systems.DownedEnemiesSystem.DLCDownedBools["GildedLycan"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedBat"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedSlime"]));
 
             ModShops.Add(shop);
+            shop.Register();
         }
     }
 }
