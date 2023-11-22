@@ -11,6 +11,50 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Libraries\*.dll" />
+	<Reference Include="Libraries\Fargowiltas.dll" />
+	<Reference Include="Libraries\FargowiltasSouls.dll" />
+	<Reference Include="Libraries\CalamityMod.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\EternityDeathIcon.png" />
+    <None Remove="Assets\EternityRevIcon.png" />
+    <None Remove="changelog.txt" />
+    <None Remove="Content\Calamity\Bosses\Cryogen\IceChain.png" />
+    <None Remove="Content\Calamity\Bosses\SlimeGod\CrimsonPaladinSpike.png" />
+    <None Remove="Content\Calamity\Buffs\CalamitousPresenceBuff.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
+    <None Remove="Content\Calamity\Items\Summons\AstrumCor.png" />
+    <None Remove="Content\Calamity\Items\Summons\EyeofExtinction.png" />
+    <None Remove="Content\Calamity\Items\Summons\LetterofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\RiftofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\SirensPearl.png" />
+    <None Remove="Content\Calamity\Items\Summons\WormFoodofKos.png" />
+    <None Remove="Content\Common\Bosses\Mutant\MutantAresBomb.png" />
+    <None Remove="Content\Common\Bosses\Mutant\MutantAtlantis.png" />
+    <None Remove="Content\Calamity\Items\Summons\AbandonedRemote.png" />
+    <None Remove="Content\Calamity\Items\Summons\AstrumCor.png" />
+    <None Remove="Content\Calamity\Items\Summons\ClamPearl.png" />
+    <None Remove="Content\Calamity\Items\Summons\ColossalTentacle.png" />
+    <None Remove="Content\Calamity\Items\Summons\DeepseaProteinShake.png" />
+    <None Remove="Content\Calamity\Items\Summons\LetterofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\MaulerSkull.png" />
+    <None Remove="Content\Calamity\Items\Summons\NuclearChunk.png" />
+    <None Remove="Content\Calamity\Items\Summons\PlaguedWalkieTalkie.png" />
+    <None Remove="Content\Calamity\Items\Summons\QuakeIdol.png" />
+    <None Remove="Content\Calamity\Items\Summons\RiftofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\SirensPearl.png" />
+    <None Remove="Content\Calamity\Items\Summons\StormIdol.png" />
+    <None Remove="Content\Calamity\Items\Summons\SulphurBearTrap.png" />
+    <None Remove="Content\Calamity\Items\Summons\WormFoodofKos.png" />
+    <None Remove="Content\Calamity\Items\Summons\WyrmTablet.png" />
+    <None Remove="icon.png" />
+    <None Remove="WorkshopIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Sounds\" />
+    <Folder Include="Content\Calamity\NPCS\" />
+    <Folder Include="Content\Calamity\Projectiles\" />
+    <Folder Include="Core\BaseClasses\" />
   </ItemGroup>
 </Project>
