@@ -6,12 +6,16 @@ Features several toggles to customize your Fargo's/Calamity cross-mod experience
 
 Features may include:
 
---toggling between eternity and calamity boss behaviors when both are enabled
+--Toggling between eternity and calamity boss behaviors when both are enabled
 
---toggling between eternity and calamity vanilla changes (gear rebalancing)
+--Eternity mode AI for Calamity bosses
 
---postML progression locks to make souls and calamity playable together
+--Accessory recipe and functionality changes to incorporate Calamity items
 
---boss stat rebalancing to compensate for having both op fargo accessories and op cal gear
+--New accessories using Calamity items
 
---finding and fixing important bugs between the mods
+--PostML progression changes to make for balanced progression between the mods
+
+--Boss stat rebalancing to compensate for having both powerful Fargo accessories and powerful Cal gear
+
+--Finding and fixing important bugs between the mods
