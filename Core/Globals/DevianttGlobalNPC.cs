@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Core.Globals
         {
             if (currentShop == 0) return;
 
-            if (ModShops[currentShop - 1] != null)
+            if (ModShops.Count >= currentShop && ModShops[currentShop - 1] != null)
             {
                 for (int i = 0; i < items.Length; i++)
                 {
@@ -34,8 +34,6 @@ namespace FargowiltasCrossmod.Core.Globals
                         items[i] = ModShops[currentShop - 1].ActiveEntries.ElementAt(i).Item;
                     }
                 } 
-                //items[0] = new Item(1);
-                //ModShops[currentShop - 1].ActiveEntries.Select(e => e.Item).ToArray().CopyTo(items, 0);
                 return;
             }
 

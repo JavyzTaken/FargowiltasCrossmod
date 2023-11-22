@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 using Terraria.DataStructures;
 using Terraria.Chat;
+using ThoriumMod.Buffs;
+using FargowiltasSouls.Content.Buffs.Masomode;
 
 // TODO: this needs testing in mp with more than 1 person, but it should work (tm)
 
@@ -24,31 +26,66 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPlayer.FallenPaladinEnchItem = Item;
         }
 
-        public static readonly List<int> WhiteList = new()
+        public static readonly List<int> WhiteList = new() 
         {
-            20,
-            24,
-            39,
-            44,
-            70,
-            153,
-            144,
-            22,
-            23,
-            31,
-            32,
-            33,
-            35,
-            36,
-            46,
-            47,
-            69,
-            80,
-            156,
-            148,
-            197,
-            149,
-            30
+            BuffID.Venom,
+            BuffID.Blackout,
+            BuffID.Bleeding,
+            BuffID.BrokenArmor,
+            BuffID.Burning,
+            BuffID.Chilled,
+            BuffID.Confused,
+            BuffID.Cursed,
+            BuffID.CursedInferno,
+            BuffID.Darkness,
+            BuffID.Electrified,
+            BuffID.Rabies,
+            BuffID.Frostburn,
+            BuffID.Frostburn2,
+            BuffID.Frozen,
+            BuffID.Ichor,
+            BuffID.OnFire,
+            BuffID.OnFire3,
+            BuffID.OgreSpit,
+            BuffID.Poisoned,
+            BuffID.ShadowFlame,
+            BuffID.Silenced,
+            BuffID.Slow,
+            BuffID.Stoned,
+            BuffID.Weak,
+            BuffID.Webbed,
+
+            ModContent.BuffType<Destabilized>(),
+            ModContent.BuffType<GraniteSurge>(),
+            ModContent.BuffType<Liquefied>(),
+            ModContent.BuffType<Staggered>(),
+
+            ModContent.BuffType<AnticoagulationBuff>(),
+            ModContent.BuffType<AntisocialBuff>(),
+            ModContent.BuffType<AtrophiedBuff>(),
+            ModContent.BuffType<BerserkedBuff>(),
+            ModContent.BuffType<ClippedWingsBuff>(),
+            ModContent.BuffType<CrippledBuff>(),
+            ModContent.BuffType<CurseoftheMoonBuff>(),
+            ModContent.BuffType<DefenselessBuff>(),
+            ModContent.BuffType<FlamesoftheUniverseBuff>(),
+            ModContent.BuffType<GuiltyBuff>(),
+            ModContent.BuffType<HypothermiaBuff>(),
+            ModContent.BuffType<InfestedBuff>(),
+            ModContent.BuffType<JammedBuff>(),
+            ModContent.BuffType<LethargicBuff>(),
+            ModContent.BuffType<LightningRodBuff>(),
+            ModContent.BuffType<LivingWastelandBuff>(),
+            ModContent.BuffType<MarkedforDeathBuff>(),
+            ModContent.BuffType<MidasBuff>(),
+            ModContent.BuffType<NanoInjectionBuff>(),
+            ModContent.BuffType<OiledBuff>(),
+            ModContent.BuffType<RottingBuff>(),
+            ModContent.BuffType<SmiteBuff>(),
+            ModContent.BuffType<ShadowflameBuff>(),
+            ModContent.BuffType<Stunned>(),
+            ModContent.BuffType<UnluckyBuff>(),
+            ModContent.BuffType<UnstableBuff>(),
         };
     }
 }
@@ -65,30 +102,28 @@ namespace FargowiltasCrossmod.Content.Thorium
             for (int i = 0; i < Main.maxPlayers; i++)
             {
                 Player other = Main.player[i];
-                if (i == Player.whoAmI || !other.active || other.dead) continue; 
+                if (i == Player.whoAmI || !other.active || other.dead) continue;
 
-                for (int buff = 0; buff < Main.player[i].buffType.Length; buff++)
+                bool flag = false;
+
+                for (int buff = 0; buff < other.buffType.Length; buff++)
                 {
                     int buffType = other.buffType[buff];
-                    int buffTime = other.buffTime[buff];
 
-                    if (buffType <= 0 || buffTime <= 0) continue;
-                    ChatHelper.BroadcastChatMessage(Terraria.Localization.NetworkText.FromLiteral($"{buffType}, {buffTime}"), Color.White);
+                    if (buffType <= 0) continue;
 
-                    if (Items.Accessories.Enchantments.FallenPaladinEnchant.WhiteList.Contains(buffType))
+                    if (Main.debuff[buffType] && Items.Accessories.Enchantments.FallenPaladinEnchant.WhiteList.Contains(buffType))
                     {
-                        if (Player.HasBuff(buffType))
-                        {
-                            // increase the time for stacking buffs
-                            Player.buffTime[Player.FindBuffIndex(buffType)] += buffTime;
-                        }
-                        else
-                        {
-                            Player.AddBuff(buffType, buffTime);
-                        }
-
-                        other.AddBuff(ModContent.BuffType<Buffs.FallenPaladinBuff>(), 60);
+                        flag = true;
+                        break;
                     }
+                }
+
+                if (flag)
+                {
+                    ModPacket request = Mod.GetPacket();
+                    request.Write((byte)FargowiltasCrossmod.PacketID.RequestFallenPaladinUsed);
+                    request.Send();
                 }
             }
         }
@@ -107,6 +142,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Buffs
             {
                 player.buffImmune[buffType] = true;
             }
+        }
+
+        public override void SetStaticDefaults()
+        {
+            Main.pvpBuff[Type] = true;
         }
     }
 }

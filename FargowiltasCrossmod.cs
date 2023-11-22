@@ -125,7 +125,7 @@ namespace FargowiltasCrossmod
             }
         }
 
-        public void AddThoriumStats()
+        public static void AddThoriumStats()
         {
             double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
             int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
@@ -152,6 +152,50 @@ namespace FargowiltasCrossmod
         {
             if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
             if (LumberHooks.AddShops != null) LumberHooks.AddShops.Undo();
+        }
+
+        internal enum PacketID : byte
+        {
+            RequestFallenPaladinUsed
+        }
+
+        public override void HandlePacket(BinaryReader reader, int whoAmI)
+        {
+            PacketID type = (PacketID)reader.ReadByte();
+
+            if (!Enum.IsDefined(type))
+            {
+                return;
+            }
+
+            switch (type)
+            {
+                case PacketID.RequestFallenPaladinUsed:
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        int healer = reader.ReadInt32();
+                        if (healer != Main.myPlayer)
+                        {
+                            Player healerPlayer = Main.player[healer];
+                            for (int i = 0; i < Main.LocalPlayer.buffType.Length; i++)
+                            {
+                                if (Content.Thorium.Items.Accessories.Enchantments.FallenPaladinEnchant.WhiteList.Contains(Main.LocalPlayer.buffType[i]))
+                                {
+                                    healerPlayer.AddBuff(Main.LocalPlayer.buffType[i], Main.LocalPlayer.buffTime[i], false);
+                                }
+                            }
+                            Main.LocalPlayer.AddBuff(ModContent.BuffType<Content.Thorium.Buffs.FallenPaladinBuff>(), 2); 
+                        }
+                    }
+                    else if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)PacketID.RequestFallenPaladinUsed);
+                        packet.Write(whoAmI);
+                        packet.Send();
+                    }
+                    break;
+            }
         }
     }
 }
