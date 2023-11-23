@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     }
                     else
                     {
-			            if (proj.damage > 50 + 50 * Teir) continue;
+			            if (proj.damage > 50 * Teir) continue;
                         
 			            CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parried", true);
                         proj.damage *= 3 * Teir;

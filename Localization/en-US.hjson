@@ -548,6 +548,11 @@ Mods: {
 				Tooltip: ""
 				DisplayName: Cobbler
 			}
+
+			ThoriumSoul: {
+				DisplayName: Thorium Soul
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {
