@@ -93,7 +93,7 @@ namespace FargowiltasCrossmod.Core.Calamity
     }
     public abstract class BaseDLCPacket
     {
-        //Yes this is shamelessly stolen from infernum (with toasty's permission)
+        //Yes this is shamelessly stolen from infernum (with permission)
 
         // This determines whether a packet should be sent back to clients once on the server. This applies in cases where a client
         // needs to inform the server of a change, and the packet can't be sent from the server itself (such as if a player makes a left click).
