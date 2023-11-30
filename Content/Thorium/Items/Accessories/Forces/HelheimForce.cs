@@ -8,6 +8,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class HelheimForce : BaseForce
     {
+
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             var DLCPlayer = player.ThoriumDLC();

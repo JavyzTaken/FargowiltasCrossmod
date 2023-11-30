@@ -18,9 +18,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.FleshEnch = true;
+            //DLCPlayer.FleshEnch = true;
             DLCPlayer.DemonBloodEnch = true;
-            DLCPlayer.FleshEnchItem = Item;
+            //DLCPlayer.FleshEnchItem = Item;
             DLCPlayer.DemonBloodEnchItem = Item;
 
             DemonBloodEffect(player);

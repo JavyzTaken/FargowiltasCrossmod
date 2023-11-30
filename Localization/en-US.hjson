@@ -207,7 +207,7 @@ Mods: {
 
 			SilkEnchant: {
 				DisplayName: Silk Enchantment
-				Tooltip: Upgrades other enchantments to their synergies with other enchants.
+				Tooltip: Upgrades other enchantments to their synergy effects.
 			}
 
 			SpiritTrapperEnchant: {
@@ -279,7 +279,7 @@ Mods: {
 
 			MynaAccessory: {
 				DisplayName: Myna Accessory
-				Tooltip: Projectiles can dodge you slightly.
+				Tooltip: Projectiles can dodge you slightly. (defunct)
 			}
 
 			OlympiansSoul: {
@@ -289,7 +289,7 @@ Mods: {
 
 			TempleCore: {
 				DisplayName: Temple Core
-				Tooltip: Spawns orbs around the player that target and fire on nearby enemies.
+				Tooltip: Spawns orbs around the player that target and fire on nearby enemies. (defunct)
 			}
 
 			GildedSummon: {
@@ -304,7 +304,7 @@ Mods: {
 
 			KluexStaff: {
 				DisplayName: Staff of copyrighted content
-				Tooltip: Spawns damaging orbs with left-click and healing orbs with right-click. Speed increases as it is used.
+				Tooltip: Spawns damaging orbs with left-click and healing orbs with right-click. Speed increases as it is used. (defunct)
 			}
 
 			DemonBloodEnchant: {
@@ -481,7 +481,7 @@ Mods: {
 
 			TideHunterEnchant: {
 				DisplayName: Tide Hunter Enchant
-				Tooltip: ""
+				Tooltip: "Creates a large damaging wave as you dash"
 			}
 
 			TideTurnerEnchant: {
@@ -491,7 +491,7 @@ Mods: {
 
 			GeodeEnchant: {
 				DisplayName: Geode Enchant
-				Tooltip: ""
+				Tooltip: "Veinmine and miner effect"
 			}
 
 			BloomingEnchant: {

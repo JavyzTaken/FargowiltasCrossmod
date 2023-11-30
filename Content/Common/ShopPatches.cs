@@ -42,13 +42,9 @@ namespace FargowiltasCrossmod.Content.Common
             {
                 Player player = Main.LocalPlayer;
                 string quote = "";
-                if (FargowiltasCrossmod.ThoriumLoaded)
+                if (Core.ModCompatibility.ThoriumMod.Loaded)
                 {
                     MiscThoriumMethods.ThoriumBiomeBugs(player, ref quote);
-                }
-                if (FargowiltasCrossmod.CalamityLoaded && quote == "")
-                {
-
                 }
 
                 if (quote != "")

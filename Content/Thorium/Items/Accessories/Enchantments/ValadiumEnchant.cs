@@ -15,7 +15,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class ValadiumEnchant : BaseEnchant
     {
         protected override Color nameColor => Color.Purple;
-        
+
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
 
         public override void SetStaticDefaults()
         {

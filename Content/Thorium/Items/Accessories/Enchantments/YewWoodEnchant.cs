@@ -23,6 +23,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             DLCPLayer.YewWoodEnchItem = Item;
         }
 
+        public override void Load()
+        {
+            LoadModdedAmmo();
+        }
+
         public override void AddRecipes()
         {
             CreateRecipe()

@@ -11,6 +11,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         protected override Color nameColor => Color.SteelBlue;
         const float EffectMult = 0.1f;
 
+        public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.ThoriumDLC().TitanEnch = true;

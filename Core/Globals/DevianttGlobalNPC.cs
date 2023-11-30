@@ -37,13 +37,13 @@ namespace FargowiltasCrossmod.Core.Globals
                 return;
             }
 
-            Main.NewText("You shouldn't be seeing this. Tell Ghoose");
+            Main.NewText("You shouldn't be seeing this. Tall Ghoose");
         }
 
         public static void AddThoriumShop()
         {
             NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Thorium");
-            shop.Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After Myna has been defeated", () => Core.Systems.DownedEnemiesSystem.DLCDownedBools["Myna"]));
+            shop.Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After Myna has been defeated", () => Systems.DownedEnemiesSystem.DLCDownedBools["Myna"]));
             shop.Add(new Item(ModContent.ItemType<GildedSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After the gilded enemies have been defeated", () => 
             Systems.DownedEnemiesSystem.DLCDownedBools["GildedLycan"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedBat"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedSlime"]));
 

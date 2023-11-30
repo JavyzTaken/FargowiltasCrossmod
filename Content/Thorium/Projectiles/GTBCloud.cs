@@ -70,6 +70,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         }
     }
 
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GFBZapTelegraph : ModProjectile
     {
         public override void SetDefaults()

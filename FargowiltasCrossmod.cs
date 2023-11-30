@@ -19,10 +19,6 @@ namespace FargowiltasCrossmod
 {
 	public class FargowiltasCrossmod : Mod
 	{
-		internal static bool CalamityLoaded;
-		internal static bool ThoriumLoaded;
-
-
         private class ClassPreJitFilter : PreJITFilter
         {
             public override bool ShouldJIT(MemberInfo member)
@@ -40,11 +36,7 @@ namespace FargowiltasCrossmod
 
         public override void Load()
         {
-            ThoriumLoaded = ModLoader.HasMod("ThoriumMod");
-            CalamityLoaded = ModLoader.HasMod("CalamityMod");
             LoadDetours();
-
-            if (ThoriumLoaded) Thorium_Load();
         }
 
         private struct LumberHooks
@@ -53,7 +45,7 @@ namespace FargowiltasCrossmod
             internal static Hook AddShops;
         }
 
-        private void LoadDetours()
+        private static void LoadDetours()
         {
             Type lumberDetourClass = ModContent.Find<ModNPC>("Fargowiltas/LumberJack").GetType();
 
@@ -79,74 +71,8 @@ namespace FargowiltasCrossmod
         }
 
         public static readonly List<int> UnlimitedPotionBlacklist = new();
-        public void Thorium_Load()
-        {
-            Assembly ThoriumAssembly = ModLoader.GetMod("ThoriumMod").GetType().Assembly;
-            Type thoriumProjExtensions = ThoriumAssembly.GetType("ThoriumMod.Utilities.ProjectileHelper", true);
 
-            Content.Thorium.Projectiles.DLCHealing.HealMethod = thoriumProjExtensions.GetMethod("ThoriumHeal", BindingFlags.Static | BindingFlags.NonPublic);
-            Content.Thorium.Projectiles.DLCHealing.CustomHealingType = thoriumProjExtensions.GetNestedType("CustomHealing", BindingFlags.NonPublic);
-            MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Content.Thorium.Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
-
-            Content.Thorium.Items.Accessories.Enchantments.YewWoodEnchant.LoadModdedAmmo();
-
-            RegisterThoriumCaughtNPCs();
-
-        }
-
-        internal Dictionary<int, int> CaughtTownies;
-        public void RegisterThoriumCaughtNPCs()
-        {
-            void Add(string internalName, int id, string quote)
-            {
-                Fargowiltas.Items.CaughtNPCs.CaughtNPCItem item = new(internalName, id, quote);
-                AddContent(item);
-                CaughtTownies.Add(id, item.Type);
-            }
-
-            Add("Cobbler", ModContent.NPCType<Cobbler>(), "''");
-            Add("DesertAcolyte", ModContent.NPCType<DesertAcolyte>(), "''");
-            Add("Cook", ModContent.NPCType<Cook>(), "'I am the danger'");
-            Add("ConfusedZombie", ModContent.NPCType<ConfusedZombie>(), "'Guh?!'");
-            Add("Blacksmith", ModContent.NPCType<Blacksmith>(), "''");
-            Add("Tracker", ModContent.NPCType<Tracker>(), "''");
-            Add("Diverman", ModContent.NPCType<Diverman>(), "'Sam?'");
-            Add("Druid", ModContent.NPCType<Druid>(), "''");
-            Add("Spiritualist", ModContent.NPCType<Spiritualist>(), "''");
-            Add("WeaponMaster", ModContent.NPCType<WeaponMaster>(), "''");
-        }
-
-        public override void PostSetupContent()
-        {
-            if (ThoriumLoaded) 
-            {
-                AddThoriumStats();
-                Core.Globals.DevianttGlobalNPC.AddThoriumShop();
-            }
-        }
-
-        public static void AddThoriumStats()
-        {
-            double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
-            int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
-
-            void Add<T>(Func<string> func) where T : ModItem => ModCompatibility.MutantMod.Mod.Call("AddStat", ModContent.ItemType<T>(), func);
-
-            Add<ThoriumMod.Items.HealerItems.WoodenBaton>(() => $"Radiant Damage: {Damage(ModContent.GetInstance<ThoriumMod.HealerDamage>())}%");
-            Add<ThoriumMod.Items.HealerItems.WoodenBaton>(() => $"Radiant Critical: {Crit(ModContent.GetInstance<ThoriumMod.HealerDamage>())}%");
-
-            Add<ThoriumMod.Items.BardItems.WoodenWhistle>(() => $"Synphonic Damage: {Damage(ModContent.GetInstance<ThoriumMod.BardDamage>())}%");
-            Add<ThoriumMod.Items.BardItems.WoodenWhistle>(() => $"Synphonic Critical: {Crit(ModContent.GetInstance<ThoriumMod.BardDamage>())}%");
-
-            Add<ThoriumMod.Items.ThrownItems.StoneThrowingSpear>(() => $"Throwing Damage: {Damage(DamageClass.Throwing)}%");
-            Add<ThoriumMod.Items.ThrownItems.StoneThrowingSpear>(() => $"Throwing Critical: {Crit(DamageClass.Throwing)}%");
-
-            Add<ThoriumMod.Items.BossMini.TheGoodBook>(() => $"Bonus Healing: {Main.LocalPlayer.Thorium().healBonus}");
-            Add<ThoriumMod.Items.HealerItems.HoneyHeart>(() => $"Life recovery: {Main.LocalPlayer.Thorium().lifeRecovery}/ sec");
-
-            Add<ThoriumMod.Items.BardItems.InspirationFragment>(() => $"Inspiration: {Main.LocalPlayer.Thorium().bardResourceMax2}");
-            Add<ThoriumMod.Items.BardItems.InspirationNote>(() => $"Inspiration Regen: {Main.LocalPlayer.Thorium().inspirationRegenBonus}/ sec");
-        }
+        internal static Dictionary<int, int> CaughtTownies;
 
         public override void Unload()
         {
