@@ -481,7 +481,7 @@ Mods: {
 
 			TideHunterEnchant: {
 				DisplayName: Tide Hunter Enchant
-				Tooltip: "Creates a large damaging wave as you dash"
+				Tooltip: Creates a large damaging wave as you dash
 			}
 
 			TideTurnerEnchant: {
@@ -491,7 +491,7 @@ Mods: {
 
 			GeodeEnchant: {
 				DisplayName: Geode Enchant
-				Tooltip: "Veinmine and miner effect"
+				Tooltip: Veinmine and miner effect
 			}
 
 			BloomingEnchant: {

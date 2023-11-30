@@ -53,9 +53,14 @@ namespace FargowiltasCrossmod.Content.Thorium
                 NoviceClericTimer = 0;
                 return;
             }
+            crossOrbitalRotation = Utils.RotatedBy(crossOrbitalRotation, -0.05, default);
+
+            if (Player.controlUseItem)
+            {
+                return;
+            }
 
             NoviceClericTimer++;
-            crossOrbitalRotation = Utils.RotatedBy(crossOrbitalRotation, -0.05, default);
 
             int maxCrosses = SynergyEffect(NoviceClericEnchItem.type) ? 8 : 5;
 

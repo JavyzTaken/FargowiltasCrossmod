@@ -27,12 +27,6 @@ namespace FargowiltasCrossmod.Content.Common
 
     public static class LumberBoyPatches
     {
-        internal delegate void orig_AddShops(LumberJack self);
-        internal static void AddShops(orig_AddShops orig, LumberJack self)
-        {
-            orig(self);
-        }
-
         internal delegate void orig_OnChatButtonClicked(LumberJack self, bool firstButton, ref string shopName);
         internal static void OnChatButtonClicked(orig_OnChatButtonClicked orig, LumberJack self, bool firstButton, ref string shopName)
         {

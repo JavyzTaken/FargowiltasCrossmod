@@ -392,7 +392,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void PostUpdate()
         {
-            Content.Thorium.Balance.ThoriumPotionNerfs.MurderBuffs(Player);
+            Balance.ThoriumPotionNerfs.MurderBuffs(Player);
         }
 
         public bool SynergyEffect(int enchType)
