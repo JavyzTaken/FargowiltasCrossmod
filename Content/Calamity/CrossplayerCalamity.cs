@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             ModContent.ItemType<AetherfluxCannon>(),
             ModContent.ItemType<TheAnomalysNanogun>(),
             ModContent.ItemType<ClockworkBow>(),
-            ModContent.ItemType<GrandStaffoftheNebulaMage>(),
+            ModContent.ItemType<NebulousCataclysm>(),
             ModContent.ItemType<Eternity>(), //fargo reference
             ModContent.ItemType<Vehemence>(),
             ModContent.ItemType<Phaseslayer>()

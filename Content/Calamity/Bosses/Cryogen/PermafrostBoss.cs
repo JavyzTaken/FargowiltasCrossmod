@@ -25,6 +25,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
     public class PermafrostBoss : ModNPC
     {
         //public override string Texture => "CalamityMod/NPCs/TownNPCs/DILF";
+
+        public override bool IsLoadingEnabled(Mod mod) => false;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

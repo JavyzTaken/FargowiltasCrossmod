@@ -130,10 +130,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             CreateCalBagRecipes(2489, new[] { ModContent.ItemType<CrownJewel>() }); //slime
             CreateCalBagRecipes(ModContent.ItemType<DesertScourgeBag>(), new[]
             {
-                ModContent.ItemType<AquaticDischarge>(),
+                ModContent.ItemType<SaharaSlicers>(),
                 ModContent.ItemType<Barinade>(),
-                ModContent.ItemType<StormSpray>(),
-                ModContent.ItemType<SeaboundStaff>(),
+                ModContent.ItemType<SandstreamScepter>(),
+                ModContent.ItemType<BrittleStarStaff>(),
                 ModContent.ItemType<ScourgeoftheDesert>(),
                 ModContent.ItemType<SandCloak>()
             });

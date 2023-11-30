@@ -22,7 +22,11 @@ Features several configs to customize your Fargo's/Calamity cross-mod experience
 Fargo Discord: https://discord.gg/Rgen4Vv
 Fargo Wiki: https://terrariamods.wiki.gg/wiki/Fargo%27s_Mod
 
-Latest Update: v1.0.4.7
+Latest Update: v1.0.4.8
+Updated to Calamity version 2.0.3.007
+Fixed functionality of Medallion of the Desert
+
+Previous Update: v1.0.4.7
 Calamity Mutant:
 Removed first Plaguebringer during Skeletron fan attack on Masochist Mode only
 Removed Mutant maso contact damage while moving to a new position during nuke attack
@@ -48,14 +52,3 @@ Mutant Fang maximum life reduction ticks twice as fast
 Fixed several NPC loot issues 
 """Resprited""" Eye of Extinction 
 Fixed functionality of Eye of Extinction
-
-
-Previous Update: v1.0.4.6
-Fixed several NPC loot issues
-Fixed Medallion of the Desert not working correctly in multiplayer
-Fixed Desert Scourge rarely repeating slam attack
-
-Made Mutant's Yharon bullet hell more lenient below Masochist Mode, but removed large openings
-Adjusted Mutant's movement before Providence ray attack
-Increased Mutant's Slime God's slam speed
-Slightly decreased Mutant's Necroplasm rotation speed
