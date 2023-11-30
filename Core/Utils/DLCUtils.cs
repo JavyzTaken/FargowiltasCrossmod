@@ -74,5 +74,18 @@ namespace FargowiltasCrossmod.Core.Utils
                 Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, null, glowColor, rotation, origin, scale, spriteEffects);
             }
         }
+
+        #region Extension Methods
+        /// <summary>
+        /// Enqueues all entries of the list to the queue, in a random order.
+        /// </summary>
+        public static void RandomFromList<T>(this Queue<T> queue, List<T> list)
+        {
+            foreach (T a in list.OrderBy(a => Main.rand.Next()).ToList())
+            {
+                queue.Enqueue(a);
+            }
+        }
+        #endregion
     }
 }

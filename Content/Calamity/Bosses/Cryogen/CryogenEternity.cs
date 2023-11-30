@@ -1,21 +1,29 @@
-﻿/*
+﻿
+using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
+using System.Timers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Events;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -72,6 +80,40 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public int[] Chains = new int[] { -1, -1, -1, -1 , -1, -1};
         public float shieldDrawTimer;
         public float shieldDrawCounter;
+
+        public int RitualProj;
+
+        public const int ArenaRadius = 1600;
+
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write7BitEncodedInt((int)npc.localAI[0]);
+            binaryWriter.Write7BitEncodedInt((int)npc.localAI[1]);
+            binaryWriter.Write7BitEncodedInt((int)npc.localAI[2]);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            npc.localAI[0] = binaryReader.Read7BitEncodedInt();
+            npc.localAI[1] = binaryReader.Read7BitEncodedInt();
+            npc.localAI[2] = binaryReader.Read7BitEncodedInt();
+        }
+        private enum Attacks
+        {
+            Idle,
+            HomingShards,
+            ShardSweep,
+            ShardStorm
+        };
+        private List<Attacks> AttackChoices = new List<Attacks>
+        {
+            //Attacks.HomingShards,
+            Attacks.ShardSweep,
+            Attacks.ShardStorm
+        };
+
+        const int chainTime = IceChain.ActiveTime;
+        const int chainStartTime = 62;
+        bool evenChain(NPC npc) => npc.ai[1] % (chainTime * 2) >= chainTime;
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !DLCWorldSavingSystem.EternityRev) return true;
@@ -80,6 +122,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ref float timer = ref npc.ai[1];
             ref float data = ref npc.ai[2];
             ref float data2 = ref npc.ai[3];
+
+            ref float attackChoice = ref npc.localAI[0];
+            ref float attackTimer = ref npc.localAI[1];
+            ref float data3 = ref npc.localAI[2];
             npc.scale = 1.5f;
             npc.dontTakeDamage = false;
             if (shieldDrawCounter == 0)
@@ -126,7 +172,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
                 
             }
-            //teleport around player and spit out ice bombs
             if (npc.ai[0] == 2)
             {
                 
@@ -134,51 +179,181 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 timer++;
                 if (timer == 2)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/NPCKilled/CryogenShieldBreak"), npc.Center);
+                    SoundEngine.PlaySound(CalamityMod.NPCs.Cryogen.Cryogen.ShieldRegenSound, npc.Center);
                     if (DLCUtils.HostCheck)
                     {
-                        Chains[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(31));
-                        Chains[1] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-31));
-                        Chains[2] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(149));
-                        Chains[3] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-149));
-                        Chains[4] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-90));
-                        Chains[5] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(90));
+                        Chains[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-149));
+                        Chains[1] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-90));
+                        Chains[2] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-31));
+                        Chains[3] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(31));
+                        Chains[4] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(90));
+                        Chains[5] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(149));
+
+                        RitualProj = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<CryogenRitual>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, 0f, npc.whoAmI);
                     }
                     DustExplode(npc);
                 }
-                if (timer % 100 == 0)
+                
+                if (timer % chainTime == chainStartTime)
                 {
-                    
-                    int p = Chains[Main.rand.Next(0, 6)];
-
-                    if (p >= 0) {
-                        Main.projectile[p].ai[2] = 200;
-                    }
-                }
-                if (timer % 200 == 0)
-                {
-                    if (DLCUtils.HostCheck) {
-                        if (Main.rand.NextBool())
-                            for (int i = 3; i < 8; i++)
-                            {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * i * 4, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
-                            }
-                        else
+                    int even = evenChain(npc) ? 1 : 0;
+                    for (int i = 0; i < Chains.Length; i++)
+                        if (i % 2 == even)
                         {
-                            for (int i = 0; i < 12; i++)
+                            int p = Chains[i];
+                            if (p.WithinBounds(Main.maxProjectiles))
+                                Main.projectile[p].ai[2] = 200;
+                        }
+                            
+                            
+                }
+                void ToIdle()
+                {
+                    ref float attackChoice = ref npc.localAI[0];
+                    ref float attackTimer = ref npc.localAI[1];
+                    attackChoice = (int)Attacks.Idle;
+                    attackTimer = 0;
+                }
+                switch ((Attacks)attackChoice)
+                {
+                    case Attacks.Idle:
+                        {
+                            if (attackTimer == 120)
                             {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 1).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                SoundEngine.PlaySound(SoundID.Item30, npc.Center);
+                                if (DLCUtils.HostCheck)
+                                {
+                                    for (int i = 3; i < 8; i++)
+                                    {
+                                        Vector2 vel = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * i * 4;
+                                        float modifier = 1;
+                                        vel = vel.RotatedByRandom(modifier * MathHelper.Pi / i);
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                    }
+                                }
                             }
-                            for (int i = 0; i < 12; i++)
+                            attackTimer++;
+                            if (attackTimer > 120 + 60)
                             {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 3).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
-                            }
-                            for (int i = 0; i < 12; i++)
-                            {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 2).RotatedBy(MathHelper.ToRadians(360f / 12 * i + 12)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0:1);
+                                attackChoice = (int)Main.rand.NextFromCollection(AttackChoices);
+                                attackTimer = 0;
                             }
                         }
-                    }
+                        break;
+                    case Attacks.HomingShards:
+                        {
+                            attackTimer++;
+                            if (attackTimer > 30)
+                            {
+                                ToIdle();
+                            }
+                        }
+                        break;
+                    case Attacks.ShardSweep:
+                        {
+                            if (attackTimer == 0)
+                            {
+                                // Find closest active ice chain in terms of rotation, to originate sweep from
+                                int closestChain = -1;
+                                int even = evenChain(npc) ? 1 : 0;
+                                for (int i = 0; i < Chains.Length; i++)
+                                {
+                                    if (i % 2 != even)
+                                        continue;
+                                    int p = Chains[i];
+
+                                    if (closestChain == -1)
+                                        closestChain = p;
+                                    else
+                                    {
+                                        Vector2 oldRotVec = Main.projectile[closestChain].Center - npc.Center;
+                                        Vector2 newRotVec = Main.projectile[p].Center - npc.Center;
+                                        Vector2 toPlayer = npc.DirectionTo(target.Center);
+                                        float oldDif = Math.Abs(FargoSoulsUtil.RotationDifference(oldRotVec, toPlayer));
+                                        float newDif = Math.Abs(FargoSoulsUtil.RotationDifference(newRotVec, toPlayer));
+
+                                        if (newDif < oldDif)
+                                            closestChain = p;
+                                    }
+                                }
+
+                                if (closestChain == -1)
+                                {
+                                    ToIdle();
+                                    //Main.NewText("oops 1");
+                                    break;
+                                }
+                                else
+                                {
+                                    data3 = closestChain;
+                                }
+                                    
+                            }
+                            const float totalRotation = MathHelper.TwoPi / 6;
+                            const int AttackTime = 60 * 3;
+                            if (attackTimer > 0 && attackTimer % 30 == 0)
+                                SoundEngine.PlaySound(SoundID.Item27);
+
+                            if (attackTimer > 0 && attackTimer % 5 == 0)
+                            {
+                                
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    float progress = attackTimer / AttackTime;
+                                    int cIndex = (int)data3;
+                                    if (!cIndex.WithinBounds(Main.maxProjectiles))
+                                    {
+                                        ToIdle();
+                                        //Main.NewText("oops 2");
+                                        break;
+                                    }
+                                    Projectile chain = Main.projectile[cIndex];
+                                    Vector2 chainDir = npc.DirectionTo(chain.Center);
+                                    float rotDir = Math.Sign(FargoSoulsUtil.RotationDifference(chainDir, npc.DirectionTo(target.Center)));
+
+                                    Vector2 velDir = chainDir.RotatedBy(rotDir * totalRotation * progress);
+                                    float speed = 1;
+                                    Vector2 vel = velDir * speed;
+                                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                }
+                            }
+                            attackTimer++;
+                            if (attackTimer >= AttackTime)
+                            {
+                                attackChoice = (int)Attacks.Idle;
+                                attackTimer = 0;
+                            }
+                        }
+                        break;
+                    case Attacks.ShardStorm:
+                        {
+                            if (attackTimer == 0)
+                            {
+                                SoundEngine.PlaySound(SoundID.Item28);
+                                if (DLCUtils.HostCheck)
+                                {
+                                    for (int i = 0; i < 12; i++)
+                                    {
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 1).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                    }
+                                    for (int i = 0; i < 12; i++)
+                                    {
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 3).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                    }
+                                    for (int i = 0; i < 12; i++)
+                                    {
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 2).RotatedBy(MathHelper.ToRadians(360f / 12 * i + 12)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                    }
+                                }
+                            }
+                            attackTimer++;
+                            if (attackTimer > 30)
+                            {
+                                ToIdle();
+                            }
+                                
+                        }
+                        break;
                 }
                 if (npc.GetLifePercent() <= 0.8f)
                 {
@@ -231,4 +406,3 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
-*/

@@ -25,6 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.tileCollide = false;
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
         }
+        bool Active = false;
         public override bool PreDraw(ref Color lightColor)
         {
             if (Projectile.ai[0] < 0)
@@ -57,9 +58,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         Color glowColor = Color.Blue with { A = 0 } * 0.7f;
 
 
-                        Main.EntitySpriteDraw(t.Value, pos + afterimageOffset - Main.screenPosition, null, glowColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+                        Main.EntitySpriteDraw(t.Value, pos + afterimageOffset - Main.screenPosition, null, glowColor * Projectile.Opacity, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
                     }
-                    Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+                    Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()) * Projectile.Opacity, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
 
                 }
             }
@@ -107,6 +108,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             behindNPCsAndTiles.Add(index);
         }
+        public const int ActiveTime = 600;
         public override void AI()
         {
             Projectile.hide = true;
@@ -134,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (timer < 50)
             {
                 timer++;
-                Projectile.velocity = new Vector2(0, 40).RotatedBy(Projectile.ai[1]);
+                Projectile.velocity = new Vector2(0, CryogenEternity.ArenaRadius / 50f).RotatedBy(Projectile.ai[1]);
             }
             else
             {
@@ -142,7 +144,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             if (timer >= 200)
             {
+                Projectile.Opacity = 1f;
                 timer++;
+            }
+            else
+            {
+                Projectile.Opacity = 0.5f;
             }
             if (timer >= 200 && timer <= 300)
             {
@@ -157,16 +164,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Dust.NewDustDirect(owner.Center - Projectile.Size / 2 + new Vector2(0, -i).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width, Projectile.height, DustID.SnowflakeIce, Scale: 2).noGravity = true;
                 }
-                SoundEngine.PlaySound(SoundID.Item28, owner.Center);
+                //SoundEngine.PlaySound(SoundID.Item28, owner.Center);
             }
-            if (timer >= 400)
+            if (timer >= 100 + ActiveTime)
             {
                 timer = 100;
                 for (int i = 0; i < Projectile.Distance(owner.Center); i += 3)
                 {
                     Dust.NewDustDirect(owner.Center - Projectile.Size + new Vector2(0, -i).RotatedBy(Projectile.rotation + MathHelper.PiOver2), Projectile.width * 2, Projectile.height * 2, DustID.SnowflakeIce, Scale: 2).noGravity = true;
                 }
-                SoundEngine.PlaySound(SoundID.Item27, owner.Center);
+                SoundEngine.PlaySound(CalamityMod.NPCs.Cryogen.CryogenShield.BreakSound, owner.Center);
             }
 
             for (int i = 0; i < 5; i++)

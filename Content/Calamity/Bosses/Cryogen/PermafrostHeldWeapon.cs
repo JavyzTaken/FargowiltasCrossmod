@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
@@ -273,4 +273,3 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
-*/

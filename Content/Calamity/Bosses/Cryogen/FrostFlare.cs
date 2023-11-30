@@ -34,6 +34,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 140;
+
+            Projectile.light = 0.5f;
         }
         public override void OnKill(int timeLeft)
         {
@@ -57,10 +59,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             Projectile.velocity /= 1.03f;
             Projectile.rotation += Projectile.velocity.Length() / 20;
-            Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
-            if (Projectile.timeLeft < 30 && DLCUtils.HostCheck)
+
+            Vector2 vel = (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2();
+            for (int i = -1; i < 2; i+= 2)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(Main.rand.Next(-50, 50), -900), new Vector2(0, 15), ModContent.ProjectileType<FrostShard>(), Projectile.damage, 0);
+                Vector2 dVel = vel * 6 * i;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce, dVel.X, dVel.Y).noGravity = true;
+            }
+
+            if (Projectile.timeLeft == 10)
+                SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
+
+            if (Projectile.timeLeft < 10 && DLCUtils.HostCheck)
+            {
+                for (int i = -1; i < 2; i += 2)
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel * 15 * i, ModContent.ProjectileType<FrostShard>(), Projectile.damage, 0);
             }
         }
     }

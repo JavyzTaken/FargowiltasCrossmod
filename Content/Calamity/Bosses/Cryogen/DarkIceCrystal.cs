@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using CalamityMod;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
@@ -26,7 +26,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "CalamityMod/Projectiles/Melee/DarkIceZero";
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
         public override void SetDefaults()
         {
@@ -34,8 +35,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 300;
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
-            ProjectileID.Sets.TrailingMode[Type] = 3;
+            Projectile.tileCollide = false;
+
+            Projectile.light = 1f;
         }
         public override void OnKill(int timeLeft)
         {
@@ -91,10 +93,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 SoundEngine.PlaySound(SoundID.Item109, Projectile.Center);
                 Projectile.velocity = targetvel.SafeNormalize(Vector2.Zero) * 35;
             }
+            if (Projectile.ai[2] > 100) //leave a lingering trail
+            {
+                if (DLCUtils.HostCheck)
+                {
+                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ModContent.ProjectileType<IceCloud>(), Projectile.damage, Projectile.knockBack, Main.myPlayer);
+                }
+            }
             Projectile.ai[2]++;
 
             base.AI();
         }
     }
 }
-*/

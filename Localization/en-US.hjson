@@ -419,6 +419,9 @@ Mods: {
 			IceArrow.DisplayName: Ice Arrow
 			IceShot.DisplayName: Ice Shot
 			IceStar.DisplayName: Ice Star
+			CryogenRitual.DisplayName: Cryogen Ritual
+			PermafrostRitual.DisplayName: Permafrost Ritual
+			IceCloud.DisplayName: Ice Cloud
 		}
 
 		Buffs: {

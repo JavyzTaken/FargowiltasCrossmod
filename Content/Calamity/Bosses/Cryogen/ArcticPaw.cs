@@ -25,7 +25,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "CalamityMod/Projectiles/Magic/ArcticBearPawProj";
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
         {
@@ -33,8 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 120;
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+            Projectile.light = 0.5f;
             Projectile.scale = 0.3f;
             
         }

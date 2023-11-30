@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
@@ -35,4 +35,3 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
-*/
