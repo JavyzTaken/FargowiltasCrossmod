@@ -2,3 +2,4 @@ New Update: v1.0.4.8
 
 Updated to Calamity version 2.0.3.007
 Fixed functionality of Medallion of the Desert
+Fixed some localization issues
