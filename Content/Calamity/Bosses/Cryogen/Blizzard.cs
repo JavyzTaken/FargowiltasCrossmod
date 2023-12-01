@@ -25,7 +25,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.HallowBossDeathAurora;
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3000;
         }
         public override void SetDefaults()
         {
@@ -33,9 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 150;
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3000;
+            
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
         }

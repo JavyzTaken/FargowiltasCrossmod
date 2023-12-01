@@ -15,6 +15,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class IceChain : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 20;
@@ -23,7 +27,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.friendly = false;
             Projectile.scale = 1;
             Projectile.tileCollide = false;
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+            
+
+            Projectile.light = 0.5f;
         }
         bool Active = false;
         public override bool PreDraw(ref Color lightColor)

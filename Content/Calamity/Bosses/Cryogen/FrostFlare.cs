@@ -33,9 +33,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.width = Projectile.height = 15;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 140;
+            Projectile.timeLeft = 180;
 
             Projectile.light = 0.5f;
+
+            Projectile.tileCollide = false;
         }
         public override void OnKill(int timeLeft)
         {
@@ -45,6 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
             }
         }
+        public override bool? CanDamage() => false;
         public override void OnSpawn(IEntitySource source)
         {
             base.OnSpawn(source);
@@ -57,11 +60,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override void AI()
         {
-            Projectile.velocity /= 1.03f;
-            Projectile.rotation += Projectile.velocity.Length() / 20;
+            float decel = 30 / 180f;
+            float newVel = MathHelper.Clamp(Projectile.velocity.Length() - decel, 0, 100);
+            Projectile.velocity = Utils.SafeNormalize(Projectile.velocity, Vector2.Zero) * newVel;
+            Projectile.rotation += Projectile.velocity.Length() / 80f;
 
             Vector2 vel = (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2();
-            for (int i = -1; i < 2; i+= 2)
+            for (int i = -3; i < 4; i+= 2)
             {
                 Vector2 dVel = vel * 6 * i;
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce, dVel.X, dVel.Y).noGravity = true;
@@ -73,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (Projectile.timeLeft < 10 && DLCUtils.HostCheck)
             {
                 for (int i = -1; i < 2; i += 2)
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, vel * 15 * i, ModContent.ProjectileType<FrostShard>(), Projectile.damage, 0);
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (vel * Main.rand.NextFloat(13, 16) * i).RotatedByRandom(MathHelper.PiOver2 / 10f), ModContent.ProjectileType<FrostShard>(), Projectile.damage, 0);
             }
         }
     }

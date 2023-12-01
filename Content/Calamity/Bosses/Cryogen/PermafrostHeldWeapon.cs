@@ -33,7 +33,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.timeLeft = 60;
             Projectile.hostile = false;
             Projectile.friendly = false;
-            
+
+            Projectile.light = 0.5f;
+            Projectile.tileCollide = false;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -51,6 +53,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             SpriteEffects se = SpriteEffects.None;
             if (Projectile.ai[0] == 1)
             {
+                Main.instance.LoadItem(ModContent.ItemType<FrostbiteBlaster>());
+
                 t = TextureAssets.Item[ModContent.ItemType<FrostbiteBlaster>()];
                 origin = new Vector2(10, t.Height() / 2);
                 float degrees = MathHelper.ToDegrees(Projectile.rotation + MathHelper.Pi);
@@ -58,26 +62,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             if (Projectile.ai[0] == 2)
             {
-                t = TextureAssets.Projectile[ModContent.ProjectileType<ArcticPaw>()];
+                int asset = ModContent.ProjectileType<ArcticPaw>();
+                Main.instance.LoadProjectile(asset);
+
+                t = TextureAssets.Projectile[asset];
                 origin = t.Size() / 2;
                 maxscale = 2;
             }
             if (Projectile.ai[0] == 3)
             {
-                t = TextureAssets.Item[ModContent.ItemType<WintersFury>()];
+                int asset = ModContent.ItemType<WintersFury>();
+                Main.instance.LoadItem(asset);
+
+                t = TextureAssets.Item[asset];
                 origin = new Vector2(2, 28);
                 float degrees = MathHelper.ToDegrees(Projectile.rotation + MathHelper.Pi);
                 if (degrees > 270 || degrees < 90) se = SpriteEffects.FlipVertically;
             }
             if (Projectile.ai[0] == 4)
             {
-                t = TextureAssets.Item[ModContent.ItemType<AbsoluteZero>()];
+                int asset = ModContent.ItemType<AbsoluteZero>();
+                Main.instance.LoadItem(asset);
+
+                t = TextureAssets.Item[asset];
                 origin = new Vector2(0, t.Height());
                 maxscale = 1.5f;
             }
             if (Projectile.ai[0] == 5)
             {
-                t = TextureAssets.Item[ModContent.ItemType<EternalBlizzard>()];
+                int asset = ModContent.ItemType<EternalBlizzard>();
+                Main.instance.LoadItem(asset);
+
+                t = TextureAssets.Item[asset];
                 origin = new Vector2(10, t.Height() / 2);
                 float degrees = MathHelper.ToDegrees(Projectile.rotation + MathHelper.Pi);
                 if (degrees > 270 || degrees < 90) se = SpriteEffects.FlipVertically;
@@ -103,6 +119,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Projectile.Kill();
                 return;
             }
+            PermafrostBoss permafrostBoss = owner.ModNPC as PermafrostBoss;
+
             float angle = Projectile.ai[1];
             float scale = 1;
             //Ice Trident
@@ -141,14 +159,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Projectile.rotation = owner.AngleTo(Main.player[owner.target].Center);
                 }
-                if (Projectile.timeLeft == 1)
-                {
+                
 
+                if (permafrostBoss.Attack == (float)PermafrostBoss.Attacks.IceShotgun && permafrostBoss.Timer < 128)
+                    Projectile.timeLeft = 5;
+                else
+                {
                     for (int i = 0; i < 50; i++)
                     {
                         Vector2 off = new Vector2(Main.rand.Next(0, 56) * Projectile.localAI[0], 0).RotatedBy(Projectile.rotation);
                         Dust.NewDustDirect(Projectile.Center + off, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
                     }
+                    Projectile.Kill();
                 }
             }
             //Arctic Bear Paw
@@ -163,13 +185,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     for (int i = 0; i < 5; i++)
                         Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
                 }
-                if (Projectile.timeLeft == 1)
+                if (permafrostBoss.Attack == (float)PermafrostBoss.Attacks.PawCharge)
+                    Projectile.timeLeft = 5;
+                else
                 {
-                    
                     for (int i = 0; i < 50; i++)
                     {
                         Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
                     }
+                    Projectile.Kill();
                 }
             }
             //Winter's fury

@@ -16,6 +16,9 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
+using FargowiltasSouls.Common.Graphics.Particles;
+using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -26,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
     {
         //public override string Texture => "CalamityMod/NPCs/TownNPCs/DILF";
 
-        public override bool IsLoadingEnabled(Mod mod) => false;
+        public override bool IsLoadingEnabled(Mod mod) => CryogenEternity.Enabled;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -49,6 +52,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             if ((Attacks)Attack != Attacks.PawCharge) return false;
             return base.CanHitPlayer(target, ref cooldownSlot);
+        }
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+            if (Phase == 0)
+                modifiers.FinalDamage *= 0.2f;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -76,6 +84,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     spriteBatch.Draw(shield.Value, NPC.Center - screenPos + new Vector2(60, 0).RotatedBy(rotation), null, drawColor * 0.7f, rotation + MathHelper.PiOver2, shield.Size() / 2, NPC.scale * 0.75f, SpriteEffects.None, 0);
                 }
             }
+            /*
+            for (int i = 0; i < 15; i++)
+            {
+                float rotation = -(MathHelper.ToRadians(360f / 15 * i) + shieldRot);
+                if (Attack == (float)Attacks.PhaseTransition)
+                {
+                    float x = (Timer / 60);
+                    spriteBatch.Draw(shield.Value, NPC.Center - screenPos + new Vector2(MathHelper.Lerp(1500, 120, (float)Math.Sin((x * Math.PI) / 2)), 0).RotatedBy(rotation), null, drawColor * 0.7f, rotation + MathHelper.PiOver2, shield.Size() / 2, NPC.scale * 0.75f, SpriteEffects.None, 0);
+                }
+                if (Phase >= 2f)
+                {
+                    spriteBatch.Draw(shield.Value, NPC.Center - screenPos + new Vector2(120, 0).RotatedBy(rotation), null, drawColor * 0.7f, rotation + MathHelper.PiOver2, shield.Size() / 2, NPC.scale * 0.75f, SpriteEffects.None, 0);
+                }
+            }
+            */
             return false;
         }
         protected static void NetSync(NPC npc, bool onlySendFromServer = true)
@@ -91,11 +114,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public ref float Attack => ref NPC.ai[2];
         public ref float Data => ref NPC.ai[3];
 
+        public float PhaseTwoPercent = 0.6f;
+
         public int RitualProj;
 
-        enum Attacks
+        public enum Attacks
         {
             Idle,
+            PhaseTransition,
             TridentToss,
             PawCharge,
             Blizzard,
@@ -105,22 +131,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             FrostFlares,
             IceStar
         };
-        static List<Attacks> SetupAttacks = new List<Attacks>
+        public static List<Attacks> SetupAttacks = new List<Attacks>
         {
-            Attacks.TridentToss,
             Attacks.PredictiveToss,
             Attacks.FrostFlares,
             Attacks.IceStar
         };
-        static List<Attacks> FollowupAttacks = new List<Attacks>
+        public static List<Attacks> FollowupAttacks = new List<Attacks>
         {
             Attacks.PawCharge,
             Attacks.IceShotgun,
             Attacks.IceArrows,
-            Attacks.Blizzard
+            Attacks.Blizzard,
+            Attacks.TridentToss
         };
-        static Queue<Attacks> SetupAttackQueue = new Queue<Attacks>();
-        static Queue<Attacks> FollowupAttackQueue = new Queue<Attacks>();
+        public static Queue<Attacks> SetupAttackQueue = new Queue<Attacks>();
+        public static Queue<Attacks> FollowupAttackQueue = new Queue<Attacks>();
+
+        public Particle TelegraphParticle;
+
         public override void AI()
         {
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
@@ -148,7 +177,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         Gore.NewGoreDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModCompatibility.Calamity.Mod.Find<ModGore>("CryoShieldGore" + Main.rand.Next(1, 5)).Type);
                     }
 
-                    RitualProj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostRitual>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0f, Main.myPlayer, 0f, NPC.whoAmI);
                     
                     Timer = 0;
                     Phase = 0.5f;
@@ -163,13 +191,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Timer = 0;
                 }
             }
-            if (Phase == 1)
+            if (Phase >= 1)
             {
                 NPC.spriteDirection = NPC.Center.X > target.Center.X ? 1 : -1;
                 switch ((Attacks)Attack)
                 {
                     case Attacks.Idle:
                         Idle();
+                        break;
+                    case Attacks.PhaseTransition:
+                        PhaseTransition();
                         break;
                     case Attacks.TridentToss:
                         TridentToss();
@@ -211,12 +242,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void Reset()
             {
-
-                if (!SetupAttacks.Contains((Attacks)Attack))
+                if (NPC.GetLifePercent() < PhaseTwoPercent && Phase < 2)
+                {
+                    Attack = (float)Attacks.PhaseTransition;
+                    Phase = 2;
+                }
+                else if (!SetupAttacks.Contains((Attacks)Attack) && Phase >= 2)
                 {
                     if (SetupAttackQueue.Count <= 0)
                     {
-                        SetupAttackQueue.RandomFromList(SetupAttacks);
+                        List<Attacks> QueueAttacks = SetupAttacks;
+                        SetupAttackQueue.RandomFromListExcept(SetupAttacks, (Attacks)Attack);
                     }
                     Attack = (float)SetupAttackQueue.Dequeue();
                 }
@@ -224,7 +260,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     if (FollowupAttackQueue.Count <= 0)
                     {
-                        FollowupAttackQueue.RandomFromList(FollowupAttacks);
+                        FollowupAttackQueue.RandomFromListExcept(FollowupAttacks, (Attacks)Attack);
                     }
                     Attack = (float)FollowupAttackQueue.Dequeue();
                 }
@@ -244,6 +280,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Timer = 0;
                     Reset();
                 }
+            }
+            void PhaseTransition()
+            {
+                if (Timer == 10)
+                    RitualProj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostRitual>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0f, Main.myPlayer, 0f, NPC.whoAmI);
+
+                if (Timer > 60)
+                {
+                    Phase = 2;
+                    Reset();
+                }
+                Timer++;
             }
             void TridentToss()
             {
@@ -285,31 +333,62 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void PawCharge()
             {
-                Timer++;
                 if (Timer == 1 && DLCUtils.HostCheck)
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai0: 2);
-                if (Timer < 60)
-                {
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 1, 0.03f);
-                }
-                if (Timer == 60)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/SCalSounds/SCalDash"), NPC.Center);
-                    NPC.velocity = toTarget * 30;
-                }
-                if (Timer > 60 && Timer < 160)
-                {
-                    if (Timer % 5 == 0 && DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.Next(2, 5)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ArcticPaw>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 30, 0.03f);
-                }
-                if (Timer == 160)
+
+                const int WindupTime = 50;
+                const int DashTime = 30;
+                const int TotalTime = WindupTime + DashTime;
+                const int Dashes = 3;
+                int partialTimer = (int)Timer % TotalTime;
+
+                if (Timer >= TotalTime * Dashes)
                 {
                     Reset();
+                    return;
                 }
+
+                if (partialTimer == 1)
+                {
+                    Data = toTarget.ToRotation() + Main.rand.NextFloat(-MathHelper.Pi / 6f, MathHelper.Pi / 6f);
+                    TelegraphParticle = null;
+                    TelegraphParticle = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, Color.DarkCyan, Vector2.One * 20, Vector2.One, WindupTime, true, Color.LightBlue);
+                    TelegraphParticle.Spawn();
+                }
+                if (TelegraphParticle != null)
+                {
+                    TelegraphParticle.Position = NPC.Center;
+                }
+                if (Timer <= 0)
+                {
+                    Timer++;
+                    return;
+                }
+                if (partialTimer < WindupTime)
+                {
+                    Vector2 desiredPos = target.Center - (Data.ToRotationVector2() * 550);
+
+                    Movement(desiredPos, 0.1f, 40, 10, 0.1f, 50f);
+                }
+                else if (partialTimer == WindupTime)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/SCalSounds/SCalDash"), NPC.Center);
+
+                    Data = toTarget.ToRotation();
+                }
+                else
+                {
+                    Vector2 desiredPos = NPC.Center + Data.ToRotationVector2() * 400;
+                    Movement(desiredPos, 0.2f, 40, 10, 0.1f, 50);
+
+                    if (Timer % 10 == 0 && DLCUtils.HostCheck) 
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.Next(2, 5)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ArcticPaw>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                }
+                Timer++;
             }
             void Blizzard()
             {
-                Movement(target.Center + new Vector2(0, 400));
+                Movement(target.Center - toTarget * 400f);
 
                 if (Timer == 0)
                 {
@@ -339,27 +418,78 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void IceShotgun()
             {
-                Movement(target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, 200));
-                Timer++;
-                if (Timer == 1 && DLCUtils.HostCheck)
+                ref float Corner = ref Data;
+
+                const int AttackTime = 64; //keep divisible by 2
+                const int Attacks = 2;
+
+                
+                if (Timer == 0)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, ai0: 1);
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, ai0: 1);
+
+                    Vector2 fromTarget = -toTarget;
+                    if (fromTarget.X >= 0 && fromTarget.Y >= 0)
+                        Corner = 0;
+                    else if (fromTarget.X >= 0 && fromTarget.Y < 0)
+                        Corner = 1;
+                    else if (fromTarget.X <= 0 && fromTarget.Y < 0)
+                        Corner = 2;
+                    else
+                        Corner = 3;
                 }
-                if (Timer == 40)
+                else
+                {
+                    Vector2 desiredDir;
+                    switch (Corner)
+                    {
+                        case 0:
+                            desiredDir = Vector2.Normalize(Vector2.UnitX + Vector2.UnitY);
+                            break;
+                        case 1:
+                            desiredDir = Vector2.Normalize(Vector2.UnitX - Vector2.UnitY);
+                            break;
+                        case 2:
+                            desiredDir = Vector2.Normalize(-Vector2.UnitX - Vector2.UnitY);
+                            break;
+                        case 3:
+                            desiredDir = Vector2.Normalize(-Vector2.UnitX + Vector2.UnitY);
+                            break;
+                        default:
+                            desiredDir = Vector2.Normalize(Vector2.One);
+                            break;
+                    }
+                    desiredDir *= 500;
+
+                    Movement(target.Center + desiredDir, 0.1f, 40, 10, 0.1f, 50f);
+
+                    if (Timer > 10 && Timer < AttackTime && NPC.Distance(target.Center + desiredDir) > 400)
+                        Timer--;
+                }
+                /*
+                if (TelegraphParticle != null)
+                    TelegraphParticle.Position = NPC.Center;
+                */
+
+                if (Timer % AttackTime == AttackTime - 1)
                 {
                     SoundEngine.PlaySound(SoundID.Item36, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Main.rand.NextFloat(-0.25f, 0.25f)) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedByRandom(MathHelper.Pi / 7f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
                         }
                     }
+                    Corner += Main.rand.NextBool() ? 1 : -1;
+                    Corner %= 4;
                 }
-                if (Timer == 60)
+                if (Timer == AttackTime * Attacks + (AttackTime / 2))
                 {
                     Reset();
                 }
+                Timer++;
             }
             void PredictiveToss()
             {
@@ -369,6 +499,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostHeldWeapon>(), 0, 0, Main.myPlayer, ai0: 4);
                     Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DarkIceCrystal>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI, ai1: target.whoAmI);
+                    TelegraphParticle = null;
+                    TelegraphParticle = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, Color.DarkCyan, Vector2.One * 20, Vector2.One, 100, true, Color.LightBlue);
+                    TelegraphParticle.Spawn();
+                }
+                if (TelegraphParticle != null)
+                {
+                    TelegraphParticle.Position = NPC.Center;
+                }
+                if (Timer == 90)
+                {
+                    SoundEngine.PlaySound(SoundID.Item109 with { Pitch = 0.5f }, NPC.Center);
                 }
                 if (Timer == 100)
                 {
@@ -423,28 +564,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void FrostFlares()
             {
-                if (Data == 0 && NPC.Center.Distance(new Vector2(NPC.Center.X, target.Center.Y - 300)) > 50)
+                const int AttackTime = 60;
+                Vector2 desiredPos = target.Center - (toTarget * 400);
+                Movement(desiredPos, maxSpeed: 50);
+
+                Timer++;
+                if (Timer % 20 == 0 && Timer <= AttackTime)
                 {
-                    Movement(new Vector2(NPC.Center.X, target.Center.Y - 300), maxSpeed: 35);
+                    SoundEngine.PlaySound(SoundID.Item92, NPC.Center);
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (toTarget * Main.rand.NextFloat(15, 25)).RotatedByRandom(MathHelper.PiOver4 * (Timer / AttackTime)), ModContent.ProjectileType<FrostFlare>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
                 }
-                else if (Data == 0)
+                if (Timer >= AttackTime + 30)
                 {
-                    Data = NPC.Center.X > target.Center.X ? -1 : 1;
-                }
-                if (Data != 0)
-                {
-                    Movement(target.Center + new Vector2(500 * Data, -300), maxSpeed: 50);
-                    Timer++;
-                    if (Timer % 30 == 0)
-                    {
-                        SoundEngine.PlaySound(SoundID.Item92, NPC.Center);
-                        if (DLCUtils.HostCheck)
-                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, toTarget * 15, ModContent.ProjectileType<FrostFlare>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
-                    }
-                    if (Timer > 200 || NPC.Distance(target.Center + new Vector2(500 * Data, -300)) < 50)
-                    {
-                        Reset();
-                    }
+                    Reset();
                 }
             }
             void IceStar()
@@ -454,14 +587,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 if (Timer > 0 && Timer % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item1, NPC.Center);
-                    if (DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                    if (DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI);
                 }
                 if (Timer >= 30)
                 {
                     Timer = -30;
                     Data++;
                 }
-                if (Data >= 1)
+                if (Data >= 1 && Timer >= 0)
                 {
                     Reset();
                 }

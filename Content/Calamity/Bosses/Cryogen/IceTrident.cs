@@ -20,7 +20,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "CalamityMod/Items/Weapons/Magic/IcicleTrident";
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
         {
@@ -28,8 +29,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 300;
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+
+            Projectile.tileCollide = false;
+            Projectile.light = 0.5f;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

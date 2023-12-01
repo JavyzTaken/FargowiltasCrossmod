@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CryogenShieldEternity : EModeCalBehaviour
     {
-        public override bool IsLoadingEnabled(Mod mod) => false;
+        public override bool IsLoadingEnabled(Mod mod) => CryogenEternity.Enabled;
 
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.Cryogen.CryogenShield>());
         public override bool SafePreAI(NPC npc)

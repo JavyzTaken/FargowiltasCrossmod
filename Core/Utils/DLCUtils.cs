@@ -86,6 +86,8 @@ namespace FargowiltasCrossmod.Core.Utils
                 queue.Enqueue(a);
             }
         }
+        public static void RandomFromListExcept<T>(this Queue<T> queue, List<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude).ToList());
+
         #endregion
     }
 }
