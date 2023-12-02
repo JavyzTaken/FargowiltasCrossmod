@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.CalPlayer;
@@ -22,6 +23,7 @@ using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity
@@ -123,6 +125,11 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
 
             }
+        }
+        public bool[] PreUpdateBuffImmune;
+        public override void PreUpdateBuffs()
+        {
+            PreUpdateBuffImmune = Player.buffImmune;
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {

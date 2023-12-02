@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using CalamityMod;
+using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Skies;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
@@ -10,6 +11,7 @@ using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Core.Toggler;
 using Terraria;
 using Terraria.Graphics.Effects;
@@ -24,6 +26,14 @@ public class FargowiltasCrossmod : Mod
     public override void Load()
     {
         Instance = this;
+
+        foreach (var entry in ModCompatibility.SoulsMod.Mod.BossChecklistValues)
+        {
+            if (entry.Key.Contains("Champion"))
+            {
+                ModCompatibility.SoulsMod.Mod.BossChecklistValues[entry.Key] += 1f;
+            }
+        }
     }
     public override void Unload()
     {
@@ -48,7 +58,6 @@ public class FargowiltasCrossmod : Mod
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static ref List<int> pierceResistExceptionList => ref CalamityLists.pierceResistExceptionList;
-
     public override void PostSetupContent()
     {
         if (ModCompatibility.Calamity.Loaded)
@@ -68,6 +77,14 @@ public class FargowiltasCrossmod : Mod
     public void PostSetupContent_Calamity()
     {
         pierceResistExceptionList.Add(ProjectileID.FinalFractal);
+        
+        /* doesn't seem to be working, may investigate later
+        List<int> CalamityReworkedSpears = new List<int>
+        {
+            ModContent.ItemType<AstralPike>()
+        };
+        SpearRework.ReworkedSpears.AddRange(CalamityReworkedSpears);
+        */
 
         #region Stat Sheet
         double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
