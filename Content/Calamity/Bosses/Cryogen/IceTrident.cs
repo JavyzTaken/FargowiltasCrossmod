@@ -32,6 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
             Projectile.tileCollide = false;
             Projectile.light = 0.5f;
+            Projectile.coldDamage = true;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -76,6 +77,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override void AI()
         {
+            Projectile.velocity *= 1.005f;
+
             if (Projectile.ai[1] == 0)
             {
                 Projectile.ai[1] = 1;
@@ -85,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (Projectile.ai[1] == 50)
             {
                 SoundEngine.PlaySound(SoundID.Item28, Projectile.Center);
-                Projectile.velocity = new Vector2(25, 0).RotatedBy(Projectile.ai[2]);
+                Projectile.velocity = new Vector2(18, 0).RotatedBy(Projectile.ai[2]);
             }
             if (Projectile.ai[1] < 50)
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Zero, 0.03f);

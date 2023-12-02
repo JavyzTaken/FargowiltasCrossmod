@@ -38,6 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.tileCollide = false;
 
             Projectile.light = 1f;
+            Projectile.coldDamage = true;
         }
         public override void OnKill(int timeLeft)
         {
@@ -51,10 +52,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             Asset<Texture2D> line = TextureAssets.Extra[178];
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            float x = Projectile.ai[2] / 100;
+            float x = Projectile.localAI[0] / 100;
             float opacity = (float)-Math.Pow((2 * x - 1), 2) + 1;
             //Main.NewText(opacity);
-            if (Projectile.ai[2] >= 100)
+            if (Projectile.localAI[0] >= 100)
             {
                 opacity = 0;
                 for (int i = 0; i < 7; i++)
@@ -66,8 +67,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
                
             }
+            if (Projectile.ai[2] < 0 || Projectile.localAI[0] >= 100)
+                return false;
             //DLCUtils.DrawBackglow(line, Color.Cyan * opacity, Projectile.Center, new Vector2(0, line.Height() / 2), new Vector2(5, 2), Projectile.rotation - MathHelper.PiOver2, SpriteEffects.None, 12, 2);
-            Main.EntitySpriteDraw(line.Value, Projectile.Center - Main.screenPosition, null, Color.Cyan * opacity, Projectile.rotation - MathHelper.PiOver2, new Vector2(0, line.Height() / 2), new Vector2(5, 2), SpriteEffects.None);
+            if (Projectile.localAI[0] >= 50)
+                opacity = 1f;
+            Main.EntitySpriteDraw(line.Value, Projectile.Center - Main.screenPosition, null, Color.Blue * opacity, Projectile.rotation - MathHelper.PiOver2, new Vector2(0, line.Height() / 2), new Vector2(5, 2), SpriteEffects.None);
             
             return false;
         }
@@ -82,25 +87,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             
             Vector2 targetvel = CalamityUtils.CalculatePredictiveAimToTarget(Projectile.Center, target, 35);
-            //Main.NewText(Projectile.ai[2]);
-            if (Projectile.ai[2] < 100)
+            //Main.NewText(Projectile.localAI[0]);
+            if (Projectile.localAI[0] < 100)
             {
                 Projectile.Center = owner.Center;
-                Projectile.rotation = targetvel.ToRotation() + MathHelper.PiOver2;
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Normalize(targetvel), 0.2f);
+
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+
             }
-            if (Projectile.ai[2] == 100)
+            if (Projectile.localAI[0] == 100)
             {
                 SoundEngine.PlaySound(SoundID.Item109, Projectile.Center);
-                Projectile.velocity = targetvel.SafeNormalize(Vector2.Zero) * 35;
+                int dir = Projectile.ai[2] < 0 ? -1 : 1;
+                
+                Projectile.velocity *= 35 * dir;
             }
-            if (Projectile.ai[2] > 100) //leave a lingering trail
+            if (Projectile.localAI[0] > 100) //leave a lingering trail
             {
                 if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ModContent.ProjectileType<IceCloud>(), Projectile.damage, Projectile.knockBack, Main.myPlayer);
                 }
             }
-            Projectile.ai[2]++;
+            Projectile.localAI[0]++;
 
             base.AI();
         }

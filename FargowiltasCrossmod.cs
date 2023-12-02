@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using CalamityMod;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Skies;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
@@ -52,6 +54,7 @@ public class FargowiltasCrossmod : Mod
         if (ModCompatibility.Calamity.Loaded)
         {
             PostSetupContent_Calamity();
+            SkyManager.Instance["FargowiltasCrossmod:Permafrost"] = new PermafrostSky();
         }
 
         if (MutantDLC.ShouldDoDLC)

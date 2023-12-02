@@ -1,5 +1,6 @@
 ﻿
 using CalamityMod;
+using CalamityMod.NPCs;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
@@ -31,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CryogenEternity : EModeCalBehaviour
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
 
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>());
@@ -86,7 +87,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
         public int RitualProj;
 
-        public const int ArenaRadius = 1600;
+        public const int ArenaRadius = 1200;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -120,6 +121,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !DLCWorldSavingSystem.EternityRev) return true;
+
             Player target = Main.player[npc.target];
             ref float attack = ref npc.ai[0];
             ref float timer = ref npc.ai[1];
@@ -129,6 +131,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ref float attackChoice = ref npc.localAI[0];
             ref float attackTimer = ref npc.localAI[1];
             ref float data3 = ref npc.localAI[2];
+
+            
+
             npc.scale = 1.5f;
             npc.dontTakeDamage = false;
             if (shieldDrawCounter == 0)
@@ -196,19 +201,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     }
                     DustExplode(npc);
                 }
-                
+                float chainCycleTime = timer % chainTime;
+                if (chainCycleTime > chainStartTime - 10 && chainCycleTime < chainStartTime && attackChoice == (float)Attacks.ShardSweep)
+                {
+                    timer--;
+                }
                 if (timer % chainTime == chainStartTime)
                 {
                     int even = evenChain(npc) ? 1 : 0;
                     for (int i = 0; i < Chains.Length; i++)
+                    {
                         if (i % 2 == even)
                         {
                             int p = Chains[i];
                             if (p.WithinBounds(Main.maxProjectiles))
                                 Main.projectile[p].ai[2] = 200;
                         }
-                            
-                            
+                    }
                 }
                 void ToIdle()
                 {
@@ -226,15 +235,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                                 SoundEngine.PlaySound(SoundID.Item30, npc.Center);
                                 if (DLCUtils.HostCheck)
                                 {
-                                    for (int i = 3; i < 8; i++)
+                                    float randSpread = Main.rand.NextFloat(5f, 8f);
+                                    float randSpeedMod = Main.rand.NextFloat(65f, 90f);
+                                    for (int i = 0; i < 6; i++) //hexagon of bombs
                                     {
-                                        Vector2 vel = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * i * 4;
-                                        float modifier = 1;
-                                        vel = vel.RotatedByRandom(modifier * MathHelper.Pi / i);
-                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                        Vector2 toPlayer = target.Center - npc.Center;
+                                        Vector2 offset = (Vector2.UnitY * npc.height / 2f).RotatedBy(MathHelper.TwoPi * i / 6f);
+                                        Vector2 vel = (toPlayer).SafeNormalize(Vector2.Zero) * toPlayer.Length() / randSpeedMod;
+                                        vel += Vector2.Normalize(offset) * randSpread;
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + offset, vel, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                                     }
                                 }
                             }
+
                             attackTimer++;
                             if (attackTimer > 120 + 60)
                             {

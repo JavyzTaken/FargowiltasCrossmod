@@ -155,7 +155,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             else
             {
-                Projectile.Opacity = 0.5f;
+                Projectile.Opacity = 0.2f;
             }
             if (timer >= 200 && timer <= 300)
             {

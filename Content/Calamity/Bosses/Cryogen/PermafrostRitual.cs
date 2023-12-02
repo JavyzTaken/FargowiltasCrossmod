@@ -32,6 +32,9 @@ namespace FargowiltasSouls.Content.Bosses.AbomBoss
 
             Projectile.velocity /= 40f;
 
+            if (npc.ai[2] == (float)PermafrostBoss.Attacks.PawCharge)
+                Projectile.velocity /= 2f;
+
             rotationPerTick = realRotation;
         }
 

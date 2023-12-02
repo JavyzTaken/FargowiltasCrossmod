@@ -38,6 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.coldDamage = true;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

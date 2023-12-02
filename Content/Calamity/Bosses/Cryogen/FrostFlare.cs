@@ -1,6 +1,7 @@
 ﻿using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
+using FargowiltasSouls.Common.Graphics.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -27,17 +28,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
 
         }
+        const int MaxTime = 60 * 5;
         public override void SetDefaults()
         {
             Projectile.scale = 2;
             Projectile.width = Projectile.height = 15;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = MaxTime;
 
             Projectile.light = 0.5f;
 
             Projectile.tileCollide = false;
+            Projectile.coldDamage = true;
         }
         public override void OnKill(int timeLeft)
         {
@@ -51,6 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void OnSpawn(IEntitySource source)
         {
             base.OnSpawn(source);
+            //Projectile.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -60,25 +64,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override void AI()
         {
-            float decel = 30 / 180f;
+            float decel = 30 / 90f;
             float newVel = MathHelper.Clamp(Projectile.velocity.Length() - decel, 0, 100);
             Projectile.velocity = Utils.SafeNormalize(Projectile.velocity, Vector2.Zero) * newVel;
-            Projectile.rotation += Projectile.velocity.Length() / 80f;
+            //Projectile.rotation += Projectile.velocity.Length() / 80f;
 
             Vector2 vel = (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2();
-            for (int i = -3; i < 4; i+= 2)
+            /*
+            if (Projectile.timeLeft < 180f && Projectile.timeLeft <= 120)
             {
-                Vector2 dVel = vel * 6 * i;
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce, dVel.X, dVel.Y).noGravity = true;
+                for (int i = -3; i < 4; i += 2)
+                {
+                    Vector2 dVel = (vel * 7 * i * Main.rand.NextFloat()).RotatedByRandom(MathHelper.PiOver2 / 10f);
+                    dVel += Projectile.velocity;
+                    dVel *= 3;
+                    Particle p = new FogPuff(Projectile.Center, dVel, Color.GhostWhite, 0.2f, 30, Main.rand.NextFloat(MathHelper.TwoPi), Main.rand.NextFloat(-0.2f, 0.2f));
+                    p.Spawn();
+                    //Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce, dVel.X, dVel.Y).noGravity = true;
+                }
             }
+            */
+            const int ActivationTime = MaxTime - 60;
 
-            if (Projectile.timeLeft == 10)
+            if (Projectile.timeLeft == ActivationTime)
                 SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
 
-            if (Projectile.timeLeft < 10 && DLCUtils.HostCheck)
+            if (Projectile.timeLeft < ActivationTime && DLCUtils.HostCheck)
             {
                 for (int i = -1; i < 2; i += 2)
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (vel * Main.rand.NextFloat(13, 16) * i).RotatedByRandom(MathHelper.PiOver2 / 10f), ModContent.ProjectileType<FrostShard>(), Projectile.damage, 0);
+                {
+                    Vector2 dVel = (vel * 14 * i * Main.rand.NextFloat()).RotatedByRandom(MathHelper.PiOver2 / 10f);
+                    //dVel += Projectile.velocity;
+                    dVel *= 3;
+                    int p = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dVel, ModContent.ProjectileType<IceCloud>(), Projectile.damage, 0, ai0: 1);
+                    if (p.IsWithinBounds(Main.maxProjectiles))
+                    {
+                        Main.projectile[p].timeLeft = 60;
+                    }
+                }
+                    /*
+                    for (int i = -1; i < 2; i += 2)
+                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (vel * Main.rand.NextFloat(30, 40) * i).RotatedByRandom(MathHelper.PiOver2 / 20f), ModContent.ProjectileType<FrostShard>(), Projectile.damage, 0);
+                    */
             }
         }
     }

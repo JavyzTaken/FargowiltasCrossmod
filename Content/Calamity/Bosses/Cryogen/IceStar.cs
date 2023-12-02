@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
             Projectile.light = 0.5f;
             Projectile.tileCollide = false;
+            Projectile.coldDamage = true;
         }
         public override void OnKill(int timeLeft)
         {
@@ -83,8 +84,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (Timer > 0) //homing
             {
                 Vector2 vectorToIdlePosition = target.Center - Projectile.Center;
-                float speed = 12f;
-                float inertia = 100f;
+                float speed = 18f;
+                float inertia = 90f;
                 vectorToIdlePosition.Normalize();
                 vectorToIdlePosition *= speed;
                 Projectile.velocity = (Projectile.velocity * (inertia - 1f) + vectorToIdlePosition) / inertia;
@@ -93,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Projectile.velocity.X = -0.15f;
                     Projectile.velocity.Y = -0.05f;
                 }
-                const int MaxSpeed = 30;
+                const int MaxSpeed = 35;
                 Projectile.velocity.ClampMagnitude(0, MaxSpeed);
                 /*
                 const float MaxSpeed = 30;
