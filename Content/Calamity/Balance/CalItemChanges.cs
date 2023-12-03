@@ -154,10 +154,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (item.type == ModContent.ItemType<Fabstaff>()) return 0.6f;
 
             //Post-Mutant items
-            if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
-            if (item.type == ModContent.ItemType<GuardianTome>()) return 0.2f;
-            if (item.type == ModContent.ItemType<SlimeRain>()) return 0.09f;
-            if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.2f;
+            if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.17f;
+            if (item.type == ModContent.ItemType<GuardianTome>()) return 0.17f;
+            if (item.type == ModContent.ItemType<SlimeRain>()) return 0.08f;
+            if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.17f;
             return 1;
 
         }
