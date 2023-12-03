@@ -18,7 +18,10 @@ using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
+using FargowiltasSouls.Content.Items.Ammos;
+using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Consumables;
+using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Duck;
@@ -89,6 +92,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             ModContent.ItemType<CausticTear>(),
             ModContent.ItemType<MartianDistressRemote>(),
         };
+
+        public static List<int> RockItems = new List<int>
+        {
+            ModContent.ItemType<Rock>(),
+            ModContent.ItemType<EternitySoul>(),
+            ModContent.ItemType<HentaiSpear>(),
+            ModContent.ItemType<StyxGazer>(),
+            ModContent.ItemType<SparklingLove>(),
+            //ModContent.ItemType<GuardianTome>(),
+            //ModContent.ItemType<PhantasmalLeashOfCthulhu>(),
+            //ModContent.ItemType<SlimeRain>(),
+            //ModContent.ItemType<TheBiggestSting>(),
+            ModContent.ItemType<MutantPants>(),
+            ModContent.ItemType<MutantBody>(),
+            ModContent.ItemType<MutantMask>(),
+            ModContent.ItemType<FargoArrow>(),
+            ModContent.ItemType<FargoBullet>(),
+        };
         //this is cloned from cal because lazy
         public static bool VanillaSummonItem(Item item) =>
             (item.type == 560 || item.type == 43 || item.type == 4271 || item.type == 361 || item.type == 70 || item.type == 1331 || item.type == 1133 || item.type == 5120 || item.type == 4988 || item.type == 1315 || item.type == 602 || item.type == 544 || item.type == 556 || item.type == 557 || item.type == 1958 || item.type == 1844 || item.type == 2767 || item.type == 2767 || item.type == 3601);
@@ -109,6 +130,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 return 0.8f;
             }
 
+            //Shadowspec items
             if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.5f;
             if (item.type == ModContent.ItemType<IllustriousKnives>()) return 0.8f;
             if (item.type == ModContent.ItemType<Azathoth>()) return 0.9f;
@@ -130,6 +152,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
             if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
             if (item.type == ModContent.ItemType<Fabstaff>()) return 0.6f;
+
+            //Post-Mutant items
+            if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
+            if (item.type == ModContent.ItemType<GuardianTome>()) return 0.2f;
+            if (item.type == ModContent.ItemType<SlimeRain>()) return 0.09f;
+            if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.2f;
             return 1;
 
         }
@@ -311,13 +339,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.type == ModContent.ItemType<Masochist>())
-            {
                 return false;
-            }
+
+            if (item.type == ModContent.ItemType<Terminus>())
+                return WorldSavingSystem.DownedMutant;
+
             if (item.type == ModContent.ItemType<CelestialOnion>() && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
-            {
                 return player.FargoSouls().MutantsPactSlot;
-            }
+
             return true;
         }
         public enum EModeChange
@@ -373,6 +402,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
                 tooltips.RemoveAll(t => t.Text != item.Name);
                 tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", $"[c/FF0000:Calamity Crossmod Support:] Disabled. Use Calamity's difficulty UI instead!"));
+            }
+            if (item.type == ModContent.ItemType<Terminus>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "PostMutant", $"[c/FF0000:Calamity Crossmod Support:] Can only be used after defeating the Mutant"));
             }
 
             const string BalanceLine = "Cross-mod Balance: ";

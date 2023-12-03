@@ -160,8 +160,8 @@ namespace FargowiltasCrossmod.Content.Calamity
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
-                Player.statDefense /= 2;
-                Player.endurance /= 2;
+                Player.statDefense /= 1.5f;
+                Player.endurance /= 1.5f;
                 Player.shinyStone = false;
             }
             if (soulsPlayer.MutantFang) //faster life reduction

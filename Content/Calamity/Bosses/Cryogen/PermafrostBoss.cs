@@ -21,6 +21,8 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using CalamityMod;
 using CalamityMod.NPCs.TownNPCs;
 using Terraria.DataStructures;
+using FargowiltasCrossmod.Content.Calamity.Balance;
+using CalamityMod.World;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -172,7 +174,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
         public Particle TelegraphParticle;
 
-        private void SpawnTownNPC()
+        private void SpawnTownNPC(bool defeat = false)
         {
             if (!DLCUtils.HostCheck)
                 return;
@@ -182,6 +184,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Main.npc[n].homeless = true;
                 if (Main.netMode == NetmodeID.Server)
                     NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
+
+                int line = DownedBossSystem.downedCryogen ? 2 : 1;
+                if (defeat)
+                    Main.npc[n].GetGlobalNPC<CalNPCChanges>().PermafrostDefeatLine = line;
             }
             
         }
@@ -200,7 +206,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override void OnKill()
         {
-            SpawnTownNPC();
+            SpawnTownNPC(true);
 
             NPC cryogen = NPC.NewNPCDirect(NPC.GetSource_FromThis(), NPC.Center, ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>());
             cryogen.NPCLoot();

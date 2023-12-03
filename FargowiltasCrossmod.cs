@@ -27,13 +27,7 @@ public class FargowiltasCrossmod : Mod
     {
         Instance = this;
 
-        foreach (var entry in ModCompatibility.SoulsMod.Mod.BossChecklistValues)
-        {
-            if (entry.Key.Contains("Champion"))
-            {
-                ModCompatibility.SoulsMod.Mod.BossChecklistValues[entry.Key] += 1f;
-            }
-        }
+        ModCompatibility.BossChecklist.AdjustValues();
     }
     public override void Unload()
     {

@@ -52,6 +52,7 @@ using CalamityMod.NPCs.StormWeaver;
 using CalamityMod.NPCs.SulphurousSea;
 using CalamityMod.NPCs.SunkenSea;
 using CalamityMod.NPCs.SupremeCalamitas;
+using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
@@ -1094,21 +1095,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         private int numAI;
         public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
         {
-            int[] rockItems = {
-                ModContent.ItemType<Rock>(),
-                ModContent.ItemType<EternitySoul>(),
-                ModContent.ItemType<HentaiSpear>(),
-                ModContent.ItemType<StyxGazer>(),
-                ModContent.ItemType<SparklingLove>(),
-                ModContent.ItemType<GuardianTome>(),
-                ModContent.ItemType<PhantasmalLeashOfCthulhu>(),
-                ModContent.ItemType<SlimeRain>(),
-                ModContent.ItemType<MutantPants>(),
-                ModContent.ItemType<MutantBody>(),
-                ModContent.ItemType<MutantMask>(),
-                ModContent.ItemType<FargoArrow>(),
-                ModContent.ItemType<FargoBullet>(),
-            };
             if (npc.type == ModContent.NPCType<Squirrel>())
             {
                 bool sellRock = false;
@@ -1117,17 +1103,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     foreach (Item item in player.inventory)
                     {
-                        if (rockItems.Contains(item.type))
+                        if (CalItemChanges.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                     foreach (Item item in player.armor)
                     {
-                        if (rockItems.Contains(item.type))
+                        if (CalItemChanges.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                     foreach (Item item in player.bank.item)
                     {
-                        if (rockItems.Contains(item.type))
+                        if (CalItemChanges.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                 }
@@ -1456,6 +1442,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             if (numAI > 0)
             {
                 numAI = 0;
+            }
+        }
+
+        public int PermafrostDefeatLine = 0;
+        public override void GetChat(NPC npc, ref string chat)
+        {
+            if (npc.type == ModContent.NPCType<DILF>())
+            {
+                if (PermafrostDefeatLine == 1)
+                {
+                    chat = "You clearly possess great skill! My thanks to you for freeing me, and providing an opportunity to defrost my fighting abilities.";
+                    PermafrostDefeatLine = 0;
+                }
+                if (PermafrostDefeatLine == 2)
+                {
+                    chat = "Aah, a good round of sparring. I need the exercise, so thanks for that.";
+                    PermafrostDefeatLine = 0;
+                }
             }
         }
     }

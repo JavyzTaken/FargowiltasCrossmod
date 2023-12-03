@@ -39,4 +39,22 @@ public static class ModCompatibility
         public static Mod Mod => ModLoader.GetMod(Name);
         public static bool InfernumDifficulty => (bool)Mod.Call("GetInfernumActive");
     }
+    public static class BossChecklist
+    {
+        public static void AdjustValues()
+        {
+            if (Calamity.Loaded)
+            {
+                foreach (var entry in SoulsMod.Mod.BossChecklistValues)
+                {
+                    if (entry.Key.Contains("Champion"))
+                    {
+                        SoulsMod.Mod.BossChecklistValues[entry.Key] += 1f;
+                    }
+                }
+                SoulsMod.Mod.BossChecklistValues["AbomBoss"] = 22.6f;
+                SoulsMod.Mod.BossChecklistValues["MutantBoss"] = 25.8f;
+            }
+        }
+    }
 }
