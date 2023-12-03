@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
-    [ExtendsFromMod("ThoriumMod")]
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class TungstenScytheGlobalProj : GlobalProjectile
     {
         public override bool AppliesToEntity(Projectile entity, bool lateInstantiation)
@@ -36,9 +36,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         // circular hitboxes
         public override bool? Colliding(Projectile projectile, Rectangle projHitbox, Rectangle targetHitbox)
         {
+            static float SQ(float n) => n * n; 
             Vector2 Closest = new(MathHelper.Clamp(projectile.Center.X, targetHitbox.Left, targetHitbox.Right), MathHelper.Clamp(projectile.Center.Y, targetHitbox.Top, targetHitbox.Bottom));
             float distSQ = Closest.DistanceSQ(projectile.Center);
-            return distSQ <= (projectile.width * projectile.height / 4);
+            return distSQ <= SQ(projectile.width / 2 + 16 * projectile.scale);
         }
     }
 }

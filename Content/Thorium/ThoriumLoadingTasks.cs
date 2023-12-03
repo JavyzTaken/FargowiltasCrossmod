@@ -1,9 +1,11 @@
 using Terraria.ModLoader;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Terraria;
 using FargowiltasCrossmod.Core;
 using ThoriumMod.NPCs;
+using ThoriumMod.Projectiles;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
@@ -17,6 +19,28 @@ namespace FargowiltasCrossmod.Content.Thorium
             Core.Globals.DevianttGlobalNPC.AddThoriumShop();
 
             FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEnchant.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
+
+            FargowiltasSouls.Content.Projectiles.SpearRework.ReworkedSpears.AddRange(new List<int> {
+                ModContent.ProjectileType<CoralPolearmPro>(),
+                ModContent.ProjectileType<DemonBloodSpearPro>(),
+                ModContent.ProjectileType<DragonToothPro>(),
+                ModContent.ProjectileType<EnergyStormPartisanPro>(),
+                ModContent.ProjectileType<FleshSkewerPro>(),
+                ModContent.ProjectileType<ForkPro>(),
+                ModContent.ProjectileType<HarpyTalonPro>(),
+                ModContent.ProjectileType<HellishHalberdPro>(),
+                ModContent.ProjectileType<IceLancePro>(),
+                ModContent.ProjectileType<IllumiteSpearPro>(),
+                ModContent.ProjectileType<MoonlightPro>(),
+                ModContent.ProjectileType<PearlPikePro>(),
+                ModContent.ProjectileType<PollenPikePro>(),
+                ModContent.ProjectileType<PoseidonChargePro>(),
+                ModContent.ProjectileType<RifleSpearPro>(),
+                ModContent.ProjectileType<SandStoneSpearPro>(),
+                ModContent.ProjectileType<TerrariumSpearPro>(),
+                ModContent.ProjectileType<ThoriumSpearPro>(),
+                ModContent.ProjectileType<ValadiumSpearPro>(),
+            });
         }
 
         public override void OnModLoad()
