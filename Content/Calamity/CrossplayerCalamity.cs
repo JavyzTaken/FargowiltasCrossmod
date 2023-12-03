@@ -160,9 +160,12 @@ namespace FargowiltasCrossmod.Content.Calamity
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
-                Player.statDefense /= 1.5f;
-                Player.endurance /= 1.5f;
+                Player.statDefense /= 2f;
+                Player.endurance /= 2f;
                 Player.shinyStone = false;
+                Player.Calamity().purity = false;
+                if (Player.statLifeMax2 > 1000)
+                    Player.statLifeMax2 = 1000;
             }
             if (soulsPlayer.MutantFang) //faster life reduction
             {
@@ -170,12 +173,24 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             base.PostUpdateMiscEffects();
         }
+        public override void PostUpdate()
+        {
+            FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
+            if (CalamitousPresence && !soulsPlayer.MutantPresence)
+            {
+                Player.Calamity().purity = false;
+                if (Player.statLifeMax2 > 1000)
+                    Player.statLifeMax2 = 1000;
+            }
+        }
         public override void UpdateBadLifeRegen()
         {
+            
             if (CalamitousPresence)
             {
-                if (Player.lifeRegen > 5)
-                    Player.lifeRegen = 5;
+                const int cap = 2;
+                if (Player.lifeRegen > cap)
+                    Player.lifeRegen = cap;
             }
             base.UpdateBadLifeRegen();
         }
