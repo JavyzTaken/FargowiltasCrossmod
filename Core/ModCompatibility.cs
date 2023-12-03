@@ -39,6 +39,15 @@ public static class ModCompatibility
         public static Mod Mod => ModLoader.GetMod(Name);
         public static bool InfernumDifficulty => (bool)Mod.Call("GetInfernumActive");
     }
+    public static class WrathoftheGods
+    {
+        public const string Name = "NoxusBoss";
+        public static bool Loaded => ModLoader.HasMod(Name);
+        public static Mod Mod => ModLoader.GetMod(Name);
+        public static ModNPC NoxusBoss1 = Mod.Find<ModNPC>("NoxusEgg");
+        public static ModNPC NoxusBoss2 = Mod.Find<ModNPC>("EntropicGod");
+        public static ModNPC NamelessDietyBoss = Mod.Find<ModNPC>("NamelessDietyBoss");
+    }
     public static class BossChecklist
     {
         public static void AdjustValues()

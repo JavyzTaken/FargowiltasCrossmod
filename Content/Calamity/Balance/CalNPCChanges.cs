@@ -372,6 +372,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 4.4f);
                 }
+                if (ModCompatibility.WrathoftheGods.Loaded)
+                {
+                    if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type || 
+                        npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
+                        npc.type == ModCompatibility.WrathoftheGods.NamelessDietyBoss.Type)
+                    {
+                        npc.lifeMax = (int)(npc.lifeMax * 1.9f);
+                    }
+                }
                 #region BRBalance
                 List<int> squirrelParts = new List<int>
                 {
@@ -1251,6 +1260,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                     Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
+            }
+            if (ModCompatibility.WrathoftheGods.Loaded)
+            {
+                if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type ||
+                    npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
+                    npc.type == ModCompatibility.WrathoftheGods.NamelessDietyBoss.Type)
+                {
+                    if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                        Main.LocalPlayer.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
+                }
             }
             #endregion SummonDrops
             if (BossRushEvent.BossRushActive)
