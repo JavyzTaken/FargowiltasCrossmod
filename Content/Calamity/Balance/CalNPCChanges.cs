@@ -376,7 +376,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type || 
                         npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
-                        npc.type == ModCompatibility.WrathoftheGods.NamelessDietyBoss.Type)
+                        npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                     {
                         npc.lifeMax = (int)(npc.lifeMax * 1.9f);
                     }
@@ -1265,7 +1265,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type ||
                     npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
-                    npc.type == ModCompatibility.WrathoftheGods.NamelessDietyBoss.Type)
+                    npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                 {
                     if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                         Main.LocalPlayer.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
