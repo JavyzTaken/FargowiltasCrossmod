@@ -15,6 +15,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             AddThoriumStatSheet();
             Core.Globals.DevianttGlobalNPC.AddThoriumShop();
+
+            FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEnchant.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
         }
 
         public override void OnModLoad()
