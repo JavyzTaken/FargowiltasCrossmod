@@ -463,7 +463,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (item.type == ModContent.ItemType<OrichalcumEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}25% less effective"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}40% less effective"));
                 }
                 if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
                 {

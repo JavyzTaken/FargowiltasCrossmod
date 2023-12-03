@@ -499,8 +499,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             Player player = Main.player[Main.myPlayer];
             if (player.FargoSouls().OriEnchantItem != null && npc.lifeRegen < 0)
             {
-                npc.lifeRegen = (int)(npc.lifeRegen * 0.75f);
-                damage = (int)(damage * 0.75f);
+                npc.lifeRegen = (int)(npc.lifeRegen * 0.6f);
+                damage = (int)(damage * 0.6f);
             }
             base.UpdateLifeRegen(npc, ref damage);
         }
