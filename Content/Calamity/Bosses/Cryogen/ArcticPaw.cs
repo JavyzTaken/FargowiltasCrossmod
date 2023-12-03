@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.width = Projectile.height = 40;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 200;
             Projectile.light = 0.5f;
             Projectile.scale = 0.3f;
 

@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core;
+﻿using CalamityMod;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -50,6 +51,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             if (Projectile.localAI[0] >= 5) lightColor.A += 50;
 
+            Projectile.DrawProjectileWithBackglow(CalamityMod.NPCs.Cryogen.Cryogen.BackglowColor, lightColor, 4f);
+            /*
+
             Rectangle rect = new Rectangle(0, 30 * Projectile.frame, 12, 30);
             //draw glow
             for (int j = 0; j < 12; j++)
@@ -62,6 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
 
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, rect, lightColor, Projectile.rotation, new Vector2(12, 30) / 2, Projectile.scale, SpriteEffects.None);
+            */
             return false;
         }
         public override void AI()

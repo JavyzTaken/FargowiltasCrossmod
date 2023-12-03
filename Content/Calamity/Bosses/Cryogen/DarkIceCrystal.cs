@@ -60,10 +60,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 opacity = 0;
                 for (int i = 0; i < 7; i++)
                 {
-                    DLCUtils.DrawBackglow(t, Color.Blue * (1- (i / Projectile.oldPos.Length)), Projectile.oldPos[i] + Projectile.Size/2, t.Size() / 2, Projectile.rotation, Projectile.scale, SpriteEffects.None, 12, 2);
+                    DLCUtils.DrawBackglow(t, Color.LightBlue * (1- (i / Projectile.oldPos.Length)), Projectile.oldPos[i] + Projectile.Size/2, t.Size() / 2, Projectile.rotation, Projectile.scale, SpriteEffects.None, 12, 2);
                     Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + Projectile.Size/2 - Main.screenPosition, null, lightColor * (1 - ((float)i / Projectile.oldPos.Length)), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
                 }
-                DLCUtils.DrawBackglow(t, Color.Blue, Projectile.Center, t.Size() / 2, Projectile.rotation, Projectile.scale, SpriteEffects.None, 12, 2);
+                DLCUtils.DrawBackglow(t, Color.LightBlue, Projectile.Center, t.Size() / 2, Projectile.rotation, Projectile.scale, SpriteEffects.None, 12, 2);
                 Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
                
             }
@@ -72,7 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             //DLCUtils.DrawBackglow(line, Color.Cyan * opacity, Projectile.Center, new Vector2(0, line.Height() / 2), new Vector2(5, 2), Projectile.rotation - MathHelper.PiOver2, SpriteEffects.None, 12, 2);
             if (Projectile.localAI[0] >= 50)
                 opacity = 1f;
-            Main.EntitySpriteDraw(line.Value, Projectile.Center - Main.screenPosition, null, Color.Blue * opacity, Projectile.rotation - MathHelper.PiOver2, new Vector2(0, line.Height() / 2), new Vector2(5, 2), SpriteEffects.None);
+            Main.EntitySpriteDraw(line.Value, Projectile.Center - Main.screenPosition, null, Color.LightBlue * opacity, Projectile.rotation - MathHelper.PiOver2, new Vector2(0, line.Height() / 2), new Vector2(5, 2), SpriteEffects.None);
             
             return false;
         }

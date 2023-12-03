@@ -23,14 +23,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.tileCollide = false;
             Projectile.coldDamage = true;
         }
-
+        private readonly Color smokeColor = new(122, 190, 255, 255);
         public override void AI()
         {
             if (Projectile.timeLeft % 10 == 0)
             {
                 //Color color = Projectile.ai[0] > 0 ? Color.GhostWhite : Color.Blue;
-                Color color = Color.Blue;
-                Particle smoke = new FogPuff(Projectile.Center + Main.rand.NextVector2Circular(20, 20), Vector2.Zero, color * 0.9f, 0.5f, 30, 0.8f, Main.rand.NextFloat(MathHelper.TwoPi), Main.rand.NextFloat(-0.2f, 0.2f));
+                //Color color = Color.Lerp(Color.Cyan, Color.LightBlue, 0.4f);
+                Particle smoke = new FogPuff(Projectile.Center + Main.rand.NextVector2Circular(20, 20), Vector2.Zero, smokeColor, 0.5f, 30, 0.8f, Main.rand.NextFloat(MathHelper.TwoPi), Main.rand.NextFloat(-0.2f, 0.2f));
                 //Particle smoke = new ExpandingBloomParticle(Projectile.Center + Main.rand.NextVector2Circular(20, 20), Vector2.Zero, Color.Cyan, Vector2.One, Vector2.Zero, 30, true, Color.LightBlue);
                 smoke.Spawn();
 

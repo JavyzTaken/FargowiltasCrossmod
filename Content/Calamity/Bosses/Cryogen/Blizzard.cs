@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.width = Projectile.height = 40;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 150;
+            Projectile.timeLeft = 60;
             
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;

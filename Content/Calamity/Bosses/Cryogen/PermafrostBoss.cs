@@ -441,7 +441,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         SpawnWeapon(2, dmg: FargoSoulsUtil.ScaledProjectileDamage(NPC.damage));
 
                     float dif = FargoSoulsUtil.RotationDifference(toTarget, target.velocity);
-                    dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.8f, MathHelper.Pi * 0.8f);
+                    dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.7f, MathHelper.Pi * 0.8f);
                     Data = toTarget.ToRotation() + dif;
                     Data += Main.rand.NextFloat(-MathHelper.PiOver2 / 10f, MathHelper.PiOver2 / 10f); //some randomness to make it less static
                     TelegraphParticle = null;
@@ -491,19 +491,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Data = Main.rand.NextBool() ? 1 : -1;
                     SpawnWeapon(3);
                 }
-                Vector2 pos = new Vector2(0, -1600).RotatedBy(MathHelper.Lerp(-0.9f * Data, 0.9f * Data, Timer / 180f));
+                const int up = 2100; //1600
+                Vector2 pos = new Vector2(0, -up).RotatedBy(MathHelper.Lerp(-0.9f * Data, 0.9f * Data, Timer / 180f));
                 pos.Y /= 1.78f;
                 if (DLCUtils.HostCheck)
                 {
                     Vector2 position = target.Center + pos + pos.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.PiOver2) * Main.rand.Next(-500, 500);
-                    //Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 30, ModContent.ProjectileType<Blizzard>(), 0, 0, ai0: Main.rand.Next(0, 4));
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 30, ModContent.ProjectileType<Blizzard>(), 0, 0, ai0: Main.rand.Next(0, 4));
+                    /*
                     const int Smokes = 5;
                     for (int i = 0; i < Smokes; i++)
                     {
                         Particle smoke = new FogPuff(position, -pos.SafeNormalize(Vector2.Zero) * 15, Color.GhostWhite, 0.5f, 45, 0.5f, Main.rand.NextFloat(MathHelper.TwoPi), Main.rand.NextFloat(-0.4f, 0.4f));
                         smoke.Spawn();
                     }
-                    
+                    */
                     if (Timer % 5 == 0)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 12, ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
@@ -610,7 +612,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     for (int i = -1; i < 1; i++)
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DarkIceCrystal>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.3f), 0, Main.myPlayer, ai0: NPC.whoAmI, ai1: target.whoAmI, ai2: i);
                     TelegraphParticle = null;
-                    TelegraphParticle = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, Color.Blue, Vector2.One * 20, Vector2.One, 100, true, Color.LightBlue);
+                    TelegraphParticle = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, Color.LightBlue, Vector2.One * 20, Vector2.One, 100, true, Color.White);
                     TelegraphParticle.Spawn();
                 }
                 if (TelegraphParticle != null)
@@ -715,7 +717,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             void IceStar()
             {
                 Timer++;
-                Movement(target.Center, lowspeed: 5, decel: 0.1f, slowdown: 300);
+                Vector2 desiredPos = target.Center - (toTarget * 300);
+                Movement(desiredPos, lowspeed: 5, decel: 0.1f, slowdown: 300);
                 if (Timer > 30 && Timer % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item1, NPC.Center);
