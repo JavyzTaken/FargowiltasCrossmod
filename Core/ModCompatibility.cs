@@ -44,6 +44,7 @@ public static class ModCompatibility
         public const string Name = "NoxusBoss";
         public static bool Loaded => ModLoader.HasMod(Name);
         public static Mod Mod => ModLoader.GetMod(Name);
+
         public static ModNPC NoxusBoss1 = Mod.Find<ModNPC>("NoxusEgg");
         public static ModNPC NoxusBoss2 = Mod.Find<ModNPC>("EntropicGod");
         public static ModNPC NamelessDeityBoss = Mod.Find<ModNPC>("NamelessDeityBoss");
