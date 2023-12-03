@@ -378,7 +378,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
                         npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                     {
-                        npc.lifeMax = (int)(npc.lifeMax * 1.9f);
+                        npc.lifeMax = (int)(npc.lifeMax * 1.6f);
                     }
                 }
                 #region BRBalance
