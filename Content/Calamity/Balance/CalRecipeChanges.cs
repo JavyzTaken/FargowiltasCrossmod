@@ -2,6 +2,7 @@
 using CalamityMod;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
+using CalamityMod.Items.Accessories.Vanity;
 using CalamityMod.Items.Accessories.Wings;
 using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.FishingRods;
@@ -14,6 +15,7 @@ using CalamityMod.Items.Placeables.Furniture;
 using CalamityMod.Items.Placeables.Furniture.BossRelics;
 using CalamityMod.Items.Placeables.Furniture.Trophies;
 using CalamityMod.Items.Placeables.Plates;
+using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Tools;
 using CalamityMod.Items.TreasureBags;
@@ -36,6 +38,7 @@ using FargowiltasSouls.Content.Items.Materials;
 using FargowiltasSouls.Content.Items.Summons;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Balance
@@ -52,6 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 .AddIngredient(ItemID.Wire, 10)
                 .AddIngredient(ModContent.ItemType<DubiousPlating>(), 20)
                 .AddIngredient(ModContent.ItemType<MysteriousCircuitry>(), 20)
+                .DisableDecraft()
                 .AddTile(TileID.Anvils)
                 .Register();
             Recipe.Create(ModContent.ItemType<RoverDrive>())
@@ -60,80 +64,83 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 .AddIngredient(ModContent.ItemType<WulfrumMetalScrap>(), 15)
                 .AddIngredient(ModContent.ItemType<DubiousPlating>(), 5)
                 .AddIngredient(ModContent.ItemType<MysteriousCircuitry>(), 5)
+                .DisableDecraft()
                 .AddTile(TileID.Anvils)
                 .Register();
             //trinket of chi
             Recipe tocrecipe = Recipe.Create(ModContent.ItemType<TrinketofChi>());
-            tocrecipe.AddIngredient(ItemID.ClayBlock, 20);
+            tocrecipe.AddIngredient(ItemID.ClayBlock, 50);
             tocrecipe.AddIngredient(ItemID.Chain, 2);
             tocrecipe.AddIngredient(ItemID.RedHusk);
+            tocrecipe.DisableDecraft();
             tocrecipe.AddTile(TileID.Furnaces);
             tocrecipe.Register();
             //gladiator's locket
             Recipe glrecipe = Recipe.Create(ModContent.ItemType<GladiatorsLocket>());
-            glrecipe.AddIngredient(ItemID.Marble, 20);
+            glrecipe.AddIngredient(ItemID.Marble, 50);
             glrecipe.AddIngredient(ItemID.LifeCrystal, 2);
-            glrecipe.AddIngredient(ItemID.GoldWatch);
+            glrecipe.AddRecipeGroup("FargowiltasCrossmod:AnyGoldWatch", 1);
+            glrecipe.DisableDecraft();
             glrecipe.AddTile(TileID.DemonAltar);
             glrecipe.Register();
-            Recipe glrecipe2 = Recipe.Create(ModContent.ItemType<GladiatorsLocket>());
-            glrecipe2.AddIngredient(ItemID.Marble, 20);
-            glrecipe2.AddIngredient(ItemID.LifeCrystal, 2);
-            glrecipe2.AddIngredient(ItemID.PlatinumWatch);
-            glrecipe2.AddTile(TileID.DemonAltar);
-            glrecipe2.Register();
             //granite core recipe
             Recipe ugcrecipe = Recipe.Create(ModContent.ItemType<UnstableGraniteCore>());
-            ugcrecipe.AddIngredient(ItemID.Granite, 20);
+            ugcrecipe.AddIngredient(ItemID.Granite, 50);
             ugcrecipe.AddIngredient(ModContent.ItemType<EnergyCore>(), 2);
             ugcrecipe.AddIngredient(ModContent.ItemType<AmidiasSpark>());
+            ugcrecipe.DisableDecraft();
             ugcrecipe.AddTile(TileID.DemonAltar);
             ugcrecipe.Register();
             //symbiote recipe
             Recipe fgrecipe = Recipe.Create(ModContent.ItemType<FungalSymbiote>());
             fgrecipe.AddIngredient(ItemID.GlowingMushroom, 50);
-            fgrecipe.AddIngredient(ModContent.ItemType<MurkyPaste>(), 2);
-            fgrecipe.AddIngredient(ItemID.JungleSpores, 4);
+            fgrecipe.AddIngredient(ItemID.JungleSpores, 2);
+            fgrecipe.AddIngredient(ItemID.TealMushroom, 1);
+            fgrecipe.DisableDecraft();
             fgrecipe.AddTile(TileID.LivingLoom);
             fgrecipe.Register();
 
             //tundra leash recipe
             Recipe tlrecipe = Recipe.Create(ModContent.ItemType<TundraLeash>());
-            tlrecipe.AddRecipeGroup("AnySilverBar", 20);
+            tlrecipe.AddRecipeGroup("FargowiltasCrossmod:AnySilverOre", 50);
             tlrecipe.AddIngredient(ItemID.Leather, 2);
             tlrecipe.AddIngredient(ItemID.Bunny);
+            tlrecipe.DisableDecraft();
             tlrecipe.AddTile(TileID.CookingPots);
             tlrecipe.Register();
             //luxor recipe
             Recipe lgrecipe = Recipe.Create(ModContent.ItemType<LuxorsGift>());
-            lgrecipe.AddIngredient(ItemID.FossilOre, 20);
+            lgrecipe.AddIngredient(ItemID.FossilOre, 50);
             lgrecipe.AddIngredient(ItemID.Ruby, 2);
             lgrecipe.AddIngredient(ModContent.ItemType<ScuttlersJewel>());
+            lgrecipe.DisableDecraft();
             lgrecipe.AddTile(TileID.Anvils);
             lgrecipe.Register();
 
             //effigies recipes
             Recipe coref = Recipe.Create(ModContent.ItemType<CorruptionEffigy>());
-            coref.AddIngredient(ItemID.EbonstoneBlock, 25);
+            coref.AddIngredient(ItemID.EbonstoneBlock, 75);
             coref.AddIngredient(ItemID.RottenChunk, 5);
             coref.AddIngredient(ItemID.AngelStatue);
+            coref.DisableDecraft();
             coref.AddTile(TileID.DemonAltar);
             coref.Register();
 
             Recipe crief = Recipe.Create(ModContent.ItemType<CrimsonEffigy>());
-            crief.AddIngredient(ItemID.CrimstoneBlock, 25);
+            crief.AddIngredient(ItemID.CrimstoneBlock, 75);
             crief.AddIngredient(ItemID.Vertebrae, 5);
             crief.AddIngredient(ItemID.AngelStatue);
+            crief.DisableDecraft();
             crief.AddTile(TileID.DemonAltar);
             crief.Register();
 
             CreateCalBagRecipes(2489, new[] { ModContent.ItemType<CrownJewel>() }); //slime
             CreateCalBagRecipes(ModContent.ItemType<DesertScourgeBag>(), new[]
             {
-                ModContent.ItemType<SaharaSlicers>(),
+                ModContent.ItemType<AquaticDischarge>(),
                 ModContent.ItemType<Barinade>(),
-                ModContent.ItemType<SandstreamScepter>(),
-                ModContent.ItemType<BrittleStarStaff>(),
+                ModContent.ItemType<StormSpray>(),
+                ModContent.ItemType<SeaboundStaff>(),
                 ModContent.ItemType<ScourgeoftheDesert>(),
                 ModContent.ItemType<SandCloak>()
             });
@@ -177,7 +184,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CryoStone>(),
                 ModContent.ItemType<FrostFlare>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<CryogenTrophy>(), new[] { ModContent.ItemType<GlacialEmbrace>() });
             CreateCalBagRecipes(1368, new[] { ModContent.ItemType<Arbalest>() }); //twins 1
             CreateCalBagRecipes(1369, new[] { ModContent.ItemType<Arbalest>() }); //twins 2
             CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeBag>(), new[]
@@ -191,7 +197,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeTrophy>(), new[]
             {
-                ModContent.ItemType<SeasSearing>(),
                 ModContent.ItemType<DeepDiver>()
             });
             CreateCalBagRecipes(ModContent.ItemType<BrimstoneWaifuBag>(), new[]
@@ -201,11 +206,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<DormantBrimseeker>(),
                 ModContent.ItemType<Abaddon>(),
                 ModContent.ItemType<RoseStone>()
-            });
-            CreateCalBagRecipes(ModContent.ItemType<BrimstoneElementalTrophy>(), new[]
-            {
-                ModContent.ItemType<Hellborn>(),
-                ModContent.ItemType<FlameLickedShell>()
             });
             CreateCalBagRecipes(ModContent.ItemType<CalamitasCloneBag>(), new[]
             {
@@ -242,7 +242,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<BorealisBomber>(),
                 ModContent.ItemType<AuroradicalThrow>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<AstrumAureusTrophy>(), new[] { ModContent.ItemType<LeonidProgenitor>() });
             CreateCalBagRecipes(1371, new[] { ModContent.ItemType<AegisBlade>() }); //golem
             CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathBag>(), new[]
             {
@@ -260,7 +259,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathTrophy>(), new[]
             {
-                ModContent.ItemType<Malachite>(),
                 ModContent.ItemType<PlagueCaller>(),
             });
             CreateCalBagRecipes(3330, new[] { ModContent.ItemType<DukesDecapitator>() }); //fishron bag
@@ -277,7 +275,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<RavagerTrophy>(), new[]
             {
-                ModContent.ItemType<Vesuvius>(),
                 ModContent.ItemType<CorpusAvertor>()
             });
             CreateCalBagRecipes(ModContent.ItemType<AstrumDeusBag>(), new[]
@@ -304,7 +301,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<RougeSlash>(),
                 ModContent.ItemType<FollyFeed>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<DragonfollyTrophy>(), new[] { ModContent.ItemType<Swordsplosion>() });
             CreateCalBagRecipes(ModContent.ItemType<ProvidenceBag>(), new[]
             {
                 ModContent.ItemType<HolyCollider>(),
@@ -317,13 +313,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<ElysianWings>(),
                 ModContent.ItemType<ElysianAegis>()
             });
-            CreateCalBagRecipes(ModContent.ItemType<ProvidenceTrophy>(), new[] { ModContent.ItemType<PristineFury>() });
             CreateCalBagRecipes(ModContent.ItemType<StormWeaverBag>(), new[]
             {
                 ModContent.ItemType<TheStorm>(),
                 ModContent.ItemType<StormDragoon>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<WeaverTrophy>(), new[] { ModContent.ItemType<Thunderstorm>() });
             CreateCalBagRecipes(ModContent.ItemType<CeaselessVoidBag>(), new[]
             {
                 ModContent.ItemType<MirrorBlade>(),
@@ -354,7 +348,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<ToxicantTwister>(),
                 ModContent.ItemType<OldDukeScales>(),
             });
-            CreateCalBagRecipes(ModContent.ItemType<OldDukeTrophy>(), new[] { ModContent.ItemType<TheOldReaper>() });
             CreateCalBagRecipes(ModContent.ItemType<DevourerofGodsBag>(), new[]
             {
                 ModContent.ItemType<Excelsus>(),
@@ -366,7 +359,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<DevourerofGodsTrophy>(), new[]
             {
-                ModContent.ItemType<CosmicDischarge>(),
                 ModContent.ItemType<Norfleet>()
             });
             CreateCalBagRecipes(ModContent.ItemType<YharonBag>(), new[]
@@ -382,7 +374,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<YharonTrophy>(), new[]
             {
-                ModContent.ItemType<YharimsCrystal>(),
                 ModContent.ItemType<ForgottenDragonEgg>(),
                 ModContent.ItemType<McNuggets>()
             });
@@ -413,32 +404,58 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 for (int i = 0; i < outputs.Length; i++)
                 {
-                    Recipe.Create(outputs[i]).AddIngredient(input).AddTile(TileID.Solidifier).Register();
+                    Recipe.Create(outputs[i]).AddIngredient(input).AddTile(TileID.Solidifier).DisableDecraft().Register();
                 }
             }
 
+            //additions to vanilla drops
+            AddBannerToItemRecipe(ModContent.ItemType<StormlionBanner>(), ItemID.ThunderSpear);
+            AddBannerToItemRecipe(ModContent.ItemType<StormlionBanner>(), ItemID.ThunderStaff);
+            AddBannerToItemRecipe(ModContent.ItemType<BoxJellyfishBanner>(), ItemID.JellyfishNecklace);
+            AddBannerToItemRecipe(ModContent.ItemType<GhostBellBanner>(), ItemID.JellyfishNecklace);
+            AddBannerToItemRecipe(ModContent.ItemType<CannonballJellyfishBanner>(), ItemID.JellyfishNecklace);
+            AddBannerToItemRecipe(ModContent.ItemType<MorayEelBanner>(), ItemID.Flipper);
+            AddBannerToItemRecipe(ItemID.SharkBanner, ItemID.SharkToothNecklace);
+            AddBannerToItemRecipe(ModContent.ItemType<ToxicatfishBanner>(), ItemID.DivingHelmet);
+            AddBannerToItemRecipe(ModContent.ItemType<TrasherBanner>(), ItemID.DivingHelmet);
+            AddBannerToItemRecipe(ModContent.ItemType<RotdogBanner>(), ItemID.AdhesiveBandage);
+
+            //prehardmode
+            AddBannerToItemRecipe(ModContent.ItemType<CuttlefishBanner>(),
+                ModContent.ItemType<InkBomb>());
+            AddBannerToItemRecipe(ItemID.HarpyBanner, ModContent.ItemType<CocosFeather>(), 5, 1);
             AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ModContent.ItemType<BurntSienna>());
             AddBannerToItemRecipe(ItemID.DemonBanner, ModContent.ItemType<BladecrestOathsword>());
             AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ModContent.ItemType<PlasmaRod>());
             AddBannerToItemRecipe(ModContent.ItemType<BoxJellyfishBanner>(),
                 ModContent.ItemType<AbyssShocker>(), 1, 1, ItemID.Bone);
-            AddBannerToItemRecipe(1682, ModContent.ItemType<StaffOfNecrosteocytes>());
             AddBannerToItemRecipe(ModContent.ItemType<NuclearToadBanner>(),
                 ModContent.ItemType<CausticCroakerStaff>());
+
             //hardmode
+            AddBannerToItemRecipe(ModContent.ItemType<ShockstormShuttleBanner>(),
+                ModContent.ItemType<OracleHeadphones>());
             AddBannerToItemRecipe(ItemID.MossHornetBanner, ModContent.ItemType<Needler>());
+            AddBannerToItemRecipe(ModContent.ItemType<FlakCrabBanner>(),
+                ModContent.ItemType<FlakToxicannon>());
             AddBannerToItemRecipe(ItemID.GiantCursedSkullBanner, ModContent.ItemType<Keelhaul>(), 1, 1,
                 ModContent.ItemType<LeviathanAmbergris>());
             AddBannerToItemRecipe(ModContent.ItemType<AcidEelBanner>(),
                 ModContent.ItemType<SlitheringEels>(), 1, 1,
                 ModContent.ItemType<CorrodedFossil>());
-            AddBannerToItemRecipe(ItemID.NecromancerBanner, ModContent.ItemType<WrathoftheAncients>());
             AddBannerToItemRecipe(ModContent.ItemType<OrthoceraBanner>(),
                 ModContent.ItemType<OrthoceraShell>());
+            AddBannerToItemRecipe(ModContent.ItemType<SkyfinBanner>(),
+                ModContent.ItemType<SkyfinBombers>(), 1, 1,
+                ModContent.ItemType<CorrodedFossil>());
+            AddBannerToItemRecipe(ItemID.NecromancerBanner, ModContent.ItemType<WrathoftheAncients>());
             AddBannerToItemRecipe(ItemID.DeadlySphereBanner, ModContent.ItemType<DefectiveSphere>());
             AddBannerToItemRecipe(ItemID.ClingerBanner, ModContent.ItemType<CursedDagger>());
             AddBannerToItemRecipe(ItemID.IchorStickerBanner, ModContent.ItemType<IchorSpear>());
+
             //post-ml
+            AddBannerToItemRecipe(ModContent.ItemType<ImpiousImmolatorBanner>(),
+                ModContent.ItemType<BlasphemousDonut>());
             AddBannerToItemRecipe(ModContent.ItemType<ScryllarBanner>(),
                 ModContent.ItemType<GuidelightofOblivion>(), 1, 1,
                 ModContent.ItemType<DivineGeode>());
@@ -453,6 +470,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     bannerRecipe1.AddIngredient(item2type, item2amount);
                 }
+                bannerRecipe1.DisableDecraft();
                 bannerRecipe1.AddTile(tile);
                 bannerRecipe1.Register();
             }
@@ -740,6 +758,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 #endregion
             }
+        }
+        public override void AddRecipeGroups()
+        {
+            #region RecipeGroups
+            RecipeGroup T3WatchGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gold Watch"}",
+                ItemID.GoldWatch,
+                ItemID.PlatinumWatch);
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGoldWatch", T3WatchGroup);
+
+            RecipeGroup T3OreGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Silver Ore"}",
+                ItemID.SilverOre,
+                ItemID.TungstenOre);
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySilverOre", T3OreGroup);
+            #endregion
         }
     }
 }
