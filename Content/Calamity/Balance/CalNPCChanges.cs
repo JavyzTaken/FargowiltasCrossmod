@@ -225,7 +225,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             #region Balance
 
-            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
+            if (DLCCalamityConfig.Instance.BalanceRework)
             {
                 //champions
                 if (Champions.Contains(npc.type))
@@ -492,6 +492,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
             }
             #endregion
+            #region Compatibility
             if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
                 if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
@@ -502,6 +503,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npc.scale = 1.4f;
                 }
             }
+            if (npc.boss && npc.ModNPC != null && npc.ModNPC.Mod == FargowiltasCrossmod.Instance || npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod)
+            {
+                // Boost health according to Calamity boss health boost config
+                float HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01f;
+                npc.lifeMax += (int)(npc.lifeMax * HPBoost);
+            }
+            #endregion
 
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
@@ -1389,7 +1397,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
             //Main.NewText(FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
             #region Balance Changes config
-            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
+            if (DLCCalamityConfig.Instance.BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
