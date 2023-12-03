@@ -134,7 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             crief.AddTile(TileID.DemonAltar);
             crief.Register();
 
-            CreateCalBagRecipes(2489, new[] { ModContent.ItemType<CrownJewel>() }); //slime
+            CreateCalBagRecipes(ItemID.KingSlimeTrophy, new[] { ModContent.ItemType<CrownJewel>() }); //slime
             CreateCalBagRecipes(ModContent.ItemType<DesertScourgeBag>(), new[]
             {
                 ModContent.ItemType<SaharaSlicers>(),
@@ -144,8 +144,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<ScourgeoftheDesert>(),
                 ModContent.ItemType<SandCloak>()
             });
-            CreateCalBagRecipes(3319, new[] { ModContent.ItemType<DeathstareRod>() }); //eoc bag
-            CreateCalBagRecipes(1360, new[] { ModContent.ItemType<TeardropCleaver>() }); //eoc trophy
+            CreateCalBagRecipes(ItemID.EyeOfCthulhuBossBag, new[] { ModContent.ItemType<DeathstareRod>() }); //eoc bag
+            CreateCalBagRecipes(ItemID.EyeofCthulhuTrophy, new[] { ModContent.ItemType<TeardropCleaver>() }); //eoc trophy
             CreateCalBagRecipes(ModContent.ItemType<CrabulonBag>(), new[]
             {
                 ModContent.ItemType<MycelialClaws>(),
@@ -157,7 +157,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             });
             CreateCalBagRecipes(ModContent.ItemType<HiveMindTrophy>(), new[] { ModContent.ItemType<RottingEyeball>() });
             CreateCalBagRecipes(ModContent.ItemType<PerforatorTrophy>(), new[] { ModContent.ItemType<BloodyVein>() });
-            CreateCalBagRecipes(1364, new[] { ModContent.ItemType<TheBee>() }); //bee
+            CreateCalBagRecipes(ItemID.QueenBeeTrophy, new[] { ModContent.ItemType<TheBee>() }); //bee
             CreateCalBagRecipes(ModContent.ItemType<SlimeGodBag>(), new[]
             {
 
@@ -167,14 +167,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CrimslimeStaff>(),
                 ModContent.ItemType<CorroslimeStaff>()
             });
-            CreateCalBagRecipes(3324, new[]
+            CreateCalBagRecipes(ItemID.WallOfFleshBossBag, new[]
             {
                 ModContent.ItemType<Meowthrower>(),
                 ModContent.ItemType<BlackHawkRemote>(),
                 ModContent.ItemType<BlastBarrel>(),
                 ModContent.ItemType<RogueEmblem>()
             }); //wof bag
-            CreateCalBagRecipes(1365, new[] { ModContent.ItemType<Carnage>() }); //wof trophy
+            CreateCalBagRecipes(ItemID.WallofFleshTrophy, new[] { ModContent.ItemType<Carnage>() }); //wof trophy
             CreateCalBagRecipes(ModContent.ItemType<CryogenBag>(), new[]
             {
                 ModContent.ItemType<Avalanche>(),
@@ -184,8 +184,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<CryoStone>(),
                 ModContent.ItemType<FrostFlare>()
             });
-            CreateCalBagRecipes(1368, new[] { ModContent.ItemType<Arbalest>() }); //twins 1
-            CreateCalBagRecipes(1369, new[] { ModContent.ItemType<Arbalest>() }); //twins 2
+            CreateCalBagRecipes(ItemID.SpazmatismTrophy, new[] { ModContent.ItemType<Arbalest>() }); //twins 1
+            CreateCalBagRecipes(ItemID.RetinazerTrophy, new[] { ModContent.ItemType<Arbalest>() }); //twins 2
             CreateCalBagRecipes(ModContent.ItemType<AquaticScourgeBag>(), new[]
             {
                 ModContent.ItemType<SubmarineShocker>(),
@@ -218,8 +218,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<ChaosStone>()
             });
             CreateCalBagRecipes(ModContent.ItemType<CalamitasCloneTrophy>(), new[] { ModContent.ItemType<Regenator>() });
-            CreateCalBagRecipes(3328, new[] { ModContent.ItemType<BloomStone>() }); //plant bag
-            CreateCalBagRecipes(1370, new[] { ModContent.ItemType<BlossomFlux>() }); //plant trophy
+            CreateCalBagRecipes(ItemID.PlanteraBossBag, new[] { ModContent.ItemType<BloomStone>() }); //plant bag
+            CreateCalBagRecipes(ItemID.PlanteraTrophy, new[] { ModContent.ItemType<BlossomFlux>() }); //plant trophy
             CreateCalBagRecipes(ModContent.ItemType<LeviathanBag>(), new[]
             {
                 ModContent.ItemType<Greentide>(),
@@ -242,7 +242,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<BorealisBomber>(),
                 ModContent.ItemType<AuroradicalThrow>()
             });
-            CreateCalBagRecipes(1371, new[] { ModContent.ItemType<AegisBlade>() }); //golem
+            CreateCalBagRecipes(ItemID.GolemTrophy, new[] { ModContent.ItemType<AegisBlade>() }); //golem
             CreateCalBagRecipes(ModContent.ItemType<PlaguebringerGoliathBag>(), new[]
             {
                 ModContent.ItemType<Virulence>(),
@@ -261,8 +261,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 ModContent.ItemType<PlagueCaller>(),
             });
-            CreateCalBagRecipes(3330, new[] { ModContent.ItemType<DukesDecapitator>() }); //fishron bag
-            CreateCalBagRecipes(2589, new[] { ModContent.ItemType<BrinyBaron>() }); //fishron trophy
+            CreateCalBagRecipes(ItemID.FishronBossBag, new[] { ModContent.ItemType<DukesDecapitator>() }); //fishron bag
+            CreateCalBagRecipes(ItemID.DukeFishronTrophy, new[] { ModContent.ItemType<BrinyBaron>() }); //fishron trophy
             CreateCalBagRecipes(ModContent.ItemType<RavagerBag>(), new[]
             {
                 ModContent.ItemType<UltimusCleaver>(),
@@ -286,7 +286,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 ModContent.ItemType<RegulusRiot>(),
                 ModContent.ItemType<ChromaticOrb>()
             });
-            CreateCalBagRecipes(3332, new[] { ModContent.ItemType<UtensilPoker>() }); //moon lodr
+            CreateCalBagRecipes(ItemID.MoonLordBossBag, new[] { ModContent.ItemType<UtensilPoker>() }); //moon lord
             CreateCalBagRecipes(ModContent.ItemType<ProfanedGuardiansRelic>(), new[]
             {
                 ModContent.ItemType<RelicOfDeliverance>(),
