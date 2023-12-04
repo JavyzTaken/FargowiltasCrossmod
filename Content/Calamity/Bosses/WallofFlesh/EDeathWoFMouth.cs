@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
@@ -12,7 +13,7 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathWoFMouth : EternideathNPC
+    public class EDeathWoFMouth : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.WallofFlesh);
 

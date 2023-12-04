@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
@@ -15,7 +16,7 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathPlantera : EternideathNPC
+    public class EDeathPlantera : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Plantera);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)

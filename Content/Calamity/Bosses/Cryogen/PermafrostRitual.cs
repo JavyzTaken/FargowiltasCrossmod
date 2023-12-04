@@ -9,7 +9,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasSouls.Content.Bosses.AbomBoss
+namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -17,7 +17,7 @@ namespace FargowiltasSouls.Content.Bosses.AbomBoss
     {
         private const float realRotation = -MathHelper.Pi / 180f;
 
-        public override string Texture => "CalamityMod/Projectiles/Magic/IceCluster";
+        //public override string Texture => "CalamityMod/Projectiles/Summon/IceClasperSummonProjectile"; //"CalamityMod/Projectiles/Magic/IceCluster";
         public PermafrostRitual() : base(realRotation, 1200f, ModContent.NPCType<PermafrostBoss>(), DustID.SnowflakeIce) { }
 
         public override void SetStaticDefaults()

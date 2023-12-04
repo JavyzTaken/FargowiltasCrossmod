@@ -6,6 +6,7 @@ using CalamityMod.Events;
 using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Projectiles.ChallengerItems;

@@ -4,6 +4,7 @@ using CalamityMod;
 using CalamityMod.Events;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
@@ -20,7 +21,7 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathEoC : EternideathNPC
+    public class EDeathEoC : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.EyeofCthulhu);
 

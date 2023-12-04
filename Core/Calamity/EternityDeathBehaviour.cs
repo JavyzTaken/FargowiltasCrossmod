@@ -5,9 +5,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasSouls.Core.Globals
+namespace FargowiltasCrossmod.Core.Calamity
 {
-    public abstract class EternideathNPC : GlobalNPC
+    public abstract class EternityDeathBehaviour : GlobalNPC
     {
         public NPCMatcher Matcher;
 

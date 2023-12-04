@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -10,7 +11,7 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathDestroyerHead : EternideathNPC
+    public class EDeathDestroyerHead : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.TheDestroyer);
 

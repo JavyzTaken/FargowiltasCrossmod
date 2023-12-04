@@ -15,6 +15,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using CalamityMod;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {

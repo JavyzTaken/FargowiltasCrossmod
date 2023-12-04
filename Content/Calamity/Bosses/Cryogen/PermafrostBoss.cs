@@ -458,7 +458,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         SpawnWeapon(2, dmg: FargoSoulsUtil.ScaledProjectileDamage(NPC.damage));
 
                     float dif = FargoSoulsUtil.RotationDifference(toTarget, target.velocity);
-                    dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.7f, MathHelper.Pi * 0.8f);
+                    dif = MathHelper.Clamp(dif, -MathHelper.PiOver2, MathHelper.PiOver2);
                     if (Timer < TotalTime) //first dash
                         dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.2f, MathHelper.Pi * 0.2f);
                     Data = toTarget.ToRotation() + dif;

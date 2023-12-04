@@ -1,5 +1,6 @@
 ﻿
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
@@ -13,7 +14,7 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathGolemHead : EternideathNPC
+    public class EDeathGolemHead : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.GolemHeadFree);
 

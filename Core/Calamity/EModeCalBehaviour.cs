@@ -1,11 +1,12 @@
 ﻿using FargowiltasCrossmod.Core.Systems;
+using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasSouls.Core.Globals
+namespace FargowiltasCrossmod.Core.Calamity
 {
     public abstract class EModeCalBehaviour : GlobalNPC
     {

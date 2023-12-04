@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;

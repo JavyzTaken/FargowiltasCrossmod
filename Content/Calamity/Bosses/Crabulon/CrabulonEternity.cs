@@ -3,6 +3,7 @@ using System.IO;
 using CalamityMod.Events;
 using CalamityMod.NPCs.Crabulon;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
