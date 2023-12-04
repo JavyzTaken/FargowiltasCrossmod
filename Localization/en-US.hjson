@@ -350,6 +350,14 @@ Mods: {
 					Can only be used in the abyss
 					'''
 			}
+
+			TyrantSoul: {
+				Tooltip: 
+				'''
+				Effects of Heart of the Elements, Occult Skull Crown, Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
+				'''
+				DisplayName: Tyrant Soul
+			}
 		}
 
 		NPCs: {

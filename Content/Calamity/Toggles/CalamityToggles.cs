@@ -43,5 +43,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
 
         public int CalamityTrawlerHeader = ModContent.ItemType<TrawlerSoul>();
         public string AbyssalDivingSuit;
+
+        public int TyrantSoulHeader = ModContent.ItemType<TyrantSoul>();
+        public string HeartoftheElements;
+        public string OccultSkullCrown;
+        public string NebulousCore;
+        public string YharimsGift;
+        public string DraedonsHeart;
+        public string Calamity;
     }
 }
