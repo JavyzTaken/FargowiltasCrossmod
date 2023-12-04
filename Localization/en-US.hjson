@@ -454,11 +454,13 @@ Mods: {
 		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
 		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
 		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
+
 		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul"
 		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
 		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
 		RampartofDeitiesConfig: "[i:CalamityMod/RampartofDeities] Rampart of Deities"
 		PurityConfig: "[i:CalamityMod/Purity] Purity"
+
 		CalamityBerserkerHeader: "[i:FargowiltasSouls/BerserkerSoul] Calamity Berserker Soul"
 		ElementalGauntletConfig: "[i:CalamityMod/ElementalGauntlet] Elemental Gauntlet"
 		CalamityWizardHeader: "[i:FargowiltasSouls/ArchWizardsSoul] Calamity Arch Wizard's Soul"
@@ -467,9 +469,19 @@ Mods: {
 		ElementalQuiverConfig: "[i:CalamityMod/ElementalQuiver] Elemental Quiver"
 		QuiverofNihilityConfig: "[i:CalamityMod/QuiverofNihility] Quiver of Nihility"
 		DynamoStemCellsConfig: "[i:CalamityMod/DynamoStemCells] Dynamo Stem Cells"
+
 		CalamityConjuristHeader: "[i:FargowiltasSouls/ConjuristsSoul] Calamity Conjurist's Soul"
 		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
+
 		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul"
 		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
+
+		TyrantSoulHeader: "[i:FargowiltasCrossmod/TyrantSoul] {$Mods.FargowiltasCrossmod.Items.TyrantSoul.DisplayName}"
+		HeartoftheElementsConfig: "[i:CalamityMod/HeartoftheElements] Heart of the Elements"
+		OccultSkullCrownConfig: "[i:CalamityMod/OccultSkullCrown] Occult Skull Crown"
+		NebulousCoreConfig: "[i:CalamityMod/NebulousCore] Nebulous Core"
+		YharimsGiftConfig: "[i:CalamityMod/YharimsGift] {$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
+		DraedonsHeartConfig: "[i:CalamityMod/DraedonsHeart] Draedons Heart"
+		CalamityConfig: "[i:CalamityMod/Calamity] {$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
 	}
 }
