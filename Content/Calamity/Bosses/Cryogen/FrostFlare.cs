@@ -69,7 +69,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.velocity = Utils.SafeNormalize(Projectile.velocity, Vector2.Zero) * newVel;
             //Projectile.rotation += Projectile.velocity.Length() / 80f;
 
+            if (Projectile.velocity != Vector2.Zero)
+                Projectile.rotation = Projectile.velocity.ToRotation();
+
             Vector2 vel = (Projectile.rotation + MathHelper.PiOver2).ToRotationVector2();
+            
             /*
             if (Projectile.timeLeft < 180f && Projectile.timeLeft <= 120)
             {

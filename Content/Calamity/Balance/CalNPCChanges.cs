@@ -503,12 +503,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npc.scale = 1.4f;
                 }
             }
-            if (npc.boss && npc.ModNPC != null && npc.ModNPC.Mod == FargowiltasCrossmod.Instance || npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod)
+            //setdefaultsbeforelookupsarebuilt error
+            /*
+            if (!Main.gameMenu && npc.boss && npc.ModNPC != null && npc.ModNPC.Mod == FargowiltasCrossmod.Instance || npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod)
             {
                 // Boost health according to Calamity boss health boost config
                 float HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01f;
                 npc.lifeMax += (int)(npc.lifeMax * HPBoost);
             }
+            */
             #endregion
 
         }
@@ -668,11 +671,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     }
                 }
 
-                if (dropRule is ItemDropWithConditionRule itemDropWithCondition && itemDropWithCondition.condition is EModeNotMasterDropCondition)
+                if (dropRule is ItemDropWithConditionRule itemDropWithCondition && itemDropWithCondition.condition is EModeNotMasterDropCondition && npc.ModNPC == null)
                 {
                     npcLoot.Remove(dropRule);
                 }
-                else if (dropRule is DropPerPlayerOnThePlayer dropPerPlayer && dropPerPlayer.condition is EModeNotMasterDropCondition)
+                else if (dropRule is DropPerPlayerOnThePlayer dropPerPlayer && dropPerPlayer.condition is EModeNotMasterDropCondition && npc.ModNPC == null)
                 {
                     npcLoot.Remove(dropRule);
                 }

@@ -22,8 +22,16 @@ namespace FargowiltasCrossmod.Core.Systems
             get => eternityDeath;
             set => eternityDeath = value;
         }
+
         public static bool E_EternityRev => EternityRev && WorldSavingSystem.EternityMode && DLCCalamityConfig.Instance.EternityPriorityOverRev;
         public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev;
+
+        internal static bool permafrostPhaseSeen;
+        public static bool PermafrostPhaseSeen 
+        { 
+            get => permafrostPhaseSeen; 
+            set => permafrostPhaseSeen = value; 
+        }
 
         public override void OnWorldLoad()
         {
@@ -40,6 +48,7 @@ namespace FargowiltasCrossmod.Core.Systems
             BitsByte flags = new();
             flags[0] = EternityRev;
             flags[1] = EternityDeath;
+            flags[2] = PermafrostPhaseSeen;
             writer.Write(flags);
         }
         public override void NetReceive(BinaryReader reader)
@@ -47,6 +56,7 @@ namespace FargowiltasCrossmod.Core.Systems
             BitsByte flags = reader.ReadByte();
             EternityRev = flags[0];
             EternityDeath = flags[1];
+            PermafrostPhaseSeen = flags[2];
 
         }
         public override void SaveWorldData(TagCompound tag)
@@ -59,6 +69,8 @@ namespace FargowiltasCrossmod.Core.Systems
                 downed.Add("EternityRevActive");
             if (EternityDeath)
                 downed.Add("EternityDeathActive");
+            if (PermafrostPhaseSeen)
+                downed.Add("PermafrostPhaseSeen");
 
             tag["downed"] = downed;
         }
@@ -68,6 +80,7 @@ namespace FargowiltasCrossmod.Core.Systems
             var downed = tag.GetList<string>("downed");
             EternityRev = downed.Contains("EternityRevActive");
             EternityDeath = downed.Contains("EternityDeathActive");
+            PermafrostPhaseSeen = downed.Contains("PermafrostPhaseSeen");
 
             if (ModCompatibility.InfernumMode.Loaded)
             {

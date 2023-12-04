@@ -18,8 +18,11 @@ using FargowiltasCrossmod.Core.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
+using FargowiltasSouls.Core.Toggler;
+using log4net.Repository.Hierarchy;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -205,6 +208,33 @@ namespace FargowiltasCrossmod.Content.Calamity
                 return 1f / soulsAttackSpeed;
             }
             return base.UseSpeedMultiplier(item);
+        }
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+        public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
+        {
+            FargoSoulsPlayer modPlayer = Player.FargoSouls();
+            if (modPlayer.TungstenEnchantItem != null && modPlayer.Toggler != null && Player.GetToggleValue("Tungsten")
+                && (modPlayer.ForceEffect(modPlayer.TungstenEnchantItem.type) || item.shoot == ProjectileID.None))
+            {
+                TungstenTrueMeleeDamageNerf(Player, ref modifiers, item);
+            }
+        }
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
+        {
+            FargoSoulsPlayer modPlayer = Player.FargoSouls();
+            if (modPlayer.TungstenEnchantItem != null && proj.FargoSouls().TungstenScale != 1)
+            {
+                TungstenTrueMeleeDamageNerf(Player, ref modifiers);
+            }
+        }
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+        public static void TungstenTrueMeleeDamageNerf(Player player, ref NPC.HitModifiers modifiers, Item item = null)
+        {
+            if (item == null)
+                item = player.HeldItem;
+            if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+                modifiers.FinalDamage /= 1.15f;
         }
     }
 }

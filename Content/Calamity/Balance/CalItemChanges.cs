@@ -171,13 +171,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     item.damage = (int)(item.damage * balance);
                 }
-                
+
                 if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
                 {
                     item.consumable = WorldSavingSystem.EternityMode;
                     item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
                 }
-                
+
             }
         }
         public override void UpdateInventory(Item item, Player player)
@@ -203,6 +203,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             }
 
         }
+        public static float TrueMeleeTungstenScaleNerf(Player player)
+        {
+            FargoSoulsPlayer soulsPlayer = player.FargoSouls();
+            return (soulsPlayer.TungstenEnchantItem != null && soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type)) ? 2f : 1.7f;
+        }
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
             FargoSoulsPlayer soulsPlayer = player.FargoSouls();
@@ -211,9 +216,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
                 scale /= tungScale;
             }
-            if (player.FargoSouls().TungstenEnchantItem != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
+            if (player.FargoSouls().TungstenEnchantItem != null && item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
             {
-                scale /= 1.3f;
+                scale /= TrueMeleeTungstenScaleNerf(player); //soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 1.475f : 1.35f;
             }
         }
         public override float UseSpeedMultiplier(Item item, Player player)

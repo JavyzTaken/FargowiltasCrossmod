@@ -383,6 +383,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (attack == 3) {
                 npc.dontTakeDamage = true;
 
+                if (DLCWorldSavingSystem.PermafrostPhaseSeen && timer % 60 < 55 && timer % 60 > 0)
+                    timer += 2;
+
                 //Main.musicVolume -= 0.003f;
                 if (timer % 60 == 0)
                 {
@@ -404,6 +407,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     npc.active = false;
                     //Main.musicVolume = 1;
                     NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y + 50, ModContent.NPCType<PermafrostBoss>());
+                    DLCWorldSavingSystem.PermafrostPhaseSeen = true;
                 }
                 timer++;
             }

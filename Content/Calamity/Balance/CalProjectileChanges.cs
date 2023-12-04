@@ -78,7 +78,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 projectile.Center = projectile.position;
                 projectile.scale /= scale;
             }
-
+            if (projectile.FargoSouls().TungstenScale != 1)
+            {
+                Player player = Main.player[projectile.owner];
+                Item item = player.HeldItem;
+                if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+                {
+                    float scale = CalItemChanges.TrueMeleeTungstenScaleNerf(player);
+                    projectile.position = projectile.Center;
+                    projectile.width = (int)(projectile.width / scale);
+                    projectile.height = (int)(projectile.height / scale);
+                    projectile.Center = projectile.position;
+                    projectile.scale /= scale;
+                }
+            }
         }
         public override bool PreAI(Projectile projectile)
         {

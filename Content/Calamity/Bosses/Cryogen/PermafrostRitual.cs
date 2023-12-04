@@ -1,4 +1,5 @@
 ﻿using CalamityMod.NPCs.Cryogen;
+using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Projectiles;
@@ -16,7 +17,7 @@ namespace FargowiltasSouls.Content.Bosses.AbomBoss
     {
         private const float realRotation = -MathHelper.Pi / 180f;
 
-        public override string Texture => "CalamityMod/Projectiles/Boss/IceBomb";
+        public override string Texture => "CalamityMod/Projectiles/Magic/IceCluster";
         public PermafrostRitual() : base(realRotation, 1200f, ModContent.NPCType<PermafrostBoss>(), DustID.SnowflakeIce) { }
 
         public override void SetStaticDefaults()
@@ -42,6 +43,14 @@ namespace FargowiltasSouls.Content.Bosses.AbomBoss
         {
             base.AI();
             Projectile.rotation -= 1f;
+
+            float rot = Main.rand.NextFloat(MathHelper.TwoPi);
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 pos = Projectile.Center + rot.ToRotationVector2().RotatedBy(MathHelper.TwoPi * i / 10f) * (threshold * Projectile.scale / 2f + Main.rand.NextFloat(-50, 50));
+                CalamityMod.Particles.Particle snowflake = new SnowflakeSparkle(pos, Projectile.velocity, Color.White, new Color(75, 177, 250), Main.rand.NextFloat(0.3f, 1.5f), 20, 0.5f);
+                GeneralParticleHandler.SpawnParticle(snowflake);
+            }
         }
 
         public override Color? GetAlpha(Color lightColor)

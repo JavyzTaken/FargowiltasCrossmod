@@ -23,6 +23,8 @@ using CalamityMod.NPCs.TownNPCs;
 using Terraria.DataStructures;
 using FargowiltasCrossmod.Content.Calamity.Balance;
 using CalamityMod.World;
+using CalamityMod.Particles;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -136,7 +138,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public ref float Attack => ref NPC.ai[2];
         public ref float Data => ref NPC.ai[3];
 
-        public float PhaseTwoPercent = 0.7f;
+        public const float PhaseTwoPercent = 0.7f;
+        public const float PhaseThreePercent = PhaseTwoPercent / 2f;
+        public bool PhaseTwoHealth => NPC.GetLifePercent() <= PhaseTwoPercent || WorldSavingSystem.MasochistModeReal;
+        public bool PhaseThreeHealth => NPC.GetLifePercent() <= (WorldSavingSystem.MasochistModeReal ? PhaseTwoPercent : PhaseThreePercent);
 
         public bool Despawning = false;
 
@@ -172,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public static Queue<Attacks> SetupAttackQueue = new Queue<Attacks>();
         public static Queue<Attacks> FollowupAttackQueue = new Queue<Attacks>();
 
-        public Particle TelegraphParticle;
+        public FargowiltasSouls.Common.Graphics.Particles.Particle TelegraphParticle;
 
         private void SpawnTownNPC(bool defeat = false)
         {
@@ -317,7 +322,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void Reset()
             {
-                if (NPC.GetLifePercent() < PhaseTwoPercent && Phase < 2)
+                if (PhaseTwoHealth && Phase < 2)
                 {
                     Attack = (float)Attacks.PhaseTransition;
                     Phase = 2;
@@ -391,6 +396,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                     Vector2 targetpos = target.Center - toTarget * 400;
                     Movement(targetpos, slowdown: 100, decel: 0.05f);
+
+                    if (NPC.Distance(targetpos) > 300 && Timer > 25)
+                        Timer--;
                 }
                 else
                 {
@@ -429,9 +437,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void PawCharge()
             {
-                const int WindupTime = 50;
+                int WindupTime = 50;
+                if (WorldSavingSystem.MasochistModeReal)
+                    WindupTime = 40;
                 const int DashTime = 30;
-                const int TotalTime = WindupTime + DashTime;
+                int TotalTime = WindupTime + DashTime;
+
                 int Dashes = Phase >= 2 ? 4 : 3;
                 int partialTimer = (int)Timer % TotalTime;
 
@@ -448,6 +459,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                     float dif = FargoSoulsUtil.RotationDifference(toTarget, target.velocity);
                     dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.7f, MathHelper.Pi * 0.8f);
+                    if (Timer < TotalTime) //first dash
+                        dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.2f, MathHelper.Pi * 0.2f);
                     Data = toTarget.ToRotation() + dif;
                     Data += Main.rand.NextFloat(-MathHelper.PiOver2 / 10f, MathHelper.PiOver2 / 10f); //some randomness to make it less static
                     TelegraphParticle = null;
@@ -504,14 +517,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Vector2 position = target.Center + pos + pos.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.PiOver2) * Main.rand.Next(-500, 500);
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 30, ModContent.ProjectileType<Blizzard>(), 0, 0, ai0: Main.rand.Next(0, 4));
-                    /*
-                    const int Smokes = 5;
-                    for (int i = 0; i < Smokes; i++)
+
+                    
+                    const int Snows = 5;
+                    for (int i = 0; i < Snows; i++)
                     {
-                        Particle smoke = new FogPuff(position, -pos.SafeNormalize(Vector2.Zero) * 15, Color.GhostWhite, 0.5f, 45, 0.5f, Main.rand.NextFloat(MathHelper.TwoPi), Main.rand.NextFloat(-0.4f, 0.4f));
-                        smoke.Spawn();
+                        CalamityMod.Particles.Particle snowflake = new SnowflakeSparkle(position + Vector2.UnitY * (up - 1600), -pos.SafeNormalize(Vector2.Zero) * 15, Color.White, new Color(75, 177, 250), Main.rand.NextFloat(0.3f, 1.5f), 40, 0.5f);
+                        GeneralParticleHandler.SpawnParticle(snowflake);
                     }
-                    */
+                    
                     if (Timer % 5 == 0)
                     {
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), position, -pos.SafeNormalize(Vector2.Zero) * 12, ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
@@ -595,6 +609,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         {
                             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedByRandom(MathHelper.Pi / 8.5f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
                         }
+                        if (WorldSavingSystem.MasochistModeReal)
+                        {
+                            for (int dir = -1; dir < 2; dir += 2)
+                            {
+                                for (int i = 0; i < 5; i++)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(MathHelper.Pi * 0.25f * dir).RotatedByRandom(MathHelper.Pi / 16f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                                }
+                            }
+                        }
                     }
                     Corner += Main.rand.NextBool() ? 1 : -1;
                     Corner %= 4;
@@ -610,7 +634,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void PredictiveToss()
             {
-                Movement(target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, 0), maxSpeed: 35, slowdown: 100);
+                if (Data != 1)
+                    Movement(target.Center + new Vector2(NPC.Center.X > target.Center.X ? 300 : -300, 0), maxSpeed: 35, slowdown: 100);
+                else
+                    Movement(target.Center + new Vector2(0, NPC.Center.Y > target.Center.Y ? 300 : -300), maxSpeed: 35, slowdown: 100);
+
                 Timer++;
                 if (Timer == 1 && DLCUtils.HostCheck)
                 {
@@ -633,6 +661,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     NPC.velocity = toTarget * 30;
                     Main.LocalPlayer.Calamity().GeneralScreenShakePower = 10f;
+
+                    if (PhaseThreeHealth && Data != 1) //do another swing, from vertical, on masomode
+                    {
+                        Data = 1;
+                        Timer = 0;
+                    }
                 }
                 if (Timer >= 120)
                 {
@@ -672,6 +706,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                             float speed = Main.rand.NextFloat(15, 20) + (Timer / Attack1Time) * 4;
                             Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget.RotatedBy((offset * i) + Main.rand.NextFloat(-0.1f, 0.1f)) * speed, ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
                         }
+                        if (WorldSavingSystem.MasochistModeReal)
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget * Main.rand.NextFloat(18, 22), ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer);
                     }
                 }
                 if (Timer >= Attack1Time && Timer <= Attack1Time + DelayTime)
@@ -712,7 +748,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     SoundEngine.PlaySound(SoundID.Item92, NPC.Center);
                     int dir = Timer % 20 == 0 ? 1 : -1;
                     if (DLCUtils.HostCheck)
+                    {
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitX * (24 * dir), ModContent.ProjectileType<FrostFlare>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                        if (PhaseThreeHealth)
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.UnitY * (28 * dir), ModContent.ProjectileType<FrostFlare>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                    }
                 }
                 if (Timer >= StartTime + AttackTime + 30)
                 {
@@ -725,17 +765,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Timer++;
                 Vector2 desiredPos = target.Center - (toTarget * 300);
                 Movement(desiredPos, lowspeed: 5, decel: 0.1f, slowdown: 300);
-                if (Timer > 30 && Timer % 10 == 0)
+                if (Timer > 30 && Timer % 10 == 0 && Timer <= 60)
                 {
+                    if (Math.Sign(Data) == 0)
+                        Data = Main.rand.NextBool() ? 1 : -1;
+
                     SoundEngine.PlaySound(SoundID.Item1, NPC.Center);
-                    if (DLCUtils.HostCheck) Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI);
+                    if (DLCUtils.HostCheck)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(Math.Sign(Data) * MathHelper.PiOver2 * 0.8f + Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI);
+                        if (PhaseThreeHealth)
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(-Math.Sign(Data) * MathHelper.PiOver2 * 0.8f + Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI);
+                    }
                 }
-                if (Timer >= 60)
-                {
-                    Timer = -30;
-                    Data++;
-                }
-                if (Data >= 1 && Timer >= 0)
+                if (Timer >= 90)
                 {
                     Reset();
                     return;
