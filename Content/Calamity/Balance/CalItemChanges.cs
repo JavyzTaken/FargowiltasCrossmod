@@ -12,7 +12,7 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
-using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common;
@@ -239,7 +239,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         {
             if (item.type == ModContent.ItemType<EternitySoul>())
             {
-                ModContent.GetInstance<TyrantSoul>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<BrandoftheBrimstoneWitch>().UpdateAccessory(player, hideVisual);
             }
             if (item.type == ModContent.ItemType<CounterScarf>() || item.type == ModContent.ItemType<EvasionScarf>() || item.type == ModContent.ItemType<OrnateShield>()
                 || item.type == ModContent.ItemType<AsgardianAegis>() || item.type == ModContent.ItemType<ElysianAegis>() || item.type == ModContent.ItemType<AsgardsValor>()
@@ -502,7 +502,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (item.type == ModContent.ItemType<OrichalcumEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}40% less effective"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
                 }
                 if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
                 {

@@ -17,14 +17,21 @@ using Terraria.Localization;
 using CalamityMod.Items.Materials;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasCrossmod.Core;
+using Terraria.DataStructures;
 
-namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
+namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class TyrantSoul : BaseSoul
+    public class BrandoftheBrimstoneWitch : SoulsItem
     {
         //public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
+
+        public override void SetStaticDefaults()
+        {
+            Main.RegisterItemAnimation(Type, new DrawAnimationVertical(8, 4));
+            ItemID.Sets.AnimatesAsSoul[Type] = true;
+        }
         public override void SetDefaults()
         {
             Item.accessory = true;

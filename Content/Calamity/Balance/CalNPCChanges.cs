@@ -520,8 +520,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             Player player = Main.player[Main.myPlayer];
             if (player.FargoSouls().OriEnchantItem != null && npc.lifeRegen < 0)
             {
-                npc.lifeRegen = (int)(npc.lifeRegen * 0.6f);
-                damage = (int)(damage * 0.6f);
+                float modifier = 0.6f;
+                if (npc.Calamity().shellfishVore > 0) //nerf with shellfish thing
+                {
+                    modifier = 0.5f;
+                }
+                if (player.FargoSouls().ForceEffect(player.FargoSouls().OriEnchantItem.type))
+                {
+                    modifier -= 0.1f;
+                }
+
+                npc.lifeRegen = (int)(npc.lifeRegen * modifier);
+                damage = (int)(damage * modifier);
+
+                
             }
             base.UpdateLifeRegen(npc, ref damage);
         }

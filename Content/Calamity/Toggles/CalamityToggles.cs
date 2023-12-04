@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Core.Toggler;
@@ -43,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public int CalamityTrawlerHeader = ModContent.ItemType<TrawlerSoul>();
         public string AbyssalDivingSuit;
 
-        public int TyrantSoulHeader = ModContent.ItemType<TyrantSoul>();
+        public int BrandoftheBrimstoneWitchHeader = ModContent.ItemType<BrandoftheBrimstoneWitch>();
         public string HeartoftheElements;
         public string OccultSkullCrown;
         public string Purity;

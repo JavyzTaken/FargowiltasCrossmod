@@ -28,6 +28,7 @@ using CalamityMod.Items.Weapons.Summon;
 using CalamityMod.Items.Weapons.Typeless;
 using CalamityMod.Tiles.Furniture.CraftingStations;
 using Fargowiltas.Items.Tiles;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
@@ -712,9 +713,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         .AddIngredient<AbomEnergy>(10);
                 }
 
-                if (recipe.HasResult<EternitySoul>() && !recipe.HasIngredient<TyrantSoul>())
+                if (recipe.HasResult<EternitySoul>() && !recipe.HasIngredient<BrandoftheBrimstoneWitch>())
                 {
-                    recipe.AddIngredient<TyrantSoul>();
+                    recipe.AddIngredient<BrandoftheBrimstoneWitch>();
                 }
 
                 #endregion

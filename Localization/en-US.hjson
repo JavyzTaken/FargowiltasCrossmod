@@ -351,8 +351,8 @@ Mods: {
 					'''
 			}
 
-			TyrantSoul: {
-				DisplayName: Tyrant Soul
+			BrandoftheBrimstoneWitch: {
+				DisplayName: Brand of the Brimstone Witch
 				Tooltip:
 					'''
 					Effects of Heart of the Elements, Occult Skull Crown, Purity, The Sponge, Chalice of the Blood God
@@ -471,7 +471,7 @@ Mods: {
 		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
 		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul"
 		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
-		TyrantSoulHeader: "[i:FargowiltasCrossmod/TyrantSoul] {$Mods.FargowiltasCrossmod.Items.TyrantSoul.DisplayName}"
+		BrandoftheBrimstoneWitchHeader: "[i:FargowiltasCrossmod/BrandoftheBrimstoneWitch] {$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 		HeartoftheElementsConfig: "[i:CalamityMod/HeartoftheElements] Heart of the Elements"
 		OccultSkullCrownConfig: "[i:CalamityMod/OccultSkullCrown] Occult Skull Crown"
 		PurityConfig: "[i:CalamityMod/Purity] Purity"

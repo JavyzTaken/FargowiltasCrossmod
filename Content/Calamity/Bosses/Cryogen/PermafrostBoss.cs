@@ -395,9 +395,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     //Vector2 targetpos = target.Center + new Vector2(NPC.Center.X > target.Center.X ? 400 : -400, -300);
 
                     Vector2 targetpos = target.Center - toTarget * 400;
-                    Movement(targetpos, slowdown: 100, decel: 0.05f);
+                    Movement(targetpos, maxSpeed: 50, slowdown: 100, decel: 0.05f);
 
-                    if (NPC.Distance(targetpos) > 300 && Timer > 25)
+                    if (NPC.Distance(targetpos) > 400 && Timer > 25)
                         Timer--;
                 }
                 else
