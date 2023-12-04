@@ -25,7 +25,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public string Amalgam;
         public string AsgardianAegis;
         public string RampartofDeities;
-        public string Purity;
 
         public int CalamityBerserkerHeader = ModContent.ItemType<BerserkerSoul>();
         public string ElementalGauntlet;
@@ -47,6 +46,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public int TyrantSoulHeader = ModContent.ItemType<TyrantSoul>();
         public string HeartoftheElements;
         public string OccultSkullCrown;
+        public string Purity;
+        public string TheSponge;
+        public string ChaliceOfTheBloodGod;
         public string NebulousCore;
         public string YharimsGift;
         public string DraedonsHeart;

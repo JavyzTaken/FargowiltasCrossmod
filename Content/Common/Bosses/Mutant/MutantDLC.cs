@@ -85,7 +85,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             {
                 if (fade)
                 {
-                    Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0.5f, 0.05f);
+                    Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0.8f, 0.05f);
                 }
                 else
                 {

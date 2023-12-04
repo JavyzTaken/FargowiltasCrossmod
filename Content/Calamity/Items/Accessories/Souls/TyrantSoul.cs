@@ -39,25 +39,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
         {
             if (player.GetToggleValue("HeartoftheElements"))
                 ModContent.GetInstance<HeartoftheElements>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("OccultSkullCrown"))
+            if (player.GetToggleValue("OccultSkullCrown", false))
                 ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
             if (player.GetToggleValue("Purity"))
                 ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("NebulousCore"))
+            if (player.GetToggleValue("TheSponge"))
+                ModContent.GetInstance<TheSponge>().UpdateAccessory(player, hideVisual);
+            if (player.GetToggleValue("ChaliceOfTheBloodGod", false))
+                ModContent.GetInstance<ChaliceOfTheBloodGod>().UpdateAccessory(player, hideVisual);
+            if (player.GetToggleValue("NebulousCore", false))
                 ModContent.GetInstance<NebulousCore>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("YharimsGift"))
+            if (player.GetToggleValue("YharimsGift", false))
                 ModContent.GetInstance<YharimsGift>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("DraedonsHeart"))
+            if (player.GetToggleValue("DraedonsHeart", false))
                 ModContent.GetInstance<DraedonsHeart>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("Calamity"))
+            if (player.GetToggleValue("Calamity", false))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
         }
         public override void AddRecipes()
         {
-            Recipe.Create(Type)
+            CreateRecipe()
                 .AddIngredient<HeartoftheElements>()
                 .AddIngredient<OccultSkullCrown>()
                 .AddIngredient<Purity>()
+                .AddIngredient<TheSponge>()
+                .AddIngredient<ChaliceOfTheBloodGod>()
                 .AddIngredient<NebulousCore>()
                 .AddIngredient<YharimsGift>()
                 .AddIngredient<DraedonsHeart>()

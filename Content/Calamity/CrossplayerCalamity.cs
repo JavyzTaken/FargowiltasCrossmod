@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 if (BossRushEvent.BossRushActive)
                 {
-                    Player.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
+                    Player.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 }
                 if (NPC.AnyNPCs(ModContent.NPCType<MutantBoss>()))
                 {
