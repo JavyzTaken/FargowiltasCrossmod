@@ -354,7 +354,7 @@ Mods: {
 			TyrantSoul: {
 				Tooltip: 
 				'''
-				Effects of Heart of the Elements, Occult Skull Crown, Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
+				Effects of Heart of the Elements, Occult Skull Crown, Purity, Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
 				'''
 				DisplayName: Tyrant Soul
 			}
@@ -429,7 +429,7 @@ Mods: {
 			IceStar.DisplayName: Ice Star
 			CryogenRitual.DisplayName: Cryogen Ritual
 			PermafrostRitual.DisplayName: Permafrost Ritual
-			IceCloud.DisplayName: Ice Cloud
+			IceCloud.DisplayName: Chilling Snow
 		}
 
 		Buffs: {

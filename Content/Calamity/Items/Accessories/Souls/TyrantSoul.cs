@@ -41,6 +41,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 ModContent.GetInstance<HeartoftheElements>().UpdateAccessory(player, hideVisual);
             if (player.GetToggleValue("OccultSkullCrown"))
                 ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
+            if (player.GetToggleValue("Purity"))
+                ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
             if (player.GetToggleValue("NebulousCore"))
                 ModContent.GetInstance<NebulousCore>().UpdateAccessory(player, hideVisual);
             if (player.GetToggleValue("YharimsGift"))
@@ -49,13 +51,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 ModContent.GetInstance<DraedonsHeart>().UpdateAccessory(player, hideVisual);
             if (player.GetToggleValue("Calamity"))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
-            //player.GetModPlayer<CrossplayerCalamity>().AncestralCharm = true;
         }
         public override void AddRecipes()
         {
             Recipe.Create(Type)
                 .AddIngredient<HeartoftheElements>()
                 .AddIngredient<OccultSkullCrown>()
+                .AddIngredient<Purity>()
                 .AddIngredient<NebulousCore>()
                 .AddIngredient<YharimsGift>()
                 .AddIngredient<DraedonsHeart>()

@@ -272,10 +272,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("Purity"))
-                {
-                    ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
-                }
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {

@@ -600,9 +600,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         recipe.AddIngredient<AsgardianAegis>();
                     if (recipe.RemoveIngredient(ItemID.CharmofMyths) && recipe.RemoveIngredient(ItemID.StarVeil) && recipe.RemoveIngredient(ItemID.FrozenShield))
                         recipe.AddIngredient<RampartofDeities>();
-                    recipe
-                        .AddIngredient<Purity>()
-                    .AddIngredient<AbomEnergy>(10);
+                    recipe.AddIngredient<AbomEnergy>(10);
                 }
                 if (recipe.HasResult<BerserkerSoul>() && recipe.HasIngredient(ItemID.StingerNecklace))
                 {

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
@@ -44,6 +45,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 GeneralParticleHandler.SpawnParticle(snowflake);
 
             }
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.Chilled, 60 * 5);
         }
     }
 }
