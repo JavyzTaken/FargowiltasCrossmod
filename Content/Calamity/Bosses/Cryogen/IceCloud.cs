@@ -41,8 +41,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             //don't make particles offscreen, to save on particle limit.
             //distance to 1920x1080 screen corner is abt 1100
             int pIndex = Player.FindClosest(Projectile.Center, 0, 0);
-            if (!(pIndex.WithinBounds(Main.maxPlayers) && Main.player[pIndex].Distance(Projectile.Center) < 1200f)) 
+            if (!(pIndex.WithinBounds(Main.maxPlayers))) 
                 return;
+
+            float distance = Main.player[pIndex].Distance(Projectile.Center);
+
+            if (distance > 2400f)
+                Projectile.Kill();
+
+            if (distance > 1200f)
+                return;
+
             if (Projectile.timeLeft % 40 == 0)
             {
                 //Color color = Projectile.ai[0] > 0 ? Color.GhostWhite : Color.Blue;

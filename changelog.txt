@@ -1,23 +1,6 @@
-New Update: v1.0.5
+New Update: v1.0.5.1
 
-NEW: Eternity Cryogen AI (With some surprises) 
-NEW: Added Brand of the Brimstone Witch
-
-Moved Purity from Colossus Soul to Soul of the Tyrant. 
-Removed Rock from the recipes of Phantasmal Leash of Cthulhu, Slime Rain, The Biggest Sting and The Guardian and adjusted their damage accordingly 
-
-Mod compatibility with the Calamity: Wrath of the Gods mod: 
-Noxus and Nameless Diety +60% health, and both inflict Mutant's Presence 
-
-Removed some drop recipes from boss bags
-Added some drop recipes from banners 
-Fixed issue where Calamity boss drops were shimmerable into bags and some banner items into banners
-Fixed boss checklist placements of Souls bosses with Calamity 
-Fixed issues with Fargo boss trophies not dropping
-
-Orichalcum Enchantment Calamity crossmod nerf: 25 -> 40% (50% with force effect) less effective
-Nerf is also increased with Shellfish Staff debuff 
-
-Calamitous Presence:
-Life regen cap 5 -> 2
-Now caps maximum Health at 1000 
+Adjusted visuals and performance for Chilling Snow attack
+Fixed some incorrect tooltips
+Fixed mod not loading without Calamity enabled
+Updated mod description

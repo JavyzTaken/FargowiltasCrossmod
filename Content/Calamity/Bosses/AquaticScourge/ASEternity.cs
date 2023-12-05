@@ -34,6 +34,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         }
 
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ASBodyEternity : EModeCalBehaviour
     {
         public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;

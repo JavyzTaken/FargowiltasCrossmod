@@ -21,7 +21,13 @@ Features several configs to customize your Fargo's/Calamity cross-mod experience
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Latest Update: v1.0.5
+Latest Update: v1.0.5.1
+Adjusted visuals and performance for Chilling Snow attack
+Fixed some incorrect tooltips
+Fixed mod not loading without Calamity enabled
+Updated mod description
+
+Previous Update: v1.0.5
 
 NEW: Eternity Cryogen AI (With some surprises) 
 NEW: Added Brand of the Brimstone Witch
@@ -44,8 +50,3 @@ Nerf is also increased with Shellfish Staff debuff
 Calamitous Presence:
 Life regen cap 5 -> 2
 Now caps maximum Health at 1000 
-
-Previous Update: v1.0.4.8
-Updated to Calamity version 2.0.3.007
-Fixed functionality of Medallion of the Desert
-Fixed some localization issues
