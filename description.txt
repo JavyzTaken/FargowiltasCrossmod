@@ -4,7 +4,7 @@ Officially maintained by Fargo's Mods developers.
 Currently supports:
 Calamity Mod
 
-Note: The multiplayer compatibility of this mod is not fully ironed out. Don't expect everything to work perfectly in multiplayer. It's being worked on.
+Secret seeds such as Zenith are not supported.
 
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
@@ -20,7 +20,6 @@ Planned future features:
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
 Fargo Discord: https://discord.gg/Rgen4Vv
-Fargo Wiki: https://terrariamods.wiki.gg/wiki/Fargo%27s_Mod
 
 Latest Update: v1.0.5
 
