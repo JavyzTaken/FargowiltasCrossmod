@@ -217,7 +217,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
                 scale /= tungScale;
             }
-            if (player.FargoSouls().TungstenEnchantItem != null && item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
+            else if (player.FargoSouls().TungstenEnchantItem != null && item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
             {
                 scale /= TrueMeleeTungstenScaleNerf(player); //soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 1.475f : 1.35f;
             }
