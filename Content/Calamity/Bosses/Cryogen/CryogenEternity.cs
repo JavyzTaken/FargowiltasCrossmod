@@ -2,6 +2,7 @@
 using CalamityMod;
 using CalamityMod.NPCs;
 using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Content.Calamity.Balance;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Systems;
@@ -253,6 +254,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                             {
                                 attackChoice = (int)Main.rand.NextFromCollection(AttackChoices);
                                 attackTimer = 0;
+                                NetSync(npc);
+                                npc.netUpdate = true;
                             }
                         }
                         break;
@@ -406,7 +409,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     }
                     npc.active = false;
                     //Main.musicVolume = 1;
-                    NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y + 50, ModContent.NPCType<PermafrostBoss>());
+                    int n = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y + 50, ModContent.NPCType<PermafrostBoss>());
+                    if (n != Main.maxNPCs)
+                    {
+                        if (Main.netMode == NetmodeID.Server)
+                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
+                    }
                     DLCWorldSavingSystem.PermafrostPhaseSeen = true;
                 }
                 timer++;
