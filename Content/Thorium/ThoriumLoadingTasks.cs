@@ -41,6 +41,14 @@ namespace FargowiltasCrossmod.Content.Thorium
                 ModContent.ProjectileType<ThoriumSpearPro>(),
                 ModContent.ProjectileType<ValadiumSpearPro>(),
             });
+
+            ModCompatibility.MutantMod.Mod.Call("AddTreeTreasure", new Func<bool>(() => Main.LocalPlayer.InModBiome<ThoriumMod.Biomes.Depths.DepthsBiome>()), new Action(() =>
+            {
+                int itemType = ModContent.ItemType<ThoriumMod.Items.Depths.WaterChestnut>();
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_OpenItem(itemType), itemType, 5);
+                itemType = ModContent.ItemType<ThoriumMod.Items.Depths.MarineBlock>();
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_OpenItem(itemType), itemType, 50);
+            }), "Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn", 0);
         }
 
         public override void OnModLoad()
