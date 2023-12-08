@@ -665,7 +665,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     {
                         npcLoot.Remove(dropRule);
                     }
-                    if (npc.type == NPCID.WyvernHead && commonDrop.itemId == ModContent.ItemType<EssenceofSunlight>())
+                    if ((npc.type == NPCID.WyvernHead || npc.type == NPCID.AngryNimbus) && commonDrop.itemId == ModContent.ItemType<EssenceofSunlight>())
                     {
                         npcLoot.Remove(dropRule);
                     }
