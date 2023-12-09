@@ -25,6 +25,7 @@ using FargowiltasCrossmod.Content.Calamity.Balance;
 using CalamityMod.World;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
+using System.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -346,6 +347,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
                 Timer = 0;
                 Data = 0;
+                NPC.netUpdate = true;
+                NetSync(NPC);
             }
             void SpawnWeapon(float weapon, float ai1 = 0, int dmg = 0, int kb = 0)
             {
@@ -466,6 +469,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     TelegraphParticle = null;
                     TelegraphParticle = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, Color.DarkCyan, Vector2.One * 20, Vector2.One, WindupTime, true, Color.LightBlue);
                     TelegraphParticle.Spawn();
+
+                    NPC.netUpdate = true;
+                    NetSync(NPC);
                 }
                 if (TelegraphParticle != null)
                 {
@@ -509,6 +515,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Data = Main.rand.NextBool() ? 1 : -1;
                     SpawnWeapon(3);
+
+                    NPC.netUpdate = true;
+                    NetSync(NPC);
                 }
                 const int up = 2100; //1600
                 Vector2 pos = new Vector2(0, -up).RotatedBy(MathHelper.Lerp(-0.9f * Data, 0.9f * Data, Timer / 180f));
@@ -624,6 +633,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Corner %= 4;
                     if (Corner < 0)
                         Corner = 3;
+
+                    NPC.netUpdate = true;
+                    NetSync(NPC);
                 }
                 if (Timer == AttackTime * Attacks + (AttackTime / 2))
                 {
@@ -777,6 +789,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         if (PhaseThreeHealth)
                             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(-Math.Sign(Data) * MathHelper.PiOver2 * 0.8f + Main.rand.NextFloat(-0.15f, 0.15f)) * 10, ModContent.ProjectileType<IceStar>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, Main.myPlayer, ai0: NPC.whoAmI);
                     }
+
+                    NPC.netUpdate = true;
+                    NetSync(NPC);
                 }
                 if (Timer >= 90)
                 {
