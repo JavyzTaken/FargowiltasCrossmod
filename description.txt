@@ -21,7 +21,13 @@ Features several configs to customize your Fargo's/Calamity cross-mod experience
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Latest Update: v1.0.5.1
+Latest Update: v1.0.5.2
+Updated to Calamity Mod version 2.0.3.8
+Eternity Cryofrost now functions in multiplayer
+Fixed bug that caused Tungsten Enchant true melee nerf to decrease the scale of unaffected weapons
+Fixed Angry Nimbus dropping Essence of Sunlight early
+
+Previous Update: v1.0.5.1
 Adjusted visuals and performance for Chilling Snow attack
 Fixed some incorrect tooltips
 Fixed mod not loading without Calamity enabled
