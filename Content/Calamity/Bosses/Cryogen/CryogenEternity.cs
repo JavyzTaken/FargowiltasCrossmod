@@ -394,28 +394,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     data++;
                     SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/NPCKilled/CryogenShieldBreak") with { Volume = 2}, target.Center);
-                    for (int i = 0; i < 3; i++)
+                    if (!Main.dedServ && Main.netMode != NetmodeID.Server)
                     {
-                        Gore.NewGore(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -5).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModCompatibility.Calamity.Mod.Find<ModGore>("CryoDeathGore" + Main.rand.Next(2, 4)).Type, 1.5f);
+                        for (int i = 0; i < 3; i++)
+                        {
+                            Gore.NewGore(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -5).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModCompatibility.Calamity.Mod.Find<ModGore>("CryoDeathGore" + Main.rand.Next(2, 4)).Type, 1.5f);
+                        }
                     }
                 }
                 if (data == 6)
                 {
                     DustExplode(npc);
                     SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/NPCKilled/CryogenDeath") with { Volume = 2}, target.Center);
-                    for (int i = 0; i < 5; i++)
+                    if (!Main.dedServ && Main.netMode != NetmodeID.Server)
                     {
-                        Gore.NewGore(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -5).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModCompatibility.Calamity.Mod.Find<ModGore>("CryoDeathGore" + Main.rand.Next(2, 4)).Type, 1.5f);
+                        for (int i = 0; i < 5; i++)
+                        {
+                            Gore.NewGore(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -5).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModCompatibility.Calamity.Mod.Find<ModGore>("CryoDeathGore" + Main.rand.Next(2, 4)).Type, 1.5f);
+                        }
                     }
-                    npc.active = false;
+                    
                     //Main.musicVolume = 1;
-                    int n = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y + 50, ModContent.NPCType<PermafrostBoss>());
-                    if (n != Main.maxNPCs)
+                    if (DLCUtils.HostCheck)
                     {
-                        if (Main.netMode == NetmodeID.Server)
-                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
+                        int n = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y + 50, ModContent.NPCType<PermafrostBoss>());
+                        if (n != Main.maxNPCs)
+                        {
+                            if (Main.netMode == NetmodeID.Server)
+                                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
+                        }
                     }
                     DLCWorldSavingSystem.PermafrostPhaseSeen = true;
+                    npc.active = false;
                 }
                 timer++;
             }
