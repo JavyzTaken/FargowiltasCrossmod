@@ -332,30 +332,34 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Emit(OpCodes.Brtrue, label);
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);
-            c.GotoPrev(i => i.MatchLdfld(typeof(Projectile), nameof(Projectile.friendly)));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Brtrue, label2);
 
-            c.GotoPrev(i => i.MatchLdcI4(466));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Bne_Un, label2);
+            
 
-            Type CalamityPlayer = calamity.Code.GetType("CalamityMod.CalPlayer.CalamityPlayer")!;
-            FieldInfo CalamityPlayer_areThereAnyDamnBosses = CalamityPlayer.GetField("areThereAnyDamnBosses", BindingFlags.Public | BindingFlags.Static)!;
-            c.GotoPrev(i => i.MatchLdsfld(CalamityPlayer_areThereAnyDamnBosses));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Brtrue, label2);
 
-            Type CalamityWorld = calamity.Code.GetType("CalamityMod.World.CalamityWorld")!;
-            FieldInfo CalamityWorld_death = CalamityWorld.GetField("death", BindingFlags.Public | BindingFlags.Static)!;
-            c.GotoPrev(i => i.MatchLdsfld(CalamityWorld_death));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Brfalse, label2);
-            //MonoModHooks.DumpIL(mod: Mod, il);
+            //c.GotoPrev(i => i.MatchLdfld(typeof(Projectile), nameof(Projectile.friendly)));
+            //c.Index++;
+            //c.Remove();
+            //c.Emit(OpCodes.Brtrue, label2);
+
+            //c.GotoPrev(i => i.MatchLdcI4(466));
+            //c.Index++;
+            //c.Remove();
+            //c.Emit(OpCodes.Bne_Un, label2);
+
+            //Type CalamityPlayer = calamity.Code.GetType("CalamityMod.CalPlayer.CalamityPlayer")!;
+            //FieldInfo CalamityPlayer_areThereAnyDamnBosses = CalamityPlayer.GetField("areThereAnyDamnBosses", BindingFlags.Public | BindingFlags.Static)!;
+            //c.GotoPrev(i => i.MatchLdsfld(CalamityPlayer_areThereAnyDamnBosses));
+            //c.Index++;
+            //c.Remove();
+            //c.Emit(OpCodes.Brtrue, label2);
+
+            //Type CalamityWorld = calamity.Code.GetType("CalamityMod.World.CalamityWorld")!;
+            //FieldInfo CalamityWorld_death = CalamityWorld.GetField("death", BindingFlags.Public | BindingFlags.Static)!;
+            //c.GotoPrev(i => i.MatchLdsfld(CalamityWorld_death));
+            //c.Index++;
+            //c.Remove();
+            //c.Emit(OpCodes.Brfalse, label2);
+            //MonoModHooks.DumpIL(mod: ModContent.GetInstance<FargowiltasCrossmod>(), il);
 
 
         }
