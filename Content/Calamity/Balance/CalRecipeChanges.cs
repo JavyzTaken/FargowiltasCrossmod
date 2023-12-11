@@ -717,6 +717,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     recipe.AddIngredient<BrandoftheBrimstoneWitch>();
                 }
+                if (recipe.HasIngredient(ItemID.BloodMoonStarter) && recipe.HasResult(ModContent.ItemType<BloodOrb>())) // bloody tear -> blood orb disabled because abom
+                { 
+                    recipe.DisableRecipe();
+                }
 
                 #endregion
 
