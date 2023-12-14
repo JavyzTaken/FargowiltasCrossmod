@@ -213,6 +213,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
             FargoSoulsPlayer soulsPlayer = player.FargoSouls();
+
             #region Tungsten balance changes/fixes
             if (soulsPlayer.TungstenEnchantItem != null && player.GetToggleValue("Tungsten") &&
                     !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
