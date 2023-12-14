@@ -113,7 +113,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         };
         //this is cloned from cal because lazy
         public static bool VanillaSummonItem(Item item) =>
-            (item.type == 560 || item.type == 43 || item.type == 4271 || item.type == 361 || item.type == 70 || item.type == 1331 || item.type == 1133 || item.type == 5120 || item.type == 4988 || item.type == 1315 || item.type == 602 || item.type == 544 || item.type == 556 || item.type == 557 || item.type == 1958 || item.type == 1844 || item.type == 2767 || item.type == 2767 || item.type == 3601);
+            (item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil);
 
         public float BalanceChange(Item item)
         {
