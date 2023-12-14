@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
                 return true;
             }
             npc.ai[0] = 0; //don't fire normal shots
-            if (++Timer >= 90)
+            if (++Timer >= 180)
             {
                 Player target = Main.player[npc.target];
                 Vector2 totarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);

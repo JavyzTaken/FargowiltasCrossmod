@@ -213,15 +213,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
             FargoSoulsPlayer soulsPlayer = player.FargoSouls();
-            if (player.FargoSouls().TungstenEnchantItem != null && CrossplayerCalamity.TungstenExcludeWeapon.Contains(item.type))
+            #region Tungsten balance changes/fixes
+            if (soulsPlayer.TungstenEnchantItem != null && player.GetToggleValue("Tungsten") &&
+                    !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
             {
-                float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
-                scale /= tungScale;
+                if (CrossplayerCalamity.TungstenExcludeWeapon.Contains(item.type))
+                {
+                    float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
+                    scale /= tungScale;
+                }
+                else if (item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
+                {
+                    scale /= TrueMeleeTungstenScaleNerf(player);
+                }
             }
-            else if (player.FargoSouls().TungstenEnchantItem != null && item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
-            {
-                scale /= TrueMeleeTungstenScaleNerf(player); //soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 1.475f : 1.35f;
-            }
+            #endregion
         }
         public override float UseSpeedMultiplier(Item item, Player player)
         {

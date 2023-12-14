@@ -58,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             //Player.tileSpeed += 0.25f;
             //Player.wallSpeed += 0.25f;
 
-            Player.moveSpeed -= 0.25f;
+            Player.moveSpeed -= 0.4f;
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
@@ -104,10 +104,12 @@ namespace FargowiltasCrossmod.Content.Calamity
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calamityPlayer = Player.Calamity();
 
+            /*
             if (!soulsPlayer.TerrariaSoul && soulsPlayer.TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
             {
                 Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
             }
+            */
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
