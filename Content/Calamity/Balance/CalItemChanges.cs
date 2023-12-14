@@ -201,6 +201,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             else if (item.type == ItemID.MagicDagger)
             {
                 item.shootSpeed = 30;
+
             }
 
         }
