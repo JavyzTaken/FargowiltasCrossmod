@@ -1,6 +1,7 @@
 ﻿using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
+using FargowiltasSouls.Core.Systems;
 using System;
 using Terraria;
 using Terraria.DataStructures;
@@ -37,8 +38,21 @@ namespace FargowiltasCrossmod.Core.Systems
                 if (ModCompatibility.InfernumMode.InfernumDifficulty && !InfernumStateLastFrame)
                 {
                     DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
-                    Main.NewText("[c/9c0000:Infernum Mode] detected. [c/00ffee:Eternity Priority over Calamity Bosses] has been disabled to prevent bugs.\n" +
-                    "[c/00ffee:Eternity Priority over Calamity Bosses] can be re-enabled in the config, but things will break.");
+                    
+
+                    if (DLCCalamityConfig.Instance.InfernumDisablesEternity)
+                    {
+                        WorldSavingSystem.EternityMode = false;
+                        WorldSavingSystem.ShouldBeEternityMode = false;
+                        Main.NewText("[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode].");
+                        if (Main.netMode != NetmodeID.SinglePlayer)
+                            PacketManager.SendPacket<EternityRevPacket>();
+                    }
+                    else
+                    {
+                        Main.NewText("[c/9c0000:Infernum Mode] detected. [c/00ffee:Eternity Priority over Calamity Bosses] has been disabled to prevent bugs.\n" +
+                            "[c/00ffee:Eternity Priority over Calamity Bosses] can be re-enabled in the config, but things will break.");
+                    }
                 }
                 if (ModCompatibility.InfernumMode.InfernumDifficulty) InfernumStateLastFrame = true;
                 else InfernumStateLastFrame = false;
