@@ -221,17 +221,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             NPCID.GiantFlyingAntlion,
             NPCID.SandShark, NPCID.SandsharkCorrupt, NPCID.SandsharkCrimson, NPCID.SandsharkHallow
         };
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void SetDefaults(NPC npc)
         {
             #region Balance
 
             if (DLCCalamityConfig.Instance.BalanceRework)
             {
-                //champions
-                if (Champions.Contains(npc.type))
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.9f);
-                }
+
                 //Events/Minibosses
 
                 if (AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
@@ -253,48 +250,51 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
                 }
-                if (npc.type == NPCID.SkeletronHead && WorldSavingSystem.EternityMode)
+                #region Vanilla Bosses
+                if (WorldSavingSystem.EternityMode)
                 {
-                    npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
+                    switch (npc.type)
+                    {
+                        case NPCID.SkeletronHead:
+                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
+                            break;
+                        case NPCID.SkeletronHand:
+                            if (DLCWorldSavingSystem.E_EternityRev)
+                                npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
+                            break;
+                        case NPCID.QueenBee:
+                            npc.lifeMax = (int)(npc.lifeMax * 1.5f);
+                            break;
+                        case NPCID.WallofFlesh:
+                        case NPCID.WallofFleshEye:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.6f);
+                            break;
+                        case NPCID.Plantera:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.4f);
+                            break;
+                        case NPCID.Golem:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                            break;
+                        case NPCID.DukeFishron:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                            break;
+                        case NPCID.HallowBoss:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.45f);
+                            break;
+                        case NPCID.CultistBoss:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.6f);
+                            break;
+                        case NPCID.MoonLordCore:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                            break;
+                    }
                 }
-                if (npc.type == NPCID.SkeletronHand && DLCWorldSavingSystem.E_EternityRev && WorldSavingSystem.EternityMode)
+                #endregion
+                #region Modded Bosses
+                //champions
+                if (Champions.Contains(npc.type))
                 {
-                    npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
-                }
-                //wof
-                if ((npc.type == NPCID.WallofFlesh || npc.type == NPCID.WallofFleshEye) && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.6f);
-                }
-                //Plantera
-                if (npc.type == NPCID.Plantera && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.4f);
-                }
-                //golem
-                if (npc.type == NPCID.Golem && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.5f);
-                }
-                //duke fishr
-                if (npc.type == NPCID.DukeFishron && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.5f);
-                }
-                //eol
-                if (npc.type == NPCID.HallowBoss && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.45f);
-                }
-                //lunatic
-                if (npc.type == NPCID.CultistBoss && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.6f);
-                }
-                //moon lord
-                if (npc.type == NPCID.MoonLordCore && WorldSavingSystem.EternityMode)
-                {
-                    npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                    npc.lifeMax = (int)(npc.lifeMax * 0.9f);
                 }
                 //Providence and guardian minions
                 if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() ||
@@ -381,6 +381,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npc.lifeMax = (int)(npc.lifeMax * 1.6f);
                     }
                 }
+                #endregion
                 #region BRBalance
                 List<int> squirrelParts = new List<int>
                 {
@@ -504,14 +505,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
             //setdefaultsbeforelookupsarebuilt error
-            /*
-            if (!Main.gameMenu && npc.boss && npc.ModNPC != null && npc.ModNPC.Mod == FargowiltasCrossmod.Instance || npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod)
+            if (!Main.gameMenu && CalamityConfig.Instance != null && npc.boss && npc.ModNPC != null && npc.ModNPC.Mod != null && (npc.ModNPC.Mod == FargowiltasCrossmod.Instance || npc.ModNPC.Mod == ModCompatibility.SoulsMod.Mod))
             {
                 // Boost health according to Calamity boss health boost config
                 float HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01f;
                 npc.lifeMax += (int)(npc.lifeMax * HPBoost);
             }
-            */
+            
             #endregion
 
         }

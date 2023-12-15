@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
+using CalamityMod;
 using CalamityMod.Events;
 using CalamityMod.NPCs.HiveMind;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
@@ -42,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             NPCID.Sets.TrailCacheLength[entity.type] = 10;
             NPCID.Sets.TrailingMode[entity.type] = 0;
             //entity.damage = (int)(entity.damage * 1.5f);
-            entity.lifeMax = (int)Math.Ceiling(entity.lifeMax * 0.76593137254); //funny number results in 12500
+            entity.lifeMax = (int)Math.Ceiling(entity.lifeMax * 0.67401960784); //funny number results in 11000
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 5000000;
@@ -316,7 +318,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         }
                         rotDirection = -rotDirection;
                     }
-                    const int desiredDistance = 350;
+                    const int desiredDistance = 450; //prev: 350
                     Vector2 desiredPos = LockVector1 + (LockVector1.DirectionTo(npc.Center).RotatedBy(rotDirection * MathHelper.Pi / 8f) * desiredDistance);
                     Vector2 toTargetPos = npc.DirectionTo(desiredPos);
                     Dash(npc, toTargetPos * 21f, 120, 50);
@@ -345,9 +347,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                     Teleport(npc, 45, 20, target.Center + toTarget * 500);
                 }
+                if (attack == 6)
+                {
+                    if (timer == 0)
+                    {
+                        LockVector1 = -Vector2.UnitY * 250 + Vector2.UnitX * 400 * -Math.Sign(toTarget.X);
+                    }
+                    Dash(npc, npc.DirectionTo(target.Center + LockVector1) * 17, 100, 70, 0.02f);
+
+                }
+                if (attack == 7)
+                {
+                    if (timer == 0)
+                    {
+                        LockVector1 = Vector2.UnitX * Math.Sign(toTarget.X) * 17;
+                    }
+                    Dash(npc, LockVector1, 45, 35, 0.02f);
+                }
                 RetractHeart(npc, 0.8f, 2, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
-                RetractHeart(npc, 0.5f, 3, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
-                RetractHeart(npc, 0.2f, 4, 7, 12, new int[attackCycleLength] { 0, 3, 1, -1, -1, -1, -1 });
+                RetractHeart(npc, 0.5f, 3, 7, 12, new int[attackCycleLength] { 0, 1, 6, 7, -1, -1, -1 });
+                RetractHeart(npc, 0.2f, 4, 7, 12, new int[attackCycleLength] { 0, 3, 1, 6, 7, -1, -1 });
                 ReleaseHeart(npc);
 
             }
@@ -485,7 +504,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 npc.velocity /= 1.05f;
                 return;
             }
-            if (phase > 3)
+            if (npc.GetLifePercent() <= 0.8f)
             {
                 speed *= 1.7f;
                 if (timer == time / 2 && npc.ai[1] == 1)
@@ -526,6 +545,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (npc.velocity.LengthSquared() > maxSpeed * maxSpeed)
                 {
                     npc.velocity = Vector2.Normalize(npc.velocity) * maxSpeed;
+                }
+            }
+            else if (attack == 7) //shade clouds during shade cloud attack
+            {
+                if (timer % 5 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    int type = ModContent.ProjectileType<ShadeNimbusHostile>();
+                    int damage = FargoSoulsUtil.ScaledProjectileDamage(npc.damage);
+                    Vector2 cloudSpawnPos = new Vector2(npc.position.X + Main.rand.Next(npc.width), npc.position.Y + Main.rand.Next(npc.height));
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), cloudSpawnPos, Vector2.Zero, type, damage, 0, Main.myPlayer, 11f);
                 }
             }
             if (timer >= time)

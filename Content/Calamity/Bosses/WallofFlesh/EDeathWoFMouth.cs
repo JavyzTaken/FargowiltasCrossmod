@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
             {
                 if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(1, 0) * npc.spriteDirection, ModContent.ProjectileType<HomingSickle>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
-                SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                SoundEngine.PlaySound(SoundID.Item8 with { Volume = 1.75f, Pitch = -0.5f}, npc.Center);
             }
             return base.SafePreAI(npc);
         }
