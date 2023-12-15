@@ -92,6 +92,8 @@ public class FargowiltasCrossmod : Mod
         ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueCrit);
 
         #endregion
+
+        Core.Globals.DevianttGlobalNPC.AddCalamityShop();
     }
 
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
