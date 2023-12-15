@@ -511,7 +511,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 float HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01f;
                 npc.lifeMax += (int)(npc.lifeMax * HPBoost);
             }
-            
             #endregion
 
         }
