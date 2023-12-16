@@ -68,12 +68,25 @@ namespace FargowiltasCrossmod.Content.Common
             }
         }
     }
-
+    public class SwitchModButton : UITextPanel<string>
+    {
+        public SwitchModButton(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        {
+        }
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            if (IsMouseHovering)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
+        }
+    }
     public class ModSwapperUIState : UIState
     {
         public override void OnInitialize()
         {
-            UITextPanel<string> textBox = new("Switch Mod");
+            SwitchModButton textBox = new("Switch Mod");
             textBox.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) =>
             {
                 DevianttGlobalNPC.CycleShop();

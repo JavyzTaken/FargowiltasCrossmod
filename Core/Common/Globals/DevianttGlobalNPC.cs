@@ -7,14 +7,17 @@ using System.Linq;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasCrossmod.Core.Calamity.Systems;
-using CalamityMod.NPCs;
-using static FargowiltasCrossmod.Core.ModCompatibility;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
 using FargowiltasSouls;
+using Fargowiltas.Items.Summons.Deviantt;
+using Fargowiltas.Items.Tiles;
+using Fargowiltas;
+using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Core.Common.Globals
 {
+    
     public class DevianttGlobalNPC : GlobalNPC
     {
         public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == ModContent.NPCType<Deviantt>();
@@ -22,56 +25,18 @@ namespace FargowiltasCrossmod.Core.Common.Globals
 
         internal static int currentShop;
         internal static readonly List<NPCShop> ModShops = new();
+
         public static void CycleShop()
         {
             currentShop++;
             currentShop %= ModShops.Count + 1;
         }
-
-        public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
-        {
-            if (currentShop == 0) return;
-
-            if (ModShops.Count >= currentShop && ModShops[currentShop - 1] != null)
-            {
-                for (int i = 0; i < items.Length; i++)
-                {
-                    items[i] = null;
-                    if (ModShops[currentShop - 1].ActiveEntries.Count() > i)
-                    {
-                        items[i] = ModShops[currentShop - 1].ActiveEntries.ElementAt(i).Item;
-                    }
-                }
-                return;
-            }
-
-            Main.NewText("You shouldn't be seeing this. Tall Ghoose");
-        }
-        public delegate void Orig_DevianttAddShops(Deviantt self);
-
-        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", FargoSoulsUtil.UniversalBindingFlags);
-        Hook DeviShopHook;
-        public override void Load()
-        {
-            DeviShopHook = new(DevianttAddShopsMethod, DevianttAddShopsDetour);
-            DeviShopHook.Apply();
-        }
-        public override void Unload()
-        {
-            DeviShopHook.Undo();
-        }
-
-        internal static void DevianttAddShopsDetour(Orig_DevianttAddShops orig, Deviantt self)
-        {
-            AddCalamityShop();
-
-            orig(self);
-        }
-
+        
         public static void AddCalamityShop()
         {
+            if (!ModCompatibility.Calamity.Loaded)
+                return;
             NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Calamity");
-            //shop.Add(new Item(Terraria.ID.ItemID.DirtBlock) { shopCustomPrice = Item.buyPrice(platinum: 3) }, new Condition("ech", () => !Main.hardMode));
 
             Condition killedClam = new Condition("After killing a Giant Clam", () => CalamityAIOverride.DownedClam);
             Condition killedPlaguebringerMini = new Condition("After killing a Plaguebringer", () => DLCWorldSavingSystem.downedMiniPlaguebringer);
@@ -92,19 +57,125 @@ namespace FargowiltasCrossmod.Core.Common.Globals
             shop.Add(new Item(ModContent.ItemType<QuakeIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedEarthElemental);
             
             shop.Register();
-
             ModShops.Add(shop);
         }
 
-        /* public static void AddThoriumShop()
-        {
-            NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Thorium");
-            shop.Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After Myna has been defeated", () => Systems.DownedEnemiesSystem.DLCDownedBools["Myna"]));
-            shop.Add(new Item(ModContent.ItemType<GildedSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After the gilded enemies have been defeated", () => 
-            Systems.DownedEnemiesSystem.DLCDownedBools["GildedLycan"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedBat"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedSlime"]));
+        //public static void AddThoriumShop()
+        //{
+        //   NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Thorium");
+        //  shop.Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After Myna has been defeated", () => Systems.DownedEnemiesSystem.DLCDownedBools["Myna"]));
+        // shop.Add(new Item(ModContent.ItemType<GildedSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After the gilded enemies have been defeated", () => 
+        //Systems.DownedEnemiesSystem.DLCDownedBools["GildedLycan"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedBat"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedSlime"]));
 
-            ModShops.Add(shop);
-            shop.Register();
-        } */
+        //ModShops.Add(shop);
+        //shop.Register();
+        //} 
+        #region Hook Stuff
+        public override void Load()
+        {
+            DeviChatButtonHook = new(DevianttOnChatButtonClickedMethod, DevianttOnChatButtonClickedDetour);
+            DeviChatButtonHook.Apply();
+
+            DeviShopHook = new(DevianttAddShopsMethod, DevianttAddShopsDetour);
+            DeviShopHook.Apply();
+        }
+        public override void Unload()
+        {
+            DeviChatButtonHook.Undo();
+            DeviShopHook.Undo();
+        }
+        public delegate void Orig_DevianttOnChatButtonClicked(Deviantt self, bool firstButton, ref string shopName);
+        public delegate void Orig_DevianttAddShops(Deviantt self);
+
+        private static readonly MethodInfo DevianttOnChatButtonClickedMethod = typeof(Deviantt).GetMethod("OnChatButtonClicked", FargoSoulsUtil.UniversalBindingFlags);
+        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", FargoSoulsUtil.UniversalBindingFlags);
+
+        Hook DeviChatButtonHook;
+        Hook DeviShopHook;
+
+        internal static void DevianttOnChatButtonClickedDetour(Orig_DevianttOnChatButtonClicked orig, Deviantt self, bool firstButton, ref string shopName)
+        {
+            orig(self, firstButton, ref shopName);
+
+            if (firstButton)
+            {
+                if (currentShop == 0)
+                {
+                    shopName = Deviantt.ShopName;
+                }
+                else
+                {
+                    shopName = ModShops[currentShop - 1].Name;
+                }
+            }
+        }
+        
+        internal static void DevianttAddShopsDetour(Orig_DevianttAddShops orig, Deviantt self)
+        {
+            AddVanillaShop();
+            //orig.Invoke(self); this does not work. ZERO reason why. make this a smoother solution later
+            if (ModCompatibility.Calamity.Loaded)
+                AddCalamityShop();
+        }
+
+        public static Dictionary<string, bool> FargoWorldDownedBools => typeof(FargoWorld).GetField("DownedBools", FargoSoulsUtil.UniversalBindingFlags).GetValue(null) as Dictionary<string, bool>;
+
+        public static void AddVanillaShop()
+        {
+            var npcShop = new NPCShop(ModContent.NPCType<Deviantt>(), Deviantt.ShopName);
+
+
+
+            if (ModLoader.HasMod("FargowiltasSoulsDLC") && TryFind("FargowiltasSoulsDLC", "PandorasBox", out ModItem pandorasBox))
+            {
+                npcShop.Add(new Item(pandorasBox.Type));
+            }
+
+            npcShop
+                .Add(new Item(ItemType<WormSnack>()) { shopCustomPrice = Item.buyPrice(copper: 20000) }, new Condition("Mods.Fargowiltas.Conditions.WormDown", () => FargoWorldDownedBools["worm"]))
+                .Add(new Item(ItemType<PinkSlimeCrown>()) { shopCustomPrice = Item.buyPrice(copper: 50000) }, new Condition("Mods.Fargowiltas.Conditions.PinkyDown", () => FargoWorldDownedBools["pinky"]))
+                .Add(new Item(ItemType<GoblinScrap>()) { shopCustomPrice = Item.buyPrice(copper: 10000) }, new Condition("Mods.Fargowiltas.Conditions.ScoutDown", () => FargoWorldDownedBools["goblinScout"]))
+                .Add(new Item(ItemType<Eggplant>()) { shopCustomPrice = Item.buyPrice(copper: 20000) }, new Condition("Mods.Fargowiltas.Conditions.DoctorDown", () => FargoWorldDownedBools["doctorBones"]))
+                .Add(new Item(ItemType<AttractiveOre>()) { shopCustomPrice = Item.buyPrice(copper: 30000) }, new Condition("Mods.Fargowiltas.Conditions.MinerDown", () => FargoWorldDownedBools["undeadMiner"]))
+                .Add(new Item(ItemType<HolyGrail>()) { shopCustomPrice = Item.buyPrice(copper: 50000) }, new Condition("Mods.Fargowiltas.Conditions.TimDown", () => FargoWorldDownedBools["tim"]))
+                .Add(new Item(ItemType<GnomeHat>()) { shopCustomPrice = Item.buyPrice(copper: 50000) }, new Condition("Mods.Fargowiltas.Conditions.GnomeDown", () => FargoWorldDownedBools["gnome"]))
+                .Add(new Item(ItemType<GoldenSlimeCrown>()) { shopCustomPrice = Item.buyPrice(copper: 600000) }, new Condition("Mods.Fargowiltas.Conditions.GoldSlimeDown", () => FargoWorldDownedBools["goldenSlime"]))
+                .Add(new Item(ItemType<SlimyLockBox>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.DungeonSlimeDown", () => NPC.downedBoss3 && FargoWorldDownedBools["dungeonSlime"]))
+                .Add(new Item(ItemType<AthenianIdol>()) { shopCustomPrice = Item.buyPrice(copper: 50000) }, new Condition("Mods.Fargowiltas.Conditions.MedusaDown", () => Main.hardMode && FargoWorldDownedBools["medusa"]))
+                .Add(new Item(ItemType<ClownLicense>()) { shopCustomPrice = Item.buyPrice(copper: 50000) }, new Condition("Mods.Fargowiltas.Conditions.ClownDown", () => Main.hardMode && FargoWorldDownedBools["clown"]))
+                .Add(new Item(ItemType<HeartChocolate>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.NymphDown", () => FargoWorldDownedBools["nymph"]))
+                .Add(new Item(ItemType<MothLamp>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.MothDown", () => Main.hardMode && FargoWorldDownedBools["moth"]))
+                .Add(new Item(ItemType<DilutedRainbowMatter>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.RainbowSlimeDown", () => Main.hardMode && FargoWorldDownedBools["rainbowSlime"]))
+                .Add(new Item(ItemType<CloudSnack>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.WyvernDown", () => Main.hardMode && FargoWorldDownedBools["wyvern"]))
+                .Add(new Item(ItemType<RuneOrb>()) { shopCustomPrice = Item.buyPrice(copper: 150000) }, new Condition("Mods.Fargowiltas.Conditions.RuneDown", () => Main.hardMode && FargoWorldDownedBools["runeWizard"]))
+                .Add(new Item(ItemType<SuspiciousLookingChest>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.MimicDown", () => Main.hardMode && FargoWorldDownedBools["mimic"]))
+                .Add(new Item(ItemType<HallowChest>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.MimicHallowDown", () => Main.hardMode && FargoWorldDownedBools["mimicHallow"]))
+                .Add(new Item(ItemType<CorruptChest>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.MimicCorruptDown", () => Main.hardMode && (FargoWorldDownedBools["mimicCorrupt"] || FargoWorldDownedBools["mimicCrimson"])))
+                .Add(new Item(ItemType<CrimsonChest>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.MimicCrimsonDown", () => Main.hardMode && (FargoWorldDownedBools["mimicCorrupt"] || FargoWorldDownedBools["mimicCrimson"])))
+                .Add(new Item(ItemType<JungleChest>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.MimicJungleDown", () => Main.hardMode && FargoWorldDownedBools["mimicJungle"]))
+                .Add(new Item(ItemType<CoreoftheFrostCore>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.IceGolemDown", () => Main.hardMode && FargoWorldDownedBools["iceGolem"]))
+                .Add(new Item(ItemType<ForbiddenForbiddenFragment>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.SandDown", () => Main.hardMode && FargoWorldDownedBools["sandElemental"]))
+                .Add(new Item(ItemType<DemonicPlushie>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.DevilDown", () => NPC.downedMechBossAny && FargoWorldDownedBools["redDevil"]))
+                .Add(new Item(ItemType<SuspiciousLookingLure>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.BloodFishDown", () => FargoWorldDownedBools["eyeFish"] || FargoWorldDownedBools["zombieMerman"]))
+                .Add(new Item(ItemType<BloodUrchin>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.BloodEelDown", () => Main.hardMode && FargoWorldDownedBools["bloodEel"]))
+                .Add(new Item(ItemType<HemoclawCrab>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.BloodGoblinDown", () => Main.hardMode && FargoWorldDownedBools["goblinShark"]))
+                .Add(new Item(ItemType<BloodSushiPlatter>()) { shopCustomPrice = Item.buyPrice(copper: 200000) }, new Condition("Mods.Fargowiltas.Conditions.BloodNautDown", () => Main.hardMode && FargoWorldDownedBools["dreadnautilus"]))
+                .Add(new Item(ItemType<ShadowflameIcon>()) { shopCustomPrice = Item.buyPrice(copper: 100000) }, new Condition("Mods.Fargowiltas.Conditions.SummonerDown", () => Main.hardMode && NPC.downedGoblins && FargoWorldDownedBools["goblinSummoner"]))
+                .Add(new Item(ItemType<PirateFlag>()) { shopCustomPrice = Item.buyPrice(copper: 150000) }, new Condition("Mods.Fargowiltas.Conditions.PirateDown", () => Main.hardMode && NPC.downedPirates && FargoWorldDownedBools["pirateCaptain"]))
+                .Add(new Item(ItemType<Pincushion>()) { shopCustomPrice = Item.buyPrice(copper: 150000) }, new Condition("Mods.Fargowiltas.Conditions.NailheadDown", () => NPC.downedPlantBoss && FargoWorldDownedBools["nailhead"]))
+                .Add(new Item(ItemType<MothronEgg>()) { shopCustomPrice = Item.buyPrice(copper: 150000) }, new Condition("Mods.Fargowiltas.Conditions.MothronDown", () => NPC.downedMechBoss1 && NPC.downedMechBoss2 && NPC.downedMechBoss3 && FargoWorldDownedBools["mothron"]))
+                .Add(new Item(ItemType<LeesHeadband>()) { shopCustomPrice = Item.buyPrice(copper: 150000) }, new Condition("Mods.Fargowiltas.Conditions.LeeDown", () => NPC.downedPlantBoss && FargoWorldDownedBools["boneLee"]))
+                .Add(new Item(ItemType<GrandCross>()) { shopCustomPrice = Item.buyPrice(copper: 150000) }, new Condition("Mods.Fargowiltas.Conditions.PaladinDown", () => NPC.downedPlantBoss && FargoWorldDownedBools["paladin"]))
+                .Add(new Item(ItemType<AmalgamatedSkull>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.SkeleGunDown", () => NPC.downedPlantBoss && FargoWorldDownedBools["skeletonGun"]))
+                .Add(new Item(ItemType<AmalgamatedSpirit>()) { shopCustomPrice = Item.buyPrice(copper: 300000) }, new Condition("Mods.Fargowiltas.Conditions.SkeleGunDown", () => NPC.downedPlantBoss && FargoWorldDownedBools["skeletonMage"]))
+                .Add(new Item(ItemType<SiblingPylon>()), Condition.HappyEnoughToSellPylons, Condition.NpcIsPresent(NPCType<Mutant>()), Condition.NpcIsPresent(NPCType<Abominationn>()))
+            ;
+
+            npcShop.Register();
+        }
+
+        #endregion
+
+
     }
 }

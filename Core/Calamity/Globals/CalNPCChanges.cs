@@ -1496,10 +1496,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
             Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalamityAIOverride.DownedNuclear);
             Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
-            if (shop.NpcType == ModContent.NPCType<Deviantt>())
-            {
-
-            }
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
                 shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);
