@@ -4,6 +4,9 @@ using Fargowiltas.NPCs;
 //using FargowiltasCrossmod.Content.Thorium.Items.Summons; 
 using System.Collections.Generic;
 using System.Linq;
+using FargowiltasCrossmod.Content.Calamity.Items.Summons;
+using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Systems;
 
 namespace FargowiltasCrossmod.Core.Globals
 {
@@ -44,6 +47,25 @@ namespace FargowiltasCrossmod.Core.Globals
         {
             NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Calamity");
             //shop.Add(new Item(Terraria.ID.ItemID.DirtBlock) { shopCustomPrice = Item.buyPrice(platinum: 3) }, new Condition("ech", () => !Main.hardMode));
+
+            Condition killedClam = new Condition("After killing a Giant Clam", () => CalamityAIOverride.DownedClam);
+            Condition killedPlaguebringerMini = new Condition("After killing a Plaguebringer", () => DLCWorldSavingSystem.downedMiniPlaguebringer);
+            Condition killedReaperShark = new Condition("After killing a Reaper Shark", () => DLCWorldSavingSystem.downedReaperShark);
+            Condition killedColossalSquid = new Condition("After killing a Colossal Squid", () => DLCWorldSavingSystem.downedColossalSquid);
+            Condition killedEidolonWyrm = new Condition("After killing an Eidolon Wyrm", () => DLCWorldSavingSystem.downedEidolonWyrm);
+            Condition killedCloudElemental = new Condition("After killing a Cloud Elemental", () => DLCWorldSavingSystem.downedCloudElemental);
+            Condition killedEarthElemental = new Condition("After killing an Earth Elemental", () => DLCWorldSavingSystem.downedEarthElemental);
+            Condition killedArmoredDigger = new Condition("After killing an Armored Digger", () => DLCWorldSavingSystem.downedArmoredDigger);
+
+            shop.Add(new Item(ModContent.ItemType<ClamPearl>()) { shopCustomPrice = Item.buyPrice(gold: 5) }, killedClam);
+            shop.Add(new Item(ModContent.ItemType<AbandonedRemote>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedArmoredDigger);
+            shop.Add(new Item(ModContent.ItemType<PlaguedWalkieTalkie>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedPlaguebringerMini);
+            shop.Add(new Item(ModContent.ItemType<DeepseaProteinShake>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedReaperShark);
+            shop.Add(new Item(ModContent.ItemType<ColossalTentacle>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedColossalSquid);
+            shop.Add(new Item(ModContent.ItemType<WyrmTablet>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedEidolonWyrm);
+            shop.Add(new Item(ModContent.ItemType<StormIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedCloudElemental);
+            shop.Add(new Item(ModContent.ItemType<QuakeIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedEarthElemental);
+
             ModShops.Add(shop);
             shop.Register();
         }

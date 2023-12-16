@@ -1575,14 +1575,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyShop(NPCShop shop)
         {
-            Condition killedClam = new Condition("Killed Giant Clam", () => CalamityAIOverride.DownedClam);
-            Condition killedPlaguebringerMini = new Condition("Killed Plaguebringer", () => DLCWorldSavingSystem.downedMiniPlaguebringer);
-            Condition killedReaperShark = new Condition("Killed Reaper Shark", () => DLCWorldSavingSystem.downedReaperShark);
-            Condition killedColossalSquid = new Condition("Killed Colossal Squid", () => DLCWorldSavingSystem.downedColossalSquid);
-            Condition killedEidolonWyrm = new Condition("Killed Eidolon Wyrm", () => DLCWorldSavingSystem.downedEidolonWyrm);
-            Condition killedCloudElemental = new Condition("Killed Cloud Elemental", () => DLCWorldSavingSystem.downedCloudElemental);
-            Condition killedEarthElemental = new Condition("Killed Earth Elemental", () => DLCWorldSavingSystem.downedEarthElemental);
-            Condition killedArmoredDigger = new Condition("Killed Armored Digger", () => DLCWorldSavingSystem.downedArmoredDigger);
+            
 
             Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalamityAIOverride.DownedCragmaw);
             Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
@@ -1590,14 +1583,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
             if (shop.NpcType == ModContent.NPCType<Deviantt>())
             {
-                shop.Add(new Item(ModContent.ItemType<ClamPearl>()) { shopCustomPrice = Item.buyPrice(gold: 5) }, killedClam);
-                shop.Add(new Item(ModContent.ItemType<AbandonedRemote>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedArmoredDigger);
-                shop.Add(new Item(ModContent.ItemType<PlaguedWalkieTalkie>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedPlaguebringerMini);
-                shop.Add(new Item(ModContent.ItemType<DeepseaProteinShake>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedReaperShark);
-                shop.Add(new Item(ModContent.ItemType<ColossalTentacle>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedColossalSquid);
-                shop.Add(new Item(ModContent.ItemType<WyrmTablet>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedEidolonWyrm);
-                shop.Add(new Item(ModContent.ItemType<StormIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedCloudElemental);
-                shop.Add(new Item(ModContent.ItemType<QuakeIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedEarthElemental);
+                
             }
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
