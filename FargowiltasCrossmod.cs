@@ -96,6 +96,5 @@ public class FargowiltasCrossmod : Mod
 
         DevianttGlobalNPC.AddCalamityShop();
     }
-
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
 }

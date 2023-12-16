@@ -7,6 +7,11 @@ using System.Linq;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasCrossmod.Core.Calamity.Systems;
+using CalamityMod.NPCs;
+using static FargowiltasCrossmod.Core.ModCompatibility;
+using MonoMod.RuntimeDetour;
+using System.Reflection;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Core.Common.Globals
 {
@@ -42,6 +47,26 @@ namespace FargowiltasCrossmod.Core.Common.Globals
 
             Main.NewText("You shouldn't be seeing this. Tall Ghoose");
         }
+        public delegate void Orig_DevianttAddShops(Deviantt self);
+
+        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", FargoSoulsUtil.UniversalBindingFlags);
+        Hook DeviShopHook;
+        public override void Load()
+        {
+            DeviShopHook = new(DevianttAddShopsMethod, DevianttAddShopsDetour);
+            DeviShopHook.Apply();
+        }
+        public override void Unload()
+        {
+            DeviShopHook.Undo();
+        }
+
+        internal static void DevianttAddShopsDetour(Orig_DevianttAddShops orig, Deviantt self)
+        {
+            AddCalamityShop();
+
+            orig(self);
+        }
 
         public static void AddCalamityShop()
         {
@@ -65,9 +90,10 @@ namespace FargowiltasCrossmod.Core.Common.Globals
             shop.Add(new Item(ModContent.ItemType<WyrmTablet>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedEidolonWyrm);
             shop.Add(new Item(ModContent.ItemType<StormIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedCloudElemental);
             shop.Add(new Item(ModContent.ItemType<QuakeIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedEarthElemental);
+            
+            shop.Register();
 
             ModShops.Add(shop);
-            shop.Register();
         }
 
         /* public static void AddThoriumShop()
