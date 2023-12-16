@@ -61,35 +61,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.ItemType<NukeFishron>(),
             ModContent.ItemType<StaffOfUnleashedOcean>(),
         };
-        public static List<int> CalSummons = new List<int>
-        {
-            ModContent.ItemType<DesertMedallion>(),
-            ModContent.ItemType<DecapoditaSprout>(),
-            ModContent.ItemType<Teratoma>(),
-            ModContent.ItemType<BloodyWormFood>(),
-            ModContent.ItemType<OverloadedSludge>(),
-            ModContent.ItemType<CryoKey>(),
-            ModContent.ItemType<Seafood>(),
-            ModContent.ItemType<CharredIdol>(),
-            ModContent.ItemType<EyeofDesolation>(),
-            ModContent.ItemType<AstralChunk>(),
-            ModContent.ItemType<Abombination>(),
-            ModContent.ItemType<DeathWhistle>(),
-            ModContent.ItemType<Starcore>(),
-            ModContent.ItemType<ProfanedShard>(),
-            ModContent.ItemType<ExoticPheromones>(),
-            ModContent.ItemType<ProfanedCore>(),
-            ModContent.ItemType<RuneofKos>(),
-            ModContent.ItemType<NecroplasmicBeacon>(),
-            ModContent.ItemType<CosmicWorm>(),
-            ModContent.ItemType<YharonEgg>(),
 
-            ModContent.ItemType<EidolonTablet>(),
-            ModContent.ItemType<Portabulb>(),
-            ModContent.ItemType<SandstormsCore>(),
-            ModContent.ItemType<CausticTear>(),
-            ModContent.ItemType<MartianDistressRemote>(),
-        };
 
         public static List<int> RockItems = new List<int>
         {
@@ -109,9 +81,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.ItemType<FargoBullet>(),
         };
 
-        //this is cloned from cal because lazy
-        public static bool VanillaSummonItem(Item item) =>
-            item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil;
+   
 
         public float BalanceChange(Item item)
         {
@@ -180,14 +150,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             }
         }
-        public override void UpdateInventory(Item item, Player player)
-        {
-            if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
-            {
-                item.consumable = WorldSavingSystem.EternityMode;
-                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
-            }
-        }
+
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
             //magic dagger not using system because needs to dynamically change and change shootspeed (setdefaults doesnt allow dynamic change)
