@@ -31,7 +31,8 @@ namespace FargowiltasCrossmod.Core.Common.Globals
             currentShop++;
             currentShop %= ModShops.Count + 1;
         }
-        
+
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public static void AddCalamityShop()
         {
             if (!ModCompatibility.Calamity.Loaded)

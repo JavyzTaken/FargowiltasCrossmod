@@ -29,6 +29,8 @@ using Terraria.ID;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static class CalamityContentLists
     {
 
