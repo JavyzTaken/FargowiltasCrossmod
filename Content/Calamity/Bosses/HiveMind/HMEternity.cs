@@ -303,7 +303,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (attack == 1)
                 {
                     const int dashDuration = 100;
-                    const float maxSpeedIncrease = 10;
+                    //const float maxSpeedIncrease = 10;
                     float speed = 10;// + (maxSpeedIncrease * Math.Min(timer / baseDashDuration, 1));
                     Dash(npc, toTarget * speed, dashDuration, 80, 0f);
                 }

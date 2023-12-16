@@ -86,7 +86,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             dustColor.A = 150;
             for (int i = 0; i < 20; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.height, Projectile.height, 4, Projectile.velocity.X, Projectile.velocity.Y, Projectile.alpha, dustColor, 2f);
+                Dust.NewDust(Projectile.position, Projectile.height, Projectile.height, DustID.TintableDust, Projectile.velocity.X, Projectile.velocity.Y, Projectile.alpha, dustColor, 2f);
             }
         }
         public override bool PreDraw(ref Color lightColor)

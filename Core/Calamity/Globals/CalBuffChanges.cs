@@ -33,6 +33,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void Update(int type, Player player, ref int buffIndex)
         {
             //Removes buff immunity to given buff ID granted by buffs
+            /*
             void PrebuffImmune(int buffID)
             {
                 CrossplayerCalamity cdlcPlayer = player.CalamityDLC();
@@ -43,6 +44,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 else
                     player.buffImmune[buffID] = false;
             }
+            */
             /*
             if (type == BuffID.Warmth && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {

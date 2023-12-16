@@ -32,6 +32,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Terraria.Localization;
+using FargowiltasCrossmod.Core.Common;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -39,47 +40,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemBalance : GlobalItem
     {
-        public static List<int> ChampionTierFargoWeapons = new List<int>
-        {
-            ModContent.ItemType<EaterLauncher>(),
-            ModContent.ItemType<FleshCannon>(),
-            ModContent.ItemType<HellZone>(),
-            ModContent.ItemType<MechanicalLeashOfCthulhu>(),
-            ModContent.ItemType<SlimeSlingingSlasher>(),
-            ModContent.ItemType<TheBigSting>(),
-            ModContent.ItemType<ScientificRailgun>(),
-            ModContent.ItemType<VortexMagnetRitual>()
-        };
-        public static List<int> AbomTierFargoWeapons = new List<int>
-        {
-            ModContent.ItemType<DragonBreath2>(),
-            ModContent.ItemType<DestroyerGun2>(),
-            ModContent.ItemType<GolemTome2>(),
-            ModContent.ItemType<GeminiGlaives>(),
-            ModContent.ItemType<Blender>(),
-            ModContent.ItemType<RefractorBlaster2>(),
-            ModContent.ItemType<NukeFishron>(),
-            ModContent.ItemType<StaffOfUnleashedOcean>(),
-        };
 
-
-        public static List<int> RockItems = new List<int>
-        {
-            ModContent.ItemType<Rock>(),
-            ModContent.ItemType<EternitySoul>(),
-            ModContent.ItemType<HentaiSpear>(),
-            ModContent.ItemType<StyxGazer>(),
-            ModContent.ItemType<SparklingLove>(),
-            //ModContent.ItemType<GuardianTome>(),
-            //ModContent.ItemType<PhantasmalLeashOfCthulhu>(),
-            //ModContent.ItemType<SlimeRain>(),
-            //ModContent.ItemType<TheBiggestSting>(),
-            ModContent.ItemType<MutantPants>(),
-            ModContent.ItemType<MutantBody>(),
-            ModContent.ItemType<MutantMask>(),
-            ModContent.ItemType<FargoArrow>(),
-            ModContent.ItemType<FargoBullet>(),
-        };
 
    
 
@@ -92,9 +53,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 1f;
             if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
                 return 2f;
-            if (AbomTierFargoWeapons.Contains(item.type))
+            if (ContentLists.AbomTierFargoWeapons.Contains(item.type))
                 return 1.5f;
-            if (ChampionTierFargoWeapons.Contains(item.type))
+            if (ContentLists.ChampionTierFargoWeapons.Contains(item.type))
             {
                 return 0.8f;
             }
@@ -141,13 +102,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     item.damage = (int)(item.damage * balance);
                 }
-
-                if (CalSummons.Contains(item.type) || VanillaSummonItem(item))
-                {
-                    item.consumable = WorldSavingSystem.EternityMode;
-                    item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
-                }
-
+                
             }
         }
 

@@ -31,7 +31,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     {
         public override bool InstancePerEntity => true;
 
-        private bool DefenseDamageSet = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.ModProjectile != null && entity.ModProjectile is BaseLaserbeamProjectile)
