@@ -1,8 +1,10 @@
 ﻿using System.IO;
+using System.Linq;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Utils;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -20,19 +22,34 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(fireball);
+            binaryWriter.Write7BitEncodedInt(NoAttackTimer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             fireball = binaryReader.ReadBoolean();
+            NoAttackTimer = binaryReader.Read7BitEncodedInt();
         }
         public bool fireball = false;
+        public int NoAttackTimer = 0;
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;
             NPC owner = Main.npc[(int)npc.ai[3]];
             Player target = Main.player[npc.target];
 
-            if (fireball && owner.ai[0] != 0 && owner.ai[1] == 30 && owner.ai[0] != 5)
+
+            if (Main.projectile.Any(p => p.active && p.hostile && p.type == ModContent.ProjectileType<CelestialPillar>()))
+                NoAttackTimer = 60 * 10;
+
+            if (NoAttackTimer > 0)
+            {
+                npc.ai[1] = 0; //disable normal attack AI
+                NoAttackTimer--;
+            }
+            else
+                NoAttackTimer = 0;
+
+            if (fireball && owner.ai[0] != 0 && owner.ai[1] == 30 && owner.ai[0] != 5 && NoAttackTimer <= 0)
             {
 
                 fireball = false;
