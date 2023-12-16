@@ -13,7 +13,9 @@ using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SulphurCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Materials;
+using CalamityMod.Items.Placeables.Banners;
 using CalamityMod.Items.Potions;
+using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AcidRain;
@@ -36,12 +38,14 @@ using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
+using CalamityMod.NPCs.GreatSandShark;
 using CalamityMod.NPCs.HiveMind;
 using CalamityMod.NPCs.Leviathan;
 using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.NPCs.OldDuke;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.PlaguebringerGoliath;
+using CalamityMod.NPCs.PlagueEnemies;
 using CalamityMod.NPCs.Polterghast;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
@@ -58,7 +62,9 @@ using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.ItemDropRules;
 using FargowiltasCrossmod.Core.Systems;
 using FargowiltasCrossmod.Core.Utils;
@@ -1033,9 +1039,73 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             npcLoot.Add(pMoon);
             npcLoot.Add(fMoon);
         }
+       
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)
         {
+            #region newshopitemdisplay
+            bool doDeviText = false;
+            //if (npc.type == ModContent.NPCType<GreatSandShark>() && !DownedBossSystem.downedGSS)
+            //{
+            //    Main.NewText("A new item has been unlocked in Abominationn's shop!", Color.Orange);
+            //}
+            //if (npc.type == ModContent.NPCType<CragmawMire>() && !DownedBossSystem.downedCragmawMire)
+            //{
+            //    Main.NewText("A new item has been unlocked in Abominationn's shop!", Color.Orange);
+            //}
+            //if (npc.type == ModContent.NPCType<Mauler>() && !DownedBossSystem.downedMauler)
+            //{
+            //    Main.NewText("A new item has been unlocked in Abominationn's shop!", Color.Orange);
+            //}
+            //if (npc.type == ModContent.NPCType<NuclearTerror>() && !DownedBossSystem.downedNuclearTerror)
+            //{
+            //    Main.NewText("A new item has been unlocked in Abominationn's shop!", Color.Orange);
+            //}
+            if (npc.type == ModContent.NPCType<GiantClam>() && !CalamityAIOverride.DownedClam)
+            {
+                
+                doDeviText = true;
+            }
+            if (npc.type == ModContent.NPCType<PlaguebringerMiniboss>() && !DLCWorldSavingSystem.downedMiniPlaguebringer)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedMiniPlaguebringer = true;
+            }
+            if (npc.type == ModContent.NPCType<ReaperShark>() && !DLCWorldSavingSystem.downedReaperShark)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedReaperShark = true;
+            }
+            if (npc.type == ModContent.NPCType<ColossalSquid>() && !DLCWorldSavingSystem.downedColossalSquid)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedColossalSquid = true;
+            }
+            if (npc.type == ModContent.NPCType<EidolonWyrmHead>() && !DLCWorldSavingSystem.downedEidolonWyrm)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedEidolonWyrm = true;
+            }
+            if (npc.type == ModContent.NPCType<ThiccWaifu>() && !DLCWorldSavingSystem.downedCloudElemental)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedCloudElemental = true;
+            }
+            if (npc.type == ModContent.NPCType<Horse>() && !DLCWorldSavingSystem.downedEarthElemental)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedEarthElemental = true;
+            }
+            if (npc.type == ModContent.NPCType<ArmoredDiggerHead>() && !DLCWorldSavingSystem.downedArmoredDigger)
+            {
+                doDeviText = true;
+                DLCWorldSavingSystem.downedArmoredDigger = true;
+            }
+            if (doDeviText && Main.netMode != NetmodeID.Server)
+            {
+                Main.NewText("A new item has been unlocked in Deviantt's shop!", Color.HotPink);
+            }
+            #endregion
             //the thing
 
 
@@ -1502,6 +1572,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     PermafrostDefeatLine = 0;
                 }
             }
+        }
+        public override void ModifyShop(NPCShop shop)
+        {
+            Condition killedClam = new Condition("Killed Giant Clam", () => CalamityAIOverride.DownedClam);
+            Condition killedPlaguebringerMini = new Condition("Killed Plaguebringer", () => DLCWorldSavingSystem.downedMiniPlaguebringer);
+            Condition killedReaperShark = new Condition("Killed Reaper Shark", () => DLCWorldSavingSystem.downedReaperShark);
+            Condition killedColossalSquid = new Condition("Killed Colossal Squid", () => DLCWorldSavingSystem.downedColossalSquid);
+            Condition killedEidolonWyrm = new Condition("Killed Eidolon Wyrm", () => DLCWorldSavingSystem.downedEidolonWyrm);
+            Condition killedCloudElemental = new Condition("Killed Cloud Elemental", () => DLCWorldSavingSystem.downedCloudElemental);
+            Condition killedEarthElemental = new Condition("Killed Earth Elemental", () => DLCWorldSavingSystem.downedEarthElemental);
+            Condition killedArmoredDigger = new Condition("Killed Armored Digger", () => DLCWorldSavingSystem.downedArmoredDigger);
+
+            Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalamityAIOverride.DownedCragmaw);
+            Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
+            Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalamityAIOverride.DownedNuclear);
+            Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
+            if (shop.NpcType == ModContent.NPCType<Deviantt>())
+            {
+                shop.Add(new Item(ModContent.ItemType<ClamPearl>()) { shopCustomPrice = Item.buyPrice(gold: 5) }, killedClam);
+                shop.Add(new Item(ModContent.ItemType<AbandonedRemote>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedArmoredDigger);
+                shop.Add(new Item(ModContent.ItemType<PlaguedWalkieTalkie>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedPlaguebringerMini);
+                shop.Add(new Item(ModContent.ItemType<DeepseaProteinShake>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedReaperShark);
+                shop.Add(new Item(ModContent.ItemType<ColossalTentacle>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedColossalSquid);
+                shop.Add(new Item(ModContent.ItemType<WyrmTablet>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedEidolonWyrm);
+                shop.Add(new Item(ModContent.ItemType<StormIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedCloudElemental);
+                shop.Add(new Item(ModContent.ItemType<QuakeIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedEarthElemental);
+            }
+            if (shop.NpcType == ModContent.NPCType<Abominationn>())
+            {
+                shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);
+                shop.Add(new Item(ModContent.ItemType<MaulerSkull>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedMauler);
+                shop.Add(new Item(ModContent.ItemType<NuclearChunk>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedNuclear);
+                shop.Add(new Item(ModContent.ItemType<SandstormsCore>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedGSS);
+            }
+            base.ModifyShop(shop);
         }
     }
 }

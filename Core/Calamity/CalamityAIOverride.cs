@@ -70,6 +70,11 @@ namespace FargowiltasCrossmod.Core.Calamity
         public static bool DownedYharon => DownedBossSystem.downedYharon;
         public static bool DownedExos => DownedBossSystem.downedExoMechs;
         public static bool DownedScal => DownedBossSystem.downedCalamitas;
+        public static bool DownedCragmaw => DownedBossSystem.downedCragmawMire;
+        public static bool DownedMauler => DownedBossSystem.downedMauler;
+        public static bool DownedNuclear => DownedBossSystem.downedNuclearTerror;
+        public static bool DownedGSS => DownedBossSystem.downedGSS;
+        public static bool DownedClam => DownedBossSystem.downedCLAM;
         #endregion summonloadingbullshit
         public override void PostSetupContent()
         {
@@ -117,9 +122,9 @@ namespace FargowiltasCrossmod.Core.Calamity
                 () => DownedSignus, Item.buyPrice(platinum: 1, gold: 30));
             mutant.Call("AddSummon", 18.0094f, "FargowiltasCrossmod", "PolterplasmicBeacon",
                 () => DownedPolter, Item.buyPrice(platinum: 1, gold: 40));
-            mutant.Call("AddSummon", 18.0095, "FargowiltasCrossmod", "BloodyWorm",
+            mutant.Call("AddSummon", 18.0095f, "FargowiltasCrossmod", "BloodyWorm",
                 () => DownedOD, Item.buyPrice(platinum: 1, gold: 40));
-            mutant.Call("AddSummon", 18.0096, "FargowiltasCrossmod", "SomeKindofSpaceWorm",
+            mutant.Call("AddSummon", 18.0096f, "FargowiltasCrossmod", "SomeKindofSpaceWorm",
                 () => DownedDoG, Item.buyPrice(platinum: 2));
             mutant.Call("AddSummon", 18.0097f, "FargowiltasCrossmod", "DragonEgg",
                 () => DownedYharon, Item.buyPrice(platinum: 2, gold: 50));

@@ -431,6 +431,7 @@ Mods: {
 			CryogenRitual.DisplayName: Cryogen Ritual
 			PermafrostRitual.DisplayName: Permafrost Ritual
 			IceCloud.DisplayName: Chilling Snow
+			BrimstoneDebris.DisplayName: Brimstone Debris
 		}
 
 		Buffs: {
