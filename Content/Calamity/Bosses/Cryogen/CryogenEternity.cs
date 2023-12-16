@@ -2,7 +2,6 @@
 using CalamityMod;
 using CalamityMod.NPCs;
 using CalamityMod.Projectiles.Boss;
-using FargowiltasCrossmod.Content.Calamity.Balance;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;

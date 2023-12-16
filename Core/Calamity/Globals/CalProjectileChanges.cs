@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 Item item = player.HeldItem;
                 if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
                 {
-                    float scale = CalItemChanges.TrueMeleeTungstenScaleNerf(player);
+                    float scale = CalItemBalance.TrueMeleeTungstenScaleNerf(player);
                     projectile.position = projectile.Center;
                     projectile.width = (int)(projectile.width / scale);
                     projectile.height = (int)(projectile.height / scale);

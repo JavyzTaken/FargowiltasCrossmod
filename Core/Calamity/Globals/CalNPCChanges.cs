@@ -1204,17 +1204,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     foreach (Item item in player.inventory)
                     {
-                        if (CalItemChanges.RockItems.Contains(item.type))
+                        if (CalItemBalance.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                     foreach (Item item in player.armor)
                     {
-                        if (CalItemChanges.RockItems.Contains(item.type))
+                        if (CalItemBalance.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                     foreach (Item item in player.bank.item)
                     {
-                        if (CalItemChanges.RockItems.Contains(item.type))
+                        if (CalItemBalance.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                 }
