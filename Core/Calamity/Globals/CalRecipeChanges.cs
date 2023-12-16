@@ -779,6 +779,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemID.SilverOre,
                 ItemID.TungstenOre);
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySilverOre", T3OreGroup);
+
+            RecipeGroup GildedDaggerGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gilded Dagger"}",
+               ModContent.ItemType<GildedDagger>(),
+               ModContent.ItemType<GleamingDagger>());
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGildedDagger", GildedDaggerGroup);
             #endregion
         }
     }
