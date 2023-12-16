@@ -1,5 +1,4 @@
 ﻿using System;
-using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -7,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.BaseClasses
+namespace FargowiltasCrossmod.Core.Common.BaseClasses
 {
 
     public enum WormSegmentType

@@ -10,7 +10,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Utils;
 using CalamityMod.CalPlayer;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -21,11 +20,12 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using CalamityMod;
 using CalamityMod.NPCs.TownNPCs;
 using Terraria.DataStructures;
-using FargowiltasCrossmod.Content.Calamity.Balance;
 using CalamityMod.World;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
 using System.IO;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {

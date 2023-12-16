@@ -1,6 +1,6 @@
 ﻿using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;

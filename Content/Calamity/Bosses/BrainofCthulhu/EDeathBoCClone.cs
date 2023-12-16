@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Content.Projectiles;

@@ -36,7 +36,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.Calamity
+namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -338,7 +338,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             c.Index -= 4;
             var label2 = il.DefineLabel(c.Prev);
 
-            
+
 
 
             c.GotoPrev(i => i.MatchLdfld(typeof(Projectile), nameof(Projectile.friendly)));

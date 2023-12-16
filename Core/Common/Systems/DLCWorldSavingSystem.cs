@@ -7,7 +7,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace FargowiltasCrossmod.Core.Systems
+namespace FargowiltasCrossmod.Core.Common.Systems
 {
     public class DLCWorldSavingSystem : ModSystem
     {
@@ -36,10 +36,10 @@ namespace FargowiltasCrossmod.Core.Systems
         public static bool R_EternityRev = EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev;
 
         internal static bool permafrostPhaseSeen;
-        public static bool PermafrostPhaseSeen 
-        { 
-            get => permafrostPhaseSeen; 
-            set => permafrostPhaseSeen = value; 
+        public static bool PermafrostPhaseSeen
+        {
+            get => permafrostPhaseSeen;
+            set => permafrostPhaseSeen = value;
         }
 
         public override void OnWorldLoad()

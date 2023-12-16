@@ -64,10 +64,10 @@ using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.ItemDropRules;
-using FargowiltasCrossmod.Core.Systems;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.ItemDropRules;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
@@ -104,7 +104,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.DLCCalamityConfig;
 
-namespace FargowiltasCrossmod.Content.Calamity.Balance
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -380,8 +380,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (ModCompatibility.WrathoftheGods.Loaded)
                 {
-                    if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type || 
-                        npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
+                    if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type ||
+                        npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
                         npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                     {
                         npc.lifeMax = (int)(npc.lifeMax * 1.6f);
@@ -502,7 +502,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             #region Compatibility
             if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
-                if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
+                if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail || npc.type == NPCID.Probe)
                 {
                     if (WorldSavingSystem.EternityMode)
                         npc.scale = 1f;
@@ -538,7 +538,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npc.lifeRegen = (int)(npc.lifeRegen * modifier);
                 damage = (int)(damage * modifier);
 
-                
+
             }
             base.UpdateLifeRegen(npc, ref damage);
         }
@@ -635,7 +635,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return;
             }
-            
+
             #region Remove Drops
             int allowedRecursionDepth = 10;
             foreach (IItemDropRule rule in npcLoot.Get())
@@ -679,7 +679,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npcLoot.Remove(dropRule);
                     }
                 }
-                
+
                 if (npc.type == NPCID.SeekerHead || npc.type == NPCID.SeekerBody || npc.type == NPCID.SeekerTail)
                 {
                     if (dropRule is CommonDrop commonDrop2 && commonDrop2.itemId == ItemID.CursedFlame)
@@ -745,7 +745,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
             }
 
-            
+
             if (npc.type == ModContent.NPCType<Leviathan>() || npc.type == ModContent.NPCType<Anahita>())
             {
                 Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
@@ -779,10 +779,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 return true;
             }
-            
+
             if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
-                LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
+                LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
                 lastWorm.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ModContent.ItemType<AstralCrate>(), 1, 5, 5, 1));
                 npcLoot.Add(lastWorm);
             }
@@ -1039,7 +1039,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             npcLoot.Add(pMoon);
             npcLoot.Add(fMoon);
         }
-       
+
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)
         {
@@ -1063,7 +1063,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //}
             if (npc.type == ModContent.NPCType<GiantClam>() && !CalamityAIOverride.DownedClam)
             {
-                
+
                 doDeviText = true;
             }
             if (npc.type == ModContent.NPCType<PlaguebringerMiniboss>() && !DLCWorldSavingSystem.downedMiniPlaguebringer)
@@ -1117,7 +1117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     if (p != null && p.active)
                     {
                         p.Calamity().BossRushReturnPosition = p.Center;
-                        Vector2 underworld = new Vector2((Main.maxTilesX * 16) / 2, Main.maxTilesY * 16 - 2400);
+                        Vector2 underworld = new Vector2(Main.maxTilesX * 16 / 2, Main.maxTilesY * 16 - 2400);
                         CalamityPlayer.ModTeleport(p, underworld, false, 2);
                         SoundStyle teleportSound = BossRushEvent.TeleportSound;
                         teleportSound.Volume = 1.6f;
@@ -1400,7 +1400,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (npc.type == ModContent.NPCType<BanishedBaron>())
                 {
                     //Fix for floppy fish in p1
-                    BanishedBaron baron = (npc.ModNPC as BanishedBaron);
+                    BanishedBaron baron = npc.ModNPC as BanishedBaron;
                     Player target = Main.player[npc.target];
                     if (target != null && target.active && !target.dead)
                     {
@@ -1493,7 +1493,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
             #endregion
-            if (!Core.Systems.DLCWorldSavingSystem.E_EternityRev)
+            if (!DLCWorldSavingSystem.E_EternityRev)
             {
                 return base.PreAI(npc);
             }
@@ -1575,7 +1575,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyShop(NPCShop shop)
         {
-            
+
 
             Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalamityAIOverride.DownedCragmaw);
             Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
@@ -1583,7 +1583,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
             if (shop.NpcType == ModContent.NPCType<Deviantt>())
             {
-                
+
             }
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {

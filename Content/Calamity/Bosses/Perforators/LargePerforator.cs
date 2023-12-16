@@ -1,6 +1,6 @@
 ﻿using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.BaseClasses;
+using FargowiltasCrossmod.Core.Common.BaseClasses;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

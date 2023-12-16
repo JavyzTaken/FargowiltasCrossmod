@@ -11,7 +11,7 @@ using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Projectiles;
@@ -24,7 +24,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Balance
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalProjectileChanges : GlobalProjectile
@@ -103,7 +103,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 //projectile.FargoSouls().TungstenScale = 1;
             }
             #region Balance Changes config
-            if (ModContent.GetInstance<Core.Calamity.DLCCalamityConfig>().BalanceRework)
+            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (projectile.ModProjectile != null)
@@ -142,7 +142,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     modifiers.FinalDamage *= 0.7f;
                 if (projectile.type == ModContent.ProjectileType<EternityCircle>() || projectile.type == ModContent.ProjectileType<EternityCrystal>()
                     || projectile.type == ModContent.ProjectileType<EternityHex>() || projectile.type == ModContent.ProjectileType<EternityHoming>()
-                    || (projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0))
+                    || projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0)
                     modifiers.FinalDamage *= 0.4f;
                 if (projectile.type == ModContent.ProjectileType<AngelBolt>() || projectile.type == ModContent.ProjectileType<AngelicAllianceArchangel>() ||
                     projectile.type == ModContent.ProjectileType<AngelOrb>() || projectile.type == ModContent.ProjectileType<AngelRay>())
@@ -243,7 +243,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         {
                             projectile.velocity *= 1.1f;
                         }
-                        projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(Utils.AngleTowards(projectile.velocity.ToRotation(), projectile.AngleTo(Main.player[p].Center), 0.04f));
+                        projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(projectile.velocity.ToRotation().AngleTowards(projectile.AngleTo(Main.player[p].Center), 0.04f));
                     }
                 }
             }

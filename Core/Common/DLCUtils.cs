@@ -11,7 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using ReLogic.Content;
 
-namespace FargowiltasCrossmod.Core.Utils
+namespace FargowiltasCrossmod.Core.Common
 {
     public static partial class DLCUtils
     {

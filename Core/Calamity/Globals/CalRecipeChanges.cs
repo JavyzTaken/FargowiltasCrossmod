@@ -42,7 +42,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Balance
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     //for putting mod stuff into souls recipes or vice versa
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -718,7 +718,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     recipe.AddIngredient<BrandoftheBrimstoneWitch>();
                 }
                 if (recipe.HasIngredient(ItemID.BloodMoonStarter) && recipe.HasResult(ModContent.ItemType<BloodOrb>())) // bloody tear -> blood orb disabled because abom
-                { 
+                {
                     recipe.DisableRecipe();
                 }
 

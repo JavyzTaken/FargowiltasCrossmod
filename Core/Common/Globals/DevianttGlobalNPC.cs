@@ -5,10 +5,10 @@ using Fargowiltas.NPCs;
 using System.Collections.Generic;
 using System.Linq;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
-using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 
-namespace FargowiltasCrossmod.Core.Globals
+namespace FargowiltasCrossmod.Core.Common.Globals
 {
     public class DevianttGlobalNPC : GlobalNPC
     {
@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Core.Globals
         public static void CycleShop()
         {
             currentShop++;
-            currentShop %= (ModShops.Count + 1);
+            currentShop %= ModShops.Count + 1;
         }
 
         public override void ModifyActiveShop(NPC npc, string shopName, Item[] items)
@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Core.Globals
                     {
                         items[i] = ModShops[currentShop - 1].ActiveEntries.ElementAt(i).Item;
                     }
-                } 
+                }
                 return;
             }
 

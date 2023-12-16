@@ -1,6 +1,6 @@
 ﻿using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls.Core.Systems;
 using System;
 using Terraria;
@@ -8,7 +8,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.Systems
+namespace FargowiltasCrossmod.Core.Common.Systems
 {
     public class WorldUpdatingSystem : ModSystem
     {
@@ -26,11 +26,11 @@ namespace FargowiltasCrossmod.Core.Systems
         {
             if (ModCompatibility.Calamity.Loaded)
             {
-                if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode && !FargowiltasSouls.Core.Systems.WorldSavingSystem.SpawnedDevi && DLCUtils.HostCheck)
+                if (WorldSavingSystem.EternityMode && !WorldSavingSystem.SpawnedDevi && DLCUtils.HostCheck)
                 {
                     int devi = NPC.NewNPC(new EntitySource_SpawnNPC(), Main.spawnTileX * 16, Main.spawnTileY * 16 - 400, ModContent.NPCType<Deviantt>());
                     NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, devi);
-                    FargowiltasSouls.Core.Systems.WorldSavingSystem.SpawnedDevi = true;
+                    WorldSavingSystem.SpawnedDevi = true;
                 }
             }
             if (ModCompatibility.InfernumMode.Loaded)
@@ -38,7 +38,7 @@ namespace FargowiltasCrossmod.Core.Systems
                 if (ModCompatibility.InfernumMode.InfernumDifficulty && !InfernumStateLastFrame)
                 {
                     DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
-                    
+
 
                     if (DLCCalamityConfig.Instance.InfernumDisablesEternity)
                     {
