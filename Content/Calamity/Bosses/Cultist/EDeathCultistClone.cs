@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Globals;

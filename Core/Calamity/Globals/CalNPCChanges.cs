@@ -64,10 +64,10 @@ using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.ItemDropRules;
-using FargowiltasCrossmod.Core.Systems;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.ItemDropRules;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
@@ -104,7 +104,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.DLCCalamityConfig;
 
-namespace FargowiltasCrossmod.Content.Calamity.Balance
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -142,91 +142,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             NPCID.Sets.SpecificDebuffImmunity[ModContent.NPCType<MutantBoss>()][ModContent.BuffType<Enraged>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[ModContent.NPCType<MutantBoss>()][ModContent.BuffType<BanishingFire>()] = true;
         }
-        public static List<int> Champions = new List<int>
-        {
-            ModContent.NPCType<CosmosChampion>(),
-            ModContent.NPCType<EarthChampion>(),
-            ModContent.NPCType<LifeChampion>(),
-            ModContent.NPCType<NatureChampion>(),
-            ModContent.NPCType<ShadowChampion>(),
-            ModContent.NPCType<SpiritChampion>(),
-            ModContent.NPCType<TerraChampion>(),
-            ModContent.NPCType<TimberChampion>(),
-            ModContent.NPCType<WillChampion>()
-        };
-        public static List<int> AcidRainEnemies = new List<int>
-        {
-            ModContent.NPCType<AcidEel>(),
-            ModContent.NPCType<NuclearToad>(),
-            ModContent.NPCType<Radiator>(),
-            ModContent.NPCType<Skyfin>(),
-            ModContent.NPCType<FlakCrab>(),
-            ModContent.NPCType<IrradiatedSlime>(),
-            ModContent.NPCType<Orthocera>(),
-            ModContent.NPCType<SulphurousSkater>(),
-            ModContent.NPCType<Trilobite>(),
-            ModContent.NPCType<CragmawMire>(),
-            ModContent.NPCType<GammaSlime>(),
-            ModContent.NPCType<Mauler>(),
-            ModContent.NPCType<NuclearTerror>(),
-        };
-        public static List<int> SolarEclipseEnemies = new List<int>
-        {
-            NPCID.Eyezor,
-            NPCID.Frankenstein,
-            NPCID.SwampThing,
-            NPCID.Vampire,
-            NPCID.CreatureFromTheDeep,
-            NPCID.Fritz,
-            NPCID.ThePossessed,
-            NPCID.Reaper,
-            NPCID.Mothron,
-            NPCID.MothronEgg,
-            NPCID.MothronSpawn,
-            NPCID.Butcher,
-            NPCID.DeadlySphere,
-            NPCID.DrManFly,
-            NPCID.Nailhead,
-            NPCID.Psycho
-        };
-        public static List<int> PumpkinMoonEnemies = new List<int>
-        {
-            NPCID.Scarecrow1,NPCID.Scarecrow2,NPCID.Scarecrow3,NPCID.Scarecrow4,
-            NPCID.Scarecrow5,NPCID.Scarecrow6,NPCID.Scarecrow7,NPCID.Scarecrow8,
-            NPCID.Scarecrow9,NPCID.Scarecrow10,
-            NPCID.Splinterling,
-            NPCID.Hellhound,
-            NPCID.Poltergeist,
-            NPCID.HeadlessHorseman,
-            NPCID.MourningWood,
-            NPCID.Pumpking
-        };
-        public static List<int> FrostMoonEnemies = new List<int>
-        {
-            NPCID.PresentMimic,
-            NPCID.Flocko,
-            NPCID.GingerbreadMan,
-            NPCID.ZombieElf,NPCID.ZombieElfBeard,NPCID.ZombieElfGirl,
-            NPCID.ElfArcher,
-            NPCID.Nutcracker,
-            NPCID.Yeti,
-            NPCID.ElfCopter,
-            NPCID.Krampus,
-            NPCID.Everscream,
-            NPCID.SantaNK1,
-            NPCID.IceQueen
-        };
-        public static List<int> SandstormEnemies = new List<int>
-        {
-            NPCID.SandElemental,
-            NPCID.DuneSplicerHead,
-            NPCID.Tumbleweed,
-            NPCID.WalkingAntlion,
-            NPCID.GiantWalkingAntlion,
-            NPCID.FlyingAntlion,
-            NPCID.GiantFlyingAntlion,
-            NPCID.SandShark, NPCID.SandsharkCorrupt, NPCID.SandsharkCrimson, NPCID.SandsharkHallow
-        };
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void SetDefaults(NPC npc)
         {
@@ -237,7 +152,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
 
                 //Events/Minibosses
 
-                if (AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
+                if (CalamityContentLists.AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
@@ -248,11 +163,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
-                if (SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG)
+                if (ContentLists.SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 4.5f);
                 }
-                if ((FrostMoonEnemies.Contains(npc.type) || PumpkinMoonEnemies.Contains(npc.type)) && DownedBossSystem.downedDoG)
+                if ((ContentLists.FrostMoonEnemies.Contains(npc.type) || ContentLists.PumpkinMoonEnemies.Contains(npc.type)) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
                 }
@@ -298,7 +213,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 #endregion
                 #region Modded Bosses
                 //champions
-                if (Champions.Contains(npc.type))
+                if (ContentLists.Champions.Contains(npc.type))
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 0.9f);
                 }
@@ -380,8 +295,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 if (ModCompatibility.WrathoftheGods.Loaded)
                 {
-                    if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type || 
-                        npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
+                    if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type ||
+                        npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
                         npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                     {
                         npc.lifeMax = (int)(npc.lifeMax * 1.6f);
@@ -502,7 +417,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             #region Compatibility
             if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
-                if ((npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail) || npc.type == NPCID.Probe)
+                if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail || npc.type == NPCID.Probe)
                 {
                     if (WorldSavingSystem.EternityMode)
                         npc.scale = 1f;
@@ -538,7 +453,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 npc.lifeRegen = (int)(npc.lifeRegen * modifier);
                 damage = (int)(damage * modifier);
 
-                
+
             }
             base.UpdateLifeRegen(npc, ref damage);
         }
@@ -635,7 +550,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return;
             }
-            
+
             #region Remove Drops
             int allowedRecursionDepth = 10;
             foreach (IItemDropRule rule in npcLoot.Get())
@@ -679,7 +594,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                         npcLoot.Remove(dropRule);
                     }
                 }
-                
+
                 if (npc.type == NPCID.SeekerHead || npc.type == NPCID.SeekerBody || npc.type == NPCID.SeekerTail)
                 {
                     if (dropRule is CommonDrop commonDrop2 && commonDrop2.itemId == ItemID.CursedFlame)
@@ -745,7 +660,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<BrimstoneCrate>(), 1, 5, 5));
             }
 
-            
+
             if (npc.type == ModContent.NPCType<Leviathan>() || npc.type == ModContent.NPCType<Anahita>())
             {
                 Func<bool> what = new Func<bool>(Leviathan.LastAnLStanding);
@@ -779,10 +694,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
                 return true;
             }
-            
+
             if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
-                LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((DropAttemptInfo info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
+                LeadingConditionRule lastWorm = npcLoot.DefineConditionalDropSet((info) => !AstrumDeusHeadShouldNotDropThings(info.npc));
                 lastWorm.OnSuccess(ItemDropRule.ByCondition(emodeRule.condition, ModContent.ItemType<AstralCrate>(), 1, 5, 5, 1));
                 npcLoot.Add(lastWorm);
             }
@@ -1039,7 +954,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             npcLoot.Add(pMoon);
             npcLoot.Add(fMoon);
         }
-       
+
         public static bool killedAquatic;
         public override bool PreKill(NPC npc)
         {
@@ -1063,7 +978,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             //}
             if (npc.type == ModContent.NPCType<GiantClam>() && !CalamityAIOverride.DownedClam)
             {
-                
+
                 doDeviText = true;
             }
             if (npc.type == ModContent.NPCType<PlaguebringerMiniboss>() && !DLCWorldSavingSystem.downedMiniPlaguebringer)
@@ -1117,7 +1032,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     if (p != null && p.active)
                     {
                         p.Calamity().BossRushReturnPosition = p.Center;
-                        Vector2 underworld = new Vector2((Main.maxTilesX * 16) / 2, Main.maxTilesY * 16 - 2400);
+                        Vector2 underworld = new Vector2(Main.maxTilesX * 16 / 2, Main.maxTilesY * 16 - 2400);
                         CalamityPlayer.ModTeleport(p, underworld, false, 2);
                         SoundStyle teleportSound = BossRushEvent.TeleportSound;
                         teleportSound.Volume = 1.6f;
@@ -1144,7 +1059,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                     }
                 }
             }
-            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || Champions.Contains(npc.type) || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
+            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || ContentLists.Champions.Contains(npc.type) || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
             {
                 BossRushEvent.BossRushStage++;
             }
@@ -1153,15 +1068,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
             {
                 return false;
             }
-            if (SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.eclipse)
+            if (ContentLists.SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.eclipse)
             {
                 return false;
             }
-            if (FrostMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.snowMoon)
+            if (ContentLists.FrostMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.snowMoon)
             {
                 return false;
             }
-            if (PumpkinMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.pumpkinMoon)
+            if (ContentLists.PumpkinMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.pumpkinMoon)
             {
                 return false;
             }
@@ -1175,9 +1090,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 pool[NPCID.PigronCrimson] = 0.0001f;
                 pool[NPCID.PigronHallow] = 0.0001f;
                 pool[NPCID.IchorSticker] = 0;
-                for (int i = 0; i < SandstormEnemies.Count; i++)
+                for (int i = 0; i < ContentLists.SandstormEnemies.Count; i++)
                 {
-                    pool[SandstormEnemies[i]] = 0;
+                    pool[ContentLists.SandstormEnemies[i]] = 0;
                 }
                 if (AcidRainEvent.AcidRainEventIsOngoing)
                 {
@@ -1204,17 +1119,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 {
                     foreach (Item item in player.inventory)
                     {
-                        if (CalItemChanges.RockItems.Contains(item.type))
+                        if (CalamityContentLists.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                     foreach (Item item in player.armor)
                     {
-                        if (CalItemChanges.RockItems.Contains(item.type))
+                        if (CalamityContentLists.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                     foreach (Item item in player.bank.item)
                     {
-                        if (CalItemChanges.RockItems.Contains(item.type))
+                        if (CalamityContentLists.RockItems.Contains(item.type))
                             sellRock = true;
                     }
                 }
@@ -1400,7 +1315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 if (npc.type == ModContent.NPCType<BanishedBaron>())
                 {
                     //Fix for floppy fish in p1
-                    BanishedBaron baron = (npc.ModNPC as BanishedBaron);
+                    BanishedBaron baron = npc.ModNPC as BanishedBaron;
                     Player target = Main.player[npc.target];
                     if (target != null && target.active && !target.dead)
                     {
@@ -1493,7 +1408,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 }
             }
             #endregion
-            if (!Core.Systems.DLCWorldSavingSystem.E_EternityRev)
+            if (!DLCWorldSavingSystem.E_EternityRev)
             {
                 return base.PreAI(npc);
             }
@@ -1575,30 +1490,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         }
         public override void ModifyShop(NPCShop shop)
         {
-            Condition killedClam = new Condition("Killed Giant Clam", () => CalamityAIOverride.DownedClam);
-            Condition killedPlaguebringerMini = new Condition("Killed Plaguebringer", () => DLCWorldSavingSystem.downedMiniPlaguebringer);
-            Condition killedReaperShark = new Condition("Killed Reaper Shark", () => DLCWorldSavingSystem.downedReaperShark);
-            Condition killedColossalSquid = new Condition("Killed Colossal Squid", () => DLCWorldSavingSystem.downedColossalSquid);
-            Condition killedEidolonWyrm = new Condition("Killed Eidolon Wyrm", () => DLCWorldSavingSystem.downedEidolonWyrm);
-            Condition killedCloudElemental = new Condition("Killed Cloud Elemental", () => DLCWorldSavingSystem.downedCloudElemental);
-            Condition killedEarthElemental = new Condition("Killed Earth Elemental", () => DLCWorldSavingSystem.downedEarthElemental);
-            Condition killedArmoredDigger = new Condition("Killed Armored Digger", () => DLCWorldSavingSystem.downedArmoredDigger);
+
 
             Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalamityAIOverride.DownedCragmaw);
             Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
             Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalamityAIOverride.DownedNuclear);
             Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
-            if (shop.NpcType == ModContent.NPCType<Deviantt>())
-            {
-                shop.Add(new Item(ModContent.ItemType<ClamPearl>()) { shopCustomPrice = Item.buyPrice(gold: 5) }, killedClam);
-                shop.Add(new Item(ModContent.ItemType<AbandonedRemote>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedArmoredDigger);
-                shop.Add(new Item(ModContent.ItemType<PlaguedWalkieTalkie>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedPlaguebringerMini);
-                shop.Add(new Item(ModContent.ItemType<DeepseaProteinShake>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedReaperShark);
-                shop.Add(new Item(ModContent.ItemType<ColossalTentacle>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedColossalSquid);
-                shop.Add(new Item(ModContent.ItemType<WyrmTablet>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedEidolonWyrm);
-                shop.Add(new Item(ModContent.ItemType<StormIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedCloudElemental);
-                shop.Add(new Item(ModContent.ItemType<QuakeIdol>()) { shopCustomPrice = Item.buyPrice(gold: 7) }, killedEarthElemental);
-            }
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
                 shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);

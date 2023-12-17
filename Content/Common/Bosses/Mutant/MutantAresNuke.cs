@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
@@ -58,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(AresGaussNuke.NukeExplosionSound with { MaxInstances = 0 }, Projectile.Center, null);
-            if (Main.netMode != 2)
+            if (Main.netMode != NetmodeID.Server)
             {
                 Gore.NewGore(Projectile.GetSource_Death((string)null), Projectile.position, Projectile.velocity, ModCompatibility.Calamity.Mod.Find<ModGore>("AresGaussNuke1").Type, 1f);
                 Gore.NewGore(Projectile.GetSource_Death((string)null), Projectile.position, Projectile.velocity, ModCompatibility.Calamity.Mod.Find<ModGore>("AresGaussNuke3").Type, 1f);

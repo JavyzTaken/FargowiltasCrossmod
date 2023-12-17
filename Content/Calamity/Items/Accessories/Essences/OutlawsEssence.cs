@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<GildedDagger>()
+                .AddRecipeGroup("FargowiltasCrossmod:AnyGildedDagger")
                 .AddIngredient<BouncingEyeball>()
                 .AddIngredient<InfestedClawmerang>()
                 .AddIngredient<MeteorFist>()

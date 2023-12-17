@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
             Projectile.position.Y -= Projectile.height / 2;
             for (int num904 = 0; num904 < 30; num904++)
             {
-                int num905 = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, 31, 0f, 0f, 100, default(Color), 1.5f);
+                int num905 = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default(Color), 1.5f);
                 Dust dust2 = Main.dust[num905];
                 dust2.velocity *= 1.4f;
             }

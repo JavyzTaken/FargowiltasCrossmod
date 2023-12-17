@@ -1,12 +1,14 @@
 ﻿
 using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.Projectiles.Boss;
-using FargowiltasCrossmod.Content.Calamity.Balance;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Core.Globals;
@@ -374,7 +376,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                         break;
                 }
-                if (npc.GetLifePercent() <= 0.8f)
+                if (npc.GetLifePercent() <= 0.8f && !BossRushEvent.BossRushActive)
                 {
                     attack = 3;
                     timer = 0;
@@ -384,7 +386,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 
             }
             if (attack == 3) {
-                npc.dontTakeDamage = true;
+
 
                 if (DLCWorldSavingSystem.PermafrostPhaseSeen && timer % 60 < 55 && timer % 60 > 0)
                     timer += 2;
@@ -425,7 +427,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                     }
                     DLCWorldSavingSystem.PermafrostPhaseSeen = true;
-                    npc.active = false;
                 }
                 timer++;
             }

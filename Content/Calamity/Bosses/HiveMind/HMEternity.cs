@@ -6,8 +6,8 @@ using CalamityMod.NPCs.HiveMind;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -303,7 +303,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (attack == 1)
                 {
                     const int dashDuration = 100;
-                    const float maxSpeedIncrease = 10;
+                    //const float maxSpeedIncrease = 10;
                     float speed = 10;// + (maxSpeedIncrease * Math.Min(timer / baseDashDuration, 1));
                     Dash(npc, toTarget * speed, dashDuration, 80, 0f);
                 }

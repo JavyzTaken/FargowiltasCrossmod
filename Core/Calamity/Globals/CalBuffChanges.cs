@@ -1,5 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
+using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls;
@@ -7,7 +8,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Balance
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalBuffChanges : GlobalBuff
@@ -32,6 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
         public override void Update(int type, Player player, ref int buffIndex)
         {
             //Removes buff immunity to given buff ID granted by buffs
+            /*
             void PrebuffImmune(int buffID)
             {
                 CrossplayerCalamity cdlcPlayer = player.CalamityDLC();
@@ -42,6 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Balance
                 else
                     player.buffImmune[buffID] = false;
             }
+            */
             /*
             if (type == BuffID.Warmth && Core.Calamity.DLCCalamityConfig.Instance.BalanceRework)
             {

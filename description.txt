@@ -21,38 +21,48 @@ Features several configs to customize your Fargo's/Calamity cross-mod experience
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Latest Update: v1.0.5.2
+Latest Update: v1.0.5.3
+Changes to Eternity-Death vanilla bosses:
+King Slime: Increased delay between crystal shots
+Eye of Cthulhu: Changed trigger for Calamity horizontal dash (to go along with rework)
+Queen Bee:
++50% health
+Wall of Flesh:
+-Improved visibility of homing sickle and changed sound effect
+-Sickle starts at a much slower speed and accelerates while traveling (it's now reactable)
+Lunatic Cultist: Clones stop firing projectiles for 10 seconds after pillar toss attack
+
+Changes to Eternity Calamity bosses:
+Desert Scourge:
+-Max health +25%
+-Now uses Eternity Destroyer's anti-pierce system instead
+Hive Mind:
+-Max health 12500 -> 11000
+-Tweaked spin attack
+-New shade cloud dash in minion phase
+-Lightning cloud happens earlier
+Perforators:
+-Core +60% health 
+
+Added Calamity miniboss/rare enemy summons to Deviantt and Abominationn shops (Deviantt got her own Calamity shop because of shop size)
+Added a ton of new QoL recipes
+Removed Plantation Staff from Conjurist Soul recipe
+Fargo's Souls and DLC bosses now work with Calamity's Boss Health Boost config
+New config to make Infernum entirely disable Eternity Mode
+
+Nerfed base movement speed decrease from Eternity + Calamity difficulties
+Disabled Calamity recipe for Bloody Tear -> Blood Orbs, because of Abominationn selling Bloody Tears
+Fixed Brand of the Brimstone Witch coin value 
+Tungsten Enchantment:
+-Fixed some edge case issues
+-Decreased nerf on non-force effect true melee 
+Slimy Shield doesn't inflict Oiled (SDF still does)
+Calamity's Withering Enchantment accumulated damage capped at 500.000
+Fixed Cryogen issues in Boss Rush
+Nerfed Orichalcum Sword and Halberd to compensate for Calamity changes
+
+Previous Update: v1.0.5.2
 Updated to Calamity Mod version 2.0.3.8
 Eternity Cryofrost now functions in multiplayer
 Fixed bug that caused Tungsten Enchant true melee nerf to decrease the scale of unaffected weapons
 Fixed Angry Nimbus dropping Essence of Sunlight early
-
-Previous Update: v1.0.5.1
-Adjusted visuals and performance for Chilling Snow attack
-Fixed some incorrect tooltips
-Fixed mod not loading without Calamity enabled
-Updated mod description
-
-Previous Update: v1.0.5
-
-NEW: Eternity Cryogen AI (With some surprises) 
-NEW: Added Brand of the Brimstone Witch
-
-Moved Purity from Colossus Soul to Soul of the Tyrant. 
-Removed Rock from the recipes of Phantasmal Leash of Cthulhu, Slime Rain, The Biggest Sting and The Guardian and adjusted their damage accordingly 
-
-Mod compatibility with the Calamity: Wrath of the Gods mod: 
-Noxus and Nameless Diety +60% health, and both inflict Mutant's Presence 
-
-Removed some drop recipes from boss bags
-Added some drop recipes from banners 
-Fixed issue where Calamity boss drops were shimmerable into bags and some banner items into banners
-Fixed boss checklist placements of Souls bosses with Calamity 
-Fixed issues with Fargo boss trophies not dropping
-
-Orichalcum Enchantment Calamity crossmod nerf: 25 -> 40% (50% with force effect) less effective
-Nerf is also increased with Shellfish Staff debuff 
-
-Calamitous Presence:
-Life regen cap 5 -> 2
-Now caps maximum Health at 1000 

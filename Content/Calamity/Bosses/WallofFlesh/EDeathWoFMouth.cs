@@ -1,6 +1,6 @@
 ﻿using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;

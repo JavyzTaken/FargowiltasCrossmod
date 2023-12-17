@@ -9,7 +9,8 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common.Globals;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Core.Toggler;
@@ -92,7 +93,7 @@ public class FargowiltasCrossmod : Mod
         ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueCrit);
 
         #endregion
-    }
 
+    }
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
 }

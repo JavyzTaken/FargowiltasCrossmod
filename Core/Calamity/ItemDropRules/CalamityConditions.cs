@@ -1,9 +1,8 @@
-﻿using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasSouls.Core.Systems;
+﻿using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.ItemDropRules
+namespace FargowiltasCrossmod.Core.Calamity.ItemDropRules
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]

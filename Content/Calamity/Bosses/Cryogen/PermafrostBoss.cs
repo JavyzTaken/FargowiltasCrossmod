@@ -10,7 +10,6 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Utils;
 using CalamityMod.CalPlayer;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -21,11 +20,13 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using CalamityMod;
 using CalamityMod.NPCs.TownNPCs;
 using Terraria.DataStructures;
-using FargowiltasCrossmod.Content.Calamity.Balance;
 using CalamityMod.World;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
 using System.IO;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using CalamityMod.Events;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -56,6 +57,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             NPC.boss = true;
             NPC.damage = 70;
             Music = MusicLoader.GetMusicSlot("FargowiltasCrossmod/Assets/Music/Niflheimr");
+
+            if (BossRushEvent.BossRushActive)
+            {
+                NPC.lifeMax = 4000000;
+            }
+                
 
             NPC.Calamity().VulnerableToHeat = true;
             NPC.Calamity().VulnerableToCold = false;

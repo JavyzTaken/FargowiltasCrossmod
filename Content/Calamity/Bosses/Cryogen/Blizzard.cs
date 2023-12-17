@@ -1,7 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

@@ -1,13 +1,13 @@
-﻿using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
+﻿using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.Calamity
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
-    public abstract class EternityDeathBehaviour : GlobalNPC
+    public abstract class EModeCalBehaviour : GlobalNPC
     {
         public NPCMatcher Matcher;
 
@@ -25,10 +25,9 @@ namespace FargowiltasCrossmod.Core.Calamity
         }
 
         public abstract NPCMatcher CreateMatcher();
-
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return (DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev) ? base.NewInstance(target) : target.GetGlobalNPC<EmptyGlobalNPC>();
+            return DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : target.GetGlobalNPC<EmptyGlobalNPC>();
         }
 
         public bool FirstTick = true;
@@ -37,7 +36,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!(DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev) || (!DLCCalamityConfig.Instance.EternityPriorityOverRev))
+            if (!DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev)
             {
                 return true;
             }
@@ -49,7 +48,16 @@ namespace FargowiltasCrossmod.Core.Calamity
             }
             return SafePreAI(npc);
         }
-
+        public virtual void SafePostAI(NPC npc) => base.PostAI(npc);
+        public sealed override void PostAI(NPC npc)
+        {
+            if (!DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev)
+            {
+                return;
+            }
+            SafePostAI(npc);
+            return;
+        }
 
         protected static void NetSync(NPC npc, bool onlySendFromServer = true)
         {
@@ -59,9 +67,5 @@ namespace FargowiltasCrossmod.Core.Calamity
             if (Main.netMode != NetmodeID.SinglePlayer)
                 NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI);
         }
-
-    }
-    internal class EmptyGlobalNPC : GlobalNPC //needs to exist because of a tmod issue where CreateInstance can't return null
-    {
     }
 }

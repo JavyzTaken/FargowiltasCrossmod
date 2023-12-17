@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
@@ -14,7 +15,7 @@ using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
@@ -57,8 +58,10 @@ namespace FargowiltasCrossmod.Content.Calamity
 
             //Player.tileSpeed += 0.25f;
             //Player.wallSpeed += 0.25f;
-
-            Player.moveSpeed -= 0.4f;
+            float nerf = 0.25f;
+            if (ModCompatibility.SoulsMod.Mod.Version < Version.Parse("1.6.2.1")) //souls mod was giving Double bonus before
+                nerf = 0.4f;
+            Player.moveSpeed -= nerf;
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
@@ -163,6 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public override void PostUpdateMiscEffects()
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
+            CalamityPlayer calPlayer = Player.Calamity();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
                 Player.statDefense /= 2f;
@@ -172,6 +176,10 @@ namespace FargowiltasCrossmod.Content.Calamity
                 if (Player.statLifeMax2 > 1000)
                     Player.statLifeMax2 = 1000;
             }
+            const int witherDamageCap = 500000;
+            if (calPlayer.witheringDamageDone > witherDamageCap)
+                calPlayer.witheringDamageDone = witherDamageCap;
+
             if (soulsPlayer.MutantFang) //faster life reduction
             {
                 soulsPlayer.LifeReductionUpdateTimer++;

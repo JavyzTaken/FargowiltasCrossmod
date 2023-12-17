@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
-namespace FargowiltasCrossmod.Core.Calamity
+namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     public class PacketManager : ModSystem
     {

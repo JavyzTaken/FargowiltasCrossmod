@@ -31,7 +31,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
             Projectile.light = 0.5f;
         }
-        bool Active = false;
         public override bool PreDraw(ref Color lightColor)
         {
             if (Projectile.ai[0] < 0)

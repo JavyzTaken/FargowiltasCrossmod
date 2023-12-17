@@ -1,6 +1,7 @@
 ﻿using CalamityMod.Systems;
 using CalamityMod.World;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

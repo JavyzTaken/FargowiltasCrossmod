@@ -1,5 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using Microsoft.Xna.Framework;
