@@ -30,6 +30,7 @@ using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
 using CalamityMod.Items.Weapons.Typeless;
 using CalamityMod.Tiles.Furniture.CraftingStations;
+using Fargowiltas.Items.Summons.Abom;
 using Fargowiltas.Items.Tiles;
 using Fargowiltas.Utilities;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
@@ -140,6 +141,34 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             crief.DisableDecraft();
             crief.AddTile(TileID.DemonAltar);
             crief.Register();
+
+            Recipe.Create(ItemType<EvilSmasher>())
+                .AddIngredient(ItemID.SoulofNight, 12)
+                .AddRecipeGroup("FargowiltasCrossmod:AnyEvilBar", 15)
+                .AddTile(TileID.Anvils)
+                .DisableDecraft()
+                .Register();
+
+            Recipe.Create(ItemType<Murasama>())
+                .AddIngredient(ItemID.Muramasa)
+                .AddIngredient(ItemType<MartianMemoryStick>()) //memories
+                .AddIngredient(ItemID.BrokenHeroSword) //broken
+                .AddIngredient(ItemID.PaintingTheTruthIsUpThere) //the truth goes unspoken
+                .AddIngredient(ItemType<ForgottenApexWand>()) //i've even forgotten my name
+                .AddIngredient(ItemID.PaintingTheSeason) //i don't know the season or what is the reason
+                .AddIngredient(ItemID.BladeofGrass) //i'm standing here holding my blade
+                .AddIngredient(ItemType<EyeofDesolation>()) //a desolate
+                .AddIngredient(ItemID.PlacePainting) //place, without any trace
+                .AddIngredient(ItemID.PaintingColdSnap) //it's only the cold
+                .AddIngredient(ItemType<WindBlade>()) //wind I feel
+                .AddIngredient(ItemType<SpitefulCandle>()) //it's me that i spite
+                .AddIngredient(ItemID.DD2ElderCrystalStand) //as i stand up and fight
+                .AddIngredient(ItemType<BloodOrb>()) //the only thing i know for real, there will be blood
+                .DisableDecraft()
+                .AddTile(TileID.BloodMoonMonolith)
+                .Register();
+
+
             #endregion
             #region Conversion Recipes
             AddConvertRecipe(ItemType<RottenMatter>(), ItemType<BloodSample>());
@@ -268,6 +297,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<BorealisBomber>(),
                 ItemType<AuroradicalThrow>()
             });
+            CreateCalBagRecipes(ItemType<AstrumAureusTrophy>(), new[] { ItemType<HeavenfallenStardisk>() }); 
             CreateCalBagRecipes(ItemID.GolemTrophy, new[] { ItemType<AegisBlade>() }); //golem
             CreateCalBagRecipes(ItemType<PlaguebringerGoliathBag>(), new[]
             {
@@ -886,20 +916,29 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void AddRecipeGroups()
         {
             #region RecipeGroups
-            RecipeGroup T3WatchGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gold Watch"}",
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGoldWatch", 
+                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gold Watch"}",
                 ItemID.GoldWatch,
-                ItemID.PlatinumWatch);
-            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGoldWatch", T3WatchGroup);
+                ItemID.PlatinumWatch
+                ));
 
-            RecipeGroup T3OreGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Silver Ore"}",
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySilverOre", 
+                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Silver Ore"}",
                 ItemID.SilverOre,
-                ItemID.TungstenOre);
-            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySilverOre", T3OreGroup);
+                ItemID.TungstenOre
+                ));
 
-            RecipeGroup GildedDaggerGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gilded Dagger"}",
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGildedDagger", 
+                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gilded Dagger"}",
                ItemType<GildedDagger>(),
-               ItemType<GleamingDagger>());
-            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGildedDagger", GildedDaggerGroup);
+               ItemType<GleamingDagger>()
+               ));
+
+            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyEvilBar", 
+                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Evil Bar"}",
+                ItemID.DemoniteBar,
+                ItemID.CrimtaneBar
+                ));
             #endregion
         }
     }
