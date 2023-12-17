@@ -809,8 +809,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     if (recipe.RemoveIngredient(ItemID.PygmyNecklace))
                         recipe.AddIngredient<Nucleogenesis>();
-                    if (recipe.RemoveIngredient(ItemID.Smolstar))
-                        recipe.AddIngredient<PlantationStaff>();
+
+                    recipe.RemoveIngredient(ItemID.Smolstar);
+
                     if (recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
                         recipe.AddIngredient<EndoHydraStaff>();
                     if (recipe.RemoveIngredient(ItemID.RavenStaff))

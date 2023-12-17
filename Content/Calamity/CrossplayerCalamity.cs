@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
@@ -57,8 +58,10 @@ namespace FargowiltasCrossmod.Content.Calamity
 
             //Player.tileSpeed += 0.25f;
             //Player.wallSpeed += 0.25f;
-
-            Player.moveSpeed -= 0.4f;
+            float nerf = 0.25f;
+            if (ModCompatibility.SoulsMod.Mod.Version < Version.Parse("3.1.2")) //souls mod was giving Double bonus before
+                nerf = 0.4f;
+            Player.moveSpeed -= nerf;
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
