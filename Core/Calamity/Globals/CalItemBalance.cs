@@ -33,6 +33,7 @@ using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Terraria.Localization;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -217,6 +218,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
                 {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
+                }
+                if (item.type == ModContent.ItemType<SlimyShield>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
                 }
                 /*
                 if (item.type == ItemID.WarmthPotion)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CalamityMod;
 using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
@@ -15,6 +16,7 @@ using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Projectiles;
+using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.ModPlayers;
@@ -89,6 +91,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     projectile.height = (int)(projectile.height / scale);
                     projectile.Center = projectile.position;
                     projectile.scale /= scale;
+                }
+            }
+
+            if (DLCCalamityConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
+            {
+                if (projectile.ModProjectile != null)
+                {
+                    typeof(SlimeBall).GetField("oil", FargoSoulsUtil.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
                 }
             }
         }
