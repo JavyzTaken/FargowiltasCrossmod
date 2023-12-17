@@ -376,7 +376,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                         break;
                 }
-                if (npc.GetLifePercent() <= 0.8f && !BossRushEvent.BossRushActive)
+                if (npc.GetLifePercent() <= 0.8f)
                 {
                     attack = 3;
                     timer = 0;
@@ -386,7 +386,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 
             }
             if (attack == 3) {
-                npc.dontTakeDamage = true;
+
+                if (!BossRushEvent.BossRushActive)
+                    npc.dontTakeDamage = true;
 
                 if (DLCWorldSavingSystem.PermafrostPhaseSeen && timer % 60 < 55 && timer % 60 > 0)
                     timer += 2;
@@ -427,7 +429,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                     }
                     DLCWorldSavingSystem.PermafrostPhaseSeen = true;
-                    npc.active = false;
+                    if (!BossRushEvent.BossRushActive)
+                        npc.active = false;
                 }
                 timer++;
             }
@@ -443,6 +446,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 d.noGravity = true;
                 
             }
+        }
+
+        public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
+        {
+            if (BossRushEvent.BossRushActive && Main.npc.Any(n => n.active && n.type == ModContent.NPCType<PermafrostBoss>()))
+                modifiers.Null();
         }
     }
 }
