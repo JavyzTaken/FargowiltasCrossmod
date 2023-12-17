@@ -90,6 +90,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<GuardianTome>()) return 0.17f;
             if (item.type == ModContent.ItemType<SlimeRain>()) return 0.08f;
             if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.17f;
+
             return 1;
 
         }
@@ -119,9 +120,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             else if (item.type == ItemID.MagicDagger)
             {
                 item.shootSpeed = 30;
-
             }
-
+            else if (item.type == ItemID.OrichalcumSword)
+            {
+                damage *= 0.72f; //compensate for cal + souls buff
+            }
+            else if (item.type == ItemID.OrichalcumHalberd)
+            {
+                damage *= 0.5f;
+                player.FargoSouls().AttackSpeed /= 1.25f;
+            }
         }
         public static float TrueMeleeTungstenScaleNerf(Player player)
         {
