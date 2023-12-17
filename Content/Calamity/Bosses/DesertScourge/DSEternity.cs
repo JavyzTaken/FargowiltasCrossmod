@@ -880,7 +880,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         }
         public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
-            if (!FargoSoulsUtil.IsSummonDamage(projectile))
+            if (!FargoSoulsUtil.IsSummonDamage(projectile) && projectile.damage > 1)
                 projectile.damage = (int)Math.Min(projectile.damage - 1, projectile.damage * 0.75);
 
             base.OnHitByProjectile(npc, projectile, hit, damageDone);
