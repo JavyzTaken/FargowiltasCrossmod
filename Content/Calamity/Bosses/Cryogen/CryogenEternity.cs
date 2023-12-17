@@ -1,7 +1,9 @@
 ﻿
 using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -374,7 +376,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                         break;
                 }
-                if (npc.GetLifePercent() <= 0.8f)
+                if (npc.GetLifePercent() <= 0.8f && !BossRushEvent.BossRushActive)
                 {
                     attack = 3;
                     timer = 0;
