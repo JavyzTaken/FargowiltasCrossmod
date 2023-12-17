@@ -163,6 +163,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public override void PostUpdateMiscEffects()
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
+            CalamityPlayer calPlayer = Player.Calamity();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
                 Player.statDefense /= 2f;
@@ -172,6 +173,10 @@ namespace FargowiltasCrossmod.Content.Calamity
                 if (Player.statLifeMax2 > 1000)
                     Player.statLifeMax2 = 1000;
             }
+            const int witherDamageCap = 500000;
+            if (calPlayer.witheringDamageDone > witherDamageCap)
+                calPlayer.witheringDamageDone = witherDamageCap;
+
             if (soulsPlayer.MutantFang) //faster life reduction
             {
                 soulsPlayer.LifeReductionUpdateTimer++;

@@ -34,6 +34,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Terraria.Localization;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
+using CalamityMod.UI.CalamitasEnchants;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -222,6 +223,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (item.type == ModContent.ItemType<SlimyShield>())
                 {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
+                }
+                CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
+                if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
+                {
+                    if (calItem.AppliedEnchantment.Value.ID == 1000)
+                    {
+                        tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
+                    }
                 }
                 /*
                 if (item.type == ItemID.WarmthPotion)
