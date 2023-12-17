@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             //Player.tileSpeed += 0.25f;
             //Player.wallSpeed += 0.25f;
             float nerf = 0.25f;
-            if (ModCompatibility.SoulsMod.Mod.Version < Version.Parse("3.1.2")) //souls mod was giving Double bonus before
+            if (ModCompatibility.SoulsMod.Mod.Version < Version.Parse("1.6.2.1")) //souls mod was giving Double bonus before
                 nerf = 0.4f;
             Player.moveSpeed -= nerf;
             // Player.statManaMax2 += 100;
