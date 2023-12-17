@@ -35,6 +35,6 @@ Tungsten Enchantment:
 -Fixed some edge case issues
 -Decreased nerf on non-force effect true melee 
 Slimy Shield doesn't inflict Oiled (SDF still does)
-Calamity's Withering Enchantment damage accumulated damage capped at 500.000
+Calamity's Withering Enchantment accumulated damage capped at 500.000
 Fixed Cryogen issues in Boss Rush
 Nerfed Orichalcum Sword and Halberd to compensate for Calamity changes
