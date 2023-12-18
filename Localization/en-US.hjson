@@ -553,6 +553,11 @@ Mods: {
 				DisplayName: Thorium Soul
 				Tooltip: ""
 			}
+
+			JesterEnchant: {
+				DisplayName: Jester Enchantment
+				Tooltip: "Copies the effect of a random other enchant for 5 seconds before switching."
+			}
 		}
 
 		NPCs: {
@@ -620,6 +625,7 @@ Mods: {
 			GTBCloud.DisplayName: G T B Cloud
 			GFBZapTelegraph.DisplayName: G F B Zap Telegraph
 			HealPulse.DisplayName: Heal Pulse
+			JesterIndicatorProj.DisplayName: Jester Indicator Proj
 		}
 
 		Keybinds: {

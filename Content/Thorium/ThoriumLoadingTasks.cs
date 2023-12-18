@@ -19,6 +19,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             Core.Globals.DevianttGlobalNPC.AddThoriumShop();
 
             FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEnchant.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
+            Items.Accessories.Enchantments.JesterEnchant.PostSetup(Mod);
 
             FargowiltasSouls.Content.Projectiles.SpearRework.ReworkedSpears.AddRange(new List<int> {
                 ModContent.ProjectileType<CoralPolearmPro>(),
