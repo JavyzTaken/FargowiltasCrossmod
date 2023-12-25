@@ -83,6 +83,8 @@ namespace FargowiltasCrossmod.Content.Thorium
         public bool GeodeEnch;
         public bool JesterEnch;
         public Item JesterEnchItem;
+        public bool ShadeMasterEnch;
+        public Item ShadeMasterEnchItem;
 
         public bool HelheimForce;
         public bool SvartalfheimForce;
@@ -95,7 +97,6 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int AstroLaserCD = 60;
         
         public bool WasInDashState = false; //for tide hunter
-        //public int PreviousSpecialDashCD=0; //decided against making tide hunter work with special dashes, un-comment it if that was abad idea
         
         internal int NoviceClericCrosses = 0;
         internal int NoviceClericTimer = 0;
@@ -177,6 +178,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             GeodeEnch = false;
             JesterEnch = false;
             JesterEnchItem = null;
+            ShadeMasterEnch = false;
+            ShadeMasterEnchItem = null;
             
             HelheimForce = false;
             SvartalfheimForce = false;
@@ -317,6 +320,14 @@ namespace FargowiltasCrossmod.Content.Thorium
                     }
                 }
             }
+
+            if (ThoriumMod.ThoriumHotkeySystem.EncaseKey.JustPressed)
+            {
+                if (ShadeMasterEnch)
+                {
+                    ShadeMasterEnter();
+                }
+            }
         }
 
         public override void OnHitAnything(float x, float y, Entity victim)
@@ -382,6 +393,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             WasInDashState = Player.FargoSouls().IsInADashState;
             NoviceClericEffect();
             DepthDiverEffect();
+            ShadeMasterEffect();
             EbonEnchant.EbonEffect(Player, this);
         }
 
@@ -416,6 +428,32 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
 
             return false;
+        }
+
+        public override void FrameEffects()
+        {
+            if (ShadeMode && ShadeMasterEnchItem != null)
+            {
+                // replace with modded vanity
+                Player.head = 120; // ghost vanity
+                Player.body = 81; 
+                Player.legs = 169;
+
+                Player.wings = 11; // specter wings
+            }
+        }
+
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        {
+            if (ShadeMode && drawInfo.shadow == 0)
+            {
+                Main.spriteBatch.End();
+
+                // draws the dummy / 'body'.
+                Main.PlayerRenderer.DrawPlayer(Main.Camera, shadeMasterDummy, shadeMasterDummy.position, shadeMasterDummy.fullRotation, shadeMasterDummy.fullRotationOrigin);
+
+                Main.spriteBatch.Begin();
+            }
         }
     }
 }

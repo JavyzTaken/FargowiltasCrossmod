@@ -556,7 +556,12 @@ Mods: {
 
 			JesterEnchant: {
 				DisplayName: Jester Enchantment
-				Tooltip: "Copies the effect of a random other enchant for 5 seconds before switching."
+				Tooltip: Copies the effect of a random other enchant for 5 seconds before switching.
+			}
+
+			ShadeMasterEnchant: {
+				DisplayName: Shade Master Enchant
+				Tooltip: ""
 			}
 		}
 
