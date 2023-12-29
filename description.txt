@@ -4,7 +4,7 @@ Officially maintained by Fargo's Mods developers.
 Currently supports:
 Calamity Mod
 
-Note: The multiplayer compatibility of this mod is not fully ironed out. Don't expect everything to work perfectly in multiplayer. It's being worked on.
+Secret seeds such as Zenith are not supported.
 
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
@@ -19,40 +19,50 @@ Planned future features:
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
-Latest Update: v1.0.1.1
+Fargo Discord: https://discord.gg/Rgen4Vv
 
--More multiplayer sync improvements (difficulty modes should properly stay enabled in multiplayer now)
--Increased the health of Eternity Hive Mind and Perforators 
--Increased the health of Eternity-Death Skeletron
--Increased the health of Eternity-Death Deerclops
--Made Old Lord Claymore and Bladecrest Oathsword not affected by Tungsten Enchant because it broke the weapons
--Made Executioner's Blade not affected by Mythril Enchant because it broke the weapons
--Fixed description of the difficulty modes
+Latest Update: v1.0.5.3
+Changes to Eternity-Death vanilla bosses:
+King Slime: Increased delay between crystal shots
+Eye of Cthulhu: Changed trigger for Calamity horizontal dash (to go along with rework)
+Queen Bee:
++50% health
+Wall of Flesh:
+-Improved visibility of homing sickle and changed sound effect
+-Sickle starts at a much slower speed and accelerates while traveling (it's now reactable)
+Lunatic Cultist: Clones stop firing projectiles for 10 seconds after pillar toss attack
 
-Previous Update: v1.0.1
+Changes to Eternity Calamity bosses:
+Desert Scourge:
+-Max health +25%
+-Now uses Eternity Destroyer's anti-pierce system instead
+Hive Mind:
+-Max health 12500 -> 11000
+-Tweaked spin attack
+-New shade cloud dash in minion phase
+-Lightning cloud happens earlier
+Perforators:
+-Core +60% health 
 
--Fixed several multiplayer desync issues and problems
--Berserker Soul now properly requires Reaper Tooth Necklace and gives its effects
--Perforators now gives the Low Ground debuff
--Doubled maximum distance of Crabulon Low Ground debuff 
--Fixed Deviantt's giant axe attack not working as intended
+Added Calamity miniboss/rare enemy summons to Deviantt and Abominationn shops (Deviantt got her own Calamity shop because of shop size)
+Added a ton of new QoL recipes
+Removed Plantation Staff from Conjurist Soul recipe
+Fargo's Souls and DLC bosses now work with Calamity's Boss Health Boost config
+New config to make Infernum entirely disable Eternity Mode
 
--Eternity Desert Scourge:
-Added a general pierce damage resist to Desert Scourge
-Buffed Desert Scourge's base health from 3500 to 3800 
+Nerfed base movement speed decrease from Eternity + Calamity difficulties
+Disabled Calamity recipe for Bloody Tear -> Blood Orbs, because of Abominationn selling Bloody Tears
+Fixed Brand of the Brimstone Witch coin value 
+Tungsten Enchantment:
+-Fixed some edge case issues
+-Decreased nerf on non-force effect true melee 
+Slimy Shield doesn't inflict Oiled (SDF still does)
+Calamity's Withering Enchantment accumulated damage capped at 500.000
+Fixed Cryogen issues in Boss Rush
+Nerfed Orichalcum Sword and Halberd to compensate for Calamity changes
 
--Eternity Crabulon: 
-Added a crab shroom trail behind Crabulon during the charge attack 
-
--Increased the delay between Eternity-Death King Slime jewel attacks
-
--Eternity Perforators: 
-Added a passive ichor rain between attacks
-Removed Perforator Hive contact damage during preparation for slam attack
-Adjusted dust telegraph for slam attack
-Extended duration of spike rain attack and changed the hive's movement during it to sweep across the screen horizontally
-Added peripheral ichor shots during hive's ichor blob shake attack
-Perforator ichor blobs fall through platforms
-Added occasional ichor rain shots during the hive's state of not attacking
-Adjusted speed of small worm retreating to hive
-Fixed tooth balls not being visible and improved their visual clarity
+Previous Update: v1.0.5.2
+Updated to Calamity Mod version 2.0.3.8
+Eternity Cryofrost now functions in multiplayer
+Fixed bug that caused Tungsten Enchant true melee nerf to decrease the scale of unaffected weapons
+Fixed Angry Nimbus dropping Essence of Sunlight early

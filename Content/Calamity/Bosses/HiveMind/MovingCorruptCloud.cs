@@ -1,14 +1,9 @@
 ﻿using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -25,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 5;
             ProjectileID.Sets.TrailingMode[Type] = 3;
-            
+
         }
         public override void SetDefaults()
         {

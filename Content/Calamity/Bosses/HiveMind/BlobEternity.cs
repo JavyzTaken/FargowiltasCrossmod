@@ -1,16 +1,15 @@
 ﻿using CalamityMod.NPCs.HiveMind;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
-using Terraria.GameContent;
-using Terraria.ID;
 using CalamityMod.Projectiles.Boss;
-using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -31,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            
+
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {
@@ -54,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override void OnKill(NPC npc)
         {
-            if (DLCUtils.HostCheck)
+            if (DLCUtils.HostCheck && WorldSavingSystem.EternityMode)
             {
                 NPC owner = Main.npc[(int)npc.ai[0]];
                 if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>()) return;
@@ -76,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             if (!WorldSavingSystem.EternityMode) return true;
             Asset<Texture2D> t = TextureAssets.Chains[3];
-            
+
             NPC owner = Main.npc[(int)npc.ai[0]];
             if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>())
             {
@@ -85,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Vector2 pos = npc.Center + ((owner.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20);
             while (pos.Distance(owner.Center) > 20)
             {
-                Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), pos.AngleTo(owner.Center) + MathHelper.Pi/2, t.Size() / 2, npc.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), pos.AngleTo(owner.Center) + MathHelper.Pi / 2, t.Size() / 2, npc.scale, SpriteEffects.None);
                 pos += (owner.Center - pos).SafeNormalize(Vector2.Zero) * 30;
             }
             return true;

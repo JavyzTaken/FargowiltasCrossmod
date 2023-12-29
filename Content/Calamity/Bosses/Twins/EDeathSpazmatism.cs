@@ -1,10 +1,11 @@
-﻿using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,22 +15,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class EDeathSpazmatism : EternideathNPC
+    public class EDeathSpazmatism : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Spazmatism);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(Fireballs);
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(FireballTime);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             Fireballs = binaryReader.ReadBoolean();
             timer = binaryReader.Read7BitEncodedInt();
-            FireballTime = binaryReader.Read7BitEncodedInt(); 
+            FireballTime = binaryReader.Read7BitEncodedInt();
         }
         public bool Fireballs = false;
         public int timer = 0;
@@ -63,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             {
                 Fireballs = true;
             }
-            
+
             return base.SafePreAI(npc);
         }
 

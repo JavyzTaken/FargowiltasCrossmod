@@ -5,6 +5,7 @@ using Terraria.ModLoader.Config;
 namespace FargowiltasCrossmod.Core.Calamity
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class DLCCalamityConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
@@ -12,14 +13,19 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         [Header("Modes")] // Title
 
-        [DefaultValue(true)] // This sets the configs default value.
-        public bool EternityPriorityOverRev; 
+        [DefaultValue(true)]
+        public bool EternityPriorityOverRev;
+        
+        [ReloadRequired]
+        [DefaultValue(false)]
+        public bool InfernumDisablesEternity;
 
         [Header("Balance")] // Title
 
         [ReloadRequired]
-        [DefaultValue(true)] // This sets the configs default value.
+        [DefaultValue(true)]
         public bool BalanceRework;
+
 
     }
 }

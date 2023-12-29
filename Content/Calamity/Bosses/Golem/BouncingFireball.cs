@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -25,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
             base.OnHitPlayer(target, info);
             target.AddBuff(BuffID.OnFire3, 200);
         }
-        public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Fireball; 
+        public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Fireball;
         public override void AI()
         {
             base.AI();

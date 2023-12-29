@@ -1,31 +1,22 @@
-﻿
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using FargowiltasSouls;
+using Terraria;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathWoFMouth : EternideathNPC
+    public class EDeathWoFMouth : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.WallofFlesh);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-        {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
-        }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-        {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
-        }
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;
@@ -35,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
             {
                 if (DLCUtils.HostCheck)
                     Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(1, 0) * npc.spriteDirection, ModContent.ProjectileType<HomingSickle>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
-                SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                SoundEngine.PlaySound(SoundID.Item8 with { Volume = 1.75f, Pitch = -0.5f}, npc.Center);
             }
             return base.SafePreAI(npc);
         }

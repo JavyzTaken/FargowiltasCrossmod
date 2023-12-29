@@ -1,11 +1,12 @@
-﻿using CalamityMod.Projectiles.Boss;
+﻿using System.IO;
+using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -16,12 +17,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class EDeathRetinazer : EternideathNPC
+    public class EDeathRetinazer : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Retinazer);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write(DashAttack);
             binaryWriter.Write7BitEncodedInt(dashTime);
             binaryWriter.Write7BitEncodedInt(timer);
@@ -29,7 +29,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             DashAttack = binaryReader.ReadBoolean();
             dashTime = binaryReader.Read7BitEncodedInt();
             timer = binaryReader.Read7BitEncodedInt();
@@ -86,7 +85,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             if (npc.GetGlobalNPC<Retinazer>().DeathrayState == 3)
             {
                 DashAttack = true;
-                
+
             }
             return base.SafePreAI(npc);
         }

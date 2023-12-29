@@ -1,33 +1,31 @@
-﻿
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader.IO;
 using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
-using FargowiltasSouls;
-using FargowiltasSouls.Content.Projectiles;
+using Terraria;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathBoCClone : EternideathNPC
+    public class EDeathBoCClone : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<BrainClone>());
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             timer = binaryReader.Read7BitEncodedInt();
         }
         int timer;
@@ -36,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
             if (!npc.HasValidTarget) return true;
             NPC brain = FargoSoulsUtil.NPCExists(EModeGlobalNPC.brainBoss, NPCID.BrainofCthulhu);
             if (brain == null) return true;
-            
+
             if (brain.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu>().ConfusionTimer == 300 && !Main.player[npc.target].HasBuff(BuffID.Confused) && timer == 0)
             {
                 timer++;

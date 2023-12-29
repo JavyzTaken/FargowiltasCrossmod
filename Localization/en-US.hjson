@@ -1,29 +1,4 @@
 Mods: {
-	FargowiltasSouls: {
-		VagabondsSoulHeader: "[i:FargowiltasCrossmod/VagabondsSoul] Vagabond's Soul"
-		NanotechConfig: "[i:CalamityMod/Nanotech] Nanotech"
-		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
-		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
-		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
-		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul Toggles"
-		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
-		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
-		RampartofDeitiesConfig: "[i:CalamityMod/RampartofDeities] Rampart of Deities"
-		PurityConfig: "[i:CalamityMod/Purity] Purity"
-		CalamityBerserkerHeader: "[i:FargowiltasSouls/BerserkerSoul] Calamity Berserker Soul Toggles"
-		ElementalGauntletConfig: "[i:CalamityMod/ElementalGauntlet] Elemental Gauntlet"
-		CalamityWizardHeader: "[i:FargowiltasSouls/ArchWizardsSoul] Calamity Arch Wizard's Soul Toggles"
-		EtherealTalismanConfig: "[i:CalamityMod/EtherealTalisman] Ethereal Talisman"
-		CalamitySniperHeader: "[i:FargowiltasSouls/SnipersSoul] Calamity Sniper's Soul Toggles"
-		ElementalQuiverConfig: "[i:CalamityMod/ElementalQuiver] Elemental Quiver"
-		QuiverofNihilityConfig: "[i:CalamityMod/QuiverofNihility] Quiver of Nihility"
-		DynamoStemCellsConfig: "[i:CalamityMod/DynamoStemCells] Dynamo Stem Cells"
-		CalamityConjuristHeader: "[i:FargowiltasSouls/ConjuristsSoul] Calamity Conjurist's Soul Toggles"
-		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
-		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul Toggles"
-		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
-	}
-
 	FargowiltasCrossmod: {
 		EternityRevDifficulty: {
 			Name: Eternity-Revengeance
@@ -93,6 +68,16 @@ Mods: {
 						Disabling this makes Calamity difficulties take priority over Eternity.
 						'''
 				}
+
+				InfernumDisablesEternity: {
+					Label: Infernum Mode Disables Eternity Mode
+					Tooltip:
+						'''
+						Only relevant with the Infernum Mode mod enabled.
+						Makes the Infernum Mode difficulty fully disable Eternity Mode. 
+						With this disabled, Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
+						'''
+				}
 			}
 		}
 
@@ -101,7 +86,7 @@ Mods: {
 				AngelTreads: Effects of Angel Treads
 				AeolusBoots: Effects of Aeolus Boots
 				ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
-				CalamityColossus: Effects of The Amalgam, Asgardian Aegis, Rampart of Deities, and Purity
+				CalamityColossus: Effects of The Amalgam, Asgardian Aegis and Rampart of Deities
 				ThoriumColossus:
 					'''
 					Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
@@ -153,92 +138,246 @@ Mods: {
 
 			ABombInMyNation: {
 				DisplayName: A Bomb In My Nation
-				Tooltip: ""
+				Tooltip: Summons the Plaguebringer Goliath
+			}
+
+			AstrumCor: {
+				DisplayName: Astrum Core
+				Tooltip: Summons Astrum Deus
 			}
 
 			BirbPheromones: {
 				DisplayName: Birb Pheromones
-				Tooltip: ""
+				Tooltip: Summons the Dragonfolly
 			}
 
 			BlightedEye: {
 				DisplayName: Blighted Eye
-				Tooltip: ""
+				Tooltip: Summons the Calamitas Clone
+			}
+
+			BloodyWorm: {
+				DisplayName: Bloody Worm
+				Tooltip: Summons the Old Duke
 			}
 
 			ChunkyStardust: {
 				DisplayName: Chunky Stardust
-				Tooltip: ""
+				Tooltip: Summons Astrum Aureus
 			}
 
 			CryingKey: {
 				DisplayName: Crying Key
-				Tooltip: ""
+				Tooltip: Summons Cryogen
 			}
 
 			DefiledCore: {
 				DisplayName: Defiled Core
-				Tooltip: ""
+				Tooltip: Summons Providence
 			}
 
 			DefiledShard: {
 				DisplayName: Defiled Shard
-				Tooltip: ""
+				Tooltip: Summons the Profaned Guardians
+			}
+
+			DragonEgg: {
+				DisplayName: Dragon Egg
+				Tooltip: Summons Yharon
+			}
+
+			ExoBattery: {
+				DisplayName: Exo Battery
+				Tooltip: Summons Draedon
+			}
+
+			EyeofExtinction: {
+				DisplayName: Eye of Extinction
+				Tooltip: Summons Supreme Calamitas
 			}
 
 			FriedDoll: {
 				DisplayName: Fried Doll
-				Tooltip: ""
+				Tooltip: Summons Brimstone Elemental
 			}
 
 			HiveTumor: {
 				DisplayName: Hive Tumor
-				Tooltip: ""
+				Tooltip: Summons Hive Mind
+			}
+
+			LetterofKos: {
+				DisplayName: Letter of Kos
+				Tooltip: Summons Signus
 			}
 
 			MedallionoftheDesert: {
-				DisplayName: Medallionofthe Desert
-				Tooltip: ""
+				DisplayName: Medallion of the Desert
+				Tooltip: Summons Desert Scourge
 			}
 
 			MurkySludge: {
 				DisplayName: Murky Sludge
-				Tooltip: ""
+				Tooltip: Summons the Slime God
 			}
 
 			NoisyWhistle: {
 				DisplayName: Noisy Whistle
-				Tooltip: ""
+				Tooltip: Summons Ravager
 			}
 
 			OphiocordycipitaceaeSprout: {
 				DisplayName: Ophiocordycipitaceae Sprout
-				Tooltip: ""
+				Tooltip: Summons Crabulon
+			}
+
+			PolterplasmicBeacon: {
+				DisplayName: Polterplasmic Beacon
+				Tooltip: Summons Polterghast
 			}
 
 			RedStainedWormFood: {
 				DisplayName: Red Stained Worm Food
-				Tooltip: ""
+				Tooltip: Summons the Perforator Hive
+			}
+
+			RiftofKos: {
+				DisplayName: Rift of Kos
+				Tooltip: Summons Ceaseless Void
 			}
 
 			SeeFood: {
 				DisplayName: See Food
-				Tooltip: ""
+				Tooltip: Summons Aquatic Scourge
 			}
 
 			SirensPearl: {
-				DisplayName: Sirens Pearl
-				Tooltip: ""
+				DisplayName: Siren's Pearl
+				Tooltip: Summons Anahita
+			}
+
+			SomeKindofSpaceWorm: {
+				DisplayName: Some Kind of Space Worm
+				Tooltip: Summons the Devourer of Gods
+			}
+
+			WormFoodofKos: {
+				DisplayName: Worm Food of Kos
+				Tooltip: Summons Storm Weaver
+			}
+
+			AbandonedRemote: {
+				DisplayName: Abandoned Remote
+				Tooltip:
+					'''
+					Summons Armored Digger
+					Can only be used underground
+					'''
+			}
+
+			ClamPearl: {
+				DisplayName: Clam Pearl
+				Tooltip:
+					'''
+					Summons Giant Clam
+					Can only be used in the Sunken Sea
+					'''
+			}
+
+			ColossalTentacle: {
+				DisplayName: Colossal Tentacle
+				Tooltip:
+					'''
+					Summons Colossal Squid
+					Can only be used in the Abyss
+					'''
+			}
+
+			DeepseaProteinShake: {
+				DisplayName: Deepsea Protein Shake
+				Tooltip:
+					'''
+					Summons Reapear Shark
+					Can only be used in the Abyss
+					'''
+			}
+
+			MaulerSkull: {
+				DisplayName: Mauler Skull
+				Tooltip:
+					'''
+					Summons Mauler
+					Can only be used in the Sulphuric Sea
+					'''
+			}
+
+			NuclearChunk: {
+				DisplayName: Nuclear Chunk
+				Tooltip:
+					'''
+					Summons Nuclear Terror
+					Can only be used in the Sulphuric Sea
+					'''
+			}
+
+			PlaguedWalkieTalkie: {
+				DisplayName: Plagued Walkie Talkie
+				Tooltip:
+					'''
+					Summons Plaguebringer
+					Can only be used in the Jungle
+					'''
+			}
+
+			QuakeIdol: {
+				DisplayName: Quake Idol
+				Tooltip:
+					'''
+					Summons Earth Elemental
+					Can only be used underground
+					'''
+			}
+
+			StormIdol: {
+				DisplayName: Storm Idol
+				Tooltip: Summons Cloud Elemental
+			}
+
+			SulphurBearTrap: {
+				DisplayName: Sulphur Bear Trap
+				Tooltip:
+					'''
+					Summons Cragmaw Mire
+					Can only be used in the Sulphuric Sea
+					'''
+			}
+
+			WyrmTablet: {
+				DisplayName: Wyrm Tablet
+				Tooltip:
+					'''
+					Summons Eidolon Wyrm
+					Can only be used in the abyss
+					'''
+			}
+
+			BrandoftheBrimstoneWitch: {
+				DisplayName: Brand of the Brimstone Witch
+				Tooltip:
+					'''
+					Effects of Heart of the Elements, Occult Skull Crown, Purity, The Sponge, Chalice of the Blood God
+					Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
+					'''
 			}
 		}
 
 		NPCs: {
 			FungalClump.DisplayName: Fungal Clump
-			LargePerforatorBody.DisplayName: Large Perforator Body
-			LargePerforatorBody2.DisplayName: Large Perforator Body2
-			LargePerforatorHead.DisplayName: Large Perforator Head
-			LargePerforatorTail.DisplayName: Large Perforator Tail
-			PermafrostBoss.DisplayName: Permafrost Boss
+			LargePerforatorBody.DisplayName: Large Perforator
+			LargePerforatorBody2.DisplayName: Large Perforator
+			LargePerforatorHead.DisplayName: Large Perforator
+			LargePerforatorTail.DisplayName: Large Perforator
+			PermafrostBoss.DisplayName: Permafrost
 		}
 
 		Projectiles: {
@@ -246,7 +385,7 @@ Mods: {
 			MushroomSpear.DisplayName: Mushroom Spear
 			ShroomGas.DisplayName: Shroom Gas
 			SandChunk.DisplayName: Sand Chunk
-			SuckedSandBlast.DisplayName: Sucked Sand Blast
+			SuckedSandBlast.DisplayName: Sand Blast
 			CursedLightning.DisplayName: Cursed Lightning
 			CurvingCursedFlames.DisplayName: Curving Cursed Flames
 			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
@@ -258,11 +397,14 @@ Mods: {
 			BouncingFireball.DisplayName: Bouncing Fireball
 			BigLight.DisplayName: Big Light
 			DestructionBolt.DisplayName: Destruction Bolt
-			StarofDestruction.DisplayName: Starof Destruction
+			StarofDestruction.DisplayName: Star of Destruction
 
 			Boss: {
-				AcceleratingEbonianGlob.DisplayName: Accelerating Ebonian Glob
-				AcceleratingCrimulanGlob.DisplayName: Accelerating Crimulan Glob
+				AcceleratingEbonianGlob.DisplayName: Ebonian Glob
+				AcceleratingCrimulanGlob.DisplayName: Crimulan Glob
+				SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
+				SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
+				MutantYharonVortex.DisplayName: The Sun
 			}
 
 			SlamTelegraph.DisplayName: Slam Telegraph
@@ -270,6 +412,85 @@ Mods: {
 			IceCrystal.DisplayName: Ice Crystal
 			IceChain.DisplayName: Ice Chain
 			IceTrident.DisplayName: Ice Trident
+			CrimsonPaladinSpike.DisplayName: Crimson Spike
+			PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
+			MutantOldDuke.DisplayName: Old Duke
+			DLCMutantSpearSpin.DisplayName: Mutant's Atlantis
+			DLCMutantSpearDash.DisplayName: Mutant's Atlantis
+			MutantAresNuke.DisplayName: Mutant's Gauss Nuke
+			MutantAresBomb.DisplayName: Mutant's Gauss Nuke
+			DLCMutantFishronRitual.DisplayName: Mutant Gauss Ritual
+			MutantSlimeGod.DisplayName: Slime God
+			DLCBloomLine.DisplayName: Telegraph Line
+			MutantSCal.DisplayName: Calamitas' Skullshield
+			MutantPBG.DisplayName: Plaguebringer Goliath
+			MutantAureusSpawn.DisplayName: Aureus Spawn
+			MutantHolyRay.DisplayName: Holy Ray
+			MutantDoGBody.DisplayName: The Devourer of Gods
+			MutantDoGHead.DisplayName: The Devourer of Gods
+			MutantDoGTail.DisplayName: The Devourer of Gods
+			MutantPolter.DisplayName: Necroplasm
+			ArcticPaw.DisplayName: Arctic Paw
+			Blizzard.DisplayName: Blizzard
+			DarkIceCrystal.DisplayName: Dark Ice Crystal
+			FrostFlare.DisplayName: Frost Flare
+			FrostShard.DisplayName: Frost Shard
+			IceArrow.DisplayName: Ice Arrow
+			IceShot.DisplayName: Ice Shot
+			IceStar.DisplayName: Ice Star
+			CryogenRitual.DisplayName: Cryogen Ritual
+			PermafrostRitual.DisplayName: Permafrost Ritual
+			IceCloud.DisplayName: Chilling Snow
+			BrimstoneDebris.DisplayName: Brimstone Debris
 		}
+
+		Buffs: {
+			CalamitousPresenceBuff: {
+				Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
+				DisplayName: Calamitous Presence
+			}
+
+			ArcticPaw.DisplayName: Arctic Paw
+			Blizzard.DisplayName: Blizzard
+			CrystalShard.DisplayName: Crystal Shard
+			DarkIceCrystal.DisplayName: Dark Ice Crystal
+			IceShot.DisplayName: Ice Shot
+			FrostShard.DisplayName: Frost Shard
+			FrostFlare.DisplayName: Frost Flare
+			IceArrow.DisplayName: Ice Arrow
+			IceStar.DisplayName: Ice Star
+		}
+
+		VagabondsSoulHeader: "[i:FargowiltasCrossmod/VagabondsSoul] Vagabond's Soul"
+		NanotechConfig: "[i:CalamityMod/Nanotech] Nanotech"
+		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
+		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
+		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
+		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul"
+		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
+		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
+		RampartofDeitiesConfig: "[i:CalamityMod/RampartofDeities] Rampart of Deities"
+		CalamityBerserkerHeader: "[i:FargowiltasSouls/BerserkerSoul] Calamity Berserker Soul"
+		ElementalGauntletConfig: "[i:CalamityMod/ElementalGauntlet] Elemental Gauntlet"
+		CalamityWizardHeader: "[i:FargowiltasSouls/ArchWizardsSoul] Calamity Arch Wizard's Soul"
+		EtherealTalismanConfig: "[i:CalamityMod/EtherealTalisman] Ethereal Talisman"
+		CalamitySniperHeader: "[i:FargowiltasSouls/SnipersSoul] Calamity Sniper's Soul"
+		ElementalQuiverConfig: "[i:CalamityMod/ElementalQuiver] Elemental Quiver"
+		QuiverofNihilityConfig: "[i:CalamityMod/QuiverofNihility] Quiver of Nihility"
+		DynamoStemCellsConfig: "[i:CalamityMod/DynamoStemCells] Dynamo Stem Cells"
+		CalamityConjuristHeader: "[i:FargowiltasSouls/ConjuristsSoul] Calamity Conjurist's Soul"
+		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
+		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul"
+		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
+		BrandoftheBrimstoneWitchHeader: "[i:FargowiltasCrossmod/BrandoftheBrimstoneWitch] {$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
+		HeartoftheElementsConfig: "[i:CalamityMod/HeartoftheElements] Heart of the Elements"
+		OccultSkullCrownConfig: "[i:CalamityMod/OccultSkullCrown] Occult Skull Crown"
+		PurityConfig: "[i:CalamityMod/Purity] Purity"
+		TheSpongeConfig: "[i:CalamityMod/TheSponge] The Sponge"
+		ChaliceOfTheBloodGodConfig: "[i:CalamityMod/ChaliceOfTheBloodGod] Chalice of the Blood God"
+		NebulousCoreConfig: "[i:CalamityMod/NebulousCore] Nebulous Core"
+		YharimsGiftConfig: "[i:CalamityMod/YharimsGift] {$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
+		DraedonsHeartConfig: "[i:CalamityMod/DraedonsHeart] Draedons Heart"
+		CalamityConfig: "[i:CalamityMod/Calamity] {$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
 	}
 }

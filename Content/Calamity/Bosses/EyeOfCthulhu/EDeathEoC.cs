@@ -1,27 +1,27 @@
-﻿
-using CalamityMod.World;
+﻿using System;
+using System.IO;
 using CalamityMod;
+using CalamityMod.Events;
+using CalamityMod.World;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using CalamityMod.Events;
-using FargowiltasSouls.Content.Projectiles.Masomode;
-using FargowiltasSouls.Content.Bosses.VanillaEternity;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathEoC : EternideathNPC
+    public class EDeathEoC : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.EyeofCthulhu);
 
@@ -32,8 +32,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
-
             binaryWriter.Write7BitEncodedInt(TeleportCounter);
             binaryWriter.Write7BitEncodedInt(Side);
             binaryWriter.Write(CheckedTeleport);
@@ -42,8 +40,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
-
             TeleportCounter = binaryReader.Read7BitEncodedInt();
             Side = binaryReader.Read7BitEncodedInt();
             CheckedTeleport = binaryReader.ReadBoolean();
@@ -51,6 +47,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
         }
         public override bool SafePreAI(NPC npc)
         {
+            ref float ai_Phase = ref npc.ai[0];
+            ref float ai_AttackState = ref npc.ai[1];
+            ref float ai_Timer = ref npc.ai[2];
+
             if (!npc.HasValidTarget || npc == null)
             {
                 return true;
@@ -62,20 +62,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 HorizontalDash(npc);
                 return true;
             }
-            if (npc.ai[0] == 3 && (npc.ai[1] == 0 || npc.ai[1] == 5))
+            if (ai_Phase == 3 && (ai_AttackState == 0 || ai_AttackState == 5)) 
             {
-                if (!CheckedTeleport)
+                if (ai_Timer >= 2 && npc.alpha <= 60) //after teleport and post-teleport dash
                 {
-                    TeleportCounter++;
-                    if (TeleportCounter >= 2)
+                    if (!CheckedTeleport)
                     {
-                        TeleportCounter = 0;
-                        HorizDash = true;
-                        npc.ai[1] = 15;
-                        Side = Math.Sign(npc.Center.X - Main.player[npc.target].Center.X);
+                        TeleportCounter++;
+                        if (TeleportCounter >= 2)
+                        {
+                            TeleportCounter = 0;
+                            HorizDash = true;
+                            ai_AttackState = 15;
+                            ai_Timer = 0;
+                            Side = Math.Sign(npc.Center.X - Main.player[npc.target].Center.X);
+                        }
+                        CheckedTeleport = true;
                     }
-                    CheckedTeleport = true;
                 }
+                
             }
             else
             {
@@ -86,9 +91,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
         const int WindupTime = 100;
         private void HorizontalDash(NPC npc) //i stole calamity horizontal dash ai and adapted it a bit
         {
+            ref float ai_Phase = ref npc.ai[0];
+            ref float ai_AttackState = ref npc.ai[1];
+            ref float ai_Timer = ref npc.ai[2];
+
+            if (npc.alpha > 0)
+                npc.alpha--;
+
+
             float lifeRatio = npc.life / (float)npc.lifeMax;
             float br = BossRushEvent.BossRushActive ? 1f : 0f;
-            if (npc.ai[1] == 15)
+            if (ai_AttackState == 15)
             {
                 float num40 = 600f;
                 float num41 = 6f * (0.4f - lifeRatio);
@@ -106,9 +119,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 npc.rotation = Rotate(npc, npc.rotation + MathHelper.PiOver2, Main.player[npc.target].Center, 2) - MathHelper.PiOver2;
                 npc.SimpleFlyMovement(val13, num44);
 
-                npc.ai[2] += 1;
+                ai_Timer += 1;
                 int eyeDelay = FargowiltasSouls.Core.Systems.WorldSavingSystem.MasochistModeReal ? 2 : 45; //funny old gigavomit crossmod bug on maso
-                if (npc.ai[2] % eyeDelay == 0f)
+                if (ai_Timer % eyeDelay == 0f)
                 {
                     Vector2 val14 = Vector2.Normalize(Main.player[npc.target].Center - npc.Center) * 5f;
                     Vector2 val15 = npc.Center + val14 * 10f;
@@ -141,10 +154,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     }
                 }
                 float num50 = WindupTime;
-                if (npc.ai[2] >= num50)
+                if (ai_Timer >= num50)
                 {
-                    npc.ai[1] = 16;
-                    npc.ai[2] = 0;
+                    ai_AttackState = 16;
+                    ai_Timer = 0;
                     npc.TargetClosest(true);
                     npc.SyncExtraAI();
                 }
@@ -154,7 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     npc.netSpam = 10;
                 }
             }
-            else if (npc.ai[1] == 16)
+            else if (ai_AttackState == 16)
             {
                 if (DLCUtils.HostCheck)
                 {
@@ -162,7 +175,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     float num52 = 18f + num51;
                     num52 += 10f * br;
                     npc.velocity = npc.SafeDirectionTo(Main.player[npc.target].Center) * num52;
-                    npc.ai[1] = 17;
+                    ai_AttackState = 17;
                     npc.netUpdate = true;
 
                     if (npc.netSpam > 10)
@@ -171,25 +184,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     }
                 }
             }
-            else if (npc.ai[1] == 17)
+            else if (ai_AttackState == 17)
             {
-                if (npc.ai[2] == 0)
+                if (ai_Timer == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Roar, npc.position, null);
                 }
 
                 float dashTime = 40;
-                if (npc.ai[2] % (dashTime / 2) == 0 && npc.ai[2] < dashTime)
+                if (ai_Timer % (dashTime / 2) == 0 && ai_Timer < dashTime)
                 {
                     if (DLCUtils.HostCheck)
                         FargoSoulsUtil.XWay(8, npc.GetSource_FromThis(), npc.Center, ModContent.ProjectileType<BloodScythe>(), 1.5f, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                 }
-                npc.ai[2] += 1;
-                if (npc.ai[2] == dashTime && Vector2.Distance(npc.position, Main.player[npc.target].position) < 200f)
+                ai_Timer += 1;
+                if (ai_Timer == dashTime && Vector2.Distance(npc.position, Main.player[npc.target].position) < 200f)
                 {
-                    npc.ai[2] -= 1;
+                    ai_Timer -= 1;
                 }
-                if (npc.ai[2] >= dashTime)
+                if (ai_Timer >= dashTime)
                 {
                     npc.velocity = npc.velocity * 0.95f;
                     if (npc.velocity.X > -0.1 && npc.velocity.X < 0.1)
@@ -206,15 +219,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     npc.rotation = npc.velocity.ToRotation() - (float)Math.PI / 2f;
                 }
                 float endTime = dashTime + 13f;
-                if (npc.ai[2] >= endTime)
+                if (ai_Timer >= endTime)
                 {
                     npc.netUpdate = true;
                     if (npc.netSpam > 10)
                     {
                         npc.netSpam = 10;
                     }
-                    npc.ai[2] = 0;
-                    npc.ai[1] = 0;
+                    ai_Timer = 2;
+                    ai_AttackState = npc.GetLifePercent() <= 0.5f ? 5 : 0;
                     HorizDash = false;
                 }
             }
@@ -225,8 +238,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 {
                     npc.netSpam = 10;
                 }
-                npc.ai[2] = 0;
-                npc.ai[1] = 0;
+                ai_Timer = 2;
+                ai_AttackState = 0;
                 HorizDash = false;
             }
         }

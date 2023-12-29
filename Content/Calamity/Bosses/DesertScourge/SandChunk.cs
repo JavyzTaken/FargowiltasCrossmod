@@ -1,18 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Common;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.ModLoader;
-using Terraria.ID;
 using Terraria.Audio;
-using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 {

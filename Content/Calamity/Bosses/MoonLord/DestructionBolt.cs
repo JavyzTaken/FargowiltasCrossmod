@@ -3,11 +3,6 @@ using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -46,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         {
             target.AddBuff(ModContent.BuffType<AstralInfectionDebuff>(), 300);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             for (int i = 0; i < 50; i++)

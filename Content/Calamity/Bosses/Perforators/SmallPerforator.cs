@@ -1,11 +1,12 @@
-﻿using CalamityMod.NPCs.Perforator;
+﻿using System.Collections.Generic;
+using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -87,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         return false;
                     }
                 }
-                
+
             }
             if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
             {
@@ -115,7 +116,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         {
                             target = Main.player[npc.target];
                         }
-                        if (perf != null && target != null) {
+                        if (perf != null && target != null)
+                        {
                             npc.Center = perf.Center + (target.Center - perf.Center).SafeNormalize(Vector2.Zero) * 80;
                             npc.rotation = npc.AngleTo(target.Center) + MathHelper.PiOver2;
                         }
@@ -128,7 +130,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         {
                             Player target = Main.player[npc.target];
                             npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20;
-                            
+
                         }
                         NetSync(npc);
                     }
@@ -183,7 +185,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     //???
                 }
                 npc.ai[3]++;
-                
+
             }
             return true;
         }

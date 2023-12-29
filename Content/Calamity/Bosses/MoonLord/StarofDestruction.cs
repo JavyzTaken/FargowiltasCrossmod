@@ -1,14 +1,9 @@
 ﻿using CalamityMod.Buffs.DamageOverTime;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -42,15 +37,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
                 Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + new Vector2(Projectile.width, Projectile.height) / 2 - Main.screenPosition, null, lightColor * (1 - ((float)i / Projectile.oldPos.Length)), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             }
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
-            
+
             return false;
-            
+
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(ModContent.BuffType<AstralInfectionDebuff>(), 300);
         }
-        public override void Kill(int timeLeft)
+        public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             for (int i = 0; i < 100; i++)

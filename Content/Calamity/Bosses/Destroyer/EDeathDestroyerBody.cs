@@ -1,37 +1,36 @@
-﻿using FargowiltasSouls;
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader.IO;
-using Microsoft.Xna.Framework;
-using FargowiltasCrossmod.Core;
 using Terraria.ModLoader;
-using FargowiltasCrossmod.Core.Utils;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathDestroyerBody : EternideathNPC
+    public class EDeathDestroyerBody : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.TheDestroyerBody);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             timer = binaryReader.Read7BitEncodedInt();
         }
         public int timer = 0;
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;
-            
+
             NPC destroyer = FargoSoulsUtil.NPCExists(npc.realLife, NPCID.TheDestroyer);
             Player target = Main.player[npc.target];
             if (destroyer != null && !destroyer.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Destroyer>().InPhase2)
@@ -52,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
                     {
                         timer = 0;
                         if (DLCUtils.HostCheck && Collision.CanHitLine(npc.Center, 1, 1, target.Center, 1, 1))
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                     }
                 }
             }

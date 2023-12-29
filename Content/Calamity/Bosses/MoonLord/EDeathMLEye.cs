@@ -1,4 +1,4 @@
-﻿
+﻿/*
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using System.IO;
@@ -19,7 +19,7 @@ using FargowiltasCrossmod.Core.Utils;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathMLEye : EternideathNPC
+    public class EDeathMLEye : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(NPCID.MoonLordHand, NPCID.MoonLordHead);
         
@@ -67,3 +67,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
         }
     }
 }
+*/

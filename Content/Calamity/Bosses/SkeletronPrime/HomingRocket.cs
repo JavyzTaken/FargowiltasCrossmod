@@ -1,5 +1,4 @@
-﻿
-using FargowiltasCrossmod.Core;
+﻿using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -30,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
             Projectile.position.Y -= Projectile.height / 2;
             for (int num904 = 0; num904 < 30; num904++)
             {
-                int num905 = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, 31, 0f, 0f, 100, default(Color), 1.5f);
+                int num905 = Dust.NewDust(new Vector2(Projectile.position.X, Projectile.position.Y), Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100, default(Color), 1.5f);
                 Dust dust2 = Main.dust[num905];
                 dust2.velocity *= 1.4f;
             }
@@ -56,7 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                 gore2.velocity *= num909;
                 Main.gore[num910].velocity.X += 1f;
                 Main.gore[num910].velocity.Y += 1f;
-                num910 = Gore.NewGore(Projectile.GetSource_Death(),new Vector2(Projectile.position.X, Projectile.position.Y), default(Vector2), Main.rand.Next(61, 64));
+                num910 = Gore.NewGore(Projectile.GetSource_Death(), new Vector2(Projectile.position.X, Projectile.position.Y), default(Vector2), Main.rand.Next(61, 64));
                 gore2 = Main.gore[num910];
                 gore2.velocity *= num909;
                 Main.gore[num910].velocity.X -= 1f;
@@ -77,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
         {
             int p = Player.FindClosest(Projectile.position, Projectile.width, Projectile.height);
             Projectile.ai[0]++;
-            
+
             if (Projectile.ai[0] == 1)
             {
                 SoundEngine.PlaySound(SoundID.Item62, Projectile.Center);

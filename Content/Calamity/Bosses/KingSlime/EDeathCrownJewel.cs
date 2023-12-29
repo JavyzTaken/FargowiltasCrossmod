@@ -1,7 +1,8 @@
 ﻿using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -13,11 +14,11 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathCrownJewel : EternideathNPC
+    public class EDeathCrownJewel : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<KingSlimeJewel>());
         public int Timer = 0;
-       
+
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget)
@@ -25,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
                 return true;
             }
             npc.ai[0] = 0; //don't fire normal shots
-            if (++Timer >= 90)
+            if (++Timer >= 180)
             {
                 Player target = Main.player[npc.target];
                 Vector2 totarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);

@@ -8,23 +8,32 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Calamity\Bosses\BrimstoneElemental\BrimstoneDebris.png" />
+    <None Remove="Content\Calamity\Bosses\Cryogen\PermafrostRitual.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Souls\BrandoftheBrimstoneWitch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Remove="Libraries\CalamityMod.dll" />
+    <Reference Remove="Libraries\Fargowiltas.dll" />
+    <Reference Remove="Libraries\FargowiltasSouls.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Libraries\*.dll" />
+	<Reference Include="CalamityMod">
+	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
+	</Reference>
+	<Reference Include="Fargowiltas">
+	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
+	</Reference>
+	<Reference Include="FargowiltasSouls">
+	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Assets\EternityDeathIcon.png" />
-    <None Remove="Assets\EternityRevIcon.png" />
-    <None Remove="changelog.txt" />
-    <None Remove="Content\Calamity\Bosses\Cryogen\IceChain.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Essences\OutlawsEssence.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Souls\VagabondsSoul.png" />
-    <None Remove="icon.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Folder Include="Assets\Sounds\" />
     <Folder Include="Content\Calamity\NPCS\" />
     <Folder Include="Content\Calamity\Projectiles\" />
-    <Folder Include="Core\BaseClasses\" />
   </ItemGroup>
 </Project>

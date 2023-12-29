@@ -17,6 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<ProfanedShard>().AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(ModContent.ItemType<ProfanedShard>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
         }
     }
 }

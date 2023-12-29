@@ -1,11 +1,10 @@
-﻿using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+﻿using System.IO;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
-using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -15,26 +14,18 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathSkeletron : EternideathNPC
+    public class EDeathSkeletron : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHead);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            base.SendExtraAI(npc, bitWriter, binaryWriter);
             binaryWriter.WriteVector2(telePos);
             binaryWriter.Write7BitEncodedInt(timer);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
-            base.ReceiveExtraAI(npc, bitReader, binaryReader);
             telePos = binaryReader.ReadVector2();
             timer = binaryReader.Read7BitEncodedInt();
-        }
-        public override void SetDefaults(NPC npc)
-        {
-            if (!WorldSavingSystem.EternityMode) return;
-            base.SetDefaults(npc);
-            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
         }
         Vector2 telePos = Vector2.Zero;
         int timer = 0;
@@ -54,12 +45,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
             {
                 timer--;
                 for (int i = 0; i < 2; i++)
-                Dust.NewDustDirect(telePos, npc.width, npc.height, DustID.Shadowflame, Scale:2);
+                    Dust.NewDustDirect(telePos, npc.width, npc.height, DustID.Shadowflame, Scale: 2);
                 if (timer == 0)
                 {
                     for (int i = 0; i < 100; i++)
                     {
-                        Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Shadowflame, Scale:2);
+                        Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Shadowflame, Scale: 2);
                     }
                     npc.position = telePos;
                     foreach (NPC n in Main.npc)
@@ -75,21 +66,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(15 * i)) * 15, ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item66, npc.Center);
-                    
+
+                }
+            }
+            if (npc.ai[1] == 2)
+            {
+                if (timer <= 0)
+                {
+                    telePos = target.Center + (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
+                    timer = 120;
                 }
             }
             return base.SafePreAI(npc);
-        }
-    }
-    public class EDeathSkeletronHands : EternideathNPC
-    {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHand);
-
-        public override void SetDefaults(NPC npc)
-        {
-            if (!WorldSavingSystem.EternityMode) return;
-            base.SetDefaults(npc);
-            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.2f);
         }
     }
 }

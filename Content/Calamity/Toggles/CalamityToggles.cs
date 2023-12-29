@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Core.Toggler;
@@ -10,7 +11,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityToggles : ToggleCollection
     {
-        public override string Mod => ModCompatibility.Calamity.Name;
+        public override string Mod => "FargowiltasCrossmod";
         public override string SortCategory => "Enchantments";
         public override int Priority => 1;
         public override bool Active => true;
@@ -25,7 +26,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
         public string Amalgam;
         public string AsgardianAegis;
         public string RampartofDeities;
-        public string Purity;
 
         public int CalamityBerserkerHeader = ModContent.ItemType<BerserkerSoul>();
         public string ElementalGauntlet;
@@ -43,5 +43,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
 
         public int CalamityTrawlerHeader = ModContent.ItemType<TrawlerSoul>();
         public string AbyssalDivingSuit;
+
+        public int BrandoftheBrimstoneWitchHeader = ModContent.ItemType<BrandoftheBrimstoneWitch>();
+        public string HeartoftheElements;
+        public string OccultSkullCrown;
+        public string Purity;
+        public string TheSponge;
+        public string ChaliceOfTheBloodGod;
+        public string NebulousCore;
+        public string YharimsGift;
+        public string DraedonsHeart;
+        public string Calamity;
     }
 }
