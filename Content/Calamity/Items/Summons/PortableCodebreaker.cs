@@ -9,9 +9,9 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExoBattery : BaseSummon
+    public class PortableCodebreaker : BaseSummon
     {
-        public override string Texture => "CalamityMod/Items/Materials/ExoPrism";
+        //public override string Texture => "CalamityMod/Items/Materials/ExoPrism";
         public override int NPCType => ModContent.NPCType<Draedon>();
         public override string NPCName => "Draedon";
         public override void AddRecipes()

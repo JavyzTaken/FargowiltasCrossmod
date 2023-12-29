@@ -11,6 +11,7 @@
     <None Remove="Content\Calamity\Bosses\BrimstoneElemental\BrimstoneDebris.png" />
     <None Remove="Content\Calamity\Bosses\Cryogen\PermafrostRitual.png" />
     <None Remove="Content\Calamity\Items\Accessories\Souls\BrandoftheBrimstoneWitch.png" />
+    <None Remove="Content\Calamity\Items\Summons\PortableCodebreaker.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
