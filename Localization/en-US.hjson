@@ -150,6 +150,86 @@ Mods: {
 					Effects of Dragon Scales and Venerated Locket
 					'''
 			}
+
+			ABombInMyNation: {
+				DisplayName: A Bomb In My Nation
+				Tooltip: ""
+			}
+
+			BirbPheromones: {
+				DisplayName: Birb Pheromones
+				Tooltip: ""
+			}
+
+			BlightedEye: {
+				DisplayName: Blighted Eye
+				Tooltip: ""
+			}
+
+			ChunkyStardust: {
+				DisplayName: Chunky Stardust
+				Tooltip: ""
+			}
+
+			CryingKey: {
+				DisplayName: Crying Key
+				Tooltip: ""
+			}
+
+			DefiledCore: {
+				DisplayName: Defiled Core
+				Tooltip: ""
+			}
+
+			DefiledShard: {
+				DisplayName: Defiled Shard
+				Tooltip: ""
+			}
+
+			FriedDoll: {
+				DisplayName: Fried Doll
+				Tooltip: ""
+			}
+
+			HiveTumor: {
+				DisplayName: Hive Tumor
+				Tooltip: ""
+			}
+
+			MedallionoftheDesert: {
+				DisplayName: Medallionofthe Desert
+				Tooltip: ""
+			}
+
+			MurkySludge: {
+				DisplayName: Murky Sludge
+				Tooltip: ""
+			}
+
+			NoisyWhistle: {
+				DisplayName: Noisy Whistle
+				Tooltip: ""
+			}
+
+			OphiocordycipitaceaeSprout: {
+				DisplayName: Ophiocordycipitaceae Sprout
+				Tooltip: ""
+			}
+
+			RedStainedWormFood: {
+				DisplayName: Red Stained Worm Food
+				Tooltip: ""
+			}
+
+			SeeFood: {
+				DisplayName: See Food
+				Tooltip: ""
+			}
+
+			SirensPearl: {
+				DisplayName: Sirens Pearl
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {

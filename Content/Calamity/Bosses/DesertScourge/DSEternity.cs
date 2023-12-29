@@ -79,6 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public const int attackCycleLength = 9;
         public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
+        public bool CanDoSlam = false;
         public bool DoSlam = false;
         
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
@@ -93,6 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             binaryWriter.Write7BitEncodedInt(phase);
             binaryWriter.Write(DoSlam);
+            binaryWriter.Write(CanDoSlam);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -106,6 +108,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             phase = binaryReader.Read7BitEncodedInt();
             DoSlam = binaryReader.ReadBoolean();
+            CanDoSlam = binaryReader.ReadBoolean();
         }
         
         public override bool SafePreAI(NPC npc)
@@ -180,7 +183,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 WormMovement(npc, collision);
 
                 ai[0]++;
-                if (ai[0] == 250 && phase > 0) //initiate slam, only after first phase (nuisances)
+                if (ai[0] == 250 && CanDoSlam) //initiate slam, only after first phase (nuisances)
                 {
                     DoSlam = true;
                     NetSync(npc);
@@ -229,6 +232,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public void suck(NPC npc)
         {
             Player target = Main.player[npc.target];
+
+            CanDoSlam = true; //can do slam after this attack
+
             if (ai[3] >= 0)
             {
                 ai[3]++;
@@ -388,6 +394,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                             timer = 0;
                             attackStep = 0;
                             DoSlam = false;
+                            CanDoSlam = false;
                             return;
                         }
                     }
