@@ -547,7 +547,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<BlackAnurian>(),
                 ItemType<HerringStaff>(),
                 ItemType<Lionfish>(),
-            }, ItemType<SulphurousCrate>(), 5);
+            }, ItemType<SulphurousCrate>(), 5, ItemType<PurifiedGel>());
 
             CreateCrateRecipes(new int[]
             {
@@ -556,7 +556,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<DepthCharm>(),
                 ItemType<IronBoots>(),
                 ItemType<AnechoicPlating>(),
-            }, ItemType<SulphurousCrate>(), 3);
+            }, ItemType<SulphurousCrate>(), 3, ItemID.Bone);
 
             CreateCrateRecipes(new int[]
             {
@@ -567,7 +567,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<SpentFuelContainer>(),
                 ItemType<SlitheringEels>(),
                 ItemType<BelchingSaxophone>(),
-            }, ItemType<SulphurousCrate>(), 5, extraItem: ItemType<CorrodedFossil>());
+            }, ItemType<SulphurousCrate>(), 5, ItemType<CorrodedFossil>());
 
             CreateCrateRecipes(new int[]
             {
@@ -578,7 +578,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<AstralScythe>(),
                 ItemType<StellarCannon>(),
                 ItemType<StarbusterCore>(),
-            }, ItemType<AstralCrate>(), 5);
+            }, ItemType<AstralCrate>(), 5, ItemType<AureusCell>());
 
             CreateCrateRecipes(new int[]
             {
@@ -586,9 +586,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<ClamorRifle>(),
                 ItemType<ShellfishStaff>(),
                 ItemType<ClamCrusher>(),
-            }, ItemType<SunkenCrate>(), 5, extraItem: ItemType<MolluskHusk>());
+            }, ItemType<SunkenCrate>(), 5, ItemType<MolluskHusk>());
 
-            void CreateCrateRecipes(int[] results, int crate, int crateAmount, int hardmodeCrate = -1, int extraItem = -1)
+            void CreateCrateRecipes(int[] results, int crate, int crateAmount, int extraItem = -1)
             {
                 foreach (int result in results)
                 {
@@ -742,6 +742,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient<ReaperToothNecklace>();
                     if (recipe.RemoveIngredient(ItemID.FireGauntlet))
                         recipe.AddIngredient<ElementalGauntlet>();
+                    if (recipe.RemoveIngredient(ItemID.ScourgeoftheCorruptor))
+                        recipe.AddIngredient<ScourgeoftheCosmos>();
                     recipe.AddIngredient<BadgeofBravery>()
                             .AddIngredient<CelestialClaymore>()
                             .AddIngredient<Greentide>()
