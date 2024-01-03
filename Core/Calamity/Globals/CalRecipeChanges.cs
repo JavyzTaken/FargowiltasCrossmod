@@ -604,19 +604,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.DisableDecraft();
                         recipe.Register();
                     }
-
-                    if (hardmodeCrate != -1)
-                    {
-                        var recipe = Recipe.Create(result);
-                        recipe.AddIngredient(hardmodeCrate, crateAmount);
-                        if (extraItem != -1)
-                        {
-                            recipe.AddIngredient(extraItem);
-                        }
-                        recipe.AddTile(TileID.WorkBenches);
-                        recipe.DisableDecraft();
-                        recipe.Register();
-                    }
                 }
                 
             }
@@ -757,7 +744,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient<ElementalGauntlet>();
                     recipe.AddIngredient<BadgeofBravery>()
                             .AddIngredient<CelestialClaymore>()
-                            .AddIngredient<ScourgeoftheCosmos>()
                             .AddIngredient<Greentide>()
                             .AddIngredient<PulseDragon>()
                             .AddIngredient<DevilsDevastation>()
