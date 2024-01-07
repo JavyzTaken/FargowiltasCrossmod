@@ -46,6 +46,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
             shadeMasterBodyCenter = Player.Center;
             shadeMasterDuration = 60 * 15;
+            shadeMasterCurrentRadius = 0;
 
 			if (shadeMasterDummy == null) shadeMasterDummy = new();
             shadeMasterDummy.head = Player.head;
@@ -63,6 +64,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal Vector2 shadeMasterBodyCenter;
         private Player shadeMasterDummy = null; // is this alright? it seemed better than creating a player each frame.
         int shadeMasterDuration = -1;
+        int shadeMasterCurrentRadius = 0;
         internal bool ShadeMode => shadeMasterDuration > 0;
 
         void ShadeMasterEffect()
@@ -81,28 +83,30 @@ namespace FargowiltasCrossmod.Content.Thorium
                 return;
             }
 
-            const int auraDist = 640;
-            const int speed = 17;
-            FargowiltasSouls.FargoSoulsUtil.AuraDust(shadeMasterDummy, auraDist, DustID.RedMoss);
+            int x = 60 * 15 - shadeMasterDuration;
+            if (x <= 30) shadeMasterCurrentRadius = (int)MathHelper.Lerp(0, 640, x / 30f);
+            else if (x > 90) shadeMasterCurrentRadius = 640 - (int)(MathF.Pow((x - 90f) / (60f * 13.5f), 2) * 640f); //(int)MathHelper.Lerp(640, 0, (x - 90f) / (60f * 14f));
+            else shadeMasterCurrentRadius = 640; // sanity case
+
+            const float speed = 17f;
+            FargowiltasSouls.FargoSoulsUtil.AuraDust(shadeMasterDummy, shadeMasterCurrentRadius, DustID.RedMoss);
 
             // Adapted from SoulsMod BaseArena.cs 
             float distance = shadeMasterBodyCenter.Distance(Player.Center);
-            if (distance > auraDist)
+            if (distance > shadeMasterCurrentRadius)
             {
-                if (distance > auraDist * 1.5f)
+                if (distance > shadeMasterCurrentRadius * 1.5f)
                 {
                     ShadeMasterExit();
                     return;
                 }
 
                 Vector2 movement = shadeMasterBodyCenter - Player.Center;
-                float difference = movement.Length() - auraDist;
+                float difference = movement.Length() - shadeMasterCurrentRadius;
                 movement.Normalize();
-                movement *= difference < speed ? difference : speed;
+                movement *= MathF.Min(difference, speed);
                 Player.position += movement;
             }
-
-            //Dust.NewDust(shadeMasterBodyCenter, 0, 0, DustID.RedTorch);
         }
 
         internal Rectangle GetShadeMasterHitBox()
@@ -120,17 +124,12 @@ namespace FargowiltasCrossmod.Content.Thorium
                 Dust.NewDust(Player.position, Player.width, Player.height, DustID.RedMoss);
             }
         }
-
-        Vector2 ShadeMasterVelocity;
-        void ShadeMasterMovement()
-        {
-
-        }
     }
 }
 
 namespace FargowiltasCrossmod.Core.Globals
 {
+    // this is the stupidest code I have written but it works perfectly. Only case I can think of is another player being in the same position as the shade master ghost.
     [ExtendsFromMod("ThoriumMod")]
     public class ShadeMasterGlobalProj : GlobalProjectile
     {
