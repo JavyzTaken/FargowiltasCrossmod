@@ -54,18 +54,24 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
             Projectile.frame = (Projectile.frameCounter++ / 10) % 6;
 
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (Projectile.ai[0] >= 0) Projectile.ai[0]--;
+
+            if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.timeLeft > 60)
             {
-                if (Main.rand.NextBool(100))
+                if (Main.rand.NextBool(64))
                 {
                     Vector2 spawnPos = Projectile.position + new Vector2(Main.rand.Next(0, Projectile.width), Projectile.height / 2f);
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<GFBZapTelegraph>(), 12, 0f, Main.myPlayer);
+                    float x = 900f - Main.npc[(int)Projectile.ai[1]].ai[1];
+                    float theta = x < 300f ? 0 : MathF.Sin(MathF.PI * (x - 300f) / 300f) * (x - 300f) / 300f;
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<GFBZapTelegraph>(), 12, 0f, Main.myPlayer, theta);
                 }
-                if (Main.rand.NextBool(Main.player[(int)Projectile.ai[0]].Center.Y < Projectile.Center.Y + Projectile.width / 2 ? 120 : 240))
-                {
-                    Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(Projectile.width / 2f, Projectile.height / 3f);
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 15, 2f, Main.myPlayer);
-                }
+                //wind?
+
+                //if (Main.rand.NextBool(Main.player[(int)Projectile.ai[0]].Center.Y < Projectile.Center.Y + Projectile.width / 2 ? 120 : 240))
+                //{
+                //    Vector2 spawnPos = Projectile.Center + Main.rand.NextVector2Circular(Projectile.width / 2f, Projectile.height / 3f);
+                //    Projectile.NewProjectile(Projectile.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 15, 2f, Main.myPlayer);
+                //}
             }
         }
     }
@@ -94,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.UnitY * 8f, ModContent.ProjectileType<GrandThunderBirdZap>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Vector2.UnitY * 8f).RotatedBy(Projectile.ai[0] * 0.5f), ModContent.ProjectileType<GrandThunderBirdZap>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
         }
     }
 }

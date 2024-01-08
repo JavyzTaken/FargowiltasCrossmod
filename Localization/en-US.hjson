@@ -631,6 +631,7 @@ Mods: {
 			GFBZapTelegraph.DisplayName: G F B Zap Telegraph
 			HealPulse.DisplayName: Heal Pulse
 			JesterIndicatorProj.DisplayName: Jester Indicator Proj
+			GTBSandStorm.DisplayName: G T B Sand Storm
 		}
 
 		Keybinds: {
