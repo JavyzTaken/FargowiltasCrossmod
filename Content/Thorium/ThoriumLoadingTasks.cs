@@ -20,6 +20,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEnchant.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
             Items.Accessories.Enchantments.JesterEnchant.PostSetup(Mod);
+            EternityMode.Boss.GrandThunderBird.LoadDetour();
 
             FargowiltasSouls.Content.Projectiles.SpearRework.ReworkedSpears.AddRange(new List<int> {
                 ModContent.ProjectileType<CoralPolearmPro>(),
@@ -52,6 +53,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             Projectiles.DLCHealing.HealMethod = thoriumProjExtensions.GetMethod("ThoriumHeal", BindingFlags.Static | BindingFlags.NonPublic);
             Projectiles.DLCHealing.CustomHealingType = thoriumProjExtensions.GetNestedType("CustomHealing", BindingFlags.NonPublic);
             MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
+
 
             if (FargowiltasCrossmod.CaughtTownies != null)
                 RegisterThoriumCaughtNPCs();

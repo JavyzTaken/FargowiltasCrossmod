@@ -102,7 +102,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
         public override void AI(Projectile projectile)
         {
-            base.AI(projectile);
+            if (stormTime == -1) return;
         }
     }
 }

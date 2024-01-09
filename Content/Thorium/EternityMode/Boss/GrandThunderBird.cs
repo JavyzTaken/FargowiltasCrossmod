@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
 using Terraria.ID;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
@@ -17,6 +18,7 @@ using FargowiltasCrossmod.Content.Thorium.Items.Accessories;
 using FargowiltasCrossmod.Content.Thorium.Items.Weapons;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using ThoriumMod.Projectiles.Boss;
+using MonoMod.RuntimeDetour;
 
 namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
 {
@@ -25,6 +27,32 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
     {
         //public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(-1);
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<TheGrandThunderBird>());
+
+        private static Hook PostDrawHook;
+        internal static void LoadDetour()
+        {
+            Type baseGTB = ModContent.Find<ModNPC>("ThoriumMod/TheGrandThunderBird").GetType();
+
+            if (baseGTB != null)
+            {
+                MethodInfo postDrawMethod = baseGTB.GetMethod("PostDraw", BindingFlags.Public | BindingFlags.Instance);
+
+                PostDrawHook = new(postDrawMethod, PostDrawDetour);
+                PostDrawHook.Apply();
+            }
+        }
+
+        public override void Unload()
+        {
+            PostDrawHook?.Undo();
+        }
+
+        private delegate void orig_PostDraw(TheGrandThunderBird self, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        private static void PostDrawDetour(orig_PostDraw orig, TheGrandThunderBird self, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode) // dont draw the sword indicator in things like the dash, where it isnt applicable
+                return;
+        }
 
         internal enum AIMode : byte
         {
@@ -39,27 +67,29 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
         /* 
          * ai[0]: animation state
          * ai[1]: attack timer
+         * 
          * Mode:   Follow       | Dash          | Storm         | NewDash
          * ai[2]:  zap timer    | wait timer    | cloud timer   | Attack state (0 - 5)
-         * ai[3]:  unused       | orb drop timer|               | Dash timer
-         * Lai[0]: unused       | unused        | range timer   | unsed
+         * ai[3]:  unused       | unused        |               | Dash timer
+         * Lai[0]: unused       | unused        | range timer   | unused
          * Lai[1]:                                              | 
          * Lai[2]:                                              | 
          */
 
         public bool hasDashed;
         public bool dashDir;
-        public bool wasInP2;
 
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
             currentMode = AIMode.Follow;
             npc.ai[1] = 400f;
-            wasInP2 = false;
         }
 
         private void CycleMode(NPC npc)
         {
+            npc.rotation = 0f;
+            npc.color = Color.White;
+
             switch (currentMode)
             {
                 case AIMode.Follow:
@@ -119,23 +149,6 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             {
                 CycleMode(npc);
             }
-
-            //if (npc.life <= npc.lifeMax / 2 && !wasInP2)
-            //{
-            //    int cloudType = ModContent.ProjectileType<GTBCloud>();
-            //    for (int i = 0; i < Main.maxProjectiles; i++)
-            //    {
-            //        Projectile proj = Main.projectile[i];
-            //        if (proj.active && proj.type == cloudType)
-            //        {
-            //            proj.timeLeft = (int)MathF.Min(proj.timeLeft, 100);
-            //        }
-            //    }
-            //    currentMode = AIMode.Diamond;
-            //    npc.ai[1] = 1200f;
-            //    npc.localAI[0] = 0f;
-            //    wasInP2 = true;
-            //}
         }
 
         public int rangePunishVisualCD;
@@ -173,6 +186,16 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     NewDashAI(npc);
                     break;
             }
+
+            //if (npc.life < npc.lifeMax * 0.5f)
+            //{
+            //    if (Main.netMode != NetmodeID.MultiplayerClient && npc.localAI[2]++ > 600)
+            //    {
+            //        npc.localAI[2] = 0;
+            //        NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<StormHatchling>(), npc.whoAmI);
+            //    } 
+            //}
+
             return false;
         }
 
@@ -352,6 +375,8 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             }
             if (npc.ai[2] >= 0)
             {
+                npc.color = new Color(150, 150, 150, 255); // visual indicator for lowered damage
+
                 npc.ai[0] = 0;
                 if (++npc.ai[2] == 30f && Main.netMode != NetmodeID.MultiplayerClient)
                 {
@@ -399,7 +424,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     if (Main.rand.NextBool((int)MathF.Max(20 - ((npc.localAI[0]) / 20), 1)))
                     {
                         Vector2 random = Main.rand.NextVector2CircularEdge(128f, 128f);
-                        if (MathF.Sign(random.Y) != MathF.Sign(Main.LocalPlayer.Center.Y - npc.Center.Y)) random.Y *= -1f;
+                        if (MathF.Sign(random.Y) != MathF.Sign(Main.LocalPlayer.Center.Y - npc.Center.Y + 160)) random.Y *= -1f;
                         Vector2 spawnPos = Main.LocalPlayer.Center + Main.LocalPlayer.velocity * 15f + random;
 
                         Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 25, 3f, Main.myPlayer, 0, 180f);
@@ -422,77 +447,53 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     float dist = npc.Distance(seekPos);
 
                     npc.velocity = npc.DirectionTo(seekPos) * 8;
-                    //npc.rotation = npc.velocity.ToRotation();
-                    //npc.velocity *= (120 + npc.ai[2]) / 30f;
 
                     npc.ai[0] = 0;
                     if (dist <= 16f)
                     {
                         npc.ai[2]++;
-                        npc.ai[3] = 60f;
+                        npc.ai[3] = 54f;
                         npc.velocity = new Vector2(dashDir ? 18 : -18, 0f);
-                        //npc.rotation = npc.velocity.ToRotation();
                         npc.Center = seekPos;
+                        npc.rotation = 0f;
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            npc.localAI[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + npc.velocity * 45f, Vector2.Zero, ModContent.ProjectileType<GTBSandStorm>(), 20, 4f);
+                            npc.localAI[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + npc.velocity * 45f - Vector2.UnitY * 64f, Vector2.Zero, ModContent.ProjectileType<GTBSandStorm>(), 20, 4f);
                         }
                     }
                     break;
-                case 1:
+                case 1: // initial dash
                     npc.ai[0] = 3;
                     storm.scale = MathHelper.SmoothStep(0, 0.5f, (60f - npc.ai[3]) / 60f);
 
                     if (npc.ai[3]-- <= 0)
                     {
                         npc.ai[2]++;
-                        npc.velocity = new Vector2(npc.velocity.X * -1.2f, -4f);
-                        //npc.rotation = npc.velocity.ToRotation();
-                        npc.ai[3] = 35;
+                        npc.velocity = new Vector2(npc.velocity.X * -1.2f, -3f);
+                        //npc.velocity = npc.Center + new Vector2(dashDir ? -240 : 240, -120);
+                        npc.ai[3] = 150;
                         npc.direction *= -1;
                         npc.spriteDirection = npc.direction;
                     }
                     break;
-                case 2:
+                case 2: // swurl
                     npc.ai[0] = 3;
-                    storm.scale = MathHelper.SmoothStep(0.5f, 1f, (35f - npc.ai[3]) / 35f);
+                    storm.scale = MathHelper.SmoothStep(0.5f, 3f, (150f - npc.ai[3]) / 150f);
+                    npc.velocity = new Vector2(18f * 10f * MathF.Cos(MathF.PI * (npc.ai[3] / 30f + 0.5f)) * MathF.PI / 30f * (dashDir ? 1 : -1), -2f);
+                    //npc.alpha = (int)(64f * MathF.Sin((MathF.PI / 15f) * (npc.ai[3] - 7.5f)) + 64f);
+                    npc.direction = MathF.Sign(npc.velocity.X);
+                    npc.rotation = npc.direction * -0.3f;
+                    npc.spriteDirection = npc.direction;
 
                     if (npc.ai[3]-- <= 0)
                     {
-                        npc.ai[2]++;
-                        npc.velocity = new Vector2(npc.velocity.X * -1f, 0f);
-                        //npc.rotation = npc.velocity.ToRotation();
-                        npc.ai[3] = 35;
-                        npc.direction *= -1;
-                        npc.spriteDirection = npc.direction;
-                    }
-                    break;
-                case 3:
-                    npc.ai[0] = 3;
-                    storm.scale = MathHelper.SmoothStep(1f, 2f, (35f - npc.ai[3]) / 35f);
-
-                    if (npc.ai[3]-- <= 0)
-                    {
-                        npc.ai[2]++;
-                        npc.velocity = new Vector2(npc.velocity.X * -1f, -4f);
-                        //npc.rotation = npc.velocity.ToRotation();
-                        npc.ai[3] = 20;
-                        npc.direction *= -1;
-                        npc.spriteDirection = npc.direction;
-                    }
-                    break;
-                case 4:
-                    npc.ai[0] = 3;
-                    storm.scale = MathHelper.SmoothStep(2f, 3f, (20f - npc.ai[3]) / 20f);
-
-                    if (npc.ai[3]-- <= 0)
-                    {
-                        npc.ai[2]++;
-                        npc.direction *= -1;
-                        npc.spriteDirection = npc.direction;
-                        npc.rotation = dashDir ? -0.3f : 0.3f;
-                        npc.ai[3] = 300;
+                        npc.ai[2] = 5;
                         npc.velocity = new Vector2(dashDir ? -0.5f : 0.5f, -0.15f);
+                        npc.rotation = dashDir ? -0.3f : 0.3f;
+                        //npc.velocity = new Vector2(npc.velocity.X * -1f, npc.velocity.Y);
+                        npc.ai[3] = 300;
+                        npc.direction *= -1;
+                        npc.spriteDirection = npc.direction;
                     }
                     break;
                 case 5:
@@ -521,6 +522,14 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             if (currentMode == AIMode.NewDash && (int)npc.ai[2] == 5)
             {
                 spriteBatch.Draw(Core.ModCompatibility.ThoriumMod.Mod.Assets.Request<Texture2D>("Textures/Sword_Indicator").Value, npc.Center - screenPos, default, Color.White, 0f, new Vector2(13f, 90f), 1f, 0, 0f);
+            }
+        }
+
+        public override void ModifyIncomingHit(NPC npc, ref NPC.HitModifiers modifiers)
+        {
+            if (npc.ai[2] >= 0 && currentMode == AIMode.Storm)
+            {
+                modifiers.FinalDamage *= 0.60f;
             }
         }
 

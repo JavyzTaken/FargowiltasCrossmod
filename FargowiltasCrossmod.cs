@@ -74,7 +74,7 @@ namespace FargowiltasCrossmod
 
         public override void Unload()
         {
-            if (LumberHooks.OnChatButtonClicked != null) LumberHooks.OnChatButtonClicked.Undo();
+            LumberHooks.OnChatButtonClicked?.Undo();
         }
 
         internal enum PacketID : byte
