@@ -85,6 +85,12 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             npc.ai[1] = 400f;
         }
 
+        public override void SetDefaults(NPC npc)
+        {
+            npc.width = npc.height = 60;
+            npc.lifeMax = (int)MathF.Round(npc.lifeMax * 1.2f / 100f) * 100; // I like the numbers to be pretty
+        }
+
         private void CycleMode(NPC npc)
         {
             npc.rotation = 0f;
@@ -128,7 +134,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     dashDir = npc.Center.X - Main.player[npc.target].Center.X < 0;
                     hasDashed = false;
                     npc.ai[1] = 1600f;
-                    npc.ai[2] = -120f;
+                    npc.ai[2] = -90f;
                     break;
                 case AIMode.Storm:
                     npc.ai[1] = 900f;
@@ -140,6 +146,29 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     npc.ai[2] = 0;
                     dashDir = npc.Center.X - Main.player[npc.target].Center.X < 0;
                     break;
+            }
+        }
+
+        public override void OnKill(NPC npc)
+        {
+            int cloudType = ModContent.ProjectileType<GTBCloud>();
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile proj = Main.projectile[i];
+                if (proj.active && proj.type == cloudType)
+                {
+                    proj.timeLeft = (int)MathF.Min(proj.timeLeft, 100);
+                }
+            }
+
+            int sandStormType = ModContent.ProjectileType<GTBSandStorm>();
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile proj = Main.projectile[i];
+                if (proj.active && proj.type == sandStormType)
+                {
+                    proj.timeLeft = (int)MathF.Min(proj.timeLeft, 90);
+                }
             }
         }
 
@@ -222,7 +251,8 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                             j--;
                             continue;
                         }
-                        Projectile.NewProjectile(source, target.Center.X + offset, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 10f, zapType, 10, 0f, Main.myPlayer, 0f, 0f, 0f);
+                        int zap = Projectile.NewProjectile(source, target.Center.X + offset, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 10f, zapType, 10, 0f, Main.myPlayer, 0f, 0f, 0f);
+                        Main.projectile[zap].tileCollide = false;
                     }
                     Projectile.NewProjectile(source, target.Center.X, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 8f, zapType, 12, 0f, Main.myPlayer, 0f, 0f, 0f);
                     float speedX = -0.05f * Utils.ToDirectionInt(npc.velocity.X > 0f);
@@ -335,7 +365,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                             return;
                         }
 
-                        npc.ai[2] = -120;
+                        npc.ai[2] = -60;
                         dashDir = !dashDir;
                         hasDashed = true;
                     }
