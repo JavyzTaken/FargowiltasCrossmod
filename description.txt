@@ -4,8 +4,6 @@ Officially maintained by Fargo's Mods developers.
 Currently supports:
 Calamity Mod
 
-Secret seeds such as Zenith are not supported.
-
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
 -Adds new accessories in Fargo's accessory style that make use of Calamity items, mechanics, and the Rogue class
@@ -18,6 +16,36 @@ Planned future features:
 -Custom Champions for added Forces
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
+
+**FAQ**
+Does this mod make Calamity balanced with Fargo's Souls?
+That's the main purpose of the mod, making other mods balanced with Fargo's and allowing for a good experience in a playthrough. We may not have caught every single little balance issue, but many measures have been taken to better the balance and overall experience.
+
+Does the mod support multiplayer?
+It intends to. If there's issues, report them.
+
+Why does this mod not have the old enchantments/souls?
+This mod is essentially a remake of the DLC, built from the ground up, with vastly raised quality standards. The old enchantments don't make that cut, both for being too uninteresting (they're literally just set bonus/accessory effects) and for balance reasons.
+
+Will you readd enchantments / souls for Calamity / (other mod)?
+Modded enchantments will be reintroduced in a reworked state to fit current quality standards. This will take a while since it's a lot to do, there's many effects to make. Making new content takes time.
+
+How does this mod work with Infernum?
+Infernum and Eternity Mode are inherently conflicting, since they both focus on full-scale reworks for bosses. Both already have fully developed and boss AI pushed to limits, meaning it's not feasible to try to mesh them together. That means you have to choose between them, in terms of boss AI.
+The mod contains two options for this:
+-Config that lets Infernum take priority over Eternity AI
+-Config that disables Eternity Mode entirely with Infernum
+
+In general, the scope of this mod is focused on quality over quantity. It's not feasible for a small dev team to account for every mod ever and their complex difficulties and AI.
+
+Will secret seeds like Zenith be supported?
+No.
+
+Will the dragon ball mod be supported?
+No.
+
+Will the Eternity Advisor give advice for other mods' bosses?
+No, way too much effort to maintain. Also, things like Class Setups wiki pages already exist for those mods, concerning their content.
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
