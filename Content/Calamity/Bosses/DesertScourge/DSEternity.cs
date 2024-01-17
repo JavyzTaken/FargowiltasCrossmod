@@ -74,7 +74,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int phase;
         public bool CanDoSlam = false;
         public bool DoSlam = false;
-        public bool CanDoSlam = true;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
