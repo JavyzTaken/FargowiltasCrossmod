@@ -24,6 +24,8 @@ Fargo Discord: https://discord.gg/Rgen4Vv
 Latest Update: v1.0.5.40
 Updated to Souls Mod version 1.6.4
 Implemented toggles in the new system and resorted them under headers
+Renamed and resprited Exo Battery to Portable Codebreaker
+Eternity Desert Scourge - Adjusted conditions for slam attack
 Tweaked some recipes
 
 Previous Update: v1.0.5.3
