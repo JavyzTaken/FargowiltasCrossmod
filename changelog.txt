@@ -1,3 +1,4 @@
 New Update: v1.0.5.40
-Updated to new Souls Mod version 
+Updated to Souls Mod version 1.6.4
 Implemented toggles in the new system and resorted them under headers
+Tweaked some recipes

@@ -22,8 +22,9 @@ Features several configs to customize your Fargo's/Calamity cross-mod experience
 Fargo Discord: https://discord.gg/Rgen4Vv
 
 Latest Update: v1.0.5.40
-Updated to new Souls Mod version 
+Updated to Souls Mod version 1.6.4
 Implemented toggles in the new system and resorted them under headers
+Tweaked some recipes
 
 Previous Update: v1.0.5.3
 Changes to Eternity-Death vanilla bosses:
