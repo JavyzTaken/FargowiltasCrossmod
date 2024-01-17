@@ -87,12 +87,14 @@ using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Ammos;
 using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
@@ -438,14 +440,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
             Player player = Main.player[Main.myPlayer];
-            if (player.FargoSouls().OriEnchantItem != null && npc.lifeRegen < 0)
+            if (player.HasEffect<OrichalcumEffect>() && npc.lifeRegen < 0)
             {
                 float modifier = 0.6f;
                 if (npc.Calamity().shellfishVore > 0) //nerf with shellfish thing
                 {
                     modifier = 0.5f;
                 }
-                if (player.FargoSouls().ForceEffect(player.FargoSouls().OriEnchantItem.type))
+                if (player.FargoSouls().ForceEffect<OrichalcumEnchant>())
                 {
                     modifier -= 0.1f;
                 }

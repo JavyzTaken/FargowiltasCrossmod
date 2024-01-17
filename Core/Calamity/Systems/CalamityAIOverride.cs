@@ -264,7 +264,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 calamity.Call("AddDifficultyToUI", new EternityRevDifficulty());
                 calamity.Call("AddDifficultyToUI", new EternityDeathDifficulty());
-                FargowiltasCrossmod.LoadTogglesFromType(typeof(CalamityToggles));
+                //FargowiltasCrossmod.LoadTogglesFromType(typeof(CalamityToggles)); no need for this anymore
             }
             //Disable rev+ enemy/boss ai in emode
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);

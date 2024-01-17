@@ -20,6 +20,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
@@ -116,11 +117,15 @@ namespace FargowiltasCrossmod.Content.Calamity
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
-            if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type))
+            AdamantiteEffect adamEffect = ModContent.GetInstance<AdamantiteEffect>();
+            if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type) && Player.HasEffect(adamEffect))
             {
-                soulsPlayer.AdamantiteEnchantItem = null;
+                AccessoryEffectPlayer effectsPlayer = Player.AccessoryEffects();
+                effectsPlayer.ActiveEffects[adamEffect.Index] = false;
+                effectsPlayer.EffectItems[adamEffect.Index] = null;
+
             }
-            if (soulsPlayer.TinEnchantItem != null)
+            if (Player.HasEffect<TinEffect>())
             {
                 calamityPlayer.spiritOrigin = false;
             }
@@ -223,8 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
         {
             FargoSoulsPlayer modPlayer = Player.FargoSouls();
-            if (modPlayer.TungstenEnchantItem != null && modPlayer.Toggler != null && Player.GetToggleValue("Tungsten")
-                && (modPlayer.ForceEffect(modPlayer.TungstenEnchantItem.type) || item.shoot == ProjectileID.None))
+            if (Player.HasEffect<TungstenEffect>() && modPlayer.Toggler != null && (modPlayer.ForceEffect<TungstenEnchant>() || item.shoot == ProjectileID.None))
             {
                 TungstenTrueMeleeDamageNerf(Player, ref modifiers, item);
             }
@@ -233,7 +237,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
         {
             FargoSoulsPlayer modPlayer = Player.FargoSouls();
-            if (modPlayer.TungstenEnchantItem != null && proj.FargoSouls().TungstenScale != 1)
+            if (Player.HasEffect<TungstenEffect>() && proj.FargoSouls().TungstenScale != 1)
             {
                 TungstenTrueMeleeDamageNerf(Player, ref modifiers);
             }

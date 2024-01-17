@@ -35,6 +35,7 @@ using Terraria.Localization;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using CalamityMod.UI.CalamitasEnchants;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -42,9 +43,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemBalance : GlobalItem
     {
-
-
-   
 
         public float BalanceChange(Item item)
         {
@@ -134,19 +132,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public static float TrueMeleeTungstenScaleNerf(Player player)
         {
             FargoSoulsPlayer soulsPlayer = player.FargoSouls();
-            return soulsPlayer.TungstenEnchantItem != null && soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1.5f;
+            return player.HasEffect<TungstenEffect>() && soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1.5f;
         }
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
             FargoSoulsPlayer soulsPlayer = player.FargoSouls();
 
             #region Tungsten balance changes/fixes
-            if (soulsPlayer.TungstenEnchantItem != null && player.GetToggleValue("Tungsten") &&
+            if (player.HasEffect<TungstenEffect>() &&
                     !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
             {
                 if (CrossplayerCalamity.TungstenExcludeWeapon.Contains(item.type))
                 {
-                    float tungScale = 1f + (soulsPlayer.ForceEffect(soulsPlayer.TungstenEnchantItem.type) ? 2f : 1f);
+                    float tungScale = 1f + (soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1f);
                     scale /= tungScale;
                 }
                 else if (item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))

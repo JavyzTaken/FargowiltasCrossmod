@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class OutlawsEssence : BaseEssence
     {
-        protected override Color nameColor => new(217, 144, 67);
+        public override Color nameColor => new(217, 144, 67);
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

@@ -18,6 +18,8 @@ using CalamityMod.Items.Materials;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasCrossmod.Core;
 using Terraria.DataStructures;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 {
@@ -48,23 +50,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.GetToggleValue("HeartoftheElements"))
+            if (player.AddEffect<HeartoftheElementsEffect>(Item))
                 ModContent.GetInstance<HeartoftheElements>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("OccultSkullCrown", false))
+
+            if (player.AddEffect<OccultSkullCrownEffect>(Item))
                 ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("Purity"))
+
+            if (player.AddEffect<PurityEffect>(Item))
                 ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("TheSponge"))
+
+            if (player.AddEffect<TheSpongeEffect>(Item))
                 ModContent.GetInstance<TheSponge>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("ChaliceOfTheBloodGod", false))
+
+            if (player.AddEffect<ChaliceOfTheBloodGodEffect>(Item))
                 ModContent.GetInstance<ChaliceOfTheBloodGod>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("NebulousCore", false))
+
+            if (player.AddEffect<NebulousCoreEffect>(Item))
                 ModContent.GetInstance<NebulousCore>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("YharimsGift", false))
+
+            if (player.AddEffect<YharimsGiftEffect>(Item))
                 ModContent.GetInstance<YharimsGift>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("DraedonsHeart", false))
+
+            if (player.AddEffect<DraedonsHeartEffect>(Item))
                 ModContent.GetInstance<DraedonsHeart>().UpdateAccessory(player, hideVisual);
-            if (player.GetToggleValue("Calamity", false))
+
+            if (player.AddEffect<CalamityEffect>(Item))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
         }
         public override void AddRecipes()
@@ -84,5 +94,70 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 .Register();
         }
     }
-
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public abstract class BotBWEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<BrandoftheBrimstoneWitchHeader>();
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class HeartoftheElementsEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<HeartoftheElements>();
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class OccultSkullCrownEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<OccultSkullCrown>();
+        public override bool IgnoresMutantPresence => true;
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class PurityEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<Purity>();
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class TheSpongeEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<TheSponge>();
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class ChaliceOfTheBloodGodEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<ChaliceOfTheBloodGod>();
+        public override bool IgnoresMutantPresence => true;
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class NebulousCoreEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<NebulousCore>();
+        public override bool IgnoresMutantPresence => true;
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class YharimsGiftEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<YharimsGift>();
+        public override bool IgnoresMutantPresence => true;
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class DraedonsHeartEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<DraedonsHeart>();
+        public override bool IgnoresMutantPresence => true;
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class CalamityEffect : BotBWEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<CalamityMod.Items.Accessories.Calamity>();
+        public override bool IgnoresMutantPresence => true;
+    }
 }

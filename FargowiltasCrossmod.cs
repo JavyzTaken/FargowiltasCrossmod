@@ -35,6 +35,7 @@ public class FargowiltasCrossmod : Mod
         Instance = null;
     }
 
+    /* no need for this anymore
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static void LoadTogglesFromType(Type type)
     {
@@ -51,6 +52,7 @@ public class FargowiltasCrossmod : Mod
             }
         }
     }
+    */
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static ref List<int> pierceResistExceptionList => ref CalamityLists.pierceResistExceptionList;
     public override void PostSetupContent()
@@ -66,8 +68,8 @@ public class FargowiltasCrossmod : Mod
             SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
         }
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public DamageClass rogueDamageClass => ModContent.GetInstance<RogueDamageClass>();
+    //[JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    //public DamageClass rogueDamageClass => ModContent.GetInstance<RogueDamageClass>();
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public void PostSetupContent_Calamity()
     {
@@ -80,20 +82,20 @@ public class FargowiltasCrossmod : Mod
         };
         SpearRework.ReworkedSpears.AddRange(CalamityReworkedSpears);
         */
-
+        
+        /*
+         * PR'd to Calamity
         #region Stat Sheet
         double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
         int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
-
 
         int rogueItem = ModContent.ItemType<WulfrumKnife>();
         Func<string> rogueDamage = () => $"Rogue Damage: {Damage(rogueDamageClass)}%";
         Func<string> rogueCrit = () => $"Rogue Critical: {Crit(rogueDamageClass)}%";
         ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueDamage);
         ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueCrit);
-
         #endregion
-
+        */
     }
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
 }
