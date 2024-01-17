@@ -72,6 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public const int attackCycleLength = 9;
         public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
+        public bool CanDoSlam = false;
         public bool DoSlam = false;
         public bool CanDoSlam = true;
 
@@ -255,6 +256,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public void suck(NPC npc)
         {
             Player target = Main.player[npc.target];
+
+            CanDoSlam = true; //can do slam after this attack
+
             if (ai[3] >= 0)
             {
                 ai[3]++;
@@ -415,6 +419,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                             timer = 0;
                             attackStep = 0;
                             DoSlam = false;
+                            CanDoSlam = false;
                             return;
                         }
                     }

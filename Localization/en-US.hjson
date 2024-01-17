@@ -186,8 +186,8 @@ Mods: {
 				Tooltip: Summons Yharon
 			}
 
-			ExoBattery: {
-				DisplayName: Exo Battery
+			PortableCodebreaker: {
+				DisplayName: Portable Codebreaker
 				Tooltip: Summons Draedon
 			}
 
