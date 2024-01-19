@@ -15,7 +15,11 @@ namespace FargowiltasCrossmod.Core.Calamity
 
         [DefaultValue(true)]
         public bool EternityPriorityOverRev;
-        
+
+        [ReloadRequired]
+        [DefaultValue(true)]
+        public bool ConsumableSummons;
+
         [ReloadRequired]
         [DefaultValue(false)]
         public bool InfernumDisablesEternity;

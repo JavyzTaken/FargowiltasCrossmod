@@ -59,6 +59,18 @@ Mods: {
 						'''
 				}
 
+				ConsumableSummons: {
+					Label: Summon Items are Consumable in Eternity Mode
+					Tooltip:
+						'''
+						Changes vanilla and Calamity summon items to be consumable, overriding the Calamity non-consumable change.
+						This change exists purely for consistency with the following features:
+						- Summon items being refunded on boss attempts in Eternity Mode (effectively the same as being non-consumable)
+						- The Mutant NPC
+						- The Mutant Mod summon item variants
+						'''
+				}
+
 				EternityPriorityOverRev: {
 					Label: Eternity Priority over Calamity Modes
 					Tooltip:
