@@ -475,14 +475,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return DropHelper.If(lambda, ui, dec);
         }
 
-        public static List<int> DropsBoundingPotion = new List<int>
+        public static List<int> DropsBoundingPotion = new()
         {
             ModContent.NPCType<AeroSlime>(),
             ModContent.NPCType<EbonianBlightSlime>(),
             ModContent.NPCType<CrimulanBlightSlime>(),
             NPCID.SpikedJungleSlime
         };
-        public static List<int> DropsCalciumPotion = new List<int>
+        public static List<int> DropsCalciumPotion = new()
         {
             NPCID.Skeleton,
             NPCID.ArmoredSkeleton,
@@ -492,13 +492,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             NPCID.BigSkeleton,
             NPCID.SmallSkeleton,
         };
-        public static List<int> DropsPhotosynthesisPotion = new List<int>
+        public static List<int> DropsPhotosynthesisPotion = new()
         {
             NPCID.AngryNimbus,
             ModContent.NPCType<ThiccWaifu>(), //fuck you fabsol
             NPCID.WyvernHead
         };
-        public static List<int> DropsShadowPotion = new List<int>
+        public static List<int> DropsShadowPotion = new()
         {
             ModContent.NPCType<Scryllar>(),
             ModContent.NPCType<SoulSlurper>(),
@@ -507,13 +507,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<CalamityEye>(),
             ModContent.NPCType<RenegadeWarlock>()
         };
-        public static List<int> DropsSoaringPotion = new List<int>
+        public static List<int> DropsSoaringPotion = new()
         {
             ModContent.NPCType<EutrophicRay>(),
             ModContent.NPCType<GhostBell>(),
             ModContent.NPCType<SeaFloaty>(),
         };
-        public static List<int> DropsSulphurskinPotion = new List<int>
+        public static List<int> DropsSulphurskinPotion = new()
         {
             ModContent.NPCType<AquaticUrchin>(),
             ModContent.NPCType<Sulflounder>(),
@@ -521,13 +521,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<Toxicatfish>(),
             ModContent.NPCType<Trasher>(),
         };
-        public static List<int> DropsTeslaPotion = new List<int>
+        public static List<int> DropsTeslaPotion = new()
         {
             NPCID.GreenJellyfish,
             ModContent.NPCType<BlindedAngler>(),
             ModContent.NPCType<ShockstormShuttle>(),
         };
-        public static List<int> DropsZenPotion = new List<int>
+        public static List<int> DropsZenPotion = new()
         {
             ModContent.NPCType<Atlas>(),
             ModContent.NPCType<AstralachneaGround>(),
@@ -536,7 +536,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<StellarCulex>(),
             ModContent.NPCType<AstralSlime>()
         };
-        public static List<int> DropsZergPotion = new List<int>
+        public static List<int> DropsZergPotion = new()
         {
             ModContent.NPCType<Hadarian>(),
             ModContent.NPCType<SightseerSpitter>(),
