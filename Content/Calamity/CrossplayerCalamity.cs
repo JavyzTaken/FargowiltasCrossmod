@@ -30,6 +30,7 @@ using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Content.Calamity
 {
@@ -41,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity
 
         public override void ResetEffects()
         {
-            CalamitousPresence = CalamitousPresence && Player.HasBuff(ModContent.BuffType<CalamitousPresenceBuff>());
+            CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
             base.ResetEffects();
         }
         public override void OnEnterWorld()
@@ -70,37 +71,41 @@ namespace FargowiltasCrossmod.Content.Calamity
             {
                 if (BossRushEvent.BossRushActive)
                 {
-                    Player.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
+                    Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
                 }
-                if (NPC.AnyNPCs(ModContent.NPCType<MutantBoss>()))
+                if (NPC.AnyNPCs(NPCType<MutantBoss>()))
                 {
-                    Player.ClearBuff(ModContent.BuffType<Enraged>());
+                    Player.ClearBuff(BuffType<Enraged>());
                 }
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
         public static List<int> TungstenExcludeWeapon = new List<int>
         {
-            ModContent.ItemType<OldLordClaymore>(),
-            ModContent.ItemType<BladecrestOathsword>()
+            ItemType<OldLordClaymore>(),
+            ItemType<BladecrestOathsword>()
         };
         public static List<int> AttackSpeedExcludeWeapons = new List<int>
         {
-            ModContent.ItemType<ExecutionersBlade>()
+            ItemType<ExecutionersBlade>()
         };
         public static List<int> AdamantiteIgnoreItem = new List<int>
         {
-            ModContent.ItemType<HeavenlyGale>(),
-            ModContent.ItemType<TheSevensStriker>(),
-            ModContent.ItemType<Phangasm>(),
-            ModContent.ItemType<TheJailor>(),
-            ModContent.ItemType<AetherfluxCannon>(),
-            ModContent.ItemType<TheAnomalysNanogun>(),
-            ModContent.ItemType<ClockworkBow>(),
-            ModContent.ItemType<NebulousCataclysm>(),
-            ModContent.ItemType<Eternity>(), //fargo reference
-            ModContent.ItemType<Vehemence>(),
-            ModContent.ItemType<Phaseslayer>()
+            ItemType<HeavenlyGale>(),
+            ItemType<TheSevensStriker>(),
+            ItemType<Phangasm>(),
+            ItemType<TheJailor>(),
+            ItemType<AetherfluxCannon>(),
+            ItemType<TheAnomalysNanogun>(),
+            ItemType<ClockworkBow>(),
+            ItemType<NebulousCataclysm>(),
+            ItemType<Eternity>(), //fargo reference
+            ItemType<Vehemence>(),
+            ItemType<Phaseslayer>(),
+            ItemType<FracturedArk>(),
+            ItemType<TrueArkoftheAncients>(),
+            ItemType<ArkoftheElements>(),
+            ItemType<ArkoftheCosmos>()
         };
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
@@ -117,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
-            AdamantiteEffect adamEffect = ModContent.GetInstance<AdamantiteEffect>();
+            AdamantiteEffect adamEffect = GetInstance<AdamantiteEffect>();
             if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type) && Player.HasEffect(adamEffect))
             {
                 AccessoryEffectPlayer effectsPlayer = Player.AccessoryEffects();
@@ -163,7 +168,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 Player.lifeRegenCount = 0;
                 Player.lifeRegenTime = 0f;
             }
-            if (ModContent.GetInstance<FargoClientConfig>().DoubleTapDashDisabled)
+            if (GetInstance<FargoClientConfig>().DoubleTapDashDisabled)
             {
                 Player.GetModPlayer<CalamityPlayer>().dashTimeMod = 0;
             }
@@ -215,7 +220,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override float UseSpeedMultiplier(Item item)
         {
-            if (item.DamageType == ModContent.GetInstance<RogueDamageClass>() && item.useTime < item.useAnimation)
+            if (item.DamageType == GetInstance<RogueDamageClass>() && item.useTime < item.useAnimation)
             {
                 bool carryOverAttackSpeedCheck = Player.FargoSouls().HaveCheckedAttackSpeed;
                 float soulsAttackSpeed = Player.FargoSouls().UseSpeedMultiplier(item);
@@ -247,7 +252,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             if (item == null)
                 item = player.HeldItem;
-            if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+            if (item != null && item.DamageType == GetInstance<TrueMeleeDamageClass>() || item.DamageType == GetInstance<TrueMeleeNoSpeedDamageClass>())
                 modifiers.FinalDamage /= 1.15f;
         }
     }
