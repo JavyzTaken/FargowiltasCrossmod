@@ -80,16 +80,16 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
-        public static List<int> TungstenExcludeWeapon = new List<int>
+        public static List<int> TungstenExcludeWeapon = new()
         {
             ItemType<OldLordClaymore>(),
             ItemType<BladecrestOathsword>()
         };
-        public static List<int> AttackSpeedExcludeWeapons = new List<int>
+        public static List<int> AttackSpeedExcludeWeapons = new()
         {
             ItemType<ExecutionersBlade>()
         };
-        public static List<int> AdamantiteIgnoreItem = new List<int>
+        public static List<int> AdamantiteIgnoreItem = new()
         {
             ItemType<HeavenlyGale>(),
             ItemType<TheSevensStriker>(),
