@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core;
+﻿using CalamityMod;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -24,7 +25,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+            Projectile.DrawProjectileWithBackglow(Color.Magenta, lightColor, 4f);
+            //Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
         public override void OnKill(int timeLeft)
@@ -36,11 +38,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.WallofFlesh
             Projectile.ai[0]++;
             Projectile.rotation += MathHelper.ToRadians(30);
             Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.DemonTorch).noGravity = true;
-            if (Projectile.velocity.Length() < 15) Projectile.velocity *= 1.05f;
+            if (Projectile.velocity.Length() < 16) Projectile.velocity *= 1.025f;
             int p = Player.FindClosest(Projectile.Center, 1, 1);
             if (Projectile.ai[0] > 30 && Projectile.ai[0] < 130 && p >= 0)
             {
-                Projectile.velocity = new Vector2(Projectile.velocity.Length(), 0).RotatedBy(Utils.AngleTowards(Projectile.velocity.ToRotation(), Projectile.AngleTo(Main.player[p].Center), 0.02f));
+                Projectile.velocity = new Vector2(Projectile.velocity.Length(), 0).RotatedBy(Utils.AngleTowards(Projectile.velocity.ToRotation(), Projectile.AngleTo(Main.player[p].Center), 0.025f));
             }
         }
     }

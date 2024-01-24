@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
@@ -33,7 +33,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.timeLeft = 60;
             Projectile.hostile = false;
             Projectile.friendly = false;
-            
+
+            Projectile.light = 0.5f;
+            Projectile.tileCollide = false;
+            //Projectile.coldDamage = true;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -43,41 +46,56 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             base.OnHitPlayer(target, info);
         }
+        ref float Weapon => ref Projectile.ai[0];
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             Vector2 origin = new Vector2(0, t.Height());
             float maxscale = 1;
             SpriteEffects se = SpriteEffects.None;
-            if (Projectile.ai[0] == 1)
+            if (Weapon == 1)
             {
+                Main.instance.LoadItem(ModContent.ItemType<FrostbiteBlaster>());
+
                 t = TextureAssets.Item[ModContent.ItemType<FrostbiteBlaster>()];
                 origin = new Vector2(10, t.Height() / 2);
                 float degrees = MathHelper.ToDegrees(Projectile.rotation + MathHelper.Pi);
                 if (degrees > 270 || degrees < 90) se = SpriteEffects.FlipVertically;
             }
-            if (Projectile.ai[0] == 2)
+            if (Weapon == 2)
             {
-                t = TextureAssets.Projectile[ModContent.ProjectileType<ArcticPaw>()];
+                int asset = ModContent.ProjectileType<ArcticPaw>();
+                Main.instance.LoadProjectile(asset);
+
+                t = TextureAssets.Projectile[asset];
                 origin = t.Size() / 2;
                 maxscale = 2;
             }
-            if (Projectile.ai[0] == 3)
+            if (Weapon == 3)
             {
-                t = TextureAssets.Item[ModContent.ItemType<WintersFury>()];
+                int asset = ModContent.ItemType<WintersFury>();
+                Main.instance.LoadItem(asset);
+
+                t = TextureAssets.Item[asset];
                 origin = new Vector2(2, 28);
                 float degrees = MathHelper.ToDegrees(Projectile.rotation + MathHelper.Pi);
                 if (degrees > 270 || degrees < 90) se = SpriteEffects.FlipVertically;
             }
-            if (Projectile.ai[0] == 4)
+            if (Weapon == 4)
             {
-                t = TextureAssets.Item[ModContent.ItemType<AbsoluteZero>()];
+                int asset = ModContent.ItemType<AbsoluteZero>();
+                Main.instance.LoadItem(asset);
+
+                t = TextureAssets.Item[asset];
                 origin = new Vector2(0, t.Height());
                 maxscale = 1.5f;
             }
-            if (Projectile.ai[0] == 5)
+            if (Weapon == 5)
             {
-                t = TextureAssets.Item[ModContent.ItemType<EternalBlizzard>()];
+                int asset = ModContent.ItemType<EternalBlizzard>();
+                Main.instance.LoadItem(asset);
+
+                t = TextureAssets.Item[asset];
                 origin = new Vector2(10, t.Height() / 2);
                 float degrees = MathHelper.ToDegrees(Projectile.rotation + MathHelper.Pi);
                 if (degrees > 270 || degrees < 90) se = SpriteEffects.FlipVertically;
@@ -103,10 +121,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Projectile.Kill();
                 return;
             }
+
             float angle = Projectile.ai[1];
             float scale = 1;
             //Ice Trident
-            if (Projectile.ai[0] == 0)
+            if (Weapon == 0)
             {
                 angle += MathHelper.PiOver4;
                 if (owner.ai[1] < 60)
@@ -114,14 +133,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 if (Projectile.localAI[0] < scale)
                 {
                     Vector2 thing = new Vector2(0, -50 * Projectile.localAI[0]).RotatedBy(Projectile.rotation);
-                    if (Projectile.ai[0] == 0) thing = thing.RotatedBy(MathHelper.PiOver4);
+                    if (Weapon == 0) thing = thing.RotatedBy(MathHelper.PiOver4);
                     for (int i = 0; i < 5; i++)
                         Dust.NewDustDirect(Projectile.Center + thing * Main.rand.NextFloat(0f, 1f), 0, 0, DustID.SnowflakeIce).noGravity = true;
                 }
                 if (Projectile.timeLeft == 1)
                 {
                     Vector2 thing = new Vector2(0, -50 * Projectile.localAI[0]).RotatedBy(Projectile.rotation);
-                    if (Projectile.ai[0] == 0) thing = thing.RotatedBy(MathHelper.PiOver4);
+                    if (Weapon == 0) thing = thing.RotatedBy(MathHelper.PiOver4);
                     for (int i = 0; i < 50; i++)
                     {
                         Dust.NewDustDirect(Projectile.Center + thing * Main.rand.NextFloat(0f, 1f), 0, 0, DustID.SnowflakeIce).noGravity = true;
@@ -129,7 +148,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
             }
             //Frostbite Blaster
-            if (Projectile.ai[0] == 1)
+            if (Weapon == 1)
             {
                 if (Projectile.localAI[0] < scale)
                 {
@@ -141,18 +160,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Projectile.rotation = owner.AngleTo(Main.player[owner.target].Center);
                 }
+                
                 if (Projectile.timeLeft == 1)
                 {
-
                     for (int i = 0; i < 50; i++)
                     {
                         Vector2 off = new Vector2(Main.rand.Next(0, 56) * Projectile.localAI[0], 0).RotatedBy(Projectile.rotation);
                         Dust.NewDustDirect(Projectile.Center + off, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
                     }
+                    Projectile.Kill();
                 }
             }
             //Arctic Bear Paw
-            if (Projectile.ai[0] == 2)
+            if (Weapon == 2)
             {
                 Projectile.Opacity = 0.7f;
                 Projectile.rotation = owner.velocity.ToRotation() + MathHelper.PiOver2;
@@ -165,7 +185,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
                 if (Projectile.timeLeft == 1)
                 {
-                    
                     for (int i = 0; i < 50; i++)
                     {
                         Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
@@ -173,7 +192,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
             }
             //Winter's fury
-            if (Projectile.ai[0] == 3)
+            if (Weapon == 3)
             {
                 if (owner.HasValidTarget)
                 {
@@ -195,7 +214,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
             }
             //Absolute zero
-            if (Projectile.ai[0] == 4)
+            if (Weapon == 4)
             {
                 scale = 1.5f;
                 if (Projectile.localAI[0] < scale)
@@ -223,7 +242,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
             }
             //Eternal Blizzard
-            if (Projectile.ai[0] == 5)
+            if (Weapon == 5)
             {
                 if (Projectile.localAI[0] < scale)
                 {
@@ -247,23 +266,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             if (Projectile.localAI[0] == 0.06f)
             {
-                if (Projectile.ai[0] == 1)
-                    Projectile.timeLeft = 60;
-                if (Projectile.ai[0] == 2)
+                if (Weapon == 1)
+                    Projectile.timeLeft = 54;
+                if (Weapon == 2)
                 {
-                    Projectile.timeLeft =160;
+                    Projectile.timeLeft = 79;
                 }
-                if (Projectile.ai[0] == 3)
+                if (Weapon == 3)
                 {
                     Projectile.timeLeft = 180;
                 }
-                if (Projectile.ai[0] == 4)
+                if (Weapon == 4)
                 {
                     Projectile.timeLeft = 120;
                 }
-                if (Projectile.ai[0] == 5)
+                if (Weapon == 5)
                 {
-                    Projectile.timeLeft = 150;
+                    Projectile.timeLeft = 165;
                 }
             }
             Projectile.Center = owner.Center;
@@ -273,4 +292,3 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
     }
 }
-*/

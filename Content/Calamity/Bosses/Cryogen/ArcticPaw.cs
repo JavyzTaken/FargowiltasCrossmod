@@ -1,7 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -25,18 +24,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "CalamityMod/Projectiles/Magic/ArcticBearPawProj";
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 40;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 120;
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+            Projectile.timeLeft = 200;
+            Projectile.light = 0.5f;
             Projectile.scale = 0.3f;
-            
+
+            Projectile.tileCollide = false;
+            //Projectile.coldDamage = true;
+
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

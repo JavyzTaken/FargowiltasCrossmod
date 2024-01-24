@@ -59,6 +59,18 @@ Mods: {
 						'''
 				}
 
+				ConsumableSummons: {
+					Label: Summon Items are Consumable in Eternity Mode
+					Tooltip:
+						'''
+						Changes vanilla and Calamity summon items to be consumable, overriding the Calamity non-consumable change.
+						This change exists purely for consistency with the following features:
+						- Summon items being refunded on boss attempts in Eternity Mode (effectively the same as being non-consumable)
+						- The Mutant NPC
+						- The Mutant Mod summon item variants
+						'''
+				}
+
 				EternityPriorityOverRev: {
 					Label: Eternity Priority over Calamity Modes
 					Tooltip:
@@ -66,6 +78,16 @@ Mods: {
 						Enables Eternity Mode boss behaviour to take priority over Revengeance Mode boss behaviour and other Calamity difficulties.
 						Some Calamity bosses have Eternity Mode changes when this is enabled.
 						Disabling this makes Calamity difficulties take priority over Eternity.
+						'''
+				}
+
+				InfernumDisablesEternity: {
+					Label: Infernum Mode Disables Eternity Mode
+					Tooltip:
+						'''
+						Only relevant with the Infernum Mode mod enabled.
+						Makes the Infernum Mode difficulty fully disable Eternity Mode. 
+						With this disabled, Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
 				}
 			}
@@ -76,7 +98,7 @@ Mods: {
 				AngelTreads: Effects of Angel Treads
 				AeolusBoots: Effects of Aeolus Boots
 				ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
-				CalamityColossus: Effects of The Amalgam, Asgardian Aegis, Rampart of Deities, and Purity
+				CalamityColossus: Effects of The Amalgam, Asgardian Aegis and Rampart of Deities
 				ThoriumColossus:
 					'''
 					Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
@@ -176,8 +198,8 @@ Mods: {
 				Tooltip: Summons Yharon
 			}
 
-			ExoBattery: {
-				DisplayName: Exo Battery
+			PortableCodebreaker: {
+				DisplayName: Portable Codebreaker
 				Tooltip: Summons Draedon
 			}
 
@@ -350,6 +372,15 @@ Mods: {
 					Can only be used in the abyss
 					'''
 			}
+
+			BrandoftheBrimstoneWitch: {
+				DisplayName: Brand of the Brimstone Witch
+				Tooltip:
+					'''
+					Effects of Heart of the Elements, Occult Skull Crown, Purity, The Sponge, Chalice of the Blood God
+					Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
+					'''
+			}
 		}
 
 		NPCs: {
@@ -419,6 +450,10 @@ Mods: {
 			IceArrow.DisplayName: Ice Arrow
 			IceShot.DisplayName: Ice Shot
 			IceStar.DisplayName: Ice Star
+			CryogenRitual.DisplayName: Cryogen Ritual
+			PermafrostRitual.DisplayName: Permafrost Ritual
+			IceCloud.DisplayName: Chilling Snow
+			BrimstoneDebris.DisplayName: Brimstone Debris
 		}
 
 		Buffs: {
@@ -438,27 +473,33 @@ Mods: {
 			IceStar.DisplayName: Ice Star
 		}
 
-		VagabondsSoulHeader: "[i:FargowiltasCrossmod/VagabondsSoul] Vagabond's Soul"
-		NanotechConfig: "[i:CalamityMod/Nanotech] Nanotech"
-		EclipseMirrorConfig: "[i:CalamityMod/EclipseMirror] Eclipse Mirror"
-		DragonScalesConfig: "[i:CalamityMod/DragonScales] Dragon Scales"
-		VeneratedLocketConfig: "[i:CalamityMod/VeneratedLocket] Venerated Locket"
-		CalamityColossusHeader: "[i:FargowiltasSouls/ColossusSoul] Calamity Colossus Soul"
-		AmalgamConfig: "[i:CalamityMod/TheAmalgam] The Amalgam"
-		AsgardianAegisConfig: "[i:CalamityMod/AsgardianAegis] Asgardian Aegis"
-		RampartofDeitiesConfig: "[i:CalamityMod/RampartofDeities] Rampart of Deities"
-		PurityConfig: "[i:CalamityMod/Purity] Purity"
-		CalamityBerserkerHeader: "[i:FargowiltasSouls/BerserkerSoul] Calamity Berserker Soul"
-		ElementalGauntletConfig: "[i:CalamityMod/ElementalGauntlet] Elemental Gauntlet"
-		CalamityWizardHeader: "[i:FargowiltasSouls/ArchWizardsSoul] Calamity Arch Wizard's Soul"
-		EtherealTalismanConfig: "[i:CalamityMod/EtherealTalisman] Ethereal Talisman"
-		CalamitySniperHeader: "[i:FargowiltasSouls/SnipersSoul] Calamity Sniper's Soul"
-		ElementalQuiverConfig: "[i:CalamityMod/ElementalQuiver] Elemental Quiver"
-		QuiverofNihilityConfig: "[i:CalamityMod/QuiverofNihility] Quiver of Nihility"
-		DynamoStemCellsConfig: "[i:CalamityMod/DynamoStemCells] Dynamo Stem Cells"
-		CalamityConjuristHeader: "[i:FargowiltasSouls/ConjuristsSoul] Calamity Conjurist's Soul"
-		NucleogenesisConfig: "[i:CalamityMod/Nucleogenesis] Nucleogenesis"
-		CalamityTrawlerHeader: "[i:FargowiltasSouls/TrawlerSoul] Calamity Trawler's Soul"
-		AbyssalDivingSuitConfig: "[i:CalamityMod/AbyssalDivingSuit] Abyssal Diving Suit"
+		Toggler: {
+			VagabondsSoulHeader: Vagabond's Soul
+			NanotechEffect: Nanotech
+			EclipseMirrorEffect: Eclipse Mirror
+			DragonScalesEffect: Dragon Scales
+			VeneratedLocketEffect: Venerated Locket
+			AmalgamEffect: The Amalgam
+			AsgardianAegisEffect: Asgardian Aegis
+			RampartofDeitiesEffect: Rampart of Deities
+			ElementalGauntletEffect: Elemental Gauntlet
+			EtherealTalismanEffect: Ethereal Talisman
+			CalamitySniperHeader: Calamity Sniper's Soul
+			ElementalQuiverEffect: Elemental Quiver
+			QuiverofNihilityEffect: Quiver of Nihility
+			DynamoStemCellsEffect: Dynamo Stem Cells
+			NucleogenesisEffect: Nucleogenesis
+			AbyssalDivingSuitEffect: Abyssal Diving Suit
+			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
+			HeartoftheElementsEffect: Heart of the Elements
+			OccultSkullCrownEffect: Occult Skull Crown
+			PurityEffect: Purity
+			TheSpongeEffect: The Sponge
+			ChaliceOfTheBloodGodEffect: Chalice of the Blood God
+			NebulousCoreEffect: Nebulous Core
+			YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
+			DraedonsHeartEffect: Draedons Heart
+			CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
+		}
 	}
 }

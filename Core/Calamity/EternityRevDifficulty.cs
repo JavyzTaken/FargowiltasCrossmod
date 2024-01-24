@@ -1,6 +1,7 @@
 ﻿using CalamityMod.Systems;
 using CalamityMod.World;
-using FargowiltasCrossmod.Core.Systems;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -26,8 +27,13 @@ namespace FargowiltasCrossmod.Core.Calamity
                     CalamityWorld.revenge = true;
                     CalamityWorld.death = false;
                 }
-                FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = value;
-                FargowiltasSouls.Core.Systems.WorldSavingSystem.ShouldBeEternityMode = value;
+                bool emode = value;
+                if (ModCompatibility.InfernumMode.Loaded)
+                    if (ModCompatibility.InfernumMode.InfernumDifficulty && DLCCalamityConfig.Instance.InfernumDisablesEternity)
+                        emode = false;
+
+                FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = emode;
+                FargowiltasSouls.Core.Systems.WorldSavingSystem.ShouldBeEternityMode = emode;
                 if (Main.netMode != NetmodeID.SinglePlayer)
                     PacketManager.SendPacket<EternityRevPacket>();
             }

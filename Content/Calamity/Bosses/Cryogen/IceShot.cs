@@ -22,15 +22,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Blizzard;
         public override void SetStaticDefaults()
         {
-            
+            Main.projFrames[Type] = 5;
         }
         public override void SetDefaults()
         {
             Projectile.height = Projectile.width = 12;
-            Main.projFrames[Type] = 5;
+            
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 300;
+
+            Projectile.light = 0.5f;
+            Projectile.tileCollide = false;
+            Projectile.coldDamage = true;
         }
         public override void OnKill(int timeLeft)
         {

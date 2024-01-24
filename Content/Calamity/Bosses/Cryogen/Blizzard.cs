@@ -1,7 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -25,19 +24,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.HallowBossDeathAurora;
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 7;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3000;
         }
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 40;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 150;
-            ProjectileID.Sets.TrailCacheLength[Type] = 7;
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 3000;
+            Projectile.timeLeft = 60;
+            
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
+            Projectile.coldDamage = true;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core;
+﻿using CalamityMod;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -22,15 +23,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.FrostShard;
         public override void SetStaticDefaults()
         {
-
+            Main.projFrames[Type] = 5;
         }
         public override void SetDefaults()
         {
-            Main.projFrames[Type] = 5;
+            
             Projectile.width = Projectile.height = 10;
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 400;
+
+            Projectile.light = 0.5f;
+            Projectile.tileCollide = false;
+            Projectile.coldDamage = true;
         }
         public override void OnKill(int timeLeft)
         {
@@ -45,7 +50,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             if (Projectile.localAI[0] >= 5) lightColor.A += 50;
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 30 * Projectile.frame, 12, 30), lightColor, Projectile.rotation, new Vector2(12, 30) / 2, Projectile.scale, SpriteEffects.None);
+
+            Projectile.DrawProjectileWithBackglow(CalamityMod.NPCs.Cryogen.Cryogen.BackglowColor, lightColor, 4f);
+            /*
+
+            Rectangle rect = new Rectangle(0, 30 * Projectile.frame, 12, 30);
+            //draw glow
+            for (int j = 0; j < 12; j++)
+            {
+                Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 0.5f;
+                Color glowColor = CalamityMod.NPCs.Cryogen.Cryogen.BackglowColor with { A = 0 } * 0.7f;
+
+
+                Main.EntitySpriteDraw(t.Value, Projectile.Center + afterimageOffset - Main.screenPosition, rect, glowColor, Projectile.rotation, new Vector2(12, 30) / 2, Projectile.scale, SpriteEffects.None);
+            }
+
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, rect, lightColor, Projectile.rotation, new Vector2(12, 30) / 2, Projectile.scale, SpriteEffects.None);
+            */
             return false;
         }
         public override void AI()

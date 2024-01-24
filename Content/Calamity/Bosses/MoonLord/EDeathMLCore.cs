@@ -21,7 +21,7 @@ using FargowiltasSouls.Content.Projectiles.Masomode;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.MoonLord
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathMLCore : EternideathNPC
+    public class EDeathMLCore : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.MoonLordCore);
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)

@@ -6,7 +6,8 @@ using CalamityMod.NPCs;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
@@ -39,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
-            //entity.lifeMax = 10000;
+            entity.lifeMax = (int)(entity.lifeMax * 1.6f);
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 5000000;

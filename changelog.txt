@@ -1,27 +1,6 @@
-New Update: v1.0.4.7
-
-Calamity Mutant:
-Removed first Plaguebringer during Skeletron fan attack on Masochist Mode only
-Removed Mutant maso contact damage while moving to a new position during nuke attack
-Removed nuke contact damage on maso 
-
-Eternity Crabulon: Increased Fungal Clump HP and condensed to single phase at 50% hp
-
-Health multipliers (compensation for Universe Core nerf):
-Devourer of Gods  3.2 -> 2.4
-Storm Weaver  2.7 -> 2.4
-Signus: 2.7 -> 2.2
-Ceaseless: 2.4 -> 2.1
-Old Duke: 3.4 -> 2.2
-Polterghast 3.5 -> 2.4
-Champions: 1 -> 0.9
-Yharon: 2.3 -> 2
-Abom: 3.8 -> 3.5 
-
-Added Calamity Rogue damage and crit to Mutant Mod stat sheet
-Made Calamity dashes disabled by Mutant Mod doubletap config 
-Normality Relocator now self-inflicts damage in Emode while a boss is alive, like Rod of Discord
-Mutant Fang maximum life reduction ticks twice as fast
-Fixed several NPC loot issues 
-"""Resprited""" Eye of Extinction 
-Fixed functionality of Eye of Extinction
+New Update: v1.0.5.40
+Updated to Souls Mod version 1.6.4
+Implemented toggles in the new system and resorted them under headers
+Renamed and resprited Exo Battery to Portable Codebreaker
+Eternity Desert Scourge - Adjusted conditions for slam attack
+Tweaked some recipes

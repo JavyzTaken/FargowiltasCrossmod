@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CalamityMod;
 using CalamityMod.Events;
 using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Utils;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using FargowiltasSouls.Core.Globals;
@@ -30,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.6f);
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 2f);
         }
         public float[] drawInfo = new float[] { 0, 200, 200, 0 };
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -70,8 +72,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public const int attackCycleLength = 9;
         public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
         public int phase;
+        public bool CanDoSlam = false;
         public bool DoSlam = false;
-        public bool CanDoSlam = true;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -253,6 +255,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public void suck(NPC npc)
         {
             Player target = Main.player[npc.target];
+
+            CanDoSlam = true; //can do slam after this attack
+
             if (ai[3] >= 0)
             {
                 ai[3]++;
@@ -413,6 +418,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                             timer = 0;
                             attackStep = 0;
                             DoSlam = false;
+                            CanDoSlam = false;
                             return;
                         }
                     }
@@ -854,17 +860,34 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             ModContent.ProjectileType<SproutingAcorn>()
         };
+        public void NullCoiledDamage(NPC npc, NPC.HitModifiers modifiers)
+        {
+            if (Main.npc.Count(n => n.active && n.type == npc.type && n.Distance(npc.Center) < npc.width * 0.75) > 4)
+            {
+                modifiers.Null();
+            }
+        }
+        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
+        {
+            NullCoiledDamage(npc, modifiers);
+
+        }
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {
-            base.ModifyHitByProjectile(npc, projectile, ref modifiers);
+            NullCoiledDamage(npc, modifiers);
             if (projectile.type == ProjectileID.SporeCloud)
             {
                 modifiers.FinalDamage.Base = 1;
             }
-            if ((projectile.penetrate != projectile.maxPenetrate || projectile.penetrate < 0) && !PierceResistExclude.Contains(projectile.type)) //for hits after the first, except infinite piercings
-            {
-                modifiers.FinalDamage /= 3;
-            }
+            if (projectile.penetrate > 1)
+                modifiers.FinalDamage /= 1.5f;
+        }
+        public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            if (!FargoSoulsUtil.IsSummonDamage(projectile) && projectile.damage > 1)
+                projectile.damage = (int)Math.Min(projectile.damage - 1, projectile.damage * 0.75);
+
+            base.OnHitByProjectile(npc, projectile, hit, damageDone);
         }
         public override bool SafePreAI(NPC npc)
         {
