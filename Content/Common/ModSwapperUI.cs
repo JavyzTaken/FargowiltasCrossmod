@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FargowiltasCrossmod.Core.Common.Globals;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -67,23 +68,36 @@ namespace FargowiltasCrossmod.Content.Common
             }
         }
     }
-
+    public class SwitchModButton : UITextPanel<string>
+    {
+        public SwitchModButton(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
+        {
+        }
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            base.DrawSelf(spriteBatch);
+            if (IsMouseHovering)
+            {
+                Main.LocalPlayer.mouseInterface = true;
+            }
+        }
+    }
     public class ModSwapperUIState : UIState
     {
         public override void OnInitialize()
         {
-            UITextPanel<string> textBox = new("Switch Mod");
+            SwitchModButton textBox = new("Switch Mod");
             textBox.OnLeftClick += (UIMouseEvent evt, UIElement listeningElement) =>
             {
-                Core.Globals.DevianttGlobalNPC.CycleShop();
-                int currentShop = Core.Globals.DevianttGlobalNPC.currentShop;
+                DevianttGlobalNPC.CycleShop();
+                int currentShop = DevianttGlobalNPC.currentShop;
                 if (currentShop == 0)
                 {
                     (listeningElement as UITextPanel<string>).SetText("Vanilla");
                 }
                 else
                 {
-                    (listeningElement as UITextPanel<string>).SetText(Core.Globals.DevianttGlobalNPC.ModShops[currentShop - 1].Name);
+                    (listeningElement as UITextPanel<string>).SetText(DevianttGlobalNPC.ModShops[currentShop - 1].Name);
                 }
             };
             textBox.Left.Set(550, 0);

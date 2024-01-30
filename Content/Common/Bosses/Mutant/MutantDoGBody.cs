@@ -1,0 +1,157 @@
+﻿using System.Collections.Generic;
+using System.IO;
+using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.NPCs.DevourerofGods;
+using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
+{
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class MutantDoGBody : ModProjectile
+    {
+        public override string Texture => "CalamityMod/NPCs/DevourerofGods/DevourerofGodsBody";
+
+        public override void SetStaticDefaults()
+        {
+            // DisplayName.SetDefault("The Destroyer");
+            Main.projFrames[Projectile.type] = 1;
+        }
+
+        public override void SetDefaults()
+        {
+            Projectile.width = 56;
+            Projectile.height = 56;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 900;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+            Projectile.alpha = 255;
+            Projectile.netImportant = true;
+            Projectile.hide = true;
+            CooldownSlot = 1;
+        }
+
+        public override void SendExtraAI(BinaryWriter writer)
+        {
+            writer.Write(Projectile.localAI[0]);
+            writer.Write(Projectile.localAI[1]);
+        }
+
+        public override void ReceiveExtraAI(BinaryReader reader)
+        {
+            Projectile.localAI[0] = reader.ReadSingle();
+            Projectile.localAI[1] = reader.ReadSingle();
+        }
+
+        public override Color? GetAlpha(Color lightColor)
+        {
+            return Color.White;
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindProjectiles.Add(index);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D texture2D13 = Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value;
+            int num214 = Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value.Height / Main.projFrames[Projectile.type];
+            int y6 = num214 * Projectile.frame;
+            Main.EntitySpriteDraw(texture2D13, Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY), new Rectangle(0, y6, texture2D13.Width, num214),
+                Projectile.GetAlpha(Color.White), Projectile.rotation, new Vector2(texture2D13.Width / 2f, num214 / 2f), Projectile.scale,
+                Projectile.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally, 0);
+            return false;
+        }
+
+        public override void AI()
+        {
+            if ((int)Main.time % 120 == 0) Projectile.netUpdate = true;
+
+            int num1038 = 56;
+
+            bool flag67 = false;
+            Vector2 value67 = Vector2.Zero;
+            Vector2 arg_2D865_0 = Vector2.Zero;
+            float num1052 = 0f;
+            if (Projectile.ai[1] == 1f)
+            {
+                Projectile.ai[1] = 0f;
+                Projectile.netUpdate = true;
+            }
+
+            int byIdentity = FargoSoulsUtil.GetProjectileByIdentity(Projectile.owner, (int)Projectile.ai[0], Projectile.type, ModContent.ProjectileType<MutantDoGHead>());
+            if (byIdentity >= 0 && Main.projectile[byIdentity].active)
+            {
+                flag67 = true;
+                value67 = Main.projectile[byIdentity].Center;
+                Vector2 arg_2D957_0 = Main.projectile[byIdentity].velocity;
+                num1052 = Main.projectile[byIdentity].rotation;
+                float num1053 = MathHelper.Clamp(Main.projectile[byIdentity].scale, 0f, 50f);
+                int arg_2D9AD_0 = Main.projectile[byIdentity].alpha;
+                Main.projectile[byIdentity].localAI[0] = Projectile.localAI[0] + 1f;
+                if (Main.projectile[byIdentity].type != ModContent.ProjectileType<MutantDoGHead>()) Main.projectile[byIdentity].localAI[1] = Projectile.identity;
+                Projectile.timeLeft = Main.projectile[byIdentity].timeLeft;
+            }
+
+            if (!flag67) return;
+
+            Projectile.alpha -= 42;
+            if (Projectile.alpha < 0) Projectile.alpha = 0;
+            Projectile.velocity = Vector2.Zero;
+            Vector2 vector134 = value67 - Projectile.Center;
+            if (num1052 != Projectile.rotation)
+            {
+                float num1056 = MathHelper.WrapAngle(num1052 - Projectile.rotation);
+                vector134 = vector134.RotatedBy(num1056 * 0.1f, default);
+            }
+
+            Projectile.rotation = vector134.ToRotation() + 1.57079637f;
+            Projectile.position = Projectile.Center;
+            Projectile.width = Projectile.height = (int)(num1038 * Projectile.scale);
+            Projectile.Center = Projectile.position;
+            if (vector134 != Vector2.Zero) Projectile.Center = value67 - Vector2.Normalize(vector134) * 36;
+            Projectile.spriteDirection = vector134.X > 0f ? 1 : -1;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                int dust = Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.PurpleTorch, -Projectile.velocity.X * 0.2f,
+                    -Projectile.velocity.Y * 0.2f, 100, default, 2f);
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity *= 2f;
+                dust = Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.PinkTorch, -Projectile.velocity.X * 0.2f,
+                    -Projectile.velocity.Y * 0.2f, 100);
+                Main.dust[dust].velocity *= 2f;
+            }
+            SoundEngine.PlaySound(DevourerofGodsHead.DeathSegmentSound, Projectile.Center);
+            if (!Main.dedServ)
+            {
+                int g = Gore.NewGore(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity / 2, ModContent.Find<ModGore>(ModCompatibility.Calamity.Name, "DoGS6").Type, Projectile.scale);
+                Main.gore[g].timeLeft = 20;
+            }
+        }
+
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(ModContent.BuffType<GodSlayerInferno>(), 200, true, false);
+            target.AddBuff(ModContent.BuffType<WhisperingDeath>(), 600, true, false);
+            if (WorldSavingSystem.EternityMode)
+                target.AddBuff(ModContent.BuffType<MutantFangBuff>(), 180);
+        }
+    }
+}

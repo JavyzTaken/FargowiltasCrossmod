@@ -6,43 +6,47 @@ using MonoMod.RuntimeDetour;
 using MonoMod.RuntimeDetour.HookGen;
 using FargowiltasCrossmod.Content.Common;
 using System;
-using System.Linq;
-using System.Reflection;
-using FargowiltasCrossmod.Core;
 using System.Collections.Generic;
-using FargowiltasSouls.Core.Toggler;
 using System.IO;
-using FargowiltasCrossmod.Content.Thorium;
-using ThoriumMod.NPCs;
+using CalamityMod;
+using CalamityMod.Items.Weapons.Melee;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Skies;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
+using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
+using FargowiltasCrossmod.Content.Common.Sky;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common.Globals;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles;
+using FargowiltasSouls.Core.Toggler;
+using Terraria;
+using Terraria.Graphics.Effects;
+using Terraria.ID;
+using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod
+namespace FargowiltasCrossmod;
+
+public class FargowiltasCrossmod : Mod
 {
-	public class FargowiltasCrossmod : Mod
-	{
-        private class ClassPreJitFilter : PreJITFilter
-        {
-            public override bool ShouldJIT(MemberInfo member)
-            {
-                return base.ShouldJIT(member) &&
-                       // also check attributes on declaring class
-                       member.DeclaringType?.GetCustomAttributes<MemberJitAttribute>().All(a => a.ShouldJIT(member)) != false;
-            }
-        }
+    internal static FargowiltasCrossmod Instance;
+    public override void Load()
+    {
+        Instance = this;
+        LoadDetours();
 
-        public FargowiltasCrossmod()
-        {
-            PreJITFilter = new ClassPreJitFilter();
-        }
+        ModCompatibility.BossChecklist.AdjustValues();
+    }
+    public override void Unload()
+    {
+        Instance = null;
+    }
 
-        public override void Load()
-        {
-            LoadDetours();
-        }
-
-        private struct LumberHooks
-        {
-            internal static Hook OnChatButtonClicked;
-        }
+    /* no need for this anymore
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public static void LoadTogglesFromType(Type type)
+    {
 
         private static void LoadDetours()
         {
@@ -81,6 +85,17 @@ namespace FargowiltasCrossmod
         {
             RequestFallenPaladinUsed
         }
+    }
+    */
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public static ref List<int> pierceResistExceptionList => ref CalamityLists.pierceResistExceptionList;
+    public override void PostSetupContent()
+    {
+        if (ModCompatibility.Calamity.Loaded)
+        {
+            PostSetupContent_Calamity();
+            SkyManager.Instance["FargowiltasCrossmod:Permafrost"] = new PermafrostSky();
+        }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
         {
@@ -91,6 +106,39 @@ namespace FargowiltasCrossmod
                 return;
             }
 
+        if (MutantDLC.ShouldDoDLC)
+        {
+            SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
+        }
+    }
+    //[JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    //public DamageClass rogueDamageClass => ModContent.GetInstance<RogueDamageClass>();
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public void PostSetupContent_Calamity()
+    {
+        pierceResistExceptionList.Add(ProjectileID.FinalFractal);
+        
+        /* doesn't seem to be working, may investigate later
+        List<int> CalamityReworkedSpears = new List<int>
+        {
+            ModContent.ItemType<AstralPike>()
+        };
+        SpearRework.ReworkedSpears.AddRange(CalamityReworkedSpears);
+        */
+        
+        /*
+         * PR'd to Calamity
+        #region Stat Sheet
+        double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
+        int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
+
+        int rogueItem = ModContent.ItemType<WulfrumKnife>();
+        Func<string> rogueDamage = () => $"Rogue Damage: {Damage(rogueDamageClass)}%";
+        Func<string> rogueCrit = () => $"Rogue Critical: {Crit(rogueDamageClass)}%";
+        ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueDamage);
+        ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueCrit);
+        #endregion
+        */
             switch (type)
             {
                 case PacketID.RequestFallenPaladinUsed:
@@ -121,4 +169,5 @@ namespace FargowiltasCrossmod
             }
         }
     }
+    public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
 }
