@@ -6,6 +6,7 @@ using Terraria.ID;
 using FargowiltasCrossmod.Content.Thorium;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -24,12 +25,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
+            //what the fuck was i on coding this
             base.UpdateAccessory(player, hideVisual);
             if (player.TryGetModPlayer(out CrossplayerThorium DLCPlayer))
             {
                 DLCPlayer.AstroEnch = true;
                 DLCPlayer.AstroEnchItem = Item;
-                player.FargoSouls().StabilizedGravity = true;
+                player.AddEffect<FargowiltasSouls.Content.Items.Accessories.Masomode.MasoGravEffect>(Item);
                 if (DLCPlayer.AstroLaserCD > 0) DLCPlayer.AstroLaserCD--;
             }
         }
@@ -69,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
     public class SaucerDeathrayProj : FargowiltasSouls.Content.Projectiles.Minions.SaucerDeathray
     {
-        // I stole this code from SoulsMod SaucerDeathray projectile but it looks like vanilla code anyway so I don't feel guilty. Had to change a few lines.
+        // code from SoulsMod SaucerDeathray
         public override void AI()
         {
             Vector2? vector78 = null;

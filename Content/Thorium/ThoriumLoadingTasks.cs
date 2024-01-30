@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             AddThoriumStatSheet();
             Core.Globals.DevianttGlobalNPC.AddThoriumShop();
 
-            FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEnchant.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
+            FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEffect.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
             Items.Accessories.Enchantments.JesterEnchant.PostSetup(Mod);
             EternityMode.Boss.GrandThunderBird.LoadDetour();
 
