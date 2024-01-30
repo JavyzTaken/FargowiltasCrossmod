@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         public override void PostSetupContent()
         {
             AddThoriumStatSheet();
-            Core.Globals.DevianttGlobalNPC.AddThoriumShop();
+            //Core.Globals.DevianttGlobalNPC.AddThoriumShop();
 
             FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEffect.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
             Items.Accessories.Enchantments.JesterEnchant.PostSetup(Mod);

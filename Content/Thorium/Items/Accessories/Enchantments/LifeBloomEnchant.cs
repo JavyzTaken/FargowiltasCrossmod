@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LifeBloomEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.Green;
+        public override Color nameColor => Color.Green;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 

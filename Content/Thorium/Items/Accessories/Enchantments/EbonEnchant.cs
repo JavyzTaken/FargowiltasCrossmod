@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class EbonEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.Purple;
+        public override Color nameColor => Color.Purple;
         //internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.EbonEnch && DLCPlayer.NoviceClericEnch;
         
         //protected override Color SynergyColor1 => Color.White with { A = 0 };

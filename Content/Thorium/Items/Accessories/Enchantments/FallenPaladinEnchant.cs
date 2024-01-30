@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class FallenPaladinEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.Beige;
+        public override Color nameColor => Color.Beige;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -127,9 +127,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             if (flag)
             {
-                ModPacket request = Mod.GetPacket();
-                request.Write((byte)FargowiltasCrossmod.PacketID.RequestFallenPaladinUsed);
-                request.Send();
+                Core.Calamity.Systems.PacketManager.SendPacket<Core.Thorium.FallenPaladinPacket>();
             }
         }
     }

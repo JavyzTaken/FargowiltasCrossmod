@@ -23,7 +23,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class LivingWoodEnchant : BaseEnchant
     {
         
-        protected override Color nameColor => Color.Brown;
+        public override Color nameColor => Color.Brown;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

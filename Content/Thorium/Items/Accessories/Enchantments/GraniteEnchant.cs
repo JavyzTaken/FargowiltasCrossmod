@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GraniteEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.DarkBlue;
+        public override Color nameColor => Color.DarkBlue;
         //internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.GraniteEnch && DLCPlayer.BronzeEnch;
 
         //protected override Color SynergyColor1 => Color.DarkBlue with { A = 0 };

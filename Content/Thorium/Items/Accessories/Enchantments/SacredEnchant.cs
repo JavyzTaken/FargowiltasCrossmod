@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SacredEnchant : BaseSynergyEnchant
     {
-        protected override Color nameColor => Color.Orange;
+        public override Color nameColor => Color.Orange;
         internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.SacredEnch && DLCPlayer.WarlockEnch;
 
         internal override int SynergyEnch => ModContent.ItemType<WarlockEnchant>();

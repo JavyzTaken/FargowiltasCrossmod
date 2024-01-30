@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class TideHunterEnchant : BaseEnchant
     {
-        protected override Color nameColor => new(0, 85, 85);
+        public override Color nameColor => new(0, 85, 85);
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();

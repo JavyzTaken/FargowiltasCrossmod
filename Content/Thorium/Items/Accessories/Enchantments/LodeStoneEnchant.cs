@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class LodeStoneEnchant : BaseEnchant
     {
         
-        protected override Color nameColor => Color.Brown;
+        public override Color nameColor => Color.Brown;
 
         public override void SetStaticDefaults()
         {

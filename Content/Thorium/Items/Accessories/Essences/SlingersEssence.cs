@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Essences
     public class SlingersEssence : BaseEssence
     {
         public override string Texture => "FargowiltasSouls/Content/Items/Placeholder";
-        protected override Color nameColor => new Color(163, 102, 255);
+        public override Color nameColor => new Color(163, 102, 255);
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
 

@@ -11,7 +11,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ConduitEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.LightSteelBlue;
+        public override Color nameColor => Color.LightSteelBlue;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 

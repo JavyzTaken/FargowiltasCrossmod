@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SteelEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.DarkGray;
+        public override Color nameColor => Color.DarkGray;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

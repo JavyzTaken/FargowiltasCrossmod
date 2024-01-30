@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class YewWoodEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.DarkGreen;
+        public override Color nameColor => Color.DarkGreen;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class JesterEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.DarkGreen;
+        public override Color nameColor => Color.DarkGreen;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -65,43 +65,43 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         internal static List<int> enchantItemTypes;
         internal static void PostSetup(Mod mod)
         {
-            enchantItemTypes = new();
+            //enchantItemTypes = new();
 
-            Assembly SoulsAssembly = Core.ModCompatibility.SoulsMod.Mod.GetType().Assembly;
-            Assembly DLCAssembly = mod.GetType().Assembly;
+            //Assembly SoulsAssembly = Core.ModCompatibility.SoulsMod.Mod.GetType().Assembly;
+            //Assembly DLCAssembly = mod.GetType().Assembly;
 
-            var soulsTypes = SoulsAssembly.GetTypes();
-            var DLCTypes = DLCAssembly.GetTypes();
+            //var soulsTypes = SoulsAssembly.GetTypes();
+            //var DLCTypes = DLCAssembly.GetTypes();
 
-            // This could potentially break from Soulsmod or DLC somehow adding another class called BaseEnchant that has other classes deriving from it, or by adding classes that are not enchants but derive from BaseEnchant.
-            // If someone does this I will kill them. (ignore BaseSynergyEnchant its not real)
-            // Unfortunatly I cannot figure out how to get a System.Type for an abstract class like BaseEnchant (to use in EqualTo()), so this will have to do.
-            var enchantTypes = soulsTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant");
-            enchantTypes = enchantTypes.Concat(DLCTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant" && T.Name != "BaseSynergyEnchant"));
+            //// This could potentially break from Soulsmod or DLC somehow adding another class called BaseEnchant that has other classes deriving from it, or by adding classes that are not enchants but derive from BaseEnchant.
+            //// If someone does this I will kill them. (ignore BaseSynergyEnchant its not real)
+            //// Unfortunatly I cannot figure out how to get a System.Type for an abstract class like BaseEnchant (to use in EqualTo()), so this will have to do.
+            //var enchantTypes = soulsTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant");
+            //enchantTypes = enchantTypes.Concat(DLCTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant" && T.Name != "BaseSynergyEnchant"));
 
-            if (ModLoader.TryGetMod("FargowiltasSoulsDLC", out Mod Extras))
-            {
-                var ExtrasTypes = Extras.GetType().Assembly.GetTypes();
-                enchantTypes = enchantTypes.Concat(ExtrasTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant"));
-            } 
+            //if (ModLoader.TryGetMod("FargowiltasSoulsDLC", out Mod Extras))
+            //{
+            //    var ExtrasTypes = Extras.GetType().Assembly.GetTypes();
+            //    enchantTypes = enchantTypes.Concat(ExtrasTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant"));
+            //} 
 
-            MethodInfo itemTypeMethod = typeof(ModContent).GetMethod("ItemType", BindingFlags.Public | BindingFlags.Static);
+            //MethodInfo itemTypeMethod = typeof(ModContent).GetMethod("ItemType", BindingFlags.Public | BindingFlags.Static);
             
-            foreach (Type enchType in enchantTypes)
-            {
-                // equivalent to ModContent.ItemType<enchType>();
-                object enchID = itemTypeMethod.MakeGenericMethod(enchType).Invoke(null, null);
+            //foreach (Type enchType in enchantTypes)
+            //{
+            //    // equivalent to ModContent.ItemType<enchType>();
+            //    object enchID = itemTypeMethod.MakeGenericMethod(enchType).Invoke(null, null);
 
-                if (enchID == null || (int)enchID == 0)
-                {
-                    mod.Logger.Debug($"Type {enchType.Name} created a null or 0 itemType. This is likely due to the item not being loaded due to jit exceptions or isLoadingEnabled() returning false");
-                    continue;
-                }
+            //    if (enchID == null || (int)enchID == 0)
+            //    {
+            //        mod.Logger.Debug($"Type {enchType.Name} created a null or 0 itemType. This is likely due to the item not being loaded due to jit exceptions or isLoadingEnabled() returning false");
+            //        continue;
+            //    }
 
-                enchantItemTypes.Add((int)enchID);
-            }
+            //    enchantItemTypes.Add((int)enchID);
+            //}
 
-            enchantItemTypes.Remove(ModContent.ItemType<JesterEnchant>());
+            //enchantItemTypes.Remove(ModContent.ItemType<JesterEnchant>());
         }
     }
 }

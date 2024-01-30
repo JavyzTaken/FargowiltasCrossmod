@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class DarksteelEnchant : SteelEnchant
     {
-        protected override Color nameColor => Color.DarkRed;
+        public override Color nameColor => Color.DarkRed;
 
         public override void SetStaticDefaults()
         {

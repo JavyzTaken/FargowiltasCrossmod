@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class GeodeEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.LightPink;
+        public override Color nameColor => Color.LightPink;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

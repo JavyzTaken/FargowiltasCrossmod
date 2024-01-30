@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [AutoloadEquip(EquipType.Wings)]
     public class NagaSkinEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.Teal;
+        public override Color nameColor => Color.Teal;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 

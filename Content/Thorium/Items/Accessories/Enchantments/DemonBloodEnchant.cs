@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class DemonBloodEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.Red;
+        public override Color nameColor => Color.Red;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

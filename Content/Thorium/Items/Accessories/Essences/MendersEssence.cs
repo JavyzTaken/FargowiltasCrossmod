@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Essences
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class MendersEssence : BaseEssence
     {
-        protected override Color nameColor => new(255, 0, 255);
+        public override Color nameColor => new(255, 0, 255);
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

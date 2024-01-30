@@ -8,7 +8,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class TitanEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.SteelBlue;
+        public override Color nameColor => Color.SteelBlue;
         const float EffectMult = 0.1f;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;

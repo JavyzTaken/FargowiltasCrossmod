@@ -1,10 +1,3 @@
-using CalamityMod;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
-using FargowiltasCrossmod.Content.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +18,13 @@ using Terraria;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
+using MonoMod.RuntimeDetour;
+using MonoMod.RuntimeDetour.HookGen;
+using FargowiltasCrossmod.Content.Common;
+using System.Linq;
+using System.Reflection;
+using FargowiltasCrossmod.Content.Thorium;
+using ThoriumMod.NPCs;
 
 namespace FargowiltasCrossmod;
 
@@ -41,49 +41,57 @@ public class FargowiltasCrossmod : Mod
     public override void Unload()
     {
         Instance = null;
+        LumberHooks.OnChatButtonClicked?.Undo();
     }
+
+    private struct LumberHooks
+    {
+        internal static Hook OnChatButtonClicked;
+    }
+
+    private static void LoadDetours()
+    {
+        // lumberjack stuff will be removed when someone makes a better tree treasures system.
+        Type lumberDetourClass = ModContent.Find<ModNPC>("Fargowiltas/LumberJack").GetType();
+
+        if (lumberDetourClass != null)
+        {
+            MethodInfo OnChatButtonClicked_DETOUR = lumberDetourClass.GetMethod("OnChatButtonClicked", BindingFlags.Public | BindingFlags.Instance);
+            MethodInfo AddShops_DETOUR = lumberDetourClass.GetMethod("AddShops", BindingFlags.Public | BindingFlags.Instance);
+
+            LumberHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, LumberBoyPatches.OnChatButtonClicked);
+
+            LumberHooks.OnChatButtonClicked.Apply();
+        }
+
+        //Type CaughtNPCType = ModContent.Find<ModItem>("Fargowiltas/Items/CaughtNPCs/CaughtNPCItem").GetType(); Doesn't work because this is in load(), this has to be in load() to add() content
+        Type CaughtNPCType = ModCompatibility.MutantMod.Mod.GetType().Assembly.GetType("Fargowiltas.Items.CaughtNPCs.CaughtNPCItem", true);
+
+        if (CaughtNPCType != null)
+        {
+            CaughtTownies = (Dictionary<int, int>)CaughtNPCType.GetField("CaughtTownies", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
+        }
+    }
+
+    public static readonly List<int> UnlimitedPotionBlacklist = new();
+
+    internal static Dictionary<int, int> CaughtTownies;
 
     /* no need for this anymore
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public static void LoadTogglesFromType(Type type)
     {
 
-        private static void LoadDetours()
-        {
-            // lumberjack stuff will be removed when someone makes a better tree treasures system.
-            Type lumberDetourClass = ModContent.Find<ModNPC>("Fargowiltas/LumberJack").GetType();
+        ToggleCollection toggles = (ToggleCollection)Activator.CreateInstance(type);
 
-            if (lumberDetourClass != null)
+        if (toggles.Active)
+        {
+            ModContent.GetInstance<FargowiltasCrossmod>().Logger.Info($"ToggleCollection found: {nameof(type)}");
+            List<Toggle> toggleCollectionChildren = toggles.Load();
+            foreach (Toggle toggle in toggleCollectionChildren)
             {
-                MethodInfo OnChatButtonClicked_DETOUR = lumberDetourClass.GetMethod("OnChatButtonClicked", BindingFlags.Public | BindingFlags.Instance);
-                MethodInfo AddShops_DETOUR = lumberDetourClass.GetMethod("AddShops", BindingFlags.Public | BindingFlags.Instance);
-
-                LumberHooks.OnChatButtonClicked = new Hook(OnChatButtonClicked_DETOUR, LumberBoyPatches.OnChatButtonClicked);
-
-                LumberHooks.OnChatButtonClicked.Apply();
+                ToggleLoader.RegisterToggle(toggle);
             }
-
-            //Type CaughtNPCType = ModContent.Find<ModItem>("Fargowiltas/Items/CaughtNPCs/CaughtNPCItem").GetType(); Doesn't work because this is in load(), this has to be in load() to add() content
-            Type CaughtNPCType = ModCompatibility.MutantMod.Mod.GetType().Assembly.GetType("Fargowiltas.Items.CaughtNPCs.CaughtNPCItem", true);
-
-            if (CaughtNPCType != null)
-            {
-                CaughtTownies = (Dictionary<int, int>)CaughtNPCType.GetField("CaughtTownies", BindingFlags.Static | BindingFlags.NonPublic).GetValue(null);
-            }
-        }
-
-        public static readonly List<int> UnlimitedPotionBlacklist = new();
-
-        internal static Dictionary<int, int> CaughtTownies;
-
-        public override void Unload()
-        {
-            LumberHooks.OnChatButtonClicked?.Undo();
-        }
-
-        internal enum PacketID : byte
-        {
-            RequestFallenPaladinUsed
         }
     }
     */
@@ -97,15 +105,6 @@ public class FargowiltasCrossmod : Mod
             SkyManager.Instance["FargowiltasCrossmod:Permafrost"] = new PermafrostSky();
         }
 
-        public override void HandlePacket(BinaryReader reader, int whoAmI)
-        {
-            PacketID type = (PacketID)reader.ReadByte();
-
-            if (!Enum.IsDefined(type))
-            {
-                return;
-            }
-
         if (MutantDLC.ShouldDoDLC)
         {
             SkyManager.Instance["FargowiltasSouls:MutantBoss"] = new MutantDLCSky();
@@ -117,7 +116,7 @@ public class FargowiltasCrossmod : Mod
     public void PostSetupContent_Calamity()
     {
         pierceResistExceptionList.Add(ProjectileID.FinalFractal);
-        
+
         /* doesn't seem to be working, may investigate later
         List<int> CalamityReworkedSpears = new List<int>
         {
@@ -125,7 +124,7 @@ public class FargowiltasCrossmod : Mod
         };
         SpearRework.ReworkedSpears.AddRange(CalamityReworkedSpears);
         */
-        
+
         /*
          * PR'd to Calamity
         #region Stat Sheet
@@ -139,35 +138,6 @@ public class FargowiltasCrossmod : Mod
         ModCompatibility.MutantMod.Mod.Call("AddStat", rogueItem, rogueCrit);
         #endregion
         */
-            switch (type)
-            {
-                case PacketID.RequestFallenPaladinUsed:
-                    if (Main.netMode == NetmodeID.MultiplayerClient)
-                    {
-                        int healer = reader.ReadInt32();
-                        if (healer != Main.myPlayer)
-                        {
-                            Player healerPlayer = Main.player[healer];
-                            for (int i = 0; i < Main.LocalPlayer.buffType.Length; i++)
-                            {
-                                if (Content.Thorium.Items.Accessories.Enchantments.FallenPaladinEnchant.WhiteList.Contains(Main.LocalPlayer.buffType[i]))
-                                {
-                                    healerPlayer.AddBuff(Main.LocalPlayer.buffType[i], Main.LocalPlayer.buffTime[i], false);
-                                }
-                            }
-                            Main.LocalPlayer.AddBuff(ModContent.BuffType<Content.Thorium.Buffs.FallenPaladinBuff>(), 2); 
-                        }
-                    }
-                    else if (Main.netMode == NetmodeID.Server)
-                    {
-                        ModPacket packet = GetPacket();
-                        packet.Write((byte)PacketID.RequestFallenPaladinUsed);
-                        packet.Write(whoAmI);
-                        packet.Send();
-                    }
-                    break;
-            }
-        }
     }
     public override void HandlePacket(BinaryReader reader, int whoAmI) => PacketManager.ReceivePacket(reader);
 }

@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class IcyEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.DarkBlue;
+        public override Color nameColor => Color.DarkBlue;
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();

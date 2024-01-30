@@ -22,7 +22,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 
-        protected override Color nameColor => Color.PaleVioletRed;
+        public override Color nameColor => Color.PaleVioletRed;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

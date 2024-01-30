@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class AstroEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.LightBlue;
+        public override Color nameColor => Color.LightBlue;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 

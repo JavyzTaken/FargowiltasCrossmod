@@ -575,7 +575,6 @@ Mods: {
 				DisplayName: Shade Master Enchant
 				Tooltip: ""
 			}
-		}
 
 			BloodyWorm: {
 				DisplayName: Bloody Worm
@@ -863,23 +862,74 @@ Mods: {
 			PermafrostRitual.DisplayName: Permafrost Ritual
 			IceCloud.DisplayName: Chilling Snow
 			BrimstoneDebris.DisplayName: Brimstone Debris
+			DmgOrbHack.DisplayName: Dmg Orb Hack
+			HealOrbHack.DisplayName: Heal Orb Hack
+			BiotechNanomachine.DisplayName: Biotech Nanomachine
+			ConduitSaucer.DisplayName: Conduit Saucer
+			DemonBloodSpill.DisplayName: Demon Blood Spill
+			DLCLightStrike.DisplayName: D L C Light Strike
+			DLCShadowWisp.DisplayName: D L C Shadow Wisp
+			DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
+			DragonHead.DisplayName: Dragon Head
+			DragonMinionBody.DisplayName: Dragon Minion Body
+			DragonMinionBody2.DisplayName: Dragon Minion Body2
+			DragonMinionHead.DisplayName: Dragon Minion Head
+			DragonMinionTail.DisplayName: Dragon Minion Tail
+			DragonScale.DisplayName: Dragon Scale
+			FungusSpore.DisplayName: Fungus Spore
+			GFBZapTelegraph.DisplayName: G F B Zap Telegraph
+			GraniteExplosion.DisplayName: Granite Explosion
+			GTBCloud.DisplayName: G T B Cloud
+			GTBSandStorm.DisplayName: G T B Sand Storm
+			HealPulse.DisplayName: Heal Pulse
+			JesterIndicatorProj.DisplayName: Jester Indicator Proj
+			KluexBlast.DisplayName: Kluex Blast
+			KluexOrb.DisplayName: Kluex Orb
+			LifeBloomBallista.DisplayName: Life Bloom Ballista
+			LifeBloomTree.DisplayName: Life Bloom Tree
+			LifeBloomWard.DisplayName: Life Bloom Ward
+			LivingWood_Roots.DisplayName: Living Wood_ Roots
+			LodeStonePlatform.DisplayName: Lode Stone Platform
+			MidExplosion.DisplayName: Mid Explosion
+			SaucerDeathrayProj.DisplayName: Saucer Deathray Proj
+			SteelParry.DisplayName: Steel Parry
+			TideTurnerWave.DisplayName: Tide Turner Wave
+			Valadium_Chunk.DisplayName: Valadium_ Chunk
+			WhisperingBeam.DisplayName: Whispering Beam
+			WhisperingLeech.DisplayName: Whispering Leech
+			WhisperingVision.DisplayName: Whispering Vision
 		}
 
 		Buffs: {
-			CalamitousPresenceBuff: {
-				Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
-				DisplayName: Calamitous Presence
+			GildedSightDB: {
+				DisplayName: Gilded Sight
+				Description: Mods.FargowiltasCrossmod.Buffs.GildedSightDB.Description
 			}
 
-			ArcticPaw.DisplayName: Arctic Paw
-			Blizzard.DisplayName: Blizzard
-			CrystalShard.DisplayName: Crystal Shard
-			DarkIceCrystal.DisplayName: Dark Ice Crystal
-			IceShot.DisplayName: Ice Shot
-			FrostShard.DisplayName: Frost Shard
-			FrostFlare.DisplayName: Frost Flare
-			IceArrow.DisplayName: Ice Arrow
-			IceStar.DisplayName: Ice Star
+			LivingWood_Root_B: {
+				DisplayName: Living Wood Root
+				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_B.Description
+			}
+
+			LivingWood_Root_DB: {
+				DisplayName: Living Wood Root CD
+				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_DB.Description
+			}
+
+			MynaDB: {
+				DisplayName: Myna
+				Description: Your projectiles dodge enemies
+			}
+
+			SteelParry_CD: {
+				DisplayName: Steel Parry_ C D
+				Description: Wait, isn't this meant to be free?
+			}
+
+			FallenPaladinBuff: {
+				DisplayName: Fallen Paladin Buff
+				Description: Mods.FargowiltasCrossmod.Buffs.FallenPaladinBuff.Description
+			}
 		}
 
 		Toggler: {
@@ -956,38 +1006,6 @@ Mods: {
 		Keybinds: {
 			"Living wood roots.DisplayName": Living wood roots
 			"Steel parry.DisplayName": Steel parry
-		}
-
-		Buffs: {
-			GildedSightDB: {
-				DisplayName: Gilded Sight
-				Description: Mods.FargowiltasCrossmod.Buffs.GildedSightDB.Description
-			}
-
-			LivingWood_Root_B: {
-				DisplayName: Living Wood Root
-				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_B.Description
-			}
-
-			LivingWood_Root_DB: {
-				DisplayName: Living Wood Root CD
-				Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_DB.Description
-			}
-
-			MynaDB: {
-				DisplayName: Myna
-				Description: Your projectiles dodge enemies
-			}
-
-			SteelParry_CD: {
-				DisplayName: Steel Parry_ C D
-				Description: Wait, isn't this meant to be free?
-			}
-
-			FallenPaladinBuff: {
-				DisplayName: Fallen Paladin Buff
-				Description: Mods.FargowiltasCrossmod.Buffs.FallenPaladinBuff.Description
-			}
 		}
 	}
 }

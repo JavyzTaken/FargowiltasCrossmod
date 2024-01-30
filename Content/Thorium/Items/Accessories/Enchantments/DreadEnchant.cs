@@ -10,7 +10,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
     public class DreadEnchant : BaseEnchant
     {
-        protected override Color nameColor => Color.DarkOliveGreen;
+        public override Color nameColor => Color.DarkOliveGreen;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 
