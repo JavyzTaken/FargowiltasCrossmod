@@ -7,6 +7,7 @@ using CalamityMod.Projectiles.BaseProjectiles;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.Projectiles.Magic;
 using CalamityMod.Projectiles.Melee;
+using CalamityMod.Projectiles.Ranged;
 using CalamityMod.Projectiles.Summon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
@@ -19,9 +20,11 @@ using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
+using FargowiltasSouls.Content.Projectiles.Souls;
 using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -93,6 +96,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     projectile.scale /= scale;
                 }
             }
+            if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalProjectileChanges>().Ricoshot)
+            {
+                projectile.hostile = false;
+                projectile.friendly = true;
+            }
 
             if (DLCCalamityConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
             {
@@ -102,10 +110,41 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
         }
+        public bool Ricoshot = false;
         public override bool PreAI(Projectile projectile)
         {
             Player player = Main.player[projectile.owner];
             FargoSoulsPlayer modPlayer = player.FargoSouls();
+
+            if (projectile.type == ModContent.ProjectileType<RainLightning>())
+            {
+                if (Main.projectile.FirstOrDefault(p => p.TypeAlive(ModContent.ProjectileType<RicoshotCoin>()) && projectile.Colliding(projectile.Hitbox, p.Hitbox)) is Projectile coin && coin != null)
+                {
+                    
+                    int n = FargoSoulsUtil.FindClosestHostileNPC(projectile.Center, 1000, true, true);
+                    if (n.IsWithinBounds(Main.maxNPCs))
+                    {
+                        NPC npc = Main.npc[n];
+                        if (npc.Alive())
+                        {
+                            
+                            projectile.velocity = projectile.DirectionTo(npc.Center) * projectile.velocity.Length() * 2;
+                        }
+                        else
+                        {
+                            projectile.velocity = Main.rand.NextVector2Unit() * projectile.velocity.Length() * 2;
+                        }
+                        SoundEngine.PlaySound(new("CalamityMod/Sounds/Custom/UltrablingHit") { PitchVariance = 0.5f }, projectile.Center);
+                        projectile.ai[0] = projectile.velocity.ToRotation();
+                        projectile.damage *= Ricoshot ? 2 : 10;
+                        projectile.hostile = false;
+                        projectile.friendly = true;
+                        Main.player[coin.owner].Calamity().GeneralScreenShakePower = 10;
+                        coin.Kill();
+                        Ricoshot = true;
+                    }
+                }
+            }
 
             if (TungstenExclude.Contains(projectile.type))
             {
