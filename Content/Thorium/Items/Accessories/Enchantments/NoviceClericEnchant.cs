@@ -45,6 +45,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
         public override bool ExtraAttackEffect => true;
+        public override bool MinionEffect => true;
         public override int ToggleItemType => ModContent.ItemType<NoviceClericEnchant>();
 
         public override void PostUpdateEquips(Player player)

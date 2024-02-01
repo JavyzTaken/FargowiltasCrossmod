@@ -40,6 +40,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MidgardHeader>();
         public override int ToggleItemType => ModContent.ItemType<LodestoneEnchant>();
+        public override bool MinionEffect => true;
 
         public override void PostUpdate(Player player)
         {

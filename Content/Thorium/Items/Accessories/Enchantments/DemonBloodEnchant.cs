@@ -29,6 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.HelheimHeader>();
         public override int ToggleItemType => ModContent.ItemType<DemonBloodEnchant>();
+        public override bool MinionEffect => true;
 
         public override void PostUpdateEquips(Player player)
         {
