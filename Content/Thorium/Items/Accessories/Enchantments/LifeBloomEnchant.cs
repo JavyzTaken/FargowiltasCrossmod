@@ -4,6 +4,9 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -16,15 +19,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.LifeBloomEnch = true;
-            DLCPlayer.LifeBloomEnchItem = Item;
+            player.AddEffect<LifeBloomEffect>(Item);
         }
+    }
 
-        public static void LifeBloomEffect(Player player, Item item)
-        {
-                        
-        }
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class LifeBloomEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
     }
 }
 
@@ -32,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 {
     public partial class CrossplayerThorium
     {
-        public void LifeBloomKeyPress()
+        public void LifeBloomKey()
         {
             int treeType = ModContent.ProjectileType<LifeBloomTree>();
             if (Player.ownedProjectileCounts[treeType] > 0)
@@ -42,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Thorium
             }
             else
             {
-                Projectile.NewProjectileDirect(Player.GetSource_Accessory(LifeBloomEnchItem), Player.Center, Vector2.Zero, ModContent.ProjectileType<LifeBloomTree>(), 0, 0f, Player.whoAmI); 
+                Projectile.NewProjectileDirect(Player.GetSource_EffectItem<LifeBloomEffect>(), Player.Center, Vector2.Zero, ModContent.ProjectileType<LifeBloomTree>(), 0, 0f, Player.whoAmI); 
             }
         }
     }

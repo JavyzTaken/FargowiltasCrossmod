@@ -24,8 +24,8 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
             Player player = drawInfo.drawPlayer;
             var DLCPlayer = player.ThoriumDLC();
 
-            Texture2D texture = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Thorium/PlayerDrawLayers/DepthBubble").Value;
-            drawInfo.DrawDataCache.Add(new DrawData(texture, player.Center - Main.screenPosition - texture.Size() / 2, Color.LightSkyBlue with { A = 100 }));
+            Texture2D texture = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Thorium/PlayerLayers/DepthBubble").Value;
+            drawInfo.DrawDataCache.Add(new DrawData(texture, player.Center - Main.screenPosition - texture.Size() / 2, Color.LightSkyBlue));
         }
     }
 }

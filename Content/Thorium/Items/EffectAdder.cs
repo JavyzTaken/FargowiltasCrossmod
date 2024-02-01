@@ -29,6 +29,9 @@ using ThoriumMod.Items.SummonItems;
 using ThoriumMod.Items.ThrownItems;
 using Terraria.Localization;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items
 {
@@ -87,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items
             }
             if (item.type == ModContent.ItemType<WorldShaperSoul>())
             {
-                ModContent.GetInstance<GeodeEnchant>().UpdateAccessory(player, hideVisual);
+                player.AddEffect<GeodeEffect>(item);
             }
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

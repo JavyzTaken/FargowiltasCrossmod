@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -27,9 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.GraniteEnch = true;
-            DLCPlayer.GraniteEnchItem = Item;
+            player.AddEffect<GraniteEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -41,19 +41,22 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .Register();
         }
     }
-}
 
-namespace FargowiltasCrossmod.Content.Thorium
-{
-    public partial class CrossplayerThorium
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class GraniteEffect : AccessoryEffect
     {
-        public void GraniteEffect(Vector2 pos, Projectile proj)
-        {
-            if (SynergyEffect(GraniteEnchItem.type) && !Player.FargoSouls().ForceEffect(GraniteEnchItem.type)) return;
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
 
-            if (proj.type != ModContent.ProjectileType<GraniteExplosion>() || !Main.rand.NextBool(3))
+        public override void OnHitNPCWithProj(Player player, Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (hit.Damage >= target.life && player.whoAmI == Main.myPlayer) 
             {
-                Projectile.NewProjectileDirect(Player.GetSource_Accessory(GraniteEnchItem), pos, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, Player.whoAmI, 1f);
+                if (player.HasEffect<BronzeEffect>() && !player.ForceEffect<GraniteEffect>()) return;
+
+                if (proj.type != ModContent.ProjectileType<GraniteExplosion>() || !Main.rand.NextBool(3))
+                {
+                    Projectile.NewProjectileDirect(GetSource_EffectItem(player), target.Center, Vector2.Zero, ModContent.ProjectileType<GraniteExplosion>(), 0, 0f, player.whoAmI, 1f);
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FargowiltasSouls.Core.AccessoryEffectSystem;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +74,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 			float num5;
 			num5 = 0.69f;
 			num4 = 5f;
-			if (!Main.player[Projectile.owner].dead && !Main.player[Projectile.owner].ThoriumDLC().ConduitEnch)
+			if (!Main.player[Projectile.owner].dead)// && !Main.player[Projectile.owner].HasEffect<ConduitEffect>())
 			{
 				Projectile.timeLeft = 2;
 			}

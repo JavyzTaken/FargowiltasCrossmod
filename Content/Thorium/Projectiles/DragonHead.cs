@@ -1,3 +1,5 @@
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -31,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         {
             Player player = Main.player[Projectile.owner];
 
-            if (player.dead || !player.ThoriumDLC().DragonEnch)
+            if (player.dead || !player.HasEffect<DragonEffect>())
             {
                 return;
             }

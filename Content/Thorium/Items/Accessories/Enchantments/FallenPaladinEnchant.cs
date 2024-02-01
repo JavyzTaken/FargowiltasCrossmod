@@ -9,6 +9,8 @@ using Terraria.DataStructures;
 using Terraria.Chat;
 using ThoriumMod.Buffs;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -19,9 +21,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.FallenPaladinEnch = true;
-            DLCPlayer.FallenPaladinEnchItem = Item;
+            player.AddEffect<FallenPaladinEffect>(Item);
         }
 
         public static readonly List<int> WhiteList = new() 
@@ -90,13 +90,19 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             ModContent.BuffType<ShadowflameBuff>(),
         };
     }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class FallenPaladinEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
+    }
 }
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
     public partial class CrossplayerThorium
     {
-        public void FallenPaladinEffect()
+        public void FallenPaladinKey()
         {
             if (Main.netMode != NetmodeID.MultiplayerClient) return;
             if (Player.dead || !Player.active) return;

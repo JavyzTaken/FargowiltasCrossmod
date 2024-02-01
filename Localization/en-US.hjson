@@ -789,6 +789,41 @@ Mods: {
 					Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
 					'''
 			}
+
+			AlfheimForce: {
+				Tooltip: ""
+				DisplayName: Alfheim Force
+			}
+
+			AsgardForce: {
+				DisplayName: Asgard Force
+				Tooltip: ""
+			}
+
+			JotunheimForce: {
+				DisplayName: Jotunheim Force
+				Tooltip: ""
+			}
+
+			MidgardForce: {
+				DisplayName: Midgard Force
+				Tooltip: ""
+			}
+
+			MuspelheimForce: {
+				DisplayName: Muspelheim Force
+				Tooltip: ""
+			}
+
+			NiflheimForce: {
+				DisplayName: Niflheim Force
+				Tooltip: ""
+			}
+
+			VanaheimForce: {
+				DisplayName: Vanaheim Force
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {

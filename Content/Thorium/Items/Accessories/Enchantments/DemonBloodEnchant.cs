@@ -7,6 +7,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -17,16 +19,17 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            //DLCPlayer.FleshEnch = true;
-            DLCPlayer.DemonBloodEnch = true;
-            //DLCPlayer.FleshEnchItem = Item;
-            DLCPlayer.DemonBloodEnchItem = Item;
-
-            DemonBloodEffect(player);
+            player.AddEffect<DemonBloodEffect>(Item);
+            player.AddEffect<FleshEffect>(Item);
         }
+    }
 
-        public static void DemonBloodEffect(Player player)
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class DemonBloodEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+
+        public override void PostUpdateEquips(Player player)
         {
             int bloodType = ModContent.ProjectileType<Projectiles.DemonBloodSpill>();
             int bloodProjs = 0;
@@ -56,16 +59,27 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 }
             }
         }
-    }
-}
 
-namespace FargowiltasCrossmod.Content.Thorium
-{
-    public partial class CrossplayerThorium
-    {
-        public void SpawnDemonBlood(Vector2 pos)
+        public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
-            Projectile.NewProjectile(Player.GetSource_Accessory(FleshEnchItem), pos, Vector2.Zero, ModContent.ProjectileType<Projectiles.DemonBloodSpill>(), 0, 0, Player.whoAmI);
+            if (hitInfo.Damage >= target.life) // kills
+            {
+                if (Main.rand.NextBool(4))
+                {
+                    SpawnDemonBlood(player, target.Center);
+                }
+            }
+
+            // (should) be true if the current hit reduced the boss's life over a 10% increment
+            if (target.boss && (int)(target.life / (target.lifeMax / 10)) > (int)((target.life - hitInfo.Damage) / (target.lifeMax / 10)))
+            {
+                SpawnDemonBlood(player, target.Center);
+            }
+        }
+
+        public void SpawnDemonBlood(Player player, Vector2 pos)
+        {
+            Projectile.NewProjectile(GetSource_EffectItem(player), pos, Vector2.Zero, ModContent.ProjectileType<Projectiles.DemonBloodSpill>(), 0, 0, player.whoAmI);
         }
     }
 }

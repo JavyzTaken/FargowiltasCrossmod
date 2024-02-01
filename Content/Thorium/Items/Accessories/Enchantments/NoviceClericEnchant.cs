@@ -8,22 +8,22 @@ using ThoriumMod.Items.HealerItems;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.BossMini;
 using Terraria.ID;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
-    public class NoviceClericEnchant : BaseSynergyEnchant
+    public class NoviceClericEnchant : BaseSynergyEnchant<EbonEffect>
     {
         public override Color nameColor => Color.White;
-        internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.NoviceClericEnch && DLCPlayer.EbonEnch;
-
         internal override int SynergyEnch => ModContent.ItemType<EbonEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.NoviceClericEnch = true;
-            DLCPlayer.NoviceClericEnchItem = Item;
+            player.AddEffect<NoviceClericEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -39,67 +39,95 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .Register();
         }
     }
+
+    [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
+    public class NoviceClericEffect : SynergyEffect<EbonEffect>
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
+        public override bool ExtraAttackEffect => true;
+
+        public override void PostUpdateEquips(Player player)
+        {
+            var DLCPlayer = player.ThoriumDLC();
+            DLCPlayer.crossOrbitalRotation = Utils.RotatedBy(DLCPlayer.crossOrbitalRotation, -0.05, default);
+
+            if (player.controlUseItem)
+            {
+                return;
+            }
+
+            DLCPlayer.NoviceClericTimer++;
+
+            int maxCrosses = SynergyActive(player) ? 8 : 5;
+
+            if (DLCPlayer.NoviceClericCrosses < maxCrosses)
+            {
+                if (DLCPlayer.NoviceClericTimer > (SynergyActive(player) ? 180 : 300))
+                {
+                    DLCPlayer.NoviceClericCrosses++;
+                    DLCPlayer.NoviceClericTimer = 0;
+                }
+            }
+            else
+            {
+                DLCPlayer.NoviceClericTimer = 0;
+            }
+        }
+
+        public override void TryAdditionalAttacks(Player player, int damage, DamageClass damageType)
+        {
+            var DLCPlayer = player.ThoriumDLC();
+            DLCPlayer.NoviceClericCrosses--;
+            bool synergy = SynergyActive(player);
+            int burstNum = (synergy && DLCPlayer.NoviceClericCrosses > 0) ? 5 : 3;
+
+            if ((synergy && DLCPlayer.NoviceClericCrosses % 2 == 0) || !synergy)
+            {
+                Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.HealPulse>(), 0, 0, player.whoAmI, 5);
+            }
+            else
+            {
+                // ebon crux
+                Vector2 vector = player.Center.DirectionTo(Main.MouseWorld) * 8f;
+                for (int i = 0; i < burstNum; i++)
+                {
+                    vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
+                    Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 15, 2f, player.whoAmI, 0f, 0f, 0f);
+                }
+            }
+        }
+
+        public void NoviceClericOnManaUse(Player player)
+        {
+            var DLCPlayer = player.ThoriumDLC();
+            DLCPlayer.NoviceClericCrosses--;
+            bool synergy = SynergyActive(player);
+            int burstNum = (synergy && DLCPlayer.NoviceClericCrosses > 0) ? 5 : 3;
+
+            if ((synergy && DLCPlayer.NoviceClericCrosses % 2 == 0) || !synergy)
+            {
+                Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.HealPulse>(), 0, 0, player.whoAmI, 5);
+            }
+            else
+            {
+                // ebon crux
+                Vector2 vector = player.Center.DirectionTo(Main.MouseWorld) * 8f;
+                for (int i = 0; i < burstNum; i++)
+                {
+                    vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
+                    Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 15, 2f, player.whoAmI, 0f, 0f, 0f);
+                }
+            }
+        }
+    }
 }
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
     public partial class CrossplayerThorium
     {
-        public void NoviceClericEffect()
-        {
-            if (!NoviceClericEnch)
-            {
-                NoviceClericCrosses = 0;
-                NoviceClericTimer = 0;
-                return;
-            }
-            crossOrbitalRotation = Utils.RotatedBy(crossOrbitalRotation, -0.05, default);
-
-            if (Player.controlUseItem)
-            {
-                return;
-            }
-
-            NoviceClericTimer++;
-
-            int maxCrosses = SynergyEffect(NoviceClericEnchItem.type) ? 8 : 5;
-
-            if (NoviceClericCrosses < maxCrosses)
-            {
-                if (NoviceClericTimer > (SynergyEffect(NoviceClericEnchItem.type) ? 180 : 300))
-                {
-                    NoviceClericCrosses++;
-                    NoviceClericTimer = 0;
-                }
-            }
-            else
-            {
-                NoviceClericTimer = 0;
-            }
-        }
-
-        public void NoviceClericOnManaUse()
-        {
-            if (NoviceClericCrosses <= 0 || !NoviceClericEnch) return;
-
-            NoviceClericCrosses--;
-            bool synergy = SynergyEffect(NoviceClericEnchItem.type);
-            int burstNum = (synergy && NoviceClericCrosses > 0) ? 5 : 3;
-
-            if ((synergy && NoviceClericCrosses % 2 == 0) || !synergy)
-            {
-                Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.HealPulse>(), 0, 0, Player.whoAmI, 5);
-            }
-            else
-            {
-                // ebon crux
-                Vector2 vector = Player.Center.DirectionTo(Main.MouseWorld) * 8f;
-                for (int i = 0; i < burstNum; i++)
-                {
-                    vector = Utils.RotatedBy(vector, MathF.Tau / burstNum);
-                    Projectile.NewProjectile(Player.GetSource_Accessory(NoviceClericEnchItem), Player.Center, vector, ModContent.ProjectileType<Projectiles.DLCShadowWispPro>(), 15, 2f, Player.whoAmI, 0f, 0f, 0f);
-                }
-            }
-        }
+        internal int NoviceClericCrosses = 0;
+        internal int NoviceClericTimer = 0;
+        public Vector2 crossOrbitalRotation = Vector2.UnitY;
     }
 }

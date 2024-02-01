@@ -7,6 +7,7 @@ using FargowiltasCrossmod.Content.Thorium;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -20,20 +21,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            //what the fuck was i on coding this
-            base.UpdateAccessory(player, hideVisual);
-            if (player.TryGetModPlayer(out CrossplayerThorium DLCPlayer))
-            {
-                DLCPlayer.AstroEnch = true;
-                DLCPlayer.AstroEnchItem = Item;
-                player.AddEffect<FargowiltasSouls.Content.Items.Accessories.Masomode.MasoGravEffect>(Item);
-                if (DLCPlayer.AstroLaserCD > 0) DLCPlayer.AstroLaserCD--;
-            }
+            player.AddEffect<FargowiltasSouls.Content.Items.Accessories.Masomode.MasoGravEffect>(Item);
+            player.AddEffect<AstroEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -45,25 +38,49 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .Register();
         }
     }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class AstroEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
+        public override bool ExtraAttackEffect => true;
+        public override int ToggleItemType => ModContent.ItemType<AstroEnchant>();
+
+        public override void PostUpdateEquips(Player player)
+        {
+            var DLCPlayer = player.ThoriumDLC();
+
+            if (DLCPlayer.AstroLaserCD > 0) DLCPlayer.AstroLaserCD--;
+        }
+
+        public void SpawnAstroLaser(Player player, NPC target)
+        {
+            int Damage = 100;
+            if (player.ForceEffect<AstroEffect>()) Damage += 50;
+            if (player.position.Y < Main.worldSurface * 0.35 * 16) Damage += 50; // in space
+            Vector2 pos = new(target.Center.X, MathHelper.Max(player.Center.Y - Main.screenHeight, 10f));
+
+            Projectile.NewProjectile(GetSource_EffectItem(player), pos,
+                Vector2.UnitY, ModContent.ProjectileType<Projectiles.SaucerDeathrayProj>(),
+                Damage, 2f, player.whoAmI);
+
+            player.ThoriumDLC().AstroLaserCD = 60;
+        }
+
+        public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
+        {
+            if (hitInfo.Crit && player.ThoriumDLC().AstroLaserCD <= 0)
+            {
+                SpawnAstroLaser(player, target);
+            }
+        }
+    }
 }
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
     public partial class CrossplayerThorium : ModPlayer
     {
-        public void SpawnAstroLaser(NPC target)
-        {
-            int Damage = 100;
-            if (Player.FargoSouls().ForceEffect(AstroEnchItem.type)) Damage += 50;
-            if (Player.position.Y < Main.worldSurface * 0.35 * 16) Damage += 50; // in space
-            Vector2 pos = new(target.Center.X, MathHelper.Max(Player.Center.Y - Main.screenHeight, 10f));
-
-            Projectile.NewProjectile(Player.GetSource_Accessory(AstroEnchItem), pos,
-                Vector2.UnitY, ModContent.ProjectileType<Projectiles.SaucerDeathrayProj>(),
-                Damage, 2f, Player.whoAmI);
-
-            AstroLaserCD = 60;
-        }
     }
 }
 

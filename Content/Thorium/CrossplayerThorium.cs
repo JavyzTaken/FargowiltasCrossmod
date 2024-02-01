@@ -12,6 +12,7 @@ using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
@@ -19,72 +20,17 @@ namespace FargowiltasCrossmod.Content.Thorium
     public partial class CrossplayerThorium : ModPlayer
     {
         #region enchants
-        // dont reorder these, they are in the order they were coded and i think thats cool
-        public bool EbonEnch;
-        public Item EbonEnchItem;
-        public bool NoviceClericEnch;
-        public Item NoviceClericEnchItem;
         public bool TemplarEnch;
         public Item TemplarEnchItem;
-        public bool LivingWoodEnch;
-        public Item LivingWoodEnchItem;
-        public bool SilkEnch;
         public bool WhiteKnightEnch;
-        public bool LodeStoneEnch;
-        public Item LodeStoneEnchItem;
-        public bool DragonEnch;
-        public Item DragonEnchItem;
-        public bool SteelEnch;
-        public Item SteelEnchItem;
-        public bool DarkSteelEnch;
         public bool ValadiumEnch;
         public Item ValadiumEnchItem;
-        public bool BerserkerEnch;
-        public bool FungusEnch;
-        public bool GraniteEnch;
-        public Item GraniteEnchItem;
-        public bool AstroEnch;
-        public Item AstroEnchItem;
-        public bool SpiritTrapperEnch;
-        public Item SpiritTrapperEnchItem;
-        public bool YewWoodEnch;
-        public Item YewWoodEnchItem;
-        public bool FleshEnch;
-        public Item FleshEnchItem;
-        public bool DemonBloodEnch;
-        public Item DemonBloodEnchItem;
-        public bool ConduitEnch;
-        public Item ConduitEnchItem;
-        public bool DepthDiverEnchant;
-        public Item DepthDiverEnchantItem;
-        public bool FallenPaladinEnch;
-        public Item FallenPaladinEnchItem;
-        public bool WarlockEnch;
-        public Item WarlockEnchItem;
-        public bool SacredEnch;
-        public Item SacredEnchItem;
-        public bool DreadEnch;
-        public Item DreadEnchItem;
         public bool NagaSkinEnch;
-        public bool LifeBloomEnch;
-        public Item LifeBloomEnchItem;
-        public bool IcyEnch;
-        public Item IcyEnchItem;
         public bool TitanEnch;
-        public bool DuraSteelEnch;
-        public bool BronzeEnch;
-        public Item BronzeEnchItem;
-        public bool BiotechEnch;
-        public Item BiotechEnchItem;
         public bool WhisperingEnch;
         public Item WhisperingEnchItem;
-        public bool TideHunterEnch;
-        public Item TideHunterEnchItem;
-        public bool GeodeEnch;
         public bool JesterEnch;
         public Item JesterEnchItem;
-        public bool ShadeMasterEnch;
-        public Item ShadeMasterEnchItem;
 
         public bool HelheimForce;
         public bool SvartalfheimForce;
@@ -95,12 +41,12 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int TemplarCD = 360;
         internal int ValadiumCD = 240;
         internal int AstroLaserCD = 60;
+        internal int BronzeCD = 45;
         
-        public bool WasInDashState = false; //for tide hunter
-        
-        internal int NoviceClericCrosses = 0;
-        internal int NoviceClericTimer = 0;
-        public Vector2 crossOrbitalRotation = Vector2.UnitY;
+        public bool WasInDashState = false; //for tide hunter mainly
+
+        internal int SteelTeir;
+        internal bool soulEssenceHit;
 
         internal Vector2[] nagaSkinLegs = new Vector2[4];
         internal Vector2[] nagaSkinLegTargets = new Vector2[4];
@@ -115,71 +61,17 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void ResetEffects()
         {
-            EbonEnch = false;
-            EbonEnchItem = null;
-            NoviceClericEnch = false;
-            NoviceClericEnchItem = null;
             TemplarEnch = false;
             TemplarEnchItem = null;
-            LivingWoodEnch = false;
-            LivingWoodEnchItem = null;
-            SilkEnch = false;
             WhiteKnightEnch = false;
-            LodeStoneEnch = false;
-            LodeStoneEnchItem = null;
-            DragonEnch = false;
-            DragonEnchItem = null;
-            SteelEnch = false;
-            SteelEnchItem = null;
-            DarkSteelEnch = false;
             ValadiumEnch = false;
             ValadiumEnchItem = null;
-            BerserkerEnch = false;
-            FungusEnch = false;
-            GraniteEnch = false;
-            GraniteEnchItem = null;
-            AstroEnch = false;
-            AstroEnchItem = null;
-            SpiritTrapperEnch = false;
-            SpiritTrapperEnchItem = null;
-            YewWoodEnch = false;
-            YewWoodEnchItem = null;
-            FleshEnch = false;
-            FleshEnchItem = null;
-            DemonBloodEnch = false;
-            DemonBloodEnchItem = null;
-            ConduitEnch = false;
-            ConduitEnchItem = null;
-            DepthDiverEnchant = false;
-            DepthDiverEnchantItem = null;
-            FallenPaladinEnch = false;
-            FallenPaladinEnchItem = null;
-            WarlockEnch = false;
-            WarlockEnchItem = null;
-            SacredEnch = false;
-            SacredEnchItem = null;
-            DreadEnch = false;
-            DreadEnchItem = null;
-            IcyEnch = false;
-            IcyEnchItem = null;
             NagaSkinEnch = false;
-            LifeBloomEnch = false;
-            LifeBloomEnchItem = null;
             TitanEnch = false;
-            DuraSteelEnch = false;
-            BronzeEnch = false;
-            BronzeEnchItem = null;
-            BiotechEnch = false;
-            BiotechEnchItem = null;
             WhisperingEnch = false;
             WhisperingEnchItem = null;
-            TideHunterEnch = false;
-            TideHunterEnchItem = null;
-            GeodeEnch = false;
             JesterEnch = false;
             JesterEnchItem = null;
-            ShadeMasterEnch = false;
-            ShadeMasterEnchItem = null;
             
             HelheimForce = false;
             SvartalfheimForce = false;
@@ -189,96 +81,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             MynaAccessory = false;
 
             TempleCoreItem = null;
-        }
 
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (FungusEnch)
-            {
-                if (target.TryGetGlobalNPC(out FungusEnemy funguy) && !funguy.Infected && !target.boss && Main.rand.NextBool(10))
-                {
-                    funguy.infectedBy = Player.whoAmI;
-                    funguy.Infected = true;
-                }
-            }
-            if (AstroEnch && hit.Crit && AstroLaserCD <= 0)
-            {
-                SpawnAstroLaser(target);
-            }
-
-            if (hit.Damage >= target.life) // kills
-            {
-                if (GraniteEnch)
-                {
-                    GraniteEffect(target.Center, proj);
-                }
-            }
-
-            if (hit.Crit)
-            {
-                if (WarlockEnch || SacredEnch)
-                {
-                    int projType = ModContent.ProjectileType<DLCShadowWisp>();
-
-                    if (Player.ownedProjectileCounts[projType] < 15)
-                    {
-                        Item itemToUse = WarlockEnch ? WarlockEnchItem : SacredEnchItem;
-                        bool synergy = SynergyEffect(itemToUse.type);
-
-                        int shadowWispType = synergy ? 2 : WarlockEnch ? 0 : 1;
-
-                        int damage = synergy ? 24 : WarlockEnch ? 16 : 0;
-                        float kb = WarlockEnch ? 1f : 0f;
-
-                        //var soulsPlayer = Player.FargoSouls();
-                        //if ((WarlockEnch && soulsPlayer.ForceEffect(WarlockEnchItem.type)) || (SacredEnch && soulsPlayer.ForceEffect(SacredEnchItem.type)))
-                        //{
-                        //    damage = 24;
-                        //    shadowWispType = 2;
-                        //    kb = 1f;
-                        //}
-
-                        Projectile.NewProjectile(Player.GetSource_Accessory(itemToUse), target.Center, Vector2.Zero, projType, damage, kb, Player.whoAmI, 0, 0, shadowWispType);
-                    }
-                }
-            }
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            SpawnFlesh(target);
-
-            if (hit.Damage >= target.life) // kills
-            {
-                if (DemonBloodEnch && Main.rand.NextBool(4))
-                {
-                    SpawnDemonBlood(target.Center);
-                }
-            }
-
-            // this (should) be true if the hit moved the boss below a 10% hp increment
-            // works by checking the current life's distance to the next increment vs the life - damage distance to next incement. 
-            if (target.boss && (target.life % (target.lifeMax / 10)) < ((target.life - hit.Damage) % (target.lifeMax / 10)))
-            {
-                if (DemonBloodEnch)
-                {
-                    SpawnDemonBlood(target.Center);
-                }
-            }
-        }
-
-        public bool soulEssenceHit;
-        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (SpiritTrapperEnch && !soulEssenceHit)
-            {
-                soulEssenceHit = true;
-                var thoriumPlayer = Player.Thorium();
-                int charge = Player.FargoSouls().ForceEffect(SpiritTrapperEnchItem.type) ? 2 : 1;
-                Player.AddBuff(ModContent.BuffType<ThoriumMod.Buffs.Healer.SoulEssence>(), 1800, true, false);
-                CombatText.NewText(target.Hitbox, new Color(100, 255, 200), charge, false, true);
-                thoriumPlayer.soulEssence += charge;
-            }
+            SteelTeir = 0;
         }
 
         public override void UpdateLifeRegen()
@@ -293,21 +97,21 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             if (ThoriumKeybinds.LivingWoodBind.JustPressed)
             {
-                if (!LifeBloomEnch) LivingWoodKey();
-                else LifeBloomKeyPress();
+                if (Player.HasEffect<LivingWoodEffect>()) LivingWoodKey();
+                else if (Player.HasEffect<LifeBloomEffect>()) LifeBloomKey();
             }
-            if (ThoriumKeybinds.SteelParryBind.JustPressed)
+            if (ThoriumKeybinds.SteelParryBind.JustPressed && Player.HasEffect<SteelEffect>())
             {
                 ParryKey();
             }
             if (ThoriumMod.ThoriumHotkeySystem.AccessoryKey.JustPressed)
             {
-                if (FallenPaladinEnch)
+                if (Player.HasEffect<FallenPaladinEffect>())
                 {
-                    FallenPaladinEffect();
+                    FallenPaladinKey();
                 }
 
-                if (WarlockEnch || SacredEnch)
+                if (Player.HasEffect<WarlockEffect>() || Player.HasEffect<SacredEffect>())
                 {
                     int type = ModContent.ProjectileType<DLCShadowWisp>();
                     for (int i = 0; i < 1000; i++)
@@ -323,38 +127,11 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             if (ThoriumMod.ThoriumHotkeySystem.EncaseKey.JustPressed)
             {
-                if (ShadeMasterEnch)
+                if (Player.HasEffect<ShadeMasterEffect>())
                 {
                     ShadeMasterEnter();
                 }
             }
-        }
-
-        public override void OnHitAnything(float x, float y, Entity victim)
-        {
-            base.OnHitAnything(x, y, victim);
-        }
-
-        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
-        {
-            if (Player.HasBuff<LivingWood_Root_B>())
-            {
-                Player.ClearBuff(ModContent.BuffType<LivingWood_Root_B>());
-                LivingWoodEnchant.KillLivingWoodRoots(Player.whoAmI);
-            }
-
-            DepthDiverHit();
-        }
-
-        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
-        {
-            if (Player.HasBuff<LivingWood_Root_B>())
-            {
-                Player.ClearBuff(ModContent.BuffType<LivingWood_Root_B>());
-                LivingWoodEnchant.KillLivingWoodRoots(Player.whoAmI);
-            }
-
-            DepthDiverHit();
         }
 
         public override void PreUpdate()
@@ -367,15 +144,10 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (YewWoodEnch)
+            if (Player.HasEffect<YewWoodEffect>())
             {
-                YewWoodEffect(item, ref position, ref velocity, ref type, ref damage, ref knockback);
+                YewWoodShootStats(item, ref position, ref velocity, ref type, ref damage, ref knockback);
             }
-        }
-
-        public override void OnEnterWorld()
-        {
-
         }
 
         public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
@@ -383,27 +155,16 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (NoviceClericCrosses > 0) mult = 0f;
         }
 
-        public override void OnConsumeMana(Item item, int manaConsumed)
-        {
-            NoviceClericOnManaUse();
-        }
-
         public override void PostUpdateEquips()
         {
             WasInDashState = Player.FargoSouls().IsInADashState;
-            NoviceClericEffect();
-            DepthDiverEffect();
-            ShadeMasterEffect();
-            EbonEnchant.EbonEffect(Player, this);
-        }
 
-        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if (BronzeEnch)
+            // needs to be outside of effect class so it actually triggers
+            if (!Player.HasEffect<ShadeMasterEffect>() || shadeMasterDuration == -1)
             {
-                BronzeEffect(item, position, damage);
+                if (shadeMasterDuration > 0)
+                    ShadeMasterExit();
             }
-            return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
 
         public override void PostUpdate()
@@ -411,28 +172,9 @@ namespace FargowiltasCrossmod.Content.Thorium
             Balance.ThoriumPotionNerfs.MurderBuffs(Player);
         }
 
-        public bool SynergyEffect(int enchType)
-        {
-            ModItem item = ModContent.GetModItem(enchType);
-            if (item == null || item.Item.IsAir)
-            {
-                Main.NewText("You shouldn't be seeing this. Taller Ghoose");
-                return false;
-            }
-
-            if (item is BaseSynergyEnchant synEnch)
-            {
-                if (SilkEnch) return true;
-
-                return synEnch.SynergyActive(this);
-            }
-
-            return false;
-        }
-
         public override void FrameEffects()
         {
-            if (ShadeMode && ShadeMasterEnchItem != null)
+            if (ShadeMode && Player.HasEffect<ShadeMasterEffect>())
             {
                 // replace with modded vanity
                 Player.head = 120; // ghost vanity

@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
@@ -31,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
         public override void AI()
         {
 			Player player = Main.player[Projectile.owner];
-			if (!player.active || player.dead || !player.ThoriumDLC().LifeBloomEnch)
+			if (!player.active || player.dead || !player.HasEffect<LifeBloomEffect>())
             {
 				Projectile.Kill();
             }

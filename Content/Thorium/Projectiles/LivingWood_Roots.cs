@@ -8,6 +8,8 @@ using Terraria.DataStructures;
 using ReLogic.Content;
 using Terraria.GameContent;
 using FargowiltasSouls;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
@@ -36,7 +38,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                 return;
             }
 
-            if (!player.ThoriumDLC().LivingWoodEnch)
+            if (!player.HasEffect<LivingWoodEffect>())
                 Projectile.Kill();
 
             Projectile.frame = 1;
@@ -92,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             if (target != null && ++Projectile.ai[0] >= 90)
             {
                 Projectile.ai[0] = 0;
-                bool wizard = player.FargoSouls().ForceEffect(player.ThoriumDLC().LivingWoodEnchItem.type);
+                bool wizard = player.ForceEffect<LivingWoodEffect>();
                 int projType = wizard ? ProjectileID.BulletHighVelocity : ProjectileID.WoodenArrowFriendly; 
                 int damage = wizard ? 80 : 20;
                 Vector2 ShootVec = Vector2.Normalize(target.Center - ShootOrigin) * (wizard ? 16 : 12); 

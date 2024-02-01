@@ -17,16 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.ConduitEnch = true;
-            DLCPlayer.ConduitEnchItem = Item;
-            DLCPlayer.AstroEnch = true;
-            DLCPlayer.AstroEnchItem = Item;
 
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<Projectiles.ConduitSaucer>()] < 1)
-            {
-                Projectile.NewProjectile(player.GetSource_Accessory(Item), player.Center, Vector2.Zero, ModContent.ProjectileType<Projectiles.ConduitSaucer>(), 0, 0, player.whoAmI);
-            }
         }
     }
 }

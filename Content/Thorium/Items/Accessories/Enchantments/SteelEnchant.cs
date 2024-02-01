@@ -4,10 +4,13 @@ using Terraria.ModLoader;
 using FargowiltasCrossmod.Content.Thorium.Buffs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 using FargowiltasSouls;
 using ThoriumMod.Items.Steel;
 using ThoriumMod.Items.Donate;
 using Terraria.ID;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -18,9 +21,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.SteelEnch = true;
-            DLCPlayer.SteelEnchItem = Item;
+            player.AddEffect<SteelEffect>(Item);
+            player.ThoriumDLC().SteelTeir = 1;
         }
 
         public override void AddRecipes()
@@ -36,6 +38,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .Register();
         }
     }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class SteelEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
+    }
 }
 
 namespace FargowiltasCrossmod.Content.Thorium
@@ -44,19 +52,23 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void ParryKey()
         {
-            if (SteelEnchItem == null || Main.myPlayer != Player.whoAmI || Player.dead || !Player.active) return;
-            int teir = DuraSteelEnch ? 3 : (DarkSteelEnch ? 2 : (SteelEnch ? 1 : 0));
+            if (Main.myPlayer != Player.whoAmI || Player.dead || !Player.active) return;
+            int teir = Player.ThoriumDLC().SteelTeir;
 
-            if (Player.FargoSouls().ForceEffect(SteelEnchItem.type)) teir++;
+            if (Player.ForceEffect<SteelEffect>()) teir++;
 
-            if (teir == 0) return;
+            if (teir == 0)
+            {
+                Main.NewText("This shouldn't be able to happen? tell ghoose");
+                return;
+            }
 
             if (!Player.HasBuff<SteelParry_CD>())
             {
                 Player.AddBuff(ModContent.BuffType<SteelParry_CD>(), 900);
 
                 float rot = Player.Center.DirectionTo(Main.MouseWorld).ToRotation();
-                Projectile.NewProjectile(Player.GetSource_Accessory(SteelEnchItem), Player.Center, Vector2.Zero, ModContent.ProjectileType<SteelParry>(), 0, 0, Player.whoAmI, teir, rot);
+                Projectile.NewProjectile(Player.GetSource_EffectItem<SteelEffect>(), Player.Center, Vector2.Zero, ModContent.ProjectileType<SteelParry>(), 0, 0, Player.whoAmI, teir, rot);
             }
         }
     }

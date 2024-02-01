@@ -8,6 +8,9 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
 using ThoriumMod.Items.ArcaneArmor;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -18,14 +21,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPLayer = player.ThoriumDLC();
-            DLCPLayer.YewWoodEnch = true;
-            DLCPLayer.YewWoodEnchItem = Item;
-        }
-
-        public override void Load()
-        {
-            LoadModdedAmmo();
+            player.AddEffect<YewWoodEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -41,7 +37,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .Register();
         }
 
-        public static void LoadModdedAmmo()
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class YewWoodEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
+
+        public override void Load()
         {
             PreHMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.IcyArrow>());
             PreHMArrows.Add(ModContent.ProjectileType<ThoriumMod.Projectiles.SteelArrow>());
@@ -105,18 +108,18 @@ namespace FargowiltasCrossmod.Content.Thorium
         /// <summary>
         /// from ModifyShootStats
         /// </summary>
-        public void YewWoodEffect(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        public void YewWoodShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (item.useAmmo == AmmoID.Arrow && type == ProjectileID.WoodenArrowFriendly)
             {
-                type = Main.rand.NextFromCollection(Main.hardMode ? Items.Accessories.Enchantments.YewWoodEnchant.HMArrows : Items.Accessories.Enchantments.YewWoodEnchant.PreHMArrows);
+                type = Main.rand.NextFromCollection(Main.hardMode ? YewWoodEffect.HMArrows : YewWoodEffect.PreHMArrows);
                 Item arrow = new(type);
                 damage += arrow.damage - 5;
             }
 
-            if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Player.FargoSouls().ForceEffect(YewWoodEnchItem.type))
+            if (item.useAmmo == AmmoID.Bullet && type == ProjectileID.Bullet && Player.ForceEffect<YewWoodEffect>())
             {
-                type = Main.rand.NextFromCollection(Main.hardMode ? Items.Accessories.Enchantments.YewWoodEnchant.HMBullets : Items.Accessories.Enchantments.YewWoodEnchant.PreHMBullets);
+                type = Main.rand.NextFromCollection(Main.hardMode ? YewWoodEffect.HMBullets : YewWoodEffect.PreHMBullets);
                 Item bullet = new(type);
                 damage += bullet.damage - 7;
             }

@@ -1,11 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using FargowiltasCrossmod.Content.Thorium.Buffs;
-using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Content.Thorium.NPCs;
-using FargowiltasCrossmod.Content.Thorium.Projectiles;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -14,16 +10,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         public override Color nameColor => Color.DarkRed;
 
-        public override void SetStaticDefaults()
-        {
-
-        }
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.DarkSteelEnch = true;
-            DLCPlayer.SteelEnchItem = Item;
+            player.ThoriumDLC().SteelTeir = 2;
+            player.AddEffect<SteelEffect>(Item);
         }
 
         public override void AddRecipes()

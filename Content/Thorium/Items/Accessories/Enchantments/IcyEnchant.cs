@@ -12,24 +12,21 @@ using ThoriumMod.Items.HealerItems;
 using ThoriumMod.Items.EarlyMagic;
 using ThoriumMod.Items.Icy;
 using ThoriumMod.Items.BardItems;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class IcyEnchant : BaseEnchant
+    public class IcyEnchant : BaseSynergyEnchant<DepthDiverEffect>
     {
         public override Color nameColor => Color.DarkBlue;
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-
-        }
+        internal override int SynergyEnch => ModContent.ItemType<DepthDiverEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.IcyEnch = true;
-            DLCPlayer.IcyEnchItem = Item;
+            player.AddEffect<IcyEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -45,45 +42,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .Register();
         }
     }
-}
 
-namespace FargowiltasCrossmod.Content.Thorium.Projectiles
-{
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class IcyEnchGlobalProj : GlobalProjectile
+    public class IcyEffect : AccessoryEffect
     {
-        public override bool InstancePerEntity => true; 
-        public override bool AppliesToEntity(Projectile proj, bool lateInstantiation)
-        {
-            return proj.friendly && !proj.sentry && !proj.minion && proj.type != ProjectileID.NorthPoleSnowflake;
-        }
-
-        private int icySnowflackTimer;
-        const int SpawnInterval = 60;
-
-        public override void PostAI(Projectile projectile)
-        {
-            if (projectile.active && projectile.damage > 0 && projectile.velocity.LengthSquared() > 1f && (Main.player[projectile.owner]).ThoriumDLC().IcyEnch)
-            {
-                if (++icySnowflackTimer > SpawnInterval)
-                {
-                    icySnowflackTimer = 0;
-                    Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, new Vector2(0, Main.rand.Next(5)), ProjectileID.NorthPoleSnowflake, projectile.damage / 4, 0.4f, projectile.owner);
-                }
-            }
-        }
-
-        public override void OnSpawn(Projectile projectile, IEntitySource source)
-        {
-            icySnowflackTimer = Main.rand.Next(SpawnInterval);
-        }
-
-        public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
-        {
-            if (projectile.active && projectile.damage > 0 && (Main.player[projectile.owner]).ThoriumDLC().IcyEnch)
-            {
-                modifiers.FinalDamage *= 0.8f;
-            }
-        }
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.JotunheimHeader>();
     }
 }

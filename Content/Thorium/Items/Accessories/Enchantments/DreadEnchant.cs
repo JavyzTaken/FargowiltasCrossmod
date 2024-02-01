@@ -4,6 +4,8 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using Microsoft.Xna.Framework;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -16,23 +18,24 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.DreadEnch = true;
-            DLCPlayer.DreadEnchItem = Item;
-
-            DreadEffect(player, Item);
         }
 
-        public static void DreadEffect(Player player, Item item)
-        {
-            int headType = ModContent.ProjectileType<DragonMinionHead>();
+        //public static void DreadEffect(Player player, Item item)
+        //{
+        //    int headType = ModContent.ProjectileType<DragonMinionHead>();
 
-            if (player.ownedProjectileCounts[headType] != 1)
-            {
-                player.KillOwnedProjectilesOfType(headType);
+        //    if (player.ownedProjectileCounts[headType] != 1)
+        //    {
+        //        player.KillOwnedProjectilesOfType(headType);
 
-                Projectile.NewProjectile(player.GetSource_Accessory(item), player.Center, Vector2.Zero, headType, 45, 0.2f, player.whoAmI);
-            }
-        }
+        //        Projectile.NewProjectile(player.GetSource_Accessory(item), player.Center, Vector2.Zero, headType, 45, 0.2f, player.whoAmI);
+        //    }
+        //}
+    }
+
+    [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
+    public class DreadEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
     }
 }

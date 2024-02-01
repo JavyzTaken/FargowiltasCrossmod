@@ -8,6 +8,8 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
 // god this is such a mess
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
@@ -88,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             }
 
             // kill if player dies or doesnt have the enchant on
-            if (modPlayer.DreadEnch && player.active && !player.dead)
+            if (player.HasEffect<DreadEffect>() && player.active && !player.dead)
             {
                 Projectile.timeLeft = 2;
             }

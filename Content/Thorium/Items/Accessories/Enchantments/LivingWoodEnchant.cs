@@ -16,20 +16,19 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using ThoriumMod.Items.SummonItems;
 using ThoriumMod.Items.ThrownItems;
 using ThoriumMod.Items.Consumable;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class LivingWoodEnchant : BaseEnchant
     {
-        
         public override Color nameColor => Color.Brown;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modPlayer = player.ThoriumDLC();
-            modPlayer.LivingWoodEnch = true;
-            modPlayer.LivingWoodEnchItem = Item;
+            player.AddEffect<LivingWoodEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -57,6 +56,21 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             }
         }
     }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class LivingWoodEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
+
+        public override void OnHitByEither(Player player, NPC npc, Projectile proj)
+        {
+            if (player.HasBuff<LivingWood_Root_B>())
+            {
+                player.ClearBuff(ModContent.BuffType<LivingWood_Root_B>());
+                LivingWoodEnchant.KillLivingWoodRoots(player.whoAmI);
+            }
+        }
+    }
 }
 
 namespace FargowiltasCrossmod.Content.Thorium
@@ -65,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Thorium
     {
         public void LivingWoodKey()
         {
-            if (!LivingWoodEnch || LivingWoodEnchItem == null || Main.myPlayer != Player.whoAmI) return;
+            if (!Player.HasEffect<LivingWoodEffect>() || Main.myPlayer != Player.whoAmI) return;
 
             if (!Player.HasBuff<LivingWood_Root_DB>() && !Player.HasBuff<LivingWood_Root_B>())
             {

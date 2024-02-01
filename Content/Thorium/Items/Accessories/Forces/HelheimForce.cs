@@ -2,6 +2,10 @@ using Terraria;
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
 {
@@ -16,27 +20,15 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Forces
 
             DLCPlayer.HelheimForce = true;
 
-            DLCPlayer.SpiritTrapperEnch = true;
-            DLCPlayer.SpiritTrapperEnchItem = Item;
-
-            DLCPlayer.DragonEnch = true;
-            DLCPlayer.DragonEnchItem = Item;
-            DragonEnchant.DragonEffect(player);
-
-            DLCPlayer.DreadEnch = true;
-            DLCPlayer.DreadEnchItem = Item;
-            DreadEnchant.DreadEffect(player, Item);
+            player.AddEffect<SpiritTrapperEffect>(Item);
+            player.AddEffect<DragonEffect>(Item);
+            //player.AddEffect<DreadEffect>(Item);
+            player.AddEffect<FleshEffect>(Item);
+            player.AddEffect<DemonBloodEffect>(Item);
+            player.AddEffect<SilkEffect>(Item);
 
             DLCPlayer.WhiteKnightEnch = true;
             WhiteKnightEnchant.WhiteKnightEffect(player);
-
-            DLCPlayer.SilkEnch = true; 
-
-            DLCPlayer.FleshEnch = true;
-            DLCPlayer.FleshEnchItem = Item;
-            DLCPlayer.DemonBloodEnch = true;
-            DLCPlayer.DemonBloodEnchItem = Item;
-            DemonBloodEnchant.DemonBloodEffect(player);
         }
     }
 }

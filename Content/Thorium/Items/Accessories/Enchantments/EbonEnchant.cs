@@ -8,6 +8,9 @@ using ThoriumMod.Items.HealerItems;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.BossMini;
 using Terraria.ID;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -15,32 +18,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class EbonEnchant : BaseEnchant
     {
         public override Color nameColor => Color.Purple;
-        //internal override bool SynergyActive(CrossplayerThorium DLCPlayer) => DLCPlayer.EbonEnch && DLCPlayer.NoviceClericEnch;
-        
-        //protected override Color SynergyColor1 => Color.White with { A = 0 };
-        //protected override Color SynergyColor2 => Color.Purple with { A = 0 };
-        //internal override int SynergyEnch => ModContent.ItemType<NoviceClericEnchant>();
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.EbonEnch = true;
-            DLCPlayer.EbonEnchItem = Item;
-        }
-
-        public static void EbonEffect(Player player, CrossplayerThorium DLCPlayer)
-        {
-            if (!DLCPlayer.EbonEnch) return;
-
-            var thoriumPlayer = player.Thorium();
-            thoriumPlayer.darkAura = true;
-
-            if (thoriumPlayer.totalHealingDarkHeart > 40)
-            {
-                Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.EbonEnchItem), player.Center - 50f * Vector2.UnitY, Vector2.Zero, ModContent.ProjectileType<ThoriumMod.Projectiles.Healer.DarkHeartPro>(), 40, 5f, player.whoAmI, 0f, 0f);
-                thoriumPlayer.totalHealingDarkHeart = 0;
-            }
-            player.GetDamage(DamageClass.Generic) += 0.05f * thoriumPlayer.healBonus;
+            player.AddEffect<EbonEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -54,6 +35,26 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .AddIngredient<DarkHeart>()
                 .AddTile(TileID.DemonAltar)
                 .Register();
+        }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class EbonEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
+
+        public override void PostUpdateEquips(Player player)
+        {
+            var thoriumPlayer = player.Thorium();
+            thoriumPlayer.darkAura = true;
+
+            if (thoriumPlayer.totalHealingDarkHeart > 40)
+            {
+                Projectile.NewProjectile(GetSource_EffectItem(player), player.Center - 50f * Vector2.UnitY, Vector2.Zero, ModContent.ProjectileType<ThoriumMod.Projectiles.Healer.DarkHeartPro>(), 40, 5f, player.whoAmI, 0f, 0f);
+                thoriumPlayer.totalHealingDarkHeart = 0;
+            }
+
+            player.GetDamage(DamageClass.Generic) += 0.05f * thoriumPlayer.healBonus;
         }
     }
 }

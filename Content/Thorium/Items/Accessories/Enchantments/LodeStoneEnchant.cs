@@ -10,46 +10,19 @@ using FargowiltasSouls;
 
 using Terraria.DataStructures;
 using System;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class LodeStoneEnchant : BaseEnchant
+    public class LodestoneEnchant : BaseEnchant
     {
-        
         public override Color nameColor => Color.Brown;
-
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-
-        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.whoAmI != Main.myPlayer) return;
-
-            var modplayer = player.ThoriumDLC();
-            modplayer.LodeStoneEnch = true;
-            modplayer.LodeStoneEnchItem = Item;
-
-            int maxPlatforms = player.FargoSouls().ForceEffect(Item.type) ? 3 : 2;
-            int currentPlatforms = player.ownedProjectileCounts[ModContent.ProjectileType<LodeStonePlatform>()];
-            if (currentPlatforms != maxPlatforms)
-            {
-                modplayer.LodeStonePlatforms = new();
-                for (int i = 0; i < maxPlatforms; i++)
-                {
-                    modplayer.LodeStonePlatforms.Add(Projectile.NewProjectile(new EntitySource_ItemUse(player, Item),
-                                                                              player.Center,
-                                                                              Vector2.Zero,
-                                                                              ModContent.ProjectileType<LodeStonePlatform>(),
-                                                                              0,
-                                                                              0,
-                                                                              player.whoAmI,
-                                                                              i * (2 * MathF.PI / maxPlatforms)));
-                }
-            }
+            player.AddEffect<LodestoneEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -59,6 +32,36 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .AddIngredient<ThoriumMod.Items.Lodestone.LodeStoneChestGuard>()
                 .AddIngredient<ThoriumMod.Items.Lodestone.LodeStoneShinGuards>()
                 .Register();
+        }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class LodestoneEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MidgardHeader>();
+
+        public override void PostUpdate(Player player)
+        {
+            if (player.whoAmI != Main.myPlayer) return;
+            var DLCPlayer = player.ThoriumDLC();
+
+            int maxPlatforms = player.ForceEffect<LodestoneEffect>() ? 3 : 2;
+            int currentPlatforms = player.ownedProjectileCounts[ModContent.ProjectileType<LodeStonePlatform>()];
+            if (currentPlatforms != maxPlatforms)
+            {
+                DLCPlayer.LodeStonePlatforms = new();
+                for (int i = 0; i < maxPlatforms; i++)
+                {
+                    DLCPlayer.LodeStonePlatforms.Add(Projectile.NewProjectile(GetSource_EffectItem(player),
+                                                                              player.Center,
+                                                                              Vector2.Zero,
+                                                                              ModContent.ProjectileType<LodeStonePlatform>(),
+                                                                              0,
+                                                                              0,
+                                                                              player.whoAmI,
+                                                                              i * (2 * MathF.PI / maxPlatforms)));
+                }
+            }
         }
     }
 }

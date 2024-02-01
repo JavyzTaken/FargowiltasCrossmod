@@ -5,6 +5,8 @@ using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using System.Collections.Generic;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -15,8 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.SilkEnch = true;
+            player.AddEffect<SilkEffect>(Item);
         }
 
         public override void SafeModifyTooltips(List<TooltipLine> tooltips)
@@ -28,15 +29,17 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
             foreach (BaseEnchant enchant in soulsPlayer.EquippedEnchants)
             {
-                if (enchant.Type == Type || enchant is not BaseSynergyEnchant synEnchant)
-                {
-                    continue;
-                }
+                // For someone smarter than me: I need this to iterate through the player's accessories and add a tooltip for each one that is a synergy enchant, however idk how to check the type, since BaseSynergyEnchant is templated.
 
-                if (DLCPlayer.SynergyEffect(enchant.Type))
-                {
-                    tooltips.Add(new TooltipLine(Mod, "silk", $"[i:{enchant.Item.type}] [i:{synEnchant.SynergyEnch}]"));
-                }
+                //if (enchant.Type == Type || enchant is not BaseSynergyEnchant synEnchant)
+                //{
+                //    continue;
+                //}
+
+                //if (DLCPlayer.SynergyEffect(enchant.Type))
+                //{
+                //    tooltips.Add(new TooltipLine(Mod, "silk", $"[i:{enchant.Item.type}] [i:{synEnchant.SynergyEnch}]"));
+                //}
             }
 
             tooltips.RemoveAll(line => line.Name == "wizard");
@@ -50,5 +53,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .AddIngredient<ThoriumMod.Items.EarlyMagic.SilkLeggings>()
                 .Register();
         }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class SilkEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
     }
 }

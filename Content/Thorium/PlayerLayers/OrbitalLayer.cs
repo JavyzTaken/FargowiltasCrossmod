@@ -7,6 +7,11 @@ using Terraria.DataStructures;
 using Terraria.ModLoader;
 using ThoriumMod.Empowerments;
 using ThoriumMod.Utilities;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 {
@@ -52,14 +57,14 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 			Player drawPlayer = drawInfo.drawPlayer;
 			var DLCPlayer = drawPlayer.ThoriumDLC();
 
-			if (DLCPlayer.NoviceClericCrosses > 0 && (DLCPlayer.NoviceClericEnch || DLCPlayer.EbonEnch))
+			if (DLCPlayer.NoviceClericCrosses > 0 && (drawPlayer.HasEffect<NoviceClericEffect>()))
 			{
 				// This code is modified from thorium code in OrbitalLayerBase.cs
-				Texture2D texture5 = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Thorium/PlayerDrawLayers/Cross").Value;
+				Texture2D texture5 = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Thorium/PlayerLayers/Cross").Value;
 				Vector2 rotation = DLCPlayer.crossOrbitalRotation;
 				float addrotation4 = MathF.Tau / DLCPlayer.NoviceClericCrosses;
 
-				bool alternating = DLCPlayer.SynergyEffect(DLCPlayer.NoviceClericEnchItem.type);
+				bool alternating = drawPlayer.HasEffect<SilkEffect>() || drawPlayer.HasEffect<EbonEffect>();
 
 				for (int n = 0; n < DLCPlayer.NoviceClericCrosses; n++)
 				{

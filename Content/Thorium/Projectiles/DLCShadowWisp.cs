@@ -1,4 +1,6 @@
 using System;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -22,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 		{
 			Player player = Main.player[Projectile.owner];
 			Lighting.AddLight(Projectile.Center, 0.65f, 0.4f, 0.7f);
-			if (player.dead || (!player.ThoriumDLC().WarlockEnch && !player.ThoriumDLC().SacredEnch))
+			if (player.dead || (!player.HasEffect<WarlockEffect>() && !player.HasEffect<SacredEffect>()))
 			{
 				Projectile.Kill();
 				return;

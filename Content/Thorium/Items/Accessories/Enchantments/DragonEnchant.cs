@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using System;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -19,34 +21,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var modplayer = player.ThoriumDLC();
-            modplayer.DragonEnch = true;
-            modplayer.DragonEnchItem = Item;
-
-            DragonEffect(player);
+            player.AddEffect<DragonEffect>(Item);
         }
-
-        public static void DragonEffect(Player player)
-        {
-            int numHeads = player.FargoSouls().ForceEffect(ModContent.ItemType<DragonEnchant>()) ? 2 : 1;
-            int projType = ModContent.ProjectileType<DragonHead>();
-
-            if (player.ownedProjectileCounts[projType] != numHeads)
-            {
-                player.KillOwnedProjectilesOfType(projType);
-
-                var DLCPlayer = player.ThoriumDLC();
-                if (numHeads == 1)
-                {
-                    Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 0);
-                }
-                else
-                {
-                    Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 1);
-                    Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.DragonEnchItem), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 2);
-                }
-            }
-        } 
 
         public override void AddRecipes()
         {
@@ -55,6 +31,33 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .AddIngredient<ThoriumMod.Items.Dragon.DragonBreastplate>()
                 .AddIngredient<ThoriumMod.Items.Dragon.DragonGreaves>()
                 .Register();
+        }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class DragonEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+
+        public override void PostUpdateEquips(Player player)
+        {
+            int numHeads = player.ForceEffect<DragonEffect>() ? 2 : 1;
+            int projType = ModContent.ProjectileType<DragonHead>();
+
+            if (player.ownedProjectileCounts[projType] != numHeads)
+            {
+                player.KillOwnedProjectilesOfType(projType);
+
+                if (numHeads == 1)
+                {
+                    Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 0);
+                }
+                else
+                {
+                    Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 1);
+                    Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, Vector2.Zero, projType, 0, 0, player.whoAmI, 2);
+                }
+            }
         }
     }
 }

@@ -7,6 +7,9 @@ using Terraria;
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -19,9 +22,27 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
+            player.AddEffect<SpiritTrapperEffect>(Item);
+        }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class SpiritTrapperEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+
+        public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
             var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.SpiritTrapperEnch = true;
-            DLCPlayer.SpiritTrapperEnchItem = Item;
+            if (!DLCPlayer.soulEssenceHit)
+            {
+                DLCPlayer.soulEssenceHit = true;
+                var thoriumPlayer = player.Thorium();
+                int charge = player.ForceEffect<SpiritTrapperEffect>() ? 2 : 1;
+                player.AddBuff(ModContent.BuffType<ThoriumMod.Buffs.Healer.SoulEssence>(), 1800, true, false);
+                CombatText.NewText(target.Hitbox, new Color(100, 255, 200), charge, false, true);
+                thoriumPlayer.soulEssence += charge;
+            }
         }
     }
 }

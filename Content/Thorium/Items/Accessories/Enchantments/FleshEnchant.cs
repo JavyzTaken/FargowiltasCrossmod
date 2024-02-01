@@ -5,6 +5,9 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -17,22 +20,20 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            DLCPlayer.FleshEnch = true;
-            DLCPlayer.FleshEnchItem = Item;
+            player.AddEffect<FleshEffect>(Item);
         }
     }
-}
 
-namespace FargowiltasCrossmod.Content.Thorium
-{
-    public partial class CrossplayerThorium
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class FleshEffect : AccessoryEffect
     {
-        public void SpawnFlesh(NPC target)
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+
+        public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
-            if (FleshEnch && Main.rand.NextBool(15))
+            if (Main.rand.NextBool(15))
             {
-                Item.NewItem(Player.GetSource_Accessory(FleshEnchItem), target.Hitbox, ModContent.ItemType<ThoriumMod.Items.Flesh.GreatFlesh>(), 1, false, 0, false, false);
+                Item.NewItem(GetSource_EffectItem(player), target.Hitbox, ModContent.ItemType<ThoriumMod.Items.Flesh.GreatFlesh>(), 1, false, 0, false, false);
             }
         }
     }

@@ -4,11 +4,11 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static FargowiltasCrossmod.Core.ModCompatibility;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls;
-using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -18,20 +18,23 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override Color nameColor => new(0, 85, 85);
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.GetModPlayer<CrossplayerThorium>();
-            DLCPlayer.TideHunterEnch = true;
-            DLCPlayer.TideHunterEnchItem = Item;
-            TideHunterEffect(player);
+            player.AddEffect<TideHunterEffect>(Item);
         }
+    }
 
-        public static void TideHunterEffect(Player player)
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class TideHunterEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.JotunheimHeader>();
+
+        public override void PostUpdateEquips(Player player)
         {
             var DLCPlayer = player.ThoriumDLC();
             if (!player.FargoSouls().IsInADashState) return;
 
             if (!DLCPlayer.WasInDashState)
             {
-                Projectile.NewProjectile(player.GetSource_Accessory(DLCPlayer.TideHunterEnchItem), player.Center, player.velocity, ModContent.ProjectileType<Projectiles.TideTurnerWave>(), 125, 3f, player.whoAmI, 6);
+                Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, player.velocity, ModContent.ProjectileType<TideTurnerWave>(), 125, 3f, player.whoAmI, 6);
             }
         }
     }

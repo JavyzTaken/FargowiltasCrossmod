@@ -3,6 +3,9 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using Microsoft.Xna.Framework;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -13,11 +16,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            var DLCPlayer = player.ThoriumDLC();
-            var ThoriumPlayer = player.Thorium();
+            player.AddEffect<GeodeEffect>(Item);
 
-            DLCPlayer.GeodeEnch = true;
-            ThoriumPlayer.setGeode = true;
+            var modPlayer = player.FargoSouls();
+            float speed = modPlayer.ForceEffect<GeodeEnchant>() ? .75f : .5f;
+            MinerEnchant.AddEffects(player, speed, Item);
         }
 
         public override void AddRecipes()
@@ -25,6 +28,16 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             CreateRecipe()
                 .AddIngredient<MinerEnchant>()
                 .Register();
+        }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class GeodeEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<FargowiltasSouls.Core.Toggler.Content.WorldShaperHeader>();
+        public override void PostUpdateEquips(Player player)
+        {
+            player.Thorium().setGeode = true;
         }
     }
 }

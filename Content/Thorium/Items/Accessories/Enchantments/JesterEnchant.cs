@@ -60,12 +60,27 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         }
 
         private int enchantChangeCD;
+
         private Item currentEnchant;
 
         internal static List<int> enchantItemTypes;
         internal static void PostSetup(Mod mod)
         {
-            //enchantItemTypes = new();
+            enchantItemTypes = new();
+
+            var BaseEnchants = ModContent.GetContent<BaseEnchant>();
+            foreach (var baseEnch in BaseEnchants)
+            {
+                if (baseEnch == null || baseEnch.Type <= 0)
+                {
+                    mod.Logger.Debug($"Enchant {baseEnch.Name} created a null or 0 itemType. This is probably due ot it being an abstract class");
+                    continue;
+                }
+
+                if (baseEnch.Type == ModContent.ItemType<JesterEnchant>()) continue;
+
+                enchantItemTypes.Add(baseEnch.Type);
+            }
 
             //Assembly SoulsAssembly = Core.ModCompatibility.SoulsMod.Mod.GetType().Assembly;
             //Assembly DLCAssembly = mod.GetType().Assembly;
@@ -83,10 +98,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             //{
             //    var ExtrasTypes = Extras.GetType().Assembly.GetTypes();
             //    enchantTypes = enchantTypes.Concat(ExtrasTypes.Where(T => T.BaseType != null && T.BaseType.Name == "BaseEnchant"));
-            //} 
+            //}
 
             //MethodInfo itemTypeMethod = typeof(ModContent).GetMethod("ItemType", BindingFlags.Public | BindingFlags.Static);
-            
+
             //foreach (Type enchType in enchantTypes)
             //{
             //    // equivalent to ModContent.ItemType<enchType>();
