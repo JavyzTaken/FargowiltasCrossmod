@@ -824,6 +824,11 @@ Mods: {
 				DisplayName: Vanaheim Force
 				Tooltip: ""
 			}
+
+			LodestoneEnchant: {
+				DisplayName: Lodestone Enchant
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {

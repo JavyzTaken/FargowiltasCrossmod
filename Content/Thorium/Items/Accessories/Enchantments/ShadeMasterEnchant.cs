@@ -33,12 +33,14 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override void PostUpdateEquips(Player player)
         {
             var DLCPlayer = player.ThoriumDLC();
-            if (DLCPlayer.ShadeMode)
+            if (!DLCPlayer.ShadeMode)
             {
-                player.GetDamage(DamageClass.Generic) += 0.2f;
-                player.statDefense -= 50;
-                player.endurance -= 0.1f;
+                return;
             }
+
+            player.GetDamage(DamageClass.Generic) += 0.2f;
+            player.statDefense -= 50;
+            player.endurance -= 0.1f;
 
             if (--DLCPlayer.shadeMasterDuration == 0)
             {

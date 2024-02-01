@@ -51,6 +51,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
             var DLCPlayer = player.ThoriumDLC();
             DLCPlayer.crossOrbitalRotation = Utils.RotatedBy(DLCPlayer.crossOrbitalRotation, -0.05, default);
 
+            if (DLCPlayer.NoviceClericCrosses < 0) DLCPlayer.NoviceClericCrosses = 0;
+
             if (player.controlUseItem)
             {
                 return;
@@ -77,6 +79,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public override void TryAdditionalAttacks(Player player, int damage, DamageClass damageType)
         {
             var DLCPlayer = player.ThoriumDLC();
+            if (DLCPlayer.NoviceClericCrosses <= 0) return;
+
             DLCPlayer.NoviceClericCrosses--;
             bool synergy = SynergyActive(player);
             int burstNum = (synergy && DLCPlayer.NoviceClericCrosses > 0) ? 5 : 3;

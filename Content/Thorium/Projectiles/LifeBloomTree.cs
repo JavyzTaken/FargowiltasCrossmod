@@ -158,7 +158,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 			}
 
 			float rotation = Projectile.ai[1] * MathF.PI / 300f;
-			Texture2D texture = TextureAssets.Projectile[ProjectileID.DryadsWardCircle].Value;
+			Texture2D texture = ModContent.Request<Texture2D>($"Terraria/Images/Projectile_{ProjectileID.DryadsWardCircle}").Value;
 			int num = (int)(Projectile.ai[1] / 6f);
 			Vector2 spinningPoint = new(0f, 0f - outerRange);
 
