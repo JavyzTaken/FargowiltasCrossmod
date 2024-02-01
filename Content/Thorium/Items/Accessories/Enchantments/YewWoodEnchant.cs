@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class YewWoodEnchant : BaseEnchant
     {
-        public override Color nameColor => Color.DarkGreen;
+        public override Color nameColor => Color.Brown;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -43,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class YewWoodEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<YewWoodEnchant>();
 
         public override void Load()
         {

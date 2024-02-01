@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SpiritTrapperEnchant : BaseEnchant
     {
-        public override Color nameColor => Color.Red;
+        public override Color nameColor => Color.LightBlue;
 
         public override bool IsLoadingEnabled(Mod mod) => !ModContent.GetInstance<Core.ThoriumConfig>().HideWIPThorium;
 
@@ -29,7 +29,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class SpiritTrapperEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.HelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<SpiritTrapperEnchant>();
 
         public override void OnHitNPCWithItem(Player player, Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {

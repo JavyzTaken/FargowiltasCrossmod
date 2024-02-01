@@ -498,16 +498,16 @@ Mods: {
 
 			TideTurnerEnchant: {
 				Tooltip: ""
-				DisplayName: Tide Turner Enchant
+				DisplayName: Tide Turner Enchantment
 			}
 
 			GeodeEnchant: {
-				DisplayName: Geode Enchant
+				DisplayName: Geode Enchantment
 				Tooltip: Veinmine and miner effect
 			}
 
 			BloomingEnchant: {
-				DisplayName: Blooming Enchant
+				DisplayName: Blooming Enchantment
 				Tooltip: ""
 			}
 
@@ -572,7 +572,7 @@ Mods: {
 			}
 
 			ShadeMasterEnchant: {
-				DisplayName: Shade Master Enchant
+				DisplayName: Shade Master Enchantment
 				Tooltip: ""
 			}
 
@@ -792,41 +792,41 @@ Mods: {
 
 			AlfheimForce: {
 				Tooltip: ""
-				DisplayName: Alfheim Force
+				DisplayName: Force of Alfheim
 			}
 
 			AsgardForce: {
-				DisplayName: Asgard Force
+				DisplayName: Force of Asgard
 				Tooltip: ""
 			}
 
 			JotunheimForce: {
-				DisplayName: Jotunheim Force
+				DisplayName: Force of Jotunheim
 				Tooltip: ""
 			}
 
 			MidgardForce: {
-				DisplayName: Midgard Force
+				DisplayName: Force of Midgard
 				Tooltip: ""
 			}
 
 			MuspelheimForce: {
-				DisplayName: Muspelheim Force
+				DisplayName: Force of Muspelheim
 				Tooltip: ""
 			}
 
 			NiflheimForce: {
-				DisplayName: Niflheim Force
+				DisplayName: Force of Niflheim
 				Tooltip: ""
 			}
 
 			VanaheimForce: {
-				DisplayName: Vanaheim Force
+				DisplayName: Force of Vanaheim
 				Tooltip: ""
 			}
 
 			LodestoneEnchant: {
-				DisplayName: Lodestone Enchant
+				DisplayName: Lodestone Enchantment
 				Tooltip: ""
 			}
 		}
@@ -957,12 +957,12 @@ Mods: {
 			}
 
 			MynaDB: {
-				DisplayName: Myna
+				DisplayName: Myna'ed
 				Description: Your projectiles dodge enemies
 			}
 
 			SteelParry_CD: {
-				DisplayName: Steel Parry_ C D
+				DisplayName: Parry issue
 				Description: Wait, isn't this meant to be free?
 			}
 
@@ -999,48 +999,43 @@ Mods: {
 			YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
 			DraedonsHeartEffect: Draedons Heart
 			CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
-			StarofDestruction.DisplayName: Starof Destruction
-			DmgOrbHack.DisplayName: Dmg Orb Hack
-			HealOrbHack.DisplayName: Heal Orb Hack
-			AngryGhost.DisplayName: Angry Ghost
-			DragonMinionBody.DisplayName: Dragon Minion Body
-			DragonMinionBody2.DisplayName: Dragon Minion Body2
-			DragonMinionHead.DisplayName: Dragon Minion Head
-			DragonMinionTail.DisplayName: Dragon Minion Tail
-			FungusSpore.DisplayName: Fungus Spore
-			GraniteExplosion.DisplayName: Granite Explosion
-			KluexBlast.DisplayName: Kluex Blast
-			KluexOrb.DisplayName: Kluex Orb
-			LivingWood_Roots.DisplayName: Living Wood Roots
-			LodeStonePlatform.DisplayName: Lode Stone Platform
-			MidExplosion.DisplayName: Mid Explosion
-			SaucerDeathrayProj.DisplayName: Saucer Deathray Proj
-			Steel_Parry.DisplayName: Steel Parry
-			Templar_Fire.DisplayName: Templar Fire
-			Valadium_Chunk.DisplayName: Valadium_Chunk
-			DemonBloodSpill.DisplayName: Demon Blood Spill
-			ConduitSaucer.DisplayName: Conduit Saucer
-			DLCShadowWisp.DisplayName: D L C Shadow Wisp
-			DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
-			DragonHead.DisplayName: Dragon Head
-			DragonScale.DisplayName: Dragon Scale
-			LifeBloomBallista.DisplayName: Life Bloom Ballista
-			LifeBloomTree.DisplayName: Life Bloom Tree
-			LifeBloomWard.DisplayName: Life Bloom Ward
-			SteelParry.DisplayName: Steel Parry
-			DLCLightStrike.DisplayName: D L C Light Strike
-			BiotechNanomachine.DisplayName: Biotech Nanomachine
-			WhisperingVision.DisplayName: Whispering Vision
-			WhisperingBeam.DisplayName: Whispering Beam
-			WhisperingLeech.DisplayName: Whispering Leech
-			HungryGhost.DisplayName: Hungry Ghost
-			TideHunter_Wave.DisplayName: Tide Hunter_ Wave
-			TideTurnerWave.DisplayName: Tide Turner Wave
-			GTBCloud.DisplayName: G T B Cloud
-			GFBZapTelegraph.DisplayName: G F B Zap Telegraph
-			HealPulse.DisplayName: Heal Pulse
-			JesterIndicatorProj.DisplayName: Jester Indicator Proj
-			GTBSandStorm.DisplayName: G T B Sand Storm
+			HelheimHeader: "{$Mods.FargowiltasCrossmod.Items.HelheimForce.DisplayName}"
+			SpiritTrapperEffect: Spirit Trapper Soul Essence
+			DragonEffect: Dragon Heads
+			DreadEffect: Dread Dragon
+			FleshEffect: Flesh Chunks
+			DemonBloodEffect: Blood Stains
+			SilkEffect: Silk Synergies
+			AlfheimHeader: "{$Mods.FargowiltasCrossmod.Items.AlfheimForce.DisplayName}"
+			NoviceClericEffect: Holy Crosses
+			SacredEffect: Healing Wisps
+			EbonHeartEffect: Dark Heart
+			EbonSynEffect: Enchantment Corruption
+			WarlockEffect: Shadow Wisps
+			FallenPaladinEffect: Debuff Transfer
+			JotunheimHeader: "{$Mods.FargowiltasCrossmod.Items.JotunheimForce.DisplayName}"
+			IcyEffect: TBD
+			DepthDiverEffect: Depth Bubble
+			TideHunterEffect: Tidal Wave
+			SvartalfheimHeader: "{$Mods.FargowiltasCrossmod.Items.SvartalfheimForce.DisplayName}"
+			BronzeEffect: Bronze Light
+			GraniteEffect: Granite Explosions
+			SteelEffect: Steel Parry
+			DarksteelEffect: Darksteel Projectile Boost
+			DurasteelEffect: Durasteel Explosions
+			AstroEffect: Astro Lazer
+			MidgardHeader: "{$Mods.FargowiltasCrossmod.Items.MidgardForce.DisplayName}"
+			LodestoneEffect: Lodestone Platforms
+			VanaheimHeader: "{$Mods.FargowiltasCrossmod.Items.VanaheimForce.DisplayName}"
+			ShadeMasterEffect: Shade Mode
+			MuspelheimHeader: "{$Mods.FargowiltasCrossmod.Items.MuspelheimForce.DisplayName}"
+			LivingWoodEffect: Living Roots
+			LifeBloomEffect: Living Tree
+			FungusEffect: Fungal Infection
+			YewWoodEffect: Convert Ammo
+			NiflheimHeader: "{$Mods.FargowiltasCrossmod.Items.NiflheimForce.DisplayName}"
+			AsgardHeader: "{$Mods.FargowiltasCrossmod.Items.AsgardForce.DisplayName}"
+			GeodeEffect: Geode Veinmine
 		}
 
 		Keybinds: {

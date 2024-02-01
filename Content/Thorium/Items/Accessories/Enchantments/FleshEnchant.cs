@@ -27,7 +27,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class FleshEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.HelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<FleshEnchant>();
 
         public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {

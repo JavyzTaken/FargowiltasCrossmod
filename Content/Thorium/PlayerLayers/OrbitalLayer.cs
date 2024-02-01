@@ -64,7 +64,7 @@ namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 				Vector2 rotation = DLCPlayer.crossOrbitalRotation;
 				float addrotation4 = MathF.Tau / DLCPlayer.NoviceClericCrosses;
 
-				bool alternating = drawPlayer.HasEffect<SilkEffect>() || drawPlayer.HasEffect<EbonEffect>();
+				bool alternating = drawPlayer.HasEffect<SilkEffect>() || drawPlayer.HasEffect<EbonSynEffect>();
 
 				for (int n = 0; n < DLCPlayer.NoviceClericCrosses; n++)
 				{

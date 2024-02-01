@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Core.Toggler.Content
     {
         public override int Item => ModContent.ItemType<MuspelheimForce>();
     }
-    public class helheimHeader : EnchantHeader
+    public class HelheimHeader : EnchantHeader
     {
         public override int Item => ModContent.ItemType<HelheimForce>();
     }

@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
         public class FungusEffect : AccessoryEffect
         {
             public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
+            public override int ToggleItemType => ModContent.ItemType<FungusEnchant>();
 
             public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
             {

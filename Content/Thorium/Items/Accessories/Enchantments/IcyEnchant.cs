@@ -47,5 +47,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class IcyEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.JotunheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<IcyEnchant>();
     }
 }

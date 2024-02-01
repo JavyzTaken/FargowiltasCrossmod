@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ModLoader;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -13,8 +14,17 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.ThoriumDLC().SteelTeir = 3;
             player.AddEffect<SteelEffect>(Item);
+            player.AddEffect<DarksteelEffect>(Item);
+            player.AddEffect<DurasteelEffect>(Item);
+            player.ThoriumDLC().SteelTeir = 3;
         }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class DurasteelEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<DurasteelEnchant>();
     }
 }

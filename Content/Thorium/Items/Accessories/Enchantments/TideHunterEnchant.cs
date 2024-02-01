@@ -26,6 +26,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class TideHunterEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.JotunheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<TideHunterEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {

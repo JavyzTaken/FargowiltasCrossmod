@@ -16,7 +16,7 @@ using FargowiltasSouls.Core.Toggler;
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
-    public class NoviceClericEnchant : BaseSynergyEnchant<EbonEffect>
+    public class NoviceClericEnchant : BaseSynergyEnchant<EbonSynEffect>
     {
         public override Color nameColor => Color.White;
         internal override int SynergyEnch => ModContent.ItemType<EbonEnchant>();
@@ -41,10 +41,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     }
 
     [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
-    public class NoviceClericEffect : SynergyEffect<EbonEffect>
+    public class NoviceClericEffect : SynergyEffect<EbonSynEffect>
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
         public override bool ExtraAttackEffect => true;
+        public override int ToggleItemType => ModContent.ItemType<NoviceClericEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {

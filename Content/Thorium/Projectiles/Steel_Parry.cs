@@ -5,6 +5,10 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System;
 using Terraria.Audio;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
+using FargowiltasSouls;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 {
@@ -25,7 +29,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             Projectile.rotation = Projectile.ai[1];
         }
 
-        public int Teir => (int)Projectile.ai[0];
+        //public int Teir => (int)Projectile.ai[0];
+        private bool AllowProBoost(Player owner) => owner.HasEffect<DarksteelEffect>() || (owner.ForceEffect<SteelEffect>() && owner.GetToggleValue(ModContent.GetInstance<DarksteelEffect>()));
+        private bool AllowExplosion(Player owner) => owner.HasEffect<DurasteelEffect>() || (owner.ForceEffect<DarksteelEffect>() && owner.GetToggleValue(ModContent.GetInstance<DurasteelEffect>()));
 
         public override void AI()
         {
@@ -40,13 +46,13 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
 
                 Projectile proj = Main.projectile[i];
 
-                if (proj.friendly && Teir < 2) continue;
+                if (proj.friendly && !AllowProBoost(player)) continue;
 
                 if (player.Center.Distance(proj.Center) < maxDist && proj.TryGetGlobalProjectile(out ParriedProjectile parried) && !parried.alreadyParried)
                 {
                     if (proj.friendly)
                     {
-                        if (Teir >= 2 && proj.aiStyle == 1)
+                        if (proj.aiStyle == 1)
                         {
                             CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+ProBoost");
                             proj.damage = (int)(proj.damage * 2f);
@@ -54,31 +60,22 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
                     }
                     else
                     {
-			            if (proj.damage > 50 * Teir) continue;
+			            if (proj.damage > 50 * (int)Projectile.ai[0]) continue;
                         
-			            CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parried", true);
-                        proj.damage *= 3 * Teir;
-                        if (Teir < 3)
-                        {
-                            proj.velocity *= -2f;
-                        }
-                        else
-                        {
-                            proj.velocity = player.Center.DirectionTo(Main.MouseWorld) * proj.velocity.Length();
-                        }
+			            CombatText.NewText(new((int)(player.position.X - 16), (int)(player.position.Y - 48), player.width + 32, 32), Color.Orange, "+Parry", true);
+                        proj.damage *= 3 * (int)Projectile.ai[0];
+                        proj.velocity = player.Center.DirectionTo(Main.MouseWorld) * proj.velocity.Length() * 2f;
                     }
 
                     parried.alreadyParried = true;
-                    parried.parryTeir = Teir;
+                    parried.explode = AllowExplosion(player);
+                    parried.bigExplode = player.ForceEffect<DurasteelEffect>();
                     proj.friendly = true;
                     proj.hostile = false;
 
-                    if (Teir >= 3)
-                    {
-                        // if the parry was succesful, the player gets a bonus to their cooldown.
-                        int buffType = ModContent.BuffType<Buffs.SteelParry_CD>();
-                        if (player.HasBuff(buffType) && player.buffTime[player.FindBuffIndex(buffType)] > 300) player.buffTime[player.FindBuffIndex(buffType)] -= 60;
-                    }
+                    // if the parry was succesful, the player gets a bonus to their cooldown.
+                    int buffType = ModContent.BuffType<Buffs.SteelParry_CD>();
+                    if (player.HasBuff(buffType) && player.buffTime[player.FindBuffIndex(buffType)] > 300) player.buffTime[player.FindBuffIndex(buffType)] -= 60;
                 }
             }
         }
@@ -87,14 +84,15 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
     public class ParriedProjectile : GlobalProjectile
     {
         public bool alreadyParried;
-        public int parryTeir;
+        public bool explode;
+        public bool bigExplode;
         public override bool InstancePerEntity => true;
 
         public override void OnKill(Projectile projectile, int timeLeft)
         {
-            if (timeLeft != 0 && parryTeir >= 3)
+            if (timeLeft != 0 && explode | bigExplode)
             {
-                int type = parryTeir > 3 ? ProjectileID.InfernoFriendlyBlast : ModContent.ProjectileType<MidExplosion>();
+                int type = bigExplode ? ProjectileID.InfernoFriendlyBlast : ModContent.ProjectileType<MidExplosion>();
                 Projectile.NewProjectileDirect(projectile.GetSource_Death(), projectile.Center, Vector2.Zero, type, (int)(projectile.damage * 0.75f), 5f, projectile.owner);
             }
         }

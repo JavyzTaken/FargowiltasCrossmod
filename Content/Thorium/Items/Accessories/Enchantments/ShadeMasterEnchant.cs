@@ -29,6 +29,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class ShadeMasterEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.VanaheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<ShadeMasterEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {

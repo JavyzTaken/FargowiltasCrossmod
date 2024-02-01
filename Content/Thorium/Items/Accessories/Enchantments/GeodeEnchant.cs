@@ -35,6 +35,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class GeodeEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<FargowiltasSouls.Core.Toggler.Content.WorldShaperHeader>();
+        public override int ToggleItemType => ModContent.ItemType<GeodeEnchant>();
         public override void PostUpdateEquips(Player player)
         {
             player.Thorium().setGeode = true;

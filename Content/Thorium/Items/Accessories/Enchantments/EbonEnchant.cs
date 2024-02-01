@@ -21,7 +21,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<EbonEffect>(Item);
+            player.AddEffect<EbonHeartEffect>(Item);
+            player.AddEffect<EbonSynEffect>(Item);
         }
 
         public override void AddRecipes()
@@ -39,9 +40,10 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     }
 
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
-    public class EbonEffect : AccessoryEffect
+    public class EbonHeartEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<EbonEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {
@@ -56,5 +58,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
             player.GetDamage(DamageClass.Generic) += 0.05f * thoriumPlayer.healBonus;
         }
+    }
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class EbonSynEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<EbonEnchant>();
     }
 }

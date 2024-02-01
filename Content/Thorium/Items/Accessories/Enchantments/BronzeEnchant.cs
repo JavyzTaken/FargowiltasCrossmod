@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
         public override bool ExtraAttackEffect => true;
+        public override int ToggleItemType => ModContent.ItemType<BronzeEnchant>();
 
         public override void TryAdditionalAttacks(Player player, int damage, DamageClass damageType)
         {

@@ -61,6 +61,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class LivingWoodEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<LivingWoodEnchant>();
 
         public override void OnHitByEither(Player player, NPC npc, Projectile proj)
         {

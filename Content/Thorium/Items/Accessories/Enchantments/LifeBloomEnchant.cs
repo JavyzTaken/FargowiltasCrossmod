@@ -27,6 +27,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class LifeBloomEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.MuspelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<LifeBloomEnchant>();
     }
 }
 

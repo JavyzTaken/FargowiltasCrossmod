@@ -165,6 +165,11 @@ namespace FargowiltasCrossmod.Content.Thorium
                 if (shadeMasterDuration > 0)
                     ShadeMasterExit();
             }
+
+            if (!Player.HasEffect<NoviceClericEffect>())
+            {
+                NoviceClericCrosses = 0;
+            }
         }
 
         public override void PostUpdate()

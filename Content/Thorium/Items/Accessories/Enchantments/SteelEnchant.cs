@@ -43,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class SteelEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<SteelEnchant>();
     }
 }
 
@@ -53,22 +54,13 @@ namespace FargowiltasCrossmod.Content.Thorium
         public void ParryKey()
         {
             if (Main.myPlayer != Player.whoAmI || Player.dead || !Player.active) return;
-            int teir = Player.ThoriumDLC().SteelTeir;
-
-            if (Player.ForceEffect<SteelEffect>()) teir++;
-
-            if (teir == 0)
-            {
-                Main.NewText("This shouldn't be able to happen? tell ghoose");
-                return;
-            }
 
             if (!Player.HasBuff<SteelParry_CD>())
             {
                 Player.AddBuff(ModContent.BuffType<SteelParry_CD>(), 900);
 
                 float rot = Player.Center.DirectionTo(Main.MouseWorld).ToRotation();
-                Projectile.NewProjectile(Player.GetSource_EffectItem<SteelEffect>(), Player.Center, Vector2.Zero, ModContent.ProjectileType<SteelParry>(), 0, 0, Player.whoAmI, teir, rot);
+                Projectile.NewProjectile(Player.GetSource_EffectItem<SteelEffect>(), Player.Center, Vector2.Zero, ModContent.ProjectileType<SteelParry>(), 0, 0, Player.whoAmI, Player.ThoriumDLC().SteelTeir, rot);
             }
         }
     }

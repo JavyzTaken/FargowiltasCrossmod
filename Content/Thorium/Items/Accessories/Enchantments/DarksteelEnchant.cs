@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Toggler;
 
 namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 {
@@ -12,8 +13,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.ThoriumDLC().SteelTeir = 2;
             player.AddEffect<SteelEffect>(Item);
+            player.AddEffect<DarksteelEffect>(Item);
+            player.ThoriumDLC().SteelTeir = 2;
         }
 
         public override void AddRecipes()
@@ -24,5 +26,12 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
                 .AddIngredient<ThoriumMod.Items.Darksteel.DarksteelGreaves>()
                 .Register();
         }
+    }
+
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
+    public class DarksteelEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.SvartalfheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<DarksteelEnchant>();
     }
 }

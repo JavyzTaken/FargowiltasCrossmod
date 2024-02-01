@@ -25,6 +25,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class DepthDiverEffect : SynergyEffect<IcyEffect>
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.JotunheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<DepthDiverEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {

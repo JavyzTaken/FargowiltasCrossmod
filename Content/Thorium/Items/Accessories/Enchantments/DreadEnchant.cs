@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
     public class DreadEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.HelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<DreadEnchant>();
     }
 }

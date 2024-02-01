@@ -27,7 +27,8 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class DemonBloodEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.helheimHeader>();
+        public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.HelheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<DemonBloodEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {

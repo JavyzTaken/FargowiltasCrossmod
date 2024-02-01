@@ -95,6 +95,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
     public class FallenPaladinEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<Core.Toggler.Content.AlfheimHeader>();
+        public override int ToggleItemType => ModContent.ItemType<FallenPaladinEnchant>();
     }
 }
 
