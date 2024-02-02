@@ -42,6 +42,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         internal int ValadiumCD = 240;
         internal int AstroLaserCD = 60;
         internal int BronzeCD = 45;
+        internal int warlockReleaseTimer;
         
         public bool WasInDashState = false; //for tide hunter mainly
 
@@ -114,12 +115,29 @@ namespace FargowiltasCrossmod.Content.Thorium
                 if (Player.HasEffect<WarlockEffect>() || Player.HasEffect<SacredEffect>())
                 {
                     int type = ModContent.ProjectileType<DLCShadowWisp>();
-                    for (int i = 0; i < 1000; i++)
+
+                    if (Player.ownedProjectileCounts[type] >= 24)
                     {
-                        Projectile projectile = Main.projectile[i];
-                        if (projectile.active && projectile.owner == Main.myPlayer && projectile.type == type)
+                        for (int i = 0; i < 1000; i++)
                         {
-                            projectile.localAI[0] = 1f;
+                            Projectile projectile = Main.projectile[i];
+                            if (projectile.active && projectile.owner == Main.myPlayer && projectile.type == type)
+                            {
+                                projectile.Kill();
+                            }
+                        }
+
+                        warlockReleaseTimer = (Player.HasEffect<WarlockEffect>() && Player.HasEffect<SacredEffect>()) ? 180 : 120;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            Projectile projectile = Main.projectile[i];
+                            if (projectile.active && projectile.owner == Main.myPlayer && projectile.type == type)
+                            {
+                                projectile.localAI[0] = 1f;
+                            }
                         }
                     }
                 }

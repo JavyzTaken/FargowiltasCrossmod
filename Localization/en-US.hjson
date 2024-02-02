@@ -345,12 +345,20 @@ Mods: {
 
 			SacredEnchant: {
 				DisplayName: Sacred Enchantment
-				Tooltip: Critical strikes create healing wisps that can be released with the accessory ability key.
+				Tooltip: 
+					'''
+					Critial strikes create healing wisps that can be released in random directions using the accessory ability key. 
+					If enough of the wisps are stored, they will be converted into a directed torrent of healing energy when released.
+					'''
 			}
 
 			WarlockEnchant: {
 				DisplayName: Warlock Enchantment
-				Tooltip: Critial strikes create damaging wisps that can be released with the accessory ability key.
+				Tooltip:
+					'''
+					Critial strikes create shadow wisps that are stored in an orb and can be released in random directions using the accessory ability key. 
+					If enough of the wisps are stored, they will be converted into a directed torrent of shadow when released.
+					'''
 			}
 
 			NoviceClericEnchant: {
