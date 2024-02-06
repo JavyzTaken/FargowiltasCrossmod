@@ -1,6 +1,5 @@
-New Update: v1.0.5.40
-Updated to Souls Mod version 1.6.4
-Implemented toggles in the new system and resorted them under headers
-Renamed and resprited Exo Battery to Portable Codebreaker
-Eternity Desert Scourge - Adjusted conditions for slam attack
-Tweaked some recipes
+New Update: v1.0.5.41
+Eternity Rain lightning can now ricochet off of Crackshot Colt and Midas Prime coins
+Added config to disable boss summons being consumable in Eternity Mode (bosses still refund them)
+Fractured Ark series of weapons melee projectiles are now unaffected by Adamantite Enchantment, being melee weapons and not actual projectiles
+Plantera eternity-rev/death HP decreased by 6.25%

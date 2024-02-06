@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     public class CalItemBalance : GlobalItem
     {
 
-        public float BalanceChange(Item item)
+        public static float BalanceChange(Item item)
         {
 
             if (item.type == ModContent.ItemType<MechanicalLeashOfCthulhu>())
