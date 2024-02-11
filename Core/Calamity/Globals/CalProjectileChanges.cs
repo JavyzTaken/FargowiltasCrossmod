@@ -65,37 +65,42 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             }
         }
-        public static List<int> TungstenExclude = new List<int>
+        public static List<int> TungstenExclude = new()
         {
             ModContent.ProjectileType<BladecrestOathswordProj>(),
             ModContent.ProjectileType<OldLordClaymoreProj>()
         };
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            if (TungstenExclude.Contains(projectile.type))
+            if (projectile.TryGetGlobalProjectile(out FargoSoulsGlobalProjectile fargoProj))
             {
-                //projectile.FargoSouls().TungstenScale = 1;
-                float scale = projectile.FargoSouls().TungstenScale;
-                projectile.position = projectile.Center;
-                projectile.width = (int)(projectile.width / scale);
-                projectile.height = (int)(projectile.height / scale);
-                projectile.Center = projectile.position;
-                projectile.scale /= scale;
-            }
-            if (projectile.FargoSouls().TungstenScale != 1)
-            {
-                Player player = Main.player[projectile.owner];
-                Item item = player.HeldItem;
-                if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+                if (TungstenExclude.Contains(projectile.type))
                 {
-                    float scale = CalItemBalance.TrueMeleeTungstenScaleNerf(player);
+                    //projectile.FargoSouls().TungstenScale = 1;
+                    float scale = fargoProj.TungstenScale;
                     projectile.position = projectile.Center;
                     projectile.width = (int)(projectile.width / scale);
                     projectile.height = (int)(projectile.height / scale);
                     projectile.Center = projectile.position;
                     projectile.scale /= scale;
                 }
+                if (fargoProj.TungstenScale != 1)
+                {
+                    Player player = Main.player[projectile.owner];
+                    Item item = player.HeldItem;
+                    if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+                    {
+                        float scale = CalItemBalance.TrueMeleeTungstenScaleNerf(player);
+                        projectile.position = projectile.Center;
+                        projectile.width = (int)(projectile.width / scale);
+                        projectile.height = (int)(projectile.height / scale);
+                        projectile.Center = projectile.position;
+                        projectile.scale /= scale;
+                    }
+                }
+                
             }
+            
             if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalProjectileChanges>().Ricoshot)
             {
                 projectile.hostile = false;
@@ -109,6 +114,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     typeof(SlimeBall).GetField("oil", FargoSoulsUtil.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
                 }
             }
+
         }
         public bool Ricoshot = false;
         public override bool PreAI(Projectile projectile)
