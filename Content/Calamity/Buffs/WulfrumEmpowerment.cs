@@ -14,8 +14,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetDamage(DamageClass.Generic) += 0.30f;
-            player.endurance += 0.30f;
+            player.GetDamage(DamageClass.Generic) += 0.15f;
+            player.endurance += 0.15f;
         }
     }
 }
