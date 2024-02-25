@@ -87,12 +87,14 @@ using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Ammos;
 using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
@@ -191,7 +193,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             npc.lifeMax = (int)(npc.lifeMax * 0.6f);
                             break;
                         case NPCID.Plantera:
-                            npc.lifeMax = (int)(npc.lifeMax * 0.4f);
+                            npc.lifeMax = (int)(npc.lifeMax * 0.375f);
                             break;
                         case NPCID.Golem:
                             npc.lifeMax = (int)(npc.lifeMax * 0.5f);
@@ -438,14 +440,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
             Player player = Main.player[Main.myPlayer];
-            if (player.FargoSouls().OriEnchantItem != null && npc.lifeRegen < 0)
+            if (player.HasEffect<OrichalcumEffect>() && npc.lifeRegen < 0)
             {
                 float modifier = 0.6f;
                 if (npc.Calamity().shellfishVore > 0) //nerf with shellfish thing
                 {
                     modifier = 0.5f;
                 }
-                if (player.FargoSouls().ForceEffect(player.FargoSouls().OriEnchantItem.type))
+                if (player.FargoSouls().ForceEffect<OrichalcumEnchant>())
                 {
                     modifier -= 0.1f;
                 }
@@ -473,14 +475,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return DropHelper.If(lambda, ui, dec);
         }
 
-        public static List<int> DropsBoundingPotion = new List<int>
+        public static List<int> DropsBoundingPotion = new()
         {
             ModContent.NPCType<AeroSlime>(),
             ModContent.NPCType<EbonianBlightSlime>(),
             ModContent.NPCType<CrimulanBlightSlime>(),
             NPCID.SpikedJungleSlime
         };
-        public static List<int> DropsCalciumPotion = new List<int>
+        public static List<int> DropsCalciumPotion = new()
         {
             NPCID.Skeleton,
             NPCID.ArmoredSkeleton,
@@ -490,13 +492,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             NPCID.BigSkeleton,
             NPCID.SmallSkeleton,
         };
-        public static List<int> DropsPhotosynthesisPotion = new List<int>
+        public static List<int> DropsPhotosynthesisPotion = new()
         {
             NPCID.AngryNimbus,
             ModContent.NPCType<ThiccWaifu>(), //fuck you fabsol
             NPCID.WyvernHead
         };
-        public static List<int> DropsShadowPotion = new List<int>
+        public static List<int> DropsShadowPotion = new()
         {
             ModContent.NPCType<Scryllar>(),
             ModContent.NPCType<SoulSlurper>(),
@@ -505,13 +507,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<CalamityEye>(),
             ModContent.NPCType<RenegadeWarlock>()
         };
-        public static List<int> DropsSoaringPotion = new List<int>
+        public static List<int> DropsSoaringPotion = new()
         {
             ModContent.NPCType<EutrophicRay>(),
             ModContent.NPCType<GhostBell>(),
             ModContent.NPCType<SeaFloaty>(),
         };
-        public static List<int> DropsSulphurskinPotion = new List<int>
+        public static List<int> DropsSulphurskinPotion = new()
         {
             ModContent.NPCType<AquaticUrchin>(),
             ModContent.NPCType<Sulflounder>(),
@@ -519,13 +521,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<Toxicatfish>(),
             ModContent.NPCType<Trasher>(),
         };
-        public static List<int> DropsTeslaPotion = new List<int>
+        public static List<int> DropsTeslaPotion = new()
         {
             NPCID.GreenJellyfish,
             ModContent.NPCType<BlindedAngler>(),
             ModContent.NPCType<ShockstormShuttle>(),
         };
-        public static List<int> DropsZenPotion = new List<int>
+        public static List<int> DropsZenPotion = new()
         {
             ModContent.NPCType<Atlas>(),
             ModContent.NPCType<AstralachneaGround>(),
@@ -534,7 +536,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<StellarCulex>(),
             ModContent.NPCType<AstralSlime>()
         };
-        public static List<int> DropsZergPotion = new List<int>
+        public static List<int> DropsZergPotion = new()
         {
             ModContent.NPCType<Hadarian>(),
             ModContent.NPCType<SightseerSpitter>(),

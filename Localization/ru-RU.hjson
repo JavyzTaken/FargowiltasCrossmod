@@ -1,0 +1,511 @@
+Mods: {
+	FargowiltasCrossmod: {
+		EternityRevDifficulty: {
+			Name: Вечная Месть
+			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/880808:Режима Месть][c/00FFFF:.]"
+			ExpandedDescription:
+				'''
+				Включает [c/00FFFF:Режим Вечность] и [c/880808:Режим Месть], а также предметы режима Мастера.
+				Добавляет новые атаки [c/00FFFF:Режима Вечность] для некоторых боссов Calamity.
+				По умолчанию, изменения боссов [c/00FFFF:Режима Вечность] стоят в приоритете. Это можно изменить в конфигурациях.
+
+				-Девиантт предоставляет стартовый набор
+				-Улучшение базовых показателей
+				-Отрицательные эффекты спадают быстрее, если не атаковать
+				[i:1612][c/00ff00:Рекомендуется использовать Отображение Дебаффов от мода Fargo's Mutant (в конфигурациях)]
+
+				'''
+			Activation: Режим Вечная Месть активирован!
+			Deactivation: Режим Вечная Месть деактивирован.
+		}
+
+		EternityDeathDifficulty: {
+			Name: Вечная Смерть
+			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/800080:Режима Смерть][c/00FFFF:.]"
+			ExpandedDescription:
+				'''
+				Включает [c/00FFFF:Режим Вечность] и [c/800080:Режим Смерть], а также предметы режима Мастера.
+				Добавляет новые атаки [c/00FFFF:Режима Вечность] для некоторых боссов Calamity.
+				Расширенный ИИ некоторых ванильных боссов [c/00FFFF:Режима Вечность],
+				включает в себя части ИИ Calamity или новые ИИ, вдохновлённые Calamity.
+				По умолчанию, изменения боссов [c/00FFFF:Режима Вечность] стоят в приоритете. Это можно изменить в конфигурациях.
+
+				-Девиантт предоставляет стартовый набор
+				-Улучшение базовых показателей
+				-Отрицательные эффекты спадают быстрее, если не атаковать
+				[i:1612][c/00ff00:Рекомендуется использовать Отображение Дебаффов от мода Fargo's Mutant (в конфигурациях)]
+
+				'''
+			Activation: Режим Вечная Смерть активирован!
+			Deactivation: Режим Вечная Смерть деактивирован.
+		}
+
+		Configs: {
+			DLCCalamityConfig: {
+				DisplayName: Конфигурация Calamity
+
+				Headers: {
+					Modes: Режимы
+					Balance: Баланс
+				}
+
+				BalanceRework: {
+					Label: Изменения баланса Calamity/Souls
+					Tooltip:
+						'''
+						Изменяет рецепты, чтобы добавить сбалансированную прогрессию между Calamity и модом Souls,
+						в основном для боссов после Лунного Лорда.
+						Изменяет экипировку и боссов Calamity/Souls для достижения более доработанного
+						и сбалансированного процесса игры.
+						Контент мода Souls теперь взаимодействует с механиками Calamity, например Уроном по защите
+						Рекомендуется оставить включённым.
+						'''
+				}
+
+				ConsumableSummons: {
+					Label: Предметы призыва тратятся в Режиме Вечность
+					Tooltip:
+						'''
+						Меняет предметы призыва из ваниллы и Calamity, чтобы они тратились, поверх изменений Calamity.
+						Это изменение существует лишь для соответствия с данными особенностями:
+						- Предметы призыва возвращаются, если босс ещё не был убит (фактически делает предметы призыва не тратящимися)
+						- НИП Мутант
+						- Варианты предметов призыва из мода Mutant
+						'''
+				}
+				
+				EternityPriorityOverRev: {
+					Label: Приоритет Вечности над режимами Calamity
+					Tooltip:
+						'''
+						Позволяет интеллекту боссов режима Вечность брать приоритет над интеллектом режимом Месть
+						и других сложностей мода Calamity.
+						У некоторых боссов Calamity будут присутствовать изменения режима Вечность,
+						когда данная конфигурация включена.
+						Выключив её, сложности мода Calamity возьмут приоритет над режимом Вечность.
+						'''
+				}
+
+				InfernumDisablesEternity: {
+					Label: Режим Инфернум отключает режим Вечность
+					Tooltip:
+						'''
+						Уместен только если включён мод Infernum Mode.
+						Заставляет режим Инфернум полностью выключать режим Вечность.
+						Если данная конфигурация выключена, Вечность будет включена вместе с режимом Инфернум,
+						но ИИ боссов Инфернум будет брать приоритет, если "Приоритет Вечности над режимами Calamity" не включена.
+						'''
+				}
+			}
+		}
+
+		Items: {
+			AddedEffects: {
+				AngelTreads: Эффекты Ангельских ботфортов
+				AeolusBoots: Эффекты Ботинок Эола
+				ThoriumSuperSonic: Эффекты Воздушных бегунов, Ботинок выживальщика и Утяжелённых летунов
+				CalamityColossus: Эффекты Слияния, Асгардской эгиды и Оплота божества
+				ThoriumColossus:
+					'''
+					Эффекты Сладкой мести, Обсидиановой чешуи, Террариевого защитника,
+					Филактерии, Сердца из камня и Колючего панцыря
+					'''
+				CalamityBerserker: Эффекты Ожерелья из зубов жнеца, Знака храбрости и Элементальной рукавицы
+				ThoriumBerserker: Эффекты Эмблемы рапиры
+				CalamityWizard: Эффекты Эфирного талисмана
+				ThoriumWizard: Эффекты Мутного катализатора
+				CalamitySniper: Эффекты Элементального колчана, Колчана небытия и Генератора стволовых клеток
+				ThoriumSniper: Эффекты Сотрясающей боеголовки
+				Vagabond:
+					'''
+					Эффекты Нанотехнологии и Зеркала затмения
+					Эффекты Драконьей чешуи и Почитаемого медальона
+					'''
+				CalamityConjurist: Эффект Нуклеосинтеза
+				ThoriumConjurist: Эффекты Подвески Юмы и Кристаллического скорпиона
+				CalamityTrawler: Эффекты Глубоководного водолазного костюма
+				ThoriumUniverse:
+					'''
+					15% увеличенная скорость метательного оружия
+					Эффекты 'Руководства по умелому метанию: том III',
+					Русалочьей фляги и Глазной повязки мертвеца
+					'''
+			}
+
+			OutlawsEssence: {
+				DisplayName: Эссенция Бандита
+				Tooltip:
+					'''
+					18% увеличенный разбойный урон
+					5% увеличенная скорость разбойных снарядов
+					5% увеличенный разбойный шанс критической атаки
+					'''
+			}
+
+			VagabondsSoul: {
+				DisplayName: Душа Беглеца
+				Tooltip:
+					'''
+					30% увеличенный разбойный урон
+					15% увеличенная скорость разбойных снарядов
+					15% увеличенный разбойный шанс критической атаки
+					Эффекты Нанотехнологии и Зеркала затмения
+					Эффекты Драконьей чешуи и Почитаемого медальона
+					'''
+			}
+
+			ABombInMyNation: {
+				DisplayName: Взрыв на Мерзости
+				Tooltip: Призывает Разносчицу Чумы Голиаф
+			}
+
+			AstrumCor: {
+				DisplayName: Ядро Аструма
+				Tooltip: Призывает Аструм Деуса
+			}
+
+			BirbPheromones: {
+				DisplayName: Феромоны Птичбки
+				Tooltip: Призывает Псевдодракона
+			}
+
+			BlightedEye: {
+				DisplayName: Гибельный Глаз
+				Tooltip: Призывает Клон Каламитас
+			}
+
+			BloodyWorm: {
+				DisplayName: Кровяной Червь
+				Tooltip: Призывает Старого Герцога
+			}
+
+			ChunkyStardust: {
+				DisplayName: Звёздная Пыль с Комочками
+				Tooltip: Призывает Аструм Ауреса
+			}
+
+			CryingKey: {
+				DisplayName: Кривоключ
+				Tooltip: Призывает Криогена
+			}
+
+			DefiledCore: {
+				DisplayName: Нечистое Ядро
+				Tooltip: Призывает Провиденс
+			}
+
+			DefiledShard: {
+				DisplayName: Нечистый Осколок
+				Tooltip: Призывает Осквернённых Стражей
+			}
+
+			DragonEgg: {
+				DisplayName: Драконье Яйцо
+				Tooltip: Призывает Ярона
+			}
+
+			PortableCodebreaker: {
+				DisplayName: Карманный Дешифратор
+				Tooltip: Призывает Дрэйдрона
+			}
+
+			EyeofExtinction: {
+				DisplayName: Глаз Вымирания
+				Tooltip: Призывает Высшую Каламитас
+			}
+
+			FriedDoll: {
+				DisplayName: Жареная Кукла
+				Tooltip: Призывает Серного Элементаля
+			}
+
+			HiveTumor: {
+				DisplayName: Опухоль Улья
+				Tooltip: Призывает Разум Улья
+			}
+
+			LetterofKos: {
+				DisplayName: Письмо Кос
+				Tooltip: Призывает Сигнуса
+			}
+
+			MedallionoftheDesert: {
+				DisplayName: Медальон Пустыни
+				Tooltip: Призывает Пустынного Бича
+			}
+
+			MurkySludge: {
+				DisplayName: Мутная Слякоть
+				Tooltip: Призывает Бога Слизней
+			}
+
+			NoisyWhistle: {
+				DisplayName: Шумный Свисток
+				Tooltip: Призывает Разрушителя
+			}
+
+			OphiocordycipitaceaeSprout: {
+				DisplayName: Кордицепсовидный Росток
+				Tooltip: Призывает Крабулона
+			}
+
+			PolterplasmicBeacon: {
+				DisplayName: Полтерплазмический Маяк
+				Tooltip: Призывает Полтергаста
+			}
+
+			RedStainedWormFood: {
+				DisplayName: Запятнанный Кровью Корм для Червя
+				Tooltip: Призывает Улей Перфораторов
+			}
+
+			RiftofKos: {
+				DisplayName: Раскол Кос
+				Tooltip: Призывает Нескончаемую Пустоту
+			}
+
+			SeeFood: {
+				DisplayName: Горепродукт
+				Tooltip: Призывает Акватического Бича
+			}
+
+			SirensPearl: {
+				DisplayName: Жемчуг Сирены
+				Tooltip: Призывает Анахиту
+			}
+
+			SomeKindofSpaceWorm: {
+				DisplayName: Какой-то Космический Червь
+				Tooltip: Призывает Пожирателя Богов
+			}
+
+			WormFoodofKos: {
+				DisplayName: Корм для Червя Кос
+				Tooltip: Призывает Штормового Ткача
+			}
+
+			AbandonedRemote: {
+				DisplayName: Затерянный Пульт Управления
+				Tooltip:
+					'''
+					Призывает Бронированного Копателя
+					Может быть использовано только под землёй
+					'''
+			}
+
+			ClamPearl: {
+				DisplayName: Жемчуг Моллюска
+				Tooltip:
+					'''
+					Призывает Гигантского Моллюска
+					Может быть использовано только в Затерянном море
+					'''
+			}
+
+			ColossalTentacle: {
+				DisplayName: Громадное Щупальце
+				Tooltip:
+					'''
+					Призывает Громадного Кальмара
+					Может быть использовано только в Бездне
+					'''
+			}
+
+			DeepseaProteinShake: {
+				DisplayName: Глубоководный Протеиновый Коктейль
+				Tooltip:
+					'''
+					Призывает Акулу-жнеца
+					Может быть использовано только в Бездне
+					'''
+			}
+
+			MaulerSkull: {
+				DisplayName: Череп Мучителя
+				Tooltip:
+					'''
+					Призывает Мучителя
+					Может быть использовано только в Сернистом море
+					'''
+			}
+
+			NuclearChunk: {
+				DisplayName: Ядерный Кусок
+				Tooltip:
+					'''
+					Призывает Ядерный Террор
+					Может быть использовано только в Сернистом море
+					'''
+			}
+
+			PlaguedWalkieTalkie: {
+				DisplayName: Чумная Рация
+				Tooltip:
+					'''
+					Призывает Разносчика Чумы
+					Может быть использовано только в Джунглях
+					'''
+			}
+
+			QuakeIdol: {
+				DisplayName: Идол Землетрясения
+				Tooltip:
+					'''
+					Призывает Земляного Элементаля
+					Может быть использовано только в под землёй
+					'''
+			}
+
+			StormIdol: {
+				DisplayName: Идол Шторма
+				Tooltip: Призывает Облачного Элементаля
+			}
+
+			SulphurBearTrap: {
+				DisplayName: Сернистый Капкан
+				Tooltip:
+					'''
+					Призывает Болотистого Скалозева
+					Может быть использовано только в Сернистом море
+					'''
+			}
+
+			WyrmTablet: {
+				DisplayName: Скрижаль Змия
+				Tooltip:
+					'''
+					Призывает Эйдолонского Змия
+					Может быть использовано только в Бездне
+					'''
+			}
+
+			BrandoftheBrimstoneWitch: {
+				DisplayName: Клеймо Серной Ведьмы
+				Tooltip:
+					'''
+					Эффекты Сердца элементов, Оккультной короны-черепа, Чистоты, Губки и Кубка кровавого божества
+					Эффекты Ядра туманности, Дара Ярима, Сердца Дрэйдона и Бедствия
+					'''
+			}
+		}
+
+		NPCs: {
+			FungalClump.DisplayName: Грибной Комок
+			LargePerforatorBody.DisplayName: Большой Перфоратор
+			LargePerforatorBody2.DisplayName: Большой Перфоратор
+			LargePerforatorHead.DisplayName: Большой Перфоратор
+			LargePerforatorTail.DisplayName: Большой Перфоратор
+			PermafrostBoss.DisplayName: Пермафрост
+		}
+
+		Projectiles: {
+			FungusBall.DisplayName: Грибной Шар
+			MushroomSpear.DisplayName: Грибное Копьё
+			ShroomGas.DisplayName: Грибной Газ
+			SandChunk.DisplayName: Песчаный Кусок
+			SuckedSandBlast.DisplayName: Песчаный Выстрел
+			CursedLightning.DisplayName: Проклятая Молния
+			CurvingCursedFlames.DisplayName: Изгибающееся Проклятое Пламя
+			MovingCorruptCloud.DisplayName: Движущееся Искажённое Облако
+			ShadeLightningCloud.DisplayName: Теневое Молниеносное Облако
+			ToothBall.DisplayName: Шар Зубов
+			HomingRocket.DisplayName: Самонаводящаяся Ракета
+			HomingSickle.DisplayName: Самонаводящаяся Коса
+			HallowedSlimeSpike.DisplayName: Шип Освящённого Слизня
+			BouncingFireball.DisplayName: Прыгающий Шар Огня
+			BigLight.DisplayName: Большой Свет
+			DestructionBolt.DisplayName: Снаряд Разрушения
+			StarofDestruction.DisplayName: Звезда Разрушения
+
+			Boss: {
+				AcceleratingEbonianGlob.DisplayName: Эбонитовый Сгусток
+				AcceleratingCrimulanGlob.DisplayName: Багротановый Сгусток
+				SlimeHomingEbonianGlob.DisplayName: Эбонитовый Сгусток
+				SlimeHomingCrimuleanGlob.DisplayName: Багротановый Сгусток
+				MutantYharonVortex.DisplayName: Солнце
+			}
+
+			SlamTelegraph.DisplayName: Удар Телеграф
+			IceBomb.DisplayName: Ледяная Бомба
+			IceCrystal.DisplayName: Ледяной Кристал
+			IceChain.DisplayName: Ледяная Цепь
+			IceTrident.DisplayName: Ледяной Трезубец
+			CrimsonPaladinSpike.DisplayName: Кримзоновый Шип
+			PermafrostHeldWeapon.DisplayName: Пермафрост Оружие в Руках
+			MutantOldDuke.DisplayName: Старый Герцог
+			DLCMutantSpearSpin.DisplayName: Атлантида Мутанта
+			DLCMutantSpearDash.DisplayName: Атлантида Мутанта
+			MutantAresNuke.DisplayName: Гаусс-бомба Мутанта
+			MutantAresBomb.DisplayName: Гаусс-бомба Мутанта
+			DLCMutantFishronRitual.DisplayName: Гаусс-ритуал Мутанта
+			MutantSlimeGod.DisplayName: Бог Слизней
+			DLCBloomLine.DisplayName: Линия Телеграфа
+			MutantSCal.DisplayName: Щит-череп Каламитас
+			MutantPBG.DisplayName: Разносчица Голиаф
+			MutantAureusSpawn.DisplayName: Порождение Ареуса
+			MutantHolyRay.DisplayName: Святой Луч
+			MutantDoGBody.DisplayName: Пожиратель Богов
+			MutantDoGHead.DisplayName: Пожиратель Богов
+			MutantDoGTail.DisplayName: Пожиратель Богов
+			MutantPolter.DisplayName: Некроплазм
+			ArcticPaw.DisplayName: Арктическая Лапа
+			Blizzard.DisplayName: Метель
+			DarkIceCrystal.DisplayName: Кристал Тёмного Льда
+			FrostFlare.DisplayName: Морозная Сигнальная Ракета
+			FrostShard.DisplayName: Морозный Осколок
+			IceArrow.DisplayName: Ледяная Стрела
+			IceShot.DisplayName: Ледяной Выстрел
+			IceStar.DisplayName: Ледяная Звезда
+			CryogenRitual.DisplayName: Ритуал Криогена
+			PermafrostRitual.DisplayName: Ритуал Пермафроста
+			IceCloud.DisplayName: Обмораживающий Снег
+			BrimstoneDebris.DisplayName: Серные Обломки
+		}
+
+		Buffs: {
+			CalamitousPresenceBuff: {
+				Description: Защита, сопротивление урону и восстановление здоровья уменьшены; эффект Лунного Укуса; радиус лёгкого касания уменьшен
+				DisplayName: Бедственное Присутствие
+			}
+
+			ArcticPaw.DisplayName: Арктическая Лапа
+			Blizzard.DisplayName: Метель
+			CrystalShard.DisplayName: Осколок Кристалла
+			DarkIceCrystal.DisplayName: Кристал Тёмного Льда
+			IceShot.DisplayName: Ледяной Выстрел
+			FrostShard.DisplayName: Морозный Осколок
+			FrostFlare.DisplayName: Морозная Сигнальная Ракета
+			IceArrow.DisplayName: Ледяная Стрела
+			IceStar.DisplayName: Ледяная Звезда
+		}
+
+		Toggler: {
+			VagabondsSoulHeader: Душа Беглеца
+			NanotechEffect: Нанотехнология
+			EclipseMirrorEffect: Зеркало Затмения
+			DragonScalesEffect: Чешуя Дракона
+			VeneratedLocketEffect: Почитаемый Медальон
+			AmalgamEffect: Слияние
+			AsgardianAegisEffect: Асгардская Эгида
+			RampartofDeitiesEffect: Оплот Божества
+			ElementalGauntletEffect: Элементальная Рукавица
+			EtherealTalismanEffect: Эфирный Талисман
+			CalamitySniperHeader: Душа Снайпера: Calamity 
+			ElementalQuiverEffect: Элементальный Колчан
+			QuiverofNihilityEffect: Колчан Небытия
+			DynamoStemCellsEffect: Генератор Стволовых Клеток
+			NucleogenesisEffect: Нуклеосинтез
+			AbyssalDivingSuitEffect: Глубоководный Водолазный Костюм
+			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
+			HeartoftheElementsEffect: Сердце Элементов
+			OccultSkullCrownEffect: Оккультная Корона-череп
+			PurityEffect: Чистота
+			TheSpongeEffect: Губка
+			ChaliceOfTheBloodGodEffect: Кубок Кровавого Божества
+			NebulousCoreEffect: Ядро Туманности
+			YharimsGiftEffect: Дар Ярима
+			DraedonsHeartEffect: Сердце Дрэйдона
+			CalamityEffect: Бедствие
+		}
+	}
+}

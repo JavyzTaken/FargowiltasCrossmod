@@ -427,6 +427,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                     }
                     DLCWorldSavingSystem.PermafrostPhaseSeen = true;
+                    npc.active = false;
                 }
                 timer++;
             }

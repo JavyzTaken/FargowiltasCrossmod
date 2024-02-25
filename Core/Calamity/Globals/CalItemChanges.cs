@@ -14,11 +14,14 @@ using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common;
 using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Ammos;
 using FargowiltasSouls.Content.Items.Armor;
@@ -28,6 +31,7 @@ using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
@@ -47,7 +51,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override float UseSpeedMultiplier(Item item, Player player)
         {
             //Mythril stealth fix
-            if (player.FargoSouls().MythrilEnchantItem != null && item.DamageType == ModContent.GetInstance<RogueDamageClass>() && item.useTime >= item.useAnimation)
+            if (player.HasEffect<MythrilEffect>() && item.DamageType == ModContent.GetInstance<RogueDamageClass>() && item.useTime >= item.useAnimation)
             {
                 FargoSoulsPlayer modPlayer = player.FargoSouls();
                 float ratio = Math.Max((float)modPlayer.MythrilTimer / modPlayer.MythrilMaxTime, 0);
@@ -73,7 +77,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<AngelTreads>())
             {
-                if (player.GetToggleValue("MasoAeolus"))
+                if (player.AddEffect<ZephyrJump>(item))
                 {
                     player.GetJumpState(ExtraJump.FartInAJar).Enable();
                 }
@@ -81,17 +85,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("Amalgam"))
+                if (player.AddEffect<AmalgamEffect>(item))
                 {
                     ModContent.GetInstance<TheAmalgam>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("AsgardianAegis", false))
+                if (player.AddEffect<AsgardianAegisEffect>(item))
                 {
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
                     player.FargoSouls().HasDash = true;
                 }
 
-                if (player.GetToggleValue("RampartofDeities", false))
+                if (player.AddEffect<RampartofDeitiesEffect>(item))
                 {
                     ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
                 }
@@ -103,36 +107,36 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("ElementalGauntlet", false))
+                if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<ArchWizardsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("EtherealTalisman", false))
+                if (player.AddEffect<EtherealTalismanEffect>(item))
                 {
                     ModContent.GetInstance<EtherealTalisman>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<SnipersSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("ElementalQuiver", false))
+                if (player.AddEffect<ElementalQuiverEffect>(item))
                 {
                     ModContent.GetInstance<ElementalQuiver>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("QuiverofNihility"))
+                if (player.AddEffect<QuiverofNihilityEffect>(item))
                 {
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("DynamoStemCells"))
+                if (player.AddEffect<DynamoStemCellsEffect>(item))
                 {
                     ModContent.GetInstance<DynamoStemCells>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("Nucleogenesis", false))
+                if (player.AddEffect<NucleogenesisEffect>(item))
                 {
                     ModContent.GetInstance<Nucleogenesis>().UpdateAccessory(player, hideVisual);
                 }
@@ -140,26 +144,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
                 player.Calamity().rogueVelocity += 0.15f;
-                if (player.GetToggleValue("Nanotech", false))
+                if (player.AddEffect<NanotechEffect>(item))
                 {
                     ModContent.GetInstance<Nanotech>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("EclipseMirror", false))
+                if (player.AddEffect<EclipseMirrorEffect>(item))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("DragonScales"))
+                if (player.AddEffect<DragonScalesEffect>(item))
                 {
                     ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.GetToggleValue("VeneratedLocket"))
+                if (player.AddEffect<VeneratedLocketEffect>(item))
                 {
                     ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                if (player.GetToggleValue("AbyssalDivingSuit"))
+                if (player.AddEffect<AbyssalDivingSuitEffect>(item))
                 {
                     ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
                 }
@@ -184,7 +188,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil;
         public override void SetDefaults(Item item)
         {
-            if (CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
+            if (DLCCalamityConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
             {
                 item.consumable = WorldSavingSystem.EternityMode;
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
@@ -192,7 +196,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void UpdateInventory(Item item, Player player)
         {
-            if (CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
+            if (DLCCalamityConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
             {
                 item.consumable = WorldSavingSystem.EternityMode;
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
