@@ -3,6 +3,7 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -14,6 +15,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
@@ -22,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class BrimlingEternity : EModeCalBehaviour
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => BrimstoneEternity.Enabled;
 
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.Brimling>());
@@ -81,11 +84,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 float speed = 10 + npc.ai[2];
                 npc.ai[2] += 0.1f;
                 npc.velocity = Vector2.Lerp(npc.velocity, (owner.Center - npc.Center).SafeNormalize(Vector2.Zero) * speed, 0.08f);
-                if (npc.Distance(owner.Center) <= 20)
+                if (npc.Distance(owner.Center) <= 20 && DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectileDirect(npc.GetSource_Death(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), 0, 0, ai1:2);
                     owner.SimpleStrikeNPC(300, 1, true);
                     npc.StrikeInstantKill();
+                    NetSync(npc);
                 }
                 return false;
             }
@@ -95,7 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 Vector2 targetP = owner.Center + new Vector2(0, 50 * npc.ai[3]).RotatedBy(MathHelper.ToRadians((int)npc.ai[2]));
                 npc.velocity = (targetP - npc.Center).SafeNormalize(Vector2.Zero) * npc.Distance(targetP) / 30f;
                 npc.ai[2] += 0.01f;
-                if (npc.ai[2] - (int)npc.ai[2] >= 0.6f)
+                if (npc.ai[2] - (int)npc.ai[2] >= 0.6f && DLCUtils.HostCheck)
                 {
                     npc.ai[2] = Main.rand.Next(0, 360);
                     npc.ai[3] = Main.rand.NextFloat(3, 4f);
@@ -103,6 +107,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 4.5f, ModContent.ProjectileType<BrimstoneBarrage>(), npc.damage, 0);
                     }
+                    NetSync(npc);
                 }
                 
             }
@@ -111,6 +116,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 npc.ai[2]++;
                 if (npc.ai[2] == 200)
                 {
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, npc.Center);
                     npc.ai[2] = 0;
                     npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15;
                 }

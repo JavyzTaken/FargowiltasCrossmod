@@ -61,13 +61,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.LifeDrain, Main.rand.NextFloat(-7, 7), Main.rand.NextFloat(-7, 7), Scale: 2).noGravity = true;
             }
-            NPC owner = Main.npc[(int)Projectile.ai[0]];
-            if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>())
+            if (DLCUtils.HostCheck)
             {
-                return;
+                NPC owner = Main.npc[(int)Projectile.ai[0]];
+                if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>())
+                {
+                    return;
+                }
+                owner.Center = Projectile.Center;
+                NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, owner.whoAmI);
             }
-            owner.Center = Projectile.Center;
-            
         }
         public override void AI()
         {
@@ -107,6 +110,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //    Projectile.frame = 0;
             //}
             Vector2 targetPos = target.Center + new Vector2(350 * Projectile.ai[2], 0);
+            if (Projectile.ai[2] == 0) targetPos = target.Center + new Vector2(0, -300);
+            if (Projectile.ai[2] == 2) targetPos = target.Center;
             Vector2 baseVel = (targetPos - Projectile.Center).SafeNormalize(Vector2.Zero);
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, baseVel * Projectile.Distance(targetPos) / 50f, 0.03f);
         }

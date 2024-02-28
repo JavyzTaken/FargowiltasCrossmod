@@ -17,6 +17,7 @@ using Terraria.Graphics.Shaders;
 using Terraria.Graphics;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Common;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 {
@@ -44,13 +45,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         public int length = 40;
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            return Collision.CheckAABBvLineCollision(targetHitbox.Location.ToVector2(), targetHitbox.Size(), Projectile.Center, Projectile.Center + new Vector2(-30 * length - 22, 0)*Projectile.scale);
+            return Collision.CheckAABBvLineCollision(targetHitbox.Location.ToVector2(), targetHitbox.Size(), Projectile.Center, Projectile.Center + new Vector2(0, 30 * length - 22).RotatedBy(Projectile.rotation) * Projectile.scale);
         }
         public override void OnSpawn(IEntitySource source)
         {
-            SoundEngine.PlaySound(SoundID.Zombie104, Projectile.Center);
-            Projectile.rotation = Projectile.ai[2];
-            Projectile.ai[2] = 0;
+            
             base.OnSpawn(source);
         }
         public override void OnKill(int timeLeft)
@@ -66,6 +65,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         public float TrailWidthFunction(float completionRatio) => 800;
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Projectile.timeLeft == 200) return false;
             ProjectileID.Sets.TrailCacheLength[Type] = 10;
             ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 1000;
@@ -78,15 +78,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //afterimage
             for (int j = Projectile.oldPos.Length-1; j >= 0; j--)
             {
-                Main.EntitySpriteDraw(begin.Value, Projectile.Center - Main.screenPosition, null, color * (1 - (float)j / Projectile.oldRot.Length) * 0.5f, Projectile.oldRot[j], begin.Size() / 2, scale, SpriteEffects.None);
-                for (int i = 0; i < length; i++)
+                if (Projectile.oldRot[j] != 0)
                 {
-                    Vector2 sectionOffset = new Vector2(0, begin.Height() / 2 + mid.Height() * i + mid.Height() / 2) * Projectile.scale;
-                    Vector2 endOffset = new Vector2(0, begin.Height() / 2 + mid.Height() * (i + 1) + end.Height() / 2) * Projectile.scale;
-                    Main.EntitySpriteDraw(mid.Value, Projectile.Center - Main.screenPosition + sectionOffset.RotatedBy(Projectile.oldRot[j]), null, color * (1- (float)j/Projectile.oldRot.Length) * 0.5f, Projectile.oldRot[j], mid.Size() / 2, scale, SpriteEffects.None);
-                    if (i == length - 1)
+                    Main.EntitySpriteDraw(begin.Value, Projectile.Center - Main.screenPosition, null, color * (1 - (float)j / Projectile.oldRot.Length) * 0.5f, Projectile.oldRot[j], begin.Size() / 2, scale, SpriteEffects.None);
+                    for (int i = 0; i < length; i++)
                     {
-                        Main.EntitySpriteDraw(end.Value, Projectile.Center - Main.screenPosition + endOffset.RotatedBy(Projectile.oldRot[j]), null, color * (1 - (float)j / Projectile.oldRot.Length) * 0.5f, Projectile.oldRot[j], end.Size() / 2, scale, SpriteEffects.None);
+                        Vector2 sectionOffset = new Vector2(0, begin.Height() / 2 + mid.Height() * i + mid.Height() / 2) * Projectile.scale;
+                        Vector2 endOffset = new Vector2(0, begin.Height() / 2 + mid.Height() * (i + 1) + end.Height() / 2) * Projectile.scale;
+                        Main.EntitySpriteDraw(mid.Value, Projectile.Center - Main.screenPosition + sectionOffset.RotatedBy(Projectile.oldRot[j]), null, color * (1 - (float)j / Projectile.oldRot.Length) * 0.5f, Projectile.oldRot[j], mid.Size() / 2, scale, SpriteEffects.None);
+                        if (i == length - 1)
+                        {
+                            Main.EntitySpriteDraw(end.Value, Projectile.Center - Main.screenPosition + endOffset.RotatedBy(Projectile.oldRot[j]), null, color * (1 - (float)j / Projectile.oldRot.Length) * 0.5f, Projectile.oldRot[j], end.Size() / 2, scale, SpriteEffects.None);
+                        }
                     }
                 }
             }
@@ -108,6 +111,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         }
         public override void AI()
         {
+            if (Projectile.timeLeft == 200)
+            {
+                SoundEngine.PlaySound(SoundID.Zombie104, Projectile.Center);
+                Projectile.rotation = Projectile.ai[2];
+                Projectile.ai[2] = 0;
+            }
             if (Projectile.localAI[0] < Projectile.scale && Projectile.timeLeft > 20) 
             {
                 Projectile.localAI[0] += 0.05f * Projectile.scale;
@@ -124,19 +133,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 Projectile.rotation += MathHelper.ToRadians(-0.7f);
             }
             Projectile.ai[2]++;
-            if (Projectile.ai[2] % 60 == 0)
+            if (Projectile.ai[2] % 60 == 0 && DLCUtils.HostCheck)
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 7; i++)
                 {
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, 150 * i).RotatedBy(Projectile.rotation), new Vector2(0, 4).RotatedBy(Projectile.rotation + MathHelper.PiOver2), ModContent.ProjectileType<BrimstoneBarrage>(), Projectile.damage, 0);
-                    Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, 150 * i).RotatedBy(Projectile.rotation), new Vector2(0, 4).RotatedBy(Projectile.rotation - MathHelper.PiOver2), ModContent.ProjectileType<BrimstoneBarrage>(), Projectile.damage, 0);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, 200 * i).RotatedBy(Projectile.rotation), new Vector2(0, 4).RotatedBy(Projectile.rotation + MathHelper.PiOver2 + MathHelper.PiOver4), ModContent.ProjectileType<BrimstoneBarrage>(), Projectile.damage, 0);
+                    Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + new Vector2(0, 200 * i).RotatedBy(Projectile.rotation), new Vector2(0, 4).RotatedBy(Projectile.rotation - MathHelper.PiOver2 - MathHelper.PiOver4), ModContent.ProjectileType<BrimstoneBarrage>(), Projectile.damage, 0);
                 }
             }
 
             NPC owner = Main.npc[(int)Projectile.ai[0]];
             if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>())
             {
-                //Projectile.Kill();
+                Projectile.Kill();
                 return;
             }
             Projectile.Center = owner.Center + new Vector2(20 * owner.spriteDirection, -60);

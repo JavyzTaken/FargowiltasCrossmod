@@ -459,6 +459,7 @@ Mods: {
 			BrimBeam.DisplayName: Brim Beam
 			BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
 			BrimstoneTeleport.DisplayName: Brimstone Teleport
+			BrimstoneFireblast.DisplayName: Brimstone Fireblast
 		}
 
 		Buffs: {
