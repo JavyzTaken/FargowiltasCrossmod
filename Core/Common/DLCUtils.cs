@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Core.Common
         /// <param name="spriteEffects">The sprite effects to use when drawing the backglow</param>
         /// <param name="iterations">Number of times backglow drawing is iterated through</param>
         /// <param name="offsetMult">How much the offset is multiplied by (bigger number = backglow stretches farther from center)</param>
-        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, float rotation = 0, float scale = 1, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1)
+        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, float rotation = 0, float scale = 1, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1, Rectangle? sourceRectangle = null)
         {
             for (int j = 0; j < iterations; j++)
             {
@@ -48,7 +48,7 @@ namespace FargowiltasCrossmod.Core.Common
                 Color glowColor = color with { A = 0 } * 0.7f;
 
 
-                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, null, glowColor, rotation, origin, scale, spriteEffects);
+                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, sourceRectangle, glowColor, rotation, origin, scale, spriteEffects);
             }
         }
         /// <summary>
@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Core.Common
         /// <param name="spriteEffects">The sprite effects to use when drawing the backglow</param>
         /// <param name="iterations">Number of times backglow drawing is iterated through</param>
         /// <param name="offsetMult">How much the offset is multiplied by (bigger number = backglow stretches farther from center)</param>
-        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, Vector2 scale, float rotation = 0, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1)
+        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, Vector2 scale, float rotation = 0, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1, Rectangle? sourceRectangle = null)
         {
             for (int j = 0; j < iterations; j++)
             {
@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Core.Common
                 Color glowColor = color with { A = 0 } * 0.7f;
 
 
-                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, null, glowColor, rotation, origin, scale, spriteEffects);
+                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, sourceRectangle, glowColor, rotation, origin, scale, spriteEffects);
             }
         }
 
