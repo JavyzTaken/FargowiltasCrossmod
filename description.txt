@@ -10,10 +10,9 @@ Calamity Mod
 -Countless balance and progression changes to make the mods' content work well together, can be toggled with config
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
-Planned potential future features (if we had infinite time):
+Planned potential future features:
 -Thorium Mod compatibility
 -Calamity and Thorium Enchantments, Forces and Souls
--More Eternity mode boss reworks
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
@@ -49,13 +48,12 @@ No, way too much effort to maintain. Also, things like Class Setups wiki pages a
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Latest Update: v1.0.5.50
+Latest Update: v1.0.6
+-NEW: Eternity mode Brimstone Elemental
+-Fixed Normality Relocator downside triggering when pressing the hotkey without having the item's effect
+-Celestial Onion doesn't override Mutant's Pact in Master Mode
+
+Previous Update: v1.0.5.50
 Updated to Souls Mod version 1.6.6
 Fixed a bug with Adamantite Enchantment and modded projectiles
-
-Previous Update: v1.0.5.41
-Eternity Rain lightning can now ricochet off of Crackshot Colt and Midas Prime coins
-Added config to disable boss summons being consumable in Eternity Mode (bosses still refund them)
-Fractured Ark series of weapons melee projectiles are now unaffected by Adamantite Enchantment, being melee weapons and not actual projectiles
-Plantera eternity-rev/death HP decreased by 6.25%
 
