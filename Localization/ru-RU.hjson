@@ -70,7 +70,7 @@ Mods: {
 						- Варианты предметов призыва из мода Mutant
 						'''
 				}
-				
+
 				EternityPriorityOverRev: {
 					Label: Приоритет Вечности над режимами Calamity
 					Tooltip:
@@ -109,12 +109,12 @@ Mods: {
 				CalamityWizard: Эффекты Эфирного талисмана
 				ThoriumWizard: Эффекты Мутного катализатора
 				CalamitySniper: Эффекты Элементального колчана, Колчана небытия и Генератора стволовых клеток
-				ThoriumSniper: Эффекты Сотрясающей боеголовки
 				Vagabond:
 					'''
 					Эффекты Нанотехнологии и Зеркала затмения
 					Эффекты Драконьей чешуи и Почитаемого медальона
 					'''
+				ThoriumSniper: Эффекты Сотрясающей боеголовки
 				CalamityConjurist: Эффект Нуклеосинтеза
 				ThoriumConjurist: Эффекты Подвески Юмы и Кристаллического скорпиона
 				CalamityTrawler: Эффекты Глубоководного водолазного костюма
@@ -484,7 +484,7 @@ Mods: {
 			RampartofDeitiesEffect: Оплот Божества
 			ElementalGauntletEffect: Элементальная Рукавица
 			EtherealTalismanEffect: Эфирный Талисман
-			CalamitySniperHeader: Душа Снайпера: Calamity 
+			CalamitySniperHeader: Душа Снайпера: Calamity
 			ElementalQuiverEffect: Элементальный Колчан
 			QuiverofNihilityEffect: Колчан Небытия
 			DynamoStemCellsEffect: Генератор Стволовых Клеток

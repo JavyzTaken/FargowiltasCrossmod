@@ -32,10 +32,11 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalProjectileChanges : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void SetDefaults(Projectile entity)
         {
             if (entity.ModProjectile != null && entity.ModProjectile is BaseLaserbeamProjectile)
@@ -117,6 +118,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
         }
         public bool Ricoshot = false;
+        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override bool PreAI(Projectile projectile)
         {
             Player player = Main.player[projectile.owner];
@@ -179,7 +181,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return true;
             #endregion
         }
-        public static List<int> MultipartShredders = new List<int>
+        public static List<int> MultipartShredders = new()
         {
             ModContent.ProjectileType<CelestialRuneFireball>()
 

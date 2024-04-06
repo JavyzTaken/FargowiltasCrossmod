@@ -425,7 +425,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<PhoenixFlameBarrage>(),
                 ItemType<YharonsKindleStaff>(),
                 ItemType<Wrathwing>(),
-                ItemType<FinalDawn>(),
+                ItemType<FinalDawn>(), //TODO CAL UPDATE: change to TheFinalDawn
+                //ItemType<TheFinalDawn>()
             });
             CreateCalBagRecipes(ItemType<YharonTrophy>(), new[]
             {
@@ -456,7 +457,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             });
             CreateCalBagRecipes(ItemID.MartianSaucerTrophy, new[]
             {
-                ItemType<NullificationRifle>()
+                ItemType<NullificationRifle>() // TODO CAL UPDATE: change to NullificationPistol
+                //ItemType<NullificationPistol>()
             });
             CreateCalBagRecipes(ItemType<MaulerTrophy>(), new[]
             {

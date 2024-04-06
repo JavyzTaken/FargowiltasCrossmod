@@ -152,7 +152,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
             
-            if (CalamityKeybinds.NormalityRelocatorHotKey.JustPressed && WorldSavingSystem.EternityMode && FargoSoulsUtil.AnyBossAlive())
+            if (CalamityKeybinds.NormalityRelocatorHotKey.JustPressed && Player.Calamity().normalityRelocator && WorldSavingSystem.EternityMode && FargoSoulsUtil.AnyBossAlive())
             {
                 //copied from vanilla chaos state damage
                 Player.statLife -= Player.statLifeMax2 / 7;
