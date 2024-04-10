@@ -153,7 +153,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
         public bool Despawning = false;
 
-        public int RitualProj;
+        public bool DidPaw = false;
 
         public enum Attacks
         {
@@ -227,6 +227,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override void AI()
         {
+            Main.LocalPlayer.ZoneSnow = true;
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.TargetClosest();
@@ -338,6 +339,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Attack = (float)Attacks.PhaseTransition;
                     Phase = 2;
+                    FollowupAttackQueue.Clear();
                 }
                 else if (!SetupAttacks.Contains((Attacks)Attack) && Phase >= 2)
                 {
@@ -352,9 +354,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     if (FollowupAttackQueue.Count <= 0)
                     {
-                        FollowupAttackQueue.RandomFromListExcept(FollowupAttacks, (Attacks)Attack);
+                        if (Phase < 2)
+                            FollowupAttackQueue.RandomFromListExcept(FollowupAttacks, (Attacks)Attack);
+                        else
+                            FollowupAttackQueue.RandomFromListExcept(FollowupAttacks, (Attacks)Attack, Attacks.PawCharge);
                     }
-                    Attack = (float)FollowupAttackQueue.Dequeue();
+                    if (Phase >= 2 && Attack == (int)Attacks.FrostFlares) // frost flare -> paw followup, every other frost flare
+                    {
+                        if (!DidPaw)
+                            Attack = (float)Attacks.PawCharge;
+                        else
+                            Attack = (float)FollowupAttackQueue.Dequeue();
+                        DidPaw = !DidPaw;
+                    }
+                    else
+                        Attack = (float)FollowupAttackQueue.Dequeue();
                 }
                 Timer = 0;
                 Data = 0;
@@ -390,9 +404,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 Vector2 desiredPos = target.Center - (toTarget * 400);
                 Movement(desiredPos, maxSpeed: 50);
 
-                if (Timer == 10)
-                    RitualProj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostRitual>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0f, Main.myPlayer, 0f, NPC.whoAmI);
-
+                //if (Timer == 10)
+                    //RitualProj = Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PermafrostRitual>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0f, Main.myPlayer, 0f, NPC.whoAmI);
+                if (Timer == 1)
+                    PhaseTransitionSound();
                 if (Timer > 60)
                 {
                     Phase = 2;
@@ -477,17 +492,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         dif = MathHelper.Clamp(dif, -MathHelper.Pi * 0.2f, MathHelper.Pi * 0.2f);
                     Data = toTarget.ToRotation() + dif;
                     Data += Main.rand.NextFloat(-MathHelper.PiOver2 / 10f, MathHelper.PiOver2 / 10f); //some randomness to make it less static
+                    WindupSound();
+                    /*
                     TelegraphParticle = null;
                     TelegraphParticle = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, Color.DarkCyan, Vector2.One * 20, Vector2.One, WindupTime, true, Color.LightBlue);
                     TelegraphParticle.Spawn();
+                    */
 
                     NPC.netUpdate = true;
                     NetSync(NPC);
                 }
+                /*
                 if (TelegraphParticle != null)
                 {
                     TelegraphParticle.Position = NPC.Center;
                 }
+                */
                 if (Timer > TotalTime * Dashes)
                 {
                     Vector2 desiredPos = target.Center - toTarget * 400;
@@ -504,6 +524,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     else if (partialTimer == WindupTime)
                     {
                         SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/SCalSounds/SCalDash"), NPC.Center);
+                        AttackSound();
 
                         Data = toTarget.ToRotation();
                     }
@@ -679,6 +700,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 if (Timer == 90)
                 {
                     SoundEngine.PlaySound(SoundID.Item109 with { Pitch = 0.5f }, NPC.Center);
+                    AttackSound();
                 }
                 if (Timer == 100)
                 {
@@ -812,6 +834,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             #endregion
         }
-        
+
+        public void WindupSound()
+        {
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostWindup{Main.rand.Next(1, 3)}") { Volume = 0.3f }, NPC.Center);
+        }
+        public void AttackSound()
+        {
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostAttack{Main.rand.Next(1, 3)}") { Volume = 0.3f }, NPC.Center);
+        }
+        public void PhaseTransitionSound()
+        {
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostPhaseTransition") { Volume = 0.3f }, NPC.Center);
+        }
+
     }
 }

@@ -79,14 +79,14 @@ namespace FargowiltasCrossmod.Core.Common
         /// <summary>
         /// Enqueues all entries of the list to the queue, in a random order.
         /// </summary>
-        public static void RandomFromList<T>(this Queue<T> queue, List<T> list)
+        public static void RandomFromList<T>(this Queue<T> queue, IEnumerable<T> list)
         {
-            foreach (T a in list.OrderBy(a => Main.rand.Next()).ToList())
+            foreach (T a in list.OrderBy(a => Main.rand.Next()))
             {
                 queue.Enqueue(a);
             }
         }
-        public static void RandomFromListExcept<T>(this Queue<T> queue, List<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude).ToList());
+        public static void RandomFromListExcept<T>(this Queue<T> queue, IEnumerable<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude));
 
         #endregion
     }
