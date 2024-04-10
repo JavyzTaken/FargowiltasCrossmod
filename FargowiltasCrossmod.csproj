@@ -11,6 +11,7 @@
     <Reference Remove="Libraries\CalamityMod.dll" />
     <Reference Remove="Libraries\Fargowiltas.dll" />
     <Reference Remove="Libraries\FargowiltasSouls.dll" />
+    <Reference Remove="Libraries\Luminance.dll" />
     <Reference Remove="Libraries\ThoriumMod.dll" />
   </ItemGroup>
   <ItemGroup>
@@ -25,6 +26,9 @@
 	</Reference>
 	<Reference Include="FargowiltasSouls">
 	  <HintPath>..\..\ModReader\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+	</Reference>
+	<Reference Include="Luminance">
+	  <HintPath>Libraries\Luminance.dll</HintPath>
 	</Reference>
   </ItemGroup>
 </Project>

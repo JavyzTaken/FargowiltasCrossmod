@@ -185,7 +185,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public static Queue<Attacks> SetupAttackQueue = new Queue<Attacks>();
         public static Queue<Attacks> FollowupAttackQueue = new Queue<Attacks>();
 
-        public FargowiltasSouls.Common.Graphics.Particles.Particle TelegraphParticle;
+        public Luminance.Core.Graphics.Particle TelegraphParticle;
 
         private void SpawnTownNPC(bool defeat = false)
         {

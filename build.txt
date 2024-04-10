@@ -1,6 +1,5 @@
 displayName = Fargo's Souls DLC
 author = Javyz, Shipmans Agla, Zavarski, Fargowilta
 version = 1.0.6
-modReferences = Fargowiltas@3.2.1
-modReferences = FargowiltasSouls@1.6.6
+modReferences = Fargowiltas@3.2.1, FargowiltasSouls@1.6.8.2, Luminance
 weakReferences = CalamityMod@2.0.3.007
