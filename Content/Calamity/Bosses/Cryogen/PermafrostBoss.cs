@@ -220,7 +220,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void OnKill()
         {
             SpawnTownNPC(true);
-
             NPC cryogen = NPC.NewNPCDirect(NPC.GetSource_FromThis(), NPC.Center, ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>());
             cryogen.NPCLoot();
             cryogen.active = false;
@@ -837,11 +836,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
         public void WindupSound()
         {
-            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostWindup{Main.rand.Next(1, 3)}") { Volume = 0.3f }, NPC.Center);
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostWindup{Main.rand.Next(1, 3)}") { Volume = 0.2f }, NPC.Center);
         }
         public void AttackSound()
         {
-            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostAttack{Main.rand.Next(1, 3)}") { Volume = 0.3f }, NPC.Center);
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostAttack{Main.rand.Next(1, 3)}") { Volume = 0.25f }, NPC.Center);
         }
         public void PhaseTransitionSound()
         {
