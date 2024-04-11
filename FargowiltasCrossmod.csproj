@@ -5,8 +5,23 @@
     <AssemblyName>FargowiltasCrossmod</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\AerospecEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\DaedalusEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\DesertProwlerEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\MarniteEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\SnowRuffianEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\SnowRuffianEnchantment_Wings.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\WulfrumEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Forces\ExplorationForce.png" />
+    <None Remove="Content\Calamity\Projectiles\Cold.png" />
+    <None Remove="Content\Calamity\Projectiles\Electricity.png" />
+    <None Remove="Content\Calamity\Projectiles\Heat.png" />
+    <None Remove="Content\Calamity\Projectiles\Sickness.png" />
+    <None Remove="Content\Calamity\Projectiles\Water.png" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
     <Reference Remove="Libraries\Fargowiltas.dll" />

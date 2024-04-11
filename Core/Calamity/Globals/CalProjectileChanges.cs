@@ -11,6 +11,7 @@ using CalamityMod.Projectiles.Ranged;
 using CalamityMod.Projectiles.Summon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
+using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Common.Systems;
@@ -151,7 +152,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                 }
             }
-
+            
             if (TungstenExclude.Contains(projectile.type))
             {
                 //projectile.FargoSouls().TungstenScale = 1;
@@ -298,6 +299,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             projectile.velocity *= 1.1f;
                         }
                         projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(projectile.velocity.ToRotation().AngleTowards(projectile.AngleTo(Main.player[p].Center), 0.04f));
+                    }
+                }
+            }
+            if (projectile.aiStyle == ProjAIStyleID.Hook)
+            {
+                foreach (Projectile proj in Main.projectile)
+                {
+                    if (proj != null && proj.active && proj.Hitbox.Intersects(projectile.Hitbox) && proj.type == ModContent.ProjectileType<CrystalPlatform>())
+                    {
+                        Player owner = Main.player[(int)proj.ai[1]];
+                        if (owner.grapCount < 10)
+                        {
+                            owner.grappling[owner.grapCount] = projectile.whoAmI;
+                            owner.grapCount += 1;
+                        }
+                        projectile.ai[0] = 2;
+                        projectile.velocity = Vector2.Zero;
+                        
+                        
+                        
                     }
                 }
             }

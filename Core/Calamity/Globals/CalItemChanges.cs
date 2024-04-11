@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CalamityMod;
 using CalamityMod.Buffs.StatBuffs;
+using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
@@ -12,8 +13,11 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
+using Fargowiltas.Items.Misc;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core;
@@ -23,14 +27,7 @@ using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
-using FargowiltasSouls.Content.Items.Ammos;
-using FargowiltasSouls.Content.Items.Armor;
 using FargowiltasSouls.Content.Items.Consumables;
-using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
-using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
-using FargowiltasSouls.Content.Patreon.DemonKing;
-using FargowiltasSouls.Content.Patreon.Duck;
-using FargowiltasSouls.Content.Patreon.GreatestKraken;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
@@ -47,7 +44,34 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalItemChanges : GlobalItem
     {
-        
+        public override bool? UseItem(Item item, Player player)
+        {
+            CalamityPlayer cplayer = player.Calamity();
+            if (item.type == ModContent.ItemType<DeathFruit>())
+            {
+                if (cplayer.dFruit)
+                {
+                    cplayer.dFruit = false;
+                    player.ConsumedLifeFruit = 20;
+                }
+                else if (cplayer.eBerry)
+                {
+                    cplayer.eBerry = false;
+                    player.ConsumedLifeFruit = 20;
+                }
+                else if (cplayer.mFruit)
+                {
+                    cplayer.mFruit = false;
+                    player.ConsumedLifeFruit = 20;
+                }
+                else if (cplayer.bOrange)
+                {
+                    cplayer.bOrange = false;
+                    player.ConsumedLifeFruit = 20;
+                }
+            }
+            return base.UseItem(item, player);
+        }
         public override float UseSpeedMultiplier(Item item, Player player)
         {
             //Mythril stealth fix
@@ -67,6 +91,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<EternitySoul>())
             {
                 ModContent.GetInstance<BrandoftheBrimstoneWitch>().UpdateAccessory(player, hideVisual);
+            }
+            if (item.type == ModContent.ItemType<EternitySoul>() || item.type == ModContent.ItemType<TerrariaSoul>())
+            {
+                ModContent.GetInstance<ExplorationForce>().UpdateAccessory(player, hideVisual);
             }
             if (item.type == ModContent.ItemType<CounterScarf>() || item.type == ModContent.ItemType<EvasionScarf>() || item.type == ModContent.ItemType<OrnateShield>()
                 || item.type == ModContent.ItemType<AsgardianAegis>() || item.type == ModContent.ItemType<ElysianAegis>() || item.type == ModContent.ItemType<AsgardsValor>()

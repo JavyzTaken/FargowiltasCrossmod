@@ -13,6 +13,7 @@ using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Common.Systems;
@@ -39,7 +40,13 @@ namespace FargowiltasCrossmod.Content.Calamity
     public class CrossplayerCalamity : ModPlayer
     {
         public bool CalamitousPresence;
-
+        //Unique accessories fields
+        public float AeroCritBoost;
+        public int FeatherJumpsRemaining;
+        public int usedWeaponTimer;
+        public float ProwlerCharge;
+        public bool AutoProwler = false;
+        
         public override void ResetEffects()
         {
             CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
@@ -49,6 +56,22 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
 
         }
+        public override void UpdateEquips()
+        {
+            
+        }
+        public override void PreUpdate()
+        {
+            if (Player.HasEffect<DesertProwlerEffect>())
+            {
+                DesertProwlerEffect.ProwlerEffect(Player);
+            }
+        }
+        public override void PreUpdateMovement()
+        {
+            
+        }
+
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
@@ -142,6 +165,12 @@ namespace FargowiltasCrossmod.Content.Calamity
                     Player.AddCooldown(GlobalDodge.ID, 60, true);
                 }
 
+            }
+            if (Player.HasEffect<DesertProwlerEffect>())
+            {
+                AutoProwler = Player.autoJump;
+                Player.autoJump = false;
+                
             }
         }
         public bool[] PreUpdateBuffImmune;

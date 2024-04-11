@@ -381,6 +381,65 @@ Mods: {
 					Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
 					'''
 			}
+
+			AerospecEnchantment: {
+				DisplayName: Aerospec Enchantment
+				Tooltip:
+					'''
+					Grants two Aero jumps that throw feathers
+					Feathers grant a critical strike chance boost and flight time on enemy hits
+					The critical strike chance boost goes away when you touch the ground
+					'''
+			}
+
+			MarniteEnchantment: {
+				DisplayName: Marnite Enchantment
+				Tooltip:
+					'''
+					10% increased placement speed and +5 tile placement range
+					Lasers strike nearby enemies when building and mining
+					'''
+			}
+
+			DesertProwlerEnchantment: {
+				DisplayName: Desert Prowler Enchantment
+				Tooltip: Replaces jumping with a powerful charge jump that boosts your horizontal speed as well
+			}
+
+			WulfrumEnchantment: {
+				DisplayName: Wulfrum Enchantment
+				Tooltip: Summons a drone that brings far away items to you
+			}
+
+			ExplorationForce: {
+				DisplayName: Force of Exploration
+				Tooltip:
+					'''
+					25% Increased placement speed and +10 placement range
+					Lasers strike nearby enemies when building and mining
+					A wulfrum drone collects items for you
+					Replaces jumping with a charged sand jump that boosts you horizontally
+					Grants 5 aero jumps that throw feathers
+					The feathers increase your critical strike chance and replenish flight time on hits
+					The critical strike chance boost goes away when you touch the ground
+					'''
+			}
+
+			SnowRuffianEnchantment: {
+				DisplayName: Snow Ruffian Enchantment
+				Tooltip:
+					'''
+					Grants the ability to glide if you do not have wings already
+					While slow falling with wings, you accelerate
+					Press UP while slow falling to direct your momentum upward
+					Press DOWN while slow falling to accelerate faster
+					'''
+			}
+
+			DaedalusEnchantment: {
+				DisplayName: Daedalus Enchantment
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {
@@ -460,6 +519,13 @@ Mods: {
 			BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
 			BrimstoneTeleport.DisplayName: Brimstone Teleport
 			BrimstoneFireblast.DisplayName: Brimstone Fireblast
+			FeatherJumpFeather.DisplayName: Feather Jump Feather
+			MarniteDagger.DisplayName: Marnite Dagger
+			MarniteLaser.DisplayName: Marnite Laser
+			ProwlerTornado.DisplayName: Prowler Tornado
+			WulfrumCollector.DisplayName: Wulfrum Collector
+			WulfrumScanner.DisplayName: Wulfrum Scanner
+			CrystalPlatform.DisplayName: Crystal Platform
 		}
 
 		Buffs: {
@@ -506,6 +572,27 @@ Mods: {
 			YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
 			DraedonsHeartEffect: Draedons Heart
 			CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
+			SplendorJamEffect: Splendor Jam
+			ExplorationHeader: Force of Exploration
+			AerospecJumpEffect: Aerospec Jumps
+			AerospecFeathersEffect: Aero Feathers
+			MarniteStatsEffect: Marnite Building
+			MarniteLasersEffect: Marnite Lasers
+			DesertProwlerEffect: Charge Jump
+			WulfrumEffect: Collector Drones
+			SnowRuffianEffect: Better Gliding
+		}
+		Cooldowns: {
+			DaedalusPlatformCooldown: Daedalus Platform
+		}
+	}
+
+	FargowiltasSouls: {
+		WizardEffect: {
+			Aerospec: Total of 5 jumps, feathers grant more crit
+			Marnite: Stronger daggers, +15% placement speed and +5 placement range
+			DesertProwler: Stronger jumps
+			Wulfrum: The drone is faster and occasionally finds bonus items
 		}
 	}
 }
