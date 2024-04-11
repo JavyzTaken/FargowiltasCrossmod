@@ -13,6 +13,7 @@ using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -575,7 +576,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     if (timer % 30 == 10)
                     {
                         Color color = (timer % 60 == 10 ? Color.Crimson : Color.Magenta);
-                        FargowiltasSouls.Common.Graphics.Particles.Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, color, Vector2.One, Vector2.One * 60, 30, true, Color.Transparent);
+                        Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, color, Vector2.One, Vector2.One * 60, 30, true, Color.Transparent);
                         p.Spawn();
                     }
                 }

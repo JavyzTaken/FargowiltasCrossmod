@@ -38,6 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
+            BEGlobalProjectile.DrawBlackBorder(t, Projectile.Center, new Vector2(36, 50) / 2, Projectile.rotation, Projectile.scale, SpriteEffects.None, offsetMult: 3, sourceRectangle: new Rectangle(0, 50 * Projectile.frame, 36, 50));
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, 50 * Projectile.frame, 36, 50), lightColor, Projectile.rotation, new Vector2(36, 50) / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }

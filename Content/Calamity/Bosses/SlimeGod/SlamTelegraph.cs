@@ -5,8 +5,7 @@ using CalamityMod.NPCs.SlimeGod;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
-using FargowiltasSouls.Common.Graphics.Primitives;
-using FargowiltasSouls.Common.Graphics.Shaders;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -21,11 +20,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class SlamTelegraph : ModProjectile
     {
-        public PrimDrawer TelegraphDrawer
-        {
-            get;
-            private set;
-        }
         public ref float Timer => ref Projectile.ai[0];
 
         public ref float Width => ref Projectile.ai[1];
@@ -125,16 +119,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-            Shader shader = ShaderManager.GetShaderIfExists("Vertex_ArcTelegraph");
+            ManagedShader shader = ShaderManager.GetShader("FargowiltasSouls.Vertex_ArcTelegraph");
 
             FargoSoulsUtil.SetTexture1(ModContent.Request<Texture2D>("Terraria/Images/Extra_193").Value);
             if (Crimson)
             {
-                shader.SetMainColor(Color.Lerp(Color.Crimson, Color.OrangeRed, 0.7f));
+                shader.TrySetParameter("mainColor", Color.Lerp(Color.Crimson, Color.OrangeRed, 0.7f));
             }
             else
             {
-                shader.SetMainColor(Color.Lerp(Color.Lavender, Color.Purple, 0.7f));
+                shader.TrySetParameter("mainColor", Color.Lerp(Color.Lavender, Color.Purple, 0.7f));
             }
 
             shader.Apply();

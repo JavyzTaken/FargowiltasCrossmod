@@ -12,6 +12,7 @@ using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -484,7 +485,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             if (Timer == 0)
             {
                 SoundEngine.PlaySound(ExitSound with { Pitch = -0.3f }, npc.Center);
-                FargowiltasSouls.Common.Graphics.Particles.Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Magenta, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
+                Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Magenta, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
                 p.Spawn();
                 bounces = 0;
             }
@@ -585,7 +586,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             if (Timer == 0)
             {
                 SoundEngine.PlaySound(ExitSound with { Pitch = -0.3f }, npc.Center);
-                FargowiltasSouls.Common.Graphics.Particles.Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Crimson, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
+                Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Crimson, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
                 p.Spawn();
                 slams = 0;
             }
