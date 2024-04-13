@@ -21,4 +21,7 @@
 	  <HintPath>..\..\ModReader\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
 	</Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Libraries\" />
+  </ItemGroup>
 </Project>
