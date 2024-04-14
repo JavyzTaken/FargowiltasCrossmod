@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public abstract NPCMatcher CreateMatcher();
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : target.GetGlobalNPC<EmptyGlobalNPC>();
+            return DLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
         }
 
         public bool FirstTick = true;
