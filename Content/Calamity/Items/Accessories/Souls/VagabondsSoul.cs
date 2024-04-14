@@ -56,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 .AddIngredient<RegulusRiot>()
                 .AddIngredient<CelestialReaper>()
                 .AddIngredient<Valediction>()
-                .AddIngredient<EclipsesFall>()
+                .AddIngredient<ExecutionersBlade>()
                 .AddIngredient<SearedPan>()
 
                 .AddTile<CrucibleCosmosSheet>()
