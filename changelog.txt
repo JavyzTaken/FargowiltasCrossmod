@@ -1,4 +1,10 @@
-New Update: v1.0.6
--NEW: Eternity mode Brimstone Elemental
--Fixed Normality Relocator downside triggering when pressing the hotkey without having the item's effect
--Celestial Onion doesn't override Mutant's Pact in Master Mode
+New Update: v1.0.6.1
+-Ported to Luminance, and updated to new Souls Mod version
+-Some recipe changes and fixes
+-Permafrost changes:
+Added some sound effects
+Removed circular arena in Phase 2
+Paw Charge in Phase 2 can only happen after Frost Flares
+Tweaked Paw Charge telegraph
+Clears attack queue when entering Phase 2
+Slight optimizations
