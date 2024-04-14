@@ -31,4 +31,7 @@
 	  <HintPath>Libraries\Luminance.dll</HintPath>
 	</Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Libraries\" />
+  </ItemGroup>
 </Project>
