@@ -1,10 +1,3 @@
-New Update: v1.0.6.1
--Ported to Luminance, and updated to new Souls Mod version
--Some recipe changes and fixes
--Permafrost changes:
-Added some sound effects
-Removed circular arena in Phase 2
-Paw Charge in Phase 2 can only happen after Frost Flares
-Tweaked Paw Charge telegraph
-Clears attack queue when entering Phase 2
-Slight optimizations
+New Update: v1.0.6.2
+-Fixed a bug with NPC behaviour overrides
+-Increased Souls Mod dependency minimum version
