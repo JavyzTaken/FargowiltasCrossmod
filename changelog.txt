@@ -1,5 +1,3 @@
-New Update: v1.0.5.41
-Eternity Rain lightning can now ricochet off of Crackshot Colt and Midas Prime coins
-Added config to disable boss summons being consumable in Eternity Mode (bosses still refund them)
-Fractured Ark series of weapons melee projectiles are now unaffected by Adamantite Enchantment, being melee weapons and not actual projectiles
-Plantera eternity-rev/death HP decreased by 6.25%
+New Update: v1.0.6.2
+-Fixed a bug with NPC behaviour overrides
+-Increased Souls Mod dependency minimum version

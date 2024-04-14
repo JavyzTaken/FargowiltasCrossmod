@@ -454,6 +454,12 @@ Mods: {
 			PermafrostRitual.DisplayName: Permafrost Ritual
 			IceCloud.DisplayName: Chilling Snow
 			BrimstoneDebris.DisplayName: Brimstone Debris
+			BrimstonePulse.DisplayName: Brimstone Pulse
+			BrimstoneClone.DisplayName: Brimstone Clone
+			BrimBeam.DisplayName: Brim Beam
+			BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
+			BrimstoneTeleport.DisplayName: Brimstone Teleport
+			BrimstoneFireblast.DisplayName: Brimstone Fireblast
 		}
 
 		Buffs: {

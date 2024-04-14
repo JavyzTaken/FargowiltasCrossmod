@@ -17,6 +17,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -881,7 +882,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 */
                 if (!Main.dedServ && Main.LocalPlayer.active)
-                    Main.LocalPlayer.FargoSouls().Screenshake = 2;
+                    if (ScreenShakeSystem.OverallShakeIntensity < 7)
+                        ScreenShakeSystem.SetUniversalRumble(7);
 
                 if (DLCUtils.HostCheck)
                 {
