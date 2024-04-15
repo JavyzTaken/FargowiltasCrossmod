@@ -12,8 +12,8 @@
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\DaedalusEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\DesertProwlerEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\MarniteEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\PlagueReaperEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\SnowRuffianEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\SnowRuffianEnchantment_Wings.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\WulfrumEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Forces\ExplorationForce.png" />
     <None Remove="Content\Calamity\Projectiles\Cold.png" />
@@ -40,10 +40,13 @@
 		<HintPath>Libraries/Fargowiltas.dll</HintPath>
 	</Reference>
 	<Reference Include="FargowiltasSouls">
-	  <HintPath>..\..\ModReader\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
 	</Reference>
 	<Reference Include="Luminance">
-	  <HintPath>Libraries\Luminance.dll</HintPath>
+	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Luminance\Luminance.dll</HintPath>
 	</Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Content\Calamity\Cooldowns\" />
   </ItemGroup>
 </Project>

@@ -26,52 +26,59 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             IL_Player.PickTile += ShootDaggersBreak;
             IL_Player.PlaceThing_Tiles_PlaceIt += ShootDaggersPlace;
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.UpdateLifeRegen)), UpdateLifeRegen_ILEdit);
+            On_Player.RefreshMovementAbilities += SetDaedalusHeight;
         }
 
+        private static void SetDaedalusHeight(On_Player.orig_RefreshMovementAbilities orig, Player self, bool doubleJumps)
+        {
+            
+            self.CalamityDLC().DaedalusHeight = (int)self.Center.Y - self.wingTimeMax * 3;
+            orig(self, doubleJumps);
+        }
         private void UpdateLifeRegen_ILEdit(ILContext il)
         {
-            try{
-                ILCursor c = new ILCursor(il);
-                c.GotoNext(MoveType.After, i => i.MatchStloc3());
-                c.GotoNext(MoveType.After, i => i.MatchStloc3());
-                c.GotoNext(MoveType.After, i => i.MatchStloc3());
-                c.Index++;
-                c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc, 3);
-                c.EmitDelegate<Func<NPC, double, double>>((npc, number) =>
-                {
+            //try{
+            //    ILCursor c = new ILCursor(il);
+            //    c.GotoNext(MoveType.After, i => i.MatchStloc3());
+            //    c.GotoNext(MoveType.After, i => i.MatchStloc3());
+            //    c.GotoNext(MoveType.After, i => i.MatchStloc3());
+            //    c.Index++;
+            //    c.Emit(OpCodes.Ldarg_0);
+            //    c.Emit(OpCodes.Ldloc, 3);
+            //    c.EmitDelegate<Func<NPC, double, double>>((npc, number) =>
+            //    {
                     
-                    //CalamityGlobalNPC calnpc = null;
-                    //CalGlobalNPC dlcnpc = null;
-                    //calnpc = npc.GetGlobalNPC<CalamityGlobalNPC>();
-                    //dlcnpc = npc.GetGlobalNPC<CalGlobalNPC>();
-                    //Main.NewText("calnpc null test");
-                    //Main.NewText(calnpc != null);
-                    //Main.NewText("dlcnpc null test");
-                    //Main.NewText(dlcnpc != null);
-                    //Main.NewText("Vulnerable null test");
-                    //Main.NewText(calnpc.VulnerableToHeat != null);
-                    //Main.NewText("Vulnerable to heat");
-                    //Main.NewText(calnpc.VulnerableToHeat.Value);
-                    //Main.NewText("Is Scanned");
-                    //Main.NewText(dlcnpc.WulfrumScanned);
-                    //if (
-                    //dlcnpc.WulfrumScanned)
-                    //{
-                    //    Main.NewText("lol");
-                    //    dlcnpc.WulfrumScanned = false;
-                    //    return number + 0.2D;
+            //        //CalamityGlobalNPC calnpc = null;
+            //        //CalGlobalNPC dlcnpc = null;
+            //        //calnpc = npc.GetGlobalNPC<CalamityGlobalNPC>();
+            //        //dlcnpc = npc.GetGlobalNPC<CalGlobalNPC>();
+            //        //Main.NewText("calnpc null test");
+            //        //Main.NewText(calnpc != null);
+            //        //Main.NewText("dlcnpc null test");
+            //        //Main.NewText(dlcnpc != null);
+            //        //Main.NewText("Vulnerable null test");
+            //        //Main.NewText(calnpc.VulnerableToHeat != null);
+            //        //Main.NewText("Vulnerable to heat");
+            //        //Main.NewText(calnpc.VulnerableToHeat.Value);
+            //        //Main.NewText("Is Scanned");
+            //        //Main.NewText(dlcnpc.WulfrumScanned);
+            //        //if (
+            //        //dlcnpc.WulfrumScanned)
+            //        //{
+            //        //    Main.NewText("lol");
+            //        //    dlcnpc.WulfrumScanned = false;
+            //        //    return number + 0.2D;
                         
-                    //}
-                    return number;
-                });
-                c.Emit(OpCodes.Stloc, 3);
-                MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
-            }
-            catch(Exception e)
-            {
+            //        //}
+            //        return number;
+            //    });
+            //    c.Emit(OpCodes.Stloc, 3);
+            //    MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
+            //}
+            //catch(Exception e)
+            //{
 
-            }
+            //}
         }
 
         private void ShootDaggersBreak(ILContext il)

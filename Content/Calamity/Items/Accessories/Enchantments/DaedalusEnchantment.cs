@@ -16,11 +16,13 @@ using FargowiltasSouls.Core.Toggler.Content;
 using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using Terraria.Audio;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [AutoloadEquip]
     public class DaedalusEnchantment : BaseEnchant
     {
 
@@ -33,11 +35,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             base.SetDefaults();
             Item.rare = ItemRarityID.Pink;
-            
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<DaedalusEffect>(Item);
+            player.AddEffect<SnowRuffianEffect>(Item);
         }
         public override void AddRecipes()
         {
@@ -47,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusBreastplate>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusLeggings>(), 1);
             recipe.AddIngredient(ModContent.ItemType<SnowRuffianEnchantment>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.Wings.SoulofCryogen>(), 1);
+            recipe.AddIngredient(ItemID.IceRod, 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.Wings.StarlightWings>(), 1);
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
@@ -57,23 +59,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override Header ToggleHeader => Header.GetHeader<CosmoHeader>();
         public override int ToggleItemType => ModContent.ItemType<DaedalusEnchantment>();
+        public override void PreUpdate(Player player)
+        {
+            
+        }
         public override void PostUpdateEquips(Player player)
         {
-            if (player.wingTime == 10 && !player.HasCooldown("DaedalusPlatform"))
+            if (player.wingTime > 0)
             {
-                int proj = Projectile.NewProjectile(player.GetSource_EffectItem<DaedalusEffect>(), player.Center + new Vector2(0, 20), Vector2.Zero, ModContent.ProjectileType<CrystalPlatform>(), 0, 0, Main.myPlayer);
-                if (Main.netMode == NetmodeID.MultiplayerClient)
-                {
-                    NetMessage.SendData(MessageID.SyncProjectile, number: proj);
-                }
-                SoundEngine.PlaySound(SoundID.Item101, player.Center);
-                player.AddCooldown("DaedalusPlatform", 100);
-            }
-            if (player.wings == 0)
-            {
-                player.wings = EquipLoader.GetEquipSlot(ModCompatibility.Calamity.Mod, "StarlightWings", EquipType.Wings);
+                Main.NewText(player.CalamityDLC().DaedalusHeight);
+                player.wingTime = (int)player.Center.Y - player.CalamityDLC().DaedalusHeight;
             }
         }
-        
     }
 }

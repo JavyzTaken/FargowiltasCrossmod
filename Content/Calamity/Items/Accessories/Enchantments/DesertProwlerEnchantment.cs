@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             if (cplayer.ProwlerCharge < 15 && player.controlJump)
             {
                 Vector2 pos = player.Bottom + new Vector2(Main.rand.Next(30, 50) * (Main.rand.NextBool() ? 1 : -1), -Main.rand.Next(10, 20));
-                FargowiltasSouls.Common.Graphics.Particles.Particle spark = new FargowiltasSouls.Common.Graphics.Particles.SparkParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 1, new Color(255, 226, 145, 200) * 0.5f, 0.5f, 30);
+                FargowiltasSouls.Common.Graphics.Particles.SparkParticle spark = new FargowiltasSouls.Common.Graphics.Particles.SparkParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 1, new Color(255, 226, 145, 200) * 0.5f, 0.5f, 30);
                 CalamityMod.Particles.Particle p = new TimedSmokeParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 6 + player.velocity, new Color(230, 206, 125, 200) * 0.1f, new Color(255, 226, 145, 200) * 0.5f, 1, 1, 30);
                 GeneralParticleHandler.SpawnParticle(p);
                 spark.Spawn();

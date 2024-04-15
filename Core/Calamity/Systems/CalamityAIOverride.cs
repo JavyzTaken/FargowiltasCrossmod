@@ -78,6 +78,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         #endregion summonloadingbullshit
         public override void PostSetupContent()
         {
+
             #region summons
             Mod mutant = ModLoader.GetMod("Fargowiltas");
             mutant.Call("AddSummon", 1.5f, "FargowiltasCrossmod", "MedallionoftheDesert",
@@ -254,6 +255,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             //make scal not end the event on defeat so it continues to mutant
             DeathEffectsList.Remove(ModContent.NPCType<SupremeCalamitas>());
             #endregion bossrush
+            cal.Call("RegisterModCooldowns", FargowiltasCrossmod.Instance);
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it
         public ref Dictionary<int, Action<NPC>> DeathEffectsList => ref BossRushEvent.BossDeathEffects;

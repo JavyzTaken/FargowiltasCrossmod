@@ -444,6 +444,15 @@ Mods: {
 
 			DaedalusEnchantment: {
 				// DisplayName: Daedalus Enchantment
+				/* Tooltip:
+					'''
+					Grants unlimited flight, but flight ends if you fly too high
+					Improves wing gliding
+					''' */
+			}
+
+			PlagueReaperEnchantment: {
+				// DisplayName: Plague Reaper Enchantment
 				// Tooltip: ""
 			}
 		}
@@ -532,6 +541,7 @@ Mods: {
 			// WulfrumCollector.DisplayName: Wulfrum Collector
 			// WulfrumScanner.DisplayName: Wulfrum Scanner
 			// CrystalPlatform.DisplayName: Crystal Platform
+			// PlagueCloud.DisplayName: Plague Cloud
 		}
 
 		Buffs: {
@@ -588,6 +598,8 @@ Mods: {
 			// WulfrumEffect: Collector Drones
 			// SnowRuffianEffect: Better Gliding
 		}
+
+		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 	}
 
 	FargowiltasSouls: {

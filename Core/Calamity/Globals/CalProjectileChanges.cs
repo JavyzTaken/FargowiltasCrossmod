@@ -304,26 +304,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                 }
             }
-            if (projectile.aiStyle == ProjAIStyleID.Hook)
-            {
-                foreach (Projectile proj in Main.projectile)
-                {
-                    if (proj != null && proj.active && proj.Hitbox.Intersects(projectile.Hitbox) && proj.type == ModContent.ProjectileType<CrystalPlatform>())
-                    {
-                        Player owner = Main.player[(int)proj.ai[1]];
-                        if (owner.grapCount < 10)
-                        {
-                            owner.grappling[owner.grapCount] = projectile.whoAmI;
-                            owner.grapCount += 1;
-                        }
-                        projectile.ai[0] = 2;
-                        projectile.velocity = Vector2.Zero;
-                        
-                        
-                        
-                    }
-                }
-            }
         }
     }
 }

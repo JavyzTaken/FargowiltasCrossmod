@@ -46,7 +46,8 @@ namespace FargowiltasCrossmod.Content.Calamity
         public int usedWeaponTimer;
         public float ProwlerCharge;
         public bool AutoProwler = false;
-        
+        public int PlagueCharge;
+        public int DaedalusHeight;
         public override void ResetEffects()
         {
             CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
