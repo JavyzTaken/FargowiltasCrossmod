@@ -128,7 +128,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 () => DownedDoG, Item.buyPrice(platinum: 2));
             mutant.Call("AddSummon", 18.0097f, "FargowiltasCrossmod", "DragonEgg",
                 () => DownedYharon, Item.buyPrice(platinum: 2, gold: 50));
-            mutant.Call("AddSummon", 18.012f, "FargowiltasCrossmod", "ExoBattery",
+            mutant.Call("AddSummon", 18.012f, "FargowiltasCrossmod", "PortableCodebreaker",
                 () => DownedExos, Item.buyPrice(platinum: 3));
             mutant.Call("AddSummon", 18.014f, "FargowiltasCrossmod", "EyeofExtinction",
                 () => DownedScal, Item.buyPrice(platinum: 3));
