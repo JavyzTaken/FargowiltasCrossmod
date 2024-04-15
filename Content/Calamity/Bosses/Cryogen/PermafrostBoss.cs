@@ -836,11 +836,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
         public void WindupSound()
         {
-            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostWindup{Main.rand.Next(1, 3)}") { Volume = 0.2f }, NPC.Center);
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostWindup{Main.rand.Next(1, 3)}") { Volume = 0.2f, PitchVariance = 0.2f }, NPC.Center);
         }
         public void AttackSound()
         {
-            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostAttack{Main.rand.Next(1, 3)}") { Volume = 0.25f }, NPC.Center);
+            SoundEngine.PlaySound(new SoundStyle($"FargowiltasCrossmod/Assets/Sounds/PermafrostAttack{Main.rand.Next(1, 3)}") { Volume = 0.25f, PitchVariance = 0.2f }, NPC.Center);
         }
         public void PhaseTransitionSound()
         {

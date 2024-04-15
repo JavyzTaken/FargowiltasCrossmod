@@ -1,4 +1,3 @@
-New Update: v1.0.6
--NEW: Eternity mode Brimstone Elemental
--Fixed Normality Relocator downside triggering when pressing the hotkey without having the item's effect
--Celestial Onion doesn't override Mutant's Pact in Master Mode
+New Update: v1.0.6.2
+-Fixed a bug with NPC behaviour overrides
+-Increased Souls Mod dependency minimum version

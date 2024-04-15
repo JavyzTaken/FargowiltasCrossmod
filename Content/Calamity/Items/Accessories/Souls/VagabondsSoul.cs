@@ -54,10 +54,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 .AddIngredient<SpentFuelContainer>()
                 .AddIngredient<TheSyringe>()
                 .AddIngredient<RegulusRiot>()
-                .AddIngredient<UtensilPoker>()
+                .AddIngredient<CelestialReaper>()
                 .AddIngredient<Valediction>()
                 .AddIngredient<ExecutionersBlade>()
-                .AddIngredient<EclipsesFall>()
+                .AddIngredient<SearedPan>()
 
                 .AddTile<CrucibleCosmosSheet>()
                 .Register();

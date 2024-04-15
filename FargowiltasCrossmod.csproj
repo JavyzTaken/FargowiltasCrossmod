@@ -5,23 +5,8 @@
     <AssemblyName>FargowiltasCrossmod</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\AerospecEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\DaedalusEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\DesertProwlerEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\MarniteEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\PlagueReaperEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\SnowRuffianEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\WulfrumEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Forces\ExplorationForce.png" />
-    <None Remove="Content\Calamity\Projectiles\Cold.png" />
-    <None Remove="Content\Calamity\Projectiles\Electricity.png" />
-    <None Remove="Content\Calamity\Projectiles\Heat.png" />
-    <None Remove="Content\Calamity\Projectiles\Sickness.png" />
-    <None Remove="Content\Calamity\Projectiles\Water.png" />
-  </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
     <Reference Remove="Libraries\Fargowiltas.dll" />
@@ -40,13 +25,13 @@
 		<HintPath>Libraries/Fargowiltas.dll</HintPath>
 	</Reference>
 	<Reference Include="FargowiltasSouls">
-	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+	  <HintPath>..\..\ModReader\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
 	</Reference>
 	<Reference Include="Luminance">
-	  <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Luminance\Luminance.dll</HintPath>
+	  <HintPath>Libraries\Luminance.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\Calamity\Cooldowns\" />
+    <Folder Include="Libraries\" />
   </ItemGroup>
 </Project>

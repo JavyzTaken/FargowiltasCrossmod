@@ -364,8 +364,3 @@ FodyWeavers.xsd
 
 # IntelliJ
 .idea/
-
-# Ignore other mods binaries
-Libraries/
-# Still commit empty folder to the repo
-!Libraries/.gitkeep

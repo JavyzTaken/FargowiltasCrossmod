@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : target.GetGlobalNPC<EmptyGlobalNPC>();
+            return DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
         }
 
         public bool FirstTick = true;
@@ -59,8 +59,5 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI);
         }
 
-    }
-    internal class EmptyGlobalNPC : GlobalNPC //needs to exist because of a tmod issue where CreateInstance can't return null
-    {
     }
 }
