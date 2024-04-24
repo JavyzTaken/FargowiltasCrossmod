@@ -1262,7 +1262,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                     Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ExoBattery", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PortableCodebreaker", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
             }
             else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
             {
