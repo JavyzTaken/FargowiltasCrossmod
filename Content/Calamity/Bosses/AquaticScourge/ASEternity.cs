@@ -16,6 +16,7 @@ using Terraria.GameContent;
 using Terraria.ModLoader;
 using CalamityMod;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -23,15 +24,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ASEternity : EModeCalBehaviour
     {
-        public static bool Enabled = false;
+        public static bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<AquaticScourgeHead>());
-
-        public override void SetDefaults(NPC entity)
-        {
-            base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.15f);
-        }
 
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -39,7 +34,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
     public class ASBodyEternity : EModeCalBehaviour
     {
         public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<AquaticScourgeBody>());
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(ModContent.NPCType<AquaticScourgeBody>(), ModContent.NPCType<AquaticScourgeBodyAlt>());
+        public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            if (!FargoSoulsUtil.IsSummonDamage(projectile) && projectile.damage > 5)
+                projectile.damage = (int)Math.Min(projectile.damage - 1, projectile.damage * 0.75);
+        }
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        {
+            if (npc.lifeRegen < 0)
+            {
+                npc.lifeRegen = (int)Math.Round(npc.lifeRegen / 4f);
+            }
+        }
+        /*
 
         public bool SpikeAttackSprite = false;
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -73,6 +81,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             spriteBatch.Draw(texture2D15, vector43, npc.frame, color, npc.rotation, vector11, npc.scale, spriteEffects, 0f);
 
             return false;
+        }
+        */
+    }
+    public class ASPartsEternity : EModeCalBehaviour
+    {
+        public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
+            ModContent.NPCType<AquaticScourgeBody>(), 
+            ModContent.NPCType<AquaticScourgeHead>(), 
+            ModContent.NPCType<AquaticScourgeBodyAlt>(), 
+            ModContent.NPCType<AquaticScourgeTail>());
+
+        public override void SetDefaults(NPC entity)
+        {
+            base.SetDefaults(entity);
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.15f);
         }
     }
 }

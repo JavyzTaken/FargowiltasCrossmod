@@ -177,7 +177,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<Terminus>())
                 return WorldSavingSystem.DownedMutant;
 
-            if (item.type == ModContent.ItemType<CelestialOnion>() && DLCCalamityConfig.Instance.BalanceRework)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && DLCCalamityConfig.Instance.BalanceRework && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
             return true;
@@ -236,7 +236,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
-            if (item.type == ModContent.ItemType<CelestialOnion>() && DLCCalamityConfig.Instance.BalanceRework && !Main.masterMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && DLCCalamityConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
@@ -300,7 +300,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
-            if (Player.Calamity().extraAccessoryML && DLCCalamityConfig.Instance.BalanceRework && !Main.masterMode)
+            if (Player.Calamity().extraAccessoryML && DLCCalamityConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 if (MutantsPactSlot)
                 {
