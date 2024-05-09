@@ -627,7 +627,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             #region Crates
             if (npc.type == ModContent.NPCType<DesertScourgeHead>())
             {
-                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunkenCrate>(), 1, 3, 3));
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EutrophicCrate>(), 1, 3, 3));
             }
             if (npc.type == ModContent.NPCType<Crabulon>())
             {

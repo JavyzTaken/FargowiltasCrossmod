@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
             if (!WorldSavingSystem.EternityMode) return;
-            attackCycle = new int[] { 0, 1, 1, 2 };
+            attackCycle = [0, 1, 1, 2];
 
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -142,7 +142,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     //NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
                 ai_attackCycleIndex = 0;
                 //npc.HealEffect(-50);
-                attackCycle = new int[] { -1, 1 };
+                attackCycle = [-1, 1];
                 ai_Timer = 0;
                 npc.defense = 40;
                 npc.HitSound = SoundID.NPCHit4;
@@ -158,7 +158,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
                 ai_attackCycleIndex = 0;
                 npc.HealEffect(-50);
-                attackCycle = new int[] { -1, 1, -1, 2 };
+                attackCycle = [-1, 1, -1, 2];
                 ai_Timer = 0;
                 npc.defense = 40;
                 npc.HitSound = SoundID.NPCHit4;
@@ -173,7 +173,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     //NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<FungalClump>(), ai1: npc.whoAmI);
                 ai_attackCycleIndex = 0;
                 //npc.HealEffect(-50);
-                attackCycle = new int[] { -1, 1, -1, 2, 1 };
+                attackCycle = [-1, 1, -1, 2, 1];
                 ai_Timer = 0;
                 npc.defense = 40;
                 npc.HitSound = SoundID.NPCHit4;
@@ -192,17 +192,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             //Attack phase 2
             if (ai_Phase == 2)
             {
-                attackCycle = new int[] { 0, 1, 1, 2, 4, 1 };
+                attackCycle = [0, 1, 1, 2, 4, 1];
             }
             //attack phase 3
             if (ai_Phase == 4)
             {
-                attackCycle = new int[] { 0, 2, 1, 4, 5, 2, 3, 1, 1 };
+                attackCycle = [0, 2, 1, 4, 5, 2, 3, 1, 1];
             }
             //attack phase 4
             if (ai_Phase == 6)
             {
-                attackCycle = new int[] { 5, 1, 4, 3, 1, 1, 4, 2, 3, 1 };
+                attackCycle = [5, 1, 4, 3, 1, 1, 4, 2, 3, 1];
             }
             Player target = Main.player[npc.target];
             //high defense and stand still for a while (only does when fungal clump is alive)

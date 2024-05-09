@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             base.HitEffect(npc, hit);
         }
-        public int[] Chains = new int[] { -1, -1, -1, -1 , -1, -1};
+        public int[] Chains = [-1, -1, -1, -1 , -1, -1];
         public float shieldDrawTimer;
         public float shieldDrawCounter;
 

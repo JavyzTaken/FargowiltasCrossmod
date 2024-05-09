@@ -377,7 +377,7 @@ Mods: {
 				DisplayName: Brand of the Brimstone Witch
 				Tooltip:
 					'''
-					Effects of Heart of the Elements, Occult Skull Crown, Purity, The Sponge, Chalice of the Blood God
+					Effects of Heart of the Elements, Occult Skull Crown, Radiance, The Sponge, Chalice of the Blood God
 					Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
 					'''
 			}
@@ -499,7 +499,7 @@ Mods: {
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 			HeartoftheElementsEffect: Heart of the Elements
 			OccultSkullCrownEffect: Occult Skull Crown
-			PurityEffect: Purity
+			PurityEffect: Radiance
 			TheSpongeEffect: The Sponge
 			ChaliceOfTheBloodGodEffect: Chalice of the Blood God
 			NebulousCoreEffect: Nebulous Core

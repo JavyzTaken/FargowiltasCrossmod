@@ -126,7 +126,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public int phase = 0;
         public Vector2 LockVector1 = Vector2.Zero;
         const int attackCycleLength = 7;
-        public int[] attackCycle = new int[attackCycleLength] { 0, 0, 0, 0, 0, -1, -1 };
+        public int[] attackCycle = [0, 0, 0, 0, 0, -1, -1];
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -276,7 +276,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     npc.noGravity = true;
                     npc.ai[1] = 1;
                     npc.noTileCollide = true;
-                    attackCycle = new int[attackCycleLength] { 0, 1, 2, -1, -1, -1, -1 };
+                    attackCycle = [0, 1, 2, -1, -1, -1, -1];
                     foreach (NPC n in Main.npc)
                     {
                         if ((n.type == ModContent.NPCType<HiveBlob>() || n.type == ModContent.NPCType<HiveBlob2>()) && n.ai[0] == npc.whoAmI)
@@ -364,9 +364,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     }
                     Dash(npc, LockVector1, 45, 35, 0.02f);
                 }
-                RetractHeart(npc, 0.8f, 2, 7, 12, new int[attackCycleLength] { 0, 1, -1, -1, -1, -1, -1 });
-                RetractHeart(npc, 0.5f, 3, 7, 12, new int[attackCycleLength] { 0, 1, 6, 7, -1, -1, -1 });
-                RetractHeart(npc, 0.2f, 4, 7, 12, new int[attackCycleLength] { 0, 3, 1, 6, 7, -1, -1 });
+                RetractHeart(npc, 0.8f, 2, 7, 12, [0, 1, -1, -1, -1, -1, -1]);
+                RetractHeart(npc, 0.5f, 3, 7, 12, [0, 1, 6, 7, -1, -1, -1]);
+                RetractHeart(npc, 0.2f, 4, 7, 12, [0, 3, 1, 6, 7, -1, -1]);
                 ReleaseHeart(npc);
 
             }
@@ -481,15 +481,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 SoundEngine.PlaySound(SoundID.NPCDeath23, npc.Center);
                 if (npc.GetLifePercent() <= 0.8f)
                 {
-                    attackCycle = new int[attackCycleLength] { 0, 1, 2, -1, -1, -1, -1 };
+                    attackCycle = [0, 1, 2, -1, -1, -1, -1];
                 }
                 if (npc.GetLifePercent() <= 0.5f)
                 {
-                    attackCycle = new int[attackCycleLength] { 0, 1, 5, 3, 2, 4, -1 };
+                    attackCycle = [0, 1, 5, 3, 2, 4, -1];
                 }
                 if (npc.GetLifePercent() <= 0.2f)
                 {
-                    attackCycle = new int[attackCycleLength] { 0, 1, 3, 5, 2, 5, 4 };
+                    attackCycle = [0, 1, 3, 5, 2, 5, 4];
                 }
                 NetSync(npc);
             }
