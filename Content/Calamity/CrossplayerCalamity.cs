@@ -5,12 +5,14 @@ using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.CalPlayer;
 using CalamityMod.Cooldowns;
+using CalamityMod.DataStructures;
 using CalamityMod.Events;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Particles;
 using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
@@ -26,6 +28,9 @@ using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
 using log4net.Repository.Hierarchy;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -41,13 +46,7 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public bool CalamitousPresence;
         //Unique accessories fields
-        public float AeroCritBoost;
-        public int FeatherJumpsRemaining;
-        public int usedWeaponTimer;
-        public float ProwlerCharge;
-        public bool AutoProwler = false;
-        public int PlagueCharge;
-        public int DaedalusHeight;
+        
         public override void ResetEffects()
         {
             CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
@@ -57,6 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
 
         }
+        
         public override void UpdateEquips()
         {
             
@@ -72,7 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
             
         }
-
+        
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
@@ -167,12 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
 
             }
-            if (Player.HasEffect<DesertProwlerEffect>())
-            {
-                AutoProwler = Player.autoJump;
-                Player.autoJump = false;
-                
-            }
+            
         }
         public bool[] PreUpdateBuffImmune;
         public override void PreUpdateBuffs()

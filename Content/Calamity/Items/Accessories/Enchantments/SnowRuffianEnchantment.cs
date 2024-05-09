@@ -18,6 +18,10 @@ using Terraria.Graphics.Renderers;
 using CalamityMod.Graphics.Renderers;
 using Terraria.Graphics;
 using CalamityMod;
+using CalamityMod.Items.Weapons.Melee;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
+using FargowiltasSouls;
+using CalamityMod.Items.Accessories.Wings;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -58,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     }
     public class SnowRuffianEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<CosmoHeader>();
+        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<SnowRuffianEnchantment>();
         public override void DrawEffects(Player player, PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
@@ -70,25 +74,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void PostUpdateEquips(Player player)
         {
-            if (player.wings == 0)
+            float neutralAcceleration = 0.15f; //speed X increase while gliding and not holding up or down
+            float boostAcceleration = 0.25f; //speed X increase while holding down
+            float risingDecel = 0.99f; //speed X is multiplied by this when holding up
+            float upwardAccel = 0.8f; //speed increase on Y while holding up
+
+            if (player.wingTimeMax == 0)
             {
                 player.Calamity().snowRuffianSet = true;
+                if (player.ForceEffect<SnowRuffianEffect>())
+                {
+                    player.Calamity().snowRuffianSet = false;
+                    player.wings = EquipLoader.GetEquipSlot(ModCompatibility.Calamity.Mod, "SnowRuffianMask", EquipType.Wings);
+                    player.wingsLogic = 46;
+                    player.wingTimeMax = player.GetWingStats(46).FlyTime;
+                }
+                
+                
             }
             
             if (player.jump == 0 && player.wingTime <= 0 && player.controlJump)
             {
                 if (((player.direction == 1 && player.velocity.X < 15) || (player.direction == -1 && player.velocity.X > -15)) && !player.controlUp && player.velocity.Y > 0)
                 {
-                    player.velocity.X += 0.15f * player.direction;
-                    if (player.controlDown) player.velocity.X += 0.1f * player.direction;
+                    float accel = neutralAcceleration;
+                    if (player.controlDown) accel = boostAcceleration;
+
+                    player.velocity.X += accel * player.direction;
                 }
                 
                 if (player.controlUp && (player.velocity.ToRotation() > MathHelper.ToRadians(-120) || player.velocity.ToRotation() < MathHelper.ToRadians(-60)))
                 {
-                    player.velocity.X *= 0.99f;
+                    player.velocity.X *= risingDecel;
                     if (Math.Abs(player.velocity.X) > 6 && player.dashDelay != -1 && player.velocity.Y > -10)
                     {
-                        player.velocity.Y -= 0.8f;
+                        player.velocity.Y -= upwardAccel;
                         player.controlLeft = false;
                         player.controlRight = false;
                         player.releaseLeft = false;

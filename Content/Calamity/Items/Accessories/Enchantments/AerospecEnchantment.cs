@@ -16,6 +16,7 @@ using FargowiltasSouls.Core.Toggler.Content;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -34,7 +35,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<AerospecJumpEffect>(Item);
-            player.AddEffect<AerospecFeathersEffect>(Item);
         }
         public override void AddRecipes()
         {
@@ -58,13 +58,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
-            CrossplayerCalamity mplayer = player.GetModPlayer<CrossplayerCalamity>();
+            int critPerJump = 5;
+            int forceCritPerJump = 10;
+
+            CalamityAddonPlayer mplayer = player.GetModPlayer<CalamityAddonPlayer>();
             player.GetJumpState<FeatherJump>().Enable();
             if (player.GetJumpState<FeatherJump>().Active)
             {
                 Dust.NewDustDirect(player.BottomLeft, player.width, 0, DustID.UnusedWhiteBluePurple);
             }
-            player.GetCritChance(DamageClass.Generic) += mplayer.AeroCritBoost;
+            player.GetCritChance(DamageClass.Generic) += mplayer.NumJumpsUsed * (player.ForceEffect<AerospecJumpEffect>() ? forceCritPerJump : critPerJump);
             for (int i = 0; i < mplayer.AeroCritBoost / 5; i++)
             {
                 if (Main.rand.NextBool())
@@ -74,20 +77,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 mplayer.AeroCritBoost = 0;
             }
+           
+            
+            
+                
+            
+            if (player.jump != 0 && mplayer.AllowJumpsUsedInc)
+            {
+                mplayer.NumJumpsUsed++;
+                mplayer.AllowJumpsUsedInc = false;
+                Main.NewText(5);
+            }
+            mplayer.AllowJumpsUsedInc = player.jump == 0;
         }
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class AerospecFeathersEffect : AccessoryEffect
-    {
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<AerospecEnchantment>();
-
-    }
+    
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class FeatherJump : ExtraJump
     {
+        int numJumps = 2;
+        int numForceJumps = 5;
+        float duration = 1.2f;
+        float acceleration = 3;
+        float speed = 1.5f;
         public override Position GetDefaultPosition()
         {
             return new Before(CloudInABottle);
@@ -95,31 +108,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 
         public override float GetDurationMultiplier(Player player)
         {
-            ref int jumps = ref player.GetModPlayer<CrossplayerCalamity>().FeatherJumpsRemaining;
+            ref int jumps = ref player.GetModPlayer<CalamityAddonPlayer>().FeatherJumpsRemaining;
             if (jumps > 0)
-                return 1.2f;
+                return duration;
             else return 0f;
         }
         public override void UpdateHorizontalSpeeds(Player player)
         {
-            player.runAcceleration *= 3;
-            player.maxRunSpeed *= 1.5f;
+            player.runAcceleration *= acceleration;
+            player.maxRunSpeed *= speed;
         }
         public override void OnRefreshed(Player player)
         {
-            CrossplayerCalamity cplayer = player.GetModPlayer<CrossplayerCalamity>();
+            CalamityAddonPlayer cplayer = player.GetModPlayer<CalamityAddonPlayer>();
             if (player.ForceEffect<AerospecJumpEffect>())
             {
-                cplayer.FeatherJumpsRemaining = 5;
+                cplayer.FeatherJumpsRemaining = numForceJumps;
             }
             else
             {
-                cplayer.FeatherJumpsRemaining = 2;
+                cplayer.FeatherJumpsRemaining = numJumps;
             }
+            cplayer.NumJumpsUsed = 0;
         }
         public override void OnStarted(Player player, ref bool playSound)
         {
-            ref int jumps = ref player.GetModPlayer<CrossplayerCalamity>().FeatherJumpsRemaining;
+            ref int jumps = ref player.GetModPlayer<CalamityAddonPlayer>().FeatherJumpsRemaining;
             jumps--;
             if (jumps > 0)
             {
@@ -137,19 +151,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 Dust.NewDustDirect(player.BottomLeft - new Vector2(20, 0), player.width + 40, 25, DustID.UnusedWhiteBluePurple);
             }
-            //feather projectiles
-            if (player.HasEffect<AerospecFeathersEffect>())
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    Vector2 baseVelocity = player.velocity * Main.rand.NextFloat(0.9f, 1.2f);
-                    if (baseVelocity.ToRotation() > -1f) baseVelocity = new Vector2(baseVelocity.Length(), 0).RotatedBy(-1f);
-                    if (baseVelocity.ToRotation() < -2f) baseVelocity = new Vector2(baseVelocity.Length(), 0).RotatedBy(-2f);
-                    //Main.NewText(baseVelocity.ToRotation());
-                    Projectile.NewProjectile(player.GetSource_FromThis(), player.Bottom, baseVelocity.RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<FeatherJumpFeather>(), 20, 0);
-
-                }
-            }
+            
         }
     }
 }

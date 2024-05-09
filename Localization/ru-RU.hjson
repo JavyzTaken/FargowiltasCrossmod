@@ -392,9 +392,9 @@ Mods: {
 				// DisplayName: Aerospec Enchantment
 				/* Tooltip:
 					'''
-					Grants two Aero jumps that throw feathers
-					Feathers grant a critical strike chance boost and flight time on enemy hits
-					The critical strike chance boost goes away when you touch the ground
+					Grants two Aero jumps
+					For every double jump used, you gain critical strike chance
+					This includes jumps not granted by this enchantment
 					''' */
 			}
 
@@ -421,13 +421,11 @@ Mods: {
 				// DisplayName: Force of Exploration
 				/* Tooltip:
 					'''
-					25% Increased placement speed and +10 placement range
-					Lasers strike nearby enemies when building and mining
-					A wulfrum drone collects items for you
-					Replaces jumping with a charged sand jump that boosts you horizontally
-					Grants 5 aero jumps that throw feathers
-					The feathers increase your critical strike chance and replenish flight time on hits
-					The critical strike chance boost goes away when you touch the ground
+					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
+					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
+					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone collects items for you
+					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping with a charged sand jump that boosts you horizontally
+					[i:FargowiltasCrossmod/AerospecEnchantment] Grants 5 aero jumps and grants crit chance for every jump used
 					''' */
 			}
 
@@ -453,6 +451,78 @@ Mods: {
 
 			PlagueReaperEnchantment: {
 				// DisplayName: Plague Reaper Enchantment
+				/* Tooltip:
+					'''
+					All attacks inflict plague for a short time
+					Being near plagued enemies grows a plague cloud around you
+					Once fully charged, it explodes into a massive lingering cloud
+					''' */
+			}
+
+			PlaguebringerEnchantment: {
+				// DisplayName: Plaguebringer Enchantment
+				// Tooltip: All damage over time debuffs spread between enemies
+			}
+
+			ReaverEnchantment: {
+				// DisplayName: Reaver Enchantment
+				/* Tooltip:
+					'''
+					Several stats up!
+					These buffs decrease when you are hit
+					The buffs can become negative
+					The buffs regenerate over time
+					''' */
+			}
+
+			HydrothermicEnchantment: {
+				// DisplayName: Hydrothermic Enchantment
+				/* Tooltip:
+					'''
+					After attacking for too long, your weapon overheats
+					While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					''' */
+			}
+
+			DevastationForce: {
+				// DisplayName: Devastation Force
+				/* Tooltip:
+					'''
+					[i:FargowiltasCrossmod/SnowRuffianEnchantment] Improves wing gliding
+					[i:FargowiltasCrossmod/DaedalusEnchantment] Flight is limited by a maximum height rather than flight time
+					[i:FargowiltasCrossmod/ReaverEnchantment] Several stats increased, but these stats decrease when hit
+					[i:FargowiltasCrossmod/HydrothermicEnchantment] After attacking for too long, your weapon overheats
+					[i:FargowiltasCrossmod/HydrothermicEnchantment] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					[i:FargowiltasCrossmod/PlaguebringerEnchantment] Debuffs spread between enemies
+					''' */
+			}
+
+			UmbraphileEnchantment: {
+				// DisplayName: Umbraphile Enchantment
+				/* Tooltip:
+					'''
+					Using a healing potion release a swarm of bats instead of healing you
+					The bats lifesteal from enemies for you
+					''' */
+			}
+
+			TitanHeartEnchantment: {
+				// DisplayName: Titan Heart Enchantment
+				// Tooltip: ""
+			}
+
+			StatigelEnchantment: {
+				// DisplayName: Statigel Enchantment
+				// Tooltip: ""
+			}
+
+			SulphurEnchantment: {
+				// DisplayName: Sulphur Enchantment
+				// Tooltip: ""
+			}
+
+			VictideEnchantment: {
+				// DisplayName: Victide Enchantment
 				// Tooltip: ""
 			}
 		}
@@ -542,6 +612,10 @@ Mods: {
 			// WulfrumScanner.DisplayName: Wulfrum Scanner
 			// CrystalPlatform.DisplayName: Crystal Platform
 			// PlagueCloud.DisplayName: Plague Cloud
+			// Eruption.DisplayName: Eruption
+			// VampireBat.DisplayName: Vampire Bat
+			// SulphurBubble.DisplayName: Sulphur Bubble
+			// VictideSpike.DisplayName: Victide Spike
 		}
 
 		Buffs: {
@@ -591,12 +665,15 @@ Mods: {
 			// SplendorJamEffect: Splendor Jam
 			// ExplorationHeader: Force of Exploration
 			// AerospecJumpEffect: Aerospec Jumps
-			// AerospecFeathersEffect: Aero Feathers
 			// MarniteStatsEffect: Marnite Building
 			// MarniteLasersEffect: Marnite Lasers
 			// DesertProwlerEffect: Charge Jump
 			// WulfrumEffect: Collector Drones
 			// SnowRuffianEffect: Better Gliding
+			// DaedalusEffect: Daedalus Flight Limit
+			// ReaverEffect: Reaver Stats
+			// HydrothermicEffect: Overheat
+			// PlaguebringerEffect: Debuff Spread
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
@@ -604,10 +681,20 @@ Mods: {
 
 	FargowiltasSouls: {
 		WizardEffect: {
-			// Aerospec: Total of 5 jumps, feathers grant more crit
+			// Aerospec: Total of 5 jumps, jumping grants more crit
 			// Marnite: Stronger daggers, +15% placement speed and +5 placement range
 			// DesertProwler: Stronger jumps
 			// Wulfrum: The drone is faster and occasionally finds bonus items
+			// Hydrothermic: Longer overheat charge, more attack speed increase
+			// Daedalus: Grants wings if you don't have any, Can fly higher
+			// SnowRuffian: Grants some flight time
+			// Reaver: More drastic stat changes
+			/* Plaguebringer:
+				'''
+				Debuffs spread from farther 
+				Enemies are tagged to spread debuffs for longer
+				''' */
+			// Umbraphile: Bats do more damage and travel faster
 		}
 	}
 }

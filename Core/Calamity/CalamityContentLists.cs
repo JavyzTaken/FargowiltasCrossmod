@@ -26,6 +26,12 @@ using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
 using Terraria.ID;
+using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.Buffs.Alcohol;
+using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Buffs;
+using FargowiltasSouls.Content.Buffs.Souls;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -99,6 +105,68 @@ namespace FargowiltasCrossmod.Core.Calamity
             ModContent.NPCType<GammaSlime>(),
             ModContent.NPCType<Mauler>(),
             ModContent.NPCType<NuclearTerror>(),
+        };
+        #endregion
+        #region Buffs
+        //excludes debuffs that are from projectiles attached to npcs
+        public static List<int> DoTDebuffs = new List<int>
+        {
+            BuffID.Bleeding,
+            BuffID.Poisoned,
+            BuffID.OnFire,
+            BuffID.Venom,
+            BuffID.CursedInferno,
+            BuffID.Frostburn,
+            BuffID.Electrified,
+            BuffID.Burning,
+            BuffID.ShadowFlame,
+            BuffID.Daybreak,
+            BuffID.OnFire3,
+            BuffID.Frostburn2,
+            ModContent.BuffType<Nightwither>(),
+            ModContent.BuffType<BanishingFire>(),
+            ModContent.BuffType<BrimstoneFlames>(),
+            ModContent.BuffType<WeakBrimstoneFlames>(),
+            ModContent.BuffType<GodSlayerInferno>(),
+            ModContent.BuffType<HolyFlames>(),
+            ModContent.BuffType<Dragonfire>(),
+            ModContent.BuffType<VulnerabilityHex>(),
+            ModContent.BuffType<AbsorberAffliction>(),
+            ModContent.BuffType<AstralInfectionDebuff>(),
+            ModContent.BuffType<Plague>(),
+            ModContent.BuffType<SulphuricPoisoning>(),
+            ModContent.BuffType<SagePoison>(),
+            ModContent.BuffType<KamiFlu>(),
+            ModContent.BuffType<CrushDepth>(),
+            ModContent.BuffType<RiptideDebuff>(),
+            ModContent.BuffType<BrainRot>(),
+            ModContent.BuffType<BurningBlood>(),
+            ModContent.BuffType<HolyInferno>(),
+            ModContent.BuffType<Irradiated>(),
+            ModContent.BuffType<MiracleBlight>(),
+            ModContent.BuffType<AlcoholPoisoning>(),
+            ModContent.BuffType<ManaBurn>(),
+            ModContent.BuffType<SearingLava>(),
+            ModContent.BuffType<ElementalMix>(),
+            ModContent.BuffType<Shred>(),
+            ModContent.BuffType<Vaporfied>(),
+            ModContent.BuffType<Shadowflame>(),
+
+            ModContent.BuffType<AnticoagulationBuff>(),
+            ModContent.BuffType<CurseoftheMoonBuff>(),
+            ModContent.BuffType<FlamesoftheUniverseBuff>(),
+            ModContent.BuffType<GodEaterBuff>(),
+            ModContent.BuffType<InfestedBuff>(),
+            ModContent.BuffType<IvyVenomBuff>(),
+            ModContent.BuffType<NanoInjectionBuff>(),
+            ModContent.BuffType<NeurotoxinBuff>(),
+            ModContent.BuffType<ShadowflameBuff>(),
+            ModContent.BuffType<TwinsInstallBuff>(),
+            ModContent.BuffType<HellFireBuff>(),
+            ModContent.BuffType<LeadPoisonBuff>(),
+            ModContent.BuffType<OriPoisonBuff>(),
+            ModContent.BuffType<SolarFlareBuff>(),
+
         };
         #endregion
     }

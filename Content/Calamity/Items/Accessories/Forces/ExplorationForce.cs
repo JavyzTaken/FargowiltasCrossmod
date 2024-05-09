@@ -25,7 +25,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<AerospecFeathersEffect>(Item);
             player.AddEffect<AerospecJumpEffect>(Item);
             player.AddEffect<MarniteStatsEffect>(Item);
             player.AddEffect<MarniteLasersEffect>(Item);

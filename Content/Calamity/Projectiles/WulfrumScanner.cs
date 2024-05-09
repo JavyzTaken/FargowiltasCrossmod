@@ -184,7 +184,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                         {
                             NPC j = Main.npc[i];
                             //Main.NewText(j );
-                            if (target != null && j != null && j.active && (j.lifeMax >= target.lifeMax || !target.IsAnEnemy()) && j.Distance(Main.MouseWorld) < 100  && j.GetGlobalNPC<CalGlobalNPC>().WulfrumScanned == false && j.IsAnEnemy())
+                            if (target != null && j != null && j.active && (j.lifeMax >= target.lifeMax || !target.IsAnEnemy()) && j.Distance(Main.MouseWorld) < 100  && j.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned == false && j.IsAnEnemy())
                             {
                                 target = j;
                                 fard = true;
@@ -201,7 +201,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                             }
                             Projectile.ai[1] = target.whoAmI;
                             Projectile.ai[2] = 1;
-                            target.GetGlobalNPC<CalGlobalNPC>().WulfrumScanned = true;
+                            target.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned = true;
                             NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, target.whoAmI);
                             
                         }

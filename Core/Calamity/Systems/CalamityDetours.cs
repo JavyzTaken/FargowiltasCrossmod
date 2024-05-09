@@ -14,6 +14,12 @@ using CalamityMod.NPCs;
 using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
+using Terraria.Graphics.Renderers;
+using Terraria.Graphics;
+using Terraria.Chat;
+using Terraria.DataStructures;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -26,15 +32,54 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             IL_Player.PickTile += ShootDaggersBreak;
             IL_Player.PlaceThing_Tiles_PlaceIt += ShootDaggersPlace;
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.UpdateLifeRegen)), UpdateLifeRegen_ILEdit);
-            On_Player.RefreshMovementAbilities += SetDaedalusHeight;
+            On_Projectile.Damage += BigPlayer;
+            On_Player.Update_NPCCollision += BigPlayerNPCs;
+            On_LegacyPlayerRenderer.DrawPlayer += DrawBigPlayer;
+
         }
 
-        private static void SetDaedalusHeight(On_Player.orig_RefreshMovementAbilities orig, Player self, bool doubleJumps)
+        private void DrawBigPlayer(On_LegacyPlayerRenderer.orig_DrawPlayer orig, LegacyPlayerRenderer self, Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow, float scale)
         {
-            
-            self.CalamityDLC().DaedalusHeight = (int)self.Center.Y - self.wingTimeMax * 3;
-            orig(self, doubleJumps);
+            scale = 2;
+            orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
         }
+
+        private void BigPlayerNPCs(On_Player.orig_Update_NPCCollision orig, Player self)
+        {
+            Player player = self;
+            Vector2 size = player.Size;
+            Vector2 position = player.position;
+            if (player.HasEffect<TitanHeartEffect>())
+            {
+                player.width += 20;
+                player.height += 30;
+                player.position.X -= 10;
+                player.position.Y -= 15;
+            }
+            orig(self);
+            player.width = (int)size.X;
+            player.height = (int)size.Y;
+            player.position = position;
+        }
+
+        private void BigPlayer(On_Projectile.orig_Damage orig, Projectile self)
+        {
+            Player player = Main.LocalPlayer;
+            Vector2 size = player.Size;
+            Vector2 position = player.position;
+            if (player.HasEffect<TitanHeartEffect>())
+            {
+                player.width += 20;
+                player.height += 30;
+                player.position.X -= 10;
+                player.position.Y -= 15;
+            }
+            orig(self);
+            player.width = (int)size.X;
+            player.height = (int)size.Y;
+            player.position = position;
+        }
+
         private void UpdateLifeRegen_ILEdit(ILContext il)
         {
             //try{

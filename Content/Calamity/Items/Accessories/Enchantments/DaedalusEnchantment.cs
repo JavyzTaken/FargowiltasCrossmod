@@ -17,6 +17,10 @@ using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using Terraria.Audio;
 using FargowiltasCrossmod.Core.Calamity;
+using rail;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
+using FargowiltasSouls;
+using Terraria.GameContent.ItemDropRules;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -57,7 +61,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     }
     public class DaedalusEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<CosmoHeader>();
+        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<DaedalusEnchantment>();
         public override void PreUpdate(Player player)
         {
@@ -65,10 +69,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void PostUpdateEquips(Player player)
         {
+            int heightMult = 6;
+            int forceWingTime = 120;
+
+            if (player.ForceEffect<DaedalusEffect>())
+            {
+                heightMult = 10;
+                if (player.wingTimeMax == 0)
+                {
+                    int starlightWings = EquipLoader.GetEquipSlot(ModCompatibility.Calamity.Mod, "StarlightWings", EquipType.Wings);
+                    player.wings = starlightWings;
+                    player.wingsLogic = starlightWings;
+                    player.wingTimeMax = forceWingTime;
+                    player.wingAccRunSpeed = player.GetWingStats(starlightWings).AccRunAccelerationMult;
+                    player.noFallDmg = true;
+                }
+            }
+            if (player.wingTime == player.wingTimeMax)
+            {
+                player.CalamityAddon().DaedalusHeight = (int)player.Center.Y - player.wingTimeMax * heightMult;
+            }
             if (player.wingTime > 0)
             {
-                Main.NewText(player.CalamityDLC().DaedalusHeight);
-                player.wingTime = (int)player.Center.Y - player.CalamityDLC().DaedalusHeight;
+                player.wingTime = (player.Center.Y - player.CalamityAddon().DaedalusHeight)/heightMult;
             }
         }
     }

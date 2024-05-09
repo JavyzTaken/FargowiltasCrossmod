@@ -21,6 +21,9 @@ using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
+using CalamityMod.Projectiles.Turret;
+using CalamityMod.Particles;
+using Terraria.Audio;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -63,22 +66,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override Header ToggleHeader => Header.GetHeader<CosmoHeader>();
         public override int ToggleItemType => ModContent.ItemType<PlagueReaperEnchantment>();
+        public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
+        {
+            target.AddBuff(ModContent.BuffType<Plague>(), 60);
+        }
         public override void PostUpdateEquips(Player player)
         {
-            Main.NewText(player.CalamityDLC().PlagueCharge);
+            float maxCharge = 400;
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<PlagueCloud>()] <= 0)
+            {
+                Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<PlagueReaperEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<PlagueCloud>(), 100, 0, player.whoAmI, player.whoAmI, 1);
+                NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
+            }
             for (int i = 0; i < Main.npc.Length; i++)
             {
                 NPC npc = Main.npc[i];
-                if (npc != null &&  npc.active && npc.HasBuff<Plague>() && npc.Distance(player.Center) < 100)
+                if (npc != null &&  npc.active && npc.Calamity().pFlames > 0 && npc.Distance(player.Center) < 350 && player.ownedProjectileCounts[ModContent.ProjectileType<PlagueCloud>()] < 2)
                 {
-                    player.CalamityDLC().PlagueCharge++;
+                    player.CalamityAddon().PlagueCharge++;
                 }
             }
-            player.CalamityDLC().PlagueCharge++;
-            if (player.CalamityDLC().PlagueCharge >= 200)
+            //player.CalamityDLC().PlagueCharge++;
+            if (player.CalamityAddon().PlagueCharge >= maxCharge)
             {
-                Projectile.NewProjectile(player.GetSource_EffectItem<PlagueReaperEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<PlagueCloud>(), 100, 0, player.whoAmI);
-                player.CalamityDLC().PlagueCharge = 0;
+                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/NPCKilled/NuclearTerrorDeath"), player.Center);
+                Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<PlagueReaperEffect>(), player.Center, new Vector2(0, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<PlagueCloud>(), 400, 0, player.whoAmI);
+                NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
+                for (int i = 0; i < 50; i++)
+                {
+                    Particle part = new TimedSmokeParticle(player.Center, new Vector2(0, Main.rand.NextFloat(0, 40)).RotatedByRandom(MathHelper.TwoPi), Color.Green * 0, Color.LimeGreen, 2f, 0.5f, 100, Main.rand.NextFloat(-0.02f, 0.02f));
+                    GeneralParticleHandler.SpawnParticle(part);
+                }
+                
+                player.CalamityAddon().PlagueCharge = 0;
             }
         }
     }
