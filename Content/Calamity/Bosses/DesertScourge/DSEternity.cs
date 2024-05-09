@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             base.SetDefaults(entity);
             entity.lifeMax = (int)Math.Round(entity.lifeMax * 2f);
         }
-        public float[] drawInfo = new float[] { 0, 200, 200, 0 };
+        public float[] drawInfo = [0, 200, 200, 0];
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Main.NewText(drawInfo[2]);
@@ -68,9 +68,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
 
-        public float[] ai = new float[] { 0, 0, 0, 0, 0 };
+        public float[] ai = [0, 0, 0, 0, 0];
         public const int attackCycleLength = 9;
-        public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
+        public int[] attackCycle = [0, 1, 0, 1, 1, 0, -1, -1, -1];
         public int phase;
         public bool CanDoSlam = false;
         public bool DoSlam = false;
@@ -138,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || npc.GetLifePercent() <= 0.75f))
             {
                 phase++;
-                attackCycle = new int[attackCycleLength] { 4, 0, 1, 3, attack, -1, -1, -1, -1 };
+                attackCycle = [4, 0, 1, 3, attack, -1, -1, -1, -1];
                 npc.ai[3] = attackCycle.Length - 5;
                 for (int i = 0; i < Main.npc.Length; i++)
                 {
@@ -154,7 +154,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 phase++;
                 NetSync(npc);
-                attackCycle = new int[attackCycleLength] { 5, 0, 2, 2, 3, 4, attack, -1, -1 };
+                attackCycle = [5, 0, 2, 2, 3, 4, attack, -1, -1];
                 NetSync(npc);
                 npc.ai[3] = attackCycle.Length - 3;
                 NetSync(npc);
@@ -163,7 +163,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 phase++;
                 NetSync(npc);
-                attackCycle = new int[attackCycleLength] { 3, 2, 3, 5, 5, 3, 5, 2, attack };
+                attackCycle = [3, 2, 3, 5, 5, 3, 5, 2, attack];
                 NetSync(npc);
                 npc.ai[3] = attackCycle.Length - 1;
                 NetSync(npc);
@@ -426,7 +426,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             timer++;
         }
-        public float[] lungeInfo = new float[] { 0, 0, 0, 0, 0 };
+        public float[] lungeInfo = [0, 0, 0, 0, 0];
         //Sets values for doing the lunge attack with configureable projectiles to accompany the attack
         //times is the number of times to lunge
         //blasts is the little sand projs when he comes out of the ground
@@ -546,7 +546,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
 
                 IncrementCycle(npc);
-                lungeInfo = new float[] { 0, 0, 0, 0, 0 };
+                lungeInfo = [0, 0, 0, 0, 0];
 
             }
         }

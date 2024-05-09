@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<PurityEffect>(Item))
-                ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<Radiance>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<TheSpongeEffect>(Item))
                 ModContent.GetInstance<TheSponge>().UpdateAccessory(player, hideVisual);
@@ -89,7 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
             CreateRecipe()
                 .AddIngredient<HeartoftheElements>()
                 .AddIngredient<OccultSkullCrown>()
-                .AddIngredient<Purity>()
+                .AddIngredient<Radiance>()
                 .AddIngredient<TheSponge>()
                 .AddIngredient<ChaliceOfTheBloodGod>()
                 .AddIngredient<NebulousCore>()
@@ -124,7 +124,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PurityEffect : BotBWEffect
     {
-        public override int ToggleItemType => ModContent.ItemType<Purity>();
+        public override int ToggleItemType => ModContent.ItemType<Radiance>();
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
