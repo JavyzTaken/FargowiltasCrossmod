@@ -181,18 +181,21 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     switch (npc.type)
                     {
                         case NPCID.SkeletronHead:
-                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
+                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.7f);
                             break;
                         case NPCID.SkeletronHand:
                             if (CalDLCWorldSavingSystem.E_EternityRev)
-                                npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
+                                npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.3f);
+                            break;
+                        case NPCID.BrainofCthulhu:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.65f);
                             break;
                         case NPCID.QueenBee:
-                            npc.lifeMax = (int)(npc.lifeMax * 1.5f);
+                            npc.lifeMax = (int)(npc.lifeMax * 0.75f);
                             break;
                         case NPCID.WallofFlesh:
                         case NPCID.WallofFleshEye:
-                            npc.lifeMax = (int)(npc.lifeMax * 0.6f);
+                            npc.lifeMax = (int)(npc.lifeMax * 0.525f);
                             break;
                         case NPCID.Plantera:
                             npc.lifeMax = (int)(npc.lifeMax * 0.375f);
@@ -216,6 +219,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 #endregion
                 #region Modded Bosses
+                // deviantt
+                if (npc.type == ModContent.NPCType<DeviBoss>())
+                    npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                // brn
+                if (npc.type == ModContent.NPCType<BanishedBaron>())
+                    npc.lifeMax = (int)(npc.lifeMax * 1.25f);
+                // lifelight
+                if (npc.type == ModContent.NPCType<LifeChallenger>())
+                    npc.lifeMax = (int)(npc.lifeMax * 1.2f);
                 //champions
                 if (ContentLists.Champions.Contains(npc.type))
                 {

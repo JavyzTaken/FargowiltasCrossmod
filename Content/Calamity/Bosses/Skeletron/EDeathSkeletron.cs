@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using CalamityMod;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
@@ -61,10 +63,50 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                         }
                     }
                     if (DLCUtils.HostCheck)
+                    {
+                        int num9 = 7;
+                        float num10 = MathHelper.ToRadians(76);
+
+                        float num16 = 6f;
+                        float num18 = target.Center.X - npc.Center.X;
+                        float num19 = target.Center.Y - npc.Center.Y;
+                        float num20 = (float)Math.Sqrt(num18 * num18 + num19 * num19);
+                        num20 = num16 / num20;
+                        num18 *= num20;
+                        num19 *= num20;
+                        Vector2 center = ((Entity)npc).Center;
+                        center.X += num18 * 5f;
+                        center.Y += num19 * 5f;
+                        float num21 = (float)Math.Sqrt(num18 * num18 + num19 * num19);
+                        double num22 = Math.Atan2(num18, num19) - (double)(num10 / 2f);
+                        double num23 = num10 / (float)num9;
+                        bool flag7 = num9 % 2 == 0;
+                        int num24 = (flag7 ? (num9 / 2) : ((num9 - 1) / 2));
+                        int num25 = (flag7 ? (num24 - 1) : (-1));
+                        float num26 = (float)Math.Floor((double)num9 / (double)num24) * 0.75f;
+                        float num27 = (flag7 ? 0.5f : 0f);
+                        float num28 = num21;
+                        float num29 = 0.5f;
+                        for (int j = 0; j < num9; j++)
+                        {
+                            float num30 = ((flag7 && (j == num24 || j == num25)) ? num29 : MathHelper.Lerp(num29, num26, Math.Abs((float)j + num27 - (float)num24) / (float)num24));
+                            num21 = num28;
+                            num21 *= num30;
+                            double num31 = num22 + num23 * (double)j;
+                            int num32 = Projectile.NewProjectile(npc.GetSource_FromAI(null), center.X, center.Y, num21 * (float)Math.Sin(num31), num21 * (float)Math.Cos(num31), ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, -2f, 0f, 0f);
+                            Main.projectile[num32].timeLeft = 600;
+                        }
+                        npc.netUpdate = true;
+
+                        // OLD SHOTS 
+                        /*
                         for (int i = -2; i < 3; i++)
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(15 * i)) * 15, ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                         }
+                        */
+                    }
+                        
                     SoundEngine.PlaySound(SoundID.Item66, npc.Center);
 
                 }

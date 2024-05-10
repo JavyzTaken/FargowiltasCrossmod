@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.375f);
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.2f);
             if (BossRushEvent.BossRushActive)
             {
                 entity.lifeMax = 5000000;

@@ -59,6 +59,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             if (HorizDash)
             {
                 npc.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = false;
+                npc.dontTakeDamage = false;
                 HorizontalDash(npc);
                 return true;
             }
