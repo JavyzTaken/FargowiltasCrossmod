@@ -1,5 +1,6 @@
 ﻿using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using Terraria;
 
 namespace FargowiltasCrossmod.Core.Calamity

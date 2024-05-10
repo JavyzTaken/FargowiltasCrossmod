@@ -2,9 +2,9 @@
 using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Potions;
-using FargowiltasCrossmod.Content.Calamity.Items;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.AccessoryEffectSystem;

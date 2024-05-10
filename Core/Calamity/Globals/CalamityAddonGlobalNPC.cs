@@ -15,7 +15,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Items
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]

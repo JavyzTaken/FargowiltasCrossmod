@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Items
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -31,8 +31,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
             if (player.ForceEffect<UmbraphileEffect>()) batDamage *= 3;
             if (item.healLife > 0 && player.HasEffect<UmbraphileEffect>())
             {
-                for (int i = 0; i < Main.rand.Next(minBats, maxBats+1); i++) {
-                    Projectile.NewProjectile(player.GetSource_EffectItem<UmbraphileEffect>(), player.Center, new Microsoft.Xna.Framework.Vector2(0, 5).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<VampireBat>(), batDamage, 1, player.whoAmI);
+                for (int i = 0; i < Main.rand.Next(minBats, maxBats + 1); i++)
+                {
+                    Projectile.NewProjectile(player.GetSource_EffectItem<UmbraphileEffect>(), player.Center, new Vector2(0, 5).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<VampireBat>(), batDamage, 1, player.whoAmI);
                 }
             }
         }

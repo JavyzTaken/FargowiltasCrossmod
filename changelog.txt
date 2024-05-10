@@ -1,3 +1,2 @@
 New Update: v1.0.6.3
--Updated to be compatible with Calamity Mod version 1.0.4.1
--Tweaked several boss health values
+-Fixed an issue that prevented blocks from breaking
