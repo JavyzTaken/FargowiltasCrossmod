@@ -67,7 +67,6 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.ItemDropRules;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
-using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
@@ -151,7 +150,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (DLCCalamityConfig.Instance.BalanceRework)
             {
-
+                if (npc.type == NPCID.ServantofCthulhu)
+                {
+                    npc.lifeMax = 12;
+                }
                 //Events/Minibosses
 
                 if (CalamityContentLists.AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
@@ -179,18 +181,21 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     switch (npc.type)
                     {
                         case NPCID.SkeletronHead:
-                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.1f);
+                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.7f);
                             break;
                         case NPCID.SkeletronHand:
-                            if (DLCWorldSavingSystem.E_EternityRev)
-                                npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
+                            if (CalDLCWorldSavingSystem.E_EternityRev)
+                                npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.3f);
+                            break;
+                        case NPCID.BrainofCthulhu:
+                            npc.lifeMax = (int)(npc.lifeMax * 0.65f);
                             break;
                         case NPCID.QueenBee:
-                            npc.lifeMax = (int)(npc.lifeMax * 1.5f);
+                            npc.lifeMax = (int)(npc.lifeMax * 0.75f);
                             break;
                         case NPCID.WallofFlesh:
                         case NPCID.WallofFleshEye:
-                            npc.lifeMax = (int)(npc.lifeMax * 0.6f);
+                            npc.lifeMax = (int)(npc.lifeMax * 0.525f);
                             break;
                         case NPCID.Plantera:
                             npc.lifeMax = (int)(npc.lifeMax * 0.375f);
@@ -214,6 +219,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 #endregion
                 #region Modded Bosses
+                // deviantt
+                if (npc.type == ModContent.NPCType<DeviBoss>())
+                    npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                // brn
+                if (npc.type == ModContent.NPCType<BanishedBaron>())
+                    npc.lifeMax = (int)(npc.lifeMax * 1.25f);
+                // lifelight
+                if (npc.type == ModContent.NPCType<LifeChallenger>())
+                    npc.lifeMax = (int)(npc.lifeMax * 1.2f);
                 //champions
                 if (ContentLists.Champions.Contains(npc.type))
                 {
@@ -423,7 +437,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     if (WorldSavingSystem.EternityMode)
                         npc.scale = 1f;
-                    if (DLCWorldSavingSystem.EternityDeath)
+                    if (CalDLCWorldSavingSystem.EternityDeath)
                         npc.scale = 1.4f;
                 }
             }
@@ -627,7 +641,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             #region Crates
             if (npc.type == ModContent.NPCType<DesertScourgeHead>())
             {
-                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SunkenCrate>(), 1, 3, 3));
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<EutrophicCrate>(), 1, 3, 3));
             }
             if (npc.type == ModContent.NPCType<Crabulon>())
             {
@@ -983,40 +997,40 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
                 doDeviText = true;
             }
-            if (npc.type == ModContent.NPCType<PlaguebringerMiniboss>() && !DLCWorldSavingSystem.downedMiniPlaguebringer)
+            if (npc.type == ModContent.NPCType<PlaguebringerMiniboss>() && !CalDLCWorldSavingSystem.downedMiniPlaguebringer)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedMiniPlaguebringer = true;
+                CalDLCWorldSavingSystem.downedMiniPlaguebringer = true;
             }
-            if (npc.type == ModContent.NPCType<ReaperShark>() && !DLCWorldSavingSystem.downedReaperShark)
+            if (npc.type == ModContent.NPCType<ReaperShark>() && !CalDLCWorldSavingSystem.downedReaperShark)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedReaperShark = true;
+                CalDLCWorldSavingSystem.downedReaperShark = true;
             }
-            if (npc.type == ModContent.NPCType<ColossalSquid>() && !DLCWorldSavingSystem.downedColossalSquid)
+            if (npc.type == ModContent.NPCType<ColossalSquid>() && !CalDLCWorldSavingSystem.downedColossalSquid)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedColossalSquid = true;
+                CalDLCWorldSavingSystem.downedColossalSquid = true;
             }
-            if (npc.type == ModContent.NPCType<EidolonWyrmHead>() && !DLCWorldSavingSystem.downedEidolonWyrm)
+            if (npc.type == ModContent.NPCType<EidolonWyrmHead>() && !CalDLCWorldSavingSystem.downedEidolonWyrm)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedEidolonWyrm = true;
+                CalDLCWorldSavingSystem.downedEidolonWyrm = true;
             }
-            if (npc.type == ModContent.NPCType<ThiccWaifu>() && !DLCWorldSavingSystem.downedCloudElemental)
+            if (npc.type == ModContent.NPCType<ThiccWaifu>() && !CalDLCWorldSavingSystem.downedCloudElemental)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedCloudElemental = true;
+                CalDLCWorldSavingSystem.downedCloudElemental = true;
             }
-            if (npc.type == ModContent.NPCType<Horse>() && !DLCWorldSavingSystem.downedEarthElemental)
+            if (npc.type == ModContent.NPCType<Horse>() && !CalDLCWorldSavingSystem.downedEarthElemental)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedEarthElemental = true;
+                CalDLCWorldSavingSystem.downedEarthElemental = true;
             }
-            if (npc.type == ModContent.NPCType<ArmoredDiggerHead>() && !DLCWorldSavingSystem.downedArmoredDigger)
+            if (npc.type == ModContent.NPCType<ArmoredDiggerHead>() && !CalDLCWorldSavingSystem.downedArmoredDigger)
             {
                 doDeviText = true;
-                DLCWorldSavingSystem.downedArmoredDigger = true;
+                CalDLCWorldSavingSystem.downedArmoredDigger = true;
             }
             if (doDeviText && Main.netMode != NetmodeID.Server)
             {
@@ -1262,7 +1276,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                     Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ExoBattery", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
+                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PortableCodebreaker", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
             }
             else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
             {
@@ -1297,7 +1311,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 killedAquatic = false;
                 if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
                 {
-                    if (npc.type == NPCID.AncientLight && DLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
+                    if (npc.type == NPCID.AncientLight && CalDLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
                     {
                         npc.Center += npc.velocity * 0.75f;
                         npc.dontTakeDamage = true;
@@ -1410,7 +1424,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             #endregion
-            if (!DLCWorldSavingSystem.E_EternityRev)
+            if (!CalDLCWorldSavingSystem.E_EternityRev)
             {
                 return base.PreAI(npc);
             }

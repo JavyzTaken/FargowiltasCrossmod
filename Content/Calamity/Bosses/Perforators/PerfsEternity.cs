@@ -149,7 +149,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             return HitPlayer ? base.CanHitPlayer(npc, target, ref cooldownSlot) : false;
         }
         public int lastAttack = 0;
-        public int[] wormCycle = new int[] { 5, 5, 6, 5, 7 };
+        public int[] wormCycle = [5, 5, 6, 5, 7];
         public int attackCounter = -2;
         public bool HitPlayer = true;
         public Vector2 LockVector1 = Vector2.Zero;

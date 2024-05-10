@@ -1,0 +1,140 @@
+﻿using CalamityMod;
+using CalamityMod.Buffs;
+using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.NPCs;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls.Content.Buffs.Souls;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace FargowiltasCrossmod.Content.Calamity.Items
+{
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public class CalamityAddonGlobalNPC : GlobalNPC
+    {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
+        public override bool InstancePerEntity => true;
+        public bool WulfrumScanned = false;
+        public int PBGDebuffTag = 0;
+        public int taggedByPlayer = -1;
+
+        public override void ResetEffects(NPC npc)
+        {
+            if (PBGDebuffTag > 0) PBGDebuffTag--;
+        }
+        //return time buff has left, -1 if doesnt have buff
+        public static bool HasAnyDoTDebuff(NPC npc)
+        {
+            for (int i = 0; i < CalamityContentLists.DoTDebuffs.Count; i++)
+            {
+                if (HasDoTBuff(npc, CalamityContentLists.DoTDebuffs[i]) > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static int HasDoTBuff(NPC npc, int buffID)
+        {
+            if (!CalamityContentLists.DoTDebuffs.Contains(buffID))
+            {
+                return -1;
+            }
+            else if (npc.HasBuff(buffID))
+            {
+                return npc.buffTime[npc.FindBuffIndex(buffID)];
+            }
+            if (buffID == ModContent.BuffType<Plague>() && npc.Calamity().pFlames > 0)
+                return npc.Calamity().pFlames;
+            if (buffID == ModContent.BuffType<BrainRot>() && npc.Calamity().brainRot > 0)
+                return npc.Calamity().brainRot;
+            if (buffID == ModContent.BuffType<BurningBlood>() && npc.Calamity().bBlood > 0)
+                return npc.Calamity().bBlood;
+            if (buffID == ModContent.BuffType<Nightwither>() && npc.Calamity().nightwither > 0)
+                return npc.Calamity().nightwither;
+            if (buffID == ModContent.BuffType<BanishingFire>() && npc.Calamity().banishingFire > 0)
+                return npc.Calamity().banishingFire;
+            if (buffID == ModContent.BuffType<BrimstoneFlames>() && npc.Calamity().bFlames > 0)
+                return npc.Calamity().bFlames;
+            if (buffID == ModContent.BuffType<VulnerabilityHex>() && npc.Calamity().vulnerabilityHex > 0)
+                return npc.Calamity().vulnerabilityHex;
+            if (buffID == ModContent.BuffType<GodSlayerInferno>() && npc.Calamity().gsInferno > 0)
+                return npc.Calamity().gsInferno;
+            if (buffID == ModContent.BuffType<HolyFlames>() && npc.Calamity().hFlames > 0)
+                return npc.Calamity().hFlames;
+            if (buffID == ModContent.BuffType<Dragonfire>() && npc.Calamity().dragonFire > 0)
+                return npc.Calamity().dragonFire;
+            if (buffID == ModContent.BuffType<AbsorberAffliction>() && npc.Calamity().absorberAffliction > 0)
+                return npc.Calamity().absorberAffliction;
+            if (buffID == ModContent.BuffType<AstralInfectionDebuff>() && npc.Calamity().astralInfection > 0)
+                return npc.Calamity().astralInfection;
+            if (buffID == ModContent.BuffType<SulphuricPoisoning>() && npc.Calamity().sulphurPoison > 0)
+                return npc.Calamity().sulphurPoison;
+            if (buffID == ModContent.BuffType<SagePoison>() && npc.Calamity().sagePoisonTime > 0)
+                return npc.Calamity().sagePoisonTime;
+            if (buffID == ModContent.BuffType<KamiFlu>() && npc.Calamity().kamiFlu > 0)
+                return npc.Calamity().kamiFlu;
+            if (buffID == ModContent.BuffType<CrushDepth>() && npc.Calamity().cDepth > 0)
+                return npc.Calamity().cDepth;
+            if (buffID == ModContent.BuffType<RiptideDebuff>() && npc.Calamity().rTide > 0)
+                return npc.Calamity().rTide;
+            if (buffID == ModContent.BuffType<Irradiated>() && npc.Calamity().irradiated > 0)
+                return npc.Calamity().irradiated;
+            if (buffID == ModContent.BuffType<MiracleBlight>() && npc.Calamity().miracleBlight > 0)
+                return npc.Calamity().miracleBlight;
+            if (buffID == ModContent.BuffType<ElementalMix>() && npc.Calamity().elementalMix > 0)
+                return npc.Calamity().elementalMix;
+            if (buffID == ModContent.BuffType<Vaporfied>() && npc.Calamity().vaporfied > 0)
+                return npc.Calamity().vaporfied;
+            return -1;
+        }
+        public override bool PreAI(NPC npc)
+        {
+            if (PBGDebuffTag > 0)
+            {
+                int distance = 300;
+                if (taggedByPlayer >= 0 && Main.player[taggedByPlayer] != null && Main.player[taggedByPlayer].active && !Main.player[taggedByPlayer].dead)
+                {
+                    distance = 600;
+                }
+                foreach (NPC target in Main.ActiveNPCs)
+                {
+
+                    if (target != npc && target.Distance(npc.Center) < distance)
+                    {
+
+                        for (int i = 0; i < BuffLoader.BuffCount; i++)
+                        {
+
+                            if (HasDoTBuff(npc, i) >= 0 && HasDoTBuff(target, i) == -1)
+                            {
+                                target.AddBuff(i, HasDoTBuff(npc, i));
+                            }
+                        }
+                    }
+                }
+            }
+            return base.PreAI(npc);
+        }
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        {
+            if (WulfrumScanned && HasAnyDoTDebuff(npc))
+            {
+                npc.lifeRegen -= 30;
+            }
+        }
+    }
+
+}

@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<PurityEffect>(Item))
-                ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<Radiance>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<TheSpongeEffect>(Item))
                 ModContent.GetInstance<TheSponge>().UpdateAccessory(player, hideVisual);
@@ -76,13 +76,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 
             if (player.AddEffect<CalamityEffect>(Item))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
+            
+            if (ModLoader.HasMod("CalamityHunt") && player.AddEffect<SplendorJamEffect>(Item))
+            {
+                ModContent.TryFind<ModItem>("CalamityHunt/SplendorJam", out ModItem jam);
+                jam.UpdateAccessory(player, hideVisual);
+                jam.UpdateEquip(player);
+            }
         }
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient<HeartoftheElements>()
                 .AddIngredient<OccultSkullCrown>()
-                .AddIngredient<Purity>()
+                .AddIngredient<Radiance>()
                 .AddIngredient<TheSponge>()
                 .AddIngredient<ChaliceOfTheBloodGod>()
                 .AddIngredient<NebulousCore>()
@@ -117,7 +124,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PurityEffect : BotBWEffect
     {
-        public override int ToggleItemType => ModContent.ItemType<Purity>();
+        public override int ToggleItemType => ModContent.ItemType<Radiance>();
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -158,6 +165,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
     public class CalamityEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<CalamityMod.Items.Accessories.Calamity>();
+        public override bool IgnoresMutantPresence => true;
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class SplendorJamEffect : BotBWEffect
+    {
+        public override int ToggleItemType
+        {
+            get
+            {
+                ModContent.TryFind<ModItem>("CalamityHunt/SplendorJam", out ModItem jam);
+                if (jam != null)
+                {
+                    return jam.Type;
+                }
+                return 0;
+            }
+        }
         public override bool IgnoresMutantPresence => true;
     }
 }

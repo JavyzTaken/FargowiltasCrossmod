@@ -9,6 +9,8 @@ using CalamityMod.NPCs.Crabulon;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.Projectiles;
+using CalamityMod.World;
+using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
@@ -28,13 +30,19 @@ using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
+using FargowiltasSouls.Content.Buffs;
+using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Buffs.Souls;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Core.Systems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static FargowiltasCrossmod.Core.Common.Globals.DevianttGlobalNPC;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -78,6 +86,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         #endregion summonloadingbullshit
         public override void PostSetupContent()
         {
+
             #region summons
             Mod mutant = ModLoader.GetMod("Fargowiltas");
             mutant.Call("AddSummon", 1.5f, "FargowiltasCrossmod", "MedallionoftheDesert",
@@ -128,7 +137,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 () => DownedDoG, Item.buyPrice(platinum: 2));
             mutant.Call("AddSummon", 18.0097f, "FargowiltasCrossmod", "DragonEgg",
                 () => DownedYharon, Item.buyPrice(platinum: 2, gold: 50));
-            mutant.Call("AddSummon", 18.012f, "FargowiltasCrossmod", "ExoBattery",
+            mutant.Call("AddSummon", 18.012f, "FargowiltasCrossmod", "PortableCodebreaker",
                 () => DownedExos, Item.buyPrice(platinum: 3));
             mutant.Call("AddSummon", 18.014f, "FargowiltasCrossmod", "EyeofExtinction",
                 () => DownedScal, Item.buyPrice(platinum: 3));
@@ -254,6 +263,67 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             //make scal not end the event on defeat so it continues to mutant
             DeathEffectsList.Remove(ModContent.NPCType<SupremeCalamitas>());
             #endregion bossrush
+            cal.Call("RegisterModCooldowns", FargowiltasCrossmod.Instance);
+            #region CalDebuffListCompat
+            CalamityLists.debuffList.Add(ModContent.BuffType<AnticoagulationBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<AntisocialBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<AtrophiedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<BerserkedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<BloodthirstyBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<BaronsBurdenBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<ClippedWingsBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<CrippledBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<CurseoftheMoonBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<DefenselessBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<FlamesoftheUniverseBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<FlippedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<FusedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<GodEaterBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<GuiltyBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<HexedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<HypothermiaBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<InfestedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<IvyVenomBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<JammedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LethargicBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LightningRodBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LivingWastelandBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LovestruckBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LowGroundBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<MarkedforDeathBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<MidasBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<MutantNibbleBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<NanoInjectionBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<NeurotoxinBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<NullificationCurseBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<OceanicMaulBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<OiledBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<PurgedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<PurifiedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<ReverseManaFlowBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<RottingBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<SmiteBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<ShadowflameBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<SqueakyToyBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<StunnedBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<SwarmingBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<TimeFrozenBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<UnluckyBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<UnstableBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<BerserkerInstallBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<HolyPriceBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<BrainOfConfusionBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LihzahrdCurseBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<RushJobBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<TwinsInstallBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<SnowstormCDBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<CorruptingBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<HellFireBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<LeadPoisonBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<OriPoisonBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<PungentGazeBuff>());
+            CalamityLists.debuffList.Add(ModContent.BuffType<SolarFlareBuff>());
+            #endregion CalDebuffListCompat
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it
         public ref Dictionary<int, Action<NPC>> DeathEffectsList => ref BossRushEvent.BossDeathEffects;
@@ -264,138 +334,67 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 calamity.Call("AddDifficultyToUI", new EternityRevDifficulty());
                 calamity.Call("AddDifficultyToUI", new EternityDeathDifficulty());
-                //FargowiltasCrossmod.LoadTogglesFromType(typeof(CalamityToggles)); no need for this anymore
             }
-            //Disable rev+ enemy/boss ai in emode
-            MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.PreAI)), CalamityPreAI_ILEdit);
-            //Disable rev+ projectile ai in emode
-            MonoModHooks.Modify(typeof(CalamityGlobalProjectile).GetMethod(nameof(CalamityGlobalProjectile.PreAI)), CalamityProjectilePreAI_ILEdit);
+
+            CalamityPreAIHook = new(CalamityPreAIMethod, CalamityPreAI_Detour);
+            CalamityPreAIHook.Apply();
+
+            CalamityProjectilePreAIHook = new(CalamityProjectilePreAIMethod, CalamityProjectilePreAI_Detour);
+            CalamityProjectilePreAIHook.Apply();
         }
-        private static void CalamityPreAI_ILEdit(ILContext il)
+
+        public override void Unload()
         {
-            var c = new ILCursor(il);
-            Mod calamity = ModCompatibility.Calamity.Mod;
-            Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent")!;
-            FieldInfo BossRushEvent_BossRushActive = BossRushEvent.GetField("BossRushActive", BindingFlags.Public | BindingFlags.Static)!;
-            //go to correct boss rush check
-            c.GotoNext(i => i.MatchLdsfld(BossRushEvent_BossRushActive));
-            c.Index++;
-            c.GotoNext(i => i.MatchLdsfld(BossRushEvent_BossRushActive));
-            c.Index++;
-            //get label for skipping past ai changes
-            ILLabel label = null;
-            c.GotoPrev(i => i.MatchBrtrue(out label));
-            c.Index += 3;
-            c.EmitDelegate(() => DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode /*&& !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard)*/);
-            c.Emit(OpCodes.Brfalse, label);
-            c.EmitDelegate(() => DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode /*&& !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard)*/);
-            c.Emit(OpCodes.Ret);
-            c.Index -= 9;
-            var label2 = il.DefineLabel(c.Prev);
-            c.Index -= 4;
-            c.Remove();
-            c.Emit(OpCodes.Brtrue, label2);
-
-            //old method (only excludes boss ais)
-            ////go to before checks
-            //c.Index -= 3;
-            ////add new check and get label for skipping to it
-
-            //c.EmitDelegate(() => DLCCalamityConfig.Instance.EternityPriorityOverRev);
-            //c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label);
-            //c.Index -= 4;
-            //var label2 = il.DefineLabel(c.Prev);
-
-            ////go to checking for queen bee and go to the skipper after it
-            //c.GotoPrev(i => i.MatchLdcI4(222));
-            //c.Index++;
-            ////replace skipper with my own
-            //c.Remove();
-            //c.Emit(Mono.Cecil.Cil.OpCodes.Bne_Un, label2);
-
-            ////do it again but make the check for zenith seed not skip my check
-            //c.GotoPrev(i => i.MatchLdsfld(typeof(Main), nameof(Main.zenithWorld)));
-            //c.Index++;
-            //c.Remove();
-            //c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label2);
-            //MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
+            CalamityPreAIHook.Undo();
+            CalamityProjectilePreAIHook.Undo();
         }
 
-        private static void CalamityProjectilePreAI_ILEdit(ILContext il)
+        public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
+        public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
+
+        private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", FargoSoulsUtil.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityProjectilePreAIMethod = typeof(CalamityGlobalProjectile).GetMethod("PreAI", FargoSoulsUtil.UniversalBindingFlags);
+
+        Hook CalamityPreAIHook;
+        Hook CalamityProjectilePreAIHook;
+
+        internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
         {
-            Mod calamity = ModCompatibility.Calamity.Mod;
-            Type BossRushEvent = calamity.Code.GetType("CalamityMod.Events.BossRushEvent")!;
-            FieldInfo BossRushEvent_BossRushActive = BossRushEvent.GetField("BossRushActive", BindingFlags.Public | BindingFlags.Static)!;
-
-            var c = new ILCursor(il);
-            c.GotoNext(i => i.MatchLdsfld(BossRushEvent_BossRushActive));
-            c.Index++;
-            ILLabel label = null;
-            c.GotoNext(i => i.MatchBrfalse(out label));
-            c.Index -= 3;
-            c.EmitDelegate(() => DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode /*&& !(BossRushEvent_BossRushActive.GetValue(null) is bool fard && fard)*/);
-            c.Emit(OpCodes.Brtrue, label);
-            c.Index -= 4;
-            var label2 = il.DefineLabel(c.Prev);
-
-
-
-
-            c.GotoPrev(i => i.MatchLdfld(typeof(Projectile), nameof(Projectile.friendly)));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Brtrue, label2);
-
-            c.GotoPrev(i => i.MatchLdcI4(466));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Bne_Un, label2);
-
-            Type CalamityPlayer = calamity.Code.GetType("CalamityMod.CalPlayer.CalamityPlayer")!;
-            FieldInfo CalamityPlayer_areThereAnyDamnBosses = CalamityPlayer.GetField("areThereAnyDamnBosses", BindingFlags.Public | BindingFlags.Static)!;
-            c.GotoPrev(i => i.MatchLdsfld(CalamityPlayer_areThereAnyDamnBosses));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Brtrue, label2);
-
-            Type CalamityWorld = calamity.Code.GetType("CalamityMod.World.CalamityWorld")!;
-            FieldInfo CalamityWorld_death = CalamityWorld.GetField("death", BindingFlags.Public | BindingFlags.Static)!;
-            c.GotoPrev(i => i.MatchLdsfld(CalamityWorld_death));
-            c.Index++;
-            c.Remove();
-            c.Emit(OpCodes.Brfalse, label2);
-            MonoModHooks.DumpIL(mod: ModContent.GetInstance<FargowiltasCrossmod>(), il);
-
-
+            bool wasRevenge = CalamityWorld.revenge;
+            bool wasDeath = CalamityWorld.death;
+            bool shouldDisable = DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = false;
+                CalamityWorld.death = false;
+            }
+            bool result = orig(self, npc);
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = wasRevenge;
+                CalamityWorld.death = wasDeath;
+            }
+            return result;
         }
-        //private static void CalamityProjectileAI_ILEdit(ILContext il)
-        //{
-        //    //make everlasting rainbow not fuck off forever
-        //    var c = new ILCursor(il);
-        //    c.GotoNext(i => i.MatchLdcI4(872));
-        //    ILLabel label3 = null;
-        //    c.GotoNext(i => i.MatchBneUn(out label3));
-        //    c.Index -= 3;
-        //    c.EmitDelegate(() => DLCCalamityConfig.Instance.RevVanillaAIDisabled);
-        //    c.Emit(Mono.Cecil.Cil.OpCodes.Brtrue, label3);
-        //    c.Index -= 4;
-        //    var label4 = il.DefineLabel(c.Prev);
 
-        //    c.GotoPrev(i => i.MatchLdcI4(95));
-        //    c.Index++;
-        //    c.Remove();
-        //    c.Emit(Mono.Cecil.Cil.OpCodes.Blt, label4);
 
-        //    c.GotoPrev(i => i.MatchLdsfld(typeof(Main), nameof(Main.zenithWorld)));
-        //    c.Index++;
-        //    c.Remove();
-        //    c.Emit(Mono.Cecil.Cil.OpCodes.Brfalse, label4);
-
-        //    c.GotoPrev(i => i.MatchLdcI4(1013));
-        //    c.Index++;
-        //    c.Remove();
-        //    c.Emit(Mono.Cecil.Cil.OpCodes.Bne_Un, label4);
-        //    MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
-        //}
+        internal static bool CalamityProjectilePreAI_Detour(Orig_CalamityProjectilePreAI orig, CalamityGlobalProjectile self, Projectile projectile)
+        {
+            bool wasRevenge = CalamityWorld.revenge;
+            bool wasDeath = CalamityWorld.death;
+            bool shouldDisable = DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = false;
+                CalamityWorld.death = false;
+            }
+            bool result = orig(self, projectile);
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = wasRevenge;
+                CalamityWorld.death = wasDeath;
+            }
+            return result;
+        }
     }
 }

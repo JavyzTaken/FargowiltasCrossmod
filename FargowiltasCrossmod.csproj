@@ -1,12 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>FargowiltasCrossmod</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\HydrothermicEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\PlaguebringerEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\ReaverEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\StatigelEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\SulphurEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\TitanHeartEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\UmbraphileEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\VictideEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Forces\DevastationForce.png" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
     <Reference Remove="Libraries\Fargowiltas.dll" />
@@ -15,7 +24,7 @@
     <Reference Remove="Libraries\ThoriumMod.dll" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
+    <Folder Include="Core\Common\Systems\" />
   </ItemGroup>
   <ItemGroup>
 	<Reference Include="CalamityMod">
@@ -30,8 +39,5 @@
 	<Reference Include="Luminance">
 	  <HintPath>Libraries\Luminance.dll</HintPath>
 	</Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Libraries\" />
   </ItemGroup>
 </Project>

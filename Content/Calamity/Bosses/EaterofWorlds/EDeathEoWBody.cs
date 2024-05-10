@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
         {
             if (!npc.HasValidTarget) return true;
             Player target = Main.player[npc.target];
-            if (time == 0) time = Main.rand.Next(1000, 2000);
+            if (time == 0) time = Main.rand.Next(3000, 4000);
             if (NPC.CountNPCS(NPCID.EaterofWorldsBody) + NPC.CountNPCS(NPCID.EaterofWorldsHead) + NPC.CountNPCS(NPCID.EaterofWorldsTail) <= 60)
             {
                 timer++;

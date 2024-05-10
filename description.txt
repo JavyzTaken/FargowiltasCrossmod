@@ -48,12 +48,11 @@ No, way too much effort to maintain. Also, things like Class Setups wiki pages a
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Latest Update: v1.0.6
+Newest Update: v1.0.6.3
+-Updated to be compatible with Calamity Mod version 1.0.4.1
+-Tweaked several boss health values
+
+Previous Update: v1.0.6
 -NEW: Eternity mode Brimstone Elemental
 -Fixed Normality Relocator downside triggering when pressing the hotkey without having the item's effect
 -Celestial Onion doesn't override Mutant's Pact in Master Mode
-
-Previous Update: v1.0.5.50
-Updated to Souls Mod version 1.6.6
-Fixed a bug with Adamantite Enchantment and modded projectiles
-

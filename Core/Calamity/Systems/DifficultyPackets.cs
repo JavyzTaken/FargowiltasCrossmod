@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
@@ -127,7 +126,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             BitsByte containmentFlagWrapper = new()
             {
-                [0] = DLCWorldSavingSystem.EternityRev,
+                [0] = CalDLCWorldSavingSystem.EternityRev,
                 [1] = WorldSavingSystem.EternityMode,
                 [2] = WorldSavingSystem.ShouldBeEternityMode
             };
@@ -137,7 +136,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public override void Read(BinaryReader reader)
         {
             BitsByte containmentFlagWrapper = reader.ReadByte();
-            DLCWorldSavingSystem.EternityRev = containmentFlagWrapper[0];
+            CalDLCWorldSavingSystem.EternityRev = containmentFlagWrapper[0];
             WorldSavingSystem.EternityMode = containmentFlagWrapper[1];
             WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[2];
         }
@@ -148,8 +147,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             BitsByte containmentFlagWrapper = new()
             {
-                [0] = DLCWorldSavingSystem.EternityDeath,
-                [1] = DLCWorldSavingSystem.EternityRev,
+                [0] = CalDLCWorldSavingSystem.EternityDeath,
+                [1] = CalDLCWorldSavingSystem.EternityRev,
                 [2] = WorldSavingSystem.EternityMode,
                 [3] = WorldSavingSystem.ShouldBeEternityMode
             };
@@ -159,8 +158,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public override void Read(BinaryReader reader)
         {
             BitsByte containmentFlagWrapper = reader.ReadByte();
-            DLCWorldSavingSystem.EternityDeath = containmentFlagWrapper[0];
-            DLCWorldSavingSystem.EternityRev = containmentFlagWrapper[1];
+            CalDLCWorldSavingSystem.EternityDeath = containmentFlagWrapper[0];
+            CalDLCWorldSavingSystem.EternityRev = containmentFlagWrapper[1];
             WorldSavingSystem.EternityMode = containmentFlagWrapper[2];
             WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[3];
         }

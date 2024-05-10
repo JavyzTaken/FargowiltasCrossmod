@@ -883,7 +883,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 */
                 if (!Main.dedServ && Main.LocalPlayer.active)
                     if (ScreenShakeSystem.OverallShakeIntensity < 7)
-                        ScreenShakeSystem.SetUniversalRumble(7);
+                        FargoSoulsUtil.ScreenshakeRumble(6);
 
                 if (DLCUtils.HostCheck)
                 {

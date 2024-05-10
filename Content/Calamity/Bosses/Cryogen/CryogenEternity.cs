@@ -7,8 +7,8 @@ using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
-using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Core.Globals;
@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             base.HitEffect(npc, hit);
         }
-        public int[] Chains = new int[] { -1, -1, -1, -1 , -1, -1};
+        public int[] Chains = [-1, -1, -1, -1 , -1, -1];
         public float shieldDrawTimer;
         public float shieldDrawCounter;
 
@@ -123,7 +123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         bool evenChain(NPC npc) => npc.ai[1] % (chainTime * 2) >= chainTime;
         public override bool SafePreAI(NPC npc)
         {
-            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !DLCWorldSavingSystem.EternityRev) return true;
+            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) return true;
 
             Player target = Main.player[npc.target];
             ref float attack = ref npc.ai[0];
@@ -388,7 +388,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (attack == 3) {
 
 
-                if (DLCWorldSavingSystem.PermafrostPhaseSeen && timer % 60 < 55 && timer % 60 > 0)
+                if (CalDLCWorldSavingSystem.PermafrostPhaseSeen && timer % 60 < 55 && timer % 60 > 0)
                     timer += 2;
 
                 //Main.musicVolume -= 0.003f;
@@ -426,7 +426,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                                 NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
                         }
                     }
-                    DLCWorldSavingSystem.PermafrostPhaseSeen = true;
+                    CalDLCWorldSavingSystem.PermafrostPhaseSeen = true;
                     npc.active = false;
                 }
                 timer++;

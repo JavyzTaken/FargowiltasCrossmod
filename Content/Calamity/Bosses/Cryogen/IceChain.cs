@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -30,6 +31,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             
 
             Projectile.light = 0.5f;
+
+            Projectile.FargoSouls().DeletionImmuneRank = 2;
         }
         public override bool PreDraw(ref Color lightColor)
         {

@@ -5,17 +5,20 @@ using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.CalPlayer;
 using CalamityMod.Cooldowns;
+using CalamityMod.DataStructures;
 using CalamityMod.Events;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Particles;
 using Fargowiltas.Common.Configs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Common.Systems;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
@@ -25,6 +28,9 @@ using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
 using log4net.Repository.Hierarchy;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -39,7 +45,8 @@ namespace FargowiltasCrossmod.Content.Calamity
     public class CrossplayerCalamity : ModPlayer
     {
         public bool CalamitousPresence;
-
+        //Unique accessories fields
+        
         public override void ResetEffects()
         {
             CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
@@ -49,10 +56,24 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
 
         }
+        
+        public override void UpdateEquips()
+        {
+            
+        }
+        public override void PreUpdate()
+        {
+            
+        }
+        public override void PreUpdateMovement()
+        {
+            
+        }
+        
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
-            if (!DLCWorldSavingSystem.EternityRev)
+            if (!CalDLCWorldSavingSystem.EternityRev)
                 return;
             //copied from emode player buffs, reverse effects
 
@@ -143,6 +164,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
 
             }
+            
         }
         public bool[] PreUpdateBuffImmune;
         public override void PreUpdateBuffs()

@@ -32,9 +32,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 2f);
+            //entity.lifeMax = (int)Math.Round(entity.lifeMax * 2f);
         }
-        public float[] drawInfo = new float[] { 0, 200, 200, 0 };
+        public float[] drawInfo = [0, 200, 200, 0];
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             //Main.NewText(drawInfo[2]);
@@ -68,12 +68,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
 
-        public float[] ai = new float[] { 0, 0, 0, 0, 0 };
+        public float[] ai = [0, 0, 0, 0, 0];
         public const int attackCycleLength = 9;
-        public int[] attackCycle = new int[attackCycleLength] { 0, 1, 0, 1, 1, 0, -1, -1, -1 };
+        public int[] attackCycle = [0, 1, 0, 1, 1, 0, -1, -1, -1];
         public int phase;
         public bool CanDoSlam = false;
         public bool DoSlam = false;
+        public int AttackIndex = 0;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -88,6 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             binaryWriter.Write7BitEncodedInt(phase);
             binaryWriter.Write(DoSlam);
             binaryWriter.Write(CanDoSlam);
+            binaryWriter.Write7BitEncodedInt(AttackIndex);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -102,6 +104,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             phase = binaryReader.Read7BitEncodedInt();
             DoSlam = binaryReader.ReadBoolean();
             CanDoSlam = binaryReader.ReadBoolean();
+            AttackIndex = binaryReader.Read7BitEncodedInt();
         }
 
         public override bool SafePreAI(NPC npc)
@@ -116,15 +119,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 return true;
 
             }
+            if ((npc.GetLifePercent() < 0.5f && npc.localAI[2] == 0) || npc.alpha > 0 || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>())) // Nuisance phase
+            {
+                drawInfo[2] = 200;
+                drawInfo[1] = 200;
+                for (int i = 0; i < ai.Length; i++)
+                {
+                    ai[i] = 0;
+                }
+                AttackIndex = 0;
+                return true;
+            }
             Player target = Main.player[npc.target];
             if (!Targeting())
             {
+                
                 return true;
             }
             Vector2 toplayer = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
             npc.realLife = -1;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-            int attack = attackCycle[(int)npc.ai[3]];
+            int attack = attackCycle[AttackIndex];
             if (DoSlam)
             {
                 attack = 22;
@@ -134,12 +149,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 attack = 0;
             }
             npc.netUpdate = true; //fuck you worm mp code
-
+           
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || npc.GetLifePercent() <= 0.75f))
             {
                 phase++;
-                attackCycle = new int[attackCycleLength] { 4, 0, 1, 3, attack, -1, -1, -1, -1 };
-                npc.ai[3] = attackCycle.Length - 5;
+                attackCycle = [4, 0, 1, 3, attack, -1, -1, -1, -1];
+                AttackIndex = attackCycle.Length - 5;
                 for (int i = 0; i < Main.npc.Length; i++)
                 {
                     if (Main.npc[i].type == ModContent.NPCType<DesertNuisanceHead>() && Main.npc[i].active)
@@ -153,19 +168,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (phase == 1 && npc.GetLifePercent() <= 0.5f)
             {
                 phase++;
-                NetSync(npc);
-                attackCycle = new int[attackCycleLength] { 5, 0, 2, 2, 3, 4, attack, -1, -1 };
-                NetSync(npc);
-                npc.ai[3] = attackCycle.Length - 3;
+                attackCycle = [5, 0, 2, 2, 3, 4, attack, -1, -1];
+                AttackIndex = attackCycle.Length - 3;
                 NetSync(npc);
             }
             if (phase == 2 && npc.GetLifePercent() <= 0.2f)
             {
                 phase++;
-                NetSync(npc);
-                attackCycle = new int[attackCycleLength] { 3, 2, 3, 5, 5, 3, 5, 2, attack };
-                NetSync(npc);
-                npc.ai[3] = attackCycle.Length - 1;
+                attackCycle = [3, 2, 3, 5, 5, 3, 5, 2, attack];
+                AttackIndex = attackCycle.Length - 1;
                 NetSync(npc);
             }
             if (attack == 0)
@@ -258,12 +269,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             CanDoSlam = true; //can do slam after this attack
 
-            if (ai[3] >= 0)
+            if (ai[3] >= 0) // sucking
             {
                 ai[3]++;
                 npc.velocity = Vector2.Lerp(npc.velocity, (target.Center - npc.Center) / 50, 0.03f);
+
+                // open mouth
+                npc.ai[3] = 1;
+                npc.frameCounter = 0;
             }
-            else
+            else // not sucking
             {
                 ai[3]--;
                 npc.velocity = Vector2.Lerp(npc.velocity, (target.Center - npc.Center) / 80, 0.03f);
@@ -272,6 +287,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             if (ai[3] > 140 && ai[3] < 550)
             {
+                
                 target.velocity.X += ((npc.Center - target.Center).SafeNormalize(Vector2.Zero) * 0.1f).X;
                 target.velocity.Y /= 1.1f;
                 if (ai[3] % 20 == 0)
@@ -426,7 +442,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             timer++;
         }
-        public float[] lungeInfo = new float[] { 0, 0, 0, 0, 0 };
+        public float[] lungeInfo = [0, 0, 0, 0, 0];
         //Sets values for doing the lunge attack with configureable projectiles to accompany the attack
         //times is the number of times to lunge
         //blasts is the little sand projs when he comes out of the ground
@@ -546,16 +562,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
 
                 IncrementCycle(npc);
-                lungeInfo = new float[] { 0, 0, 0, 0, 0 };
+                lungeInfo = [0, 0, 0, 0, 0];
 
             }
         }
         public void IncrementCycle(NPC npc)
         {
-            npc.ai[3]++;
-            if (npc.ai[3] >= attackCycle.Length - 1 || attackCycle[(int)npc.ai[3]] < 0)
+            AttackIndex++;
+            if (AttackIndex >= attackCycle.Length - 1 || attackCycle[(int)AttackIndex] < 0)
             {
-                npc.ai[3] = 0;
+                AttackIndex = 0;
             }
             CanDoSlam = true;
             NetSync(npc);
@@ -829,6 +845,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
 
             return collision;
+        }
+
+        public override void FindFrame(NPC npc, int frameHeight)
+        {
+            base.FindFrame(npc, frameHeight);
         }
         public void ManageMusicFade(bool fade)
         {
