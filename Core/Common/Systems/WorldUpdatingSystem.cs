@@ -18,6 +18,8 @@ namespace FargowiltasCrossmod.Core.Common.Systems
             if (ModCompatibility.Calamity.Loaded)
             {
                 ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", DLCCalamityConfig.Instance.EternityPriorityOverRev);
+                if (DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
+                    CalamityMod.CalamityMod.ExternalFlag_DisableNonRevBossAI = true;
             }
 
         }
