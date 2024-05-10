@@ -1,5 +1,6 @@
 ﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
@@ -13,8 +14,14 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalamityAddonGlobalItem : GlobalItem
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override void OnConsumeItem(Item item, Player player)
         {
             int bats = item.healLife / 25;

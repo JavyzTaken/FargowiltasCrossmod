@@ -33,7 +33,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class VictideEnchantment : BaseEnchant
     {
-
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Color nameColor => new Color(255, 233, 197);
 
         public override void SetStaticDefaults()
@@ -64,8 +67,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.Register();
         }
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class VictideEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<VictideEnchantment>();
         

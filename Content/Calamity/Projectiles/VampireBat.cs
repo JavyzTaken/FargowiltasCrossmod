@@ -1,6 +1,7 @@
 ﻿using CalamityMod.Particles;
 using CalamityMod.Projectiles.Typeless;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.LunarEvents.Vortex;
@@ -22,8 +23,14 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class VampireBat : ModProjectile
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Bat;
         public override void SetStaticDefaults()
         {

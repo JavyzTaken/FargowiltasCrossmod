@@ -22,6 +22,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class WulfrumEnchantment : BaseEnchant
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Color nameColor => new Color(206, 201, 170);
         public override void SetDefaults()
         {
@@ -50,6 +54,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class WulfrumEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<WulfrumEnchantment>();
         public override void PostUpdateEquips(Player player)

@@ -19,6 +19,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class MarniteLaser : ModProjectile
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override string Texture => "CalamityMod/Items/Weapons/Rogue/ShinobiBlade";
         public override void SetStaticDefaults()
         {

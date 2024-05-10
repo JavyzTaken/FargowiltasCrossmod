@@ -24,6 +24,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class AerospecEnchantment : BaseEnchant
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Color nameColor => new Color(153, 200, 193);
         public override void SetDefaults()
         {
@@ -53,6 +57,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class AerospecJumpEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<AerospecEnchantment>();
         
@@ -101,6 +109,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         float duration = 1.2f;
         float acceleration = 3;
         float speed = 1.5f;
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Position GetDefaultPosition()
         {
             return new Before(CloudInABottle);

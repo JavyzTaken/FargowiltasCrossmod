@@ -33,7 +33,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class SulphurEnchantment : BaseEnchant
     {
-
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Color nameColor => new Color(181, 139, 161);
 
         public override void SetStaticDefaults()
@@ -64,8 +67,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.Register();
         }
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class SulphurEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<SulphurEnchantment>();
         
@@ -74,8 +83,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             player.GetJumpState<SulphurJump>().Enable();
         }
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class SulphurJump : ExtraJump
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override void UpdateHorizontalSpeeds(Player player)
         {
             player.runAcceleration *= 1.5f;

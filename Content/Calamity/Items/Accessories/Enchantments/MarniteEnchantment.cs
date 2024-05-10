@@ -24,6 +24,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MarniteEnchantment : BaseEnchant
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Color nameColor => new Color(153, 200, 193);
         public override void SetDefaults()
         {
@@ -52,6 +56,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MarniteStatsEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
         public override void PostUpdateEquips(Player player)
@@ -70,6 +78,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class MarniteLasersEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
         public static void MarniteTileEffect(Player player, Vector2 worldPos)

@@ -32,6 +32,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class WulfrumScanner : ModProjectile
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override string Texture => "CalamityMod/NPCs/NormalNPCs/WulfrumDrone";
         public override void SetStaticDefaults()
         {

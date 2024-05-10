@@ -1,6 +1,6 @@
 ﻿using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Core.Systems;
 using System;
 using Terraria;
@@ -8,9 +8,11 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.Common.Systems
+namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
-    public class WorldUpdatingSystem : ModSystem
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class CalDLCWorldUpdatingSystem : ModSystem
     {
         public static bool InfernumStateLastFrame = false;
         public override void PreUpdateWorld()

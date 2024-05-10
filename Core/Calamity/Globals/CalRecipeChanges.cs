@@ -885,10 +885,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient(hunt, "SplendorJam");
                     }
                 }
-                if (recipe.HasResult<TerrariaSoul>() && !recipe.HasIngredient<ExplorationForce>())
-                {
-                    recipe.AddIngredient<ExplorationForce>();
-                }
+                //if (recipe.HasResult<TerrariaSoul>() && !recipe.HasIngredient<ExplorationForce>())
+                //{
+                //    recipe.AddIngredient<ExplorationForce>();
+                //}
                 #endregion
 
                 #region Balance and Progression Locks

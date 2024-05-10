@@ -21,6 +21,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityAddonGlobalNPC : GlobalNPC
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override bool InstancePerEntity => true;
         public bool WulfrumScanned = false;
         public int PBGDebuffTag = 0;

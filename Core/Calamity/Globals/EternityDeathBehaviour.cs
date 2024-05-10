@@ -1,4 +1,4 @@
-﻿using FargowiltasCrossmod.Core.Common.Systems;
+﻿using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls.Core.NPCMatching;
 using Terraria;
 using Terraria.ID;
@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
+            return CalDLCWorldSavingSystem.EternityDeath && CalDLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
         }
 
         public bool FirstTick = true;
@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!(DLCWorldSavingSystem.EternityDeath && DLCWorldSavingSystem.E_EternityRev) || !DLCCalamityConfig.Instance.EternityPriorityOverRev)
+            if (!(CalDLCWorldSavingSystem.EternityDeath && CalDLCWorldSavingSystem.E_EternityRev) || !DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
                 return true;
             }

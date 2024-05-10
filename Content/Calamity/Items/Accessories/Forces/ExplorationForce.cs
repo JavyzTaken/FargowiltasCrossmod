@@ -18,6 +18,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ExplorationForce : BaseForce
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -42,8 +46,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.Register();
         }
     }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ExplorationHeader : EnchantHeader
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override int Item => ModContent.ItemType<ExplorationForce>();
         public override float Priority => 0.15f;
     }

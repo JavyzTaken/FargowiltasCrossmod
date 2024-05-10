@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
 using System;
@@ -13,6 +14,8 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalamityAddonPlayer : ModPlayer
     {
         public float AeroCritBoost;
@@ -29,6 +32,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
         public bool HydrothermicHide;
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override void PostUpdateEquips()
         {
             if (Player.HasEffect<DesertProwlerEffect>())
@@ -38,6 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
 
             }
         }
+        
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
             Vector2 vector = drawInfo.Position + drawInfo.drawPlayer.Size * new Vector2(0.5f, 1f) - Main.screenPosition;

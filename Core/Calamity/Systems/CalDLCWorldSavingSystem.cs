@@ -7,9 +7,11 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace FargowiltasCrossmod.Core.Common.Systems
+namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
-    public class DLCWorldSavingSystem : ModSystem
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class CalDLCWorldSavingSystem : ModSystem
     {
         private static bool eternityRev;
         private static bool eternityDeath;

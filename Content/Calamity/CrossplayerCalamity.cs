@@ -18,7 +18,7 @@ using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Common.Systems;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
@@ -63,10 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void PreUpdate()
         {
-            if (Player.HasEffect<DesertProwlerEffect>())
-            {
-                DesertProwlerEffect.ProwlerEffect(Player);
-            }
+            
         }
         public override void PreUpdateMovement()
         {
@@ -76,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
-            if (!DLCWorldSavingSystem.EternityRev)
+            if (!CalDLCWorldSavingSystem.EternityRev)
                 return;
             //copied from emode player buffs, reverse effects
 

@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 2f);
+            //entity.lifeMax = (int)Math.Round(entity.lifeMax * 2f);
         }
         public float[] drawInfo = [0, 200, 200, 0];
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -74,6 +74,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int phase;
         public bool CanDoSlam = false;
         public bool DoSlam = false;
+        public int AttackIndex = 0;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -88,6 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             binaryWriter.Write7BitEncodedInt(phase);
             binaryWriter.Write(DoSlam);
             binaryWriter.Write(CanDoSlam);
+            binaryWriter.Write7BitEncodedInt(AttackIndex);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -102,6 +104,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             phase = binaryReader.Read7BitEncodedInt();
             DoSlam = binaryReader.ReadBoolean();
             CanDoSlam = binaryReader.ReadBoolean();
+            AttackIndex = binaryReader.Read7BitEncodedInt();
         }
 
         public override bool SafePreAI(NPC npc)
@@ -119,12 +122,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             Player target = Main.player[npc.target];
             if (!Targeting())
             {
+                
                 return true;
             }
             Vector2 toplayer = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
             npc.realLife = -1;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-            int attack = attackCycle[(int)npc.ai[3]];
+            int attack = attackCycle[AttackIndex];
             if (DoSlam)
             {
                 attack = 22;
@@ -134,12 +138,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 attack = 0;
             }
             npc.netUpdate = true; //fuck you worm mp code
-
+           
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || npc.GetLifePercent() <= 0.75f))
             {
                 phase++;
                 attackCycle = [4, 0, 1, 3, attack, -1, -1, -1, -1];
-                npc.ai[3] = attackCycle.Length - 5;
+                AttackIndex = attackCycle.Length - 5;
                 for (int i = 0; i < Main.npc.Length; i++)
                 {
                     if (Main.npc[i].type == ModContent.NPCType<DesertNuisanceHead>() && Main.npc[i].active)
@@ -150,13 +154,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 }
                 NetSync(npc);
             }
+            Main.NewText(attack);
             if (phase == 1 && npc.GetLifePercent() <= 0.5f)
             {
                 phase++;
                 NetSync(npc);
                 attackCycle = [5, 0, 2, 2, 3, 4, attack, -1, -1];
                 NetSync(npc);
-                npc.ai[3] = attackCycle.Length - 3;
+                AttackIndex = attackCycle.Length - 3;
                 NetSync(npc);
             }
             if (phase == 2 && npc.GetLifePercent() <= 0.2f)
@@ -165,7 +170,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 NetSync(npc);
                 attackCycle = [3, 2, 3, 5, 5, 3, 5, 2, attack];
                 NetSync(npc);
-                npc.ai[3] = attackCycle.Length - 1;
+                AttackIndex = attackCycle.Length - 1;
                 NetSync(npc);
             }
             if (attack == 0)
@@ -552,10 +557,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         }
         public void IncrementCycle(NPC npc)
         {
-            npc.ai[3]++;
-            if (npc.ai[3] >= attackCycle.Length - 1 || attackCycle[(int)npc.ai[3]] < 0)
+            AttackIndex++;
+            if (AttackIndex >= attackCycle.Length - 1 || attackCycle[(int)AttackIndex] < 0)
             {
-                npc.ai[3] = 0;
+                AttackIndex = 0;
             }
             CanDoSlam = true;
             NetSync(npc);

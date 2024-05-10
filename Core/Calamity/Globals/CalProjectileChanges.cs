@@ -14,7 +14,7 @@ using CalamityMod.World;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
-using FargowiltasCrossmod.Core.Common.Systems;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Projectiles;
@@ -285,11 +285,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
             {
-                if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && DLCWorldSavingSystem.E_EternityRev)
+                if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && CalDLCWorldSavingSystem.E_EternityRev)
                 {
                     projectile.velocity /= 1.015525f;
                 }
-                if (projectile.type == ProjectileID.CultistBossIceMist && DLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
+                if (projectile.type == ProjectileID.CultistBossIceMist && CalDLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
                 {
                     int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
                     //projectile.ai[1] = 1;

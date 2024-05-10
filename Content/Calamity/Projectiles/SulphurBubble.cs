@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Projectiles.Magic;
 using FargowiltasCrossmod.Content.Calamity.Items;
+using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -14,8 +15,15 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class SulphurBubble : ModProjectile
     {
+        
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override string Texture => "CalamityMod/Projectiles/Enemy/SulphuricAcidBubble";
         public override void SetStaticDefaults()
         {

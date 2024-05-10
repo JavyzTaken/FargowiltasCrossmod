@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         private void DrawBigPlayer(On_LegacyPlayerRenderer.orig_DrawPlayer orig, LegacyPlayerRenderer self, Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow, float scale)
         {
-            scale = 2;
+            //scale = 2;
             orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
         }
 
@@ -49,13 +49,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             Player player = self;
             Vector2 size = player.Size;
             Vector2 position = player.position;
-            if (player.HasEffect<TitanHeartEffect>())
-            {
-                player.width += 20;
-                player.height += 30;
-                player.position.X -= 10;
-                player.position.Y -= 15;
-            }
+            //if (player.HasEffect<TitanHeartEffect>())
+            //{
+            //    player.width += 20;
+            //    player.height += 30;
+            //    player.position.X -= 10;
+            //    player.position.Y -= 15;
+            //}
             orig(self);
             player.width = (int)size.X;
             player.height = (int)size.Y;
@@ -67,13 +67,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             Player player = Main.LocalPlayer;
             Vector2 size = player.Size;
             Vector2 position = player.position;
-            if (player.HasEffect<TitanHeartEffect>())
-            {
-                player.width += 20;
-                player.height += 30;
-                player.position.X -= 10;
-                player.position.Y -= 15;
-            }
+            //if (player.HasEffect<TitanHeartEffect>())
+            //{
+            //    player.width += 20;
+            //    player.height += 30;
+            //    player.position.X -= 10;
+            //    player.position.Y -= 15;
+            //}
             orig(self);
             player.width = (int)size.X;
             player.height = (int)size.Y;
