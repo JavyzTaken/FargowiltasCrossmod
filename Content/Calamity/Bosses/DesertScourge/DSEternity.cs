@@ -119,6 +119,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 return true;
 
             }
+            if ((npc.GetLifePercent() < 0.5f && npc.localAI[2] == 0) || npc.alpha > 0 || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>())) // Nuisance phase
+            {
+                drawInfo[2] = 200;
+                drawInfo[1] = 200;
+                for (int i = 0; i < ai.Length; i++)
+                {
+                    ai[i] = 0;
+                }
+                AttackIndex = 0;
+                return true;
+            }
             Player target = Main.player[npc.target];
             if (!Targeting())
             {
@@ -154,22 +165,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 }
                 NetSync(npc);
             }
-            Main.NewText(attack);
             if (phase == 1 && npc.GetLifePercent() <= 0.5f)
             {
                 phase++;
-                NetSync(npc);
                 attackCycle = [5, 0, 2, 2, 3, 4, attack, -1, -1];
-                NetSync(npc);
                 AttackIndex = attackCycle.Length - 3;
                 NetSync(npc);
             }
             if (phase == 2 && npc.GetLifePercent() <= 0.2f)
             {
                 phase++;
-                NetSync(npc);
                 attackCycle = [3, 2, 3, 5, 5, 3, 5, 2, attack];
-                NetSync(npc);
                 AttackIndex = attackCycle.Length - 1;
                 NetSync(npc);
             }
@@ -263,12 +269,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             CanDoSlam = true; //can do slam after this attack
 
-            if (ai[3] >= 0)
+            if (ai[3] >= 0) // sucking
             {
                 ai[3]++;
                 npc.velocity = Vector2.Lerp(npc.velocity, (target.Center - npc.Center) / 50, 0.03f);
+
+                // open mouth
+                npc.ai[3] = 1;
+                npc.frameCounter = 0;
             }
-            else
+            else // not sucking
             {
                 ai[3]--;
                 npc.velocity = Vector2.Lerp(npc.velocity, (target.Center - npc.Center) / 80, 0.03f);
@@ -277,6 +287,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
 
             if (ai[3] > 140 && ai[3] < 550)
             {
+                
                 target.velocity.X += ((npc.Center - target.Center).SafeNormalize(Vector2.Zero) * 0.1f).X;
                 target.velocity.Y /= 1.1f;
                 if (ai[3] % 20 == 0)
@@ -834,6 +845,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
 
             return collision;
+        }
+
+        public override void FindFrame(NPC npc, int frameHeight)
+        {
+            base.FindFrame(npc, frameHeight);
         }
         public void ManageMusicFade(bool fade)
         {
