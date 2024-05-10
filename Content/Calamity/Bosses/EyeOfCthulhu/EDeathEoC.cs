@@ -151,7 +151,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                     SoundEngine.PlaySound(SoundID.NPCDeath13, (Vector2?)npc.position, null);
                     for (int num49 = 0; num49 < 10; num49++)
                     {
-                        Dust.NewDust(val15, 20, 20, 5, val14.X * 0.4f, val14.Y * 0.4f, 0, default, 1f);
+                        Dust.NewDust(val15, 20, 20, DustID.Blood, val14.X * 0.4f, val14.Y * 0.4f, 0, default, 1f);
                     }
                 }
                 float num50 = WindupTime;

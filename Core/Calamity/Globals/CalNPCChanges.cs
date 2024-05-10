@@ -191,7 +191,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             npc.lifeMax = (int)(npc.lifeMax * 0.65f);
                             break;
                         case NPCID.QueenBee:
-                            npc.lifeMax = (int)(npc.lifeMax * 0.75f);
+                            npc.lifeMax = (int)(npc.lifeMax * 0.8f);
                             break;
                         case NPCID.WallofFlesh:
                         case NPCID.WallofFleshEye:

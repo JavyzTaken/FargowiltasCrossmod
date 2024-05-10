@@ -151,7 +151,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 );
                 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
             }
@@ -172,7 +172,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
             }
