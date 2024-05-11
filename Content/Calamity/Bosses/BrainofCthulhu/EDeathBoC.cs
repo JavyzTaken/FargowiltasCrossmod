@@ -46,8 +46,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
         }
         public override bool SafePreAI(NPC npc)
         {
-            FargoSoulsUtil.PrintAI(npc);
-
             FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu emodeBoC = npc.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu>();
 
             // Calamity variables
