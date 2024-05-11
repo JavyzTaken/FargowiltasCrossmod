@@ -58,25 +58,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
 
             if (emodeBoC.EnteredPhase2)
             {
-
                 emodeBoC.RunEmodeAI = true;
-                if (emodeBoC.ConfusionTimer == 70)
+                if (emodeBoC.ConfusionTimer == 70) // Periodically make the attack available, first cycle has attack since counter will increment to 1
                 {
                     ChargeCounter++;
                     if (ChargeCounter > 2)
                         ChargeCounter = 0;
                 }
-                if (emodeBoC.ConfusionTimer < 70 && emodeBoC.ConfusionTimer > 60 && ChargeCounter == 1)
+                if (emodeBoC.ConfusionTimer < 70 && emodeBoC.ConfusionTimer > 60 && ChargeCounter == 1) // approx 1 second before confusion flip, if attack is in cycle, do it
                 {
                     if (ChargePhase < 2)
                     {
                         emodeBoC.RunEmodeAI = false;
-                        if (ChargePhase == 0)
+                        if (ChargePhase == 0) // Start of attack, initialize attack variables and save old variables to be restored when it ends
                         {
                             float playerLocation = npc.Center.X - Main.player[npc.target].Center.X;
                             // start spinning
                             npc.velocity = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.UnitY) * spinVelocity;
-                            for (int i = 0; i <= 3; i++)
+                            for (int i = 0; i <= 3; i++) //Save AI values to be restored when attack ends
                             {
                                 oldAI[i] = npc.ai[i];
                             }
@@ -89,14 +88,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                             npc.localAI[1] = 0f;
                             npc.alpha = 0;
                             npc.netUpdate = true;
-                            ChargePhase = 1;
+                            ChargePhase = 1; // Mark attack as started
                             oldKnockback = npc.knockBackResist; // Save kb resist to be restored when attack ends
                             npc.knockBackResist = 0;
                         }
-
+                        // Calamity spinny charge, slightly modified code from Calamity
 
                         bool spinning = npc.ai[0] == -4f;
-                        // calamity charge
+                        
                         // Charge
                         if (!spinning)
                         {
@@ -129,9 +128,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                                 float timeGateValue = chargeDuration + chargeGateValue;
                                 if (npc.ai[1] >= timeGateValue)
                                 {
-                                    
+                                    // End the attack, go back to emode AI
                                     npc.netUpdate = true;
-                                    for (int i = 0; i <= 3; i++)
+                                    for (int i = 0; i <= 3; i++) // Restore AI values
                                     {
                                         npc.ai[i] = oldAI[i];
                                     }
