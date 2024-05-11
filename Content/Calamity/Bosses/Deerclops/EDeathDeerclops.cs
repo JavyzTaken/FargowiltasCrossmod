@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
         {
             if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(npc);
-            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.25f);
+            //npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.25f);
         }
     }
 }

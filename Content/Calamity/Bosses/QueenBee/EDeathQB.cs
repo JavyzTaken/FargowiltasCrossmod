@@ -22,16 +22,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
     public class EDeathQB : EternityDeathBehaviour
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.QueenBee);
-
-        bool Redirected = false;
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
-        {
-            binaryWriter.Write(Redirected);
-        }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
-        {
-            Redirected = binaryReader.ReadBoolean();
-        }
         public override bool SafePreAI(NPC npc)
         {
             if (!npc.HasValidTarget) return true;

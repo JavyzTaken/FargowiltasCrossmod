@@ -616,6 +616,7 @@ Mods: {
 			// VampireBat.DisplayName: Vampire Bat
 			// SulphurBubble.DisplayName: Sulphur Bubble
 			// VictideSpike.DisplayName: Victide Spike
+			// GoldenShowerShot.DisplayName: Golden Shower Shot
 		}
 
 		Buffs: {
