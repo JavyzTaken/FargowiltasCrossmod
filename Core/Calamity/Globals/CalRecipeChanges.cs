@@ -586,7 +586,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<SpentFuelContainer>(),
                 ItemType<SlitheringEels>(),
                 ItemType<BelchingSaxophone>(),
-            ], ItemType<SulphurousCrate>(), 5, ItemType<CorrodedFossil>());
+            ], ItemType<HydrothermalCrate>(), 5, ItemType<CorrodedFossil>());
 
             CreateCrateRecipes(
             [
@@ -605,7 +605,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<ClamorRifle>(),
                 ItemType<ShellfishStaff>(),
                 ItemType<ClamCrusher>(),
-            ], ItemType<EutrophicCrate>(), 5, ItemType<MolluskHusk>());
+            ], ItemType<PrismCrate>(), 3, ItemType<MolluskHusk>());
 
             void CreateCrateRecipes(int[] results, int crate, int crateAmount, int extraItem = -1)
             {
