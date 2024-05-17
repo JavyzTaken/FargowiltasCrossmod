@@ -12,7 +12,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Items
+namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
 
             }
         }
-        
+
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
             Vector2 vector = drawInfo.Position + drawInfo.drawPlayer.Size * new Vector2(0.5f, 1f) - Main.screenPosition;
@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items
                 value.scale *= 2;
                 drawInfo.DrawDataCache[i] = value;
             }
-           // drawInfo.Position += new Vector2(20, 20);
+            // drawInfo.Position += new Vector2(20, 20);
         }
     }
 }

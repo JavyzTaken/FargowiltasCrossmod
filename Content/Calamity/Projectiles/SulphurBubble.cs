@@ -1,6 +1,6 @@
 ﻿using CalamityMod.Projectiles.Magic;
-using FargowiltasCrossmod.Content.Calamity.Items;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

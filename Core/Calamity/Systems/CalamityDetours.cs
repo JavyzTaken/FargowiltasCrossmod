@@ -27,6 +27,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamityDetours : ModSystem
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return FargowiltasCrossmod.EnchantLoadingEnabled;
+        }
         public override void Load()
         {
             IL_Player.PickTile += ShootDaggersBreak;
@@ -147,7 +151,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 );
                 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
             }
@@ -168,7 +172,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MonoModHooks.DumpIL(ModContent.GetInstance<FargowiltasCrossmod>(), il);
             }
