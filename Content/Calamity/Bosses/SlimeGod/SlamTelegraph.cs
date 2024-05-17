@@ -116,8 +116,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            //Main.spriteBatch.End();
+            //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
             ManagedShader shader = ShaderManager.GetShader("FargowiltasSouls.Vertex_ArcTelegraph");
 
@@ -131,19 +131,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 shader.TrySetParameter("mainColor", Color.Lerp(Color.Lavender, Color.Purple, 0.7f));
             }
 
-            shader.Apply();
+            //shader.Apply();
 
-            VertexStrip vertexStrip = new();
+            //VertexStrip vertexStrip = new();
             List<Vector2> positions = new();
-            List<float> rotations = new();
+            //List<float> rotations = new();
             for (float i = 0; i < 1; i += 0.005f)
             {
                 positions.Add(Projectile.rotation.ToRotationVector2() * Length + Projectile.Center + Projectile.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * Width * (-0.5f + i));
-                rotations.Add(Projectile.rotation + MathHelper.PiOver2);
+                //rotations.Add(Projectile.rotation + MathHelper.PiOver2);
             }
-            vertexStrip.PrepareStrip(positions.ToArray(), rotations.ToArray(), ColorFunction, WidthFunction, -Main.screenPosition, includeBacksides: true);
-            vertexStrip.DrawTrail();
-            Main.spriteBatch.ExitShaderRegion();
+            PrimitiveRenderer.RenderTrail(positions, new(WidthFunction, ColorFunction, Shader: shader), 30);
+            //vertexStrip.PrepareStrip(positions.ToArray(), rotations.ToArray(), ColorFunction, WidthFunction, -Main.screenPosition, includeBacksides: true);
+            //vertexStrip.DrawTrail();
+            //Main.spriteBatch.ExitShaderRegion();
             return false;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
