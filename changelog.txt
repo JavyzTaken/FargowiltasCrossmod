@@ -10,6 +10,7 @@ Fixed several instances of Calamity drawing extra textures for enemies/bosses, u
 -Wall of Flesh
 -Destroyer
 -Brain of Cthulhu creepers
+Fixed Slime God contact damage not applying correctly during special attacks
 Fixed Slime God slam telegraphs not rendering
 Vanilla bosses now correctly refund summoning items
 Hardmode crate recipes now correctly use Hardmode crates
