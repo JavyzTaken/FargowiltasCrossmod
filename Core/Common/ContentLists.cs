@@ -26,8 +26,8 @@ namespace FargowiltasCrossmod.Core.Common
     public static class ContentLists
     {
         #region Items
-        public static List<int> ChampionTierFargoWeapons = new List<int>
-        {
+        public static List<int> ChampionTierFargoWeapons =
+        [
             ModContent.ItemType<EaterLauncher>(),
             ModContent.ItemType<FleshCannon>(),
             ModContent.ItemType<HellZone>(),
@@ -36,9 +36,9 @@ namespace FargowiltasCrossmod.Core.Common
             ModContent.ItemType<TheBigSting>(),
             ModContent.ItemType<ScientificRailgun>(),
             ModContent.ItemType<VortexMagnetRitual>()
-        };
-        public static List<int> AbomTierFargoWeapons = new List<int>
-        {
+        ];
+        public static List<int> AbomTierFargoWeapons =
+        [
             ModContent.ItemType<DragonBreath2>(),
             ModContent.ItemType<DestroyerGun2>(),
             ModContent.ItemType<GolemTome2>(),
@@ -47,11 +47,11 @@ namespace FargowiltasCrossmod.Core.Common
             ModContent.ItemType<RefractorBlaster2>(),
             ModContent.ItemType<NukeFishron>(),
             ModContent.ItemType<StaffOfUnleashedOcean>(),
-        };
+        ];
         #endregion
         #region NPCs
-        public static List<int> Champions = new List<int>
-        {
+        public static List<int> Champions =
+        [
             ModContent.NPCType<CosmosChampion>(),
             ModContent.NPCType<EarthChampion>(),
             ModContent.NPCType<LifeChampion>(),
@@ -61,10 +61,10 @@ namespace FargowiltasCrossmod.Core.Common
             ModContent.NPCType<TerraChampion>(),
             ModContent.NPCType<TimberChampion>(),
             ModContent.NPCType<WillChampion>()
-        };
+        ];
 
-        public static List<int> SolarEclipseEnemies = new List<int>
-        {
+        public static List<int> SolarEclipseEnemies =
+        [
             NPCID.Eyezor,
             NPCID.Frankenstein,
             NPCID.SwampThing,
@@ -81,9 +81,9 @@ namespace FargowiltasCrossmod.Core.Common
             NPCID.DrManFly,
             NPCID.Nailhead,
             NPCID.Psycho
-        };
-        public static List<int> PumpkinMoonEnemies = new List<int>
-        {
+        ];
+        public static List<int> PumpkinMoonEnemies =
+        [
             NPCID.Scarecrow1, NPCID.Scarecrow2, NPCID.Scarecrow3, NPCID.Scarecrow4, NPCID.Scarecrow5,
             NPCID.Scarecrow6, NPCID.Scarecrow7, NPCID.Scarecrow8, NPCID.Scarecrow9, NPCID.Scarecrow10,
             NPCID.Splinterling,
@@ -92,9 +92,9 @@ namespace FargowiltasCrossmod.Core.Common
             NPCID.HeadlessHorseman,
             NPCID.MourningWood,
             NPCID.Pumpking
-        };
-        public static List<int> FrostMoonEnemies = new List<int>
-        {
+        ];
+        public static List<int> FrostMoonEnemies =
+        [
             NPCID.PresentMimic,
             NPCID.Flocko,
             NPCID.GingerbreadMan,
@@ -107,9 +107,9 @@ namespace FargowiltasCrossmod.Core.Common
             NPCID.Everscream,
             NPCID.SantaNK1,
             NPCID.IceQueen
-        };
-        public static List<int> SandstormEnemies = new List<int>
-        {
+        ];
+        public static List<int> SandstormEnemies =
+        [
             NPCID.SandElemental,
             NPCID.DuneSplicerHead,
             NPCID.Tumbleweed,
@@ -118,7 +118,7 @@ namespace FargowiltasCrossmod.Core.Common
             NPCID.FlyingAntlion,
             NPCID.GiantFlyingAntlion,
             NPCID.SandShark, NPCID.SandsharkCorrupt, NPCID.SandsharkCrimson, NPCID.SandsharkHallow
-        };
+        ];
         #endregion
         #region Projectiles
         #endregion

@@ -134,7 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             //shader.Apply();
 
             //VertexStrip vertexStrip = new();
-            List<Vector2> positions = new();
+            List<Vector2> positions = [];
             //List<float> rotations = new();
             for (float i = 0; i < 1; i += 0.005f)
             {

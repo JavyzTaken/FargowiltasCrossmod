@@ -555,7 +555,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             void SwitchVariant()
             {
-                List<Variant> variantList = new List<Variant>() { Variant.Vanilla };
+                List<Variant> variantList = [Variant.Vanilla];
                 if (Calamity)
                 {
                     variantList.Add(Variant.Calamity);

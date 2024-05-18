@@ -43,8 +43,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public static int CrimsonGodType => ModContent.NPCType<CrimulanPaladin>();
         public static int CorruptionGodType => ModContent.NPCType<EbonianPaladin>();
 
-        public static List<int> SlimesToKill = new List<int>
-        {
+        public static List<int> SlimesToKill =
+        [
             CrimsonGodType,
             CorruptionGodType,
             ModContent.NPCType<CorruptSlimeSpawn>(),
@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             ModContent.NPCType<CorruptSlimeSpawn2>(),
             ModContent.NPCType<SplitCrimulanPaladin>(),
             ModContent.NPCType<SplitEbonianPaladin>(),
-        };
+        ];
 
 
         public bool AttachToCrimson = WorldGen.crimson; //start off with the current world evil
@@ -77,12 +77,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             MettatonHeart,
             SpinDash,
         }
-        public List<int> AttackCycle = new List<int>
-        {
+        public List<int> AttackCycle =
+        [
             (int)Attacks.Drift,
             (int)Attacks.MettatonHeart,
             (int)Attacks.SpinDash
-        };
+        ];
         #endregion
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {

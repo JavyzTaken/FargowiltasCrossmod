@@ -902,6 +902,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     {
                         recipe.AddIngredient(ItemID.SoulofNight, 3);
                     }
+                    if (recipe.HasResult<MechLure>())
+                    {
+                        if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
+                        {
+                            recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
+                        }
+                        if (recipe.RemoveTile(TileID.MythrilAnvil))
+                        {
+                            recipe.AddTile(TileID.Anvils);
+                        }
+                    }
                     if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
                     {
                         recipe.AddIngredient<DivineGeode>(5);
@@ -914,13 +925,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     {
                         recipe.AddIngredient<AuricBar>(2);
                     }
-                    List<int> Tier2Souls = new List<int>
-                    {
+                    List<int> Tier2Souls =
+                    [
                         ItemType<TerrariaSoul>(),
                         ItemType<UniverseSoul>(),
                         ItemType<DimensionSoul>(),
                         ItemType<MasochistSoul>()
-                    };
+                    ];
 
                     if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
                     {

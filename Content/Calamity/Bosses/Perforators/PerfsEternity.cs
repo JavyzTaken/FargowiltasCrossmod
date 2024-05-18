@@ -332,7 +332,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     return theyworm;
 
                 }
-                List<int> possibilities = new List<int>() { 1 };
+                List<int> possibilities = [1];
                 if (npc.GetLifePercent() <= 0.95f)
                 {
                     possibilities.Add(2);

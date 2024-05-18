@@ -877,10 +877,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 entity.lifeMax = 25000000;
             }
         }
-        public static List<int> PierceResistExclude = new List<int>
-        {
+        public static List<int> PierceResistExclude =
+        [
             ModContent.ProjectileType<SproutingAcorn>()
-        };
+        ];
         public void NullCoiledDamage(NPC npc, NPC.HitModifiers modifiers)
         {
             if (Main.npc.Count(n => n.active && n.type == npc.type && n.Distance(npc.Center) < npc.width * 0.75) > 4)

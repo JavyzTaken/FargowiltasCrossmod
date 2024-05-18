@@ -111,12 +111,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ShardSweep,
             ShardStorm
         };
-        private List<Attacks> AttackChoices = new List<Attacks>
-        {
+        private List<Attacks> AttackChoices =
+        [
             //Attacks.HomingShards,
             Attacks.ShardSweep,
             Attacks.ShardStorm
-        };
+        ];
 
         const int chainTime = IceChain.ActiveTime;
         const int chainStartTime = 62;

@@ -168,20 +168,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             FrostFlares,
             IceStar
         };
-        public static List<Attacks> SetupAttacks = new List<Attacks>
-        {
+        public static List<Attacks> SetupAttacks =
+        [
             Attacks.PredictiveToss,
             Attacks.FrostFlares,
             Attacks.IceStar
-        };
-        public static List<Attacks> FollowupAttacks = new List<Attacks>
-        {
+        ];
+        public static List<Attacks> FollowupAttacks =
+        [
             Attacks.PawCharge,
             Attacks.IceShotgun,
             Attacks.IceArrows,
             Attacks.Blizzard,
             Attacks.TridentToss
-        };
+        ];
         public static Queue<Attacks> SetupAttackQueue = new Queue<Attacks>();
         public static Queue<Attacks> FollowupAttackQueue = new Queue<Attacks>();
 

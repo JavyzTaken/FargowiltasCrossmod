@@ -113,22 +113,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
-        private static List<int> SuffocationImmune = new List<int>
-        {
+        private static List<int> SuffocationImmune =
+        [
             ModContent.NPCType<ShockstormShuttle>(),
             ModContent.NPCType<Sunskater>(),
             ModContent.NPCType<AeroSlime>(),
             ModContent.NPCType<RepairUnitCritter>(),
 
 
-        };
-        private static List<int> ClippedWingsImmune = new List<int>
-        {
+        ];
+        private static List<int> ClippedWingsImmune =
+        [
             ModContent.NPCType<BrimstoneHeart>(),
             ModContent.NPCType<SupremeCataclysm>(),
             ModContent.NPCType<SupremeCatastrophe>(),
 
-        };
+        ];
         public override void SetStaticDefaults()
         {
 
@@ -320,27 +320,27 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 #endregion
                 #region BRBalance
-                List<int> squirrelParts = new List<int>
-                {
+                List<int> squirrelParts =
+                [
                     ModContent.NPCType<TrojanSquirrelArms>(),
                     ModContent.NPCType<TrojanSquirrel>(),
                     ModContent.NPCType<TrojanSquirrelHead>(),
                     ModContent.NPCType<TrojanSquirrelLimb>(),
                     ModContent.NPCType<TrojanSquirrelPart>(),
-                };
-                List<int> KingSlime = new List<int>
-                {
+                ];
+                List<int> KingSlime =
+                [
                     NPCID.KingSlime,
                     NPCID.BlueSlime,
                     NPCID.SlimeSpiked,
                     ModContent.NPCType<KingSlimeJewel>()
-                };
-                List<int> Eater = new List<int> { NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail };
-                List<int> SlimeGod = new List<int> { ModContent.NPCType<EbonianPaladin>(), ModContent.NPCType<SplitEbonianPaladin>(),
+                ];
+                List<int> Eater = [NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail];
+                List<int> SlimeGod = [ ModContent.NPCType<EbonianPaladin>(), ModContent.NPCType<SplitEbonianPaladin>(),
                     ModContent.NPCType<CrimulanPaladin>(), ModContent.NPCType<SplitCrimulanPaladin>(),
-                    };
-                List<int> bossworms = new List<int>
-                {
+                    ];
+                List<int> bossworms =
+                [
 
                     ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
                     NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
@@ -350,15 +350,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),
                     ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>(),
 
-                };
-                List<int> minionworms = new List<int>()
-                {
+                ];
+                List<int> minionworms =
+                [
                     ModContent.NPCType<DesertNuisanceHead>(), ModContent.NPCType<DesertNuisanceBody>(), ModContent.NPCType<DesertNuisanceTail>(),
                     ModContent.NPCType<PerforatorHeadSmall>(),ModContent.NPCType<PerforatorBodySmall>(), ModContent.NPCType<PerforatorTailSmall>(),
                     ModContent.NPCType<PerforatorHeadMedium>(),ModContent.NPCType<PerforatorBodyMedium>(), ModContent.NPCType<PerforatorTailMedium>(),
                     ModContent.NPCType<PerforatorHeadLarge>(),ModContent.NPCType<PerforatorBodyLarge>(), ModContent.NPCType<PerforatorTailLarge>(),
 
-                };
+                ];
                 if (BossRushEvent.BossRushActive)
                 {
                     if (!npc.boss && npc.type != ModContent.NPCType<CreeperGutted>())
@@ -489,15 +489,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return DropHelper.If(lambda, ui, dec);
         }
 
-        public static List<int> DropsBoundingPotion = new()
-        {
+        public static List<int> DropsBoundingPotion =
+        [
             ModContent.NPCType<AeroSlime>(),
             ModContent.NPCType<EbonianBlightSlime>(),
             ModContent.NPCType<CrimulanBlightSlime>(),
             NPCID.SpikedJungleSlime
-        };
-        public static List<int> DropsCalciumPotion = new()
-        {
+        ];
+        public static List<int> DropsCalciumPotion =
+        [
             NPCID.Skeleton,
             NPCID.ArmoredSkeleton,
             NPCID.SkeletonTopHat,
@@ -505,60 +505,60 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             NPCID.SkeletonAlien,
             NPCID.BigSkeleton,
             NPCID.SmallSkeleton,
-        };
-        public static List<int> DropsPhotosynthesisPotion = new()
-        {
+        ];
+        public static List<int> DropsPhotosynthesisPotion =
+        [
             NPCID.AngryNimbus,
             ModContent.NPCType<ThiccWaifu>(), //fuck you fabsol
             NPCID.WyvernHead
-        };
-        public static List<int> DropsShadowPotion = new()
-        {
+        ];
+        public static List<int> DropsShadowPotion =
+        [
             ModContent.NPCType<Scryllar>(),
             ModContent.NPCType<SoulSlurper>(),
             ModContent.NPCType<HeatSpirit>(),
             ModContent.NPCType<DespairStone>(),
             ModContent.NPCType<CalamityEye>(),
             ModContent.NPCType<RenegadeWarlock>()
-        };
-        public static List<int> DropsSoaringPotion = new()
-        {
+        ];
+        public static List<int> DropsSoaringPotion =
+        [
             ModContent.NPCType<EutrophicRay>(),
             ModContent.NPCType<GhostBell>(),
             ModContent.NPCType<SeaFloaty>(),
-        };
-        public static List<int> DropsSulphurskinPotion = new()
-        {
+        ];
+        public static List<int> DropsSulphurskinPotion =
+        [
             ModContent.NPCType<AquaticUrchin>(),
             ModContent.NPCType<Sulflounder>(),
             ModContent.NPCType<Gnasher>(),
             ModContent.NPCType<Toxicatfish>(),
             ModContent.NPCType<Trasher>(),
-        };
-        public static List<int> DropsTeslaPotion = new()
-        {
+        ];
+        public static List<int> DropsTeslaPotion =
+        [
             NPCID.GreenJellyfish,
             ModContent.NPCType<BlindedAngler>(),
             ModContent.NPCType<ShockstormShuttle>(),
-        };
-        public static List<int> DropsZenPotion = new()
-        {
+        ];
+        public static List<int> DropsZenPotion =
+        [
             ModContent.NPCType<Atlas>(),
             ModContent.NPCType<AstralachneaGround>(),
             ModContent.NPCType<AstralachneaWall>(),
             ModContent.NPCType<SightseerCollider>(),
             ModContent.NPCType<StellarCulex>(),
             ModContent.NPCType<AstralSlime>()
-        };
-        public static List<int> DropsZergPotion = new()
-        {
+        ];
+        public static List<int> DropsZergPotion =
+        [
             ModContent.NPCType<Hadarian>(),
             ModContent.NPCType<SightseerSpitter>(),
             ModContent.NPCType<SightseerCollider>(),
             ModContent.NPCType<StellarCulex>(),
             ModContent.NPCType<FusionFeeder>(),
             ModContent.NPCType<MantisShrimp>()
-        };
+        ];
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
@@ -1160,8 +1160,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
         }
         public bool droppedSummon = false;
-        public static List<int> HyperNPCs = new List<int>()
-        {
+        public static List<int> HyperNPCs =
+        [
             ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrel>(),
             NPCID.KingSlime, NPCID.EyeofCthulhu, NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
             NPCID.BrainofCthulhu, ModContent.NPCType<BrainIllusion>(), NPCID.Creeper, NPCID.QueenBee, ModContent.NPCType<RoyalSubject>(),
@@ -1171,7 +1171,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             NPCID.TheDestroyerTail, NPCID.Probe, NPCID.Plantera, NPCID.PlanterasHook, NPCID.PlanterasTentacle, NPCID.GolemFistLeft,
             NPCID.GolemFistRight, NPCID.GolemHead, NPCID.Golem, NPCID.GolemHeadFree,
             NPCID.CultistBoss, NPCID.MoonLordCore, NPCID.MoonLordFreeEye, NPCID.MoonLordHand, NPCID.MoonLordHead
-        };
+        ];
         public override bool PreAI(NPC npc)
         {
             #region SummonDrops
@@ -1533,8 +1533,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 npc.dontTakeDamage = true;
             }
             //make destroyer not invincible and normal scale
-            List<int> bossworms = new List<int>
-                {
+            List<int> bossworms =
+                [
 
                     ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
                     NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
@@ -1544,7 +1544,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     /*ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),*/
                     ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>(),
 
-                };
+                ];
             if (bossworms.Contains(npc.type) && WorldSavingSystem.EternityMode)
             {
                 Mod calamity = ModCompatibility.Calamity.Mod;
