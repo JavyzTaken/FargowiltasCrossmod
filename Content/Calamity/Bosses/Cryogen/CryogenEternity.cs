@@ -135,8 +135,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ref float attackTimer = ref npc.localAI[1];
             ref float data3 = ref npc.localAI[2];
 
-            
 
+            npc.damage = npc.defDamage;
             npc.scale = 1.5f;
             npc.dontTakeDamage = false;
             if (shieldDrawCounter == 0)
