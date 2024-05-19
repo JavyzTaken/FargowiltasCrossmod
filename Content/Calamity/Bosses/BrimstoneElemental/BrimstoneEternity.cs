@@ -89,7 +89,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) 
                 return true;
             //return true;
-            
+
+            npc.damage = npc.defDamage;
 
             //useful values
             Player target = Main.player[npc.target];

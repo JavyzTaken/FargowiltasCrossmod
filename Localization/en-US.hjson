@@ -5,8 +5,10 @@ Mods: {
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''
-				Toggles [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
-				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
+				Enables [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
+
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.  [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 
 				-Deviantt provides a starter pack
@@ -25,8 +27,10 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
-				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
-				Expanded AI for some vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses. [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+				Eternity-Death only: Expands AI for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 
 				-Deviantt provides a starter pack
