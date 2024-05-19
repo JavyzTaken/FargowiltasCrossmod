@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                     if (DLCUtils.HostCheck)
                         for (int i = -10; i < 11; i++)
                         {
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), target.Center + new Vector2(i * 150, -800).RotatedBy(angle), Vector2.Zero, ProjectileID.FairyQueenLance, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: MathHelper.PiOver2 + angle, ai1: 0.1f * i);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), target.Center + new Vector2(i * 150, -800).RotatedBy(angle), Vector2.Zero, ProjectileID.FairyQueenLance, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: MathHelper.PiOver2 + angle, ai1: 0.1f * i);
                         }
                 }
                 if (timer >= 550)

@@ -196,7 +196,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 if (ai_Timer % (dashTime / 2) == 0 && ai_Timer < dashTime)
                 {
                     if (DLCUtils.HostCheck)
-                        FargoSoulsUtil.XWay(8, npc.GetSource_FromThis(), npc.Center, ModContent.ProjectileType<BloodScythe>(), 1.5f, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        FargoSoulsUtil.XWay(8, npc.GetSource_FromThis(), npc.Center, ModContent.ProjectileType<BloodScythe>(), 1.5f, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
                 ai_Timer += 1;
                 if (ai_Timer == dashTime && Vector2.Distance(npc.position, Main.player[npc.target].position) < 200f)

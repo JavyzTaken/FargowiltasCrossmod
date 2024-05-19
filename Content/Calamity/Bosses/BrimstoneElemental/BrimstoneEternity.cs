@@ -223,7 +223,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     if (DLCUtils.HostCheck)
                     {
                         NetSync(npc);
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 4).RotatedBy(MathHelper.ToRadians((int)data)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 4).RotatedBy(MathHelper.ToRadians((int)data)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
                     dontBasicAttack = true;
                     if ((timer-20) % 60 == 0)
@@ -232,7 +232,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         if (DLCUtils.HostCheck)
                         {
                             for (int i = -2; i < 3; i++)
-                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(i * 5)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(i * 5)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                             NetSync(npc);
                         }
                     }
@@ -257,7 +257,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                                 if (DLCUtils.HostCheck)
                                 {
                                     if (angle < data * npc.spriteDirection - 10 || angle > data * npc.spriteDirection + 10)
-                                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                                     
                                 }
                             }
@@ -269,7 +269,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         SoundEngine.PlaySound(SoundID.Item20, eyePos);
                         if (DLCUtils.HostCheck)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 8), ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 8), ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                             
                         }
                     }
@@ -380,7 +380,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         for (int i = 0; i < 7; i++)
                         {
                             Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-30, 30)));
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, -1, vel.X, vel.Y);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, -1, vel.X, vel.Y);
                         }
                     }
                 }
@@ -391,9 +391,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 60; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 10);
                     }
                 }
                 if (timer > 60)
@@ -414,7 +414,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     for (int i = 0; i < 7; i++)
                     {
                         Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-30, 30)));
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, -1, vel.X, vel.Y);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, -1, vel.X, vel.Y);
                     }
                 }
                 if (phase == 2 && timer == 620)
@@ -424,9 +424,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 60; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 10);
                     }
                 }
                 
@@ -463,7 +463,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath39, npc.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 5);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 5);
                 }
                 if (timer >= 140)
                 {
@@ -490,7 +490,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     SoundEngine.PlaySound(SoundID.NPCDeath39, npc.Center);
                     SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/BloodflareRangerActivation"), npc.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 5);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 5);
                     
                 }
                 if (timer >= 140)
@@ -516,9 +516,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 16; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 16 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 16 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 10);
                     }
                 }
                 else if (phase == 0)
@@ -526,7 +526,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     if (DLCUtils.HostCheck)
                         for (int i = 0; i < 5; i++)
                         {
-                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye * (i / 2f + 3), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye * (i / 2f + 3), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                 }
@@ -540,7 +540,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         {
                             int angle = i * 10 - 70;
                             if (angle < safeangle * npc.spriteDirection - 10 || angle > safeangle * npc.spriteDirection + 10)
-                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
                     }
                 }
@@ -556,9 +556,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 14; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 10);
                     }
                 }
                 else
@@ -566,7 +566,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     if (DLCUtils.HostCheck)
                         for (int i = 0; i < 4; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians((i - 1) * 10 - 5f)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians((i - 1) * 10 - 5f)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                 }
@@ -582,11 +582,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 7; i++)
                         {
-                            Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 5, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 5, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                             proj.timeLeft = Main.rand.Next(80, 100);
                             proj.netUpdate = true;
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 10);
                     }
                 }
                 else
@@ -596,7 +596,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 2; i++)
                         {
-                            Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-50, 50))) * 10, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-50, 50))) * 10, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                             proj.timeLeft = 35;
                             proj.netUpdate = true;
                         }
@@ -614,24 +614,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
                         for (int i = 0; i < 12; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 12 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 12 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i + 18)) * 2, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i + 18)) * 2, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: 10);
                     }
                 }
                 else
                 {
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye * 4, ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye * 4, ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
             }
             //laser
@@ -642,7 +642,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     int side = ((offset.Y > 0 && target.Center.X > npc.Center.X) || (offset.Y < 0 && target.Center.X < npc.Center.X)) ? -1 : 1;
 
                     float rotation = MathHelper.PiOver2 * (npc.Center.X > target.Center.X ? 1 : -1) + MathHelper.ToRadians(60 * -side);
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimBeam>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, -1, npc.whoAmI, side, rotation);
+                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimBeam>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, -1, npc.whoAmI, side, rotation);
                 }
             }
             if (smolAttack != 0) smolAttack = 0;

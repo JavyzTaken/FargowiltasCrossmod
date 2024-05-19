@@ -263,8 +263,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 timer++;
                 if (timer % 10 == 0 && DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(-30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: -1);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, toTarget.RotatedBy(MathHelper.ToRadians(-30)) * 15, ModContent.ProjectileType<CurvingCursedFlames>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: 1);
                 }
                 if (!NPC.AnyNPCs(ModContent.NPCType<DankCreeper>()))
                 {
@@ -335,7 +335,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     if (timer % 30 == 0)
                     {
                         if (DLCUtils.HostCheck)
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<ShadeNimbusHostile>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<ShadeNimbusHostile>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
                 }
                 if (attack == 4)
@@ -510,7 +510,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (timer == time / 2 && npc.ai[1] == 1)
                 {
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
             }
             npc.velocity = toTarget * speed;
@@ -552,7 +552,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (timer % 5 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int type = ModContent.ProjectileType<ShadeNimbusHostile>();
-                    int damage = FargoSoulsUtil.ScaledProjectileDamage(npc.damage);
+                    int damage = FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage);
                     Vector2 cloudSpawnPos = new Vector2(npc.position.X + Main.rand.Next(npc.width), npc.position.Y + Main.rand.Next(npc.height));
                     Projectile.NewProjectile(npc.GetSource_FromAI(), cloudSpawnPos, Vector2.Zero, type, damage, 0, Main.myPlayer, 11f);
                 }

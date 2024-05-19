@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                 {
                     timer = 0;
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<HomingGasBulb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<HomingGasBulb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
             }
             else
@@ -64,7 +64,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                         {
                             for (int i = 0; i < 15; i++)
                             {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, Main.rand.Next(5, 10)).RotatedBy(MathHelper.ToRadians(360 / 15f * i)), ModContent.ProjectileType<SporeGasPlantera>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, Main.rand.Next(5, 10)).RotatedBy(MathHelper.ToRadians(360 / 15f * i)), ModContent.ProjectileType<SporeGasPlantera>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage / 2), 0);
                             }
                         }
                     }

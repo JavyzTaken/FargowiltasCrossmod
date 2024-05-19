@@ -366,7 +366,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (ai_Timer > 60 && ai_Timer % 30 == 0)
             {
                 if (DLCUtils.HostCheck)
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer);
             }
             if (ai_Timer > 30 && ai_Timer % 40 == 0 && NPC.CountNPCS(ModContent.NPCType<CrabShroom>()) < 8) //maximum of 6 so you don't enter the CBT shroom dungeon
             {
@@ -389,8 +389,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                         Dust.NewDustDirect(npc.TopLeft, 6, npc.height, DustID.MushroomSpray, Alpha: 200, Scale: 2).noGravity = true;
                     if (DLCUtils.HostCheck)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0).RotatedBy(MathHelper.ToRadians(-30)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(7, 0).RotatedBy(MathHelper.ToRadians(-30)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer);
                     }
                 }
                 else if (npc.velocity.X > 0)
@@ -399,8 +399,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                         Dust.NewDustDirect(npc.TopRight, -6, npc.height, DustID.MushroomSpray, Alpha: 200, Scale: 2).noGravity = true;
                     if (DLCUtils.HostCheck)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-7, 0), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-7, 0).RotatedBy(MathHelper.ToRadians(30)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-7, 0), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-7, 0).RotatedBy(MathHelper.ToRadians(30)), ModContent.ProjectileType<CalamityMod.Projectiles.Boss.MushBomb>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer);
                     }
                 }
 
@@ -474,7 +474,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             if (enrageJumping && DLCUtils.HostCheck)
             {
-                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), Vector2.Zero, ModContent.ProjectileType<ShroomGas>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.position + new Vector2(Main.rand.Next(0, npc.width), Main.rand.Next(0, npc.height)), Vector2.Zero, ModContent.ProjectileType<ShroomGas>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
             }
             if (Collision.SolidCollision(npc.BottomLeft, npc.width, 10) && ai_Timer > 20 && target.position.Y < npc.BottomLeft.Y && npc.velocity.Y >= 0)
             {
@@ -493,8 +493,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 {
                     if (DLCUtils.HostCheck)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 10);
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -10);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: 10);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: -10);
                     }
                 }
                 if (type == 2)
@@ -502,7 +502,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     for (int i = 0; i < 10; i++)
                     {
                         if (DLCUtils.HostCheck)
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(Main.rand.Next(0, npc.width), -5), new Vector2(Main.rand.NextFloat(), Main.rand.NextFloat()) / 5, ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(Main.rand.Next(0, npc.width), -5), new Vector2(Main.rand.NextFloat(), Main.rand.NextFloat()) / 5, ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
                 }
             }

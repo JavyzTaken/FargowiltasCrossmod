@@ -390,7 +390,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             int type = i % 2 == 0 ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
                             float speed = Main.rand.NextFloat(2f, 2.6f);
                             Vector2 dir = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * i / ShotCount).RotatedByRandom(MathHelper.TwoPi / (ShotCount * 4));
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 3f, Main.myPlayer);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
                         }
                     }
                     attack = Main.rand.NextFromCollection(AttackCycle);
@@ -449,7 +449,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                     crim = !crim;
                                 }
                                 int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 3f, Main.myPlayer);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
                             }
                         }
                     }
@@ -492,7 +492,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                 crim = !crim;
                             }
                             int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 3f, Main.myPlayer);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
                         }
                     }
                 }
@@ -538,7 +538,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             float speed = 3.25f;
                             bool crim = timer % (shotDelay * 2) >= shotDelay;
                             int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 3f, Main.myPlayer);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
                         }
                     }
 
