@@ -118,7 +118,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;
-            Main.NewText(npc.damage);
             if (CalamityGlobalNPC.slimeGod < 0 || CalamityGlobalNPC.slimeGod >= Main.maxNPCs)
             {
                 return true;
