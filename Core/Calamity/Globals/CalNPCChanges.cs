@@ -1100,27 +1100,30 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.Calamity().ZoneSulphur)
+            if (WorldSavingSystem.EternityMode)
             {
-                pool[NPCID.PigronCorruption] = 0.0001f;
-                pool[NPCID.PigronCrimson] = 0.0001f;
-                pool[NPCID.PigronHallow] = 0.0001f;
-                pool[NPCID.IchorSticker] = 0;
-                for (int i = 0; i < ContentLists.SandstormEnemies.Count; i++)
+                if (spawnInfo.Player.Calamity().ZoneSulphur)
                 {
-                    pool[ContentLists.SandstormEnemies[i]] = 0;
+                    pool[NPCID.PigronCorruption] = 0.0001f;
+                    pool[NPCID.PigronCrimson] = 0.0001f;
+                    pool[NPCID.PigronHallow] = 0.0001f;
+                    pool[NPCID.IchorSticker] = 0;
+                    for (int i = 0; i < ContentLists.SandstormEnemies.Count; i++)
+                    {
+                        pool[ContentLists.SandstormEnemies[i]] = 0;
+                    }
+                    if (AcidRainEvent.AcidRainEventIsOngoing)
+                    {
+                        pool[NPCID.PigronCorruption] = 0f;
+                        pool[NPCID.PigronCrimson] = 0f;
+                        pool[NPCID.PigronHallow] = 0f;
+                    }
                 }
-                if (AcidRainEvent.AcidRainEventIsOngoing)
+                if (!Main.hardMode && spawnInfo.Player.Calamity().ZoneSunkenSea)
                 {
-                    pool[NPCID.PigronCorruption] = 0f;
-                    pool[NPCID.PigronCrimson] = 0f;
-                    pool[NPCID.PigronHallow] = 0f;
+                    pool[NPCID.Mimic] = 0f;
+                    pool[NPCID.DuneSplicerHead] = 0f;
                 }
-            }
-            if (!Main.hardMode && spawnInfo.Player.Calamity().ZoneSunkenSea)
-            {
-                pool[NPCID.Mimic] = 0f;
-                pool[NPCID.DuneSplicerHead] = 0f;
             }
         }
         public override bool InstancePerEntity => true;
