@@ -23,7 +23,7 @@ namespace FargowiltasCrossmod.Core.Common.Globals
         public override bool InstancePerEntity => true;
 
         internal static int currentShop;
-        internal static readonly List<NPCShop> ModShops = new();
+        internal static readonly List<NPCShop> ModShops = [];
 
         public static void CycleShop()
         {

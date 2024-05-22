@@ -51,7 +51,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
                     {
                         timer = 0;
                         if (DLCUtils.HostCheck && Collision.CanHitLine(npc.Center, 1, 1, target.Center, 1, 1))
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
                 }
             }

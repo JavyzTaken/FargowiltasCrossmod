@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
                     for (int i = -2; i < 3; i++)
                     {
                         if (i != 0)
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(7 * i) - MathHelper.PiOver2) * 7, ProjectileID.DeathLaser, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(7 * i) - MathHelper.PiOver2) * 7, ProjectileID.DeathLaser, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage / 2), 0);
                     }
             }
             return base.SafePreAI(npc);

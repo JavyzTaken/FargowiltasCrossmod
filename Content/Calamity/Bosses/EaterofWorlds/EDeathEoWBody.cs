@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
 
                     timer = 0;
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.CursedFlameHostile, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.CursedFlameHostile, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
             }
             return base.SafePreAI(npc);

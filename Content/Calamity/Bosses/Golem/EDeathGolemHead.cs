@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
             {
                 if (DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: target.Center.X, ai1: target.Center.Y);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: target.Center.X, ai1: target.Center.Y);
                 }
             }
             return base.SafePreAI(npc);

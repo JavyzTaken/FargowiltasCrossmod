@@ -12,11 +12,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
     public class PacketManager : ModSystem
     {
 
-        internal static Dictionary<string, BaseDLCPacket> RegisteredPackets = new();
+        internal static Dictionary<string, BaseDLCPacket> RegisteredPackets = [];
 
         public override void OnModLoad()
         {
-            RegisteredPackets = new();
+            RegisteredPackets = [];
             foreach (Type t in AssemblyManager.GetLoadableTypes(Mod.Code))
             {
                 if (!t.IsSubclassOf(typeof(BaseDLCPacket)) || t.IsAbstract)

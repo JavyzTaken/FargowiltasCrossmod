@@ -332,7 +332,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     return theyworm;
 
                 }
-                List<int> possibilities = new List<int>() { 1 };
+                List<int> possibilities = [1];
                 if (npc.GetLifePercent() <= 0.95f)
                 {
                     possibilities.Add(2);
@@ -425,7 +425,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         float shotSpeed = 6f;
                         Vector2 shotVel = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.5f);
-                        int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + shotVel * npc.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + shotVel * npc.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         /*
                         if (p != Main.maxProjectiles)
                         {
@@ -506,7 +506,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         SoundEngine.PlaySound(SoundID.NPCHit20, npc.Center);
                         if (DLCUtils.HostCheck)
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center + new Vector2(0, -100).RotatedBy(MathHelper.ToRadians(i * 3)), new Vector2(0, -8).RotatedBy(MathHelper.ToRadians(i * 3)), ModContent.ProjectileType<ToothBall>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center + new Vector2(0, -100).RotatedBy(MathHelper.ToRadians(i * 3)), new Vector2(0, -8).RotatedBy(MathHelper.ToRadians(i * 3)), ModContent.ProjectileType<ToothBall>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
 
                 }
@@ -552,7 +552,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     Vector2 off = new Vector2(0, -70).RotatedBy(Main.rand.NextFloat(-0.9f, 0.9f));
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + off, (npc.Center + off).AngleFrom(npc.Center).ToRotationVector2() * 10, ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + off, (npc.Center + off).AngleFrom(npc.Center).ToRotationVector2() * 10, ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
 
                 }
                 if (npc.ai[2] > 3 && timer % 2 == 0)
@@ -562,7 +562,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     Vector2 shotVel = -Vector2.UnitY.RotatedBy(shotSide * MathHelper.Pi / 3f).RotatedByRandom(MathHelper.Pi / 8f);
                     if (DLCUtils.HostCheck)
                     {
-                        int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + shotVel * npc.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + shotVel * npc.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                         if (p != Main.maxProjectiles)
                         {
                             Main.projectile[p].extraUpdates = 1;
@@ -608,7 +608,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, npc.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
                 if (npc.ai[1] > 60)
                 {

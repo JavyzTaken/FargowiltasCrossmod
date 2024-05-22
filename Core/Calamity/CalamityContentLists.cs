@@ -41,8 +41,8 @@ namespace FargowiltasCrossmod.Core.Calamity
     {
 
         #region Items
-        public static List<int> RockItems = new List<int>
-        {
+        public static List<int> RockItems =
+        [
             ModContent.ItemType<Rock>(),
             ModContent.ItemType<EternitySoul>(),
             ModContent.ItemType<HentaiSpear>(),
@@ -57,10 +57,10 @@ namespace FargowiltasCrossmod.Core.Calamity
             ModContent.ItemType<MutantMask>(),
             ModContent.ItemType<FargoArrow>(),
             ModContent.ItemType<FargoBullet>(),
-        };
+        ];
 
-        public static List<int> CalBossSummons = new List<int>
-        {
+        public static List<int> CalBossSummons =
+        [
             ModContent.ItemType<DesertMedallion>(),
             ModContent.ItemType<DecapoditaSprout>(),
             ModContent.ItemType<Teratoma>(),
@@ -87,11 +87,11 @@ namespace FargowiltasCrossmod.Core.Calamity
             ModContent.ItemType<SandstormsCore>(),
             ModContent.ItemType<CausticTear>(),
             ModContent.ItemType<MartianDistressRemote>(),
-        };
+        ];
         #endregion
         #region NPCs
-        public static List<int> AcidRainEnemies = new List<int>
-        {
+        public static List<int> AcidRainEnemies =
+        [
             ModContent.NPCType<AcidEel>(),
             ModContent.NPCType<NuclearToad>(),
             ModContent.NPCType<Radiator>(),
@@ -105,12 +105,12 @@ namespace FargowiltasCrossmod.Core.Calamity
             ModContent.NPCType<GammaSlime>(),
             ModContent.NPCType<Mauler>(),
             ModContent.NPCType<NuclearTerror>(),
-        };
+        ];
         #endregion
         #region Buffs
         //excludes debuffs that are from projectiles attached to npcs
-        public static List<int> DoTDebuffs = new List<int>
-        {
+        public static List<int> DoTDebuffs =
+        [
             BuffID.Bleeding,
             BuffID.Poisoned,
             BuffID.OnFire,
@@ -167,7 +167,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             ModContent.BuffType<OriPoisonBuff>(),
             ModContent.BuffType<SolarFlareBuff>(),
 
-        };
+        ];
         #endregion
     }
 }

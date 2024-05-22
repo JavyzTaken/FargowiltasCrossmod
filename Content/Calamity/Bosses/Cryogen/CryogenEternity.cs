@@ -111,12 +111,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ShardSweep,
             ShardStorm
         };
-        private List<Attacks> AttackChoices = new List<Attacks>
-        {
+        private List<Attacks> AttackChoices =
+        [
             //Attacks.HomingShards,
             Attacks.ShardSweep,
             Attacks.ShardStorm
-        };
+        ];
 
         const int chainTime = IceChain.ActiveTime;
         const int chainStartTime = 62;
@@ -135,8 +135,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             ref float attackTimer = ref npc.localAI[1];
             ref float data3 = ref npc.localAI[2];
 
-            
 
+            npc.damage = npc.defDamage;
             npc.scale = 1.5f;
             npc.dontTakeDamage = false;
             if (shieldDrawCounter == 0)
@@ -193,14 +193,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     SoundEngine.PlaySound(CalamityMod.NPCs.Cryogen.Cryogen.ShieldRegenSound, npc.Center);
                     if (DLCUtils.HostCheck)
                     {
-                        Chains[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-149));
-                        Chains[1] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-90));
-                        Chains[2] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-31));
-                        Chains[3] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(31));
-                        Chains[4] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(90));
-                        Chains[5] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(149));
+                        Chains[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-149));
+                        Chains[1] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-90));
+                        Chains[2] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(-31));
+                        Chains[3] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(31));
+                        Chains[4] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(90));
+                        Chains[5] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<IceChain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: MathHelper.ToRadians(149));
 
-                        RitualProj = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<CryogenRitual>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, 0f, npc.whoAmI);
+                        RitualProj = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<CryogenRitual>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, 0f, npc.whoAmI);
                     }
                     DustExplode(npc);
                 }
@@ -246,7 +246,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                                         Vector2 offset = (Vector2.UnitY * npc.height / 2f).RotatedBy(MathHelper.TwoPi * i / 6f);
                                         Vector2 vel = (toPlayer).SafeNormalize(Vector2.Zero) * toPlayer.Length() / randSpeedMod;
                                         vel += Vector2.Normalize(offset) * randSpread;
-                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + offset, vel, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + offset, vel, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                                     }
                                 }
                             }
@@ -335,7 +335,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                                     Vector2 velDir = chainDir.RotatedBy(rotDir * totalRotation * progress);
                                     float speed = 1;
                                     Vector2 vel = velDir * speed;
-                                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: 1);
                                 }
                             }
                             attackTimer++;
@@ -355,15 +355,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                                 {
                                     for (int i = 0; i < 12; i++)
                                     {
-                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 1).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 1).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: 1);
                                     }
                                     for (int i = 0; i < 12; i++)
                                     {
-                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 3).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 3).RotatedBy(MathHelper.ToRadians(360f / 12 * i)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: 1);
                                     }
                                     for (int i = 0; i < 12; i++)
                                     {
-                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 2).RotatedBy(MathHelper.ToRadians(360f / 12 * i + 12)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: 1);
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 2).RotatedBy(MathHelper.ToRadians(360f / 12 * i + 12)), ModContent.ProjectileType<IceRain>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: 1);
                                     }
                                 }
                             }

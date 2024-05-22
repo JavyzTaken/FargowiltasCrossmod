@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
-        public List<int> HitBubble = new List<int>();
+        public List<int> HitBubble = [];
         public override bool InstancePerEntity => true;
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
