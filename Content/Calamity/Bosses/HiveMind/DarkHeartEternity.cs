@@ -24,6 +24,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<DarkHeart>());
 
+        /*
+
         public override void HitEffect(NPC npc, NPC.HitInfo hit)
         {
             if (!WorldSavingSystem.EternityMode) return;
@@ -148,5 +150,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             return false;
         }
+        */
     }
 }

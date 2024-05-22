@@ -611,6 +611,7 @@ Mods: {
 			SulphurBubble.DisplayName: Sulphur Bubble
 			VictideSpike.DisplayName: Victide Spike
 			GoldenShowerShot.DisplayName: Golden Shower Shot
+			HiveMindFiretrail.DisplayName: Hive Mind Firetrail
 		}
 
 		Buffs: {

@@ -113,7 +113,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (projectile.ModProjectile != null)
                 {
-                    typeof(SlimeBall).GetField("oil", FargoSoulsUtil.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
+                    typeof(SlimeBall).GetField("oil", LumUtils.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
                 }
             }
 

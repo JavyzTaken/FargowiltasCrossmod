@@ -1,11 +1,17 @@
-﻿using CalamityMod.NPCs.HiveMind;
+﻿using CalamityMod;
+using CalamityMod.NPCs;
+using CalamityMod.NPCs.HiveMind;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
@@ -16,12 +22,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DankCreeperEternity : GlobalNPC
+    public class DankCreeperEternity : EModeCalBehaviour
     {
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == ModContent.NPCType<DankCreeper>();
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<DankCreeper>());
         public override bool InstancePerEntity => true;
 
         public override void HitEffect(NPC npc, NPC.HitInfo hit)
@@ -32,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
-            entity.lifeMax = 250;
+            entity.lifeMax *= 1;
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {
@@ -45,6 +48,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
             if (!WorldSavingSystem.EternityMode) return;
+            if (npc.ai[3] == 1)
+                return;
             NPC owner = Main.npc[(int)npc.ai[0]];
             float maxRadians = MathHelper.Pi;
             if (owner.GetLifePercent() <= 0.9f)
@@ -54,21 +59,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             npc.ai[1] = Main.rand.NextFloat(0f, maxRadians);
 
         }
-        public override void OnKill(NPC npc)
-        {
-            if (!WorldSavingSystem.EternityMode) return;
-            Player target = Main.player[npc.target];
-            NPC owner = Main.npc[(int)npc.ai[0]];
-            if (owner != null && owner.active && DLCUtils.HostCheck && owner.GetGlobalNPC<HMEternity>().phase < 2)
-                Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, (target.Center + new Vector2(0, -400) - npc.Center) / 60, ModContent.ProjectileType<MovingCorruptCloud>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
-        }
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npc, npcLoot);
         }
+        public override bool PreKill(NPC npc)
+        {
+            return false; // Prevent from spawning rainclouds on death
+        }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (!WorldSavingSystem.EternityMode) return true;
+            if (npc.ai[3] == 1)
+                return true;
             Asset<Texture2D> t = TextureAssets.Chain10;
 
             NPC owner = Main.npc[(int)npc.ai[0]];
@@ -89,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             base.FindFrame(npc, frameHeight);
         }
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode)
             {
@@ -105,29 +108,45 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 return false;
             }
             Player target = Main.player[npc.target];
-            NPC owner = Main.npc[(int)npc.ai[0]];
-            if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>())
+            int hiveMind = CalamityGlobalNPC.hiveMind;
+            if (hiveMind < 0 || !Main.npc[hiveMind].TypeAlive<CalamityMod.NPCs.HiveMind.HiveMind>())
             {
                 npc.StrikeInstantKill();
                 return false;
             }
-            if (owner.GetGlobalNPC<HMEternity>().phase >= 2 && Main.rand.NextBool(300) && DLCUtils.HostCheck)
+            NPC owner = Main.npc[hiveMind];
+            if (npc.ai[3] == 1 || owner.ai[1] != 0)
             {
-                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
+                if (npc.ai[3] != 1)
+                    npc.velocity *= 0.2f;
+                npc.ai[3] = 1;
+                npc.velocity -= npc.DirectionTo(target.Center);
+                if (npc.Distance(target.Center) > 1200)
+                    npc.StrikeInstantKill();
+                return false;
             }
-            npc.velocity = Vector2.Lerp(npc.velocity, (owner.Center + new Vector2(-120, 0).RotatedBy(npc.ai[1]) - npc.Center).SafeNormalize(Vector2.Zero) * 10, 0.05f);
-            npc.ai[2]++;
-            float maxRadians = MathHelper.Pi;
-            if (owner.GetLifePercent() <= 0.9f)
+            if (npc.ai[2] == 0)
             {
-                maxRadians = MathHelper.TwoPi;
+                npc.ai[2] = Main.rand.Next(80, 90);
             }
-            if (npc.ai[2] == 120)
+            npc.ai[2]--;
+            if (owner.GetGlobalNPC<HMEternity>().Phase >= 2 && npc.ai[2] == 1 && DLCUtils.HostCheck)
             {
-                npc.ai[2] = 0;
-                npc.ai[1] = Main.rand.NextFloat(0f, maxRadians);
+                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedByRandom(MathF.PI * 0.4f) * -3, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
+                npc.ai[2] = 100;
             }
+            npc.position += owner.velocity;
+            Vector2 desiredPos = owner.Center + owner.DirectionTo(target.Center).RotatedByRandom(MathF.PI * 0.4f) * 120;
+            npc.velocity = Vector2.Lerp(npc.velocity, npc.DirectionTo(desiredPos) * 10, 0.1f);
+            for (int i = 0; i < Main.maxNPCs; i++) // force from colliding other creepers
+            {
+                NPC otherNPC = Main.npc[i];
+                if (otherNPC.TypeAlive(npc.type) && otherNPC.Distance(npc.Center) < Math.Max(npc.width, npc.height))
+                    npc.velocity -= 0.8f * npc.SafeDirectionTo(otherNPC.Center, Vector2.Zero);
+            }
+            float maxDif = MathF.PI * 0.3f;
             return false;
         }
+        
     }
 }

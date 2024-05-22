@@ -141,10 +141,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             downedCloudElemental = downed.Contains("downedCloudElemental");
             downedEarthElemental = downed.Contains("downedEarthElemental");
             downedArmoredDigger = downed.Contains("downedArmoredDigger");
+            /*
             if (ModCompatibility.InfernumMode.Loaded)
             {
                 DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
             }
+            */
         }
     }
 }
