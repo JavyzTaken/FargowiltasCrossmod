@@ -93,12 +93,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             else
             {
+                bool desperation = (Subphase(npc) >= 3 && npc.ai[1] == (float)P2States.Spindash);
+                Color afterimageColor = desperation ? Color.Purple : drawColor;
                 for (int i = 0; i < (int)currentAfterimages; i++)
                 {
-
-                    Main.EntitySpriteDraw(fly.Value, npc.oldPos[i] + new Vector2(npc.width / 2, npc.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), npc.GetAlpha(drawColor) * (1 - i / 10f), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
+                    
+                    Main.EntitySpriteDraw(fly.Value, npc.oldPos[i] + new Vector2(npc.width / 2, npc.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), npc.GetAlpha(afterimageColor) * (1 - i / 10f), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
                 }
-                if (Subphase(npc) >= 3 && npc.ai[1] == (float)P2States.Spindash)
+                if (desperation)
                     DLCUtils.DrawBackglow(fly, npc.GetAlpha(Color.Purple), npc.Center + new Vector2(0, 10), new Vector2(178, 142) / 2, npc.rotation, npc.scale, offsetMult: 2, sourceRectangle: new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142));
                 Main.EntitySpriteDraw(fly.Value, npc.Center - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), npc.GetAlpha(drawColor), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
             }
@@ -157,6 +159,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             binaryWriter.Write7BitEncodedInt(LastAttack);
             binaryWriter.WriteVector2(sprite);
             binaryWriter.WriteVector2(LockVector1);
+            binaryWriter.Write(npc.localAI[2]);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
@@ -164,6 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             LastAttack = binaryReader.Read7BitEncodedInt();
             sprite = binaryReader.ReadVector2();
             LockVector1 = binaryReader.ReadVector2();
+            npc.localAI[2] = binaryReader.ReadSingle();
         }
         public enum P2States
         {
@@ -214,6 +218,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             npc.width = (int)(150 * npc.scale);
             npc.height = (int)(100 * npc.scale);
             npc.Bottom = bottom;
+
+            Main.LocalPlayer.ZoneCorrupt = true;
 
             //ai :real:
             #region Phase 0: Spawn animation
@@ -288,6 +294,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                 npc.noGravity = false;
                 npc.noTileCollide = false;
+                npc.chaseable = false;
                 npc.damage = 0;
                 npc.defense = 200;
 
@@ -367,6 +374,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     npc.damage = 0;
                     npc.netSpam = 0;
                     npc.netUpdate = true;
+                    npc.chaseable = true;
 
                     if (npc.life > npc.lifeMax * 0.75f)
                     {
@@ -449,7 +457,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             {
                                 if (DLCUtils.HostCheck)
                                 {
-                                    if (attackCounter > 0)
+                                    if (attackCounter > 0 && Subphase(npc) > 1)
                                         Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
                                     
                                     //SpawnCreepers(creeperCount);
@@ -606,6 +614,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             {
                                 rotation = Main.rand.NextFloat(MathF.Tau);
                                 rotationDirection = Main.rand.NextFromList(1, -1);
+                                npc.localAI[2] = 60 + Main.rand.Next(15);
                                 npc.netUpdate = true;
                             }
                             if (npc.Opacity > 0)
@@ -632,7 +641,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             int lungeFade = 15; // Divide 255 by this for duration of hive mind spin before slowing for lunge
                             double lungeRots = 0.4;
                             double rotationIncrement = 0.0246399424 * lungeRots * lungeFade;
-                            int lungeDelay = 60; // # of ticks long hive mind spends sliding to a stop before lunging
+
+                            ref float lungeDelay = ref npc.localAI[2]; // # of ticks long hive mind spends sliding to a stop before lunging
+
                             int teleportRadius = 300;
                             float lungeTime = 23;
 
@@ -671,7 +682,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                         npc.velocity *= teleportRadius / (lungeTime);
                                         npc.velocity *= 1.2f;
                                         ai3 = 1;
+                                        npc.localAI[2] = 60 + Main.rand.Next(15);
                                         SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.FastRoarSound, npc.Center);
+                                        npc.netUpdate = true;
                                     }
                                     else
                                     {
@@ -720,6 +733,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                             rotation = target.DirectionTo(npc.Center).ToRotation();
                                             rotationDirection = Math.Sign(FargoSoulsUtil.RotationDifference(npc.DirectionTo(target.Center), (npc.Center + npc.velocity).DirectionTo(target.Center)));
                                         }
+                                        npc.netUpdate = true;
                                     }
                                 }
                             }
@@ -734,9 +748,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             int lungeFade = 15; // Divide 255 by this for duration of hive mind spin before slowing for lunge
                             double lungeRots = 0.4;
                             double rotationIncrement = 0.0246399424 * lungeRots * lungeFade;
-                            int lungeDelay = 80 - (int)(dashes * 15); // # of ticks long hive mind spends sliding to a stop before lunging
                             int teleportRadius = 400;
-                            float lungeTime = 23;
 
                             npc.netUpdate = true;
                             npc.netSpam = 0;
@@ -879,6 +891,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 npc.velocity *= 0.97f;
                                 if (timer > endlagTime)
                                 {
+                                    for (int i = 0; i < Main.maxNPCs; i++)
+                                    {
+                                        NPC otherNPC = Main.npc[i];
+                                        if (otherNPC.TypeAlive(NPCID.DevourerHead))
+                                        {
+                                            otherNPC.StrikeInstantKill();
+                                        }
+                                    }
                                     npc.velocity *= 0;
                                     currentAttack = (float)P2States.Reset; // Go to idle
                                     npc.netUpdate = true;

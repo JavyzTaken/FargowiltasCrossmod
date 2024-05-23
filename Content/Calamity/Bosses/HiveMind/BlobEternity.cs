@@ -110,7 +110,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             NPC owner = Main.npc[hiveMind];
 
-            if (owner.GetGlobalNPC<HMEternity>().Phase < 2 || owner.ai[2] != 0)
+            if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
+            {
+                if (npc.HasValidTarget)
+                {
+                    Player target = Main.player[npc.target];
+                    Asset<Texture2D> line = TextureAssets.Extra[178];
+
+                    float opacity = 0;
+                    if (npc.localAI[1] >= 400f)
+                    {
+                        opacity = MathHelper.Lerp(0, 1, (npc.localAI[1] - 400f) / 80f);
+                    }
+                    Main.EntitySpriteDraw(line.Value, npc.Center - Main.screenPosition, null, Color.Lime * opacity, npc.DirectionTo(target.Center).ToRotation(), new Vector2(0, line.Height() * 0.5f), new Vector2(0.2f, npc.scale * 4), SpriteEffects.None);
+                }
+                return true;
+            }
+            else if (owner.ai[2] != 0)
                 return true;
 
 
@@ -174,6 +190,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             // Setting this in SetDefaults will disable expert mode scaling, so put it here instead
             npc.damage = 0;
+            npc.chaseable = true;
 
             if (SavedCenter == Vector2.Zero || SavedCenter.Distance(target.Center) > 1500)
                 SavedCenter = target.Center;
@@ -286,7 +303,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     //npc.localAI[1] = Main.rand.Next(0, 440);
 
                 //if (npc.Distance(desiredPosition) < 100)
-                npc.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(5f, 0.22f, (float)blobs.Count / 20);
+                npc.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(4f, 0.22f, (float)blobs.Count / 20);
 
                 if (npc.localAI[1] >= 480f)// && Vector2.Distance(target.Center, npc.Center) > 400f)
                 {
