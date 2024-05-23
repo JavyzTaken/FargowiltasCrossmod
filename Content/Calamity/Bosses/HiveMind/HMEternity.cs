@@ -767,7 +767,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                         float spininProg = (timer - spinoutTime) / (totalTime - spinoutTime);
                                         teleportRadius = (int)MathHelper.Lerp(teleportRadius, 0, spininProg);
 
-                                        if (timer % 25 == 0 && timer < totalTime - 40 && NPC.CountNPCS(ModContent.NPCType<DarkHeart>()) < 4)
+                                        if (timer % 25 == 0 && timer < totalTime - 40 && NPC.CountNPCS(ModContent.NPCType<DarkHeart>()) < 2)
                                         {
                                             NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.position.X + Main.rand.Next(npc.width), (int)npc.position.Y + Main.rand.Next(npc.height), ModContent.NPCType<DarkHeart>());
                                         }
