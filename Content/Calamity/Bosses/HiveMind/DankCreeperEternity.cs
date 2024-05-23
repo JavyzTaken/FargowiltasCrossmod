@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             if (!WorldSavingSystem.EternityMode) return;
             base.SetDefaults(entity);
-            entity.lifeMax *= 1;
+            entity.lifeMax *= 5;
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {

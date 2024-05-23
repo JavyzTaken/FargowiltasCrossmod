@@ -6,19 +6,23 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using CalamityMod;
 using CalamityMod.Events;
+using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.HiveMind;
 using CalamityMod.NPCs.VanillaNPCAIOverrides.Bosses;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
+using Extensions;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -53,6 +57,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 entity.lifeMax = 5000000;
             }
+            else
+            {
+                entity.lifeMax *= 2;
+            }
         }
         public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
         {
@@ -64,6 +72,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
+            npc.buffImmune[BuffID.Oiled] = true;
+            npc.buffImmune[ModContent.BuffType<OiledBuff>()] = true;
         }
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
@@ -88,6 +98,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                     Main.EntitySpriteDraw(fly.Value, npc.oldPos[i] + new Vector2(npc.width / 2, npc.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), npc.GetAlpha(drawColor) * (1 - i / 10f), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
                 }
+                if (Subphase(npc) >= 3 && npc.ai[1] == (float)P2States.Spindash)
+                    DLCUtils.DrawBackglow(fly, npc.GetAlpha(Color.Purple), npc.Center + new Vector2(0, 10), new Vector2(178, 142) / 2, npc.rotation, npc.scale, offsetMult: 2, sourceRectangle: new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142));
                 Main.EntitySpriteDraw(fly.Value, npc.Center - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), npc.GetAlpha(drawColor), npc.rotation, new Vector2(178, 142) / 2, npc.scale, SpriteEffects.None);
             }
 
@@ -129,18 +141,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public Vector2 LockVector1 = Vector2.Zero;
         public int Phase = 0;
+        public int LastAttack = 0;
+        public static int Subphase(NPC npc)
+        {
+            float life = npc.GetLifePercent();
+            return life < 0.5f ? life < 0.175f ? 3 : 2 : 1;
+        }
+
         public float targetAfterimages = 0;
         public float currentAfterimages = 0;
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write7BitEncodedInt(Phase);
+            binaryWriter.Write7BitEncodedInt(LastAttack);
             binaryWriter.WriteVector2(sprite);
             binaryWriter.WriteVector2(LockVector1);
         }
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             Phase = binaryReader.Read7BitEncodedInt();
+            LastAttack = binaryReader.Read7BitEncodedInt();
             sprite = binaryReader.ReadVector2();
             LockVector1 = binaryReader.ReadVector2();
         }
@@ -148,10 +169,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             Reset = -1,
             Idle,
-            OffscreenDash1,
+            I_OffscreenDash1,
             OffscreenDash2,
-            SpindashStart,
+            I_SpindashStart,
             Spindash,
+            FinalSpindash,
+            I_WormDrop,
+            I_RainDashStart,
+            RainDash,
+            I_DiagonalDashes,
             Decelerate
 
         };
@@ -232,6 +258,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (timer >= 320)
                 {
                     Phase = 1;
+                    npc.dontTakeDamage = false;
                     timer = 0;
                     ai3 = 60 * 7;
                     for (int i = 0; i < 100f; i++)
@@ -264,61 +291,65 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 npc.damage = 0;
                 npc.defense = 200;
 
-                float distance = npc.Distance(Main.LocalPlayer.Center);
-                float threshold = 600f;
-                Player player = Main.LocalPlayer;
-                for (int l = 0; l < 16; l++)
+                //Aura();
+                void Aura()
                 {
-                    double rad2 = Main.rand.NextFloat(MathF.Tau);
-                    double dustdist2 = Main.rand.NextFloat(threshold, threshold + 300);
-                    int DustX2 = (int)npc.Center.X - (int)(Math.Cos(rad2) * dustdist2);
-                    int DustY2 = (int)npc.Center.Y - (int)(Math.Sin(rad2) * dustdist2);
-                    int DustType = Main.rand.NextFromList(DustID.Corruption);
-                    int i = Dust.NewDust(new Vector2(DustX2, DustY2), 1, 1, DustType, Scale: Main.rand.NextFloat(1f, 1.5f));
-                    Main.dust[i].noGravity = true;
-                    Main.dust[i].velocity = Vector2.Normalize(npc.Center - Main.dust[i].position) * Main.rand.Next(2, 5);
-                }
-                if (player.active && !player.dead && !player.ghost) //pull into arena
-                {
-                    if (distance > threshold && distance < threshold * 4f)
+                    float distance = npc.Distance(Main.LocalPlayer.Center);
+                    float threshold = 600f;
+                    Player player = Main.LocalPlayer;
+                    for (int l = 0; l < 16; l++)
                     {
-                        if (distance > threshold * 2f)
+                        double rad2 = Main.rand.NextFloat(MathF.Tau);
+                        double dustdist2 = Main.rand.NextFloat(threshold, threshold + 300);
+                        int DustX2 = (int)npc.Center.X - (int)(Math.Cos(rad2) * dustdist2);
+                        int DustY2 = (int)npc.Center.Y - (int)(Math.Sin(rad2) * dustdist2);
+                        int DustType = Main.rand.NextFromList(DustID.Corruption);
+                        int i = Dust.NewDust(new Vector2(DustX2, DustY2), 1, 1, DustType, Scale: Main.rand.NextFloat(1f, 1.5f));
+                        Main.dust[i].noGravity = true;
+                        Main.dust[i].velocity = Vector2.Normalize(npc.Center - Main.dust[i].position) * Main.rand.Next(2, 5);
+                    }
+                    if (player.active && !player.dead && !player.ghost) //pull into arena
+                    {
+                        if (distance > threshold && distance < threshold * 4f)
                         {
-                            player.controlLeft = false;
-                            player.controlRight = false;
-                            player.controlUp = false;
-                            player.controlDown = false;
-                            player.controlUseItem = false;
-                            player.controlUseTile = false;
-                            player.controlJump = false;
-                            player.controlHook = false;
-                            if (player.grapCount > 0)
-                                player.RemoveAllGrapplingHooks();
-                            if (player.mount.Active)
-                                player.mount.Dismount(player);
-                            player.velocity.X = 0f;
-                            player.velocity.Y = -0.4f;
-                            player.FargoSouls().NoUsingItems = 2;
-                        }
+                            if (distance > threshold * 2f)
+                            {
+                                player.controlLeft = false;
+                                player.controlRight = false;
+                                player.controlUp = false;
+                                player.controlDown = false;
+                                player.controlUseItem = false;
+                                player.controlUseTile = false;
+                                player.controlJump = false;
+                                player.controlHook = false;
+                                if (player.grapCount > 0)
+                                    player.RemoveAllGrapplingHooks();
+                                if (player.mount.Active)
+                                    player.mount.Dismount(player);
+                                player.velocity.X = 0f;
+                                player.velocity.Y = -0.4f;
+                                player.FargoSouls().NoUsingItems = 2;
+                            }
 
-                        Vector2 movement = npc.Center - player.Center;
-                        float amp = ((distance - 600) / 100);
-                        movement.Normalize();
-                        movement *= 0.1f * amp;
-                        player.velocity += movement;
+                            Vector2 movement = npc.Center - player.Center;
+                            float amp = ((distance - 600) / 100);
+                            movement.Normalize();
+                            movement *= 0.1f * amp;
+                            player.velocity += movement;
 
-                        for (int i = 0; i < 10; i++)
-                        {
-                            int DustType = Main.rand.NextFromList(DustID.Corruption);
-                            int d = Dust.NewDust(player.position, player.width, player.height, DustType, 0f, 0f, 0, default, 1.25f);
-                            Main.dust[d].noGravity = true;
-                            Main.dust[d].velocity *= 5f;
+                            for (int i = 0; i < 10; i++)
+                            {
+                                int DustType = Main.rand.NextFromList(DustID.Corruption);
+                                int d = Dust.NewDust(player.position, player.width, player.height, DustType, 0f, 0f, 0, default, 1.25f);
+                                Main.dust[d].noGravity = true;
+                                Main.dust[d].velocity *= 5f;
+                            }
                         }
                     }
                 }
               
 
-                //CalamityBurrow(npc, target);
+                CalamityBurrow(npc, target);
 
                 if (!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>()))
                 {
@@ -360,8 +391,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             #endregion
             #region Phase 2: Mobile
-            const int MidwayIdleStart = 60 * 4 + 30;
-            const int IdleEnd = 60 * 9 + 20;
+            const int MidwayIdleStart = 60 * 4 + 10;
+            const int IdleEnd = 60 * 9 - 20;
             if (Phase >= 2)
             {
                 npc.damage = npc.defDamage;
@@ -437,18 +468,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 npc.netUpdate = true;
                                 npc.netSpam = 0;
 
-                                currentAttack = (float)P2States.SpindashStart;
+                                if (attackCounter == 3 || Subphase(npc) >= 3)
+                                    currentAttack = (float)P2States.I_SpindashStart;
+                                else
+                                {
+                                    List<P2States> attacks = [P2States.I_OffscreenDash1, P2States.I_WormDrop, P2States.I_DiagonalDashes];
+                                    if (Subphase(npc) > 1)
+                                        attacks.Add(P2States.I_RainDashStart);
+                                    attacks.Remove((P2States)LastAttack);
+
+                                    currentAttack = (float)Main.rand.NextFromCollection(attacks);
+                                }
+                                LastAttack = (int)currentAttack;
+                                
                                 timer = 0;
+                                ai3 = 0;
+                                npc.netUpdate = true;
                             }
                         }
                         break;
-                    case P2States.OffscreenDash1: // back off, dash,  go offscreen and dash in from offscreen at 90 degree angle
+                    case P2States.I_OffscreenDash1: // back off, dash,  go offscreen and dash in from offscreen at 90 degree angle
                         {
                             npc.damage = npc.defDamage;
                             targetAfterimages = 10;
                             if (timer == 1) // start of attack
                             {
-                                npc.velocity = -npc.DirectionTo(target.Center).RotatedBy(MathF.PI * Main.rand.NextFloat(0.35f, 0.5f) * (Main.rand.NextBool() ? 1 : -1)) * 20;
+                                npc.velocity = -npc.DirectionTo(target.Center).RotatedBy(MathF.PI * Main.rand.NextFloat(0.35f, 0.5f) * (Main.rand.NextBool() ? 1 : -1)) * 25;
                                 SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, npc.Center);
                             }
                             float attackTime = 120f;
@@ -471,7 +516,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             if (accelerate) //accelerate during dash towards player
                             {
-                                const float accel = 0.95f;
+                                const float accel = 1.12f;
                                 const float maxSpeed = 30;
                                 Vector2 accelDir = npc.DirectionTo(Main.player[npc.target].Center);
                                 if (accelStraight)
@@ -550,7 +595,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                         }
                         break;
-                    case P2States.SpindashStart: // start spin dash, by dashing away and fading
+                    case P2States.I_SpindashStart: // start spin dash, by dashing away and fading
                         {
                             ref float rotation = ref npc.localAI[0];
                             ref float rotationDirection = ref npc.localAI[1];
@@ -577,12 +622,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             ref float rotation = ref npc.localAI[0];
                             ref float rotationDirection = ref npc.localAI[1];
                             ref float dashes = ref npc.localAI[3];
-                            int totalDashes = 3;
+                            int totalDashes = Subphase(npc) switch
+                            {
+                                3 => 9999,
+                                2 => 4,
+                                _ => 2
+                            };
 
                             int lungeFade = 15; // Divide 255 by this for duration of hive mind spin before slowing for lunge
                             double lungeRots = 0.4;
                             double rotationIncrement = 0.0246399424 * lungeRots * lungeFade;
-                            int lungeDelay = 90; // # of ticks long hive mind spends sliding to a stop before lunging
+                            int lungeDelay = 60; // # of ticks long hive mind spends sliding to a stop before lunging
                             int teleportRadius = 300;
                             float lungeTime = 23;
 
@@ -594,11 +644,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
-                                    Vector2 desiredVel = (target.Center + new Vector2(teleportRadius, 0).RotatedBy(rotation)) - npc.Center;
+                                    float distance = teleportRadius;
+                                    if (dashes > 0)
+                                        distance = MathHelper.Lerp(npc.Distance(target.Center), teleportRadius, 0.1f);
+                                    Vector2 desiredVel = (target.Center + new Vector2(distance, 0).RotatedBy(rotation)) - npc.Center;
                                     npc.velocity = desiredVel;
 
                                 }
-                                    
 
                                 rotation += (float)(rotationIncrement * rotationDirection);
                                 timer = lungeDelay;
@@ -619,22 +671,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                         npc.velocity *= teleportRadius / (lungeTime);
                                         npc.velocity *= 1.2f;
                                         ai3 = 1;
-                                        SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, npc.Center);
+                                        SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.FastRoarSound, npc.Center);
                                     }
                                     else
                                     {
                                         if (Main.netMode != NetmodeID.MultiplayerClient)
                                         {
-                                            Vector2 desiredVel = (target.Center + new Vector2(teleportRadius, 0).RotatedBy(rotation)) - npc.Center;
-                                            if (dashes <= 0)
-                                                npc.velocity = desiredVel;
-                                            else
-                                            {
-                                                npc.velocity = Vector2.Lerp(npc.velocity, desiredVel, 0.1f);
-                                                npc.position += target.velocity;
-                                            }
-                                                
+                                            float distance = teleportRadius;
+                                            if (dashes > 0)
+                                                distance = MathHelper.Lerp(npc.Distance(target.Center), teleportRadius, MathHelper.Lerp(1, 0.025f, timer / lungeDelay));
+                                            Vector2 desiredPos = (target.Center + new Vector2(distance, 0).RotatedBy(rotation));
+                                            npc.velocity = desiredPos - npc.Center;
                                         }
+
+                                        if (dashes > 0)
+                                            rotationIncrement *= 0.6f;
 
                                         rotation += (float)(rotationIncrement * rotationDirection * timer / lungeDelay);
                                     }
@@ -643,27 +694,364 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 {
                                     // Set damage
                                     npc.damage = npc.defDamage;
-                                    
-                                    if (timer <= 0)
+
+                                    npc.velocity *= 1.02f;
+
+                                    float dif = FargoSoulsUtil.RotationDifference(npc.velocity, npc.DirectionTo(target.Center));
+                                    if (Math.Abs(dif) >= MathHelper.PiOver2 && timer <= lungeTime / 2)
                                     {
-                                        dashes++;
-                                        if (dashes >= 3)
+  
+                                        if (dashes < totalDashes - 1)
                                         {
-                                            dashes = 0;
-                                            currentAttack = (float)P2States.Decelerate; // Deceleration phase
-                                            timer = 0;
-                                            ai3 = npc.velocity.Length() / 30;
-                                        }
-                                        else
-                                        {
+                                            dashes++;
                                             ai3 = 0;
-                                            rotation = target.DirectionTo(npc.Center).RotatedByRandom(MathF.PI * 0.2f).ToRotation();
-                                            rotationDirection *= -1;
+                                            rotation = target.DirectionTo(npc.Center).ToRotation();
+                                            rotationDirection = Math.Sign(FargoSoulsUtil.RotationDifference(npc.DirectionTo(target.Center), (npc.Center + npc.velocity).DirectionTo(target.Center)));
                                             timer = lungeDelay;
+                                        }
+                                        else if (timer <= 0)
+                                        {
+                                            currentAttack = (float)P2States.FinalSpindash; // Final spin
+                                            LockVector1 = target.Center;
+                                            dashes = 0;
+                                            
+                                            timer = 0;
+                                            ai3 = 0;
+                                            rotation = target.DirectionTo(npc.Center).ToRotation();
+                                            rotationDirection = Math.Sign(FargoSoulsUtil.RotationDifference(npc.DirectionTo(target.Center), (npc.Center + npc.velocity).DirectionTo(target.Center)));
                                         }
                                     }
                                 }
                             }
+                        }
+                        break;
+                    case P2States.FinalSpindash: // Spin out, lock spin center, then spin in to center
+                        {
+                            ref float rotation = ref npc.localAI[0];
+                            ref float rotationDirection = ref npc.localAI[1];
+                            ref float dashes = ref npc.localAI[3];
+
+                            int lungeFade = 15; // Divide 255 by this for duration of hive mind spin before slowing for lunge
+                            double lungeRots = 0.4;
+                            double rotationIncrement = 0.0246399424 * lungeRots * lungeFade;
+                            int lungeDelay = 80 - (int)(dashes * 15); // # of ticks long hive mind spends sliding to a stop before lunging
+                            int teleportRadius = 400;
+                            float lungeTime = 23;
+
+                            npc.netUpdate = true;
+                            npc.netSpam = 0;
+
+                            int totalTime = 160;
+                            int spinoutTime = 40;
+
+                            if (timer == spinoutTime)
+                            {
+                                SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, npc.Center);
+                            }
+
+                            if (timer < totalTime)
+                            {
+                                npc.damage = npc.defDamage;
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    float progress = timer / totalTime;
+                                    if (timer <= spinoutTime)
+                                    {
+                                        LockVector1 = target.Center;
+                                        teleportRadius = (int)MathHelper.Lerp(0, teleportRadius, timer / spinoutTime);
+                                        if (teleportRadius < npc.Distance(LockVector1))
+                                            teleportRadius = (int)npc.Distance(LockVector1);
+                                    }
+                                    else
+                                    {
+                                        float spininProg = (timer - spinoutTime) / (totalTime - spinoutTime);
+                                        teleportRadius = (int)MathHelper.Lerp(teleportRadius, 0, spininProg);
+
+                                        if (timer % 25 == 0 && timer < totalTime - 40 && NPC.CountNPCS(ModContent.NPCType<DarkHeart>()) < 4)
+                                        {
+                                            NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.position.X + Main.rand.Next(npc.width), (int)npc.position.Y + Main.rand.Next(npc.height), ModContent.NPCType<DarkHeart>());
+                                        }
+                                    }
+                                    
+                                    float distance = MathHelper.Lerp(npc.Distance(LockVector1), teleportRadius, 0.1f);
+
+                                    Vector2 desiredPos = (LockVector1 + new Vector2(distance, 0).RotatedBy(rotation));
+                                    npc.velocity = desiredPos - npc.Center;
+                                }
+
+                                rotationIncrement *= 0.8f;
+
+                                rotation += (float)(rotationIncrement * rotationDirection * (totalTime - timer) / totalTime);
+                            }
+                            else if (timer < totalTime + 7)
+                            {
+                                npc.velocity *= 0.96f;
+                            }
+                            else 
+                            {
+                                // Set damage
+                                npc.damage = npc.defDamage;
+                                currentAttack = (float)P2States.Reset; // Go to idle
+                                npc.netUpdate = true;
+                                npc.netSpam = 0;
+
+                            }
+                        }
+                        break;
+                    case P2States.I_WormDrop:
+                        {
+                            ref float attackPhase = ref ai3;
+                            ref float initialRotation = ref npc.localAI[0];
+
+                            int aboveDistance = 450;
+                            Vector2 abovePlayer = target.Center - Vector2.UnitY * aboveDistance;
+
+                            if (attackPhase == 0) // get in position
+                            {
+                                int repositionTime = 40;
+                                float lerp = MathF.Pow(timer / repositionTime, 3);
+                                float distance = MathHelper.Lerp(npc.Distance(target.Center), aboveDistance, lerp);
+
+                                Vector2 currentDirection = target.DirectionTo(npc.Center);
+
+                                float rotation = currentDirection.ToRotation() + FargoSoulsUtil.RotationDifference(currentDirection, -Vector2.UnitY) * lerp;
+                                Vector2 desiredPos = target.Center + rotation.ToRotationVector2() * distance;
+                                npc.velocity = desiredPos - npc.Center;
+                                if (timer >= repositionTime)
+                                {
+                                    timer = 0;
+                                    attackPhase = 1;
+                                    npc.netUpdate = true;
+                                }
+                            }
+                            else if (attackPhase == 1)
+                            {
+                                int wormTime = 120;
+
+                                Vector2 toNeutral = abovePlayer - npc.Center;
+                                npc.velocity.Y = toNeutral.Y;
+                                npc.velocity.X = toNeutral.X * 0.1f;
+
+                                if (timer % 10 == 0)
+                                {
+                                    if (FargoSoulsUtil.HostCheck)
+                                    {
+                                        int side = timer % 20 == 0 ? 1 : -1;
+                                        float progress = timer / wormTime;
+
+                                        int n = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X + Main.rand.Next(-npc.width / 4, npc.width / 4), (int)npc.Center.Y + Main.rand.Next(-npc.height / 4, npc.height / 4), NPCID.DevourerHead);
+                                        if (n.IsWithinBounds(Main.maxNPCs))
+                                        {
+                                            Main.npc[n].velocity = Vector2.UnitX * side * MathHelper.Lerp(16, 2, progress) + Vector2.UnitY * MathHelper.Lerp(0, 4, progress);
+                                        }
+                                    }
+                                }
+
+                                if (timer >= wormTime)
+                                {
+                                    SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, npc.Center);
+                                    timer = 0;
+                                    attackPhase = 2;
+                                    npc.velocity.Y = -7;
+                                    npc.netUpdate = true;
+                                }
+                            }
+                            else if (attackPhase == 2)
+                            {
+                                int dashTime = 75;
+                                Vector2 toNeutral = abovePlayer - npc.Center;
+                                npc.velocity.Y += 0.4f;
+                                npc.velocity.X *= 0.92f;
+                                //npc.velocity.X += Math.Sign(toNeutral.X) * 0.4f;
+                                npc.velocity.Y = Math.Clamp(npc.velocity.Y, -15f, 15f);
+
+                                if (timer > dashTime)
+                                {
+                                    timer = 0;
+                                    attackPhase = 3;
+                                    npc.netUpdate = true;
+                                }
+                            }
+
+                            if (attackPhase == 3)
+                            {
+                                int endlagTime = 20;
+                                npc.velocity *= 0.97f;
+                                if (timer > endlagTime)
+                                {
+                                    npc.velocity *= 0;
+                                    currentAttack = (float)P2States.Reset; // Go to idle
+                                    npc.netUpdate = true;
+                                    npc.netSpam = 0;
+                                }
+                                
+                            }
+                        }
+                        break;
+                    case P2States.I_RainDashStart:
+                        {
+                            ref float rotation = ref npc.localAI[0];
+                            ref float rotationDirection = ref npc.localAI[1];
+
+                            float startTime = 30;
+
+                            if (timer == 1)
+                            {
+                                SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.FastRoarSound, npc.Center);
+                                npc.velocity = -npc.DirectionTo(target.Center) * 10;
+                            }
+                            npc.velocity -= npc.velocity.SafeNormalize(Vector2.Zero) * 10f / startTime;
+
+                            if (timer == 5) // before end to give time for netupdate
+                            {
+                                rotation = Main.rand.NextFloat(MathF.Tau);
+                                rotationDirection = Main.rand.NextFromList(1, -1);
+                                npc.netUpdate = true;
+                            }
+                            if (npc.Opacity > 0)
+                                npc.Opacity -= 1f / startTime;
+                            else
+                            {
+                                timer = 0;
+                                ai3 = 0;
+                                currentAttack = (float)P2States.RainDash;
+                                npc.velocity = Vector2.Zero;
+                            }
+                        }
+                        break;
+                    case P2States.RainDash:
+                        {
+                            npc.damage = 0;
+
+                            int teleportRadius = 300;
+                            float arcTime = 45f; // Ticks needed to complete movement for spawn and rain attacks (DEATH ONLY)
+
+                            ref float rotationDirection = ref npc.localAI[1];
+
+                            if (npc.alpha > 0)
+                            {
+                                npc.alpha -= 5;
+                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                {
+                                    npc.Center = target.Center;
+                                    npc.position.Y -= teleportRadius;
+                                    npc.position.X += teleportRadius * rotationDirection;
+                                }
+                                npc.netUpdate = true;
+                                npc.netSpam = 0;
+                            }
+                            else
+                            {
+                                if (ai3 == 0)
+                                {
+                                    // Set damage
+                                    npc.damage = npc.defDamage;
+
+                                    ai3 = 1;
+                                    SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, npc.Center);
+                                    npc.velocity.X = teleportRadius / arcTime * 3;
+                                    npc.velocity *= -rotationDirection;
+                                    npc.netUpdate = true;
+                                    npc.netSpam = 0;
+                                    timer = 0;
+                                }
+                                else
+                                {
+                                    // Set damage
+                                    npc.damage = npc.defDamage;
+
+                                    if (timer == 4)
+                                    {
+                                        timer = 0;
+                                        ai3++;
+                                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                                        {
+                                            int type = ModContent.ProjectileType<ShadeNimbusHostile>();
+                                            int damage = npc.GetProjectileDamage(type);
+                                            Vector2 cloudSpawnPos = new Vector2(npc.position.X + Main.rand.Next(npc.width), npc.position.Y + Main.rand.Next(npc.height));
+                                            Vector2 randomVelocity = Vector2.Zero;
+                                            Projectile.NewProjectile(npc.GetSource_FromAI(), cloudSpawnPos, randomVelocity, type, damage, 0, Main.myPlayer, 11f);
+                                        }
+
+                                        if (ai3 == 11)
+                                        {
+                                            currentAttack = (float)P2States.Decelerate;
+                                            ai3 = npc.velocity.Length() / 30f;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        break;
+                    case P2States.I_DiagonalDashes:
+                        {
+                            void Movement(Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
+                            {
+                                if (npc.Distance(pos) > slowdown)
+                                {
+                                    npc.velocity = Vector2.Lerp(npc.velocity, (pos - npc.Center).SafeNormalize(Vector2.Zero) * maxSpeed, accel);
+                                }
+                                else
+                                {
+                                    npc.velocity = Vector2.Lerp(npc.velocity, (pos - npc.Center).SafeNormalize(Vector2.Zero) * lowspeed, decel);
+                                }
+                            }
+
+                            ref float performedAttacks = ref ai3;
+                            int totalAttacks = Subphase(npc) > 1 ? 3 : 2;
+
+                            int windupTime = 60;
+                            int dashTime = 50;
+                            int endlagTime = 30;
+                            Vector2 windupPos = target.Center + Vector2.UnitX * target.HorizontalDirectionTo(npc.Center) * 400 - Vector2.UnitY * 240;
+
+                            if (timer < windupTime)
+                            {
+                                Movement(windupPos, 0.1f, 40, 10, 0.1f, 50f);
+                            }
+                            else if (timer == windupTime)
+                            {
+                                SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, npc.Center);
+                                npc.velocity = npc.DirectionTo(target.Center) * 20f;
+                                int spread = 8;
+                                float totalSpread = MathF.PI * 0.7f;
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    for (int i = 0; i < spread; i++)
+                                    {
+                                        float rot = totalSpread * ((float)i / spread - 0.5f);
+                                        Vector2 dir = npc.DirectionTo(target.Center).RotatedBy(rot);
+                                        int type = ModContent.ProjectileType<GravityVileClot>();
+                                        int damage = FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage);
+                                        Vector2 spawnPos = npc.Center + dir * npc.height / 2;
+                                        Vector2 vel = dir * 14f;
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, vel, type, damage, 0, Main.myPlayer);
+                                    }
+                                }
+                            }
+                            else if (timer <= windupTime + dashTime)
+                            {
+                                npc.velocity.Y *= 0.97f;
+                            }
+                            else
+                            {
+                                performedAttacks++;
+                                if (performedAttacks >= totalAttacks)
+                                {
+                                    npc.velocity *= 0.96f;
+                                    if (timer >= windupTime + dashTime + endlagTime)
+                                    {
+                                        currentAttack = (float)P2States.Reset; // Go to idle
+                                        npc.netUpdate = true;
+                                        npc.netSpam = 0;
+                                    }
+                                }
+                                else
+                                {
+                                    timer = 0;
+                                }
+                            }
+
                         }
                         break;
                     case P2States.Decelerate: // decelerate to halt, then go to idle
@@ -672,7 +1060,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             if (timer > 30)
                             {
                                 npc.velocity *= 0;
-                                currentAttack = (float)P2States.Idle; // Go to idle
+                                currentAttack = (float)P2States.Reset; // Go to idle
                                 npc.netUpdate = true;
                                 npc.netSpam = 0;
                             }
@@ -721,7 +1109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             ref float burrowTimer = ref npc.ai[3];
             burrowTimer--;
-            if (npc.Distance(target.Center) > 700 && burrowTimer > 5)
+            if (npc.Distance(target.Center) > 900 && burrowTimer > 5)
             {
                 burrowTimer = 5;
             }

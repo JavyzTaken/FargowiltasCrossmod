@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(ModContent.NPCType<HiveBlob>(), ModContent.NPCType<HiveBlob2>());
 
-
+        Vector2 SavedCenter = Vector2.Zero;
         public override void HitEffect(NPC npc, NPC.HitInfo hit)
         {
             base.HitEffect(npc, hit);
@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 NPC owner = Main.npc[hiveMind];
                 if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
-                    healthMult /= 2;
+                    healthMult *= 2;
             }
             entity.lifeMax = (int)(entity.lifeMax * healthMult);
             base.SetDefaults(entity);
@@ -175,6 +175,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             // Setting this in SetDefaults will disable expert mode scaling, so put it here instead
             npc.damage = 0;
 
+            if (SavedCenter == Vector2.Zero || SavedCenter.Distance(target.Center) > 1500)
+                SavedCenter = target.Center;
+
+            SavedCenter = Vector2.Lerp(SavedCenter, target.Center, 0.4f);
+
             int hiveMind = owner.whoAmI;
 
             if (npc.ai[3] > 0f)
@@ -201,7 +206,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             float targetY = Main.player[npc.target].position.Y + (Main.player[npc.target].height / 2) - (npc.height / 2) - randomLocationVector.Y;
             float targetDistance = (float)Math.Sqrt(targetX * targetX + targetY * targetY);
 
-            Vector2 circleCenter = Main.npc[hiveMind].Center;
+            Vector2 circleCenter = SavedCenter; //Main.npc[hiveMind].Center;
             List<NPC> blobs = Main.npc.Where(n => n.TypeAlive<HiveBlob>()).ToList();
             if (index == -1)
                 index = (float)blobs.IndexOf(npc) / blobs.Count;
@@ -209,7 +214,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (owner.GetGlobalNPC<HMEternity>().Phase == 1)
                 timer = index + (Main.npc[hiveMind].ai[0] % 640f) / 640f;
 
-            float distance = 700;
+            float distance = 500;
             float angle = timer * MathF.Tau;
             /*
             float angleFromBoss = owner.DirectionTo(npc.Center).ToRotation();
@@ -235,6 +240,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             finalRandPosY *= finalRandDistance;
 
             Vector2 desiredPosition = new(hiveMindX + finalRandPosX, hiveMindY + finalRandPosY);
+            /*
             if (npc.position.X < desiredPosition.X)
             {
                 npc.velocity.X += relocateSpeed;
@@ -262,18 +268,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
             float velocityLimit = 8f;
             npc.velocity = npc.velocity.ClampMagnitude(0, velocityLimit);
+            */
+            if (npc.localAI[1] >= 200 && npc.localAI[1] < 300 && desiredPosition.Distance(npc.Center) > 5)
+            {
+                npc.velocity = (desiredPosition - npc.Center) * 0.05f;
+            }
+            else
+            {
+                npc.velocity *= 0.9f;
+            }
 
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
                 if (npc.localAI[1] == 0) // initial
                     npc.localAI[1] = Main.rand.Next(0, 440);
-                if (!Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
-                    npc.localAI[1] = Main.rand.Next(0, 440);
+                //if (!Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
+                    //npc.localAI[1] = Main.rand.Next(0, 440);
 
-                if (npc.Distance(desiredPosition) < 100)
-                    npc.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(4f, 0.18f, (float)blobs.Count / 20);
+                //if (npc.Distance(desiredPosition) < 100)
+                npc.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(5f, 0.22f, (float)blobs.Count / 20);
 
-                if (npc.localAI[1] >= 480f && Vector2.Distance(target.Center, npc.Center) > 400f)
+                if (npc.localAI[1] >= 480f)// && Vector2.Distance(target.Center, npc.Center) > 400f)
                 {
                     npc.localAI[1] = 1f;
                     npc.TargetClosest(true);
@@ -285,7 +300,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         float playerX = Main.player[npc.target].position.X + Main.player[npc.target].width * 0.5f - projDirection.X;
                         float playerY = Main.player[npc.target].position.Y + Main.player[npc.target].height * 0.5f - projDirection.Y;
                         float playerDist = (float)Math.Sqrt(playerX * playerX + playerY * playerY);
-                        playerDist = projSpeed / playerDist;
+                        playerDist = projSpeed / (playerDist + 1e-6f);
                         playerX *= playerDist;
                         playerY *= playerDist;
                         int type = ModContent.ProjectileType<VileClot>();
@@ -300,7 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public void Phase2AI(NPC npc, NPC owner, Player target)
         {
             // Currently disabled in phase 2
-            if (owner.ai[1] != 0)
+            if (true)//owner.ai[1] != 0)
             {
                 npc.active = false;
                 return;
