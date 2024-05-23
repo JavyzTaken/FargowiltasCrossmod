@@ -214,8 +214,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<SandstreamScepter>(),
                 ItemType<BrittleStarStaff>(),
                 ItemType<ScourgeoftheDesert>(),
-                ItemType<SandCloak>(),
-                ItemType<AeroStone>()
+                ItemType<SandCloak>()
             ]);
             CreateCalBagRecipes(ItemID.EyeOfCthulhuBossBag, [ItemType<DeathstareRod>()]);
             CreateCalBagRecipes(ItemID.EyeofCthulhuTrophy, [ItemType<TeardropCleaver>()]);
@@ -246,7 +245,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<BlackHawkRemote>(),
                 ItemType<BlastBarrel>(),
                 ItemType<RogueEmblem>()
-            ]); //wof bag
+            ]);
             CreateCalBagRecipes(ItemID.WallofFleshTrophy, [ItemType<Carnage>()]);
             CreateCalBagRecipes(ItemType<CryogenBag>(),
             [
@@ -267,10 +266,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<DeepseaStaff>(),
                 ItemType<ScourgeoftheSeas>(),
                 ItemType<CorrosiveSpine>()
-            ]);
-            CreateCalBagRecipes(ItemType<AquaticScourgeTrophy>(),
-            [
-                ItemType<DeepDiver>()
             ]);
             CreateCalBagRecipes(ItemType<BrimstoneWaifuBag>(),
             [
