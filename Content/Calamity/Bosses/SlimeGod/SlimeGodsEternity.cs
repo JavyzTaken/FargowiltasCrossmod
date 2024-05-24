@@ -259,6 +259,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     break;
                 case 2.1f:
                     {
+                        npc.damage = npc.defDamage;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
                             return CorruptionSlamAttack(npc);
@@ -288,6 +289,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     return false;
                 case 5: //for some reason, ebonian teleport anim is 6 while crimulean is 5
                     {
+                        npc.damage = npc.defDamage;
                         int type;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
@@ -311,6 +313,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     break;
                 case 6:
                     {
+                        npc.damage = npc.defDamage;
                         int type;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
@@ -334,6 +337,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     break;
                 case 22:
                     {
+                        npc.damage = npc.defDamage;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
                             return CorruptionSpecial(npc);
@@ -581,6 +585,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             Player player = Main.player[npc.target];
             const int TotalSlams = 3;
 
+            //npc.damage = npc.defDamage;
             npc.noGravity = slams < TotalSlams;
 
             if (Timer == 0)

@@ -294,7 +294,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 {
                     Vector2 pos = npc.Center + new Vector2(1300, Main.rand.Next(-300, 300)).RotatedBy(npc.rotation - MathHelper.PiOver2);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), pos, (npc.Center - pos).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<SuckedSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: npc.whoAmI);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), pos, (npc.Center - pos).SafeNormalize(Vector2.Zero) * 7, ModContent.ProjectileType<SuckedSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI);
                 }
             }
             if (ai[3] == -2) //telegraph spit followup
@@ -305,10 +305,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 if (DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * 20, ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * 20, ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     for (int i = -2; i < 3; i++)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
                 }
                 SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
@@ -426,7 +426,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                                     for (int j = -1; j < 2; j += 2)
                                     {
                                         float offset = randfac * npc.width / 5f;
-                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + (Vector2.UnitX * side * (offset + (npc.width / 3))), speed * dir.RotatedBy(randfac * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 2f);
+                                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + (Vector2.UnitX * side * (offset + (npc.width / 3))), speed * dir.RotatedBy(randfac * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 2f);
                                     }
 
                                 }
@@ -516,7 +516,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (DLCUtils.HostCheck)
                     for (int i = j; i < (-j) + 1; i++)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
             }
             if (npc.velocity.X < 0)
@@ -537,7 +537,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -8), ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -8), ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
                 lungeInfo[0]++;
             }
@@ -554,7 +554,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (lungeInfo[3] % 15 == 0)
                 {
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 7), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.HorsWaterBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 7), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.HorsWaterBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
             }
             //if has been moving downard and to the side of the player (ending the lung), truely end the attack. Repeat the attack if lungeinfo 1 is not zero.
@@ -585,7 +585,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (DLCUtils.HostCheck)
                     for (int i = -3; i < 4; i++)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 10, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 10, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
                 canSee = true;
             }
@@ -877,10 +877,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 entity.lifeMax = 25000000;
             }
         }
-        public static List<int> PierceResistExclude = new List<int>
-        {
+        public static List<int> PierceResistExclude =
+        [
             ModContent.ProjectileType<SproutingAcorn>()
-        };
+        ];
         public void NullCoiledDamage(NPC npc, NPC.HitModifiers modifiers)
         {
             if (Main.npc.Count(n => n.active && n.type == npc.type && n.Distance(npc.Center) < npc.width * 0.75) > 4)

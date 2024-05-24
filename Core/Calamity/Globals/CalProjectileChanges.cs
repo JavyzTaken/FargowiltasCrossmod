@@ -67,11 +67,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             }
         }
-        public static List<int> TungstenExclude = new()
-        {
+        public static List<int> TungstenExclude =
+        [
             ModContent.ProjectileType<BladecrestOathswordProj>(),
             ModContent.ProjectileType<OldLordClaymoreProj>()
-        };
+        ];
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             if (projectile.TryGetGlobalProjectile(out FargoSoulsGlobalProjectile fargoProj))
@@ -113,7 +113,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (projectile.ModProjectile != null)
                 {
-                    typeof(SlimeBall).GetField("oil", FargoSoulsUtil.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
+                    typeof(SlimeBall).GetField("oil", LumUtils.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
                 }
             }
 
@@ -182,11 +182,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return true;
             #endregion
         }
-        public static List<int> MultipartShredders = new()
-        {
+        public static List<int> MultipartShredders =
+        [
             ModContent.ProjectileType<CelestialRuneFireball>()
 
-        };
+        ];
         public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
         {
             if (MultipartShredders.Contains(projectile.type) && target.type == ModContent.NPCType<DarkEnergy>())
@@ -214,8 +214,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     modifiers.FinalDamage *= 0.8f;
                 }
-                List<int> profanedCrystalProjs = new List<int>()
-                {
+                List<int> profanedCrystalProjs =
+                [
                     ModContent.ProjectileType<ProfanedCrystalMageFireball>(),
                     ModContent.ProjectileType<ProfanedCrystalMageFireballSplit>(),
                     ModContent.ProjectileType<ProfanedCrystalMeleeSpear>(),
@@ -232,7 +232,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     ModContent.ProjectileType<MiniGuardianRock>(),
                     ModContent.ProjectileType<MiniGuardianSpear>(),
                     ModContent.ProjectileType<MiniGuardianStars>(),
-                };
+                ];
                 if (profanedCrystalProjs.Contains(projectile.type) && Main.player[projectile.owner].Calamity().profanedCrystal)
                 {
                     modifiers.FinalDamage *= 0.4f;

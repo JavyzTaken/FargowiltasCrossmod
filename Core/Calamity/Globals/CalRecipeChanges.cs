@@ -214,8 +214,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<SandstreamScepter>(),
                 ItemType<BrittleStarStaff>(),
                 ItemType<ScourgeoftheDesert>(),
-                ItemType<SandCloak>(),
-                ItemType<AeroStone>()
+                ItemType<SandCloak>()
             ]);
             CreateCalBagRecipes(ItemID.EyeOfCthulhuBossBag, [ItemType<DeathstareRod>()]);
             CreateCalBagRecipes(ItemID.EyeofCthulhuTrophy, [ItemType<TeardropCleaver>()]);
@@ -246,7 +245,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<BlackHawkRemote>(),
                 ItemType<BlastBarrel>(),
                 ItemType<RogueEmblem>()
-            ]); //wof bag
+            ]);
             CreateCalBagRecipes(ItemID.WallofFleshTrophy, [ItemType<Carnage>()]);
             CreateCalBagRecipes(ItemType<CryogenBag>(),
             [
@@ -267,10 +266,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<DeepseaStaff>(),
                 ItemType<ScourgeoftheSeas>(),
                 ItemType<CorrosiveSpine>()
-            ]);
-            CreateCalBagRecipes(ItemType<AquaticScourgeTrophy>(),
-            [
-                ItemType<DeepDiver>()
             ]);
             CreateCalBagRecipes(ItemType<BrimstoneWaifuBag>(),
             [
@@ -586,7 +581,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<SpentFuelContainer>(),
                 ItemType<SlitheringEels>(),
                 ItemType<BelchingSaxophone>(),
-            ], ItemType<SulphurousCrate>(), 5, ItemType<CorrodedFossil>());
+            ], ItemType<HydrothermalCrate>(), 5, ItemType<CorrodedFossil>());
 
             CreateCrateRecipes(
             [
@@ -605,7 +600,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<ClamorRifle>(),
                 ItemType<ShellfishStaff>(),
                 ItemType<ClamCrusher>(),
-            ], ItemType<EutrophicCrate>(), 5, ItemType<MolluskHusk>());
+            ], ItemType<PrismCrate>(), 3, ItemType<MolluskHusk>());
 
             void CreateCrateRecipes(int[] results, int crate, int crateAmount, int extraItem = -1)
             {
@@ -902,6 +897,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     {
                         recipe.AddIngredient(ItemID.SoulofNight, 3);
                     }
+                    if (recipe.HasResult<MechLure>())
+                    {
+                        if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
+                        {
+                            recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
+                        }
+                        if (recipe.RemoveTile(TileID.MythrilAnvil))
+                        {
+                            recipe.AddTile(TileID.Anvils);
+                        }
+                    }
                     if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
                     {
                         recipe.AddIngredient<DivineGeode>(5);
@@ -914,13 +920,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     {
                         recipe.AddIngredient<AuricBar>(2);
                     }
-                    List<int> Tier2Souls = new List<int>
-                    {
+                    List<int> Tier2Souls =
+                    [
                         ItemType<TerrariaSoul>(),
                         ItemType<UniverseSoul>(),
                         ItemType<DimensionSoul>(),
                         ItemType<MasochistSoul>()
-                    };
+                    ];
 
                     if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
                     {

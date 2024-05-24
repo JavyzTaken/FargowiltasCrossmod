@@ -101,17 +101,17 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
-        public static List<int> TungstenExcludeWeapon = new()
-        {
+        public static List<int> TungstenExcludeWeapon =
+        [
             ItemType<OldLordClaymore>(),
             ItemType<BladecrestOathsword>()
-        };
-        public static List<int> AttackSpeedExcludeWeapons = new()
-        {
+        ];
+        public static List<int> AttackSpeedExcludeWeapons =
+        [
             ItemType<ExecutionersBlade>()
-        };
-        public static List<int> AdamantiteIgnoreItem = new()
-        {
+        ];
+        public static List<int> AdamantiteIgnoreItem =
+        [
             ItemType<HeavenlyGale>(),
             ItemType<TheSevensStriker>(),
             ItemType<Phangasm>(),
@@ -127,7 +127,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             ItemType<TrueArkoftheAncients>(),
             ItemType<ArkoftheElements>(),
             ItemType<ArkoftheCosmos>()
-        };
+        ];
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
         {

@@ -26,8 +26,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
                 if (DLCUtils.HostCheck)
                     for (int i = 0; i < 3; i++)
                     {
-                        Projectile fireball = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.BottomRight + new Vector2(0, -10), new Vector2(5, 0).RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<BouncingFireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
-                        Projectile fireball2 = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(0, -10), new Vector2(-5, 0).RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<BouncingFireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
+                        Projectile fireball = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.BottomRight + new Vector2(0, -10), new Vector2(5, 0).RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<BouncingFireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage / 2), 0);
+                        Projectile fireball2 = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.BottomLeft + new Vector2(0, -10), new Vector2(-5, 0).RotatedBy(Main.rand.NextFloat(-0.1f, 0.1f)), ModContent.ProjectileType<BouncingFireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage / 2), 0);
 
                     }
             }

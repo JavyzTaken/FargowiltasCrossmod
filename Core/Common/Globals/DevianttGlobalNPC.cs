@@ -23,7 +23,7 @@ namespace FargowiltasCrossmod.Core.Common.Globals
         public override bool InstancePerEntity => true;
 
         internal static int currentShop;
-        internal static readonly List<NPCShop> ModShops = new();
+        internal static readonly List<NPCShop> ModShops = [];
 
         public static void CycleShop()
         {
@@ -87,8 +87,8 @@ namespace FargowiltasCrossmod.Core.Common.Globals
         public delegate void Orig_DevianttOnChatButtonClicked(Deviantt self, bool firstButton, ref string shopName);
         public delegate void Orig_DevianttAddShops(Deviantt self);
 
-        private static readonly MethodInfo DevianttOnChatButtonClickedMethod = typeof(Deviantt).GetMethod("OnChatButtonClicked", FargoSoulsUtil.UniversalBindingFlags);
-        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", FargoSoulsUtil.UniversalBindingFlags);
+        private static readonly MethodInfo DevianttOnChatButtonClickedMethod = typeof(Deviantt).GetMethod("OnChatButtonClicked", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", LumUtils.UniversalBindingFlags);
 
         Hook DeviChatButtonHook;
         Hook DeviShopHook;
@@ -118,7 +118,7 @@ namespace FargowiltasCrossmod.Core.Common.Globals
                 AddCalamityShop();
         }
 
-        public static Dictionary<string, bool> FargoWorldDownedBools => typeof(FargoWorld).GetField("DownedBools", FargoSoulsUtil.UniversalBindingFlags).GetValue(null) as Dictionary<string, bool>;
+        public static Dictionary<string, bool> FargoWorldDownedBools => typeof(FargoWorld).GetField("DownedBools", LumUtils.UniversalBindingFlags).GetValue(null) as Dictionary<string, bool>;
 
         public static void AddVanillaShop()
         {

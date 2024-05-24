@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
                 if (DLCUtils.HostCheck)
                     for (int i = 0; i < 11; i++)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-10, 0).RotatedBy(MathHelper.ToRadians(180 / 10f * i)), ModContent.ProjectileType<HallowedSlimeSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-10, 0).RotatedBy(MathHelper.ToRadians(180 / 10f * i)), ModContent.ProjectileType<HallowedSlimeSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                     }
 
                 slam = false;

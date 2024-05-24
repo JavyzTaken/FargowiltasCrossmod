@@ -1,2 +1,5 @@
-New Update: v1.0.6.4
--Fixed an issue that prevented blocks from breaking
+New Update: v1.0.7.02
+- Changed Mechanical Lure recipe (With Balance Rework config): Mythril Bars -> Iron Bars, Mythril Anvil -> Iron Anvil
+- Fixed Eternity Cryogen phase 1 not dealing damage correctly
+-Fixed Eternity Brimstone Elemental sometimes not dealing damage correctly
+-Rewrote Eternity-Revengeance and Eternity-Death difficulty descriptions

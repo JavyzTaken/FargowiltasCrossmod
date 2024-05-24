@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                 for (int i = 0; i < 12; i++)
                 {
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(360 / 12f * i)), ProjectileID.DeathLaser, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(360 / 12f * i)), ProjectileID.DeathLaser, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 }
             }
             NPC arm = null;
@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                     }
                     if (npc.ai[2] % 15 == 0 && DLCUtils.HostCheck)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero), ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: -1);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.Zero), ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: -1);
                     }
 
                     npc.velocity = (rotationPoint - npc.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.PiOver2 - 0.05f) * 20;
@@ -75,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                     {
 
                         if (DLCUtils.HostCheck)
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<HomingRocket>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<HomingRocket>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
 
                     }
                 }
