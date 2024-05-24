@@ -103,13 +103,13 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.DLCCalamityConfig;
+using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.CalDLCConfig;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalNPCChanges : GlobalNPC
+    public class CalDLCNPCChanges : GlobalNPC
     {
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
@@ -148,7 +148,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             #region Balance
 
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 if (npc.type == NPCID.ServantofCthulhu)
                 {
@@ -156,7 +156,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 //Events/Minibosses
 
-                if (CalamityContentLists.AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
+                if (CalDLCSets.GetValue(CalDLCSets.NPCs.AcidRainEnemy, npc.type) && DownedBossSystem.downedPolterghast)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
@@ -167,11 +167,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
-                if (ContentLists.SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG)
+                if (DLCSets.GetValue(DLCSets.NPCs.SolarEclipseEnemy, npc.type) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 4.5f);
                 }
-                if ((ContentLists.FrostMoonEnemies.Contains(npc.type) || ContentLists.PumpkinMoonEnemies.Contains(npc.type)) && DownedBossSystem.downedDoG)
+                if ((DLCSets.GetValue(DLCSets.NPCs.FrostMoonEnemy, npc.type) || DLCSets.GetValue(DLCSets.NPCs.PumpkinMoonEnemy, npc.type)) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
                 }
@@ -229,7 +229,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<LifeChallenger>())
                     npc.lifeMax = (int)(npc.lifeMax * 1.2f);
                 //champions
-                if (ContentLists.Champions.Contains(npc.type))
+                if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 0.9f);
                 }
@@ -431,7 +431,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region Compatibility
-            if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
+            if (CalDLCConfig.Instance.EternityPriorityOverRev)
             {
                 if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail || npc.type == NPCID.Probe)
                 {
@@ -724,156 +724,156 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (npc.type == NPCID.DD2DarkMageT3)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DarkMageMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DarkMageBookMountItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DarkMageMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DarkMageBookMountItem, 4));
             }
             if (npc.type == NPCID.DD2OgreT3)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.OgreMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DD2OgrePetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.OgreMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DD2OgrePetItem, 4));
 
             }
             if (npc.type == NPCID.MourningWood)
             {
-                pMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MourningWoodMasterTrophy));
-                pMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SpookyWoodMountItem, 4));
+                pMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MourningWoodMasterTrophy));
+                pMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SpookyWoodMountItem, 4));
             }
             if (npc.type == NPCID.Pumpking)
             {
-                pMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PumpkingMasterTrophy));
-                pMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PumpkingPetItem, 4));
+                pMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PumpkingMasterTrophy));
+                pMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PumpkingPetItem, 4));
             }
             if (npc.type == NPCID.Everscream)
             {
-                fMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EverscreamMasterTrophy));
-                fMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EverscreamPetItem, 4));
+                fMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EverscreamMasterTrophy));
+                fMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EverscreamPetItem, 4));
             }
             if (npc.type == NPCID.SantaNK1)
             {
-                fMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SantankMasterTrophy));
-                fMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SantankMountItem, 4));
+                fMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SantankMasterTrophy));
+                fMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SantankMountItem, 4));
             }
             if (npc.type == NPCID.IceQueen)
             {
-                fMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.IceQueenMasterTrophy));
-                fMoon.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.IceQueenPetItem, 4));
+                fMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.IceQueenMasterTrophy));
+                fMoon.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.IceQueenPetItem, 4));
             }
             if (npc.type == NPCID.PirateShip)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.FlyingDutchmanMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PirateShipMountItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.FlyingDutchmanMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PirateShipMountItem, 4));
             }
             if (npc.type == NPCID.MartianSaucerCore)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.UFOMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MartianPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.UFOMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MartianPetItem, 4));
             }
             if (npc.type == NPCID.KingSlime)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.KingSlimeMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.KingSlimePetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.KingSlimeMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.KingSlimePetItem, 4));
             }
             if (npc.type == NPCID.EyeofCthulhu)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EyeofCthulhuMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EyeOfCthulhuPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EyeofCthulhuMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EyeOfCthulhuPetItem, 4));
 
             }
             if (npc.type >= NPCID.EaterofWorldsHead && npc.type <= NPCID.EaterofWorldsTail)
             {
                 LeadingConditionRule lastEater = new(new Conditions.LegacyHack_IsABoss());
-                lastEater.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterofWorldsMasterTrophy));
-                lastEater.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterOfWorldsPetItem, 4));
+                lastEater.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterofWorldsMasterTrophy));
+                lastEater.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.EaterOfWorldsPetItem, 4));
                 npcLoot.Add(lastEater);
 
             }
             if (npc.type == NPCID.BrainofCthulhu)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.BrainofCthulhuMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.BrainOfCthulhuPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.BrainofCthulhuMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.BrainOfCthulhuPetItem, 4));
             }
             if (npc.type == NPCID.Deerclops)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DeerclopsMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DeerclopsPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DeerclopsMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DeerclopsPetItem, 4));
             }
             if (npc.type == NPCID.QueenBee)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenBeeMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenBeePetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenBeeMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenBeePetItem, 4));
             }
             if (npc.type == NPCID.SkeletronHead)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronPetItem, 4));
             }
             if (npc.type == NPCID.WallofFlesh)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.WallofFleshMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.WallOfFleshGoatMountItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.WallofFleshMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.WallOfFleshGoatMountItem, 4));
             }
             if (npc.type == NPCID.QueenSlimeBoss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenSlimeMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenSlimePetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenSlimeMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.QueenSlimePetItem, 4));
             }
             if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DestroyerMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DestroyerPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DestroyerMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DestroyerPetItem, 4));
             }
             if (npc.type == NPCID.Retinazer || npc.type == NPCID.Spazmatism)
             {
                 LeadingConditionRule noTwin = new(new Conditions.MissingTwin());
-                noTwin.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsMasterTrophy));
-                noTwin.OnSuccess(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsPetItem, 4));
+                noTwin.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsMasterTrophy));
+                noTwin.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.TwinsPetItem, 4));
                 npcLoot.Add(noTwin);
             }
             if (npc.type == NPCID.SkeletronPrime)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronPrimeMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronPrimePetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronPrimeMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.SkeletronPrimePetItem, 4));
             }
             if (npc.type == NPCID.Plantera)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PlanteraMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PlanteraPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PlanteraMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.PlanteraPetItem, 4));
             }
             if (npc.type == NPCID.Golem)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.GolemMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.GolemPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.GolemMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.GolemPetItem, 4));
             }
             if (npc.type == NPCID.DD2Betsy)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.BetsyMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DD2BetsyPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.BetsyMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DD2BetsyPetItem, 4));
             }
             if (npc.type == NPCID.DukeFishron)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DukeFishronMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DukeFishronPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DukeFishronMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.DukeFishronPetItem, 4));
             }
             if (npc.type == NPCID.HallowBoss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.FairyQueenMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.FairyQueenPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.FairyQueenMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.FairyQueenPetItem, 4));
             }
             if (npc.type == NPCID.CultistBoss)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.LunaticCultistMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.LunaticCultistPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.LunaticCultistMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.LunaticCultistPetItem, 4));
             }
             if (npc.type == NPCID.MoonLordCore)
             {
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordMasterTrophy));
-                npcLoot.Add(ItemDropRule.ByCondition(FargoCalConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordPetItem, 4));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordMasterTrophy));
+                npcLoot.Add(ItemDropRule.ByCondition(CalDLCConditions.EmodeNotRevCondition.ToDropCondition(ShowItemDropInUI.Never), ItemID.MoonLordPetItem, 4));
             }
 
             #endregion MasterModeDropsInRev
 
             #region PreHM progression break fixes
-            LeadingConditionRule PreHMNotBalanced = new LeadingConditionRule(FargoCalConditions.PreHardmodeAndNotBalance.ToDropCondition(ShowItemDropInUI.Always));
+            LeadingConditionRule PreHMNotBalanced = new LeadingConditionRule(CalDLCConditions.PreHardmodeAndNotBalance.ToDropCondition(ShowItemDropInUI.Always));
             if (npc.type == NPCID.WyvernHead)
             {
                 hardmode.OnSuccess(NormalVsExpertQuantity(ModContent.ItemType<EssenceofSunlight>(), 1, 8, 10, 10, 12));
@@ -894,9 +894,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     CommonDrop drop = rule as CommonDrop;
                     return drop != null && drop.itemId == ItemID.CursedFlame && Condition.Hardmode.IsMet();
                 });
-                npcLoot.DefineConditionalDropSet(If(() => !death && (Condition.Hardmode.IsMet() || FargoCalConditions.PreHardmodeAndNotBalance.IsMet()), () => !death && (Condition.Hardmode.IsMet() || FargoCalConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 2, 5);
-                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet() || FargoCalConditions.PreHardmodeAndNotBalance.IsMet()), () => death && (Condition.Hardmode.IsMet() || FargoCalConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 6, 15);
-                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet() || FargoCalConditions.PreHardmodeAndNotBalance.IsMet()), () => death && (Condition.Hardmode.IsMet() || FargoCalConditions.PreHardmodeAndNotBalance.IsMet()), "In Death Mode")).Add(ItemID.SoulofNight, 1, 4, 8);
+                npcLoot.DefineConditionalDropSet(If(() => !death && (Condition.Hardmode.IsMet() || CalDLCConditions.PreHardmodeAndNotBalance.IsMet()), () => !death && (Condition.Hardmode.IsMet() || CalDLCConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 2, 5);
+                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet() || CalDLCConditions.PreHardmodeAndNotBalance.IsMet()), () => death && (Condition.Hardmode.IsMet() || CalDLCConditions.PreHardmodeAndNotBalance.IsMet()), "")).Add(ItemID.CursedFlame, 1, 6, 15);
+                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet() || CalDLCConditions.PreHardmodeAndNotBalance.IsMet()), () => death && (Condition.Hardmode.IsMet() || CalDLCConditions.PreHardmodeAndNotBalance.IsMet()), "In Death Mode")).Add(ItemID.SoulofNight, 1, 4, 8);
             }
             if (npc.type == NPCID.SandElemental)
             {
@@ -992,7 +992,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //{
             //    Main.NewText("A new item has been unlocked in Abominationn's shop!", Color.Orange);
             //}
-            if (npc.type == ModContent.NPCType<GiantClam>() && !CalamityAIOverride.DownedClam)
+            if (npc.type == ModContent.NPCType<GiantClam>() && !CalDLCCompatibilityMisc.DownedClam)
             {
 
                 doDeviText = true;
@@ -1075,7 +1075,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                 }
             }
-            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || ContentLists.Champions.Contains(npc.type) || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
+            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || DLCSets.NPCs.Champion[npc.type] || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
             {
                 BossRushEvent.BossRushStage++;
             }
@@ -1084,15 +1084,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 return false;
             }
-            if (ContentLists.SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.eclipse)
+            if (DLCSets.NPCs.SolarEclipseEnemy[npc.type] && DownedBossSystem.downedDoG && !Main.eclipse)
             {
                 return false;
             }
-            if (ContentLists.FrostMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.snowMoon)
+            if (DLCSets.NPCs.FrostMoonEnemy[npc.type] && DownedBossSystem.downedDoG && !Main.snowMoon)
             {
                 return false;
             }
-            if (ContentLists.PumpkinMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.pumpkinMoon)
+            if (DLCSets.NPCs.PumpkinMoonEnemy[npc.type] && DownedBossSystem.downedDoG && !Main.pumpkinMoon)
             {
                 return false;
             }
@@ -1108,9 +1108,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     pool[NPCID.PigronCrimson] = 0.0001f;
                     pool[NPCID.PigronHallow] = 0.0001f;
                     pool[NPCID.IchorSticker] = 0;
-                    for (int i = 0; i < ContentLists.SandstormEnemies.Count; i++)
+                    for (int i = 0; i < DLCLists.SandstormEnemies.Count; i++)
                     {
-                        pool[ContentLists.SandstormEnemies[i]] = 0;
+                        pool[DLCLists.SandstormEnemies[i]] = 0;
                     }
                     if (AcidRainEvent.AcidRainEventIsOngoing)
                     {
@@ -1138,17 +1138,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     foreach (Item item in player.inventory)
                     {
-                        if (CalamityContentLists.RockItems.Contains(item.type))
+                        if (CalDLCSets.Items.RockItem[item.type])
                             sellRock = true;
                     }
                     foreach (Item item in player.armor)
                     {
-                        if (CalamityContentLists.RockItems.Contains(item.type))
+                        if (CalDLCSets.Items.RockItem[item.type])
                             sellRock = true;
                     }
                     foreach (Item item in player.bank.item)
                     {
-                        if (CalamityContentLists.RockItems.Contains(item.type))
+                        if (CalDLCSets.Items.RockItem[item.type])
                             sellRock = true;
                     }
                 }
@@ -1394,7 +1394,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             else
             {
                 killedAquatic = false;
-                if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
+                if (CalDLCConfig.Instance.EternityPriorityOverRev)
                 {
                     if (npc.type == NPCID.AncientLight && CalDLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
                     {
@@ -1497,7 +1497,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             //Main.NewText(FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
             #region Balance Changes config
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
@@ -1593,10 +1593,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
 
 
-            Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalamityAIOverride.DownedCragmaw);
-            Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
-            Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalamityAIOverride.DownedNuclear);
-            Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
+            Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalDLCCompatibilityMisc.DownedCragmaw);
+            Condition killedMauler = new Condition("Kill a Mauler", () => CalDLCCompatibilityMisc.DownedMauler);
+            Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalDLCCompatibilityMisc.DownedNuclear);
+            Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalDLCCompatibilityMisc.DownedGSS);
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
                 shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);

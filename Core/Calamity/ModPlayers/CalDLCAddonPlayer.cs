@@ -1,6 +1,5 @@
 ﻿using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
-using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
 using System;
@@ -12,11 +11,11 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Core.Calamity.Globals
+namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalamityAddonPlayer : ModPlayer
+    public class CalDLCAddonPlayer : ModPlayer
     {
         public float AeroCritBoost;
         public int FeatherJumpsRemaining;

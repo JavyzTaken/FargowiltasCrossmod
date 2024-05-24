@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public abstract NPCMatcher CreateMatcher();
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return CalDLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && CalDLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
+            return CalDLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
         }
 
         public bool FirstTick = true;
@@ -38,7 +38,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!CalDLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && CalDLCWorldSavingSystem.E_EternityRev)
+            if (!CalDLCWorldSavingSystem.E_EternityRev)
             {
                 return true;
             }
@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public virtual void SafePostAI(NPC npc) => base.PostAI(npc);
         public sealed override void PostAI(NPC npc)
         {
-            if (!CalDLCWorldSavingSystem.EternityRev && WorldSavingSystem.EternityMode && CalDLCWorldSavingSystem.E_EternityRev)
+            if (!CalDLCWorldSavingSystem.E_EternityRev)
             {
                 return;
             }

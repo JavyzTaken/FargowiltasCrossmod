@@ -38,7 +38,7 @@ namespace FargowiltasCrossmod.Core.Common.Globals
                 return;
             NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Calamity");
 
-            Condition killedClam = new Condition("After killing a Giant Clam", () => CalamityAIOverride.DownedClam);
+            Condition killedClam = new Condition("After killing a Giant Clam", () => CalDLCCompatibilityMisc.DownedClam);
             Condition killedPlaguebringerMini = new Condition("After killing a Plaguebringer", () => CalDLCWorldSavingSystem.downedMiniPlaguebringer);
             Condition killedReaperShark = new Condition("After killing a Reaper Shark", () => CalDLCWorldSavingSystem.downedReaperShark);
             Condition killedColossalSquid = new Condition("After killing a Colossal Squid", () => CalDLCWorldSavingSystem.downedColossalSquid);

@@ -24,7 +24,6 @@ using Terraria.ID;
 using Terraria;
 using FargowiltasSouls.Content.Items.Armor;
 using CalamityMod;
-using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
@@ -36,12 +35,13 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using CalamityMod.UI.CalamitasEnchants;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalItemBalance : GlobalItem
+    public class CalDLCItemBalance : GlobalItem
     {
 
         public static float BalanceChange(Item item)
@@ -53,9 +53,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 1f;
             if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
                 return 2f;
-            if (ContentLists.AbomTierFargoWeapons.Contains(item.type))
+            if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
                 return 1.5f;
-            if (ContentLists.ChampionTierFargoWeapons.Contains(item.type))
+            if (DLCSets.GetValue(DLCSets.Items.ChampionTierFargoWeapon, item.type))
             {
                 return 0.8f;
             }
@@ -96,7 +96,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void SetDefaults(Item item)
         {
             //Progression balance changes
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
                 if (balance != 1)
@@ -142,14 +142,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (player.HasEffect<TungstenEffect>() &&
                     !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
             {
-                if (CrossplayerCalamity.TungstenExcludeWeapon.Contains(item.type))
+                if (DLCSets.GetValue(DLCSets.Items.TungstenExclude, item.type))
                 {
                     float tungScale = 1f + (soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1f);
                     scale /= tungScale;
                 }
                 else if (item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
                 {
-                    if (DLCCalamityConfig.Instance.BalanceRework)
+                    if (CalDLCConfig.Instance.BalanceRework)
                         scale /= TrueMeleeTungstenScaleNerf(player);
                 }
             }
@@ -189,18 +189,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
 
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
                 const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
                 const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
                 if (balance > 1)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
                 }
                 else if (balance < 1)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
                 }
                 if (item.type == ItemID.MagicDagger)
                 {
@@ -235,7 +235,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     if (calItem.AppliedEnchantment.Value.ID == 1000)
                     {
-                        tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
+                        tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
                     }
                 }
                 /*

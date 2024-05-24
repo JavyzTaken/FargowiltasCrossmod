@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev)
+            if (!npc.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev)
                 return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
 
             //drawing the aura
@@ -86,7 +86,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         public override bool SafePreAI(NPC npc)
         {
 
-            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) 
+            if (!npc.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) 
                 return true;
             //return true;
 

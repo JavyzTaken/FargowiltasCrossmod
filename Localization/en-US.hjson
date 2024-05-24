@@ -44,7 +44,7 @@ Mods: {
 		}
 
 		Configs: {
-			DLCCalamityConfig: {
+			CalDLCConfig: {
 				DisplayName: Calamity Config
 
 				Headers: {
@@ -632,6 +632,9 @@ Mods: {
 			VictideSpike.DisplayName: Victide Spike
 			GoldenShowerShot.DisplayName: Golden Shower Shot
 			HiveMindFiretrail.DisplayName: Hive Mind Firetrail
+			HMShadeNimbus.DisplayName: H M Shade Nimbus
+			GravityVileClot.DisplayName: Gravity Vile Clot
+			VileClotDrop.DisplayName: Vile Clot Drop
 			SulphurCloud.DisplayName: Sulphur Cloud
 			PureGel.DisplayName: Pure Gel
 		}

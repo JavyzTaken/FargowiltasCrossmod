@@ -80,13 +80,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override int ToggleItemType => ModContent.ItemType<PlaguebringerEnchantment>();
         public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
-            target.GetGlobalNPC<CalamityAddonGlobalNPC>().PBGDebuffTag = 500;
+            target.GetGlobalNPC<CalDLCAddonGlobalNPC>().PBGDebuffTag = 500;
             if (player.ForceEffect<PlaguebringerEffect>())
             {
-                target.GetGlobalNPC<CalamityAddonGlobalNPC>().PBGDebuffTag = 1000;
+                target.GetGlobalNPC<CalDLCAddonGlobalNPC>().PBGDebuffTag = 1000;
 
             }
-            target.GetGlobalNPC<CalamityAddonGlobalNPC>().taggedByPlayer = player.whoAmI;
+            target.GetGlobalNPC<CalDLCAddonGlobalNPC>().taggedByPlayer = player.whoAmI;
         }
         public override void PostUpdateEquips(Player player)
         {

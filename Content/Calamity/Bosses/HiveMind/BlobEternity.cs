@@ -330,7 +330,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         playerDist = projSpeed / (playerDist + 1e-6f);
                         playerX *= playerDist;
                         playerY *= playerDist;
-                        int type = ModContent.ProjectileType<VileClot>();
+                        int type = ModContent.ProjectileType<VileClotDrop>();
                         int damage = npc.GetProjectileDamage(type);
                         Vector2 projectileVelocity = new Vector2(playerX, playerY);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), projDirection, projectileVelocity * 0.7f, type, damage, 0f, Main.myPlayer);
@@ -368,7 +368,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     Vector2 toPlayer = npc.DirectionTo(target.Center) * 7;
                     Vector2 aim = CalamityUtils.CalculatePredictiveAimToTarget(npc.Center, target, 7);
                     aim = Vector2.Lerp(aim, toPlayer, Main.rand.NextFloat(0.2f, 0.6f));
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, aim, ModContent.ProjectileType<CalamityMod.Projectiles.Boss.VileClot>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
+                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, aim, ModContent.ProjectileType<VileClotDrop>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
                 }
             }
         }

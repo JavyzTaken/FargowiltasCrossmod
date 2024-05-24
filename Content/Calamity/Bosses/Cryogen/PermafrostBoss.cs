@@ -200,7 +200,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                 int line = DownedBossSystem.downedCryogen ? 2 : 1;
                 if (defeat)
-                    Main.npc[n].GetGlobalNPC<CalNPCChanges>().PermafrostDefeatLine = line;
+                    Main.npc[n].GetGlobalNPC<CalDLCNPCChanges>().PermafrostDefeatLine = line;
             }
             
         }

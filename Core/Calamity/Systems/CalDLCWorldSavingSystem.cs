@@ -34,8 +34,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             set => eternityDeath = value;
         }
 
-        public static bool E_EternityRev => EternityRev && WorldSavingSystem.EternityMode && DLCCalamityConfig.Instance.EternityPriorityOverRev;
-        public static bool R_EternityRev => EternityRev && !DLCCalamityConfig.Instance.EternityPriorityOverRev;
+        public static bool E_EternityRev => EternityRev && WorldSavingSystem.EternityMode && CalDLCConfig.Instance.EternityPriorityOverRev;
+        public static bool R_EternityRev => EternityRev && !CalDLCConfig.Instance.EternityPriorityOverRev;
 
         internal static bool permafrostPhaseSeen;
         public static bool PermafrostPhaseSeen

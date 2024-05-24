@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalBuffChanges : GlobalBuff
+    public class CalDLCBuffChanges : GlobalBuff
     {
         public override void ModifyBuffText(int type, ref string buffName, ref string tip, ref int rare)
         {

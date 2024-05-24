@@ -19,6 +19,7 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
@@ -38,7 +39,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace FargowiltasCrossmod.Content.Calamity
+namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -46,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public bool CalamitousPresence;
         //Unique accessories fields
-        
+
         public override void ResetEffects()
         {
             CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
@@ -56,20 +57,20 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
 
         }
-        
+
         public override void UpdateEquips()
         {
-            
+
         }
         public override void PreUpdate()
         {
-            
+
         }
         public override void PreUpdateMovement()
         {
-            
+
         }
-        
+
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
@@ -88,7 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 if (BossRushEvent.BossRushActive)
                 {
@@ -101,50 +102,16 @@ namespace FargowiltasCrossmod.Content.Calamity
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
-        public static List<int> TungstenExcludeWeapon =
-        [
-            ItemType<OldLordClaymore>(),
-            ItemType<BladecrestOathsword>()
-        ];
-        public static List<int> AttackSpeedExcludeWeapons =
-        [
-            ItemType<ExecutionersBlade>()
-        ];
-        public static List<int> AdamantiteIgnoreItem =
-        [
-            ItemType<HeavenlyGale>(),
-            ItemType<TheSevensStriker>(),
-            ItemType<Phangasm>(),
-            ItemType<TheJailor>(),
-            ItemType<AetherfluxCannon>(),
-            ItemType<TheAnomalysNanogun>(),
-            ItemType<ClockworkBow>(),
-            ItemType<NebulousCataclysm>(),
-            ItemType<Eternity>(), //fargo reference
-            ItemType<Vehemence>(),
-            ItemType<Phaseslayer>(),
-            ItemType<FracturedArk>(),
-            ItemType<TrueArkoftheAncients>(),
-            ItemType<ArkoftheElements>(),
-            ItemType<ArkoftheCosmos>()
-        ];
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calamityPlayer = Player.Calamity();
-
-            /*
-            if (!soulsPlayer.TerrariaSoul && soulsPlayer.TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
-            {
-                Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
-            }
-            */
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
             AdamantiteEffect adamEffect = GetInstance<AdamantiteEffect>();
-            if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type) && Player.HasEffect(adamEffect))
+            if (Player.HasEffect(adamEffect) && Player.HeldItem != null && DLCSets.Items.AdamantiteIgnore[Player.HeldItem.type])
             {
                 AccessoryEffectPlayer effectsPlayer = Player.AccessoryEffects();
                 effectsPlayer.ActiveEffects[adamEffect.Index] = false;
@@ -164,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
 
             }
-            
+
         }
         public bool[] PreUpdateBuffImmune;
         public override void PreUpdateBuffs()
@@ -173,7 +140,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            
+
             if (CalamityKeybinds.NormalityRelocatorHotKey.JustPressed && Player.Calamity().normalityRelocator && WorldSavingSystem.EternityMode && LumUtils.AnyBosses())
             {
                 //copied from vanilla chaos state damage
@@ -230,7 +197,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void UpdateBadLifeRegen()
         {
-            
+
             if (CalamitousPresence)
             {
                 const int cap = 2;

@@ -19,7 +19,7 @@ using FargowiltasSouls.Common.Graphics.Particles;
 using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public static void ProwlerEffect(Player player)
         {
             
-            CalamityAddonPlayer cplayer = player.GetModPlayer<CalamityAddonPlayer>();
+            CalDLCAddonPlayer cplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             
             if (cplayer.ProwlerCharge < 15 && player.controlJump)
             {

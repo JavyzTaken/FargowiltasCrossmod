@@ -19,8 +19,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             if (ModCompatibility.Calamity.Loaded)
             {
-                ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", DLCCalamityConfig.Instance.EternityPriorityOverRev);
-                if (DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
+                ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", CalDLCConfig.Instance.EternityPriorityOverRev);
+                if (CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
                     CalamityMod.CalamityMod.ExternalFlag_DisableNonRevBossAI = true;
             }
 
@@ -41,10 +41,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 if (ModCompatibility.InfernumMode.InfernumDifficulty && !InfernumStateLastFrame)
                 {
-                    DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
+                    CalDLCConfig.Instance.EternityPriorityOverRev = false;
 
 
-                    if (DLCCalamityConfig.Instance.InfernumDisablesEternity)
+                    if (CalDLCConfig.Instance.InfernumDisablesEternity)
                     {
                         WorldSavingSystem.EternityMode = false;
                         WorldSavingSystem.ShouldBeEternityMode = false;

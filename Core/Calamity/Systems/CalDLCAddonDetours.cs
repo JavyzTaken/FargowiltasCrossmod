@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalamityDetours : ModSystem
+    public class CalDLCAddonDetours : ModSystem
     {
         public override bool IsLoadingEnabled(Mod mod)
         {

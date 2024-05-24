@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalProjectileChanges : GlobalProjectile
+    public class CalDLCProjectileChanges : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -67,16 +67,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             }
         }
-        public static List<int> TungstenExclude =
-        [
-            ModContent.ProjectileType<BladecrestOathswordProj>(),
-            ModContent.ProjectileType<OldLordClaymoreProj>()
-        ];
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             if (projectile.TryGetGlobalProjectile(out FargoSoulsGlobalProjectile fargoProj))
             {
-                if (TungstenExclude.Contains(projectile.type))
+                if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
                 {
                     //projectile.FargoSouls().TungstenScale = 1;
                     float scale = fargoProj.TungstenScale;
@@ -92,7 +87,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     Item item = player.HeldItem;
                     if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
                     {
-                        float scale = CalItemBalance.TrueMeleeTungstenScaleNerf(player);
+                        float scale = CalDLCItemBalance.TrueMeleeTungstenScaleNerf(player);
                         projectile.position = projectile.Center;
                         projectile.width = (int)(projectile.width / scale);
                         projectile.height = (int)(projectile.height / scale);
@@ -103,13 +98,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 
             }
             
-            if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalProjectileChanges>().Ricoshot)
+            if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalDLCProjectileChanges>().Ricoshot)
             {
                 projectile.hostile = false;
                 projectile.friendly = true;
             }
 
-            if (DLCCalamityConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
+            if (CalDLCConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
             {
                 if (projectile.ModProjectile != null)
                 {
@@ -155,12 +150,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             
-            if (TungstenExclude.Contains(projectile.type))
+            if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
             {
                 //projectile.FargoSouls().TungstenScale = 1;
             }
             #region Balance Changes config
-            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
+            if (ModContent.GetInstance<CalDLCConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (projectile.ModProjectile != null)
@@ -182,27 +177,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return true;
             #endregion
         }
-        public static List<int> MultipartShredders =
-        [
-            ModContent.ProjectileType<CelestialRuneFireball>()
-
-        ];
         public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (MultipartShredders.Contains(projectile.type) && target.type == ModContent.NPCType<DarkEnergy>())
+            if (CalDLCSets.Projectiles.MultipartShredder[projectile.type] && target.type == ModContent.NPCType<DarkEnergy>())
             {
                 modifiers.FinalDamage *= 0.2f;
             }
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 if (projectile.type == ModContent.ProjectileType<BlushieStaffProj>())
                     modifiers.FinalDamage *= 0.7f;
-                if (projectile.type == ModContent.ProjectileType<EternityCircle>() || projectile.type == ModContent.ProjectileType<EternityCrystal>()
-                    || projectile.type == ModContent.ProjectileType<EternityHex>() || projectile.type == ModContent.ProjectileType<EternityHoming>()
-                    || projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0)
+                if (CalDLCSets.Projectiles.EternityBookProj[projectile.type] || (projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0))
                     modifiers.FinalDamage *= 0.4f;
-                if (projectile.type == ModContent.ProjectileType<AngelBolt>() || projectile.type == ModContent.ProjectileType<AngelicAllianceArchangel>() ||
-                    projectile.type == ModContent.ProjectileType<AngelOrb>() || projectile.type == ModContent.ProjectileType<AngelRay>())
+                if (CalDLCSets.Projectiles.AngelAllianceProj[projectile.type])
                 {
                     modifiers.FinalDamage *= 0.2f;
                 }
@@ -214,26 +201,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     modifiers.FinalDamage *= 0.8f;
                 }
-                List<int> profanedCrystalProjs =
-                [
-                    ModContent.ProjectileType<ProfanedCrystalMageFireball>(),
-                    ModContent.ProjectileType<ProfanedCrystalMageFireballSplit>(),
-                    ModContent.ProjectileType<ProfanedCrystalMeleeSpear>(),
-                    ModContent.ProjectileType<ProfanedCrystalRangedHuges>(),
-                    ModContent.ProjectileType<ProfanedCrystalRangedSmalls>(),
-                    ModContent.ProjectileType<ProfanedCrystalRogueShard>(),
-                    ModContent.ProjectileType<ProfanedCrystalWhip>(),
-                    ModContent.ProjectileType<MiniGuardianAttack>(),
-                    ModContent.ProjectileType<MiniGuardianDefense>(),
-                    ModContent.ProjectileType<MiniGuardianFireball>(),
-                    ModContent.ProjectileType<MiniGuardianFireballSplit>(),
-                    ModContent.ProjectileType<MiniGuardianHealer>(),
-                    ModContent.ProjectileType<MiniGuardianHolyRay>(),
-                    ModContent.ProjectileType<MiniGuardianRock>(),
-                    ModContent.ProjectileType<MiniGuardianSpear>(),
-                    ModContent.ProjectileType<MiniGuardianStars>(),
-                ];
-                if (profanedCrystalProjs.Contains(projectile.type) && Main.player[projectile.owner].Calamity().profanedCrystal)
+                
+                if (CalDLCSets.Projectiles.ProfanedCrystalProj[projectile.type] && Main.player[projectile.owner].Calamity().profanedCrystal)
                 {
                     modifiers.FinalDamage *= 0.4f;
                     for (int i = 0; i < Main.player[projectile.owner].ownedProjectileCounts.Length; i++)
@@ -243,8 +212,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             modifiers.FinalDamage *= 0.3f;
                         }
                     }
-                    //Main.NewText(Main.player[projectile.owner].Calamity().pscState);
-
                 }
             }
 
@@ -283,25 +250,36 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void AI(Projectile projectile)
         {
-            if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
+            if (CalDLCConfig.Instance.EternityPriorityOverRev)
             {
-                if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && CalDLCWorldSavingSystem.E_EternityRev)
+                switch (projectile.type)
                 {
-                    projectile.velocity /= 1.015525f;
-                }
-                if (projectile.type == ProjectileID.CultistBossIceMist && CalDLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
-                {
-                    int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
-                    //projectile.ai[1] = 1;
-
-                    if (p >= 0)
-                    {
-                        if (projectile.velocity.Length() < 10)
+                    case ProjectileID.HallowBossLastingRainbow:
                         {
-                            projectile.velocity *= 1.1f;
+                            if ((CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && CalDLCWorldSavingSystem.E_EternityRev)
+                            {
+                                projectile.velocity /= 1.015525f;
+                            }
                         }
-                        projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(projectile.velocity.ToRotation().AngleTowards(projectile.AngleTo(Main.player[p].Center), 0.04f));
-                    }
+                        break;
+                    case ProjectileID.CultistBossIceMist:
+                        {
+                            if (CalDLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
+                            {
+                                int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
+                                //projectile.ai[1] = 1;
+
+                                if (p >= 0)
+                                {
+                                    if (projectile.velocity.Length() < 10)
+                                    {
+                                        projectile.velocity *= 1.1f;
+                                    }
+                                    projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(projectile.velocity.ToRotation().AngleTowards(projectile.AngleTo(Main.player[p].Center), 0.04f));
+                                }
+                            }
+                        }
+                        break;
                 }
             }
         }

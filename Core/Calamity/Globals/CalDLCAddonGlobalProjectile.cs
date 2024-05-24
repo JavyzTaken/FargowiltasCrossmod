@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalamityAddonGlobalProjectile : GlobalProjectile
+    public class CalDLCAddonGlobalProjectile : GlobalProjectile
     {
         //1 if a clone projectile, 2 if clone of a clone etc
         public int statigelClone = 0;
