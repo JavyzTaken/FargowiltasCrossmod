@@ -123,7 +123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         bool evenChain(NPC npc) => npc.ai[1] % (chainTime * 2) >= chainTime;
         public override bool SafePreAI(NPC npc)
         {
-            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) return true;
+            if (!npc.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) return true;
 
             Player target = Main.player[npc.target];
             ref float attack = ref npc.ai[0];

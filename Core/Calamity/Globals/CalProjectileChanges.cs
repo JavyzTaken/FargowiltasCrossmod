@@ -109,7 +109,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 projectile.friendly = true;
             }
 
-            if (DLCCalamityConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
+            if (CalDLCConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
             {
                 if (projectile.ModProjectile != null)
                 {
@@ -160,7 +160,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 //projectile.FargoSouls().TungstenScale = 1;
             }
             #region Balance Changes config
-            if (ModContent.GetInstance<DLCCalamityConfig>().BalanceRework)
+            if (ModContent.GetInstance<CalDLCConfig>().BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (projectile.ModProjectile != null)
@@ -193,7 +193,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 modifiers.FinalDamage *= 0.2f;
             }
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 if (projectile.type == ModContent.ProjectileType<BlushieStaffProj>())
                     modifiers.FinalDamage *= 0.7f;
@@ -283,7 +283,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void AI(Projectile projectile)
         {
-            if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
+            if (CalDLCConfig.Instance.EternityPriorityOverRev)
             {
                 if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && CalDLCWorldSavingSystem.E_EternityRev)
                 {

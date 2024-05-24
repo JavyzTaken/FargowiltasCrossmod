@@ -6,10 +6,10 @@ namespace FargowiltasCrossmod.Core.Calamity
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class DLCCalamityConfig : ModConfig
+    public class CalDLCConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
-        public static DLCCalamityConfig Instance => ModContent.GetInstance<DLCCalamityConfig>();
+        public static CalDLCConfig Instance => ModContent.GetInstance<CalDLCConfig>();
 
         [Header("Modes")] // Title
 

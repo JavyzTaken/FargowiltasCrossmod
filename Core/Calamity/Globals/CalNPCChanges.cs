@@ -103,7 +103,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.DLCCalamityConfig;
+using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.CalDLCConfig;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -148,7 +148,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             #region Balance
 
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 if (npc.type == NPCID.ServantofCthulhu)
                 {
@@ -431,7 +431,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region Compatibility
-            if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
+            if (CalDLCConfig.Instance.EternityPriorityOverRev)
             {
                 if (npc.type >= NPCID.TheDestroyer && npc.type <= NPCID.TheDestroyerTail || npc.type == NPCID.Probe)
                 {
@@ -992,7 +992,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //{
             //    Main.NewText("A new item has been unlocked in Abominationn's shop!", Color.Orange);
             //}
-            if (npc.type == ModContent.NPCType<GiantClam>() && !CalamityAIOverride.DownedClam)
+            if (npc.type == ModContent.NPCType<GiantClam>() && !CalDLCCompatibilityMisc.DownedClam)
             {
 
                 doDeviText = true;
@@ -1394,7 +1394,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             else
             {
                 killedAquatic = false;
-                if (DLCCalamityConfig.Instance.EternityPriorityOverRev)
+                if (CalDLCConfig.Instance.EternityPriorityOverRev)
                 {
                     if (npc.type == NPCID.AncientLight && CalDLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
                     {
@@ -1497,7 +1497,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             //Main.NewText(FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
             #region Balance Changes config
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
                 if (npc.ModNPC != null)
@@ -1593,10 +1593,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
 
 
-            Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalamityAIOverride.DownedCragmaw);
-            Condition killedMauler = new Condition("Kill a Mauler", () => CalamityAIOverride.DownedMauler);
-            Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalamityAIOverride.DownedNuclear);
-            Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalamityAIOverride.DownedGSS);
+            Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalDLCCompatibilityMisc.DownedCragmaw);
+            Condition killedMauler = new Condition("Kill a Mauler", () => CalDLCCompatibilityMisc.DownedMauler);
+            Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalDLCCompatibilityMisc.DownedNuclear);
+            Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalDLCCompatibilityMisc.DownedGSS);
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
                 shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);

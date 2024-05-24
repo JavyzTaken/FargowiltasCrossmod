@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 if (BossRushEvent.BossRushActive)
                 {

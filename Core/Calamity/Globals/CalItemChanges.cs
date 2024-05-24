@@ -205,7 +205,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<Terminus>())
                 return WorldSavingSystem.DownedMutant;
 
-            if (item.type == ModContent.ItemType<CelestialOnion>() && DLCCalamityConfig.Instance.BalanceRework && WorldSavingSystem.EternityMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && CalDLCConfig.Instance.BalanceRework && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
             return true;
@@ -216,7 +216,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil;
         public override void SetDefaults(Item item)
         {
-            if (DLCCalamityConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
+            if (CalDLCConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
             {
                 item.consumable = WorldSavingSystem.EternityMode;
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
@@ -224,7 +224,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void UpdateInventory(Item item, Player player)
         {
-            if (DLCCalamityConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
+            if (CalDLCConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
             {
                 item.consumable = WorldSavingSystem.EternityMode;
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
@@ -264,7 +264,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
-            if (item.type == ModContent.ItemType<CelestialOnion>() && DLCCalamityConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && CalDLCConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
@@ -328,7 +328,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
-            if (Player.Calamity().extraAccessoryML && DLCCalamityConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
+            if (Player.Calamity().extraAccessoryML && CalDLCConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 if (MutantsPactSlot)
                 {

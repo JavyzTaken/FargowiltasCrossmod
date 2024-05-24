@@ -96,7 +96,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void SetDefaults(Item item)
         {
             //Progression balance changes
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
                 if (balance != 1)
@@ -149,7 +149,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 else if (item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
                 {
-                    if (DLCCalamityConfig.Instance.BalanceRework)
+                    if (CalDLCConfig.Instance.BalanceRework)
                         scale /= TrueMeleeTungstenScaleNerf(player);
                 }
             }
@@ -189,7 +189,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
 
-            if (DLCCalamityConfig.Instance.BalanceRework)
+            if (CalDLCConfig.Instance.BalanceRework)
             {
                 float balance = BalanceChange(item);
                 const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
