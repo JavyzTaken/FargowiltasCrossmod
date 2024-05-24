@@ -285,23 +285,34 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (CalDLCConfig.Instance.EternityPriorityOverRev)
             {
-                if (projectile.type == ProjectileID.HallowBossLastingRainbow && (CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && CalDLCWorldSavingSystem.E_EternityRev)
+                switch (projectile.type)
                 {
-                    projectile.velocity /= 1.015525f;
-                }
-                if (projectile.type == ProjectileID.CultistBossIceMist && CalDLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
-                {
-                    int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
-                    //projectile.ai[1] = 1;
-
-                    if (p >= 0)
-                    {
-                        if (projectile.velocity.Length() < 10)
+                    case ProjectileID.HallowBossLastingRainbow:
                         {
-                            projectile.velocity *= 1.1f;
+                            if ((CalamityWorld.revenge || BossRushEvent.BossRushActive) && projectile.timeLeft > 570 && CalDLCWorldSavingSystem.E_EternityRev)
+                            {
+                                projectile.velocity /= 1.015525f;
+                            }
                         }
-                        projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(projectile.velocity.ToRotation().AngleTowards(projectile.AngleTo(Main.player[p].Center), 0.04f));
-                    }
+                        break;
+                    case ProjectileID.CultistBossIceMist:
+                        {
+                            if (CalDLCWorldSavingSystem.EternityDeath && projectile.ai[1] == 1)
+                            {
+                                int p = Player.FindClosest(projectile.position, projectile.width, projectile.height);
+                                //projectile.ai[1] = 1;
+
+                                if (p >= 0)
+                                {
+                                    if (projectile.velocity.Length() < 10)
+                                    {
+                                        projectile.velocity *= 1.1f;
+                                    }
+                                    projectile.velocity = new Vector2(projectile.velocity.Length(), 0).RotatedBy(projectile.velocity.ToRotation().AngleTowards(projectile.AngleTo(Main.player[p].Center), 0.04f));
+                                }
+                            }
+                        }
+                        break;
                 }
             }
         }
