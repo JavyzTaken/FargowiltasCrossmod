@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 NPC owner = Main.npc[hiveMind];
                 if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
-                    healthMult *= 2;
+                    healthMult *= 4;
             }
             entity.lifeMax = (int)(entity.lifeMax * healthMult);
             base.SetDefaults(entity);
@@ -118,9 +118,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     Asset<Texture2D> line = TextureAssets.Extra[178];
 
                     float opacity = 0;
-                    if (npc.localAI[1] >= 400f)
+                    if (npc.localAI[1] >= 420f)
                     {
-                        opacity = MathHelper.Lerp(0, 1, (npc.localAI[1] - 400f) / 80f);
+                        opacity = MathHelper.Lerp(0, 1, (npc.localAI[1] - 420f) / 60f);
                     }
                     Main.EntitySpriteDraw(line.Value, npc.Center - Main.screenPosition, null, Color.Lime * opacity, npc.DirectionTo(target.Center).ToRotation(), new Vector2(0, line.Height() * 0.5f), new Vector2(0.2f, npc.scale * 4), SpriteEffects.None);
                 }
@@ -242,21 +242,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             */
             Vector2 circlePos = circleCenter + (angle.ToRotationVector2() * distance);
 
-            float hiveMindX = circlePos.X;
-            float hiveMindY = circlePos.Y;
-            Vector2 hiveMindPos = new Vector2(hiveMindX, hiveMindY);
+            Vector2 findPosition(Vector2 pos)
+            {
+                float hiveMindX = pos.X;
+                float hiveMindY = pos.Y;
+                Vector2 hiveMindPos = new Vector2(hiveMindX, hiveMindY);
 
 
-            float randomPosX = hiveMindX + npc.ai[0];
-            float randomPosY = hiveMindY + npc.ai[1];
-            float finalRandPosX = randomPosX - hiveMindPos.X;
-            float finalRandPosY = randomPosY - hiveMindPos.Y;
-            float finalRandDistance = (float)Math.Sqrt(finalRandPosX * finalRandPosX + finalRandPosY * finalRandPosY);
-            finalRandDistance = 128f / finalRandDistance;
-            finalRandPosX *= finalRandDistance;
-            finalRandPosY *= finalRandDistance;
+                float randomPosX = hiveMindX + npc.ai[0];
+                float randomPosY = hiveMindY + npc.ai[1];
+                float finalRandPosX = randomPosX - hiveMindPos.X;
+                float finalRandPosY = randomPosY - hiveMindPos.Y;
+                float finalRandDistance = (float)Math.Sqrt(finalRandPosX * finalRandPosX + finalRandPosY * finalRandPosY);
+                finalRandDistance = 128f / finalRandDistance;
+                finalRandPosX *= finalRandDistance;
+                finalRandPosY *= finalRandDistance;
+                return new(hiveMindX + finalRandPosX, hiveMindY + finalRandPosY);
+            }
 
-            Vector2 desiredPosition = new(hiveMindX + finalRandPosX, hiveMindY + finalRandPosY);
+            Vector2 desiredPosition = findPosition(circlePos);
+            if (Collision.SolidCollision(desiredPosition - npc.Size / 2, npc.width, npc.height))
+            {
+                circlePos = circleCenter - (angle.ToRotationVector2() * distance);
+                desiredPosition = findPosition(circlePos);
+            }
+                
             /*
             if (npc.position.X < desiredPosition.X)
             {
@@ -286,13 +296,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             float velocityLimit = 8f;
             npc.velocity = npc.velocity.ClampMagnitude(0, velocityLimit);
             */
-            if (npc.localAI[1] >= 200 && npc.localAI[1] < 300 && desiredPosition.Distance(npc.Center) > 5)
+            if (npc.localAI[1] >= 380f && npc.localAI[1] < 480f && desiredPosition.Distance(npc.Center) > 5)
             {
                 npc.velocity = (desiredPosition - npc.Center) * 0.05f;
             }
             else
             {
-                npc.velocity *= 0.9f;
+                npc.velocity *= 0.925f;
             }
 
             if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -305,7 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 //if (npc.Distance(desiredPosition) < 100)
                 npc.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(4f, 0.22f, (float)blobs.Count / 20);
 
-                if (npc.localAI[1] >= 480f)// && Vector2.Distance(target.Center, npc.Center) > 400f)
+                if (npc.localAI[1] >= 480f && npc.velocity.Length() < 2f)// && Vector2.Distance(target.Center, npc.Center) > 400f)
                 {
                     npc.localAI[1] = 1f;
                     npc.TargetClosest(true);
@@ -324,6 +334,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         int damage = npc.GetProjectileDamage(type);
                         Vector2 projectileVelocity = new Vector2(playerX, playerY);
                         Projectile.NewProjectile(npc.GetSource_FromAI(), projDirection, projectileVelocity * 0.7f, type, damage, 0f, Main.myPlayer);
+
+                        npc.velocity -= projectileVelocity; // recoil
                         npc.netUpdate = true;
                     }
                 }

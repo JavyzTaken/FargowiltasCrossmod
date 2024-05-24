@@ -12,50 +12,48 @@ using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.IO;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DevourerEternityHM : EModeCalBehaviour
+    public class DevourerEternityHM : GlobalNPC
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.DevourerHead);
-        private bool FromHM = false;
-        public override void OnSpawn(NPC npc, IEntitySource source)
+        public override bool InstancePerEntity => true;
+        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev)
-            {
-                if (source is EntitySource_Parent parent && parent.Entity is NPC parentNPC && parentNPC.type == ModContent.NPCType<CalamityMod.NPCs.HiveMind.HiveMind>() && npc.TryGetGlobalNPC(out HMEternity _))
-                {
-                    FromHM = true;
-                }
-            }
-            base.OnSpawn(npc, source);
+            return entity.type == NPCID.DevourerHead;
         }
-        public override bool SafePreAI(NPC npc)
+        public bool FromHM = false;
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            base.SendExtraAI(npc, bitWriter, binaryWriter);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            base.ReceiveExtraAI(npc, bitReader, binaryReader);
+        }
+        public int timer = 0;
+        public override bool PreAI(NPC npc)
         {
             if (FromHM)
             {
-                Main.NewText("e");
-                npc.velocity.Y += 0.3f;
-                int closestPlayer = Player.FindClosest(npc.Center, 0, 0);
-                if (closestPlayer.IsWithinBounds(Main.maxPlayers))
+                timer++;
+                if (timer > 60 * 4)
                 {
-                    Player player = Main.player[closestPlayer];
-                    if (player.Alive())
-                    {
-                        if (player.Distance(npc.Center) > 1500)
-                            npc.active = false;
-                    }
+                    npc.Opacity -= 1f / 60;
+                    if (npc.Opacity < 0.05f)
+                        npc.active = false;
                 }
-                return false;
             }
-            return base.SafePreAI(npc);
+            return true;
         }
 
     }

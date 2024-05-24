@@ -561,7 +561,7 @@ Mods: {
 				SlimeHomingEbonianGlob.DisplayName: Эбонитовый Сгусток
 				SlimeHomingCrimuleanGlob.DisplayName: Багротановый Сгусток
 				MutantYharonVortex.DisplayName: Солнце
-				// GravityVileClot.DisplayName: Gravity Vile Clot
+				// GravityVileClot.DisplayName: Vile Clot
 			}
 
 			SlamTelegraph.DisplayName: Удар Телеграф
