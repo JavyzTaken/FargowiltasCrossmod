@@ -156,7 +156,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 //Events/Minibosses
 
-                if (CalamityContentLists.AcidRainEnemies.Contains(npc.type) && DownedBossSystem.downedPolterghast)
+                if (CalDLCSets.NPCs.AcidRainEnemy[npc.type] && DownedBossSystem.downedPolterghast)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
@@ -167,11 +167,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
-                if (ContentLists.SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG)
+                if (DLCSets.NPCs.SolarEclipseEnemy[npc.type] && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 4.5f);
                 }
-                if ((ContentLists.FrostMoonEnemies.Contains(npc.type) || ContentLists.PumpkinMoonEnemies.Contains(npc.type)) && DownedBossSystem.downedDoG)
+                if ((DLCSets.NPCs.FrostMoonEnemy[npc.type] || DLCSets.NPCs.PumpkinMoonEnemy[npc.type]) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
                 }
@@ -229,7 +229,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<LifeChallenger>())
                     npc.lifeMax = (int)(npc.lifeMax * 1.2f);
                 //champions
-                if (ContentLists.Champions.Contains(npc.type))
+                if (DLCSets.NPCs.Champion[npc.type])
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 0.9f);
                 }
@@ -1075,7 +1075,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                 }
             }
-            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || ContentLists.Champions.Contains(npc.type) || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
+            if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || DLCSets.NPCs.Champion[npc.type] || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
             {
                 BossRushEvent.BossRushStage++;
             }
@@ -1084,15 +1084,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 return false;
             }
-            if (ContentLists.SolarEclipseEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.eclipse)
+            if (DLCSets.NPCs.SolarEclipseEnemy[npc.type] && DownedBossSystem.downedDoG && !Main.eclipse)
             {
                 return false;
             }
-            if (ContentLists.FrostMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.snowMoon)
+            if (DLCSets.NPCs.FrostMoonEnemy[npc.type] && DownedBossSystem.downedDoG && !Main.snowMoon)
             {
                 return false;
             }
-            if (ContentLists.PumpkinMoonEnemies.Contains(npc.type) && DownedBossSystem.downedDoG && !Main.pumpkinMoon)
+            if (DLCSets.NPCs.PumpkinMoonEnemy[npc.type] && DownedBossSystem.downedDoG && !Main.pumpkinMoon)
             {
                 return false;
             }
@@ -1108,9 +1108,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     pool[NPCID.PigronCrimson] = 0.0001f;
                     pool[NPCID.PigronHallow] = 0.0001f;
                     pool[NPCID.IchorSticker] = 0;
-                    for (int i = 0; i < ContentLists.SandstormEnemies.Count; i++)
+                    for (int i = 0; i < DLCLists.SandstormEnemies.Count; i++)
                     {
-                        pool[ContentLists.SandstormEnemies[i]] = 0;
+                        pool[DLCLists.SandstormEnemies[i]] = 0;
                     }
                     if (AcidRainEvent.AcidRainEventIsOngoing)
                     {
@@ -1138,17 +1138,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     foreach (Item item in player.inventory)
                     {
-                        if (CalamityContentLists.RockItems.Contains(item.type))
+                        if (CalDLCSets.Items.RockItem[item.type])
                             sellRock = true;
                     }
                     foreach (Item item in player.armor)
                     {
-                        if (CalamityContentLists.RockItems.Contains(item.type))
+                        if (CalDLCSets.Items.RockItem[item.type])
                             sellRock = true;
                     }
                     foreach (Item item in player.bank.item)
                     {
-                        if (CalamityContentLists.RockItems.Contains(item.type))
+                        if (CalDLCSets.Items.RockItem[item.type])
                             sellRock = true;
                     }
                 }

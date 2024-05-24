@@ -216,7 +216,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil;
         public override void SetDefaults(Item item)
         {
-            if (CalDLCConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
+            if (CalDLCConfig.Instance.ConsumableSummons && CalDLCSets.Items.CalBossSummon[item.type] || VanillaSummonItem(item))
             {
                 item.consumable = WorldSavingSystem.EternityMode;
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
@@ -224,7 +224,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void UpdateInventory(Item item, Player player)
         {
-            if (CalDLCConfig.Instance.ConsumableSummons && CalamityContentLists.CalBossSummons.Contains(item.type) || VanillaSummonItem(item))
+            if (CalDLCConfig.Instance.ConsumableSummons && CalDLCSets.Items.CalBossSummon[item.type] || VanillaSummonItem(item))
             {
                 item.consumable = WorldSavingSystem.EternityMode;
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;

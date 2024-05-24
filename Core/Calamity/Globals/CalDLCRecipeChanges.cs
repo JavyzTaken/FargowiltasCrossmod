@@ -889,7 +889,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 #region Balance and Progression Locks
                 if (CalDLCConfig.Instance.BalanceRework)
                 {
-                    if (recipe.HasIngredient<EternalEnergy>() && recipe.createItem != null && CalamityContentLists.RockItems.Contains(recipe.createItem.type) && !recipe.HasIngredient<Rock>())
+                    if (recipe.HasIngredient<EternalEnergy>() && recipe.createItem != null && CalDLCSets.Items.RockItem[recipe.createItem.type] && !recipe.HasIngredient<Rock>())
                     {
                         recipe.AddIngredient<Rock>();
                     }

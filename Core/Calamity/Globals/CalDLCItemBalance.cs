@@ -53,9 +53,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 1f;
             if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
                 return 2f;
-            if (ContentLists.AbomTierFargoWeapons.Contains(item.type))
+            if (DLCSets.Items.AbomTierFargoWeapon[item.type])
                 return 1.5f;
-            if (ContentLists.ChampionTierFargoWeapons.Contains(item.type))
+            if (DLCSets.Items.ChampionTierFargoWeapon[item.type])
             {
                 return 0.8f;
             }

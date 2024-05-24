@@ -37,9 +37,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         //return time buff has left, -1 if doesnt have buff
         public static bool HasAnyDoTDebuff(NPC npc)
         {
-            for (int i = 0; i < CalamityContentLists.DoTDebuffs.Count; i++)
+            for (int i = 0; i < BuffLoader.BuffCount; i++)
             {
-                if (HasDoTBuff(npc, CalamityContentLists.DoTDebuffs[i]) > 0)
+                if (HasDoTBuff(npc, i) > 0)
                 {
                     return true;
                 }
@@ -48,7 +48,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public static int HasDoTBuff(NPC npc, int buffID)
         {
-            if (!CalamityContentLists.DoTDebuffs.Contains(buffID))
+            if (!CalDLCSets.Buffs.DoTDebuff[buffID])
             {
                 return -1;
             }

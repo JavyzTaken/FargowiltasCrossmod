@@ -67,16 +67,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             }
         }
-        public static List<int> TungstenExclude =
-        [
-            ModContent.ProjectileType<BladecrestOathswordProj>(),
-            ModContent.ProjectileType<OldLordClaymoreProj>()
-        ];
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             if (projectile.TryGetGlobalProjectile(out FargoSoulsGlobalProjectile fargoProj))
             {
-                if (TungstenExclude.Contains(projectile.type))
+                if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
                 {
                     //projectile.FargoSouls().TungstenScale = 1;
                     float scale = fargoProj.TungstenScale;
@@ -155,7 +150,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             
-            if (TungstenExclude.Contains(projectile.type))
+            if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
             {
                 //projectile.FargoSouls().TungstenScale = 1;
             }
@@ -182,14 +177,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return true;
             #endregion
         }
-        public static List<int> MultipartShredders =
-        [
-            ModContent.ProjectileType<CelestialRuneFireball>()
-
-        ];
         public override void ModifyHitNPC(Projectile projectile, NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (MultipartShredders.Contains(projectile.type) && target.type == ModContent.NPCType<DarkEnergy>())
+            if (CalDLCSets.Projectiles.MultipartShredder[projectile.type] && target.type == ModContent.NPCType<DarkEnergy>())
             {
                 modifiers.FinalDamage *= 0.2f;
             }
