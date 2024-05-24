@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalamityAddonGlobalNPC : GlobalNPC
+    public class CalDLCAddonGlobalNPC : GlobalNPC
     {
         public override bool IsLoadingEnabled(Mod mod)
         {

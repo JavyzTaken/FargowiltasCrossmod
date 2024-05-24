@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalamityAddonPlayer : ModPlayer
+    public class CalDLCAddonPlayer : ModPlayer
     {
         public float AeroCritBoost;
         public int FeatherJumpsRemaining;

@@ -42,7 +42,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalItemChanges : GlobalItem
+    public class CalDLCItemChanges : GlobalItem
     {
         public override bool? UseItem(Item item, Player player)
         {

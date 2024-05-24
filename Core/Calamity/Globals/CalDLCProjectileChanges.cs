@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalProjectileChanges : GlobalProjectile
+    public class CalDLCProjectileChanges : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
@@ -92,7 +92,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     Item item = player.HeldItem;
                     if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
                     {
-                        float scale = CalItemBalance.TrueMeleeTungstenScaleNerf(player);
+                        float scale = CalDLCItemBalance.TrueMeleeTungstenScaleNerf(player);
                         projectile.position = projectile.Center;
                         projectile.width = (int)(projectile.width / scale);
                         projectile.height = (int)(projectile.height / scale);
@@ -103,7 +103,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 
             }
             
-            if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalProjectileChanges>().Ricoshot)
+            if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalDLCProjectileChanges>().Ricoshot)
             {
                 projectile.hostile = false;
                 projectile.friendly = true;

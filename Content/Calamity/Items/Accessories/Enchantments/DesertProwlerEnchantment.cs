@@ -67,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public static void ProwlerEffect(Player player)
         {
             
-            CalamityAddonPlayer cplayer = player.GetModPlayer<CalamityAddonPlayer>();
+            CalDLCAddonPlayer cplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             
             if (cplayer.ProwlerCharge < 15 && player.controlJump)
             {

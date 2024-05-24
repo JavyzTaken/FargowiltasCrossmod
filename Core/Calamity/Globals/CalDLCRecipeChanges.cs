@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     //for putting mod stuff into souls recipes or vice versa
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalRecipeChanges : ModSystem
+    public class CalDLCRecipeChanges : ModSystem
     {
         public override void AddRecipes()
         {

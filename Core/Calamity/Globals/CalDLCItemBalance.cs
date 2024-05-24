@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalItemBalance : GlobalItem
+    public class CalDLCItemBalance : GlobalItem
     {
 
         public static float BalanceChange(Item item)

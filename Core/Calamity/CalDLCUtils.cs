@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Core.Calamity
     {
         public static CrossplayerCalamity CalamityDLC(this Player player)
             => player.GetModPlayer<CrossplayerCalamity>();
-        public static CalamityAddonPlayer CalamityAddon(this Player player)
-            => player.GetModPlayer<CalamityAddonPlayer>();
+        public static CalDLCAddonPlayer CalamityAddon(this Player player)
+            => player.GetModPlayer<CalDLCAddonPlayer>();
     }
 }

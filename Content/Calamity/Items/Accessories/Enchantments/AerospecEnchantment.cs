@@ -70,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             int critPerJump = 5;
             int forceCritPerJump = 10;
 
-            CalamityAddonPlayer mplayer = player.GetModPlayer<CalamityAddonPlayer>();
+            CalDLCAddonPlayer mplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             player.GetJumpState<FeatherJump>().Enable();
             if (player.GetJumpState<FeatherJump>().Active)
             {
@@ -121,7 +121,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 
         public override float GetDurationMultiplier(Player player)
         {
-            ref int jumps = ref player.GetModPlayer<CalamityAddonPlayer>().FeatherJumpsRemaining;
+            ref int jumps = ref player.GetModPlayer<CalDLCAddonPlayer>().FeatherJumpsRemaining;
             if (jumps > 0)
                 return duration;
             else return 0f;
@@ -133,7 +133,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void OnRefreshed(Player player)
         {
-            CalamityAddonPlayer cplayer = player.GetModPlayer<CalamityAddonPlayer>();
+            CalDLCAddonPlayer cplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             if (player.ForceEffect<AerospecJumpEffect>())
             {
                 cplayer.FeatherJumpsRemaining = numForceJumps;
@@ -146,7 +146,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void OnStarted(Player player, ref bool playSound)
         {
-            ref int jumps = ref player.GetModPlayer<CalamityAddonPlayer>().FeatherJumpsRemaining;
+            ref int jumps = ref player.GetModPlayer<CalDLCAddonPlayer>().FeatherJumpsRemaining;
             jumps--;
             if (jumps > 0)
             {

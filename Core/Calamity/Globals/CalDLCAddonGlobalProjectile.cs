@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CalamityAddonGlobalProjectile : GlobalProjectile
+    public class CalDLCAddonGlobalProjectile : GlobalProjectile
     {
         public override bool IsLoadingEnabled(Mod mod)
         {

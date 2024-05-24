@@ -70,9 +70,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
-                if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>() != null && (Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>().HitBubble.Count <= 0 || !Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>().HitBubble.Contains(i)) && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<MiasmaGas>())
+                if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>() != null && (Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>().HitBubble.Count <= 0 || !Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>().HitBubble.Contains(i)) && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<MiasmaGas>())
                 {
-                    Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>().HitBubble.Add(Projectile.whoAmI);
+                    Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>().HitBubble.Add(Projectile.whoAmI);
                     for (int j = 0; j < 1; j++)
                     {
                         Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(3, 6)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<MiasmaGas>(), 20, 1, Projectile.owner);
