@@ -24,7 +24,6 @@ using Terraria.ID;
 using Terraria;
 using FargowiltasSouls.Content.Items.Armor;
 using CalamityMod;
-using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
@@ -36,6 +35,7 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using CalamityMod.UI.CalamitasEnchants;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {

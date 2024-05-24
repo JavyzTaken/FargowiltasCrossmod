@@ -38,7 +38,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
-namespace FargowiltasCrossmod.Content.Calamity
+namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -46,7 +46,7 @@ namespace FargowiltasCrossmod.Content.Calamity
     {
         public bool CalamitousPresence;
         //Unique accessories fields
-        
+
         public override void ResetEffects()
         {
             CalamitousPresence = CalamitousPresence && Player.HasBuff(BuffType<CalamitousPresenceBuff>());
@@ -56,20 +56,20 @@ namespace FargowiltasCrossmod.Content.Calamity
         {
 
         }
-        
+
         public override void UpdateEquips()
         {
-            
+
         }
         public override void PreUpdate()
         {
-            
+
         }
         public override void PreUpdateMovement()
         {
-            
+
         }
-        
+
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateBuffs()
         {
@@ -164,7 +164,7 @@ namespace FargowiltasCrossmod.Content.Calamity
                 }
 
             }
-            
+
         }
         public bool[] PreUpdateBuffImmune;
         public override void PreUpdateBuffs()
@@ -173,7 +173,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
-            
+
             if (CalamityKeybinds.NormalityRelocatorHotKey.JustPressed && Player.Calamity().normalityRelocator && WorldSavingSystem.EternityMode && LumUtils.AnyBosses())
             {
                 //copied from vanilla chaos state damage
@@ -230,7 +230,7 @@ namespace FargowiltasCrossmod.Content.Calamity
         }
         public override void UpdateBadLifeRegen()
         {
-            
+
             if (CalamitousPresence)
             {
                 const int cap = 2;
