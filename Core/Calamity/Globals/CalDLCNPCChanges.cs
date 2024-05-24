@@ -156,7 +156,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 //Events/Minibosses
 
-                if (CalDLCSets.NPCs.AcidRainEnemy[npc.type] && DownedBossSystem.downedPolterghast)
+                if (CalDLCSets.GetValue(CalDLCSets.NPCs.AcidRainEnemy, npc.type) && DownedBossSystem.downedPolterghast)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
@@ -167,11 +167,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 2.5f);
                 }
-                if (DLCSets.NPCs.SolarEclipseEnemy[npc.type] && DownedBossSystem.downedDoG)
+                if (DLCSets.GetValue(DLCSets.NPCs.SolarEclipseEnemy, npc.type) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 4.5f);
                 }
-                if ((DLCSets.NPCs.FrostMoonEnemy[npc.type] || DLCSets.NPCs.PumpkinMoonEnemy[npc.type]) && DownedBossSystem.downedDoG)
+                if ((DLCSets.GetValue(DLCSets.NPCs.FrostMoonEnemy, npc.type) || DLCSets.GetValue(DLCSets.NPCs.PumpkinMoonEnemy, npc.type)) && DownedBossSystem.downedDoG)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 3f);
                 }
@@ -229,7 +229,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<LifeChallenger>())
                     npc.lifeMax = (int)(npc.lifeMax * 1.2f);
                 //champions
-                if (DLCSets.NPCs.Champion[npc.type])
+                if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 0.9f);
                 }

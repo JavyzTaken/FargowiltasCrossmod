@@ -19,6 +19,7 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
@@ -101,50 +102,16 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
-        public static List<int> TungstenExcludeWeapon =
-        [
-            ItemType<OldLordClaymore>(),
-            ItemType<BladecrestOathsword>()
-        ];
-        public static List<int> AttackSpeedExcludeWeapons =
-        [
-            ItemType<ExecutionersBlade>()
-        ];
-        public static List<int> AdamantiteIgnoreItem =
-        [
-            ItemType<HeavenlyGale>(),
-            ItemType<TheSevensStriker>(),
-            ItemType<Phangasm>(),
-            ItemType<TheJailor>(),
-            ItemType<AetherfluxCannon>(),
-            ItemType<TheAnomalysNanogun>(),
-            ItemType<ClockworkBow>(),
-            ItemType<NebulousCataclysm>(),
-            ItemType<Eternity>(), //fargo reference
-            ItemType<Vehemence>(),
-            ItemType<Phaseslayer>(),
-            ItemType<FracturedArk>(),
-            ItemType<TrueArkoftheAncients>(),
-            ItemType<ArkoftheElements>(),
-            ItemType<ArkoftheCosmos>()
-        ];
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void PostUpdateEquips()
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calamityPlayer = Player.Calamity();
-
-            /*
-            if (!soulsPlayer.TerrariaSoul && soulsPlayer.TungstenEnchantItem != null && TungstenExcludeWeapon.Contains(Player.HeldItem.type))
-            {
-                Player.GetAttackSpeed(DamageClass.Melee) += 0.5f; //negate attack speed effect
-            }
-            */
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
             AdamantiteEffect adamEffect = GetInstance<AdamantiteEffect>();
-            if (AdamantiteIgnoreItem.Contains(Player.HeldItem.type) && Player.HasEffect(adamEffect))
+            if (Player.HasEffect(adamEffect) && Player.HeldItem != null && DLCSets.Items.AdamantiteIgnore[Player.HeldItem.type])
             {
                 AccessoryEffectPlayer effectsPlayer = Player.AccessoryEffects();
                 effectsPlayer.ActiveEffects[adamEffect.Index] = false;

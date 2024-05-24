@@ -53,9 +53,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 1f;
             if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
                 return 2f;
-            if (DLCSets.Items.AbomTierFargoWeapon[item.type])
+            if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
                 return 1.5f;
-            if (DLCSets.Items.ChampionTierFargoWeapon[item.type])
+            if (DLCSets.GetValue(DLCSets.Items.ChampionTierFargoWeapon, item.type))
             {
                 return 0.8f;
             }
@@ -142,7 +142,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (player.HasEffect<TungstenEffect>() &&
                     !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
             {
-                if (CrossplayerCalamity.TungstenExcludeWeapon.Contains(item.type))
+                if (DLCSets.GetValue(DLCSets.Items.TungstenExclude, item.type))
                 {
                     float tungScale = 1f + (soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1f);
                     scale /= tungScale;

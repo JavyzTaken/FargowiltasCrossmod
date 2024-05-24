@@ -32,6 +32,10 @@ namespace FargowiltasCrossmod.Core.Calamity
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalDLCSets : ModSystem
     {
+        /// <summary>
+        /// Get boolean value, false if set is null. Necessary to alleviate SetDefaultsBeforeLookupsAreBuilt error.
+        /// </summary>
+        public static bool GetValue(bool[] set, int index) => set != null && set[index];
         public class Items
         {
             public static bool[] RockItem;
