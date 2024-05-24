@@ -132,7 +132,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             npc.ai[2]--;
             if (owner.GetGlobalNPC<HMEternity>().Phase >= 2 && npc.ai[2] == 1 && DLCUtils.HostCheck)
             {
-                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedByRandom(MathF.PI * 0.4f) * -3, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
+                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedByRandom(MathF.PI * 0.4f) * -3, ModContent.ProjectileType<HMShadeNimbus>(), FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
                 npc.ai[2] = 100;
             }
             npc.position += owner.velocity;

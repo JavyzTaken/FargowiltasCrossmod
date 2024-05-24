@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Calamity\Bosses\HiveMind\VileClotDrop.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\HydrothermicEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\PlaguebringerEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\ReaverEnchantment.png" />
