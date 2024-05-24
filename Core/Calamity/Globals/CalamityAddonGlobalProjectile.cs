@@ -24,27 +24,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         //1 if a clone projectile, 2 if clone of a clone etc
         public int statigelClone = 0;
         public int statigelOriginNPC = -1;
-        public int statigelHitTimer = 0;
+        public int statigelHitTimer = 30;
+        public bool statigelBoost = false;
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override bool InstancePerEntity => true;
         public override bool? CanHitNPC(Projectile projectile, NPC target)
         {
-            if (statigelHitTimer > 0 && statigelOriginNPC == target.whoAmI)
-            {
-                statigelHitTimer--;
-                return false;
-            }
+            
             return base.CanHitNPC(projectile, target);
         }
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
-            if (Main.LocalPlayer.HasEffect<StatigelEffect>())
-            {
-                StatigelEffect.StatigelProjEffect(projectile, null);
-            }
+            
             return base.OnTileCollide(projectile, oldVelocity);
         }
         public override bool PreKill(Projectile projectile, int timeLeft)
@@ -59,18 +54,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.LocalPlayer.HasEffect<StatigelEffect>())
-            {
-                //StatigelEffect.StatigelProjEffect(projectile, target);
-            }
+            
             base.OnHitNPC(projectile, target, hit, damageDone);
         }
         public override bool PreAI(Projectile projectile)
         {
-            if (Main.netMode != NetmodeID.Server &&  projectile.Hitbox.Intersects(Main.LocalPlayer.Hitbox))
-            {
-                StatigelEffect.StatigelProjEffect2(projectile, Main.LocalPlayer);
-            }
+            
             return base.PreAI(projectile);
         }
 

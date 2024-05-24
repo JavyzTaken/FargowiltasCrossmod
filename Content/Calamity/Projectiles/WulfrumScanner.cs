@@ -34,7 +34,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "CalamityMod/NPCs/NormalNPCs/WulfrumDrone";
         public override void SetStaticDefaults()
@@ -160,8 +161,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 
             int speed = owner.ForceEffect<WulfrumEffect>() ? 12 : 6;
             float thing = speed == 6 ? 0.03f : 0.06f;
-            if (true)
-            {
                 Projectile.ai[0]++;
                 if (Main.myPlayer == owner.whoAmI)
                 {
@@ -173,45 +172,50 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 if (Projectile.ai[0] >= 60)
                 {
                     Projectile.ai[0] = 0;
-                    if (Main.myPlayer == owner.whoAmI)
+                if (Main.myPlayer == owner.whoAmI)
+                {
+                    NPC prev = null;
+                    if (Projectile.ai[1] >= 0) prev = Main.npc[(int)Projectile.ai[1]];
+                    if (prev == null || !prev.active || Main.MouseWorld.Distance(prev.Center) > 200)
                     {
-                        NPC prev = null;
-                        if (Projectile.ai[1] >= 0) prev = Main.npc[(int)Projectile.ai[1]];
-                        if (prev == null || !prev.active || Main.MouseWorld.Distance(prev.Center) > 200)
-                        {
-                            Projectile.ai[1] = -1;
-                        }
-                        bool fard = false;
-                        NPC target = Main.npc[0];
-                        
-                        for (int i = 0; i < Main.npc.Length; i++)
-                        {
-                            NPC j = Main.npc[i];
-                            //Main.NewText(j );
-                            if (target != null && j != null && j.active && (j.lifeMax >= target.lifeMax || !target.IsAnEnemy()) && j.Distance(Main.MouseWorld) < 100  && j.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned == false && j.IsAnEnemy())
-                            {
-                                target = j;
-                                fard = true;
-                                
-                            }
-                            
-                        }
-                        if (target != null && target.active && fard)
-                        {
-                            
-                            if (Projectile.ai[1] != target.whoAmI)
-                            {
-                                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/WulfrumDroidHurry" + Main.rand.Next(1, 3)), Projectile.Center);
-                            }
-                            Projectile.ai[1] = target.whoAmI;
-                            Projectile.ai[2] = 1;
-                            target.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned = true;
-                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, target.whoAmI);
-                            
-                        }
-                        NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, Projectile.whoAmI);
+                        Projectile.ai[1] = -1;
                     }
+                    bool fard = false;
+                    NPC target = Main.npc[0];
+
+                    for (int i = 0; i < Main.npc.Length; i++)
+                    {
+                        NPC j = Main.npc[i];
+                        //Main.NewText(j );
+                        if (target != null && j != null && j.active && (j.lifeMax >= target.lifeMax || target.friendly || target.lifeMax <= 5) && j.Distance(Main.MouseWorld) < 100 && j.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned == -1 && !j.friendly && j.lifeMax > 5)
+                        {
+                            target = j;
+                            fard = true;
+
+                        }
+
+                    }
+                    if (target != null && target.active && fard)
+                    {
+
+                        if (Projectile.ai[1] != target.whoAmI)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/WulfrumDroidHurry" + Main.rand.Next(1, 3)), Projectile.Center);
+                        }
+                        Projectile.ai[1] = target.whoAmI;
+                        Projectile.ai[2] = 1;
+                        //Main.NewText(target.FullName);
+                        target.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned = Projectile.whoAmI;
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, target.whoAmI);
+
+                    }
+                    NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, Projectile.whoAmI);
                 }
+            }
+            if (Projectile.ai[1] >= 0 && Main.npc[(int)Projectile.ai[1]].active)
+            {
+                //Main.NewText("hi");
+                Main.npc[(int)Projectile.ai[1]].GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned = Projectile.whoAmI;
             }
             base.AI();
         }

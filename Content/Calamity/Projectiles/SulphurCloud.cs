@@ -24,7 +24,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "CalamityMod/Projectiles/Magic/MiasmaGas";
         public override void SetStaticDefaults()

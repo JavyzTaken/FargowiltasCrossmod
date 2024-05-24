@@ -34,7 +34,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public bool AllowJumpsUsedInc = false;
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override void PostUpdateEquips()
         {
@@ -54,15 +55,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
-            Vector2 vector = drawInfo.Position + drawInfo.drawPlayer.Size * new Vector2(0.5f, 1f) - Main.screenPosition;
-            for (int i = 0; i < drawInfo.DrawDataCache.Count; i++)
-            {
-                DrawData value = drawInfo.DrawDataCache[i];
-                Vector2 vector2 = value.position - vector;
-                value.position = vector + vector2 * 2;
-                value.scale *= 2;
-                drawInfo.DrawDataCache[i] = value;
-            }
+            //titan heart
+            //Vector2 vector = drawInfo.Position + drawInfo.drawPlayer.Size * new Vector2(0.5f, 1f) - Main.screenPosition;
+            //for (int i = 0; i < drawInfo.DrawDataCache.Count; i++)
+            //{
+            //    DrawData value = drawInfo.DrawDataCache[i];
+            //    Vector2 vector2 = value.position - vector;
+            //    value.position = vector + vector2 * 2;
+            //    value.scale *= 2;
+            //    drawInfo.DrawDataCache[i] = value;
+            //}
             // drawInfo.Position += new Vector2(20, 20);
         }
     }

@@ -20,7 +20,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override void SetDefaults()
         {
@@ -34,6 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             player.AddEffect<MarniteLasersEffect>(Item);
             player.AddEffect<DesertProwlerEffect>(Item);
             player.AddEffect<WulfrumEffect>(Item);
+            player.AddEffect<SulphurEffect>(Item);
+            player.AddEffect<VictideEffect>(Item);
         }
         public override void AddRecipes()
         {
@@ -42,6 +45,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.AddIngredient(ModContent.ItemType<DesertProwlerEnchantment>());
             recipe.AddIngredient(ModContent.ItemType<MarniteEnchantment>());
             recipe.AddIngredient(ModContent.ItemType<WulfrumEnchantment>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<SulphurEnchantment>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<VictideEnchantment>(), 1);
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }
@@ -52,7 +57,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override int Item => ModContent.ItemType<ExplorationForce>();
         public override float Priority => 0.15f;

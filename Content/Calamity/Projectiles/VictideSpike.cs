@@ -13,6 +13,7 @@ using ReLogic.Content;
 using Terraria.GameContent;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
@@ -22,7 +23,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "CalamityMod/Items/Weapons/Rogue/UrchinStinger";
         public override void SetStaticDefaults()
@@ -41,8 +43,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.Poisoned, 500);
-        }
+            if (Main.player[Projectile.owner].ForceEffect<VictideEffect>())
+            {
+                target.AddBuff(BuffID.Venom, 500);
+            }
+            else
+            {
+                target.AddBuff(BuffID.Poisoned, 500);
+            }
+            }
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 10; i++)
@@ -115,12 +124,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 Projectile.ai[2] = 2;
                 Projectile.tileCollide = true;
                 Projectile.penetrate = 2;
-                Projectile.velocity = new Vector2(0, -7).RotatedBy(Projectile.rotation);
+                Projectile.velocity = new Vector2(0, -7).RotatedBy(Projectile.rotation) + owner.velocity/2;
             }
             if (Projectile.ai[2] == 2)
             {
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-                if (Projectile.velocity.Y < 10)
+                if (Projectile.velocity.Y < 10 && !Main.player[Projectile.owner].ForceEffect<VictideEffect>())
                 {
                     Projectile.velocity.Y += 0.1f;
                 }

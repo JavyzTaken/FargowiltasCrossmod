@@ -1,6 +1,8 @@
 ﻿using CalamityMod.Projectiles.Magic;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -24,7 +26,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "CalamityMod/Projectiles/Enemy/SulphuricAcidBubble";
         public override void SetStaticDefaults()
@@ -57,6 +60,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI()
         {
+            int gasSpeedMin = 3;
+            int gasSpeedMax = 6;
+            if (Main.player[Projectile.owner].ForceEffect<SulphurEffect>())
+            {
+                gasSpeedMin = 4;
+                gasSpeedMax = 10;
+            }
+
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 10)
             {
@@ -70,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             if (Projectile.Opacity < 0.7f) Projectile.Opacity += 0.01f;
             Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -4, 0.01f);
 
-            if (Projectile.ai[1] <= 0)
+            if (Projectile.ai[1] <= 0 && Main.myPlayer == Projectile.owner)
             {
                 for (int i = 0; i < Main.maxProjectiles; i++)
                 {
@@ -79,10 +90,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                        
                         for (int j = 0; j < 3; j++)
                         {
-                            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(3, 6)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), Main.projectile[i].damage / 4, 0, Projectile.owner);
+                            int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(gasSpeedMin, gasSpeedMax)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), Main.projectile[i].damage / 4, 0, Projectile.owner);
+                            NetMessage.SendData(MessageID.SyncProjectile, number: proj);
                         }
                         SoundEngine.PlaySound(SoundID.Item85, Projectile.Center);
                         Projectile.ai[1] = 10;
+                        NetMessage.SendData(MessageID.SyncProjectile, number: Projectile.whoAmI);
                         break;
                     }
                 }

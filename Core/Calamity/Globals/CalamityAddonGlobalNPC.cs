@@ -3,8 +3,10 @@ using CalamityMod.Buffs;
 using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Souls;
 using System;
 using System.Collections.Generic;
@@ -23,10 +25,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override bool InstancePerEntity => true;
-        public bool WulfrumScanned = false;
+        public int WulfrumScanned = -1;
         public int PBGDebuffTag = 0;
         public int taggedByPlayer = -1;
 
@@ -100,40 +103,52 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return npc.Calamity().vaporfied;
             return -1;
         }
-        public override bool PreAI(NPC npc)
-        {
-            if (PBGDebuffTag > 0)
-            {
-                int distance = 300;
-                if (taggedByPlayer >= 0 && Main.player[taggedByPlayer] != null && Main.player[taggedByPlayer].active && !Main.player[taggedByPlayer].dead)
-                {
-                    distance = 600;
-                }
-                foreach (NPC target in Main.ActiveNPCs)
-                {
+        //Hardmode enchant. not in release.
+        //public override bool PreAI(NPC npc)
+        //{
+        //    if (PBGDebuffTag > 0)
+        //    {
+        //        int distance = 300;
+        //        if (taggedByPlayer >= 0 && Main.player[taggedByPlayer] != null && Main.player[taggedByPlayer].active && !Main.player[taggedByPlayer].dead)
+        //        {
+        //            distance = 600;
+        //        }
+        //        foreach (NPC target in Main.ActiveNPCs)
+        //        {
 
-                    if (target != npc && target.Distance(npc.Center) < distance)
-                    {
+        //            if (target != npc && target.Distance(npc.Center) < distance)
+        //            {
 
-                        for (int i = 0; i < BuffLoader.BuffCount; i++)
-                        {
+        //                for (int i = 0; i < BuffLoader.BuffCount; i++)
+        //                {
 
-                            if (HasDoTBuff(npc, i) >= 0 && HasDoTBuff(target, i) == -1)
-                            {
-                                target.AddBuff(i, HasDoTBuff(npc, i));
-                            }
-                        }
-                    }
-                }
-            }
-            return base.PreAI(npc);
-        }
+        //                    if (HasDoTBuff(npc, i) >= 0 && HasDoTBuff(target, i) == -1)
+        //                    {
+        //                        target.AddBuff(i, HasDoTBuff(npc, i));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return base.PreAI(npc);
+        //}
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
-            if (WulfrumScanned && HasAnyDoTDebuff(npc))
+            if (WulfrumScanned >= 0 && HasAnyDoTDebuff(npc))
             {
-                npc.lifeRegen -= 30;
+                int DoTNormal = 30;
+                int DoTForce = 80;
+                Player owner = Main.player[Main.projectile[WulfrumScanned].owner];
+                if (owner != null && owner.active && !owner.dead && owner.ForceEffect<WulfrumEffect>())
+                {
+                    npc.lifeRegen -= DoTForce;
+                }
+                else
+                {
+                    npc.lifeRegen -= DoTNormal;
+                }
             }
+            WulfrumScanned = -1;
         }
     }
 

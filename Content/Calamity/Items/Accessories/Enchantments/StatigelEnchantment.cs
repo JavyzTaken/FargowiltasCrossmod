@@ -29,6 +29,7 @@ using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -38,7 +39,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new(89, 170, 204);
 
@@ -76,83 +78,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
         public override int ToggleItemType => ModContent.ItemType<StatigelEnchantment>();
         
         public override void PostUpdateEquips(Player player)
         {
-
-        }
-        public static void StatigelProjEffect(Projectile projectile, NPC? target)
-        {
-            if (projectile.owner == Main.myPlayer && !projectile.minion && FargoSoulsUtil.OnSpawnEnchCanAffectProjectile(projectile, false) &&
-                projectile.type != ProjectileID.WireKite && projectile.aiStyle != 190 && Main.LocalPlayer.heldProj != projectile.whoAmI && 
-                ((projectile.type == ModContent.ProjectileType<PureGel>() && projectile.ai[1] == 0) || projectile.type != ModContent.ProjectileType<PureGel>())
-                && (projectile.penetrate == 1 || target == null))
+            if (player.ForceEffect<StatigelEffect>())
             {
-                int t = -1;
-                if (target != null)
-                    t = DLCUtils.ClosestNPCExcludingOne(projectile.Center, 1000, target.whoAmI, false);
-                else
-                {
-                    t = DLCUtils.ClosestNPCExcludingOne(projectile.Center, 1000, -1, false);
-                }
-                if (t < 0)
-                {
-                    Projectile proj = Projectile.NewProjectileDirect(projectile.GetSource_Death(), projectile.Center, projectile.velocity.RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<PureGel>(), projectile.damage / 2, projectile.knockBack, projectile.owner);
-
-                    proj.ai[1] = 1;
-                    if (projectile.type == ModContent.ProjectileType<PureGel>())
-                        proj.ai[1] = projectile.ai[1] + 1;
-                    if (target != null)
-                        proj.ai[2] = target.whoAmI;
-                    if (proj.velocity.Length() < 8) proj.velocity = proj.velocity.SafeNormalize(Vector2.Zero) * 8;
-                    if (Main.netMode != NetmodeID.SinglePlayer)
-                    {
-                        NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
-                    }
-                    return;
-                }
-                Projectile proje = Projectile.NewProjectileDirect(projectile.GetSource_Death(), projectile.Center, (Main.npc[t].Center - projectile.Center).SafeNormalize(Vector2.Zero) * projectile.velocity.Length(), ModContent.ProjectileType<PureGel>(), projectile.damage / 2, projectile.knockBack, projectile.owner);
-
-                proje.ai[1] = 1;
-                if (projectile.type == ModContent.ProjectileType<PureGel>())
-                    proje.ai[1] = projectile.ai[1] + 1;
-                if (target != null)
-                    proje.ai[2] = target.whoAmI;
-                if (proje.velocity.Length() < 8) proje.velocity = proje.velocity.SafeNormalize(Vector2.Zero) * 8;
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                {
-                    NetMessage.SendData(MessageID.SyncProjectile, number: proje.whoAmI);
-                }
+                player.runAcceleration *= 0.6f;
+                //player.maxRunSpeed *= 1.3f;
+                player.accRunSpeed *= 1.1f;
+                player.runSlowdown *= 0.05f;
             }
-        }
-        public static void StatigelProjEffect2(Projectile projectile, Player player)
-        {
-            if (player.immuneTime <= 0 || player.ForceEffect<StatigelEffect>())
+            else
             {
-                projectile.velocity = (player.Center - projectile.Center).SafeNormalize(Vector2.Zero) * projectile.velocity.Length();
-                int target = -1;
-                for (int i = 0; i < Main.maxNPCs; i++)
-                {
-                    NPC j = Main.npc[i];
-                    if (j.active && !j.friendly && j.lifeMax > 5 && 
-                        j.AngleFrom(projectile.Center) < projectile.rotation + MathHelper.ToRadians(20) &&
-                        j.AngleFrom(projectile.Center) > projectile.rotation - MathHelper.ToRadians(20) &&
-                        (target == -1 || j.Center.Distance(projectile.Center) < Main.npc[target].Center.Distance(projectile.Center)))
-                    {
-                        target = i;
-                    }
-                }
-                if (target >= 0)
-                {
-                    projectile.velocity = (Main.npc[target].Center - projectile.Center).SafeNormalize(Vector2.Zero) * projectile.velocity.Length();
-                }
-                projectile.friendly = true;
-                projectile.hostile = false;
+                player.runAcceleration *= 0.4f;
+                player.accRunSpeed *= 1.01f;
+                player.runSlowdown *= 0.05f;
             }
+            
         }
+       
     }
 }
