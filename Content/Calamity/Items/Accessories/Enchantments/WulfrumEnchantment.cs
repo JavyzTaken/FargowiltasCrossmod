@@ -15,6 +15,7 @@ using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -66,7 +67,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 Projectile.NewProjectile(player.GetSource_EffectItem<WulfrumEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<WulfrumScanner>(), 0, 0, player.whoAmI);
             }
-            
         }
     }
 }

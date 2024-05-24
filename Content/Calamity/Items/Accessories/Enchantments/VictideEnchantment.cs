@@ -80,7 +80,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
-            //lmao this doesnt do anything its all in CalamityAddonGlobalItem
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<VictideSpike>()] <= 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), 35, 1, player.whoAmI, MathHelper.Lerp(0.6f, 3f, i/4f));
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), 35, 1, player.whoAmI, -MathHelper.Lerp(0.6f, 3f, i / 4f));
+                }
+                Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), 35, 1, player.whoAmI, MathHelper.Pi);
+            }
         }
     }
 }

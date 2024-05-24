@@ -45,7 +45,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             }
         }
-
+        public override void PreUpdate()
+        {
+           if (Player.HasEffect<DesertProwlerEffect>())
+            {
+                DesertProwlerEffect.ProwlerEffect(Player);
+            }
+        }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
             Vector2 vector = drawInfo.Position + drawInfo.drawPlayer.Size * new Vector2(0.5f, 1f) - Main.screenPosition;

@@ -45,6 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.timeLeft = 400;
             Projectile.penetrate = -1;
             Main.projFrames[Type] = 4;
+            ProjectileID.Sets.CultistIsResistantTo[Type] = true;
         }
         public override bool PreDraw(ref Color lightColor)
         {

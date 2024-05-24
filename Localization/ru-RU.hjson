@@ -518,7 +518,11 @@ Mods: {
 
 			SulphurEnchantment: {
 				// DisplayName: Sulphur Enchantment
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					Grants a sulphur jump that spawns a sulphur bubble on use
+					When the bubble is hit, it releases damaging gas
+					''' */
 			}
 
 			VictideEnchantment: {
@@ -616,6 +620,8 @@ Mods: {
 			// VampireBat.DisplayName: Vampire Bat
 			// SulphurBubble.DisplayName: Sulphur Bubble
 			// VictideSpike.DisplayName: Victide Spike
+			// SulphurCloud.DisplayName: Sulphur Cloud
+			// PureGel.DisplayName: Pure Gel
 		}
 
 		Buffs: {
@@ -695,6 +701,9 @@ Mods: {
 				Enemies are tagged to spread debuffs for longer
 				''' */
 			// Umbraphile: Bats do more damage and travel faster
+			// Sulphur: Grants 2 jumps, gas does more damage and travels farther
+			// Victide: Spikes are no longer affected by gravity and inflict venom
+			// Statigel: Projectiles bounce twice
 		}
 	}
 }

@@ -33,8 +33,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         public override void Load()
         {
-            IL_Player.PickTile += ShootDaggersBreak;
-            IL_Player.PlaceThing_Tiles_PlaceIt += ShootDaggersPlace;
+            On_Player.PickTile += ShootDaggersBreak;
+            On_Player.PlaceThing_Tiles_PlaceIt += ShootDaggersPlace;
             MonoModHooks.Modify(typeof(CalamityGlobalNPC).GetMethod(nameof(CalamityGlobalNPC.UpdateLifeRegen)), UpdateLifeRegen_ILEdit);
             On_Projectile.Damage += BigPlayer;
             On_Player.Update_NPCCollision += BigPlayerNPCs;
@@ -42,9 +42,30 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         }
 
+        private TileObject ShootDaggersPlace(On_Player.orig_PlaceThing_Tiles_PlaceIt orig, Player self, bool newObjectType, TileObject data, int tileToCreate)
+        {
+            TileObject returnvalue = orig(self, newObjectType, data, tileToCreate);
+            if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server && Main.tile[Main.MouseWorld.ToTileCoordinates()].HasTile)
+            {
+               
+                MarniteLasersEffect.MarniteTileEffect(self, Main.MouseWorld);
+            }
+            return returnvalue;
+        }
+
+        private void ShootDaggersBreak(On_Player.orig_PickTile orig, Player self, int x, int y, int pickPower)
+        {
+            if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server)
+            {
+                MarniteLasersEffect.MarniteTileEffect(self, new Microsoft.Xna.Framework.Vector2(x, y).ToWorldCoordinates());
+            }
+            orig(self, x, y, pickPower);
+        }
+
         private void DrawBigPlayer(On_LegacyPlayerRenderer.orig_DrawPlayer orig, LegacyPlayerRenderer self, Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow, float scale)
         {
-            //scale = 2;
+            if (drawPlayer.HasEffect<TitanHeartEffect>())
+                scale = 2;
             orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
         }
 
@@ -53,13 +74,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             Player player = self;
             Vector2 size = player.Size;
             Vector2 position = player.position;
-            //if (player.HasEffect<TitanHeartEffect>())
-            //{
-            //    player.width += 20;
-            //    player.height += 30;
-            //    player.position.X -= 10;
-            //    player.position.Y -= 15;
-            //}
+            if (player.HasEffect<TitanHeartEffect>())
+            {
+                player.width += 20;
+                player.height += 30;
+                player.position.X -= 10;
+                player.position.Y -= 15;
+            }
             orig(self);
             player.width = (int)size.X;
             player.height = (int)size.Y;
@@ -71,13 +92,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             Player player = Main.LocalPlayer;
             Vector2 size = player.Size;
             Vector2 position = player.position;
-            //if (player.HasEffect<TitanHeartEffect>())
-            //{
-            //    player.width += 20;
-            //    player.height += 30;
-            //    player.position.X -= 10;
-            //    player.position.Y -= 15;
-            //}
+            if (player.HasEffect<TitanHeartEffect>())
+            {
+                player.width += 20;
+                player.height += 30;
+                player.position.X -= 10;
+                player.position.Y -= 15;
+            }
             orig(self);
             player.width = (int)size.X;
             player.height = (int)size.Y;
