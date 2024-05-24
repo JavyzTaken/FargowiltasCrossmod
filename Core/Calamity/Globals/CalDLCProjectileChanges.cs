@@ -197,12 +197,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (projectile.type == ModContent.ProjectileType<BlushieStaffProj>())
                     modifiers.FinalDamage *= 0.7f;
-                if (projectile.type == ModContent.ProjectileType<EternityCircle>() || projectile.type == ModContent.ProjectileType<EternityCrystal>()
-                    || projectile.type == ModContent.ProjectileType<EternityHex>() || projectile.type == ModContent.ProjectileType<EternityHoming>()
-                    || projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0)
+                if (CalDLCSets.Projectiles.EternityBookProj[projectile.type] || (projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0))
                     modifiers.FinalDamage *= 0.4f;
-                if (projectile.type == ModContent.ProjectileType<AngelBolt>() || projectile.type == ModContent.ProjectileType<AngelicAllianceArchangel>() ||
-                    projectile.type == ModContent.ProjectileType<AngelOrb>() || projectile.type == ModContent.ProjectileType<AngelRay>())
+                if (CalDLCSets.Projectiles.AngelAllianceProj[projectile.type])
                 {
                     modifiers.FinalDamage *= 0.2f;
                 }
@@ -214,26 +211,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     modifiers.FinalDamage *= 0.8f;
                 }
-                List<int> profanedCrystalProjs =
-                [
-                    ModContent.ProjectileType<ProfanedCrystalMageFireball>(),
-                    ModContent.ProjectileType<ProfanedCrystalMageFireballSplit>(),
-                    ModContent.ProjectileType<ProfanedCrystalMeleeSpear>(),
-                    ModContent.ProjectileType<ProfanedCrystalRangedHuges>(),
-                    ModContent.ProjectileType<ProfanedCrystalRangedSmalls>(),
-                    ModContent.ProjectileType<ProfanedCrystalRogueShard>(),
-                    ModContent.ProjectileType<ProfanedCrystalWhip>(),
-                    ModContent.ProjectileType<MiniGuardianAttack>(),
-                    ModContent.ProjectileType<MiniGuardianDefense>(),
-                    ModContent.ProjectileType<MiniGuardianFireball>(),
-                    ModContent.ProjectileType<MiniGuardianFireballSplit>(),
-                    ModContent.ProjectileType<MiniGuardianHealer>(),
-                    ModContent.ProjectileType<MiniGuardianHolyRay>(),
-                    ModContent.ProjectileType<MiniGuardianRock>(),
-                    ModContent.ProjectileType<MiniGuardianSpear>(),
-                    ModContent.ProjectileType<MiniGuardianStars>(),
-                ];
-                if (profanedCrystalProjs.Contains(projectile.type) && Main.player[projectile.owner].Calamity().profanedCrystal)
+                
+                if (CalDLCSets.Projectiles.ProfanedCrystalProj[projectile.type] && Main.player[projectile.owner].Calamity().profanedCrystal)
                 {
                     modifiers.FinalDamage *= 0.4f;
                     for (int i = 0; i < Main.player[projectile.owner].ownedProjectileCounts.Length; i++)
@@ -243,8 +222,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             modifiers.FinalDamage *= 0.3f;
                         }
                     }
-                    //Main.NewText(Main.player[projectile.owner].Calamity().pscState);
-
                 }
             }
 

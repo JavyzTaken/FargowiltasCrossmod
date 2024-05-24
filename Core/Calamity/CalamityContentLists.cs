@@ -32,6 +32,7 @@ using CalamityMod.Buffs.Alcohol;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Buffs;
 using FargowiltasSouls.Content.Buffs.Souls;
+using CalamityMod.Projectiles.Summon;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
