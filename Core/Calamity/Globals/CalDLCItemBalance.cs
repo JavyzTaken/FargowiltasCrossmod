@@ -196,46 +196,46 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
                 if (balance > 1)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
                 }
                 else if (balance < 1)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                    tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
                 }
                 if (item.type == ItemID.MagicDagger)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
                 }
                 if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Massively reduced damage with any minions active"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
                 }
                 if (item.type == ModContent.ItemType<TungstenEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Less effective on true melee weapons"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on true melee weapons"));
                 }
                 if (item.type == ModContent.ItemType<MythrilEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Less effective on rogue weapons"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
                 }
                 if (item.type == ModContent.ItemType<OrichalcumEnchant>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Reduced effectiveness"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
                 }
                 if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
                 }
                 if (item.type == ModContent.ItemType<SlimyShield>())
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown2", $"{BalanceDownLine}Does not inflict Oiled"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
                 }
                 CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
                 if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
                 {
                     if (calItem.AppliedEnchantment.Value.ID == 1000)
                     {
-                        tooltips.Add(new TooltipLine(Mod, "NerfHealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
+                        tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
                     }
                 }
                 /*
