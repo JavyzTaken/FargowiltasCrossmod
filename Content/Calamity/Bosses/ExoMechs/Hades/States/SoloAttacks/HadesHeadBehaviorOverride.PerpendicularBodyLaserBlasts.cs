@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
-    public sealed partial class HadesHeadBehaviorOverride : CalDLCEmodeBehavior
+    public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
         /// <summary>
         /// Whether Hades has successfully reached his destination or not during his PerpendicularBodyLaserBlasts attack.
@@ -224,7 +224,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// Fires two lasers perpendicular to a given segment of Hades'.
         /// </summary>
         /// <param name="bodyAI">The behavior override of the body segment that should fire.</param>
-        public static void PerpendicularBodyLaserBlasts_FireLaser(HadesBodyBehaviorOverride bodyAI)
+        public static void PerpendicularBodyLaserBlasts_FireLaser(HadesBodyEternity bodyAI)
         {
             NPC segment = bodyAI.NPC;
             Vector2 laserSpawnPosition = bodyAI.TurretPosition;
@@ -257,13 +257,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
-        /// Renders a laser telegraph for a given <see cref="HadesBodyBehaviorOverride"/> in a given direction.
+        /// Renders a laser telegraph for a given <see cref="HadesBodyEternity"/> in a given direction.
         /// </summary>
         /// <param name="behaviorOverride">The behavior override responsible for the segment.</param>
         /// <param name="telegraphIntensityFactor">The intensity factor of the telegraph.</param>
         /// <param name="telegraphSize">How big the telegraph should be by default.</param>
         /// <param name="telegraphDirection">The direction of the telegraph</param>
-        public static void RenderLaserTelegraph(HadesBodyBehaviorOverride behaviorOverride, float telegraphIntensityFactor, float telegraphSize, Vector2 telegraphDirection)
+        public static void RenderLaserTelegraph(HadesBodyEternity behaviorOverride, float telegraphIntensityFactor, float telegraphSize, Vector2 telegraphDirection)
         {
             float opacity = behaviorOverride.SegmentOpenInterpolant.Cubed();
             Vector2 start = behaviorOverride.TurretPosition;

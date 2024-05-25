@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -188,28 +189,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     if (CurrentState?.AttackAction?.Invoke(npc) ?? true)
                         SelectNewComboAttackState();
 
-                    /*
-                    if (behavior is HadesHeadBehaviorOverride)
+                    if (behavior is HadesHeadEternity)
                         hadesIsPresent = true;
-                    */
                 }
             }
 
             // Special case: Since puppeteering happens after all NPCs are active it's necessary that Hades' segments be told what to do manually, since the
             // instructions will otherwise be reset on the next frame, before the segments are updated.
-            /*
             if (hadesIsPresent)
             {
                 foreach (NPC npc in Main.ActiveNPCs)
                 {
-                    if (npc.TryGetDLCBehavior(out HadesBodyBehaviorOverride body))
+                    if (npc.TryGetDLCBehavior(out HadesBodyEternity body))
                     {
                         body.ListenToHeadInstructions();
                         body.ModifyDRBasedOnOpenInterpolant();
                     }
                 }
             }
-            */
         }
     }
 }

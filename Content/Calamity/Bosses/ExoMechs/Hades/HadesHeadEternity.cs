@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public sealed partial class HadesHeadBehaviorOverride : CalDLCEmodeBehavior, IHadesSegment, IExoMech
+    public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior, IHadesSegment, IExoMech
     {
         public enum HadesAIState
         {
@@ -177,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// Represents an action that should be performed by segments on Hades' body.
         /// </summary>
         /// <param name="behaviorOverride">The segment's overriding instance.</param>
-        public delegate void BodySegmentAction(HadesBodyBehaviorOverride behaviorOverride);
+        public delegate void BodySegmentAction(HadesBodyEternity behaviorOverride);
 
         /// <summary>
         /// Represents a condition that should be applied to Hades' body segments.
@@ -392,7 +392,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <param name="behaviorOverride">The segment.</param>
         /// <param name="bigInterpolant">How big the smoke should be.</param>
         /// <param name="quantityInterpolant">A multiplier for how much smoke should be released.</param>
-        public static void CreateSmoke(HadesBodyBehaviorOverride behaviorOverride, float bigInterpolant, float quantityInterpolant = 1f)
+        public static void CreateSmoke(HadesBodyEternity behaviorOverride, float bigInterpolant, float quantityInterpolant = 1f)
         {
             NPC npc = behaviorOverride.NPC;
             if (!npc.WithinRange(Main.LocalPlayer.Center, 1200f))

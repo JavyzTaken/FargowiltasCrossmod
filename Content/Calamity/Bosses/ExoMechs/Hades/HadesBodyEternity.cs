@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public sealed class HadesBodyBehaviorOverride : CalDLCEmodeBehavior, IHadesSegment
+    public sealed class HadesBodyEternity : CalDLCEmodeBehavior, IHadesSegment
     {
         // This uses newAI[2] of all things because that happens to coincide with the immunity timer base Hades has, which makes incoming hits basically not matter if it hasn't exceeded a certain threshold.
         // By using it for the general existence timer, that guarantees that the immunity timer doesn't stay at zero 24/7 and effectively make Hades unable to be damaged.
@@ -139,7 +139,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
-        /// Listens to incoming instructions from the head's <see cref="HadesHeadBehaviorOverride.BodyBehaviorAction"/>.
+        /// Listens to incoming instructions from the head's <see cref="HadesHeadEternity.BodyBehaviorAction"/>.
         /// </summary>
         public void ListenToHeadInstructions()
         {
@@ -147,7 +147,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 return;
 
             NPC hades = Main.npc[CalamityGlobalNPC.draedonExoMechWorm];
-            if (!hades.TryGetDLCBehavior(out HadesHeadBehaviorOverride hadesAI))
+            if (!hades.TryGetDLCBehavior(out HadesHeadEternity hadesAI))
                 return;
 
             if (!hadesAI.BodyBehaviorAction?.Condition(NPC, RelativeIndex) ?? false)
@@ -161,7 +161,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
-        /// Listens to incoming instructions from the head's <see cref="HadesHeadBehaviorOverride.BodyRenderAction"/> that dictate optional draw data.
+        /// Listens to incoming instructions from the head's <see cref="HadesHeadEternity.BodyRenderAction"/> that dictate optional draw data.
         /// </summary>
         public void RenderInAccordanceWithHeadInstructions()
         {
@@ -169,7 +169,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 return;
 
             NPC hades = Main.npc[CalamityGlobalNPC.draedonExoMechWorm];
-            if (!hades.TryGetDLCBehavior(out HadesHeadBehaviorOverride hadesAI))
+            if (!hades.TryGetDLCBehavior(out HadesHeadEternity hadesAI))
                 return;
 
             if (!hadesAI.BodyRenderAction?.Condition(NPC, RelativeIndex) ?? false)

@@ -7,7 +7,7 @@ using Terraria;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
-    public sealed partial class HadesHeadBehaviorOverride : CalDLCEmodeBehavior
+    public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
         /// <summary>
         /// AI update loop method for the inactive state.

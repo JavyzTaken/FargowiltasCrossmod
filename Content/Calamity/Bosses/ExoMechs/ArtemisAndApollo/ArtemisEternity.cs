@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public sealed partial class ArtemisBehaviorOverride : CalDLCEmodeBehavior, IExoMech, IExoTwin
+    public sealed partial class ArtemisEternity : CalDLCEmodeBehavior, IExoMech, IExoTwin
     {
         private static ILHook? hitEffectHook;
 
@@ -262,7 +262,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 NPC.realLife = CalamityGlobalNPC.draedonExoMechTwinGreen;
                 NPC.life = Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].life;
-                if (Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloBehaviorOverride apollo))
+                if (Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
                     Inactive = apollo.Inactive;
             }
             else

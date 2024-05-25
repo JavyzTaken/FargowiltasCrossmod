@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
-    public sealed partial class HadesHeadBehaviorOverride : CalDLCEmodeBehavior
+    public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
         /// <summary>
         /// The amount of damage the Exo Energy Blast from Hades does.

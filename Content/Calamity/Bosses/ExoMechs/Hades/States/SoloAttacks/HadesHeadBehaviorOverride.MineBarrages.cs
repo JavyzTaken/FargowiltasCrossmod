@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
-    public sealed partial class HadesHeadBehaviorOverride : CalDLCEmodeBehavior
+    public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
         /// <summary>
         /// The amount of damage mines from Hades do.
@@ -70,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
-        public void DoBehavior_MineBarrages_FireMine(HadesBodyBehaviorOverride behaviorOverride)
+        public void DoBehavior_MineBarrages_FireMine(HadesBodyEternity behaviorOverride)
         {
             NPC segment = behaviorOverride.NPC;
 

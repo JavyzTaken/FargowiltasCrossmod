@@ -52,14 +52,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1)
             {
                 NPC apollo = Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen];
-                if (apollo.active && apollo.TryGetDLCBehavior(out ApolloBehaviorOverride apolloAI))
+                if (apollo.active && apollo.TryGetDLCBehavior(out ApolloEternity apolloAI))
                     PerformUpdateLoop(apollo, apolloAI);
             }
 
             if (CalamityGlobalNPC.draedonExoMechTwinRed != -1)
             {
                 NPC artemis = Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed];
-                if (artemis.active && artemis.TryGetDLCBehavior(out ArtemisBehaviorOverride artemisAI))
+                if (artemis.active && artemis.TryGetDLCBehavior(out ArtemisEternity artemisAI))
                     PerformUpdateLoop(artemis, artemisAI);
             }
 
@@ -171,10 +171,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// </summary>
         public static void PickIndividualAIStates()
         {
-            if (CalamityGlobalNPC.draedonExoMechTwinRed == -1 || !Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed].TryGetDLCBehavior(out ArtemisBehaviorOverride artemis))
+            if (CalamityGlobalNPC.draedonExoMechTwinRed == -1 || !Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed].TryGetDLCBehavior(out ArtemisEternity artemis))
                 return;
 
-            if (CalamityGlobalNPC.draedonExoMechTwinGreen == -1 || !Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloBehaviorOverride apollo))
+            if (CalamityGlobalNPC.draedonExoMechTwinGreen == -1 || !Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
                 return;
 
             bool apolloWillPerformActiveState = Main.rand.NextBool();
@@ -230,10 +230,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             SoundEngine.PlaySound(Artemis.AttackSelectionSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew });
 
-            if (CalamityGlobalNPC.draedonExoMechTwinRed != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed].TryGetDLCBehavior(out ArtemisBehaviorOverride artemis))
+            if (CalamityGlobalNPC.draedonExoMechTwinRed != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed].TryGetDLCBehavior(out ArtemisEternity artemis))
                 artemis.ResetLocalStateData();
 
-            if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloBehaviorOverride apollo))
+            if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
                 apollo.ResetLocalStateData();
 
             if (SharedState.AIState == ExoTwinsAIState.PerformIndividualAttacks)

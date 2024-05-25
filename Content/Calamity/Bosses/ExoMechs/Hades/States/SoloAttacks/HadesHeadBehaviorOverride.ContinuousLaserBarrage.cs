@@ -12,7 +12,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
-    public sealed partial class HadesHeadBehaviorOverride : CalDLCEmodeBehavior
+    public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
         /// <summary>
         /// How far along Hades is with his firing animation during his ContinuousLaserBarrage attack.
@@ -143,10 +143,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
-        /// Renders a laser telegraph for a given <see cref="HadesBodyBehaviorOverride"/> in a given direction.
+        /// Renders a laser telegraph for a given <see cref="HadesBodyEternity"/> in a given direction.
         /// </summary>
         /// <param name="behaviorOverride">The behavior override responsible for the segment.</param>
-        public void ContinuousLaserBarrage_CreateTelegraphsOnSegments(HadesBodyBehaviorOverride behaviorOverride, float telegraphCompletion, float telegraphSize)
+        public void ContinuousLaserBarrage_CreateTelegraphsOnSegments(HadesBodyEternity behaviorOverride, float telegraphCompletion, float telegraphSize)
         {
             if (!ContinuousLaserBarrage_SegmentCanFire(behaviorOverride.NPC, NPC))
                 return;

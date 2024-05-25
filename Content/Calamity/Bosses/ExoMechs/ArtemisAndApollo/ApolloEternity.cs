@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public sealed partial class ApolloBehaviorOverride : CalDLCEmodeBehavior, IExoMech, IExoTwin
+    public sealed partial class ApolloEternity : CalDLCEmodeBehavior, IExoMech, IExoTwin
     {
         private static ILHook? hitEffectHook;
 
@@ -288,7 +288,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
         public void UpdateEngineSound()
         {
-            EngineLoopSound ??= LoopedSoundManager.CreateNew(ArtemisBehaviorOverride.EngineSound, () =>
+            EngineLoopSound ??= LoopedSoundManager.CreateNew(ArtemisEternity.EngineSound, () =>
             {
                 return !NPC.active;
             });
