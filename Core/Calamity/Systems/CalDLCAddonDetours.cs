@@ -22,6 +22,10 @@ using Terraria.Chat;
 using Terraria.DataStructures;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using CalamityMod.NPCs.TownNPCs;
+using FargowiltasSouls.Core.ModPlayers;
+using Terraria.Localization;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -47,7 +51,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         private void ResetAeroCrit(On_Player.orig_RefreshDoubleJumps orig, Player self)
         {
-            self.GetModPlayer<CalDLCAddonPlayer>().NumJumpsUsed = 0;
+            CalDLCAddonPlayer addonPlayer = self.CalamityAddon();
+            if (addonPlayer.NumJumpsUsed > 0)
+            {
+                int critPerJump = self.ForceEffect<AerospecJumpEffect>() ? 10 : 5;
+                int critLost = critPerJump * addonPlayer.NumJumpsUsed;
+                addonPlayer.NumJumpsUsed = 0;
+                CombatText.NewText(self.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchantment.CritReset", critLost), true);
+            }
             orig(self);
         }
 

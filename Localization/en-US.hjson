@@ -394,6 +394,8 @@ Mods: {
 					For every double jump used, you gain critical strike chance
 					This includes jumps not granted by this enchantment
 					'''
+				CritUp: +{0}% crit
+				CritReset: -{0}% crit
 			}
 
 			MarniteEnchantment: {
