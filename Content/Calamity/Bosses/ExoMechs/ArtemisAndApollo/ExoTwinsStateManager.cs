@@ -51,13 +51,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             if (!CalDLCWorldSavingSystem.E_EternityRev)
                 return;
 
-            SharedState.Update();
-
+            bool anyExoTwinIsPresent = false;
             if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1)
             {
                 NPC apollo = Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen];
                 if (apollo.active && apollo.TryGetDLCBehavior(out ApolloEternity apolloAI))
                     PerformUpdateLoop(apollo, apolloAI);
+
+                anyExoTwinIsPresent = true;
             }
 
             if (CalamityGlobalNPC.draedonExoMechTwinRed != -1)
@@ -65,7 +66,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 NPC artemis = Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed];
                 if (artemis.active && artemis.TryGetDLCBehavior(out ArtemisEternity artemisAI))
                     PerformUpdateLoop(artemis, artemisAI);
+
+                anyExoTwinIsPresent = true;
             }
+
+            if (anyExoTwinIsPresent)
+                SharedState.Update();
 
             if (SharedState.AIState == ExoTwinsAIState.PerformComboAttack)
                 SharedState.AITimer = ExoMechComboAttackManager.ComboAttackTimer;
