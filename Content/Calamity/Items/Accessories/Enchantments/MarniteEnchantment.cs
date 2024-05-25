@@ -19,6 +19,7 @@ using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Tools;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -62,8 +63,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectHeadgear>());
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectToga>());
             recipe.AddIngredient(ModContent.ItemType<MarniteRepulsionShield>());
-            recipe.AddIngredient(ModContent.ItemType<UnstableGraniteCore>());
-            recipe.AddIngredient(ModContent.ItemType<GladiatorsLocket>());
+            recipe.AddIngredient(ModContent.ItemType<MarniteDeconstructor>());
+            recipe.AddIngredient(ModContent.ItemType<MarniteObliterator>());
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

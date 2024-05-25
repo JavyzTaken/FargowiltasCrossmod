@@ -24,6 +24,9 @@ using FargowiltasSouls;
 using CalamityMod.Items.Accessories.Wings;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core.Calamity;
+using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Armor.SnowRuffian;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -57,11 +60,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             //recipe
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.SnowRuffian.SnowRuffianMask>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.SnowRuffian.SnowRuffianChestplate>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.SnowRuffian.SnowRuffianGreaves>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Magic.IcicleStaff>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Summon.FrostBlossomStaff>(), 1);
+            recipe.AddIngredient<SnowRuffianMask>();
+            recipe.AddIngredient<SnowRuffianChestplate>();
+            recipe.AddIngredient<SnowRuffianGreaves>();
+            recipe.AddIngredient<IcicleStaff>();
+            recipe.AddIngredient<FrostBlossomStaff>();
+            recipe.AddIngredient(ItemID.Cherry);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

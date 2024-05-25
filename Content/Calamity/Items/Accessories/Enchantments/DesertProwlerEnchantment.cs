@@ -21,6 +21,10 @@ using Terraria.Audio;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Armor.DesertProwler;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -47,11 +51,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerHat>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerShirt>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerPants>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.CrackshotColt>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Summon.SunSpiritStaff>());
+            recipe.AddIngredient<DesertProwlerHat>();
+            recipe.AddIngredient<DesertProwlerShirt>();
+            recipe.AddIngredient<DesertProwlerPants>();
+            recipe.AddIngredient<CrackshotColt>();
+            recipe.AddIngredient<SunSpiritStaff>();
+            recipe.AddIngredient<Cinquedea>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
