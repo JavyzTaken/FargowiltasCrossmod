@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             player.AddEffect<MarniteLasersEffect>(Item);
             player.AddEffect<DesertProwlerEffect>(Item);
             player.AddEffect<WulfrumEffect>(Item);
-            player.AddEffect<SulphurEffect>(Item);
+            SulphurEnchantment.AddEffects(player, Item);
             VictideEnchantment.AddEffects(player, Item);
         }
         public override void AddRecipes()

@@ -423,7 +423,14 @@ Mods: {
 
 			WulfrumEnchantment: {
 				// DisplayName: Wulfrum Enchantment
-				// Tooltip: Summons a drone that brings far away items to you
+				/* Tooltip:
+					'''
+						Summons a wulfrum drone that follows your cursor
+						The drone scans enemies it collides with
+						Scanning enemies tells you their debuff weaknesses and resistances
+						Red means weakness, green means resistance
+						Scanned enemies also take extra damage over time when afflicted with any debuff
+					''' */
 			}
 
 			ExplorationForce: {
@@ -548,7 +555,7 @@ Mods: {
 					Grants urchin spikes that protrude from your body
 					Attacking charges the spikes, which launch outward when you stop attacking
 					Increases underwater movement
-					Effects of Ocean Crest
+					Effects of [i:CalamityMod/OceanCrest] Ocean Crest
 					''' */
 			}
 		}

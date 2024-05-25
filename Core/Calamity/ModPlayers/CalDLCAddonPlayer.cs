@@ -1,5 +1,7 @@
 ﻿using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Patreon.Potato;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
 using System;
@@ -8,8 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
+using FargowiltasCrossmod.Content.Calamity.Projectiles;
+using Luminance.Common.Utilities;
 
 namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
@@ -50,6 +56,23 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
            if (Player.HasEffect<DesertProwlerEffect>())
             {
                 DesertProwlerEffect.ProwlerEffect(Player);
+            }
+        }
+        public override void MeleeEffects(Item item, Rectangle hitbox)
+        {
+            if (Player.HasEffect<SulphurEffect>())
+            {
+                for (int i = 0; i < Main.projectile.Length; i++)
+                {
+                    Projectile projectile = Main.projectile[i];
+
+                    if (projectile.TypeAlive<SulphurBubble>() && hitbox.Intersects(projectile.Hitbox))
+                    {
+                        if (projectile.ai[1] <= 0 && Main.myPlayer == projectile.owner && projectile.scale >= 3)
+                            projectile.As<SulphurBubble>().OnHitEffect(item.damage);
+                    }
+                }
+
             }
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)

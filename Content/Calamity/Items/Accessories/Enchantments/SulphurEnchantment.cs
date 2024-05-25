@@ -26,6 +26,7 @@ using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
+using CalamityMod.Buffs.StatDebuffs;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -51,8 +52,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<SulphurEffect>(Item);
-            
+            AddEffects(player, Item);
+        }
+        public static void AddEffects(Player player, Item item)
+        {
+            player.buffImmune[ModContent.BuffType<Irradiated>()] = true;
+            player.AddEffect<SulphurEffect>(item);
         }
         
         public override void AddRecipes()
@@ -133,7 +138,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     dust.alpha = 190;
                 }
             }
-
+            foreach (var bubble in LumUtils.AllProjectilesByID(ModContent.ProjectileType<SulphurBubble>()))
+            {
+                if (bubble.owner == player.whoAmI)
+                    bubble.Kill();
+            }
             Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurBubble>(), bubbleDamage, 1, player.whoAmI);
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
