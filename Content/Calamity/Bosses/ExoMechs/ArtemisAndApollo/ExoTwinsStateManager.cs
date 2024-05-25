@@ -4,6 +4,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using System.IO;
 using System.Linq;
 using Terraria;
@@ -47,6 +48,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
         public override void PostUpdateNPCs()
         {
+            if (!CalDLCWorldSavingSystem.E_EternityRev)
+                return;
+
             SharedState.Update();
 
             if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1)
