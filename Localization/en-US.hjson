@@ -527,6 +527,7 @@ Mods: {
 					'''
 					Increases your maximum speed
 					Massively decreases your acceleration and deceleration
+					Gain up to +15% increased damage, depending on how fast you're moving
 					'''
 			}
 
@@ -708,7 +709,7 @@ Mods: {
 			ReaverEffect: Reaver Stats
 			HydrothermicEffect: Overheat
 			PlaguebringerEffect: Debuff Spread
-			StatigelEffect: Statigel Acceleration
+			StatigelEffect: Statigel Acceleration and Damage
 			SulphurEffect: Bubble Jump
 			VictideEffect: Urchin Spikes
 			TitanHeartEffect: Titan Size
@@ -716,7 +717,7 @@ Mods: {
 		}
 
 		WizardEffect: {
-			Aerospec: jumping grants more crit, higher maximum crit boost
+			Aerospec: Crit bonus doubled
 			Marnite: Stronger daggers, +15% placement speed and +5 placement range
 			DesertProwler: Stronger jumps
 			Wulfrum: Scanned Enemies take even more extra damage from debuffs
@@ -729,10 +730,10 @@ Mods: {
 				Debuffs spread from farther 
 				Enemies spread debuffs for a longer amount of time
 				'''
-			Umbraphile: Bats do more damage and travel faster
-			Sulphur: Gas does more damage and travels farther
+			Umbraphile: Bats deal more damage and travel faster
+			Sulphur: Gas deals more damage and travels farther
 			Victide: Spikes are no longer affected by gravity and inflict venom
-			Statigel: Higher maximum speed
+			Statigel: Higher maximum speed, damage bonus doubled
 		}
 
 		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform

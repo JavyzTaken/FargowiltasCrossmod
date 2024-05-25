@@ -86,6 +86,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
+            float x = player.velocity.Length() / 12f;
+            float bonusMultiplier = x / MathF.Sqrt(x * x + 1); // This function approaches y = 1 as x approaches infinity.
+            float bonusDamage = bonusMultiplier * 0.15f;
+            if (player.ForceEffect<StatigelEffect>())
+                bonusDamage *= 2;
+            player.GetDamage(DamageClass.Generic) += bonusDamage;
             if (player.ForceEffect<StatigelEffect>())
             {
                 player.runAcceleration *= 0.6f;

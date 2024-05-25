@@ -50,16 +50,4 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.Register();
         }
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExplorationHeader : EnchantHeader
-    {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            //return FargowiltasCrossmod.EnchantLoadingEnabled;
-            return true;
-        }
-        public override int Item => ModContent.ItemType<ExplorationForce>();
-        public override float Priority => 0.15f;
-    }
 }
