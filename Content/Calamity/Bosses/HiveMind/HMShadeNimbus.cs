@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Terraria.Audio;
 using Microsoft.Xna.Framework;
 using FargowiltasSouls;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -24,12 +25,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 4;
+            ProjectileID.Sets.TrailCacheLength[Type] = 10;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
         }
 
         public override void SetDefaults()
         {
             Projectile.timeLeft = 300;
-
             Projectile.width = Projectile.height = 28;
 
             Projectile.netImportant = true;
@@ -176,7 +178,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            FargoSoulsUtil.GenericProjectileDraw(Projectile, lightColor);
+            FargoSoulsUtil.ProjectileWithTrailDraw(Projectile, lightColor);
             return false;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

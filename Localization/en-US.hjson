@@ -394,6 +394,8 @@ Mods: {
 					For every double jump used, you gain critical strike chance
 					This includes jumps not granted by this enchantment
 					'''
+				CritUp: +{0}% crit
+				CritReset: -{0}% crit
 			}
 
 			MarniteEnchantment: {
@@ -708,6 +710,7 @@ Mods: {
 			VileClotDrop.DisplayName: Vile Clot
 			SulphurCloud.DisplayName: Sulphur Cloud
 			PureGel.DisplayName: Pure Gel
+			HiveMindPulse.DisplayName: Hive Mind Pulse
 			ApolloLineTelegraph.DisplayName: Telegraph
 			ApolloMissile.DisplayName: Plasma Missile
 			AresMissile.DisplayName: Thermal Missile
@@ -729,6 +732,7 @@ Mods: {
 			LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
 			LingeringPlasmaFireball.DisplayName: Plasma Fireball
 			SmallTeslaArc.DisplayName: Tesla Arc
+
 		}
 
 		Buffs: {
