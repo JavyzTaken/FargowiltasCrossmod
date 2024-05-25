@@ -7,6 +7,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using System;
@@ -98,7 +99,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// <param name="fightState">The state of the overall Exo Mechs fight.</param>
         public delegate bool PhaseTransitionCondition(ExoMechFightState fightState);
 
-        public override void PreUpdateEntities() => DetermineBattleState();
+        public override void PreUpdateEntities()
+        {
+            if (CalDLCWorldSavingSystem.E_EternityRev)
+                DetermineBattleState();
+        }
 
         /// <summary>
         /// Creates and registers a new phase for the Exo Mechs fight.

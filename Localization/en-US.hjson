@@ -732,7 +732,6 @@ Mods: {
 			LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
 			LingeringPlasmaFireball.DisplayName: Plasma Fireball
 			SmallTeslaArc.DisplayName: Tesla Arc
-
 		}
 
 		Buffs: {
