@@ -32,6 +32,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Graphics.CameraModifiers;
+using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -71,6 +72,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (!WorldSavingSystem.EternityMode) return true;
             Asset<Texture2D> ground = ModContent.Request<Texture2D>("CalamityMod/NPCs/HiveMind/HiveMind");
             Asset<Texture2D> fly = ModContent.Request<Texture2D>("CalamityMod/NPCs/HiveMind/HiveMindP2");
+
+            Color glowColor = HiveMindPulse.GlowColor;
             if (sprite.X == 0)
             {
                 Main.EntitySpriteDraw(ground.Value, NPC.Center - Main.screenPosition - new Vector2(0, 10), new Rectangle(0, 122 * (int)sprite.Y, 178, 122), NPC.GetAlpha(drawColor), NPC.rotation, new Vector2(178, 122) / 2, NPC.scale, SpriteEffects.None);
@@ -78,14 +81,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             else
             {
                 bool desperation = (Subphase(NPC) >= 3 && NPC.ai[1] == (float)P2States.Spindash);
-                Color afterimageColor = desperation ? Color.Purple : drawColor;
+                Color afterimageColor = desperation ? glowColor : drawColor;
                 for (int i = 0; i < (int)currentAfterimages; i++)
                 {
                     
                     Main.EntitySpriteDraw(fly.Value, NPC.oldPos[i] + new Vector2(NPC.width / 2, NPC.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), NPC.GetAlpha(afterimageColor) * (1 - i / 10f), NPC.rotation, new Vector2(178, 142) / 2, NPC.scale, SpriteEffects.None);
                 }
                 if (desperation)
-                    DLCUtils.DrawBackglow(fly, NPC.GetAlpha(Color.Purple), NPC.Center + new Vector2(0, 10), new Vector2(178, 142) / 2, NPC.rotation, NPC.scale, offsetMult: 2, sourceRectangle: new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142));
+                    DLCUtils.DrawBackglow(fly, NPC.GetAlpha(glowColor), NPC.Center + new Vector2(0, 10), new Vector2(178, 142) / 2, NPC.rotation, NPC.scale, offsetMult: 2, sourceRectangle: new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142));
                 Main.EntitySpriteDraw(fly.Value, NPC.Center - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), NPC.GetAlpha(drawColor), NPC.rotation, new Vector2(178, 142) / 2, NPC.scale, SpriteEffects.None);
             }
 
@@ -129,10 +132,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public int Phase = 0;
         public int LastAttack = 0;
         public bool DidRainDash = false;
+
+        public const float Subphase2HP = 0.5f;
+        public const float Subphase3HP = 0.175f;
         public static int Subphase(NPC NPC)
         {
             float life = NPC.GetLifePercent();
-            return life < 0.5f ? life < 0.175f ? 3 : 2 : 1;
+            return life < Subphase2HP ? life < Subphase3HP ? 3 : 2 : 1;
         }
 
         public float targetAfterimages = 0;
@@ -430,7 +436,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 currentAttack = (float)P2States.I_RainDashStart;
                                 DidRainDash = true;
                                 timer = 0;
-                                if (attackCounter == 0) // if this replaced this replaced spin dashes
+                                if (attackCounter == 3) // if this replaced this replaced spin dashes
                                     attackCounter = 2;
                                 NPC.netUpdate = true;
                             }
@@ -660,6 +666,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                             int teleportRadius = 300;
                             float lungeTime = 23;
+
+                            if (Subphase(NPC) > 2)
+                            {
+                                SkyManager.Instance.Activate("FargowiltasCrossmod:HiveMind", target.Center);
+                            }
 
                             NPC.netUpdate = true;
                             NPC.netSpam = 0;

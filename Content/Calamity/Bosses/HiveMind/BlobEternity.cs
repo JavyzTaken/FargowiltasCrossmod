@@ -132,7 +132,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 return false;
             }
             NPC owner = Main.npc[hiveMind];
-
             if (owner.GetDLCBehavior<HMEternity>().Phase < 2)
                 Phase1AI(NPC, owner, target);
             else
@@ -143,11 +142,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
         }
         float index = -1;
+        int InvumTime = 0;
         public void Phase1AI(NPC NPC, NPC owner, Player target)
         {
             // Setting this in SetDefaults will disable expert mode scaling, so put it here instead
             NPC.damage = 0;
             NPC.chaseable = true;
+
+            if (InvumTime < 60)
+            {
+                NPC.dontTakeDamage = true;
+                InvumTime++;
+            }
+            else
+                NPC.dontTakeDamage = false;
 
             if (SavedCenter == Vector2.Zero || SavedCenter.Distance(target.Center) > 1500)
                 SavedCenter = target.Center;
@@ -330,5 +338,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
         }
         
+    }
+    public class Blob2Eternity : BlobEternity
+    {
+        public override int NPCOverrideID => ModContent.NPCType<HiveBlob2>();
     }
 }
