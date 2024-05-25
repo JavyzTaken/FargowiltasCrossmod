@@ -392,6 +392,7 @@ Mods: {
 					'''
 					Gain +5% critical strike chance whenever you use a jump or double jump
 					This bonus lasts until your jumps are reset
+					Effects of [i:CalamityMod/AeroStone] Aero Stone
 					'''
 				CritUp: +{0}% crit
 				CritReset: -{0}% crit
@@ -435,7 +436,7 @@ Mods: {
 					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance
 					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
 					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
-					[i:FargowiltasCrossmod/VictideEnchantment] Effects of [i:CalamityMod/OceanCrest] Ocean Crest
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield, [i:CalamityMod/OceanCrest] Ocean Crest and [i:CalamityMod/AeroStone] Aero Stone
 					'''
 			}
 
