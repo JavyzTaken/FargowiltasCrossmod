@@ -129,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// </remarks>
         private static void CalculateFightState()
         {
-            int totalActiveMechs = 0;
+            int totalAliveMechs = 0;
             bool checkForPrimaryMech = false;
             List<int> evaluatedMechs = new(4);
             foreach (int exoMechID in ExoMechNPCIDs.ManagingExoMechIDs)
@@ -138,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
                 if (NPC.AnyNPCs(exoMechID))
                 {
                     checkForPrimaryMech = true;
-                    totalActiveMechs++;
+                    totalAliveMechs++;
                 }
             }
 
@@ -166,7 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
 
                 stateOfOtherExoMechs[i] = ExoMechStateFromNPC(otherExoMech, exoMechWasSummonedAtOnePoint);
             }
-            FightState = new(draedonState, totalActiveMechs, ExoMechStateFromNPC(primaryMech, true), stateOfOtherExoMechs);
+            FightState = new(draedonState, totalAliveMechs, ExoMechStateFromNPC(primaryMech, true), stateOfOtherExoMechs);
 
             FightOngoing = true;
         }
