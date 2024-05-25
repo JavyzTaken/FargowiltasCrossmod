@@ -586,7 +586,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 {
                                     if (FargoSoulsUtil.HostCheck)
                                     {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), -NPC.velocity.RotatedBy(MathF.PI / 3f * i) * 0.8f, ModContent.ProjectileType<HiveMindFiretrail>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), -NPC.velocity.RotatedBy(MathF.PI / 3f * i) * 0.8f, ModContent.ProjectileType<BrainMassProjectile>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai1: 1);
                                     }
                                 }
                                 

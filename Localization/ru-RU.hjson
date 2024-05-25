@@ -426,11 +426,11 @@ Mods: {
 				// DisplayName: Wulfrum Enchantment
 				/* Tooltip:
 					'''
-						Summons a wulfrum drone that follows your cursor
-						The drone scans enemies it collides with
-						Scanning enemies tells you their debuff weaknesses and resistances
-						Red means weakness, green means resistance
-						Scanned enemies also take extra damage over time when afflicted with any debuff
+					Summons a wulfrum drone that follows your cursor
+					The drone scans enemies it collides with
+					Scanning enemies tells you their debuff weaknesses and resistances
+					Red means weakness, green means resistance
+					Scanned enemies also take extra damage over time when afflicted with any debuff
 					''' */
 			}
 
@@ -640,7 +640,7 @@ Mods: {
 			// BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
 			// BrimstoneTeleport.DisplayName: Brimstone Teleport
 			// BrimstoneFireblast.DisplayName: Brimstone Fireblast
-			// FeatherJumpFeather.DisplayName: Feather Jump Feather
+			// FeatherJumpFeather.DisplayName: Feather
 			// MarniteDagger.DisplayName: Marnite Dagger
 			// MarniteLaser.DisplayName: Marnite Laser
 			// ProwlerTornado.DisplayName: Prowler Tornado
@@ -653,8 +653,8 @@ Mods: {
 			// SulphurBubble.DisplayName: Sulphur Bubble
 			// VictideSpike.DisplayName: Victide Spike
 			// GoldenShowerShot.DisplayName: Golden Shower Shot
-			// HiveMindFiretrail.DisplayName: Hive Mind Firetrail
-			// HMShadeNimbus.DisplayName: H M Shade Nimbus
+			// HiveMindFiretrail.DisplayName: Cursed Fire
+			// BrainMassProjectile.DisplayName: Rotten Brainmass
 			// GravityVileClot.DisplayName: Vile Clot
 			// VileClotDrop.DisplayName: Vile Clot
 			// SulphurCloud.DisplayName: Sulphur Cloud
