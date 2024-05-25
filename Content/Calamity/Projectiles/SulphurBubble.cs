@@ -1,6 +1,8 @@
 ﻿using CalamityMod.Projectiles.Magic;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -10,7 +12,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
@@ -22,7 +26,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "CalamityMod/Projectiles/Enemy/SulphuricAcidBubble";
         public override void SetStaticDefaults()
@@ -34,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Main.projFrames[Type] = 7;
             Projectile.width = 30;
             Projectile.height = 30;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.hostile = false;
             Projectile.scale = 3;
             Projectile.Opacity = 0;
@@ -55,6 +60,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI()
         {
+            int gasSpeedMin = 3;
+            int gasSpeedMax = 6;
+            if (Main.player[Projectile.owner].ForceEffect<SulphurEffect>())
+            {
+                gasSpeedMin = 4;
+                gasSpeedMax = 10;
+            }
+
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 10)
             {
@@ -68,16 +81,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             if (Projectile.Opacity < 0.7f) Projectile.Opacity += 0.01f;
             Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -4, 0.01f);
 
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            if (Projectile.ai[1] <= 0 && Main.myPlayer == Projectile.owner)
             {
-                if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>() != null && (Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>().HitBubble.Count <= 0 || !Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>().HitBubble.Contains(i)) && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<MiasmaGas>())
+                for (int i = 0; i < Main.maxProjectiles; i++)
                 {
-                    Main.projectile[i].GetGlobalProjectile<CalDLCAddonGlobalProjectile>().HitBubble.Add(Projectile.whoAmI);
-                    for (int j = 0; j < 1; j++)
+                    if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0  && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<SulphurCloud>())
                     {
-                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(3, 6)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<MiasmaGas>(), 20, 1, Projectile.owner);
+                       
+                        for (int j = 0; j < 3; j++)
+                        {
+                            int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(gasSpeedMin, gasSpeedMax)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), Main.projectile[i].damage / 4, 0, Projectile.owner);
+                            NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                        }
+                        SoundEngine.PlaySound(SoundID.Item85, Projectile.Center);
+                        Projectile.ai[1] = 10;
+                        NetMessage.SendData(MessageID.SyncProjectile, number: Projectile.whoAmI);
+                        break;
                     }
                 }
+                
+            }
+            else
+            {
+                Projectile.ai[1]--;
             }
         }
     }

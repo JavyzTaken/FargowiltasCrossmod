@@ -16,6 +16,7 @@
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\UmbraphileEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\VictideEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Forces\DevastationForce.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Forces\ExplorationForce.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />

@@ -1,6 +1,7 @@
 ﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls.Core.Toggler.Content;
@@ -8,6 +9,14 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public class CalamitySoulHeader : SoulHeader
+    {
+        public override float Priority => 5;
+        public override int Item => ModContent.ItemType<Masochist>();
+        
+    }
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class VagabondsSoulHeader : SoulHeader

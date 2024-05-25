@@ -26,6 +26,10 @@ using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls.Content.Projectiles.BossWeapons;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -35,7 +39,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new(89, 170, 204);
 
@@ -73,14 +78,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
         public override int ToggleItemType => ModContent.ItemType<StatigelEnchantment>();
         
         public override void PostUpdateEquips(Player player)
         {
-
+            if (player.ForceEffect<StatigelEffect>())
+            {
+                player.runAcceleration *= 0.6f;
+                //player.maxRunSpeed *= 1.3f;
+                player.accRunSpeed *= 1.1f;
+                player.runSlowdown *= 0.05f;
+            }
+            else
+            {
+                player.runAcceleration *= 0.4f;
+                player.accRunSpeed *= 1.01f;
+                player.runSlowdown *= 0.05f;
+            }
+            
         }
+       
     }
 }

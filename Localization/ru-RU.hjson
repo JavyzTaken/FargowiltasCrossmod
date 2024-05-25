@@ -430,9 +430,11 @@ Mods: {
 					'''
 					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
 					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
-					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone collects items for you
+					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
 					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping with a charged sand jump that boosts you horizontally
-					[i:FargowiltasCrossmod/AerospecEnchantment] Grants 5 aero jumps and grants crit chance for every jump used
+					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance
+					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
+					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
 					''' */
 			}
 
@@ -520,17 +522,30 @@ Mods: {
 
 			StatigelEnchantment: {
 				// DisplayName: Statigel Enchantment
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					Increases your maximum speed
+					Massively decreases your acceleration and deceleration
+					''' */
 			}
 
 			SulphurEnchantment: {
 				// DisplayName: Sulphur Enchantment
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					Grants a sulphur jump that spawns a sulphur bubble on use
+					When the bubble is hit, it releases damaging gas
+					''' */
 			}
 
 			VictideEnchantment: {
 				// DisplayName: Victide Enchantment
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					Grants urchin spikes protruding from you
+					Attacking charges the spikes, which launch outward when you stop attacking
+					Increases underwater movement
+					''' */
 			}
 		}
 
@@ -649,6 +664,7 @@ Mods: {
 		}
 
 		Toggler: {
+			// CalamitySoulHeader: Soul of Calamity
 			VagabondsSoulHeader: Душа Беглеца
 			NanotechEffect: Нанотехнология
 			EclipseMirrorEffect: Зеркало Затмения
@@ -677,16 +693,21 @@ Mods: {
 			CalamityEffect: Бедствие
 			// SplendorJamEffect: Splendor Jam
 			// ExplorationHeader: Force of Exploration
-			// AerospecJumpEffect: Aerospec Jumps
+			// AerospecJumpEffect: Jump Crit
 			// MarniteStatsEffect: Marnite Building
 			// MarniteLasersEffect: Marnite Lasers
 			// DesertProwlerEffect: Charge Jump
-			// WulfrumEffect: Collector Drones
+			// WulfrumEffect: Wulfrum Drone
 			// SnowRuffianEffect: Better Gliding
 			// DaedalusEffect: Daedalus Flight Limit
 			// ReaverEffect: Reaver Stats
 			// HydrothermicEffect: Overheat
 			// PlaguebringerEffect: Debuff Spread
+			// StatigelEffect: Statigel Acceleration
+			// SulphurEffect: Bubble Jump
+			// VictideEffect: Urchin Spikes
+			// TitanHeartEffect: Titan Size
+			// UmbraphileEffect: Bat Healing
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
@@ -694,10 +715,10 @@ Mods: {
 
 	FargowiltasSouls: {
 		WizardEffect: {
-			// Aerospec: Total of 5 jumps, jumping grants more crit
+			// Aerospec: jumping grants more crit, higher maximum crit boost
 			// Marnite: Stronger daggers, +15% placement speed and +5 placement range
 			// DesertProwler: Stronger jumps
-			// Wulfrum: The drone is faster and occasionally finds bonus items
+			// Wulfrum: Scanned Enemies take even more extra damage from debuffs
 			// Hydrothermic: Longer overheat charge, more attack speed increase
 			// Daedalus: Grants wings if you don't have any, Can fly higher
 			// SnowRuffian: Grants some flight time
@@ -705,9 +726,12 @@ Mods: {
 			/* Plaguebringer:
 				'''
 				Debuffs spread from farther 
-				Enemies are tagged to spread debuffs for longer
+				Enemies spread debuffs for a longer amount of time
 				''' */
 			// Umbraphile: Bats do more damage and travel faster
+			// Sulphur: Gas does more damage and travels farther
+			// Victide: Spikes are no longer affected by gravity and inflict venom
+			// Statigel: Higher maximum speed
 		}
 	}
 }

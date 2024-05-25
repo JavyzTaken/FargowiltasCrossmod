@@ -35,7 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new Color(181, 139, 161);
 
@@ -73,9 +74,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<SulphurEnchantment>();
         
         public override void PostUpdateEquips(Player player)
@@ -89,7 +91,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override void UpdateHorizontalSpeeds(Player player)
         {
@@ -108,6 +111,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         //copy pasted dust code from cal
         public override void OnStarted(Player player, ref bool playSound)
         {
+            int bubbleDamage = 50;
+            if (player.ForceEffect<SulphurEffect>())
+            {
+                bubbleDamage = 250;
+            }
+
             int offset = player.height;
             if (player.gravDir == -1f)
                 offset = 0;
@@ -125,7 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 }
             }
 
-            Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurBubble>(), 50, 1, player.whoAmI);
+            Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurBubble>(), bubbleDamage, 1, player.whoAmI);
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);

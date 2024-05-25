@@ -35,7 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new Color(255, 233, 197);
 
@@ -73,14 +74,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<VictideEnchantment>();
         
         public override void PostUpdateEquips(Player player)
         {
-            //lmao this doesnt do anything its all in CalamityAddonGlobalItem
+            int damage;
+            if (player.ForceEffect<VictideEffect>())
+            {
+                damage = 250;
+            }
+            else
+            {
+                damage = 35;
+            }
+            player.ignoreWater = true;
+
+
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<VictideSpike>()] <= 0)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, MathHelper.Lerp(0.6f, 3f, i/4f));
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, -MathHelper.Lerp(0.6f, 3f, i / 4f));
+                }
+                Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, MathHelper.Pi);
+            }
         }
     }
 }
