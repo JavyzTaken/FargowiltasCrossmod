@@ -128,6 +128,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public Vector2 LockVector1 = Vector2.Zero;
         public int Phase = 0;
         public int LastAttack = 0;
+        public bool DidRainDash = false;
         public static int Subphase(NPC NPC)
         {
             float life = NPC.GetLifePercent();
@@ -141,6 +142,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             binaryWriter.Write7BitEncodedInt(Phase);
             binaryWriter.Write7BitEncodedInt(LastAttack);
+            binaryWriter.Write(DidRainDash);
             binaryWriter.WriteVector2(sprite);
             binaryWriter.WriteVector2(LockVector1);
             binaryWriter.Write(NPC.localAI[2]);
@@ -149,6 +151,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             Phase = binaryReader.Read7BitEncodedInt();
             LastAttack = binaryReader.Read7BitEncodedInt();
+            DidRainDash = binaryReader.ReadBoolean();
             sprite = binaryReader.ReadVector2();
             LockVector1 = binaryReader.ReadVector2();
             NPC.localAI[2] = binaryReader.ReadSingle();
@@ -422,14 +425,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             {
                                 NPC.localAI[i] = 0;
                             }
-                            if (Subphase(NPC) >= 2 && Main.rand.NextBool(2) && LastAttack != (float)P2States.I_RainDashStart && LastAttack != (float)P2States.I_SpindashStart)
+                            if (Subphase(NPC) >= 2 && Main.rand.NextBool(2) && !DidRainDash && LastAttack != (float)P2States.I_SpindashStart)
                             {
                                 currentAttack = (float)P2States.I_RainDashStart;
-                                LastAttack = (int)currentAttack;
+                                DidRainDash = true;
                                 timer = 0;
                                 if (attackCounter == 0) // if this replaced this replaced spin dashes
                                     attackCounter = 2;
+                                NPC.netUpdate = true;
                             }
+                            else
+                                DidRainDash = false;
                         }
                         break;
                     case P2States.Idle: // idle float, spawn some shit as a shield
