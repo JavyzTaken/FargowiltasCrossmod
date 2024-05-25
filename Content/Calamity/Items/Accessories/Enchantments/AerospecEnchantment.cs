@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             int forceCritPerJump = 10;
             int maxCritJumps = 6;
 
-            CalamityAddonPlayer mplayer = player.GetModPlayer<CalamityAddonPlayer>();
+            CalDLCAddonPlayer mplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             player.GetCritChance(DamageClass.Generic) += (mplayer.NumJumpsUsed > maxCritJumps ? maxCritJumps : mplayer.NumJumpsUsed) * (player.ForceEffect<AerospecJumpEffect>() ? forceCritPerJump : critPerJump);
             for (int i = 0; i < mplayer.AeroCritBoost / 5; i++)
             {

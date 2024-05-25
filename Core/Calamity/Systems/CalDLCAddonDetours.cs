@@ -21,6 +21,7 @@ using Terraria.Graphics;
 using Terraria.Chat;
 using Terraria.DataStructures;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -46,7 +47,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         private void ResetAeroCrit(On_Player.orig_RefreshDoubleJumps orig, Player self)
         {
-            self.GetModPlayer<CalamityAddonPlayer>().NumJumpsUsed = 0;
+            self.GetModPlayer<CalDLCAddonPlayer>().NumJumpsUsed = 0;
             orig(self);
         }
 

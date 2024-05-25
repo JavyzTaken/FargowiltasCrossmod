@@ -187,7 +187,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                     {
                         NPC j = Main.npc[i];
                         //Main.NewText(j );
-                        if (target != null && j != null && j.active && (j.lifeMax >= target.lifeMax || target.friendly || target.lifeMax <= 5) && j.Distance(Main.MouseWorld) < 100 && j.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned == -1 && !j.friendly && j.lifeMax > 5)
+                        if (target != null && j != null && j.active && (j.lifeMax >= target.lifeMax || target.friendly || target.lifeMax <= 5) && j.Distance(Main.MouseWorld) < 100 && j.GetGlobalNPC<CalDLCAddonGlobalNPC>().WulfrumScanned == -1 && !j.friendly && j.lifeMax > 5)
                         {
                             target = j;
                             fard = true;
@@ -205,7 +205,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                         Projectile.ai[1] = target.whoAmI;
                         Projectile.ai[2] = 1;
                         //Main.NewText(target.FullName);
-                        target.GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned = Projectile.whoAmI;
+                        target.GetGlobalNPC<CalDLCAddonGlobalNPC>().WulfrumScanned = Projectile.whoAmI;
                         NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, target.whoAmI);
 
                     }
@@ -215,7 +215,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             if (Projectile.ai[1] >= 0 && Main.npc[(int)Projectile.ai[1]].active)
             {
                 //Main.NewText("hi");
-                Main.npc[(int)Projectile.ai[1]].GetGlobalNPC<CalamityAddonGlobalNPC>().WulfrumScanned = Projectile.whoAmI;
+                Main.npc[(int)Projectile.ai[1]].GetGlobalNPC<CalDLCAddonGlobalNPC>().WulfrumScanned = Projectile.whoAmI;
             }
             base.AI();
         }

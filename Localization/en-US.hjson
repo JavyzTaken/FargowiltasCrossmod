@@ -574,7 +574,6 @@ Mods: {
 				SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
 				SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
 				MutantYharonVortex.DisplayName: The Sun
-				GravityVileClot.DisplayName: Vile Clot
 			}
 
 			SlamTelegraph.DisplayName: Slam Telegraph
@@ -635,6 +634,8 @@ Mods: {
 			HMShadeNimbus.DisplayName: H M Shade Nimbus
 			GravityVileClot.DisplayName: Vile Clot
 			VileClotDrop.DisplayName: Vile Clot
+			SulphurCloud.DisplayName: Sulphur Cloud
+			PureGel.DisplayName: Pure Gel
 		}
 
 		Buffs: {
