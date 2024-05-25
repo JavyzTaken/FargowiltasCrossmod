@@ -390,9 +390,8 @@ Mods: {
 				DisplayName: Aerospec Enchantment
 				Tooltip:
 					'''
-					Grants two Aero jumps
-					For every double jump used, you gain critical strike chance
-					This includes jumps not granted by this enchantment
+					Gain +5% critical strike chance whenever you use a jump or double jump
+					This bonus lasts until your jumps are reset
 					'''
 				CritUp: +{0}% crit
 				CritReset: -{0}% crit
