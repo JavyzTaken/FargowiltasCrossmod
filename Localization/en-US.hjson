@@ -414,7 +414,14 @@ Mods: {
 
 			WulfrumEnchantment: {
 				DisplayName: Wulfrum Enchantment
-				Tooltip: Summons a drone that brings far away items to you
+				Tooltip: 
+				'''
+					Summons a wulfrum drone to aid you
+					The drone scans enemies it collides with
+					Scanning enemies tells you their debuff weaknesses and resistances
+					Red means weakness, green means resistance
+					Scanned enemies also take extra damage over time when afflicted with any debuff
+				'''
 			}
 
 			ExplorationForce: {
