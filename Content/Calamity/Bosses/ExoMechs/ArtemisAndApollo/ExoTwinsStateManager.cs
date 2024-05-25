@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         {
             get;
             set;
-        } = new(ExoTwinsAIState.DashesAndLasers, new float[5]);
+        } = new(ExoTwinsAIState.SpawnAnimation, new float[5]);
 
         /// <summary>
         /// The set of all passive individual AI states the Exo Twins can perform.
