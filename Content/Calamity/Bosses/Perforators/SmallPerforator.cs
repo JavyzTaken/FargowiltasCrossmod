@@ -16,30 +16,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SmallPerforator : EModeCalBehaviour
+    public class SmallPerforator : CalDLCEmodeExtraGlobalNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
         ModContent.NPCType<PerforatorHeadSmall>(),
         ModContent.NPCType<PerforatorBodySmall>(),
         ModContent.NPCType<PerforatorTailSmall>()
         );
-        public override void SetDefaults(NPC entity)
-        {
-            base.SetDefaults(entity);
-        }
-        public override void SpawnNPC(int npc, int tileX, int tileY)
-        {
-            base.SpawnNPC(npc, tileX, tileY);
-        }
-
-        public override void OnKill(NPC npc)
-        {
-            base.OnKill(npc);
-        }
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
-        }
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;

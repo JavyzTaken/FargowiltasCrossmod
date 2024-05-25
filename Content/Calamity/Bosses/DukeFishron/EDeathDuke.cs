@@ -9,25 +9,25 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.DukeFishron
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathDuke : EternityDeathBehaviour
+    public class EDeathDuke : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.DukeFishron);
+        public override int NPCOverrideID => NPCID.DukeFishron;
 
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
-            if (npc.ai[0] == 10 && npc.ai[3] == 8 && npc.ai[2] >= 20 && npc.GetLifePercent() <= 0.1f)
+            if (!NPC.HasValidTarget) return true;
+            if (NPC.ai[0] == 10 && NPC.ai[3] == 8 && NPC.ai[2] >= 20 && NPC.GetLifePercent() <= 0.1f)
             {
-                npc.Center = Main.player[npc.target].Center + Main.player[npc.target].velocity * 100;
-                if (npc.ai[2] == 25)
-                    npc.ai[3] = 5;
+                NPC.Center = Main.player[NPC.target].Center + Main.player[NPC.target].velocity * 100;
+                if (NPC.ai[2] == 25)
+                    NPC.ai[3] = 5;
             }
-            if (npc.ai[3] == 1 && npc.GetLifePercent() <= 0.1f)
+            if (NPC.ai[3] == 1 && NPC.GetLifePercent() <= 0.1f)
             {
 
-                npc.ai[3] = 5;
+                NPC.ai[3] = 5;
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

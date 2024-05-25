@@ -1,12 +1,24 @@
 ﻿using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls.Core.NPCMatching;
-using Terraria;
+using FargowiltasSouls.Core.Systems;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
-    public abstract class EternityDeathBehaviour : GlobalNPC
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    /// <summary>
+    /// For when several NPC types are needed to run the same code. 
+    /// Example use case is modifying the damage reduction of the entire head, body and tail of a worm.
+    /// </summary>
+    public abstract class CalDLCEmodeExtraGlobalNPC : GlobalNPC
     {
         public NPCMatcher Matcher;
 
@@ -23,12 +35,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             base.Load();
         }
 
-        public abstract NPCMatcher CreateMatcher();
 
+        public abstract NPCMatcher CreateMatcher();
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return CalDLCWorldSavingSystem.EternityDeath && CalDLCWorldSavingSystem.E_EternityRev ? base.NewInstance(target) : null;
+            return CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements() ? base.NewInstance(target) : null;
         }
+
+        /// <summary>
+        /// The behaviour only runs code if this returns true. Returns true by default.
+        /// </summary>
+        public virtual bool ExtraRequirements() { return true; }
 
         public bool FirstTick = true;
         public virtual void OnFirstTick(NPC npc) { }
@@ -36,7 +53,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!(CalDLCWorldSavingSystem.EternityDeath && CalDLCWorldSavingSystem.E_EternityRev))
+            if (!(CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements()))
             {
                 return true;
             }
@@ -48,7 +65,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             return SafePreAI(npc);
         }
-
+        public virtual void SafePostAI(NPC npc) => base.PostAI(npc);
+        public sealed override void PostAI(NPC npc)
+        {
+            if (!(CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements()))
+            {
+                return;
+            }
+            SafePostAI(npc);
+            return;
+        }
 
         protected static void NetSync(NPC npc, bool onlySendFromServer = true)
         {
@@ -58,6 +84,5 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (Main.netMode != NetmodeID.SinglePlayer)
                 NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, npc.whoAmI);
         }
-
     }
 }

@@ -25,9 +25,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SlimeGodCoreEternity : EModeCalBehaviour
+    public class SlimeGodCoreEternity : CalDLCEmodeBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<SlimeGodCore>());
+        public override int NPCOverrideID => ModContent.NPCType<SlimeGodCore>();
 
 
         #region Variables
@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             (int)Attacks.SpinDash
         ];
         #endregion
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write7BitEncodedInt(AttachedSlime);
             binaryWriter.Write(AttachToCrimson);
@@ -94,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             binaryWriter.Write7BitEncodedInt(LatestAttack);
 
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             AttachedSlime = binaryReader.Read7BitEncodedInt();
             AttachToCrimson = binaryReader.ReadBoolean();
@@ -104,39 +104,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             LatestAttack = binaryReader.Read7BitEncodedInt();
         }
 
-        public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => ContactDamage;
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot) => ContactDamage;
 
 
-        public override void SetDefaults(NPC npc)
+        public override void SetDefaults()
         {
-            base.SetDefaults(npc);
-            npc.lifeMax = 10000;
+            NPC.lifeMax = 10000;
         }
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
             if (!WorldSavingSystem.EternityMode) return true;
             #region Passive
-            //FargoSoulsUtil.PrintAI(npc);
-            CalamityGlobalNPC.slimeGod = npc.whoAmI;
-            ref float timer = ref npc.ai[0];
-            ref float attack = ref npc.ai[2];
-            ref float phase = ref npc.ai[3];
-            if (npc.life < npc.lifeMax * 0.15f && phase != (int)Phases.Final)
+            //FargoSoulsUtil.PrintAI(NPC);
+            CalamityGlobalNPC.slimeGod = NPC.whoAmI;
+            ref float timer = ref NPC.ai[0];
+            ref float attack = ref NPC.ai[2];
+            ref float phase = ref NPC.ai[3];
+            if (NPC.life < NPC.lifeMax * 0.15f && phase != (int)Phases.Final)
             {
                 FullReset();
                 phase = (int)Phases.Final;
             }
 
-            npc.dontTakeDamage = !(phase == (int)Phases.Attacking);
+            NPC.dontTakeDamage = !(phase == (int)Phases.Attacking);
             ContactDamage = phase == (int)Phases.Attacking;
 
             if (phase != (int)Phases.Attached)
             {
-                npc.rotation += npc.velocity.Length() * (MathHelper.Pi / 300f);
+                NPC.rotation += NPC.velocity.Length() * (MathHelper.Pi / 300f);
             }
             else //attached
             {
-                npc.Opacity = 0.3f;
+                NPC.Opacity = 0.3f;
             }
 
             if (!Targeting())
@@ -188,8 +187,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         {
                             phase = (int)Phases.ShouldAttach;
                             FullReset();
-                            NetSync(npc);
-                            npc.netUpdate = true;
+                            NetSync(NPC);
+                            NPC.netUpdate = true;
                         }
                     }
                     break;
@@ -206,22 +205,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             bool Targeting()
             {
                 const float despawnRange = 5000f;
-                Player p = Main.player[npc.target];
-                if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                Player p = Main.player[NPC.target];
+                if (!p.active || p.dead || Vector2.Distance(NPC.Center, p.Center) > despawnRange)
                 {
-                    npc.TargetClosest();
-                    p = Main.player[npc.target];
-                    if (!p.active || p.dead || Vector2.Distance(npc.Center, p.Center) > despawnRange)
+                    NPC.TargetClosest();
+                    p = Main.player[NPC.target];
+                    if (!p.active || p.dead || Vector2.Distance(NPC.Center, p.Center) > despawnRange)
                     {
-                        npc.noTileCollide = true;
-                        if (npc.timeLeft > 30)
-                            npc.timeLeft = 30;
-                        npc.velocity.Y -= 1f;
-                        if (npc.timeLeft == 1)
+                        NPC.noTileCollide = true;
+                        if (NPC.timeLeft > 30)
+                            NPC.timeLeft = 30;
+                        NPC.velocity.Y -= 1f;
+                        if (NPC.timeLeft == 1)
                         {
                             if (Main.netMode != NetmodeID.MultiplayerClient)
                             {
-                                FargoSoulsUtil.ClearHostileProjectiles(2, npc.whoAmI);
+                                FargoSoulsUtil.ClearHostileProjectiles(2, NPC.whoAmI);
                             }
                         }
                         return false;
@@ -231,23 +230,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             }
             void FullReset()
             {
-                npc.ai[0] = 0;
-                npc.ai[1] = 0;
+                NPC.ai[0] = 0;
+                NPC.ai[1] = 0;
                 ReattachTimer = 0;
-                NetSync(npc);
-                npc.netUpdate = true;
+                NetSync(NPC);
+                NPC.netUpdate = true;
             }
             void AttackReset()
             {
-                npc.ai[0] = 0;
-                npc.ai[1] = 0;
+                NPC.ai[0] = 0;
+                NPC.ai[1] = 0;
                 LockVector = Vector2.Zero;
-                NetSync(npc);
-                npc.netUpdate = true;
+                NetSync(NPC);
+                NPC.netUpdate = true;
             }
             void ResetToDrift()
             {
-                ref float attack = ref npc.ai[2];
+                ref float attack = ref NPC.ai[2];
                 LatestAttack = (int)attack;
                 attack = (int)Attacks.Drift;
                 AttackReset();
@@ -256,12 +255,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             #region Special Actions
             void SummonSlimes()
             {
-                ref float timer = ref npc.ai[0];
-                ref float phase = ref npc.ai[3];
+                ref float timer = ref NPC.ai[0];
+                ref float phase = ref NPC.ai[3];
                 if (timer < 120)
                 {
-                    Vector2 desiredPos = Main.player[npc.target].Center - Vector2.UnitY * 300;
-                    npc.velocity = (desiredPos - npc.Center) * 0.05f;
+                    Vector2 desiredPos = Main.player[NPC.target].Center - Vector2.UnitY * 300;
+                    NPC.velocity = (desiredPos - NPC.Center) * 0.05f;
                 }
                 if (timer >= 120)
                 {
@@ -270,7 +269,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         const int spawnTossSpeed = 30;
                         if (!NPC.AnyNPCs(CrimsonGodType))
                         {
-                            int crim = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, CrimsonGodType, Target: npc.target);
+                            int crim = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, CrimsonGodType, Target: NPC.target);
                             if (crim != Main.maxNPCs)
                             {
                                 Main.npc[crim].velocity = Vector2.UnitX * -spawnTossSpeed;
@@ -285,7 +284,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         }
                         if (!NPC.AnyNPCs(CorruptionGodType))
                         {
-                            int corr = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, CorruptionGodType, Target: npc.target);
+                            int corr = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, CorruptionGodType, Target: NPC.target);
                             if (corr != Main.maxNPCs)
                             {
                                 Main.npc[corr].velocity = Vector2.UnitX * spawnTossSpeed;
@@ -301,25 +300,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         AttachToCrimson = !AttachToCrimson;
                         FullReset();
                     }
-                    SoundEngine.PlaySound(BigShotSound, npc.Center);
+                    SoundEngine.PlaySound(BigShotSound, NPC.Center);
                 }
             }
             void TryAttaching()
             {
-                ref float timer = ref npc.ai[0];
-                ref float phase = ref npc.ai[3];
-                ref float attack = ref npc.ai[2];
+                ref float timer = ref NPC.ai[0];
+                ref float phase = ref NPC.ai[3];
+                ref float attack = ref NPC.ai[2];
 
                 NPC slime = Main.npc[AttachedSlime];
                 ContactDamage = false;
                 if (slime != null && slime.active)
                 {
                     float modifier = timer / 60f;
-                    npc.velocity = npc.DirectionTo(slime.Center) * 20f * modifier;
-                    if (npc.Distance(slime.Center) <= npc.velocity.Length() * 2f)
+                    NPC.velocity = NPC.DirectionTo(slime.Center) * 20f * modifier;
+                    if (NPC.Distance(slime.Center) <= NPC.velocity.Length() * 2f)
                     {
                         phase = (int)Phases.Attached;
-                        SoundEngine.PlaySound(PossessionSound, npc.Center);
+                        SoundEngine.PlaySound(PossessionSound, NPC.Center);
                         FullReset();
                     }
                 }
@@ -332,13 +331,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             }
             void Attached()
             {
-                ref float timer = ref npc.ai[0];
-                ref float phase = ref npc.ai[3];
-                ref float attack = ref npc.ai[2];
+                ref float timer = ref NPC.ai[0];
+                ref float phase = ref NPC.ai[3];
+                ref float attack = ref NPC.ai[2];
                 NPC slime = Main.npc[AttachedSlime];
                 if (slime != null && slime.active && (slime.type == CrimsonGodType || slime.type == CorruptionGodType))
                 {
-                    npc.velocity = (slime.Center - npc.Center) + slime.velocity;
+                    NPC.velocity = (slime.Center - NPC.Center) + slime.velocity;
                 }
                 else
                 {
@@ -351,8 +350,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             #region Attacks
             void SlimeBreakout()
             {
-                ref float timer = ref npc.ai[0];
-                ref float attack = ref npc.ai[2];
+                ref float timer = ref NPC.ai[0];
+                ref float attack = ref NPC.ai[2];
                 if (timer < 22)
                 {
                     foreach (NPC minion in Main.npc.Where(n => n != null && n.active && SlimesToKill.Contains(n.type)))
@@ -360,7 +359,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         if (minion.TryGetGlobalNPC(out SlimeGodMinionEternity lobotomizer))
                         {
                             lobotomizer.LobotomizeAndSuck = true;
-                            lobotomizer.CoreNPCID = npc.whoAmI;
+                            lobotomizer.CoreNPCID = NPC.whoAmI;
                         }
                         else
                         {
@@ -369,19 +368,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     }
                     timer = 22;
                 }
-                if (npc.Opacity < 1)
+                if (NPC.Opacity < 1)
                 {
-                    npc.Opacity += 0.7f * (1 / 120f); //takes 2 seconds
-                    npc.velocity *= 0.95f;
+                    NPC.Opacity += 0.7f * (1 / 120f); //takes 2 seconds
+                    NPC.velocity *= 0.95f;
                 }
                 else
                 {
 
-                    npc.velocity = Vector2.Zero;
-                    npc.Opacity = 1;
+                    NPC.velocity = Vector2.Zero;
+                    NPC.Opacity = 1;
                     const int ShotCount = 16;
-                    SoundEngine.PlaySound(ExitSound, npc.Center);
-                    npc.SimpleStrikeNPC((int)Math.Round(npc.lifeMax * 0.125f), 1);
+                    SoundEngine.PlaySound(ExitSound, NPC.Center);
+                    NPC.SimpleStrikeNPC((int)Math.Round(NPC.lifeMax * 0.125f), 1);
                     //screenshake
                     if (DLCUtils.HostCheck)
                     {
@@ -390,20 +389,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             int type = i % 2 == 0 ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
                             float speed = Main.rand.NextFloat(2f, 2.6f);
                             Vector2 dir = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * i / ShotCount).RotatedByRandom(MathHelper.TwoPi / (ShotCount * 4));
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 3f, Main.myPlayer);
                         }
                     }
                     attack = Main.rand.NextFromCollection(AttackCycle);
-                    npc.netUpdate = true;
-                    NetSync(npc);
+                    NPC.netUpdate = true;
+                    NetSync(NPC);
                 }
             }
             void MettatonHeart()
             {
-                ref float timer = ref npc.ai[0];
-                ref float partialTimer = ref npc.ai[1];
-                ref float attack = ref npc.ai[2];
-                Player player = Main.player[npc.target];
+                ref float timer = ref NPC.ai[0];
+                ref float partialTimer = ref NPC.ai[1];
+                ref float attack = ref NPC.ai[2];
+                Player player = Main.player[NPC.target];
 
                 const int partialAttackTime = 100;
                 const int partialAttacks = 3;
@@ -411,37 +410,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 {
                     const int minDistance = 200;
                     float dir = Main.rand.NextBool() ? 1 : -1;
-                    LockVector = (player.DirectionTo(npc.Center) * minDistance).RotatedBy(dir * MathHelper.Pi / 3f);
-                    NetSync(npc);
-                    npc.netUpdate = true;
+                    LockVector = (player.DirectionTo(NPC.Center) * minDistance).RotatedBy(dir * MathHelper.Pi / 3f);
+                    NetSync(NPC);
+                    NPC.netUpdate = true;
                     partialTimer++;
                 }
                 else
                 {
                     if (partialTimer < partialAttackTime / 4) //first quarter of attack
                     {
-                        npc.velocity = (partialTimer / partialAttackTime) * (player.Center + LockVector - npc.Center) * 0.65f; //go to pos, relative player
+                        NPC.velocity = (partialTimer / partialAttackTime) * (player.Center + LockVector - NPC.Center) * 0.65f; //go to pos, relative player
                     }
                     else //latter three quarters
                     {
-                        npc.velocity *= 0.92f; //decel
+                        NPC.velocity *= 0.92f; //decel
                         if (partialTimer % (partialAttackTime / 4) == 1) //first frame of cycle
                         {
-                            float rot = npc.DirectionTo(player.Center).ToRotation();
+                            float rot = NPC.DirectionTo(player.Center).ToRotation();
                             if (partialTimer >= partialAttackTime / 2)
                             {
                                 int dir = partialTimer >= partialAttackTime * 0.7f ? 1 : -1;
                                 rot = rot + dir * MathHelper.Pi / 7.65f; //funny weird number
 
                             }
-                            npc.rotation = rot;
+                            NPC.rotation = rot;
                         }
                         if (partialTimer % (partialAttackTime / 10) == 5) //shoot
                         {
-                            SoundEngine.PlaySound(ShotSound, npc.Center);
+                            SoundEngine.PlaySound(ShotSound, NPC.Center);
                             if (DLCUtils.HostCheck)
                             {
-                                Vector2 dir = npc.rotation.ToRotationVector2();
+                                Vector2 dir = NPC.rotation.ToRotationVector2();
                                 float speed = 5f;
                                 bool crim = partialTimer >= partialAttackTime / 2;
                                 if (!AttachToCrimson)
@@ -449,7 +448,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                     crim = !crim;
                                 }
                                 int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 3f, Main.myPlayer);
                             }
                         }
                     }
@@ -465,26 +464,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             }
             void SpinDash()
             {
-                ref float timer = ref npc.ai[0];
-                ref float partialTimer = ref npc.ai[1];
-                ref float attack = ref npc.ai[2];
-                Player player = Main.player[npc.target];
+                ref float timer = ref NPC.ai[0];
+                ref float partialTimer = ref NPC.ai[1];
+                ref float attack = ref NPC.ai[2];
+                Player player = Main.player[NPC.target];
                 const int DashTime = 108; //divisible by 4 pls
                 const int Dashes = 3;
                 float speedmod = 1.2f;
                 if (partialTimer < DashTime * 0.7f)
                 {
-                    npc.velocity *= 0.95f;
+                    NPC.velocity *= 0.95f;
                     speedmod /= 6f;
                     float modifier = 3f;
-                    npc.rotation += modifier * MathHelper.Pi / DashTime;
+                    NPC.rotation += modifier * MathHelper.Pi / DashTime;
                     const int shotDelay = 3;
                     if (partialTimer % shotDelay == shotDelay - 1 && partialTimer > DashTime / 4)
                     {
-                        SoundEngine.PlaySound(ShotSound, npc.Center);
+                        SoundEngine.PlaySound(ShotSound, NPC.Center);
                         if (DLCUtils.HostCheck)
                         {
-                            Vector2 dir = npc.rotation.ToRotationVector2();
+                            Vector2 dir = NPC.rotation.ToRotationVector2();
                             float speed = 3.25f;
                             bool crim = timer > DashTime && timer < DashTime * 2;
                             if (!AttachToCrimson)
@@ -492,12 +491,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                                 crim = !crim;
                             }
                             int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 3f, Main.myPlayer);
                         }
                     }
                 }
-                npc.velocity += npc.DirectionTo(player.Center) * speedmod;
-                npc.velocity.ClampMagnitude(0, 35);
+                NPC.velocity += NPC.DirectionTo(player.Center) * speedmod;
+                NPC.velocity.ClampMagnitude(0, 35);
                 if (++partialTimer > DashTime)
                 {
                     partialTimer = 0;
@@ -509,48 +508,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             }
             void Drift()
             {
-                ref float timer = ref npc.ai[0];
-                ref float driftDir = ref npc.ai[1];
-                ref float attack = ref npc.ai[2];
-                Player player = Main.player[npc.target];
+                ref float timer = ref NPC.ai[0];
+                ref float driftDir = ref NPC.ai[1];
+                ref float attack = ref NPC.ai[2];
+                Player player = Main.player[NPC.target];
                 const int DriftDuration = 60;
                 const int MaxDistance = 300;
                 const int MinDistance = 100;
                 if (timer <= 1)
                 {
-                    LockVector = (npc.Center - player.Center).ClampMagnitude(MinDistance, MaxDistance);
+                    LockVector = (NPC.Center - player.Center).ClampMagnitude(MinDistance, MaxDistance);
                     driftDir = Main.rand.NextBool() ? 1 : -1;
                 }
                 else if (timer < DriftDuration)
                 {
                     float modifier = 1.2f; //fraction of half circle to drift
                     LockVector = LockVector.RotatedBy(driftDir * MathHelper.Pi * modifier / DriftDuration);
-                    npc.velocity = (player.Center + LockVector - npc.Center) * (timer / DriftDuration);
+                    NPC.velocity = (player.Center + LockVector - NPC.Center) * (timer / DriftDuration);
 
                     const int shotDelay = 9;
                     if (timer % shotDelay == shotDelay - 1)
                     {
-                        SoundEngine.PlaySound(ShotSound, npc.Center);
+                        SoundEngine.PlaySound(ShotSound, NPC.Center);
                         if (DLCUtils.HostCheck)
                         {
-                            int shotSide = -Math.Sign(FargoSoulsUtil.RotationDifference(npc.DirectionTo(player.Center), npc.velocity));
-                            Vector2 dir = Vector2.Normalize(npc.velocity).RotatedBy(MathHelper.PiOver2 * shotSide);
+                            int shotSide = -Math.Sign(FargoSoulsUtil.RotationDifference(NPC.DirectionTo(player.Center), NPC.velocity));
+                            Vector2 dir = Vector2.Normalize(NPC.velocity).RotatedBy(MathHelper.PiOver2 * shotSide);
                             float speed = 3.25f;
                             bool crim = timer % (shotDelay * 2) >= shotDelay;
                             int type = crim ? ModContent.ProjectileType<AcceleratingCrimulanGlob>() : ModContent.ProjectileType<AcceleratingEbonianGlob>();
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + dir * npc.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 3f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 3f, Main.myPlayer);
                         }
                     }
 
-                    if (npc.velocity.Length() > 20)
+                    if (NPC.velocity.Length() > 20)
                     {
-                        npc.velocity = Vector2.Normalize(npc.velocity) * 20;
+                        NPC.velocity = Vector2.Normalize(NPC.velocity) * 20;
                     }
                 }
                 else
                 {
-                    npc.velocity *= 0.96f;
-                    if (npc.velocity.Length() < 2)
+                    NPC.velocity *= 0.96f;
+                    if (NPC.velocity.Length() < 2)
                     {
                         attack = LatestAttack == (int)Attacks.MettatonHeart ? (int)Attacks.SpinDash : (int)Attacks.MettatonHeart; //defaults to latter for first attack
                         AttackReset();
@@ -559,24 +558,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             }
             void FinalPhase()
             {
-                ref float timer = ref npc.ai[0];
-                ref float phase = ref npc.ai[3];
-                Vector2 desiredPos = Main.player[npc.target].Center - Vector2.UnitY * 300;
-                npc.velocity = (desiredPos - npc.Center) * 0.05f;
-                if (npc.life < npc.lifeMax * 0.15f)
+                ref float timer = ref NPC.ai[0];
+                ref float phase = ref NPC.ai[3];
+                Vector2 desiredPos = Main.player[NPC.target].Center - Vector2.UnitY * 300;
+                NPC.velocity = (desiredPos - NPC.Center) * 0.05f;
+                if (NPC.life < NPC.lifeMax * 0.15f)
                 {
-                    npc.life = (int)(npc.lifeMax * 0.15f);
+                    NPC.life = (int)(NPC.lifeMax * 0.15f);
                 }
                 if (timer < 120)
                 {
                     if (timer == 10)
                     {
-                        SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center);
+                        SoundEngine.PlaySound(SoundID.ForceRoar, NPC.Center);
                     }
                     if (timer % 30 == 10)
                     {
                         Color color = (timer % 60 == 10 ? Color.Crimson : Color.Magenta);
-                        Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, color, Vector2.One, Vector2.One * 60, 30, true, Color.Transparent);
+                        Particle p = new ExpandingBloomParticle(NPC.Center, Vector2.Zero, color, Vector2.One, Vector2.One * 60, 30, true, Color.Transparent);
                         p.Spawn();
                     }
                 }
@@ -587,7 +586,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         const int spawnTossSpeed = 30;
                         if (!NPC.AnyNPCs(CrimsonGodType))
                         {
-                            int crim = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, CrimsonGodType, Target: npc.target);
+                            int crim = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, CrimsonGodType, Target: NPC.target);
                             if (crim != Main.maxNPCs)
                             {
                                 Main.npc[crim].velocity = Vector2.UnitX * -spawnTossSpeed;
@@ -597,7 +596,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         }
                         if (!NPC.AnyNPCs(CorruptionGodType))
                         {
-                            int corr = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, CorruptionGodType, Target: npc.target);
+                            int corr = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, CorruptionGodType, Target: NPC.target);
                             if (corr != Main.maxNPCs)
                             {
                                 Main.npc[corr].velocity = Vector2.UnitX * spawnTossSpeed;
@@ -606,9 +605,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             }
                         }
                     }
-                    NetSync(npc);
-                    npc.netUpdate = true;
-                    SoundEngine.PlaySound(BigShotSound, npc.Center);
+                    NetSync(NPC);
+                    NPC.netUpdate = true;
+                    SoundEngine.PlaySound(BigShotSound, NPC.Center);
                     timer = 300;
                 }
                 if (timer > 120 && !NPC.AnyNPCs(CrimsonGodType) && !NPC.AnyNPCs(CorruptionGodType))
@@ -618,7 +617,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                         if (minion.TryGetGlobalNPC(out SlimeGodMinionEternity lobotomizer))
                         {
                             lobotomizer.LobotomizeAndSuck = true;
-                            lobotomizer.CoreNPCID = npc.whoAmI;
+                            lobotomizer.CoreNPCID = NPC.whoAmI;
                         }
                         else
                         {
@@ -629,30 +628,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     {
                         Color newColor = (Main.rand.NextBool() ? Color.Lavender : Color.Crimson);
                         newColor.A = 150;
-                        Dust.NewDust(npc.position, npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor);
+                        Dust.NewDust(NPC.position, NPC.width, NPC.height, 4, 0f, 0f, NPC.alpha, newColor);
                     }
 
-                    npc.velocity *= 0.97f;
-                    npc.rotation += (float)npc.direction * 0.3f;
-                    npc.Opacity -= 0.005f;
-                    if (!(npc.Opacity <= 0f))
+                    NPC.velocity *= 0.97f;
+                    NPC.rotation += (float)NPC.direction * 0.3f;
+                    NPC.Opacity -= 0.005f;
+                    if (!(NPC.Opacity <= 0f))
                     {
                         return;
                     }
 
-                    npc.Opacity = 0f;
-                    SoundEngine.PlaySound(in PossessionSound, npc.Center);
-                    npc.position.X = npc.position.X + (float)(npc.width / 2);
-                    npc.position.Y = npc.position.Y + (float)(npc.height / 2);
-                    npc.width = 40;
-                    npc.height = 40;
-                    npc.position.X = npc.position.X - (float)(npc.width / 2);
-                    npc.position.Y = npc.position.Y - (float)(npc.height / 2);
+                    NPC.Opacity = 0f;
+                    SoundEngine.PlaySound(in PossessionSound, NPC.Center);
+                    NPC.position.X = NPC.position.X + (float)(NPC.width / 2);
+                    NPC.position.Y = NPC.position.Y + (float)(NPC.height / 2);
+                    NPC.width = 40;
+                    NPC.height = 40;
+                    NPC.position.X = NPC.position.X - (float)(NPC.width / 2);
+                    NPC.position.Y = NPC.position.Y - (float)(NPC.height / 2);
                     for (int j = 0; j < 40; j++)
                     {
                         Color newColor2 = (Main.rand.NextBool() ? Color.Lavender : Color.Crimson);
                         newColor2.A = 150;
-                        int num = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor2, 2f);
+                        int num = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y), NPC.width, NPC.height, 4, 0f, 0f, NPC.alpha, newColor2, 2f);
                         Main.dust[num].velocity *= 3f;
                         if (Main.rand.NextBool(2))
                         {
@@ -665,10 +664,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     {
                         Color newColor3 = (Main.rand.NextBool() ? Color.Lavender : Color.Crimson);
                         newColor3.A = 150;
-                        int num2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor3, 3f);
+                        int num2 = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y), NPC.width, NPC.height, 4, 0f, 0f, NPC.alpha, newColor3, 3f);
                         Main.dust[num2].noGravity = true;
                         Main.dust[num2].velocity *= 5f;
-                        num2 = Dust.NewDust(new Vector2(npc.position.X, npc.position.Y), npc.width, npc.height, 4, 0f, 0f, npc.alpha, newColor3, 2f);
+                        num2 = Dust.NewDust(new Vector2(NPC.position.X, NPC.position.Y), NPC.width, NPC.height, 4, 0f, 0f, NPC.alpha, newColor3, 2f);
                         Main.dust[num2].velocity *= 2f;
                     }
 
@@ -680,13 +679,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 
                     for (int num3 = 254; num3 >= 0; num3--)
                     {
-                        npc.ApplyInteraction(num3);
+                        NPC.ApplyInteraction(num3);
                     }
 
-                    npc.active = false;
-                    npc.HitEffect();
-                    npc.NPCLoot();
-                    npc.netUpdate = true;
+                    NPC.active = false;
+                    NPC.HitEffect();
+                    NPC.NPCLoot();
+                    NPC.netUpdate = true;
                 }
             }
             #endregion

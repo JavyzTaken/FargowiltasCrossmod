@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class MediumPerforator : EModeCalBehaviour
+    public class MediumPerforator : CalDLCEmodeExtraGlobalNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
             ModContent.NPCType<PerforatorHeadMedium>(),

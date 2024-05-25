@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.DataStructures;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -28,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             if (CalDLCWorldSavingSystem.E_EternityRev)
             {
-                if (source is EntitySource_Parent parent && parent.Entity is NPC npc && npc.type == ModContent.NPCType<DankCreeper>() && npc.TryGetGlobalNPC(out DankCreeperEternity _))
+                if (source is EntitySource_Parent parent && parent.Entity is NPC npc && npc.type == ModContent.NPCType<DankCreeper>() && npc.GetDLCBehavior<DankCreeperEternity>() != null)
                 {
                     FromCreeper = true;
                 }

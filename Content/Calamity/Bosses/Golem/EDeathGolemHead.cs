@@ -14,29 +14,29 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathGolemHead : EternityDeathBehaviour
+    public class EDeathGolemHead : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.GolemHeadFree);
+        public override int NPCOverrideID => NPCID.GolemHeadFree;
 
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
+            if (!NPC.HasValidTarget) return true;
             NPC golem = FargoSoulsUtil.NPCExists(NPC.golemBoss, NPCID.Golem);
             if (golem != null && golem.active)
             {
-                npc.damage = golem.damage;
+                NPC.damage = golem.damage;
             }
-            GolemHead gol = npc.GetGlobalNPC<GolemHead>();
+            GolemHead gol = NPC.GetGlobalNPC<GolemHead>();
             //Main.NewText(gol.AttackTimer);
-            Player target = Main.player[npc.target];
+            Player target = Main.player[NPC.target];
             if (gol != null && gol.AttackTimer == 260)
             {
                 if (DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: target.Center.X, ai1: target.Center.Y);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 8, ProjectileID.InfernoHostileBolt, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: target.Center.X, ai1: target.Center.Y);
                 }
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

@@ -16,26 +16,26 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathCultistClone : EternityDeathBehaviour
+    public class EDeathCultistClone : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.CultistBossClone);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.CultistBossClone;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(fireball);
             binaryWriter.Write7BitEncodedInt(NoAttackTimer);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             fireball = binaryReader.ReadBoolean();
             NoAttackTimer = binaryReader.Read7BitEncodedInt();
         }
         public bool fireball = false;
         public int NoAttackTimer = 0;
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
-            NPC owner = Main.npc[(int)npc.ai[3]];
-            Player target = Main.player[npc.target];
+            if (!NPC.HasValidTarget) return true;
+            NPC owner = Main.npc[(int)NPC.ai[3]];
+            Player target = Main.player[NPC.target];
 
 
             if (Main.projectile.Any(p => p.active && p.hostile && p.type == ModContent.ProjectileType<CelestialPillar>()))
@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
 
             if (NoAttackTimer > 0)
             {
-                npc.ai[1] = 0; //disable normal attack AI
+                NPC.ai[1] = 0; //disable normal attack AI
                 NoAttackTimer--;
             }
             else
@@ -54,14 +54,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cultist
 
                 fireball = false;
                 if (DLCUtils.HostCheck)
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(150), 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.CultistBossFireBallClone, FargoSoulsUtil.ScaledProjectileDamage(150), 0);
             }
             if (owner.ai[0] == 0)
             {
 
                 fireball = true;
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

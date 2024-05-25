@@ -5,6 +5,7 @@ using CalamityMod.NPCs.HiveMind;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
@@ -27,38 +28,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class BlobEternity : EModeCalBehaviour
+    public class BlobEternity : CalDLCEmodeBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(ModContent.NPCType<HiveBlob>(), ModContent.NPCType<HiveBlob2>());
+        public override int NPCOverrideID => ModContent.NPCType<HiveBlob>();
 
         Vector2 SavedCenter = Vector2.Zero;
-        public override void HitEffect(NPC npc, NPC.HitInfo hit)
-        {
-            base.HitEffect(npc, hit);
-        }
-        public override void SetDefaults(NPC entity)
+        public override void SetDefaults()
         {
             float healthMult = 0.5f;
             int hiveMind = CalamityGlobalNPC.hiveMind;
             if (!(hiveMind < 0 || !Main.npc[hiveMind].TypeAlive<CalamityMod.NPCs.HiveMind.HiveMind>()))
             {
                 NPC owner = Main.npc[hiveMind];
-                if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
+                if (owner.GetDLCBehavior<HMEternity>().Phase < 2)
                     healthMult *= 4;
             }
-            entity.lifeMax = (int)(entity.lifeMax * healthMult);
-            base.SetDefaults(entity);
-
+            NPC.lifeMax = (int)(NPC.lifeMax * healthMult);
         }
-        public override void ApplyDifficultyAndPlayerScaling(NPC npc, int numPlayers, float balance, float bossAdjustment)
-        {
-            base.ApplyDifficultyAndPlayerScaling(npc, numPlayers, balance, bossAdjustment);
-        }
-        public override void OnHitPlayer(NPC npc, Player target, Player.HurtInfo hurtInfo)
-        {
-            
-        }
-        public override void OnSpawn(NPC npc, IEntitySource source)
+        public override void OnSpawn(IEntitySource source)
         {
             if (!WorldSavingSystem.EternityMode) return;
             int hiveMind = CalamityGlobalNPC.hiveMind;
@@ -67,40 +54,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 return;
             }
             NPC owner = Main.npc[hiveMind];
-            if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
+            if (owner.GetDLCBehavior<HMEternity>().Phase < 2)
             {
                 float maxRadians = owner.GetLifePercent() <= 0.9f ? MathHelper.TwoPi : MathHelper.Pi;
-                npc.ai[1] = Main.rand.NextFloat(0f, maxRadians);
+                NPC.ai[1] = Main.rand.NextFloat(0f, maxRadians);
             }
             
         }
-        public override void OnKill(NPC npc)
-        {
-            /*
-            if (DLCUtils.HostCheck && WorldSavingSystem.EternityMode)
-            {
-                int hiveMind = CalamityGlobalNPC.hiveMind;
-                if (hiveMind < 0 || !Main.npc[hiveMind].TypeAlive<CalamityMod.NPCs.HiveMind.HiveMind>())
-                {
-                    return;
-                }
-                NPC owner = Main.npc[hiveMind];
-                int range = 20;
-                if (owner.GetLifePercent() <= 0.9f) range = 40;
-                int amount = 0;
-                if (owner.GetGlobalNPC<HMEternity>().Phase < 2) amount = 2;
-                else if (Main.rand.NextBool()) amount = 1;
-                if (DLCUtils.HostCheck)
-                    for (int i = 0; i < amount; i++)
-                        Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -10).RotatedBy(MathHelper.ToRadians(Main.rand.Next(-range, range))), ModContent.ProjectileType<OldDukeGore>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
-            }
-            */
-        }
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            base.ModifyNPCLoot(npc, npcLoot);
-        }
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (!WorldSavingSystem.EternityMode) return true;
             int hiveMind = CalamityGlobalNPC.hiveMind;
@@ -110,19 +71,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             NPC owner = Main.npc[hiveMind];
 
-            if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
+            if (owner.GetDLCBehavior<HMEternity>().Phase < 2)
             {
-                if (npc.HasValidTarget)
+                if (NPC.HasValidTarget)
                 {
-                    Player target = Main.player[npc.target];
+                    Player target = Main.player[NPC.target];
                     Asset<Texture2D> line = TextureAssets.Extra[178];
 
                     float opacity = 0;
-                    if (npc.localAI[1] >= 420f)
+                    if (NPC.localAI[1] >= 420f)
                     {
-                        opacity = MathHelper.Lerp(0, 1, (npc.localAI[1] - 420f) / 60f);
+                        opacity = MathHelper.Lerp(0, 1, (NPC.localAI[1] - 420f) / 60f);
                     }
-                    Main.EntitySpriteDraw(line.Value, npc.Center - Main.screenPosition, null, Color.Lime * opacity, npc.DirectionTo(target.Center).ToRotation(), new Vector2(0, line.Height() * 0.5f), new Vector2(0.2f, npc.scale * 4), SpriteEffects.None);
+                    Main.EntitySpriteDraw(line.Value, NPC.Center - Main.screenPosition, null, Color.Lime * opacity, NPC.DirectionTo(target.Center).ToRotation(), new Vector2(0, line.Height() * 0.5f), new Vector2(0.2f, NPC.scale * 4), SpriteEffects.None);
                 }
                 return true;
             }
@@ -131,66 +92,62 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
 
             Asset<Texture2D> t = TextureAssets.Chains[3];
-            Vector2 pos = npc.Center + ((owner.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20);
+            Vector2 pos = NPC.Center + ((owner.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20);
             while (pos.Distance(owner.Center) > 20)
             {
-                Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), pos.AngleTo(owner.Center) + MathHelper.Pi / 2, t.Size() / 2, npc.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(t.Value, pos - Main.screenPosition, null, Lighting.GetColor(pos.ToTileCoordinates()), pos.AngleTo(owner.Center) + MathHelper.Pi / 2, t.Size() / 2, NPC.scale, SpriteEffects.None);
                 pos += (owner.Center - pos).SafeNormalize(Vector2.Zero) * 30;
             }
             return true;
         }
-        public override void FindFrame(NPC npc, int frameHeight)
-        {
-            base.FindFrame(npc, frameHeight);
-        }
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
             if (!FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode) return true;
 
 
             
-            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
-                npc.TargetClosest();
+                NPC.TargetClosest();
             }
-            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
-                npc.velocity.Y += 1;
+                NPC.velocity.Y += 1;
                 return false;
             }
-            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
-                npc.TargetClosest();
+                NPC.TargetClosest();
             }
-            if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+            if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
-                npc.velocity.Y += 1;
+                NPC.velocity.Y += 1;
                 return false;
             }
-            Player target = Main.player[npc.target];
+            Player target = Main.player[NPC.target];
             int hiveMind = CalamityGlobalNPC.hiveMind;
             if (hiveMind < 0 || !Main.npc[hiveMind].TypeAlive<CalamityMod.NPCs.HiveMind.HiveMind>())
             {
-                npc.StrikeInstantKill();
+                NPC.StrikeInstantKill();
                 return false;
             }
             NPC owner = Main.npc[hiveMind];
 
-            if (owner.GetGlobalNPC<HMEternity>().Phase < 2)
-                Phase1AI(npc, owner, target);
+            if (owner.GetDLCBehavior<HMEternity>().Phase < 2)
+                Phase1AI(NPC, owner, target);
             else
-                Phase2AI(npc, owner, target);
+                Phase2AI(NPC, owner, target);
             
 
             return false;
 
         }
         float index = -1;
-        public void Phase1AI(NPC npc, NPC owner, Player target)
+        public void Phase1AI(NPC NPC, NPC owner, Player target)
         {
             // Setting this in SetDefaults will disable expert mode scaling, so put it here instead
-            npc.damage = 0;
-            npc.chaseable = true;
+            NPC.damage = 0;
+            NPC.chaseable = true;
 
             if (SavedCenter == Vector2.Zero || SavedCenter.Distance(target.Center) > 1500)
                 SavedCenter = target.Center;
@@ -199,45 +156,45 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
             int hiveMind = owner.whoAmI;
 
-            if (npc.ai[3] > 0f)
-                hiveMind = (int)npc.ai[3] - 1;
+            if (NPC.ai[3] > 0f)
+                hiveMind = (int)NPC.ai[3] - 1;
 
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                npc.localAI[0] -= 1f; //Relocation rate
+                NPC.localAI[0] -= 1f; //Relocation rate
                 float RandomPositionMultiplier = 1f;
-                if (npc.localAI[0] <= 0f)
+                if (NPC.localAI[0] <= 0f)
                 {
-                    npc.localAI[0] = Main.rand.Next(180, 361);
-                    npc.ai[0] = Main.rand.Next(-10, 11) * RandomPositionMultiplier; //X position
-                    npc.ai[1] = Main.rand.Next(-10, 11) * RandomPositionMultiplier; //Y position
-                    npc.netUpdate = true;
+                    NPC.localAI[0] = Main.rand.Next(180, 361);
+                    NPC.ai[0] = Main.rand.Next(-10, 11) * RandomPositionMultiplier; //X position
+                    NPC.ai[1] = Main.rand.Next(-10, 11) * RandomPositionMultiplier; //Y position
+                    NPC.netUpdate = true;
                 }
             }
 
-            npc.TargetClosest(true);
+            NPC.TargetClosest(true);
 
             float relocateSpeed = 0.8f;
-            Vector2 randomLocationVector = new Vector2(npc.ai[0] * 16f + 8f, npc.ai[1] * 16f + 8f);
-            float targetX = Main.player[npc.target].position.X + (Main.player[npc.target].width / 2) - (npc.width / 2) - randomLocationVector.X;
-            float targetY = Main.player[npc.target].position.Y + (Main.player[npc.target].height / 2) - (npc.height / 2) - randomLocationVector.Y;
+            Vector2 randomLocationVector = new Vector2(NPC.ai[0] * 16f + 8f, NPC.ai[1] * 16f + 8f);
+            float targetX = Main.player[NPC.target].position.X + (Main.player[NPC.target].width / 2) - (NPC.width / 2) - randomLocationVector.X;
+            float targetY = Main.player[NPC.target].position.Y + (Main.player[NPC.target].height / 2) - (NPC.height / 2) - randomLocationVector.Y;
             float targetDistance = (float)Math.Sqrt(targetX * targetX + targetY * targetY);
 
-            Vector2 circleCenter = SavedCenter; //Main.npc[hiveMind].Center;
+            Vector2 circleCenter = SavedCenter; //Main.NPC[hiveMind].Center;
             List<NPC> blobs = Main.npc.Where(n => n.TypeAlive<HiveBlob>()).ToList();
             if (index == -1)
-                index = (float)blobs.IndexOf(npc) / blobs.Count;
+                index = (float)blobs.IndexOf(NPC) / blobs.Count;
             float timer = index + (Main.npc[hiveMind].ai[0] % 320f) / 320f;
-            if (owner.GetGlobalNPC<HMEternity>().Phase == 1)
+            if (owner.GetDLCBehavior<HMEternity>().Phase == 1)
                 timer = index + (Main.npc[hiveMind].ai[0] % 640f) / 640f;
 
             float distance = 500;
             float angle = timer * MathF.Tau;
             /*
-            float angleFromBoss = owner.DirectionTo(npc.Center).ToRotation();
+            float angleFromBoss = owner.DirectionTo(NPC.Center).ToRotation();
             float rotationDif = angle - angleFromBoss;
             const float difCap = MathF.PI * 0.1f;
-            if (Math.Abs(rotationDif) > difCap && Math.Abs(npc.Distance(owner.Center) - distance) < 300)
+            if (Math.Abs(rotationDif) > difCap && Math.Abs(NPC.Distance(owner.Center) - distance) < 300)
                 angle = angleFromBoss + Math.Sign(rotationDif) * difCap;
             */
             Vector2 circlePos = circleCenter + (angle.ToRotationVector2() * distance);
@@ -249,8 +206,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 Vector2 hiveMindPos = new Vector2(hiveMindX, hiveMindY);
 
 
-                float randomPosX = hiveMindX + npc.ai[0];
-                float randomPosY = hiveMindY + npc.ai[1];
+                float randomPosX = hiveMindX + NPC.ai[0];
+                float randomPosY = hiveMindY + NPC.ai[1];
                 float finalRandPosX = randomPosX - hiveMindPos.X;
                 float finalRandPosY = randomPosY - hiveMindPos.Y;
                 float finalRandDistance = (float)Math.Sqrt(finalRandPosX * finalRandPosX + finalRandPosY * finalRandPosY);
@@ -261,114 +218,114 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
 
             Vector2 desiredPosition = findPosition(circlePos);
-            if (Collision.SolidCollision(desiredPosition - npc.Size / 2, npc.width, npc.height))
+            if (Collision.SolidCollision(desiredPosition - NPC.Size / 2, NPC.width, NPC.height))
             {
                 circlePos = circleCenter - (angle.ToRotationVector2() * distance);
                 desiredPosition = findPosition(circlePos);
             }
                 
             /*
-            if (npc.position.X < desiredPosition.X)
+            if (NPC.position.X < desiredPosition.X)
             {
-                npc.velocity.X += relocateSpeed;
-                if (npc.velocity.X < 0f && finalRandPosX > 0f)
-                    npc.velocity.X *= 0.8f;
+                NPC.velocity.X += relocateSpeed;
+                if (NPC.velocity.X < 0f && finalRandPosX > 0f)
+                    NPC.velocity.X *= 0.8f;
             }
-            else if (npc.position.X > desiredPosition.X)
+            else if (NPC.position.X > desiredPosition.X)
             {
-                npc.velocity.X -= relocateSpeed;
-                if (npc.velocity.X > 0f && finalRandPosX < 0f)
-                    npc.velocity.X *= 0.8f;
+                NPC.velocity.X -= relocateSpeed;
+                if (NPC.velocity.X > 0f && finalRandPosX < 0f)
+                    NPC.velocity.X *= 0.8f;
             }
-            if (npc.position.Y < desiredPosition.Y)
+            if (NPC.position.Y < desiredPosition.Y)
             {
-                npc.velocity.Y += relocateSpeed;
-                if (npc.velocity.Y < 0f && finalRandPosY > 0f)
-                    npc.velocity.Y *= 0.8f;
+                NPC.velocity.Y += relocateSpeed;
+                if (NPC.velocity.Y < 0f && finalRandPosY > 0f)
+                    NPC.velocity.Y *= 0.8f;
             }
-            else if (npc.position.Y > desiredPosition.Y)
+            else if (NPC.position.Y > desiredPosition.Y)
             {
-                npc.velocity.Y -= relocateSpeed;
-                if (npc.velocity.Y > 0f && finalRandPosY < 0f)
-                    npc.velocity.Y *= 0.8f;
+                NPC.velocity.Y -= relocateSpeed;
+                if (NPC.velocity.Y > 0f && finalRandPosY < 0f)
+                    NPC.velocity.Y *= 0.8f;
             }
 
             float velocityLimit = 8f;
-            npc.velocity = npc.velocity.ClampMagnitude(0, velocityLimit);
+            NPC.velocity = NPC.velocity.ClampMagnitude(0, velocityLimit);
             */
-            if (npc.localAI[1] >= 380f && npc.localAI[1] < 480f && desiredPosition.Distance(npc.Center) > 5)
+            if (NPC.localAI[1] >= 380f && NPC.localAI[1] < 480f && desiredPosition.Distance(NPC.Center) > 5)
             {
-                npc.velocity = (desiredPosition - npc.Center) * 0.05f;
+                NPC.velocity = (desiredPosition - NPC.Center) * 0.05f;
             }
             else
             {
-                npc.velocity *= 0.925f;
+                NPC.velocity *= 0.925f;
             }
 
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                if (npc.localAI[1] == 0) // initial
-                    npc.localAI[1] = Main.rand.Next(0, 440);
-                //if (!Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
-                    //npc.localAI[1] = Main.rand.Next(0, 440);
+                if (NPC.localAI[1] == 0) // initial
+                    NPC.localAI[1] = Main.rand.Next(0, 440);
+                //if (!Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height))
+                    //NPC.localAI[1] = Main.rand.Next(0, 440);
 
-                //if (npc.Distance(desiredPosition) < 100)
-                npc.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(4f, 0.22f, (float)blobs.Count / 20);
+                //if (NPC.Distance(desiredPosition) < 100)
+                NPC.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(4f, 0.22f, (float)blobs.Count / 20);
 
-                if (npc.localAI[1] >= 480f && npc.velocity.Length() < 2f)// && Vector2.Distance(target.Center, npc.Center) > 400f)
+                if (NPC.localAI[1] >= 480f && NPC.velocity.Length() < 2f)// && Vector2.Distance(target.Center, NPC.Center) > 400f)
                 {
-                    npc.localAI[1] = 1f;
-                    npc.TargetClosest(true);
-                    if (Collision.CanHit(npc.position, npc.width, npc.height, Main.player[npc.target].position, Main.player[npc.target].width, Main.player[npc.target].height))
+                    NPC.localAI[1] = 1f;
+                    NPC.TargetClosest(true);
+                    if (Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height))
                     {
                         float projSpeed = 5f;
 
-                        Vector2 projDirection = new Vector2(npc.position.X + npc.width * 0.5f, npc.position.Y + (npc.height / 2));
-                        float playerX = Main.player[npc.target].position.X + Main.player[npc.target].width * 0.5f - projDirection.X;
-                        float playerY = Main.player[npc.target].position.Y + Main.player[npc.target].height * 0.5f - projDirection.Y;
+                        Vector2 projDirection = new Vector2(NPC.position.X + NPC.width * 0.5f, NPC.position.Y + (NPC.height / 2));
+                        float playerX = Main.player[NPC.target].position.X + Main.player[NPC.target].width * 0.5f - projDirection.X;
+                        float playerY = Main.player[NPC.target].position.Y + Main.player[NPC.target].height * 0.5f - projDirection.Y;
                         float playerDist = (float)Math.Sqrt(playerX * playerX + playerY * playerY);
                         playerDist = projSpeed / (playerDist + 1e-6f);
                         playerX *= playerDist;
                         playerY *= playerDist;
                         int type = ModContent.ProjectileType<VileClotDrop>();
-                        int damage = npc.GetProjectileDamage(type);
+                        int damage = NPC.GetProjectileDamage(type);
                         Vector2 projectileVelocity = new Vector2(playerX, playerY);
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), projDirection, projectileVelocity * 0.7f, type, damage, 0f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projDirection, projectileVelocity * 0.7f, type, damage, 0f, Main.myPlayer);
 
-                        npc.velocity -= projectileVelocity; // recoil
-                        npc.netUpdate = true;
+                        NPC.velocity -= projectileVelocity; // recoil
+                        NPC.netUpdate = true;
                     }
                 }
             }
         }
-        public void Phase2AI(NPC npc, NPC owner, Player target)
+        public void Phase2AI(NPC NPC, NPC owner, Player target)
         {
             // Currently disabled in phase 2
             if (true)//owner.ai[1] != 0)
             {
-                npc.active = false;
+                NPC.active = false;
                 return;
             }
 
-            npc.velocity = Vector2.Lerp(npc.velocity, (owner.Center + new Vector2(-180, 0).RotatedBy(npc.ai[1]) - npc.Center).SafeNormalize(Vector2.Zero) * 10, 0.05f);
-            npc.position += owner.velocity;
-            npc.ai[2]++;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, (owner.Center + new Vector2(-180, 0).RotatedBy(NPC.ai[1]) - NPC.Center).SafeNormalize(Vector2.Zero) * 10, 0.05f);
+            NPC.position += owner.velocity;
+            NPC.ai[2]++;
             float maxRadians = MathHelper.Pi;
             if (owner.GetLifePercent() <= 0.9f)
             {
                 maxRadians = MathHelper.TwoPi;
             }
-            if (npc.ai[2] == 120)
+            if (NPC.ai[2] == 120)
             {
-                npc.ai[2] = 0;
-                npc.ai[1] = Main.rand.NextFloat(0f, maxRadians);
+                NPC.ai[2] = 0;
+                NPC.ai[1] = Main.rand.NextFloat(0f, maxRadians);
                 
                 if (DLCUtils.HostCheck)
                 {
-                    Vector2 toPlayer = npc.DirectionTo(target.Center) * 7;
-                    Vector2 aim = CalamityUtils.CalculatePredictiveAimToTarget(npc.Center, target, 7);
+                    Vector2 toPlayer = NPC.DirectionTo(target.Center) * 7;
+                    Vector2 aim = CalamityUtils.CalculatePredictiveAimToTarget(NPC.Center, target, 7);
                     aim = Vector2.Lerp(aim, toPlayer, Main.rand.NextFloat(0.2f, 0.6f));
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, aim, ModContent.ProjectileType<VileClotDrop>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, aim, ModContent.ProjectileType<VileClotDrop>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(owner.damage), 0);
                 }
             }
         }

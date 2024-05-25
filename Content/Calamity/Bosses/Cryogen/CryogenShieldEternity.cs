@@ -19,20 +19,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CryogenShieldEternity : EModeCalBehaviour
+    public class CryogenShieldEternity : CalDLCEmodeBehavior
     {
         public override bool IsLoadingEnabled(Mod mod) => CryogenEternity.Enabled;
-
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.Cryogen.CryogenShield>());
-        public override bool SafePreAI(NPC npc)
+        public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.Cryogen.CryogenShield>();
+        public override bool PreAI()
         {
-            if ( !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) return true;
-            NPC owner = Main.npc[(int)npc.ai[0]];
+            if (!CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) return true;
+            NPC owner = Main.npc[(int)NPC.ai[0]];
             if (owner == null || !owner.active || owner.type != ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>())
             {
                 return true;
             }
-            npc.active = false;
+            NPC.active = false;
             
             return false;
         }

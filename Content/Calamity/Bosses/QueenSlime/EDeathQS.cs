@@ -14,23 +14,23 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathQS : EternityDeathBehaviour
+    public class EDeathQS : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.QueenSlimeBoss);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.QueenSlimeBoss;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(slam);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             slam = binaryReader.ReadBoolean();
         }
         public bool slam = false;
 
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
-            if (npc.ai[0] == 4)
+            if (!NPC.HasValidTarget) return true;
+            if (NPC.ai[0] == 4)
             {
                 slam = true;
 
@@ -40,12 +40,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenSlime
                 if (DLCUtils.HostCheck)
                     for (int i = 0; i < 11; i++)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(-10, 0).RotatedBy(MathHelper.ToRadians(180 / 10f * i)), ModContent.ProjectileType<HallowedSlimeSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(-10, 0).RotatedBy(MathHelper.ToRadians(180 / 10f * i)), ModContent.ProjectileType<HallowedSlimeSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                     }
 
                 slam = false;
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

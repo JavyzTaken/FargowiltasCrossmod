@@ -20,9 +20,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DarkHeartEternity : EModeCalBehaviour
+    public class DarkHeartEternity : CalDLCEmodeBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<DarkHeart>());
+        public override int NPCOverrideID => ModContent.NPCType<DarkHeart>();
 
         /*
 

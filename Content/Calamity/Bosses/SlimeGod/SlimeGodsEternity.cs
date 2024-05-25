@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SlimeGodsEternity : EModeCalBehaviour
+    public abstract class SlimeGodsEternity : CalDLCEmodeExtraGlobalNPC
     {
         public static readonly SoundStyle ExitSound = new SoundStyle("CalamityMod/Sounds/Custom/SlimeGodExit", (SoundType)0);
 
@@ -35,10 +35,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
         public int Timer = 0;
         public bool DidSpecial = false;
         public Vector2 CrimsonSlamPos = Vector2.Zero;
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
-            ModContent.NPCType<EbonianPaladin>(),
-            ModContent.NPCType<CrimulanPaladin>()
-        );
 
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -760,7 +756,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SlimeGodMinionEternity : EModeCalBehaviour
+    public class SlimeGodMinionEternity : CalDLCEmodeExtraGlobalNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(SlimeGodCoreEternity.SlimesToKill.ToArray());
         public bool LobotomizeAndSuck = false;

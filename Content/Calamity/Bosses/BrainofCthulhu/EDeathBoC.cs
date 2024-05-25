@@ -13,18 +13,20 @@ using Terraria.Audio;
 using CalamityMod;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using System.Data;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathBoC : EternityDeathBehaviour
+    public class EDeathBoC : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.BrainofCthulhu);
+        public override int NPCOverrideID => NPCID.BrainofCthulhu;
+
         public int ChargeCounter = 0;
         public int ChargePhase = 0;
         public float oldKnockback = 0f;
         public float[] oldAI = new float[4];
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(ChargePhase);
             binaryWriter.Write(ChargeCounter);
@@ -34,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                 binaryWriter.Write(oldAI[i]);
             }
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             ChargePhase = binaryReader.ReadInt32();
             ChargeCounter = binaryReader.ReadInt32();
@@ -44,12 +46,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                 oldAI[i] = binaryReader.ReadSingle();
             }
         }
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu emodeBoC = npc.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu>();
+            FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu emodeBoC = NPC.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.BrainofCthulhu>();
 
             // Calamity variables
-            float lifeRatio = npc.GetLifePercent();
+            float lifeRatio = NPC.GetLifePercent();
             float enrageScale = 0f;
 
             float spinVelocity = 12f;
@@ -72,80 +74,80 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                         emodeBoC.RunEmodeAI = false;
                         if (ChargePhase == 0) // Start of attack, initialize attack variables and save old variables to be restored when it ends
                         {
-                            float playerLocation = npc.Center.X - Main.player[npc.target].Center.X;
+                            float playerLocation = NPC.Center.X - Main.player[NPC.target].Center.X;
                             // start spinning
-                            npc.velocity = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.UnitY) * spinVelocity;
+                            NPC.velocity = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.UnitY) * spinVelocity;
                             for (int i = 0; i <= 3; i++) //Save AI values to be restored when attack ends
                             {
-                                oldAI[i] = npc.ai[i];
+                                oldAI[i] = NPC.ai[i];
                             }
-                            npc.ai[0] = -4f;
-                            npc.ai[1] = playerLocation < 0 ? 1f : -1f;
-                            npc.ai[2] = 0f;
+                            NPC.ai[0] = -4f;
+                            NPC.ai[1] = playerLocation < 0 ? 1f : -1f;
+                            NPC.ai[2] = 0f;
 
                             int maxRandomTime = 30;
-                            npc.ai[3] = Main.rand.Next(maxRandomTime) + 31;
-                            npc.localAI[1] = 0f;
-                            npc.alpha = 0;
-                            npc.netUpdate = true;
+                            NPC.ai[3] = Main.rand.Next(maxRandomTime) + 31;
+                            NPC.localAI[1] = 0f;
+                            NPC.alpha = 0;
+                            NPC.netUpdate = true;
                             ChargePhase = 1; // Mark attack as started
-                            oldKnockback = npc.knockBackResist; // Save kb resist to be restored when attack ends
-                            npc.knockBackResist = 0;
+                            oldKnockback = NPC.knockBackResist; // Save kb resist to be restored when attack ends
+                            NPC.knockBackResist = 0;
                         }
                         // Calamity spinny charge, slightly modified code from Calamity
 
-                        bool spinning = npc.ai[0] == -4f;
+                        bool spinning = NPC.ai[0] == -4f;
                         
                         // Charge
                         if (!spinning)
                         {
                             // Not charging
-                            if (npc.ai[0] != -5f)
+                            if (NPC.ai[0] != -5f)
                             {
 
                             }
                             // Charge, -5
                             else
                             {
-                                npc.ai[1] += 1f;
+                                NPC.ai[1] += 1f;
 
                                 float chargeDistance = 960f; // 60 tile charge distance
                                 float chargeDuration = chargeDistance / chargeVelocity;
                                 float chargeGateValue = 10f;
 
-                                if (npc.ai[1] < chargeGateValue)
+                                if (NPC.ai[1] < chargeGateValue)
                                 {
                                     // Avoid cheap bullshit
-                                    npc.damage = 0;
+                                    NPC.damage = 0;
                                 }
                                 else
                                 {
                                     // Set damage
-                                    npc.damage = npc.defDamage;
+                                    NPC.damage = NPC.defDamage;
                                 }
 
                                 // Teleport
                                 float timeGateValue = chargeDuration + chargeGateValue;
-                                if (npc.ai[1] >= timeGateValue)
+                                if (NPC.ai[1] >= timeGateValue)
                                 {
                                     // End the attack, go back to emode AI
-                                    npc.netUpdate = true;
+                                    NPC.netUpdate = true;
                                     for (int i = 0; i <= 3; i++) // Restore AI values
                                     {
-                                        npc.ai[i] = oldAI[i];
+                                        NPC.ai[i] = oldAI[i];
                                     }
                                     ChargePhase = 2;
-                                    npc.knockBackResist = oldKnockback; // Restore kb resist
+                                    NPC.knockBackResist = oldKnockback; // Restore kb resist
                                 }
 
                                 // Charge sound and velocity
-                                else if (npc.ai[1] == chargeGateValue)
+                                else if (NPC.ai[1] == chargeGateValue)
                                 {
                                     // Sound
-                                    SoundEngine.PlaySound(SoundID.ForceRoarPitched, npc.Center);
+                                    SoundEngine.PlaySound(SoundID.ForceRoarPitched, NPC.Center);
 
                                     // Velocity
-                                    npc.velocity = (Main.player[npc.target].Center + (false ? Main.player[npc.target].velocity * 20f * enrageScale : Vector2.Zero) - npc.Center).SafeNormalize(Vector2.UnitY) * chargeVelocity;
+                                    NPC.velocity = (Main.player[NPC.target].Center + (false ? Main.player[NPC.target].velocity * 20f * enrageScale : Vector2.Zero) - NPC.Center).SafeNormalize(Vector2.UnitY) * chargeVelocity;
                                 }
                             }
                         }
@@ -154,48 +156,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                         if (spinning)
                         {
                             // Avoid cheap bullshit
-                            npc.damage = 0;
+                            NPC.damage = 0;
 
                             // Charge sound
-                            if (npc.ai[2] == 0f)
+                            if (NPC.ai[2] == 0f)
                             {
-                                SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center);
+                                SoundEngine.PlaySound(SoundID.ForceRoar, NPC.Center);
                             }
 
                             // Velocity
                             float velocity = MathHelper.TwoPi / spinRadius;
-                            npc.velocity = npc.velocity.RotatedBy(-(double)velocity * npc.ai[1]);
+                            NPC.velocity = NPC.velocity.RotatedBy(-(double)velocity * NPC.ai[1]);
 
-                            npc.ai[2] += 1f;
+                            NPC.ai[2] += 1f;
 
-                            float timer = 0f + npc.ai[3];
+                            float timer = 0f + NPC.ai[3];
 
                             // Move the brain away from the target in order to ensure fairness
-                            if (npc.ai[2] >= timer - 5f)
+                            if (NPC.ai[2] >= timer - 5f)
                             {
                                 float minChargeDistance = 640f; // 40 tile distance
-                                if (Vector2.Distance(Main.player[npc.target].Center, npc.Center) < minChargeDistance)
+                                if (Vector2.Distance(Main.player[NPC.target].Center, NPC.Center) < minChargeDistance)
                                 {
-                                    npc.ai[2] -= 1f;
-                                    npc.velocity = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.UnitY) * (-chargeVelocity - 2f * enrageScale);
+                                    NPC.ai[2] -= 1f;
+                                    NPC.velocity = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.UnitY) * (-chargeVelocity - 2f * enrageScale);
                                     if (Main.getGoodWorld)
-                                        npc.velocity *= 1.15f;
+                                        NPC.velocity *= 1.15f;
                                 }
                             }
 
                             // Charge at target
-                            if (npc.ai[2] >= timer)
+                            if (NPC.ai[2] >= timer)
                             {
                                 // Shoot projectiles from 4 directions, alternating between diagonal and cardinal
                                 float bloodShotVelocity = 7.5f + enrageScale;
 
 
-                                Vector2 projectileVelocity2 = (Main.player[npc.target].Center - npc.Center).SafeNormalize(Vector2.UnitY) * bloodShotVelocity;
-                                bool canHit2 = Collision.CanHitLine(npc.Center, 1, 1, Main.player[npc.target].Center, 1, 1);
+                                Vector2 projectileVelocity2 = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.UnitY) * bloodShotVelocity;
+                                bool canHit2 = Collision.CanHitLine(NPC.Center, 1, 1, Main.player[NPC.target].Center, 1, 1);
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
                                     int type = ModContent.ProjectileType<GoldenShowerShot>();
-                                    int damage = FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage);
+                                    int damage = FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage);
                                     int numProj = 9;
                                     int spread = 45;
 
@@ -204,7 +206,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                                     for (int i = 0; i < numProj; i++)
                                     {
                                         Vector2 perturbedSpeed = projectileVelocity2.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (float)(numProj - 1)));
-                                        int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + perturbedSpeed.SafeNormalize(Vector2.UnitY) * 10f, perturbedSpeed, type, damage, 0f, Main.myPlayer);
+                                        int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + perturbedSpeed.SafeNormalize(Vector2.UnitY) * 10f, perturbedSpeed, type, damage, 0f, Main.myPlayer);
                                         Main.projectile[proj].timeLeft = 600;
                                         if (!canHit2)
                                             Main.projectile[proj].tileCollide = false;
@@ -212,14 +214,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                                 }
 
                                 // Complete stop
-                                npc.velocity *= 0f;
+                                NPC.velocity *= 0f;
 
-                                npc.ai[0] = -5f;
-                                npc.ai[1] = 0f;
-                                npc.ai[2] = 0f;
-                                npc.ai[3] = 0f;
-                                npc.TargetClosest();
-                                npc.netUpdate = true;
+                                NPC.ai[0] = -5f;
+                                NPC.ai[1] = 0f;
+                                NPC.ai[2] = 0f;
+                                NPC.ai[3] = 0f;
+                                NPC.TargetClosest();
+                                NPC.netUpdate = true;
                             }
                         }
                         return false;
@@ -230,7 +232,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrainofCthulhu
                     ChargePhase = 0;
                 }
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }
