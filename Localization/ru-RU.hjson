@@ -437,6 +437,7 @@ Mods: {
 					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance
 					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
 					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
+					[i:FargowiltasCrossmod/VictideEnchantment] Effects of [i:CalamityMod/OceanCrest] Ocean Crest
 					''' */
 			}
 
@@ -544,9 +545,10 @@ Mods: {
 				// DisplayName: Victide Enchantment
 				/* Tooltip:
 					'''
-					Grants urchin spikes protruding from you
+					Grants urchin spikes that protrude from your body
 					Attacking charges the spikes, which launch outward when you stop attacking
 					Increases underwater movement
+					Effects of Ocean Crest
 					''' */
 			}
 		}
