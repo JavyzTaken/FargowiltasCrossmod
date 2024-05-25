@@ -416,7 +416,7 @@ Mods: {
 				DisplayName: Wulfrum Enchantment
 				Tooltip: 
 				'''
-					Summons a wulfrum drone to aid you
+					Summons a wulfrum drone that follows your cursor
 					The drone scans enemies it collides with
 					Scanning enemies tells you their debuff weaknesses and resistances
 					Red means weakness, green means resistance
