@@ -80,6 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 spark.Spawn();
                 cplayer.ProwlerCharge += 0.15f;
             }
+            player.rocketTime = player.rocketTimeMax = 0;
             if ((!player.controlJump || (cplayer.AutoProwler && cplayer.ProwlerCharge >= 15)) && Collision.SolidCollision(player.BottomLeft, player.width, 6, true) && cplayer.ProwlerCharge > 0)
             {
 

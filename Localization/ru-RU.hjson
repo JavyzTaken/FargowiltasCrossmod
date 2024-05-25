@@ -412,6 +412,7 @@ Mods: {
 					'''
 					10% increased placement speed and +5 tile placement range
 					Lasers strike nearby enemies when building and mining
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					''' */
 			}
 
@@ -707,7 +708,7 @@ Mods: {
 			// SplendorJamEffect: Splendor Jam
 			// ExplorationHeader: Force of Exploration
 			// AerospecJumpEffect: Jump Crit
-			// MarniteStatsEffect: Marnite Building
+			// MarniteRepulsionShield: Marnite Repulsion
 			// MarniteLasersEffect: Marnite Lasers
 			// DesertProwlerEffect: Charge Jump
 			// WulfrumEffect: Wulfrum Drone

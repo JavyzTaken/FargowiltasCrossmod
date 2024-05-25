@@ -8,6 +8,7 @@
   <ItemGroup>
     <None Remove="Content\Calamity\Bosses\HiveMind\VileClotDrop.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\HydrothermicEnchantment.png" />
+    <None Remove="Content\Calamity\Items\Accessories\Enchantments\MarniteEnchantment_Back.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\PlaguebringerEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\ReaverEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\StatigelEnchantment.png" />
