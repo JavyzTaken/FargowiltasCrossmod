@@ -20,6 +20,7 @@ using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 using FargowiltasSouls.Core.ModPlayers;
 using Terraria.Localization;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {

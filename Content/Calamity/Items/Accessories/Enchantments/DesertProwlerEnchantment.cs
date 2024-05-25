@@ -20,6 +20,7 @@ using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {

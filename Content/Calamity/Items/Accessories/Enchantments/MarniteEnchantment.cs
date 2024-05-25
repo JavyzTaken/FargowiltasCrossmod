@@ -18,6 +18,7 @@ using FargowiltasSouls;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using CalamityMod;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {

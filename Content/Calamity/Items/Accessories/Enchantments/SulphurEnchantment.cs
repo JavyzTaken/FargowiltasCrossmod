@@ -27,6 +27,7 @@ using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
 using CalamityMod.Buffs.StatDebuffs;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
