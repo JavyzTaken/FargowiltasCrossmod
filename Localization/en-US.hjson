@@ -703,10 +703,6 @@ Mods: {
 			UmbraphileEffect: Bat Healing
 		}
 
-		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
-	}
-
-	FargowiltasSouls: {
 		WizardEffect: {
 			Aerospec: jumping grants more crit, higher maximum crit boost
 			Marnite: Stronger daggers, +15% placement speed and +5 placement range
@@ -726,5 +722,7 @@ Mods: {
 			Victide: Spikes are no longer affected by gravity and inflict venom
 			Statigel: Higher maximum speed
 		}
+
+		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 	}
 }
