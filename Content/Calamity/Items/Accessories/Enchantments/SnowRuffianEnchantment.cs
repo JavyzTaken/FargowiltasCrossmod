@@ -23,6 +23,7 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
 using CalamityMod.Items.Accessories.Wings;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -105,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 
             }
             
-            if (player.jump == 0 && player.wingTime <= 0 && player.controlJump)
+            if (player.jump == 0 && player.wingTime <= 0 && player.controlJump && player.velocity.X != 0)
             {
                 if (((player.direction == 1 && player.velocity.X < 15) || (player.direction == -1 && player.velocity.X > -15)) && !player.controlUp && player.velocity.Y > 0)
                 {
@@ -131,6 +132,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 }
                 player.fullRotation = player.velocity.ToRotation() + (player.velocity.X > 0 ? 0 : MathHelper.Pi);
                 player.fullRotationOrigin = player.Size / 2;
+                player.direction = player.velocity.X.DirectionalSign();
+                player.CalamityAddon().RuffianModifiedRotation = true;
             }
             else
             {

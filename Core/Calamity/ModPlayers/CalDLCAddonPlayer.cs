@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public bool HydrothermicHide;
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;
+        public bool RuffianModifiedRotation = false;
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
@@ -49,6 +50,11 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 AutoProwler = Player.autoJump;
                 Player.autoJump = false;
 
+            }
+            if (!Player.HasEffect<SnowRuffianEffect>() && RuffianModifiedRotation)
+            {
+                Player.fullRotation = 0;
+                RuffianModifiedRotation = false;
             }
         }
         public override void PreUpdate()
