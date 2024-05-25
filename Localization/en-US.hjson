@@ -409,7 +409,7 @@ Mods: {
 
 			DesertProwlerEnchantment: {
 				DisplayName: Desert Prowler Enchantment
-				Tooltip: Replaces jumping with a powerful charge jump that boosts your horizontal speed as well
+				Tooltip: Replaces jumping and boot hovering with a powerful charge jump that boosts your horizontal speed as well
 			}
 
 			WulfrumEnchantment: {
@@ -431,7 +431,7 @@ Mods: {
 					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
 					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
 					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping with a charged sand jump that boosts you horizontally
+					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
 					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance
 					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
 					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
