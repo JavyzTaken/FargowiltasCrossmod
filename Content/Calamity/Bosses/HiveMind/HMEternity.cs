@@ -13,6 +13,7 @@ using CalamityMod.NPCs.VanillaNPCAIOverrides.Bosses;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using Extensions;
+using FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
@@ -23,6 +24,7 @@ using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -234,6 +236,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 if (timer == 300)
                 {
                     SoundEngine.PlaySound(roar with { Pitch = -0.5f }, NPC.Center);
+                    ScreenShakeSystem.StartShake(15);
                     if (DLCUtils.HostCheck)
                     {
                         int maxBlobs = 20;
@@ -251,7 +254,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 }
                             }
                         }
-                            
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HiveMindPulse>(), 0, 0, ai1: 10);
+
                     }
                     NetSync(NPC);
                 }
@@ -423,6 +427,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 currentAttack = (float)P2States.I_RainDashStart;
                                 LastAttack = (int)currentAttack;
                                 timer = 0;
+                                if (attackCounter == 0) // if this replaced this replaced spin dashes
+                                    attackCounter = 2;
                             }
                         }
                         break;
@@ -973,7 +979,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                                     float x = NPC.alpha / 255f;
                                     float factor = (x - x * x) * 4;
-                                    NPC.position.X += 100 + factor * 100 * rotationDirection;
+                                    NPC.position.X += (100 + factor * 100) * rotationDirection;
                                 }
                                 NPC.netUpdate = true;
                                 NPC.netSpam = 0;

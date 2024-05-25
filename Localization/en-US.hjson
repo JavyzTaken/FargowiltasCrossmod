@@ -636,6 +636,7 @@ Mods: {
 			VileClotDrop.DisplayName: Vile Clot
 			SulphurCloud.DisplayName: Sulphur Cloud
 			PureGel.DisplayName: Pure Gel
+			HiveMindPulse.DisplayName: Hive Mind Pulse
 		}
 
 		Buffs: {

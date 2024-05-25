@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
             Projectile.velocity.Y += 0.08f;
 
-            if (Main.rand.NextBool(2))
+            if (Main.rand.NextBool(6))
             {
                 int vileDust = Dust.NewDust(Projectile.position,
                 Projectile.width, Projectile.height, (int)CalamityDusts.SulphurousSeaAcid, Projectile.velocity.X * 0.1f, Projectile.velocity.Y * 0.1f, 100, default, 1.5f);

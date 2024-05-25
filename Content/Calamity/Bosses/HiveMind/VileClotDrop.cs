@@ -9,11 +9,17 @@ using Terraria.ID;
 using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     public class VileClotDrop : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 10;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 12;
@@ -67,6 +73,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 dust = Main.dust[killDust];
                 dust.velocity *= 2f;
             }
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
+            FargoSoulsUtil.ProjectileWithTrailDraw(Projectile, lightColor, additiveTrail: true, alsoAdditiveMainSprite: false);
+            return false;
         }
     }
 }
