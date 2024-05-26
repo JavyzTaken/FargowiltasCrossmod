@@ -38,8 +38,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 SoundEngine.PlaySound(SoundID.Item20, Projectile.Center);
             }
 
-            if (Projectile.velocity.Length() < 12f)
-                Projectile.velocity *= 1.01f;
+            if (Projectile.velocity.Length() < 20f)
+                Projectile.velocity *= 1.05f;
             if (Main.rand.NextBool(2))
             {
                 int vileDust = Dust.NewDust(Projectile.position,

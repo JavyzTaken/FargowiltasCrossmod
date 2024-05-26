@@ -1,7 +1,10 @@
 ﻿using CalamityMod.Events;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.HiveMind;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
@@ -24,13 +27,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DevourerEternityHM : GlobalNPC
+    public class DevourerEternityHM : CalDLCEmodeExtraGlobalNPC
     {
         public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(NPC entity, bool lateInstantiation)
-        {
-            return entity.type == NPCID.DevourerHead;
-        }
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange([NPCID.DevourerHead, NPCID.EaterofSouls]);
         public bool FromHM = false;
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
@@ -41,9 +41,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             base.ReceiveExtraAI(npc, bitReader, binaryReader);
         }
         public int timer = 0;
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
-            if (FromHM)
+            if (CalDLCWorldSavingSystem.E_EternityRev && CalamityGlobalNPC.hiveMind.IsWithinBounds(Main.maxNPCs) && Main.npc[CalamityGlobalNPC.hiveMind] is NPC hiveMind && hiveMind.TypeAlive<CalamityMod.NPCs.HiveMind.HiveMind>() && hiveMind.GetDLCBehavior<HMEternity>().Phase < 2)
+                npc.active = false;
+            if (FromHM && npc.type == NPCID.DevourerHead)
             {
                 timer++;
                 if (timer > 60 * 4)

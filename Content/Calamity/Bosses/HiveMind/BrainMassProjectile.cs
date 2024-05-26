@@ -92,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (Timer == 0f)
             {
                 Timer = 1f;
-                SoundEngine.PlaySound(SoundID.NPCHit13 with { Volume = 0.4f, PitchVariance = 0.2f }, Projectile.position);
+                SoundEngine.PlaySound(SoundID.NPCHit18 with { Volume = 0.5f, PitchVariance = 0.2f }, Projectile.position);
             }
             else
             {
@@ -138,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (Timer == 0f)
             {
                 Timer = 1f;
-                SoundEngine.PlaySound(SoundID.NPCHit13 with { Volume = 0.4f, PitchVariance = 0.2f}, Projectile.position);
+                SoundEngine.PlaySound(SoundID.NPCHit18 with { Volume = 0.5f, PitchVariance = 0.2f }, Projectile.position);
             }
             else if (Timer == 1f && Main.netMode != 1)
             {
