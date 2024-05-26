@@ -41,6 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 100;
+            Projectile.light = 1f;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

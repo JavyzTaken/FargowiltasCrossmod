@@ -537,7 +537,7 @@ Mods: {
 				Tooltip:
 					'''
 					Grants a sulphur jump that spawns a sulphur bubble on use
-					When the bubble is hit, it releases damaging gas
+					The bubble releases damaging gas when hit by you
 					Grants immunity to Irradiated
 					'''
 			}

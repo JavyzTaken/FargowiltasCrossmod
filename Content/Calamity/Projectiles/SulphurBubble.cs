@@ -43,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.hostile = false;
             Projectile.scale = 3f;
             Projectile.Opacity = 0;
+            Projectile.tileCollide = false;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -111,7 +112,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.scale -= 0.4f;
             int gasSpeedMin = 3;
             int gasSpeedMax = 6;
-            int damage = baseDamage / 4;
+            int damage = (int)(baseDamage * 0.5f);
+            damage += 5;
             int count = 3;
 
 

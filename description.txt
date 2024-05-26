@@ -11,8 +11,8 @@ Calamity Mod
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
 Planned potential future features:
--Thorium Mod compatibility
--Calamity and Thorium Enchantments, Forces and Souls
+-Thorium Mod compatibility (some day)
+-Calamity Enchantments, Forces and Souls
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 

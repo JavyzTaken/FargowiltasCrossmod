@@ -118,7 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         //copy pasted dust code from cal
         public override void OnStarted(Player player, ref bool playSound)
         {
-            int bubbleDamage = 50;
+            int bubbleDamage = 80;
             if (player.ForceEffect<SulphurEffect>())
             {
                 bubbleDamage = 250;
@@ -145,7 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 if (bubble.owner == player.whoAmI)
                     bubble.Kill();
             }
-            Vector2 vel = Vector2.UnitY * 4;
+            Vector2 vel = Vector2.UnitY * 2;
             Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, vel, ModContent.ProjectileType<SulphurBubble>(), bubbleDamage, 1, player.whoAmI);
             if (player.ForceEffect<SulphurEffect>())
             {

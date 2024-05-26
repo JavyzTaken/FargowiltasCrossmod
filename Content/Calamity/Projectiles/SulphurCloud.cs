@@ -1,4 +1,5 @@
 ﻿using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.Particles;
 using CalamityMod.Projectiles.Magic;
 using FargowiltasCrossmod.Core;
@@ -47,7 +48,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<SulphuricPoisoning>(), 500);
+            target.AddBuff(ModContent.BuffType<Irradiated>(), 60 * 4);
         }
         public override void OnKill(int timeLeft)
         {
