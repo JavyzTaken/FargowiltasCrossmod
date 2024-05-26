@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.velocity *= 0.98f;
             if (Main.rand.NextBool(5))
             {
-                Color color = new Color(100, (int)MathHelper.Lerp(120, 255, Projectile.timeLeft / 400f) + Main.rand.Next(20, 50), 50);
+                Color color = new Color(100, (int)MathHelper.Lerp(120, 255, Projectile.timeLeft / 400f) + Main.rand.Next(-50, 50), 50);
                 Particle p = new TimedSmokeParticle(Projectile.Center + new Vector2(Main.rand.NextFloat(0, 16), 0).RotatedByRandom(MathHelper.PiOver2), Projectile.velocity + new Vector2(0, Main.rand.NextFloat(-2, 0)).RotatedBy(Main.rand.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2)), Color.Gray, color, 1, 0.7f, 50);
                 GeneralParticleHandler.SpawnParticle(p);
             }

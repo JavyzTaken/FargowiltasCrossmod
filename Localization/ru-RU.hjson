@@ -399,10 +399,12 @@ Mods: {
 				// DisplayName: Aerospec Enchantment
 				/* Tooltip:
 					'''
-					Grants two Aero jumps
-					For every double jump used, you gain critical strike chance
-					This includes jumps not granted by this enchantment
+					Gain +5% critical strike chance whenever you use a jump or double jump
+					This bonus lasts until your jumps are reset
+					Effects of [i:CalamityMod/AeroStone] Aero Stone
 					''' */
+				// CritUp: +{0}% crit
+				// CritReset: -{0}% crit
 			}
 
 			MarniteEnchantment: {
@@ -411,17 +413,25 @@ Mods: {
 					'''
 					10% increased placement speed and +5 tile placement range
 					Lasers strike nearby enemies when building and mining
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					''' */
 			}
 
 			DesertProwlerEnchantment: {
 				// DisplayName: Desert Prowler Enchantment
-				// Tooltip: Replaces jumping with a powerful charge jump that boosts your horizontal speed as well
+				// Tooltip: Replaces jumping and boot hovering with a powerful charge jump that boosts your horizontal speed as well
 			}
 
 			WulfrumEnchantment: {
 				// DisplayName: Wulfrum Enchantment
-				// Tooltip: Summons a drone that brings far away items to you
+				/* Tooltip:
+					'''
+					Summons a wulfrum drone that follows your cursor
+					The drone scans enemies it collides with
+					Scanning enemies tells you their debuff weaknesses and resistances
+					Red means weakness, green means resistance
+					Scanned enemies also take extra damage over time when afflicted with any debuff
+					''' */
 			}
 
 			ExplorationForce: {
@@ -431,10 +441,11 @@ Mods: {
 					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
 					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
 					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping with a charged sand jump that boosts you horizontally
+					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
 					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance
 					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
 					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield, [i:CalamityMod/OceanCrest] Ocean Crest and [i:CalamityMod/AeroStone] Aero Stone
 					''' */
 			}
 
@@ -526,6 +537,7 @@ Mods: {
 					'''
 					Increases your maximum speed
 					Massively decreases your acceleration and deceleration
+					Gain up to +15% increased damage, depending on how fast you're moving
 					''' */
 			}
 
@@ -535,6 +547,7 @@ Mods: {
 					'''
 					Grants a sulphur jump that spawns a sulphur bubble on use
 					When the bubble is hit, it releases damaging gas
+					Grants immunity to Irradiated
 					''' */
 			}
 
@@ -542,9 +555,10 @@ Mods: {
 				// DisplayName: Victide Enchantment
 				/* Tooltip:
 					'''
-					Grants urchin spikes protruding from you
+					Grants urchin spikes that protrude from your body
 					Attacking charges the spikes, which launch outward when you stop attacking
 					Increases underwater movement
+					Effects of [i:CalamityMod/OceanCrest] Ocean Crest
 					''' */
 			}
 		}
@@ -698,7 +712,7 @@ Mods: {
 			// BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
 			// BrimstoneTeleport.DisplayName: Brimstone Teleport
 			// BrimstoneFireblast.DisplayName: Brimstone Fireblast
-			// FeatherJumpFeather.DisplayName: Feather Jump Feather
+			// FeatherJumpFeather.DisplayName: Feather
 			// MarniteDagger.DisplayName: Marnite Dagger
 			// MarniteLaser.DisplayName: Marnite Laser
 			// ProwlerTornado.DisplayName: Prowler Tornado
@@ -711,12 +725,13 @@ Mods: {
 			// SulphurBubble.DisplayName: Sulphur Bubble
 			// VictideSpike.DisplayName: Victide Spike
 			// GoldenShowerShot.DisplayName: Golden Shower Shot
-			// HiveMindFiretrail.DisplayName: Hive Mind Firetrail
-			// HMShadeNimbus.DisplayName: H M Shade Nimbus
+			// HiveMindFiretrail.DisplayName: Cursed Fire
+			// BrainMassProjectile.DisplayName: Rotten Brainmass
 			// GravityVileClot.DisplayName: Vile Clot
 			// VileClotDrop.DisplayName: Vile Clot
 			// SulphurCloud.DisplayName: Sulphur Cloud
 			// PureGel.DisplayName: Pure Gel
+			// HiveMindPulse.DisplayName: Hive Mind Pulse
 			// ApolloLineTelegraph.DisplayName: Telegraph
 			// ApolloMissile.DisplayName: Plasma Missile
 			// AresMissile.DisplayName: Thermal Missile
@@ -788,7 +803,7 @@ Mods: {
 			// SplendorJamEffect: Splendor Jam
 			// ExplorationHeader: Force of Exploration
 			// AerospecJumpEffect: Jump Crit
-			// MarniteStatsEffect: Marnite Building
+			// MarniteRepulsionEffect: Marnite Repulsion
 			// MarniteLasersEffect: Marnite Lasers
 			// DesertProwlerEffect: Charge Jump
 			// WulfrumEffect: Wulfrum Drone
@@ -797,19 +812,15 @@ Mods: {
 			// ReaverEffect: Reaver Stats
 			// HydrothermicEffect: Overheat
 			// PlaguebringerEffect: Debuff Spread
-			// StatigelEffect: Statigel Acceleration
+			// StatigelEffect: Statigel Acceleration and Damage
 			// SulphurEffect: Bubble Jump
 			// VictideEffect: Urchin Spikes
 			// TitanHeartEffect: Titan Size
 			// UmbraphileEffect: Bat Healing
 		}
 
-		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
-	}
-
-	FargowiltasSouls: {
 		WizardEffect: {
-			// Aerospec: jumping grants more crit, higher maximum crit boost
+			// Aerospec: Crit bonus doubled
 			// Marnite: Stronger daggers, +15% placement speed and +5 placement range
 			// DesertProwler: Stronger jumps
 			// Wulfrum: Scanned Enemies take even more extra damage from debuffs
@@ -822,10 +833,12 @@ Mods: {
 				Debuffs spread from farther 
 				Enemies spread debuffs for a longer amount of time
 				''' */
-			// Umbraphile: Bats do more damage and travel faster
-			// Sulphur: Gas does more damage and travels farther
+			// Umbraphile: Bats deal more damage and travel faster
+			// Sulphur: Gas deals more damage and travels farther
 			// Victide: Spikes are no longer affected by gravity and inflict venom
-			// Statigel: Higher maximum speed
+			// Statigel: Higher maximum speed, damage bonus doubled
 		}
+
+		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 	}
 }

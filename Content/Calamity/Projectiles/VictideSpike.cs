@@ -14,6 +14,7 @@ using Terraria.GameContent;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasSouls;
+using Terraria.Audio;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
@@ -124,7 +125,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 Projectile.ai[2] = 2;
                 Projectile.tileCollide = true;
                 Projectile.penetrate = 2;
-                Projectile.velocity = new Vector2(0, -7).RotatedBy(Projectile.rotation) + owner.velocity/2;
+                Projectile.velocity = new Vector2(0, -Main.rand.NextFloat(4f, 6f)).RotatedBy(Projectile.rotation) + owner.velocity / 2;
+                SoundEngine.PlaySound(SoundID.Item17, Projectile.Center);
             }
             if (Projectile.ai[2] == 2)
             {

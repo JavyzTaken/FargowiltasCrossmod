@@ -7,6 +7,7 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Skies;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
+using FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
@@ -63,6 +64,7 @@ public class FargowiltasCrossmod : Mod
         {
             PostSetupContent_Calamity();
             SkyManager.Instance["FargowiltasCrossmod:Permafrost"] = new PermafrostSky();
+            SkyManager.Instance["FargowiltasCrossmod:HiveMind"] = new HiveMindSky();
         }
 
         if (MutantDLC.ShouldDoDLC)

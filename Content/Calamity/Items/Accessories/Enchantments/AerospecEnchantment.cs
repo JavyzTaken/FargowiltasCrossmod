@@ -18,6 +18,10 @@ using FargowiltasSouls;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasSouls.Core.ModPlayers;
+using Terraria.Localization;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -41,6 +45,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<AerospecJumpEffect>(Item);
+        }
+        public static void AddEffects(Player player, Item item)
+        {
+            player.AddEffect<AerospecJumpEffect>(item);
+            player.Calamity().aeroStone = true;
         }
         public override void AddRecipes()
         {
@@ -69,13 +78,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
-            int critPerJump = 5;
-            int forceCritPerJump = 10;
+            int critPerJump = player.ForceEffect<AerospecJumpEffect>() ? 10 : 5;
             int maxCritJumps = 6;
 
             CalDLCAddonPlayer mplayer = player.GetModPlayer<CalDLCAddonPlayer>();
-            player.GetCritChance(DamageClass.Generic) += (mplayer.NumJumpsUsed > maxCritJumps ? maxCritJumps : mplayer.NumJumpsUsed) * (player.ForceEffect<AerospecJumpEffect>() ? forceCritPerJump : critPerJump);
-            for (int i = 0; i < mplayer.AeroCritBoost / 5; i++)
+            float extraCrit = (mplayer.NumJumpsUsed > maxCritJumps ? maxCritJumps : mplayer.NumJumpsUsed) * critPerJump;
+            player.GetCritChance(DamageClass.Generic) += extraCrit;
+            for (int i = 0; i < extraCrit / 5; i++)
             {
                 if (Main.rand.NextBool())
                     Dust.NewDustDirect(player.position, player.width, player.height, DustID.UnusedWhiteBluePurple, player.velocity.X, player.velocity.Y);
@@ -93,7 +102,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 mplayer.NumJumpsUsed++;
                 mplayer.AllowJumpsUsedInc = false;
-                Main.NewText(5);
+                CombatText.NewText(player.Hitbox, Color.Yellow, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchantment.CritUp", critPerJump));
             }
             mplayer.AllowJumpsUsedInc = player.jump == 0;
         }

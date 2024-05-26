@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares waits before slashing.
         /// </summary>
-        public static int AresSlashDelay => Utilities.SecondsToFrames(2f);
+        public static int AresSlashDelay => Utilities.SecondsToFrames(3.5f);
 
         /// <summary>
         /// The max speed at which Ares can fly when trying to reach the player.
@@ -127,11 +127,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.netUpdate = true;
             }
 
-            if (AITimer <= 60)
+            if (AITimer <= 120)
                 npc.damage = 0;
 
-            float spinAngle = MathHelper.TwoPi * AITimer / HadesSpinPeriod;
-            Vector2 spinOffset = spinAngle.ToRotationVector2() * HadesSpinRadius;
+            npc.ai[2] += MathHelper.TwoPi * Utilities.InverseLerp(0f, 150f, AITimer).Squared() / HadesSpinPeriod;
+
+            Vector2 spinOffset = npc.ai[2].ToRotationVector2() * HadesSpinRadius;
             Vector2 hoverDestination = new Vector2(npc.ai[0], npc.ai[1]) + spinOffset;
             npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(hoverDestination) * HadesSpinSpeed, 0.3f);
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;

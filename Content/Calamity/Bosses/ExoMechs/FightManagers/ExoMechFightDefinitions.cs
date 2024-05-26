@@ -8,6 +8,10 @@ using static FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers.
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
 {
+    /// <summary>
+    /// The central location for all Exo Mech phase definitions.
+    /// This governs the entire fight structure (such as life ratio threshold state changes), and is intended to be extraordinarily flexible.
+    /// </summary>
     public static class ExoMechFightDefinitions
     {
         /// <summary>

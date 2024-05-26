@@ -274,10 +274,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (wrappedAttackTimer <= returnOnScreenTime)
             {
                 Vector2 idealDirection = npc.SafeDirectionTo(Target.Center);
-                npc.velocity = idealDirection * MathHelper.Lerp(npc.velocity.Length(), 120f, 0.06f);
+                npc.velocity = idealDirection * MathHelper.Lerp(npc.velocity.Length(), 130f, 0.07f);
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
 
-                if (npc.WithinRange(Target.Center, 400f))
+                if (npc.WithinRange(Target.Center, 300f))
                 {
                     localAITimer += returnOnScreenTime - localAITimer + 1f;
                     npc.velocity *= 0.1f;

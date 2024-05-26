@@ -4,6 +4,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using System.IO;
 using System.Linq;
 using Terraria;
@@ -23,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         {
             get;
             set;
-        } = new(ExoTwinsAIState.DashesAndLasers, new float[5]);
+        } = new(ExoTwinsAIState.SpawnAnimation, new float[5]);
 
         /// <summary>
         /// The set of all passive individual AI states the Exo Twins can perform.
@@ -47,13 +48,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
         public override void PostUpdateNPCs()
         {
-            SharedState.Update();
+            if (!CalDLCWorldSavingSystem.E_EternityRev)
+                return;
 
+            bool anyExoTwinIsPresent = false;
             if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1)
             {
                 NPC apollo = Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen];
                 if (apollo.active && apollo.TryGetDLCBehavior(out ApolloEternity apolloAI))
                     PerformUpdateLoop(apollo, apolloAI);
+
+                anyExoTwinIsPresent = true;
             }
 
             if (CalamityGlobalNPC.draedonExoMechTwinRed != -1)
@@ -61,7 +66,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 NPC artemis = Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed];
                 if (artemis.active && artemis.TryGetDLCBehavior(out ArtemisEternity artemisAI))
                     PerformUpdateLoop(artemis, artemisAI);
+
+                anyExoTwinIsPresent = true;
             }
+
+            if (anyExoTwinIsPresent)
+                SharedState.Update();
 
             if (SharedState.AIState == ExoTwinsAIState.PerformComboAttack)
                 SharedState.AITimer = ExoMechComboAttackManager.ComboAttackTimer;

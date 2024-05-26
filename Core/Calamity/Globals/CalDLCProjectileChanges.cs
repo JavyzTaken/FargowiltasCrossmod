@@ -11,6 +11,7 @@ using CalamityMod.Projectiles.Ranged;
 using CalamityMod.Projectiles.Summon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
+using FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
@@ -120,7 +121,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             Player player = Main.player[projectile.owner];
             FargoSoulsPlayer modPlayer = player.FargoSouls();
 
-            if (projectile.type == ModContent.ProjectileType<RainLightning>())
+            if (projectile.type == ModContent.ProjectileType<RainLightning>() || projectile.type == ModContent.ProjectileType<CursedLightning>())
             {
                 if (Main.projectile.FirstOrDefault(p => p.TypeAlive(ModContent.ProjectileType<RicoshotCoin>()) && projectile.Colliding(projectile.Hitbox, p.Hitbox)) is Projectile coin && coin != null)
                 {

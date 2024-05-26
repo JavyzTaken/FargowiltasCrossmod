@@ -2,11 +2,13 @@
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using System;
@@ -98,7 +100,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// <param name="fightState">The state of the overall Exo Mechs fight.</param>
         public delegate bool PhaseTransitionCondition(ExoMechFightState fightState);
 
-        public override void PreUpdateEntities() => DetermineBattleState();
+        public override void PreUpdateEntities()
+        {
+            if (CalDLCWorldSavingSystem.E_EternityRev)
+                DetermineBattleState();
+        }
 
         /// <summary>
         /// Creates and registers a new phase for the Exo Mechs fight.
@@ -123,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// </remarks>
         private static void CalculateFightState()
         {
-            int totalActiveMechs = 0;
+            int totalAliveMechs = 0;
             bool checkForPrimaryMech = false;
             List<int> evaluatedMechs = new(4);
             foreach (int exoMechID in ExoMechNPCIDs.ManagingExoMechIDs)
@@ -132,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
                 if (NPC.AnyNPCs(exoMechID))
                 {
                     checkForPrimaryMech = true;
-                    totalActiveMechs++;
+                    totalAliveMechs++;
                 }
             }
 
@@ -160,7 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
 
                 stateOfOtherExoMechs[i] = ExoMechStateFromNPC(otherExoMech, exoMechWasSummonedAtOnePoint);
             }
-            FightState = new(draedonState, totalActiveMechs, ExoMechStateFromNPC(primaryMech, true), stateOfOtherExoMechs);
+            FightState = new(draedonState, totalAliveMechs, ExoMechStateFromNPC(primaryMech, true), stateOfOtherExoMechs);
 
             FightOngoing = true;
         }
@@ -268,7 +274,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             FightOngoing = false;
             CurrentPhase = PhaseDefinition.UndefinedPhase;
             FightState = ExoMechFightState.UndefinedFightState;
-            //ExoTwinsStateManger.SharedState.ResetForEntireBattle();
+            ExoTwinsStateManager.SharedState.ResetForEntireBattle();
 
             if (Main.LocalPlayer.TryGetModPlayer(out ExoMechDamageRecorderPlayer recorderPlayer) && !NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>()))
                 recorderPlayer.ResetIncurredDamage();

@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
 
             // This is indirectly responsible for ensuring that Exo Mechs return to solo attacks once the combo attacks need to end.
-            if (ExoMechFightStateManager.FightState.TotalActiveMechs <= 1)
+            if (ExoMechFightStateManager.ActiveManagingExoMechs.Count <= 1)
             {
                 Reset();
                 SetComboStateForAllActiveExoMechs(false);
