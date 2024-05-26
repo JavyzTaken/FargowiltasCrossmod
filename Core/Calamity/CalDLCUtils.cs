@@ -6,8 +6,8 @@ namespace FargowiltasCrossmod.Core.Calamity
 {
     public static partial class CalDLCUtils
     {
-        public static CrossplayerCalamity CalamityDLC(this Player player)
-            => player.GetModPlayer<CrossplayerCalamity>();
+        public static CalDLCPlayer CalamityDLC(this Player player)
+            => player.GetModPlayer<CalDLCPlayer>();
         public static CalDLCAddonPlayer CalamityAddon(this Player player)
             => player.GetModPlayer<CalDLCAddonPlayer>();
         /// <summary>
