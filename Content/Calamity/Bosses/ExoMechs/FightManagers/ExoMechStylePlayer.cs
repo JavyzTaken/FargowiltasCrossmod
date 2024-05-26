@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using FargowiltasCrossmod.Core;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -9,6 +10,8 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public sealed class ExoMechStylePlayer : ModPlayer
     {
         private static bool ResetData => !ExoMechFightStateManager.FightOngoing && !NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>());
