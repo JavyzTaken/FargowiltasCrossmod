@@ -75,7 +75,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 
                     if (projectile.TypeAlive<SulphurBubble>() && hitbox.Intersects(projectile.Hitbox))
                     {
-                        if (projectile.ai[1] <= 0 && Main.myPlayer == projectile.owner && projectile.scale >= 3)
+                        if (projectile.ai[1] <= 0 && Main.myPlayer == projectile.owner)
                             projectile.As<SulphurBubble>().OnHitEffect(item.damage);
                     }
                 }

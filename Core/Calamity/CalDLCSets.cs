@@ -25,6 +25,10 @@ using FargowiltasSouls.Content.Items.Armor;
 using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.NPCs.AcidRain;
+using CalamityMod.Items.Weapons.DraedonsArsenal;
+using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Weapons.Melee;
+using CalamityMod.Items.Weapons.Ranged;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -40,6 +44,9 @@ namespace FargowiltasCrossmod.Core.Calamity
         {
             public static bool[] RockItem;
             public static bool[] CalBossSummon;
+
+            public static bool[] AdamantiteExclude;
+            public static bool[] TungstenExclude;
         }
         public class NPCs
         {
@@ -105,6 +112,28 @@ namespace FargowiltasCrossmod.Core.Calamity
                 ItemType<CausticTear>(),
                 ItemType<MartianDistressRemote>()
                 );
+
+            Items.AdamantiteExclude = itemFactory.CreateBoolSet(false,
+                ItemType<HeavenlyGale>(),
+                ItemType<TheSevensStriker>(),
+                ItemType<Phangasm>(),
+                ItemType<TheJailor>(),
+                ItemType<AetherfluxCannon>(),
+                ItemType<TheAnomalysNanogun>(),
+                ItemType<ClockworkBow>(),
+                ItemType<NebulousCataclysm>(),
+                ItemType<Eternity>(), //fargo reference
+                ItemType<CalamityMod.Items.Weapons.Magic.Vehemence>(),
+                ItemType<Phaseslayer>(),
+                ItemType<FracturedArk>(),
+                ItemType<TrueArkoftheAncients>(),
+                ItemType<ArkoftheElements>(),
+                ItemType<ArkoftheCosmos>()
+            );
+            Items.TungstenExclude = itemFactory.CreateBoolSet(false,
+                ItemType<OldLordClaymore>(),
+                ItemType<BladecrestOathsword>()
+            );
             #endregion
 
             #region NPCs

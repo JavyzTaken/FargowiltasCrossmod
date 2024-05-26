@@ -732,7 +732,7 @@ Mods: {
 				Enemies spread debuffs for a longer amount of time
 				'''
 			Umbraphile: Bats deal more damage and travel faster
-			Sulphur: Gas deals more damage and travels farther
+			Sulphur: Jumps create 3 bubbles with increased damage
 			Victide: Spikes are no longer affected by gravity and inflict venom
 			Statigel: Higher maximum speed, damage bonus doubled
 		}

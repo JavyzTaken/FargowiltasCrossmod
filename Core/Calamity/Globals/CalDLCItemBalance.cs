@@ -142,7 +142,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (player.HasEffect<TungstenEffect>() &&
                     !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
             {
-                if (DLCSets.GetValue(DLCSets.Items.TungstenExclude, item.type))
+                if (DLCSets.GetValue(CalDLCSets.Items.TungstenExclude, item.type))
                 {
                     float tungScale = 1f + (soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1f);
                     scale /= tungScale;

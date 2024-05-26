@@ -18,9 +18,12 @@ using Terraria.GameContent;
 using Luminance.Common.Utilities;
 using CalamityMod.Particles;
 using CalamityMod.Projectiles.Melee;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class BrainMassProjectile : ModProjectile
     {
         public bool StartFading = false;

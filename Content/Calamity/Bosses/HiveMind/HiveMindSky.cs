@@ -15,9 +15,12 @@ using Terraria.ModLoader;
 using Terraria;
 using CalamityMod.NPCs;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class HiveMindSky : CustomSky
     {
         private bool isActive = false;

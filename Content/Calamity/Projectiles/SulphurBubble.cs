@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.height = 30;
             Projectile.friendly = false;
             Projectile.hostile = false;
-            Projectile.scale = 2.25f;
+            Projectile.scale = 3f;
             Projectile.Opacity = 0;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -62,6 +62,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI()
         {
+            if (Projectile.localAI[2] == 0) // just spawned
+            {
+                Projectile.localAI[2] = 1;
+                Projectile.ai[1] = 15;
+            }
+            if (Projectile.ai[0] > 2)
+                Projectile.Kill();
 
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 10)
@@ -75,13 +82,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             }
             if (Projectile.Opacity < 0.7f) Projectile.Opacity += 0.01f;
             Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -4, 0.01f);
+            Projectile.velocity.X *= 0.97f;
 
-            if (Projectile.scale < 3)
-                Projectile.scale += 1.5f / 60;
 
             if (Projectile.ai[1] <= 0)
             {
-                if (Main.myPlayer == Projectile.owner && Projectile.scale >= 3)
+                if (Main.myPlayer == Projectile.owner)
                 {
                     for (int i = 0; i < Main.maxProjectiles; i++)
                     {
@@ -100,21 +106,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public void OnHitEffect(int baseDamage)
         {
+            Projectile.ai[1] = 30;
+            Projectile.ai[0]++;
+            Projectile.scale -= 0.4f;
             int gasSpeedMin = 3;
             int gasSpeedMax = 6;
-            if (Projectile.owner.IsWithinBounds(Main.maxPlayers) && Main.player[Projectile.owner] is Player player && player != null && player.ForceEffect<SulphurEffect>())
+            int damage = baseDamage / 4;
+            int count = 3;
+
+
+            if (Projectile.ai[0] > 2)
             {
-                gasSpeedMin = 4;
-                gasSpeedMax = 10;
+                gasSpeedMin *= 2;
+                gasSpeedMax *= 2;
+                damage *= 2;
+                count *= 2;
             }
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < count; j++)
             {
-                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(gasSpeedMin, gasSpeedMax)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), baseDamage / 4, 0, Projectile.owner);
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(gasSpeedMin, gasSpeedMax)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), damage, 0, Projectile.owner);
                 NetMessage.SendData(MessageID.SyncProjectile, number: proj);
             }
             SoundEngine.PlaySound(SoundID.Item85, Projectile.Center);
-            Projectile.ai[1] = 60;
-            Projectile.scale = 1.5f;
             NetMessage.SendData(MessageID.SyncProjectile, number: Projectile.whoAmI);
         }
     }

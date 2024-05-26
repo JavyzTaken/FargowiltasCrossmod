@@ -2,8 +2,6 @@
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
-using CalamityMod.Items.Weapons.Rogue;
-using CalamityMod.NPCs.AcidRain;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.Champions.Life;
@@ -39,9 +37,6 @@ namespace FargowiltasCrossmod.Core.Common
         {
             public static bool[] ChampionTierFargoWeapon;
             public static bool[] AbomTierFargoWeapon;
-
-            public static bool[] AdamantiteIgnore;
-            public static bool[] TungstenExclude;
         }
         public class NPCs
         {
@@ -78,28 +73,6 @@ namespace FargowiltasCrossmod.Core.Common
                 ItemType<RefractorBlaster2>(),
                 ItemType<NukeFishron>(),
                 ItemType<StaffOfUnleashedOcean>()
-            );
-
-            Items.AdamantiteIgnore = itemFactory.CreateBoolSet(false,
-                ItemType<HeavenlyGale>(),
-                ItemType<TheSevensStriker>(),
-                ItemType<Phangasm>(),
-                ItemType<TheJailor>(),
-                ItemType<AetherfluxCannon>(),
-                ItemType<TheAnomalysNanogun>(),
-                ItemType<ClockworkBow>(),
-                ItemType<NebulousCataclysm>(),
-                ItemType<Eternity>(), //fargo reference
-                ItemType<Vehemence>(),
-                ItemType<Phaseslayer>(),
-                ItemType<FracturedArk>(),
-                ItemType<TrueArkoftheAncients>(),
-                ItemType<ArkoftheElements>(),
-                ItemType<ArkoftheCosmos>()
-            );
-            Items.TungstenExclude = itemFactory.CreateBoolSet(false,
-                ItemType<OldLordClaymore>(),
-                ItemType<BladecrestOathsword>()
             );
             #endregion
 

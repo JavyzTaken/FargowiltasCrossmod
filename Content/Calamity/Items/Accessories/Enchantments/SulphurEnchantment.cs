@@ -145,7 +145,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 if (bubble.owner == player.whoAmI)
                     bubble.Kill();
             }
-            Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurBubble>(), bubbleDamage, 1, player.whoAmI);
+            Vector2 vel = Vector2.UnitY * 4;
+            Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, vel, ModContent.ProjectileType<SulphurBubble>(), bubbleDamage, 1, player.whoAmI);
+            if (player.ForceEffect<SulphurEffect>())
+            {
+                for (int i = -1; i <= 1; i += 2)
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<SulphurEffect>(), player.Center, Vector2.UnitX * i * 6f + vel, ModContent.ProjectileType<SulphurBubble>(), bubbleDamage, 1, player.whoAmI);
+            }
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
                 NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
