@@ -25,6 +25,7 @@ using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Armor.DesertProwler;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -72,10 +73,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<DesertProwlerEnchantment>();
+        public override void PostUpdateEquips(Player player)
+        {
+            CalDLCAddonPlayer addonPlayer = player.CalamityAddon();
+            if (player.rocketBoots != 0)
+            {
+                player.rocketBoots = 0;
+                addonPlayer.DesertProwlerRocketPower = true;
+            }
+            else
+            {
+                addonPlayer.DesertProwlerRocketPower = false;
+            }
+        }
         public static void ProwlerEffect(Player player)
         {
             
-            CalDLCAddonPlayer cplayer = player.GetModPlayer<CalDLCAddonPlayer>();
+            CalDLCAddonPlayer cplayer = player.CalamityAddon();
             
             if (cplayer.ProwlerCharge < 15 && player.controlJump)
             {
@@ -86,15 +100,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 spark.Spawn();
                 cplayer.ProwlerCharge += 0.15f;
             }
-            player.rocketTime = player.rocketTimeMax = 0;
             if ((!player.controlJump || (cplayer.AutoProwler && cplayer.ProwlerCharge >= 15)) && Collision.SolidCollision(player.BottomLeft, player.width, 6, true) && cplayer.ProwlerCharge > 0)
             {
 
-                float power = player.ForceEffect<DesertProwlerEffect>() ? 1f : 0.7f;
+                float horizontalPower = player.ForceEffect<DesertProwlerEffect>() ? 1f : 0.65f;
+                float verticalPower = horizontalPower;
                 float maxSpeed = player.ForceEffect<DesertProwlerEffect>() ? 20f : 15f;
                 cplayer.ProwlerCharge += 10;
-                player.velocity.Y = -cplayer.ProwlerCharge * power - player.jumpSpeedBoost;
-                player.velocity.X *= cplayer.ProwlerCharge / (6f / power);
+                if (cplayer.DesertProwlerRocketPower)
+                    verticalPower += 0.f;
+                player.velocity.Y = -cplayer.ProwlerCharge * verticalPower - player.jumpSpeedBoost;
+                player.velocity.X *= cplayer.ProwlerCharge / (6f / horizontalPower);
                 player.velocity.X = MathHelper.Clamp(player.velocity.X, -maxSpeed, maxSpeed);
                 for (int i = 0; i < player.width+10; i++)
                 {
