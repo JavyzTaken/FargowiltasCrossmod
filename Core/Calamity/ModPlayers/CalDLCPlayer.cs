@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class CrossplayerCalamity : ModPlayer
+    public class CalDLCPlayer : ModPlayer
     {
         public bool CalamitousPresence;
         //Unique accessories fields
