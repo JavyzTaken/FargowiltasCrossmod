@@ -108,7 +108,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 float maxSpeed = player.ForceEffect<DesertProwlerEffect>() ? 20f : 15f;
                 cplayer.ProwlerCharge += 10;
                 if (cplayer.DesertProwlerRocketPower)
-                    verticalPower += 0.f;
+                    verticalPower += 0.2f;
                 player.velocity.Y = -cplayer.ProwlerCharge * verticalPower - player.jumpSpeedBoost;
                 player.velocity.X *= cplayer.ProwlerCharge / (6f / horizontalPower);
                 player.velocity.X = MathHelper.Clamp(player.velocity.X, -maxSpeed, maxSpeed);
