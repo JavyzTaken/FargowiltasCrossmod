@@ -86,7 +86,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<VictideEnchantment>();
-        
+        public override bool ExtraAttackEffect => true;
+
         public override void PostUpdateEquips(Player player)
         {
             int damage;

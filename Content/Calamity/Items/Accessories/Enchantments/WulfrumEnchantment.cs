@@ -67,6 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<WulfrumEnchantment>();
+        public override bool MinionEffect => true;
         public override void PostUpdateEquips(Player player)
         {
             if (player.ownedProjectileCounts[ModContent.ProjectileType<WulfrumScanner>()] < 1)

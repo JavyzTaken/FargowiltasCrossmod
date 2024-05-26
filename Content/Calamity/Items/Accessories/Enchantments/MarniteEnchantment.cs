@@ -80,6 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
+        public override bool ExtraAttackEffect => true;
         public override void PostUpdateEquips(Player player)
         {
             MarniteRepulsionShieldPlayer modPlayer = player.GetModPlayer<MarniteRepulsionShieldPlayer>();
@@ -109,6 +110,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
+        public override bool ExtraAttackEffect => true;
         public static void MarniteTileEffect(Player player, Vector2 worldPos)
         {
             int n = FargoSoulsUtil.FindClosestHostileNPC(worldPos, 500);
