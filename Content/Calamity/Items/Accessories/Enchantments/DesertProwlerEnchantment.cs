@@ -20,6 +20,12 @@ using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Armor.DesertProwler;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -46,11 +52,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerHat>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerShirt>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerPants>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.CrackshotColt>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Summon.SunSpiritStaff>());
+            recipe.AddIngredient<DesertProwlerHat>();
+            recipe.AddIngredient<DesertProwlerShirt>();
+            recipe.AddIngredient<DesertProwlerPants>();
+            recipe.AddIngredient<CrackshotColt>();
+            recipe.AddIngredient<SunSpiritStaff>();
+            recipe.AddIngredient<Cinquedea>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -66,10 +73,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<DesertProwlerEnchantment>();
+        public override void PostUpdateEquips(Player player)
+        {
+            CalDLCAddonPlayer addonPlayer = player.CalamityAddon();
+            if (player.rocketBoots != 0)
+            {
+                player.rocketBoots = 0;
+                addonPlayer.DesertProwlerRocketPower = true;
+            }
+            else
+            {
+                addonPlayer.DesertProwlerRocketPower = false;
+            }
+        }
         public static void ProwlerEffect(Player player)
         {
             
-            CalDLCAddonPlayer cplayer = player.GetModPlayer<CalDLCAddonPlayer>();
+            CalDLCAddonPlayer cplayer = player.CalamityAddon();
             
             if (cplayer.ProwlerCharge < 15 && player.controlJump)
             {
@@ -83,11 +103,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             if ((!player.controlJump || (cplayer.AutoProwler && cplayer.ProwlerCharge >= 15)) && Collision.SolidCollision(player.BottomLeft, player.width, 6, true) && cplayer.ProwlerCharge > 0)
             {
 
-                float power = player.ForceEffect<DesertProwlerEffect>() ? 1f : 0.7f;
-                int maxSpeed = player.ForceEffect<DesertProwlerEffect>() ? 45 : 30;
+                float horizontalPower = player.ForceEffect<DesertProwlerEffect>() ? 1f : 0.65f;
+                float verticalPower = horizontalPower;
+                float maxSpeed = player.ForceEffect<DesertProwlerEffect>() ? 20f : 15f;
                 cplayer.ProwlerCharge += 10;
-                player.velocity.Y = -cplayer.ProwlerCharge * power - player.jumpSpeedBoost;
-                player.velocity.X *= cplayer.ProwlerCharge / (6f / power);
+                if (cplayer.DesertProwlerRocketPower)
+                    verticalPower += 0.f;
+                player.velocity.Y = -cplayer.ProwlerCharge * verticalPower - player.jumpSpeedBoost;
+                player.velocity.X *= cplayer.ProwlerCharge / (6f / horizontalPower);
                 player.velocity.X = MathHelper.Clamp(player.velocity.X, -maxSpeed, maxSpeed);
                 for (int i = 0; i < player.width+10; i++)
                 {

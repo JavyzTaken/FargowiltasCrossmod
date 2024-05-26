@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Content.Items;
@@ -9,11 +10,23 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class ExplorationHeader : EnchantHeader
+    {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
+        }
+        public override int Item => ModContent.ItemType<ExplorationForce>();
+        public override float Priority => 0.91f;
+    }
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamitySoulHeader : SoulHeader
     {
-        public override float Priority => 5;
+        public override float Priority => 0.99f;
         public override int Item => ModContent.ItemType<Masochist>();
         
     }

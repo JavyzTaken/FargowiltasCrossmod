@@ -17,11 +17,15 @@ using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
+using CalamityMod;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Tools;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [AutoloadEquip(EquipType.Back)]
     public class MarniteEnchantment : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
@@ -35,11 +39,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             base.SetDefaults();
             Item.rare = ItemRarityID.Orange;
             Item.value = Item.buyPrice(gold: 10);
+            Item.defense = 2;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<MarniteStatsEffect>(Item);
-            player.AddEffect<MarniteLasersEffect>(Item);
+            AddEffects(player, Item);
+        }
+        public static void AddEffects(Player player, Item item)
+        {
+            player.AddEffect<MarniteRepulsionEffect>(item);
+            player.AddEffect<MarniteLasersEffect>(item);
+            player.tileSpeed += 0.1f;
+            player.blockRange += 5;
+            if (player.FargoSouls().ForceEffect(item.type))
+            {
+                player.tileSpeed += 0.15f;
+                player.blockRange += 5;
+            }
         }
         public override void AddRecipes()
         {
@@ -47,15 +63,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectHeadgear>());
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectToga>());
             recipe.AddIngredient(ModContent.ItemType<MarniteRepulsionShield>());
-            recipe.AddIngredient(ModContent.ItemType<UnstableGraniteCore>());
-            recipe.AddIngredient(ModContent.ItemType<GladiatorsLocket>());
+            recipe.AddIngredient(ModContent.ItemType<MarniteDeconstructor>());
+            recipe.AddIngredient(ModContent.ItemType<MarniteObliterator>());
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
     }
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class MarniteStatsEffect : AccessoryEffect
+    public class MarniteRepulsionEffect : AccessoryEffect
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -66,12 +82,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
         public override void PostUpdateEquips(Player player)
         {
-            player.tileSpeed += 0.1f;
-            player.blockRange += 5;
-            if (player.ForceEffect<MarniteStatsEffect>())
+            MarniteRepulsionShieldPlayer modPlayer = player.GetModPlayer<MarniteRepulsionShieldPlayer>();
+            modPlayer.shieldEquipped = true;
+
+            if (player.whoAmI == Main.myPlayer)
             {
-                player.tileSpeed += 0.15f;
-                player.blockRange += 5;
+                int baseDamage = player.ApplyArmorAccDamageBonusesTo(5);
+                var source = player.GetSource_EffectItem<MarniteRepulsionEffect>();
+                if (player.ownedProjectileCounts[ModContent.ProjectileType<MarniteRepulsionHitbox>()] < 1)
+                {
+                    var hitbox = Projectile.NewProjectileDirect(source, player.Center, Vector2.Zero, ModContent.ProjectileType<MarniteRepulsionHitbox>(), baseDamage, 10f, Main.myPlayer);
+                    hitbox.originalDamage = baseDamage;
+                }
             }
         }
 

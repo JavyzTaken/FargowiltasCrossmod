@@ -20,6 +20,8 @@ using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 using FargowiltasSouls.Core.ModPlayers;
 using Terraria.Localization;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -43,6 +45,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<AerospecJumpEffect>(Item);
+        }
+        public static void AddEffects(Player player, Item item)
+        {
+            player.AddEffect<AerospecJumpEffect>(item);
+            player.Calamity().aeroStone = true;
         }
         public override void AddRecipes()
         {

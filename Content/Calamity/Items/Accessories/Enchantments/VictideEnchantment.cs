@@ -26,6 +26,7 @@ using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -38,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Color nameColor => new Color(255, 233, 197);
+        public override Color nameColor => new(255, 233, 197);
 
         public override void SetStaticDefaults()
         {
@@ -51,8 +52,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<VictideEffect>(Item);
+            AddEffects(player, Item);
             
+        }
+        public static void AddEffects(Player player, Item item)
+        {
+            player.ignoreWater = true;
+            player.Calamity().oceanCrest = true;
+            player.AddEffect<VictideEffect>(item);
         }
         
         public override void AddRecipes()
@@ -91,7 +98,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 damage = 35;
             }
-            player.ignoreWater = true;
 
 
             if (player.ownedProjectileCounts[ModContent.ProjectileType<VictideSpike>()] <= 0)
@@ -102,6 +108,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, -MathHelper.Lerp(0.6f, 3f, i / 4f));
                 }
                 Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, MathHelper.Pi);
+                SoundEngine.PlaySound(SoundID.Item17 with { Pitch = -0.4f }, player.Center);
             }
         }
     }

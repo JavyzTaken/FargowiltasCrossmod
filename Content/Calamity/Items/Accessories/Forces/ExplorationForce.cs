@@ -31,12 +31,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<AerospecJumpEffect>(Item);
-            player.AddEffect<MarniteStatsEffect>(Item);
-            player.AddEffect<MarniteLasersEffect>(Item);
+            MarniteEnchantment.AddEffects(player, Item);
             player.AddEffect<DesertProwlerEffect>(Item);
             player.AddEffect<WulfrumEffect>(Item);
-            player.AddEffect<SulphurEffect>(Item);
-            player.AddEffect<VictideEffect>(Item);
+            SulphurEnchantment.AddEffects(player, Item);
+            VictideEnchantment.AddEffects(player, Item);
         }
         public override void AddRecipes()
         {
@@ -50,17 +49,5 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExplorationHeader : EnchantHeader
-    {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            //return FargowiltasCrossmod.EnchantLoadingEnabled;
-            return true;
-        }
-        public override int Item => ModContent.ItemType<ExplorationForce>();
-        public override float Priority => 0.15f;
     }
 }
