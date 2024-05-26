@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return false;
             }
 
-            int cannonChargeUpTime = Utilities.SecondsToFrames(ares.AimedLaserBursts_SweepCounter >= 1f ? 1.5f : 2.35f);
+            int cannonChargeUpTime = Utilities.SecondsToFrames(ares.AimedLaserBursts_SweepCounter >= 1f ? 1.5f : 2.9f);
             if (AITimer == 1)
                 SoundEngine.PlaySound(AresLaserCannon.TelSound);
 
