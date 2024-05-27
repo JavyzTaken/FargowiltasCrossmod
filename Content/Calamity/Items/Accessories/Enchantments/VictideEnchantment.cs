@@ -94,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
             else
             {
-                damage = 35;
+                damage = 38;
             }
 
 

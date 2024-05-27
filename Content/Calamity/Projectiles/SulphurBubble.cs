@@ -113,7 +113,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             int gasSpeedMin = 3;
             int gasSpeedMax = 6;
             int damage = (int)(baseDamage * 0.5f);
-            damage += 5;
+            damage += 8;
             int count = 3;
 
 
