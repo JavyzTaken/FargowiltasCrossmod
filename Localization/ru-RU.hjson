@@ -418,7 +418,7 @@ Mods: {
 
 			DesertProwlerEnchantment: {
 				// DisplayName: Desert Prowler Enchantment
-				// Tooltip: Replaces jumping and boot hovering with a powerful charge jump that boosts your horizontal speed as well
+				// Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
 			}
 
 			WulfrumEnchantment: {
@@ -428,7 +428,7 @@ Mods: {
 					Summons a wulfrum drone that follows your cursor
 					The drone scans enemies it collides with
 					Scanning enemies tells you their debuff weaknesses and resistances
-					Red means weakness, green means resistance
+					Green means weakness, red means resistance
 					Scanned enemies also take extra damage over time when afflicted with any debuff
 					''' */
 			}

@@ -464,6 +464,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             else
                                 DidRainDash = false;
+                            if (Subphase(NPC) > 2)
+                            {
+                                currentAttack = currentAttack = (float)P2States.I_SpindashStart;
+                            }
                         }
                         break;
                     case P2States.Idle: // idle float, spawn some shit as a shield
@@ -564,6 +568,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 Particle p = new SparkParticle(sparkPos, sparkVel, Color.Lime, Main.rand.NextFloat(0.7f, 1.3f), 10);
                                 p.Spawn();
                                 */
+
+                                if (timer > telegraphTime - 10)
+                                {
+                                    float lerp = (float)(timer - (telegraphTime - 10)) / 10f;
+                                    NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(target.Center) * 15f, lerp);
+                                }
                             }
                             else if (timer == telegraphTime)
                             {
