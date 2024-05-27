@@ -57,7 +57,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public static void AddEffects(Player player, Item item)
         {
-            player.buffImmune[ModContent.BuffType<Irradiated>()] = true;
             player.AddEffect<SulphurEffect>(item);
         }
         
@@ -69,7 +68,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<CalamityMod.Items.Armor.Sulphurous.SulphurousLeggings>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Rogue.ContaminatedBile>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.CausticCroakerStaff>();
-            recipe.AddIngredient<CalamityMod.Items.Accessories.RustyMedallion>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

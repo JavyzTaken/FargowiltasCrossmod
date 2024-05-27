@@ -51,7 +51,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<CalamityMod.Items.Armor.Wulfrum.WulfrumOveralls>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.WulfrumController>();
             recipe.AddIngredient<CalamityMod.Items.Placeables.Furniture.WulfrumLureItem>();
-            recipe.AddIngredient<WulfrumTreasurePinger>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

@@ -63,8 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectHeadgear>());
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectToga>());
             recipe.AddIngredient(ModContent.ItemType<MarniteRepulsionShield>());
-            recipe.AddIngredient(ModContent.ItemType<MarniteDeconstructor>());
-            recipe.AddIngredient(ModContent.ItemType<MarniteObliterator>());
+            recipe.AddRecipeGroup("FargowiltasCrossmod:AnyMarniteTool");
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
