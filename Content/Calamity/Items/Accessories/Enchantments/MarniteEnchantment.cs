@@ -118,10 +118,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 if (Main.rand.NextBool(5)) {
                     NPC target = Main.npc[n];
                     Vector2 vel = (target.Center - (worldPos - new Vector2(8, 8))).SafeNormalize(Vector2.Zero) * 2;
-                    float damage = 10;
+                    float damage = 13;
                     damage += player.HeldItem.pick / 10;
                     if (player.ForceEffect<MarniteLasersEffect>()) damage *= 2.5f;
                     int index = Projectile.NewProjectile(player.GetSource_EffectItem<MarniteLasersEffect>(), worldPos - new Vector2(8, 8), vel, ModContent.ProjectileType<MarniteLaser>(), (int)damage, 1, player.whoAmI);
+                    if (index.IsWithinBounds(Main.maxProjectiles) && Main.projectile[index] is Projectile proj)
+                    {
+                        proj.knockBack += 10;
+                    }
                     NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, index);
                 }
             }
