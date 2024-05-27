@@ -38,7 +38,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;
         public bool RuffianModifiedRotation = false;
-        public bool DesertProwlerRocketPower = false;
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
