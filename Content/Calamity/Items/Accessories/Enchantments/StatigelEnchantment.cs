@@ -30,6 +30,7 @@ using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Weapons.Rogue;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -65,9 +66,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyStatisHelms");
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelArmor>());
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelGreaves>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.VitalJelly>());
+            recipe.AddIngredient(ItemID.GolfBallDyedPurple);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.OverloadedBlaster>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.GelDart>(), 300);
+            recipe.AddIngredient(ModContent.ItemType<BouncySpikyBall>(), 300);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -86,7 +87,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
-            float x = player.velocity.Length() / 12f;
+            float x = player.velocity.Length() / 8f;
             float bonusMultiplier = x / MathF.Sqrt(x * x + 1); // This function approaches y = 1 as x approaches infinity.
             float bonusDamage = bonusMultiplier * 0.15f;
             if (player.ForceEffect<StatigelEffect>())
@@ -94,16 +95,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             player.GetDamage(DamageClass.Generic) += bonusDamage;
             if (player.ForceEffect<StatigelEffect>())
             {
-                player.runAcceleration *= 0.6f;
+                player.runAcceleration *= 0.85f;
                 //player.maxRunSpeed *= 1.3f;
-                player.accRunSpeed *= 1.1f;
-                player.runSlowdown *= 0.05f;
+                player.accRunSpeed *= 1.2f;
+                player.runSlowdown *= 0.25f;
             }
             else
             {
-                player.runAcceleration *= 0.4f;
-                player.accRunSpeed *= 1.01f;
-                player.runSlowdown *= 0.05f;
+                player.runAcceleration *= 0.7f;
+                player.accRunSpeed *= 1.12f;
+                player.runSlowdown *= 0.25f;
             }
             
         }
