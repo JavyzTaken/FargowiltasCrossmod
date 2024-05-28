@@ -1199,7 +1199,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 timer++;
             }
             #endregion
-            Main.NewText(NPC.damage);
             return false;
 
             void Movement(Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
