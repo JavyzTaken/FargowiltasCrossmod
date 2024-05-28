@@ -399,9 +399,8 @@ Mods: {
 				// DisplayName: Aerospec Enchantment
 				/* Tooltip:
 					'''
-					Gain +5% critical strike chance whenever you use a jump or double jump
+					Gain +5% critical strike chance and summon damage whenever you use a jump or double jump
 					This bonus lasts until your jumps are reset
-					Effects of [i:CalamityMod/AeroStone] Aero Stone
 					''' */
 				// CritUp: +{0}% crit
 				// CritReset: -{0}% crit
@@ -419,7 +418,7 @@ Mods: {
 
 			DesertProwlerEnchantment: {
 				// DisplayName: Desert Prowler Enchantment
-				// Tooltip: Replaces jumping and boot hovering with a powerful charge jump that boosts your horizontal speed as well
+				// Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
 			}
 
 			WulfrumEnchantment: {
@@ -429,7 +428,7 @@ Mods: {
 					Summons a wulfrum drone that follows your cursor
 					The drone scans enemies it collides with
 					Scanning enemies tells you their debuff weaknesses and resistances
-					Red means weakness, green means resistance
+					Green means weakness, red means resistance
 					Scanned enemies also take extra damage over time when afflicted with any debuff
 					''' */
 			}
@@ -442,10 +441,10 @@ Mods: {
 					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
 					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
 					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
-					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance
+					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance and summon damage
 					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
 					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
-					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield, [i:CalamityMod/OceanCrest] Ocean Crest and [i:CalamityMod/AeroStone] Aero Stone
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					''' */
 			}
 
@@ -546,8 +545,7 @@ Mods: {
 				/* Tooltip:
 					'''
 					Grants a sulphur jump that spawns a sulphur bubble on use
-					When the bubble is hit, it releases damaging gas
-					Grants immunity to Irradiated
+					The bubble releases damaging gas when hit by you
 					''' */
 			}
 
@@ -557,8 +555,6 @@ Mods: {
 					'''
 					Grants urchin spikes that protrude from your body
 					Attacking charges the spikes, which launch outward when you stop attacking
-					Increases underwater movement
-					Effects of [i:CalamityMod/OceanCrest] Ocean Crest
 					''' */
 			}
 		}
@@ -834,7 +830,7 @@ Mods: {
 				Enemies spread debuffs for a longer amount of time
 				''' */
 			// Umbraphile: Bats deal more damage and travel faster
-			// Sulphur: Gas deals more damage and travels farther
+			// Sulphur: Jumps create 3 bubbles with increased damage
 			// Victide: Spikes are no longer affected by gravity and inflict venom
 			// Statigel: Higher maximum speed, damage bonus doubled
 		}

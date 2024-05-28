@@ -13,11 +13,13 @@ using CalamityMod.NPCs.VanillaNPCAIOverrides.Bosses;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using Extensions;
+using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
@@ -31,6 +33,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.Graphics.CameraModifiers;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
@@ -80,15 +83,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             else
             {
-                bool desperation = (Subphase(NPC) >= 3 && NPC.ai[1] == (float)P2States.Spindash);
+                bool desperation = (Subphase(NPC) >= 3);
                 Color afterimageColor = desperation ? glowColor : drawColor;
                 for (int i = 0; i < (int)currentAfterimages; i++)
                 {
                     
-                    Main.EntitySpriteDraw(fly.Value, NPC.oldPos[i] + new Vector2(NPC.width / 2, NPC.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), NPC.GetAlpha(afterimageColor) * (1 - i / 10f), NPC.rotation, new Vector2(178, 142) / 2, NPC.scale, SpriteEffects.None);
+                    Main.EntitySpriteDraw(fly.Value, NPC.oldPos[i] + new Vector2(NPC.width / 2, NPC.height / 2) - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), NPC.GetAlpha(afterimageColor) * (1 - i / 10f) * 0.4f, NPC.rotation, new Vector2(178, 142) / 2, NPC.scale, SpriteEffects.None);
                 }
-                if (desperation)
-                    DLCUtils.DrawBackglow(fly, NPC.GetAlpha(glowColor), NPC.Center + new Vector2(0, 10), new Vector2(178, 142) / 2, NPC.rotation, NPC.scale, offsetMult: 2, sourceRectangle: new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142));
+                if (desperation && NPC.Opacity > 0.5f)
+                    DLCUtils.DrawBackglow(fly, NPC.GetAlpha(glowColor) * NPC.Opacity, NPC.Center + new Vector2(0, 10), new Vector2(178, 142) / 2, NPC.rotation, NPC.scale, offsetMult: 2, sourceRectangle: new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142));
+                
+                if (NPC.ai[1] == (float)P2States.I_OffscreenDash1 && NPC.ai[0] < 50)
+                {
+                    Player target = Main.player[NPC.target];
+                    Asset<Texture2D> line = TextureAssets.Extra[178];
+
+                    float opacity = MathHelper.Lerp(0, 1, NPC.ai[0] / 90);
+                    Main.EntitySpriteDraw(line.Value, NPC.Center - Main.screenPosition, null, Color.Lime * opacity, NPC.DirectionTo(target.Center).ToRotation(), new Vector2(0, line.Height() * 0.5f), new Vector2(0.5f, NPC.scale * 8), SpriteEffects.None);
+                }
                 Main.EntitySpriteDraw(fly.Value, NPC.Center - Main.screenPosition + new Vector2(0, 10), new Rectangle(178 * ((int)sprite.X - 1), 142 * (int)sprite.Y, 178, 142), NPC.GetAlpha(drawColor), NPC.rotation, new Vector2(178, 142) / 2, NPC.scale, SpriteEffects.None);
             }
 
@@ -182,6 +194,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             if (!WorldSavingSystem.EternityMode) return true;
 
+            Main.windSpeedTarget = Main.windSpeedCurrent = 0.4f;
+            //sets rain time to 4 hours
+            int day = 86400;
+            int hour = day / 24;
+            if (Main.rainTime < hour * 0.5f)
+                Main.rainTime = hour * 0.5f;
+            Main.raining = true;
+            if (Main.maxRaining < 0.6f)
+                Main.maxRaining += 0.01f;
+            Main.cloudAlpha = Main.maxRaining;
 
             CalamityGlobalNPC.hiveMind = NPC.whoAmI;
 
@@ -206,7 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 currentAfterimages -= 1f;
             }
-            targetAfterimages = Math.Min(10, NPC.velocity.Length());
+            targetAfterimages = Math.Min(5, NPC.velocity.Length());
             Vector2 bottom = NPC.Bottom;
             NPC.width = (int)(150 * NPC.scale);
             NPC.height = (int)(100 * NPC.scale);
@@ -248,7 +270,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     ScreenShakeSystem.StartShake(15);
                     if (DLCUtils.HostCheck)
                     {
-                        int maxBlobs = 20;
+                        int maxBlobs = BlobEternity.P1Blobs;
 
                         for (int i = 0; i < maxBlobs; i++)
                         {
@@ -442,6 +464,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             else
                                 DidRainDash = false;
+                            if (Subphase(NPC) > 2)
+                            {
+                                currentAttack = currentAttack = (float)P2States.I_SpindashStart;
+                            }
                         }
                         break;
                     case P2States.Idle: // idle float, spawn some shit as a shield
@@ -522,10 +548,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             float attackTime = 120f;
                             float fadeTime = 100f;
-                            bool decel = timer > 10 && timer < 30;
+
                             bool fade = timer > fadeTime;
-                            bool accelerate = timer < fadeTime && timer > 20;
-                            int accelStraightTime = 60;
+
+                            float telegraphTime = 50;
+                            bool accelerate = timer > telegraphTime;
+                            float accelStraightTime = telegraphTime + 0f;
+
+                            if (timer < telegraphTime)
+                            {
+                                NPC.velocity *= 0.965f;
+                                /*
+                                float progress = timer / telegraphTime;
+                                
+                                Vector2 sparkDir = toTarget.RotatedByRandom(MathHelper.PiOver2 * (1 - progress));
+                                Vector2 sparkPos = NPC.Center + sparkDir * NPC.width * Main.rand.NextFloat(0.25f, 1.5f);
+                                int lifetime = 10;
+                                Vector2 sparkVel = (NPC.Center - sparkPos) / lifetime;
+                                Particle p = new SparkParticle(sparkPos, sparkVel, Color.Lime, Main.rand.NextFloat(0.7f, 1.3f), 10);
+                                p.Spawn();
+                                */
+
+                                if (timer > telegraphTime - 10)
+                                {
+                                    float lerp = (float)(timer - (telegraphTime - 10)) / 10f;
+                                    NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(target.Center) * 15f, lerp);
+                                }
+                            }
+                            else if (timer == telegraphTime)
+                            {
+                                NPC.velocity = NPC.DirectionTo(target.Center) * 15f;
+                                SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.FastRoarSound, NPC.Center);
+                            }
 
                             //NPC.velocity = Vector2.Lerp(NPC.velocity, LockVector1, 0.02f);
                             if (fade)
@@ -534,10 +588,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 //NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.Zero, (timer - fadeTime) / (attackTime - fadeTime));
                                 NPC.Opacity -= 1f / fadeDuration;
                             }
-                            if (decel)
-                            {
-                                NPC.velocity *= 0.94f;
-                            }
+
                             if (accelerate) //accelerate during dash towards player
                             {
                                 const float accel = 1.12f;
@@ -579,7 +630,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                                 SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound with { Pitch = -0.5f }, NPC.Center);
                             }
-                            if (timer % 4 == 0)
+                            if (timer % 9 == 0)
                             {
                                 SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
                                 for (int i = -1; i < 2; i += 2)
@@ -636,6 +687,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 rotationDirection = Main.rand.NextFromList(1, -1);
                                 NPC.localAI[2] = 60 + Main.rand.Next(15);
                                 NPC.netUpdate = true;
+
+                                if (Subphase(NPC) > 2)
+                                {
+                                    SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.FastRoarSound, NPC.Center);
+                                    NPC.velocity = -NPC.DirectionTo(target.Center) * 10;
+                                }
                             }
                             if (NPC.Opacity > 0)
                                 NPC.Opacity -= 1f / startTime;
@@ -734,6 +791,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                     NPC.damage = NPC.defDamage;
 
                                     NPC.velocity *= 1.02f;
+                                    targetAfterimages = 10;
 
                                     float dif = FargoSoulsUtil.RotationDifference(NPC.velocity, NPC.DirectionTo(target.Center));
                                     if (Math.Abs(dif) >= MathHelper.PiOver2 && timer <= lungeTime / 2)
@@ -746,6 +804,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                             rotation = target.DirectionTo(NPC.Center).ToRotation();
                                             rotationDirection = Math.Sign(FargoSoulsUtil.RotationDifference(NPC.DirectionTo(target.Center), (NPC.Center + NPC.velocity).DirectionTo(target.Center)));
                                             timer = lungeDelay;
+
+                                            if (Subphase(NPC) > 2 && dashes > 3 && Main.rand.NextBool(2))
+                                            {
+                                                dashes = 0;
+                                                currentAttack = (float)P2States.I_RainDashStart;
+                                                timer = 0;
+                                            }
                                         }
                                         else if (timer <= 0)
                                         {
@@ -766,6 +831,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         break;
                     case P2States.FinalSpindash: // Spin out, lock spin center, then spin in to center
                         {
+                            targetAfterimages = 10;
                             ref float rotation = ref NPC.localAI[0];
                             ref float rotationDirection = ref NPC.localAI[1];
                             ref float dashes = ref NPC.localAI[3];
@@ -871,7 +937,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 int wormTime = 120;
 
                                 Vector2 toNeutral = abovePlayer - NPC.Center;
-                                Movement(abovePlayer, 0.1f, 40, 10, 0.1f, 50f);
+                                Movement(abovePlayer, 0.1f, 10, 6, 0.1f, 50f);
                                 //NPC.velocity.Y = toNeutral.Y;
                                 //NPC.velocity.X = toNeutral.X * 0.1f;
 
@@ -891,7 +957,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                             NPC worm = Main.npc[n];
                                             worm.velocity = Vector2.UnitX * side * MathHelper.Lerp(16, 2, progress) + Vector2.UnitY * MathHelper.Lerp(0, 4, progress);
                                             worm.GetGlobalNPC<DevourerEternityHM>().FromHM = true;
-                                            worm.life = worm.lifeMax *= 3;
+                                            worm.life = worm.lifeMax *= 7;
                                         }
                                     }
                                 }
@@ -907,10 +973,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             else if (attackPhase == 2)
                             {
+                                targetAfterimages = 10;
                                 int dashTime = 75;
                                 Vector2 toNeutral = abovePlayer - NPC.Center;
                                 NPC.velocity.Y += 0.4f;
-                                NPC.velocity.X *= 0.92f;
+                                NPC.velocity.X *= 0.99f;
                                 //NPC.velocity.X += Math.Sign(toNeutral.X) * 0.4f;
                                 NPC.velocity.Y = Math.Clamp(NPC.velocity.Y, -15f, 15f);
 
@@ -988,6 +1055,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             if (NPC.alpha > 0)
                             {
                                 NPC.alpha -= 5;
+                                if (Subphase(NPC) > 2)
+                                    NPC.alpha -= 3;
+
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
                                     NPC.Center = target.Center;
@@ -996,7 +1066,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                                     float x = NPC.alpha / 255f;
                                     float factor = (x - x * x) * 4;
-                                    NPC.position.X += (100 + factor * 100) * rotationDirection;
+                                    NPC.position.X += (260 + factor * 100) * rotationDirection;
                                 }
                                 NPC.netUpdate = true;
                                 NPC.netSpam = 0;
@@ -1011,6 +1081,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                     ai3 = 1;
                                     SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, NPC.Center);
                                     NPC.velocity.X = teleportRadius / arcTime * 3;
+                                    NPC.velocity.X *= 1.2f;
                                     NPC.velocity *= -rotationDirection;
                                     NPC.netUpdate = true;
                                     NPC.netSpam = 0;
@@ -1020,6 +1091,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 {
                                     // Set damage
                                     NPC.damage = NPC.defDamage;
+                                    targetAfterimages = 10;
 
                                     if (timer == 4)
                                     {
@@ -1039,10 +1111,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                             }
                                         }
 
-                                        if (ai3 == 11)
+                                        if (ai3 == 13)
                                         {
-                                            currentAttack = (float)P2States.Decelerate;
-                                            ai3 = NPC.velocity.Length() / 30f;
+                                            if (Subphase(NPC) < 3)
+                                            {
+                                                currentAttack = (float)P2States.Decelerate;
+                                                ai3 = NPC.velocity.Length() / 30f;
+                                            }
+                                            else
+                                            {
+                                                currentAttack = (float)P2States.I_SpindashStart;
+                                                ai3 = 0;
+                                            }
                                         }
                                     }
                                 }
@@ -1112,6 +1192,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     case P2States.Decelerate: // decelerate to halt, then go to idle
                         {
                             NPC.velocity -= NPC.velocity.SafeNormalize(Vector2.Zero) * ai3;
+                            float rotDif = FargoSoulsUtil.RotationDifference(NPC.velocity, toTarget);
+                            NPC.velocity = NPC.velocity.RotatedBy(rotDif / 50f);
                             if (timer > 30)
                             {
                                 NPC.velocity *= 0;

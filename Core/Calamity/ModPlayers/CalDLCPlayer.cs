@@ -111,7 +111,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             calamityPlayer.pscState = 0;
 
             AdamantiteEffect adamEffect = GetInstance<AdamantiteEffect>();
-            if (Player.HasEffect(adamEffect) && Player.HeldItem != null && DLCSets.Items.AdamantiteIgnore[Player.HeldItem.type])
+            if (Player.HasEffect(adamEffect) && Player.HeldItem != null && CalDLCSets.Items.AdamantiteExclude[Player.HeldItem.type])
             {
                 AccessoryEffectPlayer effectsPlayer = Player.AccessoryEffects();
                 effectsPlayer.ActiveEffects[adamEffect.Index] = false;

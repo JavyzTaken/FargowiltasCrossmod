@@ -51,7 +51,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<CalamityMod.Items.Armor.Wulfrum.WulfrumOveralls>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.WulfrumController>();
             recipe.AddIngredient<CalamityMod.Items.Placeables.Furniture.WulfrumLureItem>();
-            recipe.AddIngredient<WulfrumTreasurePinger>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -67,6 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<WulfrumEnchantment>();
+        public override bool MinionEffect => true;
         public override void PostUpdateEquips(Player player)
         {
             if (player.ownedProjectileCounts[ModContent.ProjectileType<WulfrumScanner>()] < 1)

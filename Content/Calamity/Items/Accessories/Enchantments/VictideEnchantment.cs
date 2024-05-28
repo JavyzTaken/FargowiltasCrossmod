@@ -57,8 +57,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public static void AddEffects(Player player, Item item)
         {
-            player.ignoreWater = true;
-            player.Calamity().oceanCrest = true;
             player.AddEffect<VictideEffect>(item);
         }
         
@@ -70,7 +68,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideGreaves>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.SnapClam>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Melee.UrchinMace>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.OceanCrest>(), 1);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -86,7 +83,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<VictideEnchantment>();
-        
+        public override bool ExtraAttackEffect => true;
+
         public override void PostUpdateEquips(Player player)
         {
             int damage;
@@ -96,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
             else
             {
-                damage = 35;
+                damage = 38;
             }
 
 

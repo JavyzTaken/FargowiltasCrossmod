@@ -18,9 +18,12 @@ using Terraria.GameContent;
 using Luminance.Common.Utilities;
 using CalamityMod.Particles;
 using CalamityMod.Projectiles.Melee;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class BrainMassProjectile : ModProjectile
     {
         public bool StartFading = false;
@@ -89,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (Timer == 0f)
             {
                 Timer = 1f;
-                SoundEngine.PlaySound(SoundID.NPCHit13 with { Volume = 0.4f, PitchVariance = 0.2f }, Projectile.position);
+                SoundEngine.PlaySound(SoundID.NPCHit18 with { Volume = 0.5f, PitchVariance = 0.2f }, Projectile.position);
             }
             else
             {
@@ -135,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (Timer == 0f)
             {
                 Timer = 1f;
-                SoundEngine.PlaySound(SoundID.NPCHit13 with { Volume = 0.4f, PitchVariance = 0.2f}, Projectile.position);
+                SoundEngine.PlaySound(SoundID.NPCHit18 with { Volume = 0.5f, PitchVariance = 0.2f }, Projectile.position);
             }
             else if (Timer == 1f && Main.netMode != 1)
             {

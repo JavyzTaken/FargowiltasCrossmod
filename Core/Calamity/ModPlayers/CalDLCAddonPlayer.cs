@@ -38,7 +38,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;
         public bool RuffianModifiedRotation = false;
-        public bool DesertProwlerRocketPower = false;
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
@@ -75,7 +74,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 
                     if (projectile.TypeAlive<SulphurBubble>() && hitbox.Intersects(projectile.Hitbox))
                     {
-                        if (projectile.ai[1] <= 0 && Main.myPlayer == projectile.owner && projectile.scale >= 3)
+                        if (projectile.ai[1] <= 0 && Main.myPlayer == projectile.owner)
                             projectile.As<SulphurBubble>().OnHitEffect(item.damage);
                     }
                 }

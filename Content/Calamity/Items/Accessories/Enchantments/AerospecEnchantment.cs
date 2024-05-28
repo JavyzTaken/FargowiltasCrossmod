@@ -59,7 +59,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<CalamityMod.Items.Armor.Aerospec.AerospecLeggings>(1);
             recipe.AddIngredient<CalamityMod.Items.Weapons.Rogue.Turbulance>(1);
             recipe.AddIngredient<CalamityMod.Items.Weapons.Magic.SkyGlaze>(1);
-            recipe.AddIngredient<CalamityMod.Items.Accessories.AeroStone>(1);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -84,6 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             CalDLCAddonPlayer mplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             float extraCrit = (mplayer.NumJumpsUsed > maxCritJumps ? maxCritJumps : mplayer.NumJumpsUsed) * critPerJump;
             player.GetCritChance(DamageClass.Generic) += extraCrit;
+            player.GetDamage(DamageClass.Summon) += extraCrit;
             for (int i = 0; i < extraCrit / 5; i++)
             {
                 if (Main.rand.NextBool())

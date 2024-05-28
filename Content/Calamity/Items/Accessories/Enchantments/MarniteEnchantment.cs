@@ -63,8 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectHeadgear>());
             recipe.AddIngredient(ModContent.ItemType<MarniteArchitectToga>());
             recipe.AddIngredient(ModContent.ItemType<MarniteRepulsionShield>());
-            recipe.AddIngredient(ModContent.ItemType<MarniteDeconstructor>());
-            recipe.AddIngredient(ModContent.ItemType<MarniteObliterator>());
+            recipe.AddRecipeGroup("FargowiltasCrossmod:AnyMarniteTool");
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -80,6 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
+        public override bool ExtraAttackEffect => true;
         public override void PostUpdateEquips(Player player)
         {
             MarniteRepulsionShieldPlayer modPlayer = player.GetModPlayer<MarniteRepulsionShieldPlayer>();
@@ -109,6 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
+        public override bool ExtraAttackEffect => true;
         public static void MarniteTileEffect(Player player, Vector2 worldPos)
         {
             int n = FargoSoulsUtil.FindClosestHostileNPC(worldPos, 500);
@@ -117,10 +118,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 if (Main.rand.NextBool(5)) {
                     NPC target = Main.npc[n];
                     Vector2 vel = (target.Center - (worldPos - new Vector2(8, 8))).SafeNormalize(Vector2.Zero) * 2;
-                    float damage = 10;
+                    float damage = 13;
                     damage += player.HeldItem.pick / 10;
                     if (player.ForceEffect<MarniteLasersEffect>()) damage *= 2.5f;
                     int index = Projectile.NewProjectile(player.GetSource_EffectItem<MarniteLasersEffect>(), worldPos - new Vector2(8, 8), vel, ModContent.ProjectileType<MarniteLaser>(), (int)damage, 1, player.whoAmI);
+                    if (index.IsWithinBounds(Main.maxProjectiles) && Main.projectile[index] is Projectile proj)
+                    {
+                        proj.knockBack += 10;
+                    }
                     NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, index);
                 }
             }

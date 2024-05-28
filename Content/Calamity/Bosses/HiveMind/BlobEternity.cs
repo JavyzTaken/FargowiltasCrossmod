@@ -33,6 +33,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public override int NPCOverrideID => ModContent.NPCType<HiveBlob>();
 
         Vector2 SavedCenter = Vector2.Zero;
+
+        public const int P1Blobs = 10;
         public override void SetDefaults()
         {
             float healthMult = 0.5f;
@@ -41,7 +43,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             {
                 NPC owner = Main.npc[hiveMind];
                 if (owner.GetDLCBehavior<HMEternity>().Phase < 2)
-                    healthMult *= 4;
+                {
+                    healthMult *= 10;
+                    NPC.scale = 1.5f;
+                }
             }
             NPC.lifeMax = (int)(NPC.lifeMax * healthMult);
         }
@@ -278,7 +283,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                     //NPC.localAI[1] = Main.rand.Next(0, 440);
 
                 //if (NPC.Distance(desiredPosition) < 100)
-                NPC.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(4f, 0.22f, (float)blobs.Count / 20);
+                NPC.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(6f, 1f, (float)blobs.Count / P1Blobs);
 
                 if (NPC.localAI[1] >= 480f && NPC.velocity.Length() < 2f)// && Vector2.Distance(target.Center, NPC.Center) > 400f)
                 {
@@ -298,7 +303,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         int type = ModContent.ProjectileType<VileClotDrop>();
                         int damage = NPC.GetProjectileDamage(type);
                         Vector2 projectileVelocity = new Vector2(playerX, playerY);
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projDirection, projectileVelocity * 0.7f, type, damage, 0f, Main.myPlayer);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projDirection, projectileVelocity * 0.2f, type, damage, 0f, Main.myPlayer);
 
                         NPC.velocity -= projectileVelocity; // recoil
                         NPC.netUpdate = true;
