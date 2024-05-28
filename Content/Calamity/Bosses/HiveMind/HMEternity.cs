@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             else
             {
-                NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.3f);
+                NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.175f);
             }
         }
         public override void OnSpawn(IEntitySource source)
@@ -464,12 +464,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             else
                                 DidRainDash = false;
+                            if (Subphase(NPC) > 2)
+                            {
+                                currentAttack = currentAttack = (float)P2States.I_SpindashStart;
+                            }
                         }
                         break;
                     case P2States.Idle: // idle float, spawn some shit as a shield
                         {
                             targetAfterimages = 0;
-                            NPC.damage = NPC.defDamage;
+                            NPC.damage = 0;
 
                             if (NPC.alpha > 0)
                                 NPC.alpha -= 3;
@@ -498,7 +502,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 if (DLCUtils.HostCheck)
                                 {
                                     if (attackCounter > 0 && Subphase(NPC) > 1)
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                                     
                                     //SpawnCreepers(creeperCount);
                                 }
@@ -535,7 +539,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         break;
                     case P2States.I_OffscreenDash1: // back off, dash,  go offscreen and dash in from offscreen at 90 degree angle
                         {
-                            NPC.damage = NPC.defDamage;
                             targetAfterimages = 10;
                             if (timer == 1) // start of attack
                             {
@@ -564,6 +567,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 Particle p = new SparkParticle(sparkPos, sparkVel, Color.Lime, Main.rand.NextFloat(0.7f, 1.3f), 10);
                                 p.Spawn();
                                 */
+
+                                if (timer > telegraphTime - 10)
+                                {
+                                    float lerp = (float)(timer - (telegraphTime - 10)) / 10f;
+                                    NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(target.Center) * 15f, lerp);
+                                }
                             }
                             else if (timer == telegraphTime)
                             {
@@ -605,7 +614,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         break;
                     case P2States.OffscreenDash2: // it's currently offscreen. shift 90 degrees random left or right,quickly fade in, and dash in with slight curving and leaving cursed flame trails diagonally backwards
                         {
-                            NPC.damage = NPC.defDamage;
                             const float maxSpeed = 25f;
                             targetAfterimages = 10;
                             if (timer == 1)
@@ -627,7 +635,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 {
                                     if (FargoSoulsUtil.HostCheck)
                                     {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), -NPC.velocity.RotatedBy(MathF.PI / 3f * i) * 0.8f, ModContent.ProjectileType<BrainMassProjectile>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 0, ai1: 1);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), -NPC.velocity.RotatedBy(MathF.PI / 3f * i) * 0.8f, ModContent.ProjectileType<BrainMassProjectile>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 1);
                                     }
                                 }
                                 
@@ -745,8 +753,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 {
                                     if (timer <= 0)
                                     {
-                                        // Set damage
-                                        NPC.damage = NPC.defDamage;
 
                                         timer = lungeTime;
                                         NPC.velocity = target.Center  - NPC.Center;
@@ -777,8 +783,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 }
                                 else
                                 {
-                                    // Set damage
-                                    NPC.damage = NPC.defDamage;
 
                                     NPC.velocity *= 1.02f;
                                     targetAfterimages = 10;
@@ -844,7 +848,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                             if (timer < totalTime)
                             {
-                                NPC.damage = NPC.defDamage;
                                 if (FargoSoulsUtil.HostCheck)
                                 {
                                     float progress = timer / totalTime;
@@ -882,8 +885,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             else 
                             {
-                                // Set damage
-                                NPC.damage = NPC.defDamage;
                                 currentAttack = (float)P2States.Reset; // Go to idle
                                 NPC.netUpdate = true;
                                 NPC.netSpam = 0;
@@ -1035,7 +1036,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         break;
                     case P2States.RainDash:
                         {
-                            NPC.damage = 0;
 
                             int teleportRadius = 300;
                             float arcTime = 45f; // Ticks needed to complete movement for spawn and rain attacks (DEATH ONLY)
@@ -1065,8 +1065,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             {
                                 if (ai3 == 0)
                                 {
-                                    // Set damage
-                                    NPC.damage = NPC.defDamage;
 
                                     ai3 = 1;
                                     SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, NPC.Center);
@@ -1079,8 +1077,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 }
                                 else
                                 {
-                                    // Set damage
-                                    NPC.damage = NPC.defDamage;
                                     targetAfterimages = 10;
 
                                     if (timer == 4)
@@ -1203,6 +1199,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 timer++;
             }
             #endregion
+            Main.NewText(NPC.damage);
             return false;
 
             void Movement(Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
