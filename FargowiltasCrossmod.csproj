@@ -19,6 +19,7 @@
     <None Remove="Content\Calamity\Items\Accessories\Enchantments\VictideEnchantment.png" />
     <None Remove="Content\Calamity\Items\Accessories\Forces\DevastationForce.png" />
     <None Remove="Content\Calamity\Items\Accessories\Forces\ExplorationForce.png" />
+    <None Remove="Content\Calamity\Projectiles\SulphurFireball.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
