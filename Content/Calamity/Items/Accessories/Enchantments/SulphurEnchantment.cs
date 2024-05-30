@@ -68,6 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<CalamityMod.Items.Armor.Sulphurous.SulphurousLeggings>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Rogue.ContaminatedBile>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.CausticCroakerStaff>();
+            recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.RustyBeaconPrototype>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

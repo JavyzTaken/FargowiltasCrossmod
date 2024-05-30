@@ -1033,12 +1033,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.AdamantiteParticleAccelerator>(),
                 ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TitaniumRailgun>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyRailguns", RailgunsGroup);
-
-            RecipeGroup marniteGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Marnite Tool"}",
-                ItemType<MarniteObliterator>(),
-                ItemType<MarniteDeconstructor>());
-            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyMarniteTool", marniteGroup);
-            #endregion
         }
     }
 }
