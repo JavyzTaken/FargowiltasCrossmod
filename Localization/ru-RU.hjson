@@ -396,41 +396,42 @@ Mods: {
 			}
 
 			AerospecEnchantment: {
-				// DisplayName: Aerospec Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Аэрофаза
+				Tooltip:
 					'''
-					Gain +5% critical strike chance and summon damage whenever you use a jump or double jump
-					This bonus lasts until your jumps are reset
-					''' */
-				// CritUp: +{0}% crit
-				// CritReset: -{0}% crit
+					Вы получаете +5% шанса критического урона и урона призывателя
+					после прыжка и каждого использования двойного прыжка
+					Бонус пропадает по восстанавлению прыжков
+					'''
+				CritUp: +{0}% крит
+				CritReset: -{0}% крит
 			}
 
 			MarniteEnchantment: {
-				// DisplayName: Marnite Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Мранитового Архитектора
+				Tooltip:
 					'''
-					10% increased placement speed and +5 tile placement range
-					Lasers strike nearby enemies when building and mining
-					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
-					''' */
+					Увеличивает скорость размещения блоков 10% и далность размещения блоков на 5 
+					Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
+					Эффекты [i:CalamityMod/MarniteRepulsionShield] Мранитового репульсионного щита
+					'''
 			}
 
 			DesertProwlerEnchantment: {
-				// DisplayName: Desert Prowler Enchantment
-				// Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
+				DisplayName: Зачарование Пустынного Мародёра
+				Tooltip: Задержите ПРОБЕЛ, чтобы зарядить мощный заряжаемый прыжок, который так же увеличивает горизонтальную скорость
 			}
 
 			WulfrumEnchantment: {
-				// DisplayName: Wulfrum Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Вульфрума
+				Tooltip:
 					'''
-					Summons a wulfrum drone that follows your cursor
-					The drone scans enemies it collides with
-					Scanning enemies tells you their debuff weaknesses and resistances
-					Green means weakness, red means resistance
-					Scanned enemies also take extra damage over time when afflicted with any debuff
-					''' */
+					Призывает вульфрумового дрона, который преследует ваш курсок
+					Дрон сканирует врагов, с которыми сталкивается
+					Сканирование врагов показывает их слабости и устойчивости к дебаффам
+					Зелёный - слабость, красный - устойчивость
+					Также просканированным врагам наносится дополнительный постепенный урон от любого дебаффа
+					'''
 			}
 
 			ExplorationForce: {
@@ -449,14 +450,14 @@ Mods: {
 			}
 
 			SnowRuffianEnchantment: {
-				// DisplayName: Snow Ruffian Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Снежного Бандита
+				Tooltip:
 					'''
-					Grants the ability to glide if you do not have wings already
-					While slow falling with wings, you accelerate
-					Press UP while slow falling to direct your momentum upward
-					Press DOWN while slow falling to accelerate faster
-					''' */
+					Позволяет парить в воздухе, если на вас нет крыльев
+					При медленном падении на крыльях, вы ускоряетесь
+					Нажмите ВВЕРХ в медленном падении чтобы перенаправить движение вверх
+					Нажмите ВНИЗ в медленном падении чтобы быстрее ускоряться
+					'''
 			}
 
 			DaedalusEnchantment: {
@@ -531,31 +532,31 @@ Mods: {
 			}
 
 			StatigelEnchantment: {
-				// DisplayName: Statigel Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Статигеля
+				Tooltip:
 					'''
-					Increases your maximum speed
-					Massively decreases your acceleration and deceleration
-					Gain up to +15% increased damage, depending on how fast you're moving
-					''' */
+					Увеличивает максимальную скорость передвижения
+					Значительно уменьшает ускорение и замедление
+					Чем быстрее вы двигаетесь, тем больше урона наносите, до +15%
+					'''
 			}
 
 			SulphurEnchantment: {
-				// DisplayName: Sulphur Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Сернистости
+				Tooltip:
 					'''
-					Grants a sulphur jump that spawns a sulphur bubble on use
-					The bubble releases damaging gas when hit by you
-					''' */
+					Дарует сернистый прыжок, который оставляет за собой сернистый пузырь
+					Если атаковать пузырь, то он начнёт выпускать газ, наносящий урон врагам
+					'''
 			}
 
 			VictideEnchantment: {
-				// DisplayName: Victide Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Прилива
+				Tooltip:
 					'''
-					Grants urchin spikes that protrude from your body
-					Attacking charges the spikes, which launch outward when you stop attacking
-					''' */
+					Дарует морские иглы, которые торчат из вашего тела
+					Иглы заряжаются, пока вы атакуете, и вылетают наружу, когда вы перестаёте
+					'''
 			}
 		}
 
@@ -630,32 +631,32 @@ Mods: {
 			PermafrostRitual.DisplayName: Ритуал Пермафроста
 			IceCloud.DisplayName: Обмораживающий Снег
 			BrimstoneDebris.DisplayName: Серные Обломки
-			// BrimstonePulse.DisplayName: Brimstone Pulse
-			// BrimstoneClone.DisplayName: Brimstone Clone
-			// BrimBeam.DisplayName: Brim Beam
-			// BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
-			// BrimstoneTeleport.DisplayName: Brimstone Teleport
-			// BrimstoneFireblast.DisplayName: Brimstone Fireblast
+			BrimstonePulse.DisplayName: Серный Пульс
+			BrimstoneClone.DisplayName: Серный Клон
+			BrimBeam.DisplayName: Серолуч
+			BrimstoneChainExplosion.DisplayName: Серный Цепной Взрыв
+			BrimstoneTeleport.DisplayName: Серный Телепорт
+			BrimstoneFireblast.DisplayName: Шар Серного Огня
 			// FeatherJumpFeather.DisplayName: Feather
 			// MarniteDagger.DisplayName: Marnite Dagger
-			// MarniteLaser.DisplayName: Marnite Laser
+			MarniteLaser.DisplayName: Мранитовый Лазер
 			// ProwlerTornado.DisplayName: Prowler Tornado
 			// WulfrumCollector.DisplayName: Wulfrum Collector
-			// WulfrumScanner.DisplayName: Wulfrum Scanner
-			// CrystalPlatform.DisplayName: Crystal Platform
+			WulfrumScanner.DisplayName: Вульфрумовый Сканер
+			CrystalPlatform.DisplayName: Кристальная Платформа
 			// PlagueCloud.DisplayName: Plague Cloud
 			// Eruption.DisplayName: Eruption
 			// VampireBat.DisplayName: Vampire Bat
-			// SulphurBubble.DisplayName: Sulphur Bubble
-			// VictideSpike.DisplayName: Victide Spike
-			// GoldenShowerShot.DisplayName: Golden Shower Shot
-			// HiveMindFiretrail.DisplayName: Cursed Fire
-			// BrainMassProjectile.DisplayName: Rotten Brainmass
-			// GravityVileClot.DisplayName: Vile Clot
-			// VileClotDrop.DisplayName: Vile Clot
-			// SulphurCloud.DisplayName: Sulphur Cloud
-			// PureGel.DisplayName: Pure Gel
-			// HiveMindPulse.DisplayName: Hive Mind Pulse
+			SulphurBubble.DisplayName: Сернистый Пузырь
+			VictideSpike.DisplayName: Приливной Шип
+			GoldenShowerShot.DisplayName: Выстрел Золотого Дождя
+			HiveMindFiretrail.DisplayName: Проклятый Огонь
+			BrainMassProjectile.DisplayName: Гнилое Мозговое Вещество
+			GravityVileClot.DisplayName: Мерзкий Сгусток
+			VileClotDrop.DisplayName: Мерзкий Сгусток
+			SulphurCloud.DisplayName: Сернистое Облако
+			PureGel.DisplayName: Чистейший Гель
+			HiveMindPulse.DisplayName: Разум Улей Пульс
 		}
 
 		Buffs: {
@@ -676,7 +677,7 @@ Mods: {
 		}
 
 		Toggler: {
-			// CalamitySoulHeader: Soul of Calamity
+			CalamitySoulHeader: Душа Бедствия
 			VagabondsSoulHeader: Душа Беглеца
 			NanotechEffect: Нанотехнология
 			EclipseMirrorEffect: Зеркало Затмения
@@ -703,21 +704,21 @@ Mods: {
 			YharimsGiftEffect: Дар Ярима
 			DraedonsHeartEffect: Сердце Дрэйдона
 			CalamityEffect: Бедствие
-			// SplendorJamEffect: Splendor Jam
-			// ExplorationHeader: Force of Exploration
-			// AerospecJumpEffect: Jump Crit
-			// MarniteRepulsionEffect: Marnite Repulsion
-			// MarniteLasersEffect: Marnite Lasers
-			// DesertProwlerEffect: Charge Jump
-			// WulfrumEffect: Wulfrum Drone
-			// SnowRuffianEffect: Better Gliding
+			SplendorJamEffect: Варенье Великолепия
+			ExplorationHeader: Артефакт Исследования
+			AerospecJumpEffect: Крит Прыжки
+			MarniteRepulsionEffect: Мранитовая Репульсия
+			MarniteLasersEffect: Мранитовые Лазеры
+			DesertProwlerEffect: Заряжающийся Прыжок
+			WulfrumEffect: Вульфрумовый Дрон
+			SnowRuffianEffect: Лучшее Парение
 			// DaedalusEffect: Daedalus Flight Limit
 			// ReaverEffect: Reaver Stats
 			// HydrothermicEffect: Overheat
 			// PlaguebringerEffect: Debuff Spread
-			// StatigelEffect: Statigel Acceleration and Damage
-			// SulphurEffect: Bubble Jump
-			// VictideEffect: Urchin Spikes
+			StatigelEffect: Ускорение и Урон Статигеля
+			SulphurEffect: Прыжок с Пузырём
+			VictideEffect: Морские Игры
 			// TitanHeartEffect: Titan Size
 			// UmbraphileEffect: Bat Healing
 		}
