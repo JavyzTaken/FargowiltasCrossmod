@@ -9,6 +9,7 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -58,6 +59,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             
             Player target = Main.player[NPC.target];
 
+            if (WorldSavingSystem.MasochistModeReal)
+                NPC.dontTakeDamage = true;
             
             NPC owner = Main.npc[(int)NPC.ai[0]];
             NPC.spriteDirection = NPC.Center.X > target.Center.X ? -1 : 1;
@@ -108,7 +111,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         }
         public override void OnKill()
         {
-            if (NPC.ai[1] >= 0)
+            if (NPC.ai[1] >= 0 && WorldSavingSystem.MasochistModeReal)
             {
                 NPC.NewNPC(NPC.GetSource_Death(), (int)NPC.Center.X + 20, (int)NPC.Center.Y + 20, ModContent.NPCType<Brimling>(), 0, NPC.ai[0], -1);
             }
