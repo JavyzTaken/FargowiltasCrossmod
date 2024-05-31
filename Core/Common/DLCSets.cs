@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Core.Common
         public override void PostSetupContent()
         {
             #region Items
-            SetFactory itemFactory = new(ItemLoader.ItemCount);
+            SetFactory itemFactory = ItemID.Sets.Factory;
             Items.ChampionTierFargoWeapon = itemFactory.CreateBoolSet(false,
                 ItemType<EaterLauncher>(),
                 ItemType<FleshCannon>(),
@@ -77,7 +77,7 @@ namespace FargowiltasCrossmod.Core.Common
             #endregion
 
             #region NPCs
-            SetFactory npcFactory = new(NPCLoader.NPCCount);
+            SetFactory npcFactory = NPCID.Sets.Factory
             NPCs.Champion = npcFactory.CreateBoolSet(false,
                 NPCType<CosmosChampion>(),
                 NPCType<EarthChampion>(),

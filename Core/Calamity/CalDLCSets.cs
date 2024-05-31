@@ -67,7 +67,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         public override void PostSetupContent()
         {
             #region Items
-            SetFactory itemFactory = new(ItemLoader.ItemCount);
+            SetFactory itemFactory = ItemID.Sets.Factory;
             Items.RockItem = itemFactory.CreateBoolSet(false,
                 ItemType<Rock>(),
                 ItemType<EternitySoul>(),
@@ -137,7 +137,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             #endregion
 
             #region NPCs
-            SetFactory npcFactory = new(NPCLoader.NPCCount);
+            SetFactory npcFactory = NPCID.Sets.Factory;
             NPCs.AcidRainEnemy = npcFactory.CreateBoolSet(false,
                 NPCType<AcidEel>(),
                 NPCType<NuclearToad>(),
@@ -156,7 +156,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             #endregion
 
             #region Buffs
-            SetFactory buffFactory = new(BuffLoader.BuffCount);
+            SetFactory buffFactory = BuffID.Sets.Factory;
             Buffs.DoTDebuff = buffFactory.CreateBoolSet(false,
                 BuffID.Bleeding,
                 BuffID.Poisoned,
@@ -217,7 +217,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             #endregion
 
             #region Projectiles
-            SetFactory projectileFactory = new(ProjectileLoader.ProjectileCount);
+            SetFactory projectileFactory = ProjectileID.Sets.Factory;
 
             Projectiles.TungstenExclude = projectileFactory.CreateBoolSet(false,
                     ProjectileType<BladecrestOathswordProj>(),
