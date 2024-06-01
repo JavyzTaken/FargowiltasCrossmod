@@ -77,7 +77,7 @@ namespace FargowiltasCrossmod.Core.Common
             #endregion
 
             #region NPCs
-            SetFactory npcFactory = NPCID.Sets.Factory
+            SetFactory npcFactory = NPCID.Sets.Factory;
             NPCs.Champion = npcFactory.CreateBoolSet(false,
                 NPCType<CosmosChampion>(),
                 NPCType<EarthChampion>(),

@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     WorldSavingSystem.SpawnedDevi = true;
                 }
             }
+            /*
             if (ModCompatibility.InfernumMode.Loaded)
             {
                 if (ModCompatibility.InfernumMode.InfernumDifficulty && !InfernumStateLastFrame)
@@ -61,6 +62,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 if (ModCompatibility.InfernumMode.InfernumDifficulty) InfernumStateLastFrame = true;
                 else InfernumStateLastFrame = false;
             }
+            */
             base.PostUpdateWorld();
         }
     }
