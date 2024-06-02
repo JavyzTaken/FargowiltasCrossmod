@@ -68,6 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideGreaves>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.SnapClam>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Melee.UrchinMace>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.UrchinStinger>(), 200);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

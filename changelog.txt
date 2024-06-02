@@ -1,5 +1,24 @@
-New Update: v1.0.7.02
-- Changed Mechanical Lure recipe (With Balance Rework config): Mythril Bars -> Iron Bars, Mythril Anvil -> Iron Anvil
-- Fixed Eternity Cryogen phase 1 not dealing damage correctly
--Fixed Eternity Brimstone Elemental sometimes not dealing damage correctly
--Rewrote Eternity-Revengeance and Eternity-Death difficulty descriptions
+New Update: v1.1
+-ADDED 8 NEW ENCHANTMENTS, one per pre-Hardmode Calamity armor
+-Added Force of Exploration
+-Reworked Eternity Hive Mind
+
+-Brimstone Elemental:
+--Added new burning shader aura
+--Tweaked movement during mobile phases
+--Increased visibility for several projectiles
+--Brimstone barrages now accelerate after 2 seconds
+--No longer inflicts Obstructed with aura
+--Reworked cocoon phase
+--Brimlings now damage the boss when dying
+--Brimlings no longer spawn a clone on death and are immortal on Masochist Mode
+--Added burning effect when outside aura
+
+-Improved Permafrost's movement
+
+-Ported to new Calamity update
+-Adjusted some recipes
+-Resprited Outlaws Essence and Vagabond Soul
+-Loading a world with Infernum Mod enabled no longer disables Eternity priority automatically
+-Fixed enemy spawn adjustments applying outside of Eternity Mode
+-Large internal rewrites, restructuring, and some optimization

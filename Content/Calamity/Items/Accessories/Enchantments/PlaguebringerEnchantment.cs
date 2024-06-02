@@ -62,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Plaguebringer.PlaguebringerCarapace>());
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Plaguebringer.PlaguebringerPistons>());
             recipe.AddIngredient(ModContent.ItemType<BeeEnchant>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.PlagueHive>());
+            //recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.PlagueHive>()); they DELETED IT
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Rogue.EpidemicShredder>());
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();

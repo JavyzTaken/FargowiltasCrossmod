@@ -48,7 +48,32 @@ No, way too much effort to maintain. Also, things like Class Setups wiki pages a
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Newest Update: v1.0.7
+Newest Update: v1.1
+-ADDED 8 NEW ENCHANTMENTS, one per pre-Hardmode Calamity armor
+-Added Force of Exploration
+-Reworked Eternity Hive Mind
+
+-Brimstone Elemental:
+--Added new burning shader aura
+--Tweaked movement during mobile phases
+--Increased visibility for several projectiles
+--Brimstone barrages now accelerate after 2 seconds
+--No longer inflicts Obstructed with aura
+--Reworked cocoon phase
+--Brimlings now damage the boss when dying
+--Brimlings no longer spawn a clone on death and are immortal on Masochist Mode
+--Added burning effect when outside aura
+
+-Improved Permafrost's movement
+
+-Ported to new Calamity update
+-Adjusted some recipes
+-Resprited Outlaws Essence and Vagabond Soul
+-Loading a world with Infernum Mod enabled no longer disables Eternity priority automatically
+-Fixed enemy spawn adjustments applying outside of Eternity Mode
+-Large internal rewrites, restructuring, and some optimization
+
+Previous Update: v1.0.7
 Eternity-Death changes:
 -Queen Bee: Uses new Calamity deathmode charges
 -Brain of Cthulhu: Deleted old change, Now uses a modified version of new Calamity charge in Phase 2
@@ -64,7 +89,3 @@ Fixed Slime God contact damage not applying correctly during special attacks
 Fixed Slime God slam telegraphs not rendering
 Vanilla bosses now correctly refund summoning items
 Hardmode crate recipes now correctly use Hardmode crates
-
-Previous Update: v1.0.6.3
--Updated to be compatible with Calamity Mod version 1.0.4.1
--Tweaked several boss health values

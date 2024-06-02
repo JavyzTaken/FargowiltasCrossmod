@@ -1,11 +1,16 @@
-﻿using CalamityMod.NPCs.BrimstoneElemental;
+﻿using CalamityMod;
+using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
+using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -45,6 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             return base.PreDraw(spriteBatch, screenPos, drawColor);
 
         }
+        Vector2 Aim = Vector2.Zero;
         public override bool PreAI()
         {
             NPC.TargetClosest();
@@ -53,6 +59,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             
             Player target = Main.player[NPC.target];
 
+            if (WorldSavingSystem.MasochistModeReal)
+                NPC.dontTakeDamage = true;
             
             NPC owner = Main.npc[(int)NPC.ai[0]];
             NPC.spriteDirection = NPC.Center.X > target.Center.X ? -1 : 1;
@@ -67,61 +75,52 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 return false;
             }
 
-            
-            if (NPC.ai[1] < 0)
-            {
-                NPC.dontTakeDamage = true;
-                NPC.rotation += 0.15f;
-                float speed = 10 + NPC.ai[2];
-                NPC.ai[2] += 0.1f;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, (owner.Center - NPC.Center).SafeNormalize(Vector2.Zero) * speed, 0.08f);
-                if (NPC.Distance(owner.Center) <= 20 && DLCUtils.HostCheck)
-                {
-                    Projectile.NewProjectileDirect(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), 0, 0, ai1:2);
-                    owner.SimpleStrikeNPC(300, 1, true);
-                    NPC.StrikeInstantKill();
-                    NetSync(NPC);
-                }
-                return false;
-            }
+            Vector2 targetP = target.Center + new Vector2(0, 50 * NPC.ai[3]).RotatedBy(MathHelper.ToRadians((int)NPC.ai[2]));
+            int distance = 550;
+            Vector2 ownerToMe = owner.DirectionTo(NPC.Center);
+            int side = -Math.Sign(FargoSoulsUtil.RotationDifference(ownerToMe, owner.DirectionTo(target.Center)));
+            targetP += ownerToMe.RotatedBy(side * MathHelper.PiOver2) * distance;
+            NPC.velocity = (targetP - NPC.Center).SafeNormalize(Vector2.Zero) * NPC.Distance(targetP) / 160f;
 
-            if (NPC.ai[1] == 0)
+            NPC.ai[2] += 0.01f;
+            if (NPC.Opacity < 0.9f)
+                return false;
+            Vector2 shootPos = NPC.Center + Vector2.UnitX * NPC.spriteDirection * NPC.width / 2;
+            Vector2 predictiveAim = CalamityUtils.CalculatePredictiveAimToTarget(shootPos, target, 4.5f);
+            Aim = Vector2.Lerp(Aim, predictiveAim, 0.03f);
+            if (NPC.ai[2] - (int)NPC.ai[2] >= 0.4f && DLCUtils.HostCheck) // telegraph
             {
-                Vector2 targetP = owner.Center + new Vector2(0, 50 * NPC.ai[3]).RotatedBy(MathHelper.ToRadians((int)NPC.ai[2]));
-                NPC.velocity = (targetP - NPC.Center).SafeNormalize(Vector2.Zero) * NPC.Distance(targetP) / 30f;
-                NPC.ai[2] += 0.01f;
-                if (NPC.ai[2] - (int)NPC.ai[2] >= 0.6f && DLCUtils.HostCheck)
+                
+                Particle p = new SparkParticle(shootPos + Main.rand.NextVector2Circular(4, 4), Aim, Color.DarkRed, Main.rand.NextFloat(0.25f, 0.5f), 10);
+                p.Spawn();
+            }
+            if (NPC.ai[2] - (int)NPC.ai[2] >= 0.6f)
+            {
+                
+                if (DLCUtils.HostCheck)
                 {
                     NPC.ai[2] = Main.rand.Next(0, 360);
                     NPC.ai[3] = Main.rand.NextFloat(3, 4f);
-                    if (Main.rand.NextBool(3))
-                    {
-                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 4.5f, ModContent.ProjectileType<BrimstoneBarrage>(), NPC.damage, 0);
-                    }
-                    NetSync(NPC);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), shootPos, Aim, ModContent.ProjectileType<BrimstoneBarrage>(), NPC.damage, 0);
                 }
-                
+                SoundEngine.PlaySound(SoundID.Item20 with { Pitch = 0.3f, Volume = 0.8f }, NPC.Center);
+                NetSync(NPC);
             }
-            if (NPC.ai[1] == 1)
-            {
-                NPC.ai[2]++;
-                if (NPC.ai[2] == 200)
-                {
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
-                    NPC.ai[2] = 0;
-                    NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
-                }
-                
-                NPC.velocity *= 0.98f;
-            }
-            
+
             return false;
         }
         public override void OnKill()
         {
-            if (NPC.ai[1] >= 0)
+            if (NPC.ai[1] >= 0 && WorldSavingSystem.MasochistModeReal)
             {
                 NPC.NewNPC(NPC.GetSource_Death(), (int)NPC.Center.X + 20, (int)NPC.Center.Y + 20, ModContent.NPCType<Brimling>(), 0, NPC.ai[0], -1);
+            }
+            int ownerID = (int)NPC.ai[0];
+            if (ownerID.IsWithinBounds(Main.maxNPCs) && Main.npc[ownerID] is NPC owner && owner.TypeAlive<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>())
+            {
+                owner.SimpleStrikeNPC(NPC.lifeMax, 1);
+                if (owner.HitSound.HasValue)
+                    SoundEngine.PlaySound(owner.HitSound.Value with { Pitch = -0.5f }, owner.Center);
             }
         }
     }

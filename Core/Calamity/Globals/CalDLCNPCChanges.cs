@@ -320,7 +320,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     NPCID.KingSlime,
                     NPCID.BlueSlime,
                     NPCID.SlimeSpiked,
-                    ModContent.NPCType<KingSlimeJewel>()
+                    ModContent.NPCType<KingSlimeJewelRuby>()
                 ];
                 List<int> Eater = [NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail];
                 List<int> SlimeGod = [ ModContent.NPCType<EbonianPaladin>(), ModContent.NPCType<SplitEbonianPaladin>(),
