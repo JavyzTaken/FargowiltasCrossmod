@@ -9,6 +9,11 @@ namespace FargowiltasCrossmod.Assets.Particles
     public class BloomPixelParticle : Particle
     {
         /// <summary>
+        /// The spin speed of this pixel when rotating towards <see cref="HomeInDestination"/>.
+        /// </summary>
+        public float SpinSpeed;
+
+        /// <summary>
         /// The color of bloom behind the pixel.
         /// </summary>
         public Color BloomColor;
@@ -48,6 +53,7 @@ namespace FargowiltasCrossmod.Assets.Particles
             Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
             HomeInDestination = homeInDestination;
             BloomScaleFactor = bloomScaleFactor ?? Vector2.One * 0.19f;
+            SpinSpeed = Main.rand.NextFloat(0.1f, 0.9f);
         }
 
         public override void Update()
@@ -63,16 +69,21 @@ namespace FargowiltasCrossmod.Assets.Particles
                 Velocity *= 0.96f;
             else
             {
-                float currentDirection = Velocity.ToRotation();
-                float idealDirection = (HomeInDestination.Value - Position).ToRotation();
-                Velocity = currentDirection.AngleLerp(idealDirection, 0.03f).ToRotationVector2() * Velocity.Length();
-                Velocity += (HomeInDestination.Value - Position) * 0.005f;
+                float radius = HomeInDestination.Value.Distance(Position);
+                float angle = HomeInDestination.Value.AngleTo(Position);
+
+                radius -= 1.5f;
+                radius *= 0.925f;
+                angle += MathHelper.TwoPi * SpinSpeed / radius;
+
+                Vector2 newPosition = HomeInDestination.Value + angle.ToRotationVector2() * radius;
+                Velocity = Vector2.Lerp(Velocity, newPosition - Position, 0.9f);
 
                 if (Position.WithinRange(HomeInDestination.Value, 10f))
                     Kill();
             }
 
-            Rotation += Velocity.X * 0.07f;
+            Rotation = Velocity.ToRotation();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
