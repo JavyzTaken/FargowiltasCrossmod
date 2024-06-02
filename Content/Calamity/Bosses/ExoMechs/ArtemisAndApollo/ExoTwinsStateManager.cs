@@ -100,6 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     TransitionToNextState();
             }
 
+            // Reset damage. This is not performed during combo attacks.
             if (SharedState.AIState != ExoTwinsAIState.PerformComboAttack)
                 twin.damage = 0;
 
@@ -119,6 +120,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     break;
                 case ExoTwinsAIState.MachineGunLasers:
                     ExoTwinsStates.DoBehavior_MachineGunLasers(twin, twinAttributes);
+                    break;
+                case ExoTwinsAIState.ExothermalOverload:
+                    ExoTwinsStates.DoBehavior_ExothermalOverload(twin, twinAttributes);
                     break;
                 case ExoTwinsAIState.PerformIndividualAttacks:
                     PerformIndividualizedAttacks(twin, twinAttributes);
@@ -173,6 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             if (SharedState.TotalFinishedAttacks % 2 == 1)
                 return ExoTwinsAIState.PerformIndividualAttacks;
 
+            return ExoTwinsAIState.ExothermalOverload;
             return Main.rand.NextFromList(ExoTwinsAIState.DashesAndLasers, ExoTwinsAIState.CloseShots, ExoTwinsAIState.MachineGunLasers);
         }
 

@@ -8,6 +8,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         DashesAndLasers,
         CloseShots,
         MachineGunLasers,
+        ExothermalOverload,
 
         Inactive,
 

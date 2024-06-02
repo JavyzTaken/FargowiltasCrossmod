@@ -13,6 +13,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Luminance.Core.Hooking;
 using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
@@ -123,6 +124,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// The interpolant of motion blur for Apollo.
         /// </summary>
         public float MotionBlurInterpolant
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// How much Apollo's form should be engulfed in frames, as a 0-1 interpolant.
+        /// </summary>
+        public float FlameEngulfInterpolant
         {
             get;
             set;
@@ -273,6 +283,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             NPC.chaseable = true;
             ThrusterBoost = MathHelper.Clamp(ThrusterBoost - 0.035f, 0f, 10f);
             MotionBlurInterpolant = Utilities.Saturate(MotionBlurInterpolant - 0.05f);
+            FlameEngulfInterpolant = Utilities.Saturate(FlameEngulfInterpolant - 0.06f);
             SpecificDrawAction = null;
 
             if (!Inactive)
@@ -359,7 +370,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             CommonExoTwinFunctionalities.DrawBase(NPC, this, BaseTexture.Value, Glowmask.Value, lightColor, screenPos, Frame);
+            DrawPlasmaFlameEngulfEffect(screenPos);
             return false;
+        }
+
+        public float FlameEngulfWidthFunction(float completionRatio)
+        {
+            float baseWidth = 114f - completionRatio * 64f;
+            float tipSmoothenFactor = MathF.Sqrt(1f - Utilities.InverseLerp(0.3f, 0.015f, completionRatio).Cubed());
+            return NPC.scale * baseWidth * tipSmoothenFactor;
+        }
+
+        public Color FlameEngulfColorFunction(float completionRatio)
+        {
+            Color flameTipColor = new(255, 255, 208);
+            Color limeFlameColor = new(173, 255, 36);
+            Color greenFlameColor = new(52, 156, 17);
+            Color trailColor = Utilities.MulticolorLerp(MathF.Pow(completionRatio, 0.75f) * 0.7f, flameTipColor, limeFlameColor, greenFlameColor);
+            return NPC.GetAlpha(trailColor) * (1 - completionRatio) * FlameEngulfInterpolant;
+        }
+
+        public void DrawPlasmaFlameEngulfEffect(Vector2 screenPos)
+        {
+            if (FlameEngulfInterpolant <= 0f)
+                return;
+
+            Vector2[] flamePositions = new Vector2[8];
+            for (int i = 0; i < flamePositions.Length; i++)
+                flamePositions[i] = NPC.Center - NPC.oldRot[i].ToRotationVector2() * (i * 90f - 96f);
+
+            ManagedShader flameShader = ShaderManager.GetShader("FargowiltasCrossmod.FlameEngulfShader");
+            flameShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
+            flameShader.SetTexture(MiscTexturesRegistry.TurbulentNoise.Value, 2, SamplerState.LinearWrap);
+
+            PrimitiveSettings flameSettings = new(FlameEngulfWidthFunction, FlameEngulfColorFunction, Shader: flameShader);
+            PrimitiveRenderer.RenderTrail(flamePositions, flameSettings, 60);
         }
 
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
