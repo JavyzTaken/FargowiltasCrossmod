@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             CalDLCAddonPlayer mplayer = player.GetModPlayer<CalDLCAddonPlayer>();
             float extraCrit = (mplayer.NumJumpsUsed > maxCritJumps ? maxCritJumps : mplayer.NumJumpsUsed) * critPerJump;
             player.GetCritChance(DamageClass.Generic) += extraCrit;
-            player.GetDamage(DamageClass.Summon) += extraCrit;
+            player.GetDamage(DamageClass.Summon) += extraCrit / 100f;
             for (int i = 0; i < extraCrit / 5; i++)
             {
                 if (Main.rand.NextBool())
