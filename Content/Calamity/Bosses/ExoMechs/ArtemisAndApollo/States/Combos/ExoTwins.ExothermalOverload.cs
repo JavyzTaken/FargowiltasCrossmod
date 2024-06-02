@@ -242,7 +242,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
-        /// Draws the gleam of the Empress' bow during her Eventide Lances attack, assuming she's using it.
+        /// Draws a gleam on Artemis' pupil/central exo crystal as a telegraph for her laserbeam during the Exothermal Overload attack.
         /// </summary>
         /// <param name="drawPosition">The base draw position of the Empress.</param>
         public static void DoBehavior_ExothermalOverload_ArtemisRenderGleam(Vector2 drawPosition, float glimmerInterpolant)
