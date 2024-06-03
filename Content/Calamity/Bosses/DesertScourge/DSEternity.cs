@@ -72,9 +72,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public int[] attackCycle = [0, 1, 0, 1, 1, 0, -1, -1, -1];
         public int phase;
         public bool CanDoSlam = false;
+        public int SlamCooldown = 0;
         public bool DoSlam = false;
         public int AttackIndex = 0;
 
+        public int DespawnTimer = 0;
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             for (int i = 0; i < ai.Length; i++)
@@ -112,33 +114,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 return true;
             }
-            if (NPC.ai[2] < 20)
-            {
-                NPC.ai[2]++;
-                return true;
-
-            }
             if ((NPC.GetLifePercent() < 0.5f && NPC.localAI[2] == 0) || NPC.alpha > 0 || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>())) // Nuisance phase
             {
-                drawInfo[2] = 200;
-                drawInfo[1] = 200;
+                drawInfo = [0, 200, 200, 0];
                 for (int i = 0; i < ai.Length; i++)
                 {
                     ai[i] = 0;
                 }
                 AttackIndex = 0;
+
                 return true;
             }
+            if (NPC.ai[2] < 20)
+            {
+                NPC.ai[2]++;
+
+                return true;
+
+            }
+            if (NPC.localAI[2] == 0f)
+                NPC.localAI[2] = 2f; // Cannot summon nuisances unless otherwise specified
+
             Player target = Main.player[NPC.target];
             if (!Targeting())
             {
-                
-                return true;
+                return false;
             }
             Vector2 toplayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
             NPC.realLife = -1;
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
             int attack = attackCycle[AttackIndex];
+            if (SlamCooldown > 0)
+                SlamCooldown--;
             if (DoSlam)
             {
                 attack = 22;
@@ -185,9 +192,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 WormMovement(NPC, collision);
 
                 ai[0]++;
-                if (ai[0] == 250 && phase > 0 && CanDoSlam) //initiate slam, only after first phase (nuisances)
+                if (ai[0] == 250 && phase > 0 && CanDoSlam && SlamCooldown <= 0) //initiate slam, only after first phase (nuisances)
                 {
                     CanDoSlam = false;
+                    SlamCooldown = 60 * 10;
                     DoSlam = true;
                     NetSync(NPC);
                 }
@@ -222,6 +230,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 Slam(NPC);
             }
+            if (attack != 4) // Not suck, reset suck variables
+            {
+                drawInfo = [0, 200, 200, 0]; 
+            }
 
             ManageMusicFade(attack == 22);
 
@@ -249,13 +261,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                         if (NPC.timeLeft > 30)
                             NPC.timeLeft = 30;
                         NPC.velocity.Y += 1f;
-                        if (NPC.timeLeft == 1)
+                        if (NPC.timeLeft <= 1)
                         {
                             if (Main.netMode != NetmodeID.MultiplayerClient)
                             {
                                 FargoSoulsUtil.ClearHostileProjectiles(2, NPC.whoAmI);
                             }
                         }
+                        if (++DespawnTimer > 90)
+                            NPC.active = false;
                         return false;
                     }
                 }
@@ -552,8 +566,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 lungeInfo[3]++;
                 if (lungeInfo[3] % 15 == 0)
                 {
+                    SoundEngine.PlaySound(SoundID.Item72, NPC.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, 7), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.HorsWaterBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, 7), ModContent.ProjectileType<ScourgeSandstream>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                 }
             }
             //if has been moving downard and to the side of the player (ending the lung), truely end the attack. Repeat the attack if lungeinfo 1 is not zero.
@@ -573,6 +588,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 AttackIndex = 0;
             }
             CanDoSlam = true;
+
+            if (NPC.localAI[2] == 2f)
+                NPC.localAI[2] = 0f; // Can summon nuisances
+            NPC.netUpdate = true;
             NetSync(NPC);
         }
         bool canSee = false;

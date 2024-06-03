@@ -647,6 +647,7 @@ Mods: {
 			SulphurCloud.DisplayName: Sulphur Cloud
 			PureGel.DisplayName: Pure Gel
 			HiveMindPulse.DisplayName: Hive Mind Pulse
+			ScourgeSandstream.DisplayName: Scourge Sandstream
 		}
 
 		Buffs: {

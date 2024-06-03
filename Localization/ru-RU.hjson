@@ -657,6 +657,7 @@ Mods: {
 			SulphurCloud.DisplayName: Сернистое Облако
 			PureGel.DisplayName: Чистейший Гель
 			HiveMindPulse.DisplayName: Разум Улей Пульс
+			// ScourgeSandstream.DisplayName: Scourge Sandstream
 		}
 
 		Buffs: {
