@@ -1,24 +1,11 @@
-New Update: v1.1
--ADDED 8 NEW ENCHANTMENTS, one per pre-Hardmode Calamity armor
--Added Force of Exploration
--Reworked Eternity Hive Mind
+New Update: v1.1.0.2
+-Fixed the Slime God fight not working properly
+-Infernum Mode again properly disables Eternity Mode
+-Buffed Wulfrum Enchantment damage
+-Fixed Wulfrum Enchantment DoT not updating popup numbers
 
--Brimstone Elemental:
---Added new burning shader aura
---Tweaked movement during mobile phases
---Increased visibility for several projectiles
---Brimstone barrages now accelerate after 2 seconds
---No longer inflicts Obstructed with aura
---Reworked cocoon phase
---Brimlings now damage the boss when dying
---Brimlings no longer spawn a clone on death and are immortal on Masochist Mode
---Added burning effect when outside aura
-
--Improved Permafrost's movement
-
--Ported to new Calamity update
--Adjusted some recipes
--Resprited Outlaws Essence and Vagabond Soul
--Loading a world with Infernum Mod enabled no longer disables Eternity priority automatically
--Fixed enemy spawn adjustments applying outside of Eternity Mode
--Large internal rewrites, restructuring, and some optimization
+-Desert Scourge:
+--Cannot interrupt attacks to spawn Nuisances
+--Water blasts replaced with sand blasts
+--Fixed despawn issues
+--Fixed sometimes suddenly becoming a very big fan of smashing his head into the sand at low health
