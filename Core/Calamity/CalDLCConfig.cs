@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         public bool ConsumableSummons;
 
         [ReloadRequired]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool InfernumDisablesEternity;
 
         [Header("Balance")] // Title
