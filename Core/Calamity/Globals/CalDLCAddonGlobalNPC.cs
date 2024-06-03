@@ -142,11 +142,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (owner != null && owner.active && !owner.dead && owner.ForceEffect<WulfrumEffect>())
                 {
                     npc.lifeRegen -= DoTForce;
+                    if (damage < (int)(DoTForce / 10f))
+                        damage = (int)(DoTForce / 10f);
                 }
                 else
                 {
                     npc.lifeRegen -= DoTNormal;
+                    if (damage < (int)(DoTNormal / 10f))
+                        damage = (int)(DoTNormal / 10f);
                 }
+
             }
             WulfrumScanned = -1;
         }
