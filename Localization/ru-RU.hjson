@@ -411,7 +411,7 @@ Mods: {
 				DisplayName: Зачарование Мранитового Архитектора
 				Tooltip:
 					'''
-					Увеличивает скорость размещения блоков 10% и далность размещения блоков на 5 
+					Увеличивает скорость размещения блоков на 10% и далность размещения блоков на 5
 					Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
 					Эффекты [i:CalamityMod/MarniteRepulsionShield] Мранитового репульсионного щита
 					'''
@@ -419,7 +419,7 @@ Mods: {
 
 			DesertProwlerEnchantment: {
 				DisplayName: Зачарование Пустынного Мародёра
-				Tooltip: Задержите ПРОБЕЛ, чтобы зарядить мощный заряжаемый прыжок, который так же увеличивает горизонтальную скорость
+				Tooltip: Задержите ВВЕРХ, чтобы зарядить мощный заряжаемый прыжок, который также увеличивает горизонтальную скорость
 			}
 
 			WulfrumEnchantment: {
@@ -435,18 +435,18 @@ Mods: {
 			}
 
 			ExplorationForce: {
-				// DisplayName: Force of Exploration
-				/* Tooltip:
+				DisplayName: Артефакт Исследования
+				Tooltip:
 					'''
-					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
-					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
-					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
-					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance and summon damage
-					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
-					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
-					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
-					''' */
+					[i:FargowiltasCrossmod/MarniteEnchantment] Увеличивает скорость размещения блоков на 25% и далность размещения блоков на 5
+					[i:FargowiltasCrossmod/MarniteEnchantment] Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
+					[i:FargowiltasCrossmod/WulfrumEnchantment] Вульфрумовый дрон показывает слабости врагов к дебаффам и делает их менее устойчивым к любым дебаффам с уроном
+					[i:FargowiltasCrossmod/DesertProwlerEnchantment] ВВЕРХ чтобы зарядить прыжок, который также увеличивает скорость передвижения
+					[i:FargowiltasCrossmod/AerospecEnchantment] Прыжок и двойные прыжки увеличивают шанс критического удара и урон призывателя
+					[i:FargowiltasCrossmod/SulphurEnchantment] Дарует дополнительный прыжок с пузырём, атакуйте пузырь, чтобы выпустить токсичные газы
+					[i:FargowiltasCrossmod/VictideEnchantment] Даёт морские иглы, которые вылетают, если какое-то время атаковать и перестать
+					Эффекты [i:CalamityMod/MarniteRepulsionShield] Мранитового репульсионного щита
+					'''
 			}
 
 			SnowRuffianEnchantment: {
@@ -724,13 +724,13 @@ Mods: {
 		}
 
 		WizardEffect: {
-			// Aerospec: Crit bonus doubled
-			// Marnite: Stronger daggers, +15% placement speed and +5 placement range
-			// DesertProwler: Stronger jumps
-			// Wulfrum: Scanned Enemies take even more extra damage from debuffs
+			Aerospec: Крит бонус удвоен
+			Marnite: Усиленные лазеры, +15% скорость размещения и +5 дальность размещения блоков
+			DesertProwler: Более сильные прыжки
+			Wulfrum: Отсканированные враги получают ещё больше доп. урона от дебаффов
 			// Hydrothermic: Longer overheat charge, more attack speed increase
 			// Daedalus: Grants wings if you don't have any, Can fly higher
-			// SnowRuffian: Grants some flight time
+			SnowRuffian: Даёт немного полёта
 			// Reaver: More drastic stat changes
 			/* Plaguebringer:
 				'''
@@ -738,9 +738,9 @@ Mods: {
 				Enemies spread debuffs for a longer amount of time
 				''' */
 			// Umbraphile: Bats deal more damage and travel faster
-			// Sulphur: Jumps create 3 bubbles with increased damage
-			// Victide: Spikes are no longer affected by gravity and inflict venom
-			// Statigel: Higher maximum speed, damage bonus doubled
+			Sulphur: Прыжки создают 3 пузыря, которые наносят больше урона
+			Victide: Иглы игнорируют гравитацию и наносят Кислотный яд
+			Statigel: Увеличена максимальная скорость, бонус к урону удвоен
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
