@@ -142,6 +142,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             NPCID.Sets.SpecificDebuffImmunity[ModContent.NPCType<MutantBoss>()][ModContent.BuffType<Enraged>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[ModContent.NPCType<MutantBoss>()][ModContent.BuffType<BanishingFire>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[NPCID.QueenBee][ModContent.BuffType<Vaporfied>()] = true;
         }
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void SetDefaults(NPC npc)
