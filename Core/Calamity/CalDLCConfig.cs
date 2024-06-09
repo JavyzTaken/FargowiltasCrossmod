@@ -24,12 +24,6 @@ namespace FargowiltasCrossmod.Core.Calamity
         [DefaultValue(true)]
         public bool InfernumDisablesEternity;
 
-        [Header("Balance")] // Title
-
-        [ReloadRequired]
-        [DefaultValue(true)]
-        public bool BalanceRework;
-
 
     }
 }

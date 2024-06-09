@@ -96,14 +96,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void SetDefaults(Item item)
         {
             //Progression balance changes
-            if (CalDLCConfig.Instance.BalanceRework)
+            float balance = BalanceChange(item);
+            if (balance != 1)
             {
-                float balance = BalanceChange(item);
-                if (balance != 1)
-                {
-                    item.damage = (int)(item.damage * balance);
-                }
-                
+                item.damage = (int)(item.damage * balance);
             }
         }
 
@@ -149,8 +145,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 else if (item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
                 {
-                    if (CalDLCConfig.Instance.BalanceRework)
-                        scale /= TrueMeleeTungstenScaleNerf(player);
+                    scale /= TrueMeleeTungstenScaleNerf(player);
                 }
             }
             #endregion
@@ -189,66 +184,63 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
 
-            if (CalDLCConfig.Instance.BalanceRework)
+            float balance = BalanceChange(item);
+            const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
+            const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
+            if (balance > 1)
             {
-                float balance = BalanceChange(item);
-                const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
-                const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
-                if (balance > 1)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
-                }
-                else if (balance < 1)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
-                }
-                if (item.type == ItemID.MagicDagger)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
-                }
-                if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
-                }
-                if (item.type == ModContent.ItemType<TungstenEnchant>())
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on true melee weapons"));
-                }
-                if (item.type == ModContent.ItemType<MythrilEnchant>())
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
-                }
-                if (item.type == ModContent.ItemType<OrichalcumEnchant>())
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
-                }
-                if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
-                }
-                if (item.type == ModContent.ItemType<SlimyShield>())
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
-                }
-                if (item.ModItem != null && item.ModItem is FlightMasteryWings)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
-                }
-                CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
-                if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
-                {
-                    if (calItem.AppliedEnchantment.Value.ID == 1000)
-                    {
-                        tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
-                    }
-                }
-                /*
-                if (item.type == ItemID.WarmthPotion)
-                {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not grant buff immunities"));
-                }
-                */
+                tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
             }
+            else if (balance < 1)
+            {
+                tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+            }
+            if (item.type == ItemID.MagicDagger)
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
+            }
+            if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
+            }
+            if (item.type == ModContent.ItemType<TungstenEnchant>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on true melee weapons"));
+            }
+            if (item.type == ModContent.ItemType<MythrilEnchant>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
+            }
+            if (item.type == ModContent.ItemType<OrichalcumEnchant>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
+            }
+            if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
+            }
+            if (item.type == ModContent.ItemType<SlimyShield>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
+            }
+            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
+            }
+            CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
+            if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
+            {
+                if (calItem.AppliedEnchantment.Value.ID == 1000)
+                {
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
+                }
+            }
+            /*
+            if (item.type == ItemID.WarmthPotion)
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not grant buff immunities"));
+            }
+            */
         }
         #endregion
     }

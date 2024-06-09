@@ -89,16 +89,13 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
-            if (CalDLCConfig.Instance.BalanceRework)
+            if (BossRushEvent.BossRushActive)
             {
-                if (BossRushEvent.BossRushActive)
-                {
-                    Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
-                }
-                if (NPC.AnyNPCs(NPCType<MutantBoss>()))
-                {
-                    Player.ClearBuff(BuffType<Enraged>());
-                }
+                Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
+            }
+            if (NPC.AnyNPCs(NPCType<MutantBoss>()))
+            {
+                Player.ClearBuff(BuffType<Enraged>());
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }

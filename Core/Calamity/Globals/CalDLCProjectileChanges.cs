@@ -105,7 +105,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 projectile.friendly = true;
             }
 
-            if (CalDLCConfig.Instance.BalanceRework && projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
+            if (projectile.type == ModContent.ProjectileType<SlimeBall>() && !Main.player.Any(p => p.active && p.FargoSouls() != null && p.FargoSouls().SupremeDeathbringerFairy))
             {
                 if (projectile.ModProjectile != null)
                 {
@@ -155,25 +155,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 //projectile.FargoSouls().TungstenScale = 1;
             }
-            #region Balance Changes config
-            if (ModContent.GetInstance<CalDLCConfig>().BalanceRework)
+            #region Balance Changes
+            //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
+            if (projectile.ModProjectile != null)
             {
-                //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
-                if (projectile.ModProjectile != null)
+                if (projectile.ModProjectile.Mod == ModCompatibility.SoulsMod.Mod && projectile.hostile)
                 {
-                    if (projectile.ModProjectile.Mod == ModCompatibility.SoulsMod.Mod && projectile.hostile)
-                    {
-                        ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
-                    }
+                    ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
                 }
-                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
-                {
-                    projectile.damage = 75;
-                }
-                if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 100 && NPC.AnyNPCs(NPCID.HallowBoss))
-                {
-                    projectile.damage = 100;
-                }
+            }
+            if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
+            {
+                projectile.damage = 75;
+            }
+            if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 100 && NPC.AnyNPCs(NPCID.HallowBoss))
+            {
+                projectile.damage = 100;
             }
             return true;
             #endregion
@@ -184,34 +181,32 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 modifiers.FinalDamage *= 0.2f;
             }
-            if (CalDLCConfig.Instance.BalanceRework)
+
+            if (projectile.type == ModContent.ProjectileType<BlushieStaffProj>())
+                modifiers.FinalDamage *= 0.7f;
+            if (CalDLCSets.Projectiles.EternityBookProj[projectile.type] || (projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0))
+                modifiers.FinalDamage *= 0.4f;
+            if (CalDLCSets.Projectiles.AngelAllianceProj[projectile.type])
             {
-                if (projectile.type == ModContent.ProjectileType<BlushieStaffProj>())
-                    modifiers.FinalDamage *= 0.7f;
-                if (CalDLCSets.Projectiles.EternityBookProj[projectile.type] || (projectile.type == ModContent.ProjectileType<DirectStrike>() && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<EternityBook>()] > 0))
-                    modifiers.FinalDamage *= 0.4f;
-                if (CalDLCSets.Projectiles.AngelAllianceProj[projectile.type])
+                modifiers.FinalDamage *= 0.2f;
+            }
+            if (projectile.type == ModContent.ProjectileType<AndromedaDeathRay>())
+            {
+                modifiers.FinalDamage *= 0.45f;
+            }
+            if (projectile.type == ModContent.ProjectileType<AndromedaRegislash>())
+            {
+                modifiers.FinalDamage *= 0.8f;
+            }
+
+            if (CalDLCSets.Projectiles.ProfanedCrystalProj[projectile.type] && Main.player[projectile.owner].Calamity().profanedCrystal)
+            {
+                modifiers.FinalDamage *= 0.4f;
+                for (int i = 0; i < Main.player[projectile.owner].ownedProjectileCounts.Length; i++)
                 {
-                    modifiers.FinalDamage *= 0.2f;
-                }
-                if (projectile.type == ModContent.ProjectileType<AndromedaDeathRay>())
-                {
-                    modifiers.FinalDamage *= 0.45f;
-                }
-                if (projectile.type == ModContent.ProjectileType<AndromedaRegislash>())
-                {
-                    modifiers.FinalDamage *= 0.8f;
-                }
-                
-                if (CalDLCSets.Projectiles.ProfanedCrystalProj[projectile.type] && Main.player[projectile.owner].Calamity().profanedCrystal)
-                {
-                    modifiers.FinalDamage *= 0.4f;
-                    for (int i = 0; i < Main.player[projectile.owner].ownedProjectileCounts.Length; i++)
+                    if (ContentSamples.ProjectilesByType[i].minionSlots > 0 && Main.player[projectile.owner].ownedProjectileCounts[i] > 0)
                     {
-                        if (ContentSamples.ProjectilesByType[i].minionSlots > 0 && Main.player[projectile.owner].ownedProjectileCounts[i] > 0)
-                        {
-                            modifiers.FinalDamage *= 0.3f;
-                        }
+                        modifiers.FinalDamage *= 0.3f;
                     }
                 }
             }
