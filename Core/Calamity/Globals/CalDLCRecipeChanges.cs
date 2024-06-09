@@ -727,8 +727,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     recipe.AddIngredient<WulfrumAcrobaticsPack>()
                         .AddIngredient<TundraLeash>()
                         .AddIngredient<FollyFeed>()
-                        .AddIngredient<TheCartofGods>()
-                        .AddIngredient<AuricBar>(10);
+                        .AddIngredient<TheCartofGods>();
                 }
                 if (recipe.HasResult<FlightMasterySoul>() && recipe.HasIngredient(ItemID.EmpressFlightBooster))
                 {
@@ -737,8 +736,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     recipe.AddIngredient<SkylineWings>()
                         .AddIngredient<HadarianWings>()
                         .AddIngredient<TarragonWings>()
-                        .AddIngredient<SilvaWings>()
-                        .AddIngredient<AuricBar>(10);
+                        .AddIngredient<SilvaWings>();
 
                 }
                 if (recipe.HasResult<ColossusSoul>() && recipe.HasIngredient(ItemID.WormScarf))
