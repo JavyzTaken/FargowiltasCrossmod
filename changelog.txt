@@ -1,11 +1,24 @@
-New Update: v1.1.0.2
--Fixed the Slime God fight not working properly
--Infernum Mode again properly disables Eternity Mode
--Buffed Wulfrum Enchantment damage
--Fixed Wulfrum Enchantment DoT not updating popup numbers
+New Update: v1.1.0.3
 
--Desert Scourge:
---Cannot interrupt attacks to spawn Nuisances
---Water blasts replaced with sand blasts
---Fixed despawn issues
---Fixed sometimes suddenly becoming a very big fan of smashing his head into the sand at low health
+-Eternity Hive Mind:
+--Increased maximum speed during p2 idle
+--Decreased phase 2.5 spindash Dark Heart spawn from 2 to 1
+--Can no longer transition to p2 in the middle of teleporting
+--Fixed certain attacks not dealing damage correctly
+
+-Eternity Slime God:
+--Core rests an extra second when breaking out
+--Increased leniency of core immobile shots attack
+
+-Calamity Mutant: Removed phase 2 anahita attack
+
+-Balance Rework config removed, changes are now default
+-Queen Bee is now immune to Vaporfied
+-DLC behavior changes no longer run during Swarms
+-Flight Mastery Soul and Supersonic Soul no longer require Auric Bars
+-Flight Mastery Soul is now throttled when fighting non-Fargo bosses, setting its wing stats to the best available Calamity wings (Silva pre-Yharon, Drew's post-Yharon)
+-Phantasmal Leash and The Guardian damage 17% -> 20%
+-The Biggest Sting damage 17% -> 30%
+-Rebalanced Hardmode ore swords and Orichalcum Halberd
+-Aeolus Boots now includes ALL effects of Angel Treads
+-Banned Kamikaze Squirrel Staff from using Luxor's Gift
