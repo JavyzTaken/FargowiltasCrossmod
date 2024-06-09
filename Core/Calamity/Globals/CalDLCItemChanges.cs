@@ -109,7 +109,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     player.GetJumpState(ExtraJump.FartInAJar).Enable();
                 }
-
+            }
+            if (item.type == ModContent.ItemType<AeolusBoots>()) // add angel treads effects
+            {
+                CalamityPlayer modPlayer = player.Calamity();
+                modPlayer.angelTreads = true;
+                player.accRunSpeed = 7.5f;
+                player.moveSpeed += 0.04f; // angel provides 0.12. aeolus provides 0.08. leftover is 0.04
+                player.iceSkate = true;
+                player.waterWalk = true;
+                player.fireWalk = true;
+                player.buffImmune[BuffID.OnFire] = true;
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -271,6 +281,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
 
             string key = "Mods.FargowiltasCrossmod.Items.AddedEffects.";
+            if (item.type == ModContent.ItemType<AeolusBoots>() && !item.social)
+            {
+                tooltips.Insert(11, new TooltipLine(Mod, "CalAeolus", Language.GetTextValue(key + "AngelTreads")));
+            }
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
