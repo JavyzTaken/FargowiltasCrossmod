@@ -105,24 +105,32 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
         public override void ModifyWeaponDamage(Item item, Player player, ref StatModifier damage)
         {
-            //magic dagger not using system because needs to dynamically change and change shootspeed (setdefaults doesnt allow dynamic change)
-            if (item.type == ItemID.MagicDagger && !Main.hardMode)
+            switch (item.type)
             {
-                damage *= 0.51f;
-                item.shootSpeed = 12;
+                //magic dagger not using system because needs to dynamically change and change shootspeed (setdefaults doesnt allow dynamic change)
+                case ItemID.MagicDagger:
+                    if (!Main.hardMode)
+                    {
+                        damage *= 0.51f;
+                        item.shootSpeed = 12;
+                    }
+                    else
+                    {
+                        item.shootSpeed = 30;
+                    }
+                    break;
+                case ItemID.CobaltSword:
+                case ItemID.PalladiumSword:
+                case ItemID.MythrilSword:
+                case ItemID.OrichalcumSword:
+                    {
+                        player.FargoSouls().AttackSpeed /= 1.5f;
+                    }
+                    break;
             }
-            else if (item.type == ItemID.MagicDagger)
+            if (item.type == ItemID.OrichalcumSword || item.type == ItemID.OrichalcumHalberd)
             {
-                item.shootSpeed = 30;
-            }
-            else if (item.type == ItemID.OrichalcumSword)
-            {
-                damage *= 0.72f; //compensate for cal + souls buff
-            }
-            else if (item.type == ItemID.OrichalcumHalberd)
-            {
-                damage *= 0.5f;
-                player.FargoSouls().AttackSpeed /= 1.25f;
+                damage *= 0.725f;
             }
         }
         public static float TrueMeleeTungstenScaleNerf(Player player)
@@ -227,6 +235,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
             }
+
+            if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
+                item.type == ItemID.OrichalcumSword || item.type == ItemID.MythrilSword ||
+                item.type == ItemID.OrichalcumHalberd)
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Stat buffs decreased"));
+            }
+
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
             {
