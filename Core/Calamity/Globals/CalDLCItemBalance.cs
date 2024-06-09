@@ -87,7 +87,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
             if (item.type == ModContent.ItemType<GuardianTome>()) return 0.2f;
             if (item.type == ModContent.ItemType<SlimeRain>()) return 0.08f;
-            if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.2f;
+            if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.3f;
 
             return 1;
 
