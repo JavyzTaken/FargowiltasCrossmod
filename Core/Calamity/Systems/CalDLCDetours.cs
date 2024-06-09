@@ -16,6 +16,9 @@ using Terraria;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
+using Terraria.DataStructures;
+using CalamityMod.Items;
+using FargowiltasSouls.Content.Items.Weapons.Challengers;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -43,6 +46,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalamityPostDrawHook = new(CalamityPostDrawMethod, CalamityPostDraw_Detour);
             CalamityPostDrawHook.Apply();
 
+            CalamityShootHook = new(CalamityShootMethod, CalamityShoot_Detour);
+            CalamityShootHook.Apply();
+
         }
 
         public override void Unload()
@@ -54,23 +60,23 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalamityPostDrawHook.Undo();
         }
 
+        Hook CalamityPreAIHook;
+        Hook CalamityProjectilePreAIHook;
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
-
-        public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
-        public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
-
         private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityProjectilePreAIMethod = typeof(CalamityGlobalProjectile).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
 
+        Hook CalamityPreDrawHook;
+        Hook CalamityPostDrawHook;
+        public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
 
-        Hook CalamityPreAIHook;
-        Hook CalamityProjectilePreAIHook;
-
-        Hook CalamityPreDrawHook;
-        Hook CalamityPostDrawHook;
+        Hook CalamityShootHook;
+        public delegate bool Orig_CalamityShoot(CalamityGlobalItem self, Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack);
+        private static readonly MethodInfo CalamityShootMethod = typeof(CalamityGlobalItem).GetMethod("Shoot", LumUtils.UniversalBindingFlags);
 
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
         {
@@ -146,6 +152,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 return;
             }
             orig(self, npc, spriteBatch, screenPos, drawColor);
+        }
+
+        internal static bool CalamityShoot_Detour(Orig_CalamityShoot orig, CalamityGlobalItem self, Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack)
+        {
+            // Luxor's Gift banlist
+            if (item.type == ModContent.ItemType<KamikazeSquirrelStaff>())
+                player.Calamity().luxorsGift = false;
+
+            return orig(self, item, player, source, position, velocity, type, damage, knockBack);
         }
     }
 }
