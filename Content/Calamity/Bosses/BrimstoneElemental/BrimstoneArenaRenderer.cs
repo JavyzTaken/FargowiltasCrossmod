@@ -17,9 +17,12 @@ using FargowiltasCrossmod.Core.Calamity.Systems;
 using CalamityMod;
 using FargowiltasSouls;
 using Luminance.Core.Graphics;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class BrimstoneArenaRenderer : BaseRenderer
     {
         #region Fields/Properties

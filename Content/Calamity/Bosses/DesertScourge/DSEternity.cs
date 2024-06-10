@@ -121,9 +121,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 return false;
             }
+
             if (NPC.GetLifePercent() < 0.5f && (NPC.localAI[2] == 0))
                 return true;
-            if (NPC.GetLifePercent() < 0.5f && NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>())) // Nuisance phase
+            if (NPC.GetLifePercent() < 0.5f && (NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>()))) // Nuisance phase
             {
                 drawInfo = [0, 200, 200, 0];
                 for (int i = 0; i < ai.Length; i++)
@@ -168,15 +169,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 return false;
             }
             
+            if (NPC.localAI[2] == 0f)
+                NPC.localAI[2] = 2f; // Cannot summon nuisances unless otherwise specified
+
             if (NPC.ai[2] < 20)
             {
                 NPC.ai[2]++;
 
                 return true;
-
             }
-            if (NPC.localAI[2] == 0f)
-                NPC.localAI[2] = 2f; // Cannot summon nuisances unless otherwise specified
 
             NPC.alpha -= 42;
             if (NPC.alpha < 0)
