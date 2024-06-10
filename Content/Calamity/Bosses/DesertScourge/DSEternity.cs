@@ -10,9 +10,11 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -114,7 +116,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 return true;
             }
-            if ((NPC.GetLifePercent() < 0.5f && NPC.localAI[2] == 0) || NPC.alpha > 0 || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>())) // Nuisance phase
+            Player target = Main.player[NPC.target];
+            if (!Targeting())
+            {
+                return false;
+            }
+            if (NPC.GetLifePercent() < 0.5f && (NPC.localAI[2] == 0))
+                return true;
+            if (NPC.GetLifePercent() < 0.5f && NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHeadYoung>())) // Nuisance phase
             {
                 drawInfo = [0, 200, 200, 0];
                 for (int i = 0; i < ai.Length; i++)
@@ -123,8 +132,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 }
                 AttackIndex = 0;
 
-                return true;
+                // Calamity burrow
+                NPC.Calamity().newAI[0] = 0f;
+                NPC.Calamity().newAI[1] = 0f;
+                NPC.Calamity().newAI[3] = 0f;
+                NPC.localAI[3] = 0f;
+                NPC.As<DesertScourgeHead>().playRoarSound = false;
+                NPC.dontTakeDamage = true;
+
+                // Calamity variables condensed
+                float maxChaseSpeed = 18f * 1.75f;
+                float turnSpeed = 0.3f * 1.15f * 1.05f + 0.12f;
+                float burrowDistance = 1080f;
+                float burrowTarget = target.Center.Y + burrowDistance;
+
+                NPC.alpha += 3;
+                if (NPC.alpha > 255)
+                {
+                    NPC.alpha = 255;
+                }
+                else
+                {
+                    for (int dustIndex = 0; dustIndex < 2; dustIndex++)
+                    {
+                        int dust = Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.UnusedBrown, 0f, 0f, 100, default, 2f);
+                        Main.dust[dust].noGravity = true;
+                        Main.dust[dust].noLight = true;
+                    }
+                }
+
+                NPC.SimpleFlyMovement((new Vector2(target.Center.X, burrowTarget) - NPC.Center).SafeNormalize(Vector2.UnitY) * maxChaseSpeed, turnSpeed);
+                NPC.damage = 0;
+
+
+                return false;
             }
+            
             if (NPC.ai[2] < 20)
             {
                 NPC.ai[2]++;
@@ -135,13 +178,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (NPC.localAI[2] == 0f)
                 NPC.localAI[2] = 2f; // Cannot summon nuisances unless otherwise specified
 
-            Player target = Main.player[NPC.target];
-            if (!Targeting())
-            {
-                return false;
-            }
+            NPC.alpha -= 42;
+            if (NPC.alpha < 0)
+                NPC.alpha = 0;
+
             Vector2 toplayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+
             NPC.realLife = -1;
+
+            NPC.damage = NPC.defDamage;
+            NPC.dontTakeDamage = false;
+
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
             int attack = attackCycle[AttackIndex];
             if (SlamCooldown > 0)
