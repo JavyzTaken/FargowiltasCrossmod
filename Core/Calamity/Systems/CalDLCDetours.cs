@@ -140,7 +140,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             bool wasRevenge = CalamityWorld.revenge;
             bool wasBossRush = BossRushEvent.BossRushActive;
-            bool shouldDisableNPC = CalamityLists.DestroyerIDs.Contains(npc.type);
+            bool shouldDisableNPC = CalamityLists.DestroyerIDs.Contains(npc.type) || npc.type == NPCID.SkeletronPrime;
             bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode && shouldDisableNPC;
 
             if (shouldDisable)
@@ -161,6 +161,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
             NPCID.WallofFleshEye,
             NPCID.Creeper,
+            NPCID.SkeletronPrime
             };
 
         internal static void CalamityPostDraw_Detour(Orig_CalamityPostDraw orig, CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

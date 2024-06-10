@@ -60,6 +60,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
                 if (timer == 60)
                 {
                     NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 22;
+                    NPC.netUpdate = true;
                 }
                 if (timer > 60 && timer % 15 == 0)
                 {
@@ -77,6 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
                         DashAttack = false;
                         dashCounter = 0;
                     }
+                    NPC.netUpdate = true;
                 }
                 return false;
             }
@@ -84,8 +86,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             //Main.NewText(NPC.GetGlobalNPC<Retinazer>().DeathrayState);
             if (NPC.GetGlobalNPC<Retinazer>().DeathrayState == 3)
             {
-                DashAttack = true;
-
+                if (DashAttack != true)
+                {
+                    DashAttack = true;
+                    NPC.netUpdate = true;
+                }
+                
             }
             return true;
         }
