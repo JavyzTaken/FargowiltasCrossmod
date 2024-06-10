@@ -22,29 +22,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ASEternity : EModeCalBehaviour
+    public class ASEternity : CalDLCEmodeBehavior
     {
         public static bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<AquaticScourgeHead>());
+        public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeHead>();
 
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ASBodyEternity : EModeCalBehaviour
+    public class ASBodyAltEternity : ASBodyEternity
+    {
+        public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeBodyAlt>();
+    }
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class ASBodyEternity : CalDLCEmodeBehavior
     {
         public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(ModContent.NPCType<AquaticScourgeBody>(), ModContent.NPCType<AquaticScourgeBodyAlt>());
-        public override void OnHitByProjectile(NPC npc, Projectile projectile, NPC.HitInfo hit, int damageDone)
+        public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeBody>();
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             if (!FargoSoulsUtil.IsSummonDamage(projectile) && projectile.damage > 5)
                 projectile.damage = (int)Math.Min(projectile.damage - 1, projectile.damage * 0.75);
         }
-        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        public override void UpdateLifeRegen(ref int damage)
         {
-            if (npc.lifeRegen < 0)
+            if (NPC.lifeRegen < 0)
             {
-                npc.lifeRegen = (int)Math.Round(npc.lifeRegen / 4f);
+                NPC.lifeRegen = (int)Math.Round(NPC.lifeRegen / 4f);
             }
         }
         /*
@@ -84,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         }
         */
     }
-    public class ASPartsEternity : EModeCalBehaviour
+    public class ASPartsEternity : CalDLCEmodeExtraGlobalNPC
     {
         public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(

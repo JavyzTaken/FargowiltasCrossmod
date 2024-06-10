@@ -19,7 +19,13 @@ using FargowiltasSouls.Common.Graphics.Particles;
 using CalamityMod.Particles;
 using Terraria.Audio;
 using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Armor.DesertProwler;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -29,7 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new Color(102, 89, 54);
         public override void SetDefaults()
@@ -45,11 +52,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerHat>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerShirt>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.DesertProwler.DesertProwlerPants>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.CrackshotColt>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Summon.SunSpiritStaff>());
+            recipe.AddIngredient<DesertProwlerHat>();
+            recipe.AddIngredient<DesertProwlerShirt>();
+            recipe.AddIngredient<DesertProwlerPants>();
+            recipe.AddIngredient<CrackshotColt>();
+            recipe.AddIngredient<SunSpiritStaff>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -60,32 +67,52 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<DesertProwlerEnchantment>();
+        public override void PostUpdateEquips(Player player)
+        {
+            CalDLCAddonPlayer addonPlayer = player.CalamityAddon();
+        }
         public static void ProwlerEffect(Player player)
         {
             
-            CalamityAddonPlayer cplayer = player.GetModPlayer<CalamityAddonPlayer>();
+            CalDLCAddonPlayer cplayer = player.CalamityAddon();
             
-            if (cplayer.ProwlerCharge < 15 && player.controlJump)
+            if (cplayer.ProwlerCharge < 15 && player.controlUp)
             {
-                Vector2 pos = player.Bottom + new Vector2(Main.rand.Next(30, 50) * (Main.rand.NextBool() ? 1 : -1), -Main.rand.Next(10, 20));
-                FargowiltasSouls.Common.Graphics.Particles.SparkParticle spark = new FargowiltasSouls.Common.Graphics.Particles.SparkParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 1, new Color(255, 226, 145, 200) * 0.5f, 0.5f, 30);
-                CalamityMod.Particles.Particle p = new TimedSmokeParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 6 + player.velocity, new Color(230, 206, 125, 200) * 0.1f, new Color(255, 226, 145, 200) * 0.5f, 1, 1, 30);
-                GeneralParticleHandler.SpawnParticle(p);
-                spark.Spawn();
+                if (cplayer.ProwlerCharge > 0)
+                {
+                    Vector2 pos = player.Bottom + new Vector2(Main.rand.Next(30, 50) * (Main.rand.NextBool() ? 1 : -1), -Main.rand.Next(10, 20));
+                    FargowiltasSouls.Common.Graphics.Particles.SparkParticle spark = new FargowiltasSouls.Common.Graphics.Particles.SparkParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 1, new Color(255, 226, 145, 200) * 0.5f, 0.5f, 30);
+                    CalamityMod.Particles.Particle p = new TimedSmokeParticle(pos, (player.Bottom - pos).SafeNormalize(Vector2.Zero) * 6 + player.velocity, new Color(230, 206, 125, 200) * 0.1f, new Color(255, 226, 145, 200) * 0.5f, 1, 1, 30);
+                    GeneralParticleHandler.SpawnParticle(p);
+                    spark.Spawn();
+                }
                 cplayer.ProwlerCharge += 0.15f;
             }
-            if ((!player.controlJump || (cplayer.AutoProwler && cplayer.ProwlerCharge >= 15)) && Collision.SolidCollision(player.BottomLeft, player.width, 6, true) && cplayer.ProwlerCharge > 0)
+            if ((!player.controlUp || (cplayer.AutoProwler && cplayer.ProwlerCharge >= 15)) && Collision.SolidCollision(player.BottomLeft, player.width, 6, true) && cplayer.ProwlerCharge > 0)
             {
 
-                float power = player.ForceEffect<DesertProwlerEffect>() ? 1f : 0.7f;
-                int maxSpeed = player.ForceEffect<DesertProwlerEffect>() ? 45 : 30;
+                float horizontalPower = player.ForceEffect<DesertProwlerEffect>() ? 1f : 0.65f;
+                float verticalPower = horizontalPower;
+                float maxSpeed = player.ForceEffect<DesertProwlerEffect>() ? 20f : 15f;
                 cplayer.ProwlerCharge += 10;
-                player.velocity.Y = -cplayer.ProwlerCharge * power - player.jumpSpeedBoost;
-                player.velocity.X *= cplayer.ProwlerCharge / (6f / power);
+                player.velocity.Y = -cplayer.ProwlerCharge * verticalPower - player.jumpSpeedBoost;
+                player.velocity.X *= (cplayer.ProwlerCharge / (6f / horizontalPower));
+                int dir = 0;
+                if (player.controlLeft)
+                {
+                    dir = -1;
+                    if (player.controlRight)
+                        dir = Math.Sign(player.velocity.X);
+                }
+                else if (player.controlRight)
+                    dir = 1;
+                    
+                player.velocity.X += dir * 6f;
                 player.velocity.X = MathHelper.Clamp(player.velocity.X, -maxSpeed, maxSpeed);
                 for (int i = 0; i < player.width+10; i++)
                 {
@@ -100,15 +127,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 player.RefreshExtraJumps();
                 player.RemoveAllGrapplingHooks();
             }
-            if (!player.controlJump)
+            
+            if (!player.controlUp)
             {
                 cplayer.ProwlerCharge = 0;
             }
+            
             if (Collision.SolidCollision(player.BottomLeft, player.width, 6, true))
             {
+                /*
                 player.controlJump = false;
                 //player.jump = 1;
                 player.releaseJump = false;
+                */
             }
         }
     }

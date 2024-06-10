@@ -19,19 +19,20 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathQB : EternityDeathBehaviour
+    public class EDeathQB : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.QueenBee);
-        public override bool SafePreAI(NPC npc)
-        {
-            if (!npc.HasValidTarget) return true;
 
-            Player player = Main.player[npc.target];
-            CalamityGlobalNPC calamityGlobalNPC = npc.Calamity();
+        public override int NPCOverrideID => NPCID.QueenBee;
+        public override bool PreAI()
+        {
+            if (!NPC.HasValidTarget) return true;
+
+            Player player = Main.player[NPC.target];
+            CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
 
             float maxEnrageScale = 2f;
             float enrageScale = 0.5f; // death default
-            float lifeRatio = npc.GetLifePercent();
+            float lifeRatio = NPC.GetLifePercent();
 
             // Calamity phases
             bool phase2 = lifeRatio < 0.85f;
@@ -40,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
             bool phase5 = lifeRatio < 0.3f;
             bool phase6 = lifeRatio < 0.1f;
 
-            if (npc.ai[0] == 0) // charge phase
+            if (NPC.ai[0] == 0) // charge phase
             {
                 // Calamity charges
 
@@ -52,12 +53,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
                 int chargeAmt = phase6 ? 1 : phase5 ? 3 : phase4 ? 2 : 1;
 
                 // Switch to a random phase if chargeAmt has been exceeded
-                if (npc.ai[1] > (2 * chargeAmt) && npc.ai[1] % 2f == 0f)
+                if (NPC.ai[1] > (2 * chargeAmt) && NPC.ai[1] % 2f == 0f)
                 {
-                    npc.ai[0] = -1f;
-                    npc.ai[1] = 0f;
-                    npc.ai[2] = 0f;
-                    npc.netUpdate = true;
+                    NPC.ai[0] = -1f;
+                    NPC.ai[1] = 0f;
+                    NPC.ai[2] = 0f;
+                    NPC.netUpdate = true;
                     return false;
                 }
 
@@ -65,131 +66,131 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
                 float velocity = ((phase6 ? 25f : phase5 ? 14f : phase4 ? 25f : phase2 ? 20f : 15f) + 3f * enrageScale);
 
                 // Line up and initiate charge
-                if (npc.ai[1] % 2f == 0f)
+                if (NPC.ai[1] % 2f == 0f)
                 {
                     // Avoid cheap bullshit
-                    npc.damage = 0;
+                    NPC.damage = 0;
 
                     // Initiate charge
                     float chargeDistanceY = phase6 ? 100f : phase4 ? 50f : 20f;
                     chargeDistanceY += 100f * enrageScale;
                     chargeDistanceY += MathHelper.Lerp(0f, 100f, 1f - lifeRatio);
 
-                    float distanceFromTargetX = Math.Abs(npc.Center.X - Main.player[npc.target].Center.X);
-                    float distanceFromTargetY = Math.Abs(npc.Center.Y - Main.player[npc.target].Center.Y);
+                    float distanceFromTargetX = Math.Abs(NPC.Center.X - Main.player[NPC.target].Center.X);
+                    float distanceFromTargetY = Math.Abs(NPC.Center.Y - Main.player[NPC.target].Center.Y);
                     if (distanceFromTargetY < chargeDistanceY && distanceFromTargetX >= chargeDistanceX)
                     {
                         // Set damage
-                        npc.damage = npc.defDamage;
+                        NPC.damage = NPC.defDamage;
 
                         // Set AI variables and speed
-                        npc.localAI[0] = 1f;
-                        npc.ai[1] += 1f;
-                        npc.ai[2] = 0f;
+                        NPC.localAI[0] = 1f;
+                        NPC.ai[1] += 1f;
+                        NPC.ai[2] = 0f;
 
                         // Get target location
-                        Vector2 beeLocation = npc.Center;
-                        float targetXDist = Main.player[npc.target].Center.X - beeLocation.X;
-                        float targetYDist = Main.player[npc.target].Center.Y - beeLocation.Y;
+                        Vector2 beeLocation = NPC.Center;
+                        float targetXDist = Main.player[NPC.target].Center.X - beeLocation.X;
+                        float targetYDist = Main.player[NPC.target].Center.Y - beeLocation.Y;
                         float targetDistance = (float)Math.Sqrt(targetXDist * targetXDist + targetYDist * targetYDist);
                         targetDistance = velocity / targetDistance;
-                        npc.velocity.X = targetXDist * targetDistance;
-                        npc.velocity.Y = targetYDist * targetDistance;
+                        NPC.velocity.X = targetXDist * targetDistance;
+                        NPC.velocity.Y = targetYDist * targetDistance;
 
                         // Face the correct direction and play charge sound
-                        float playerLocation = npc.Center.X - Main.player[npc.target].Center.X;
-                        npc.direction = playerLocation < 0 ? 1 : -1;
-                        npc.spriteDirection = npc.direction;
+                        float playerLocation = NPC.Center.X - Main.player[NPC.target].Center.X;
+                        NPC.direction = playerLocation < 0 ? 1 : -1;
+                        NPC.spriteDirection = NPC.direction;
 
-                        SoundEngine.PlaySound(SoundID.Zombie125, npc.Center);
+                        SoundEngine.PlaySound(SoundID.Zombie125, NPC.Center);
 
                         return false;
                     }
 
                     // Velocity variables
-                    npc.localAI[0] = 0f;
+                    NPC.localAI[0] = 0f;
                     float chargeVelocityX = (phase4 ? 24f : phase2 ? 20f : 16f) + 8f * enrageScale;
                     float chargeVelocityY = (phase4 ? 18f : phase2 ? 15f : 12f) + 6f * enrageScale;
                     float chargeAccelerationX = (phase4 ? 0.9f : phase2 ? 0.7f : 0.5f) + 0.25f * enrageScale;
                     float chargeAccelerationY = (phase4 ? 0.45f : phase2 ? 0.35f : 0.25f) + 0.125f * enrageScale;
 
                     // Velocity calculations
-                    if (npc.Center.Y < Main.player[npc.target].Center.Y - chargeDistanceY)
-                        npc.velocity.Y += chargeAccelerationY;
-                    else if (npc.Center.Y > Main.player[npc.target].Center.Y + chargeDistanceY)
-                        npc.velocity.Y -= chargeAccelerationY;
+                    if (NPC.Center.Y < Main.player[NPC.target].Center.Y - chargeDistanceY)
+                        NPC.velocity.Y += chargeAccelerationY;
+                    else if (NPC.Center.Y > Main.player[NPC.target].Center.Y + chargeDistanceY)
+                        NPC.velocity.Y -= chargeAccelerationY;
                     else
-                        npc.velocity.Y *= 0.7f;
+                        NPC.velocity.Y *= 0.7f;
 
-                    if (npc.velocity.Y < -chargeVelocityY)
-                        npc.velocity.Y = -chargeVelocityY;
-                    if (npc.velocity.Y > chargeVelocityY)
-                        npc.velocity.Y = chargeVelocityY;
+                    if (NPC.velocity.Y < -chargeVelocityY)
+                        NPC.velocity.Y = -chargeVelocityY;
+                    if (NPC.velocity.Y > chargeVelocityY)
+                        NPC.velocity.Y = chargeVelocityY;
 
                     float distanceXMax = 100f;
                     float distanceXMin = 20f;
                     if (distanceFromTargetX > chargeDistanceX + distanceXMax)
-                        npc.velocity.X += chargeAccelerationX * npc.direction;
+                        NPC.velocity.X += chargeAccelerationX * NPC.direction;
                     else if (distanceFromTargetX < chargeDistanceX + distanceXMin)
-                        npc.velocity.X -= chargeAccelerationX * npc.direction;
+                        NPC.velocity.X -= chargeAccelerationX * NPC.direction;
                     else
-                        npc.velocity.X *= 0.7f;
+                        NPC.velocity.X *= 0.7f;
 
                     // Limit velocity
-                    if (npc.velocity.X < -chargeVelocityX)
-                        npc.velocity.X = -chargeVelocityX;
-                    if (npc.velocity.X > chargeVelocityX)
-                        npc.velocity.X = chargeVelocityX;
+                    if (NPC.velocity.X < -chargeVelocityX)
+                        NPC.velocity.X = -chargeVelocityX;
+                    if (NPC.velocity.X > chargeVelocityX)
+                        NPC.velocity.X = chargeVelocityX;
 
                     // Face the correct direction
-                    float playerLocation2 = npc.Center.X - Main.player[npc.target].Center.X;
-                    npc.direction = playerLocation2 < 0 ? 1 : -1;
-                    npc.spriteDirection = npc.direction;
+                    float playerLocation2 = NPC.Center.X - Main.player[NPC.target].Center.X;
+                    NPC.direction = playerLocation2 < 0 ? 1 : -1;
+                    NPC.spriteDirection = NPC.direction;
 
-                    npc.netUpdate = true;
+                    NPC.netUpdate = true;
 
-                    if (npc.netSpam > 10)
-                        npc.netSpam = 10;
+                    if (NPC.netSpam > 10)
+                        NPC.netSpam = 10;
                 }
                 else
                 {
                     // Set damage
-                    npc.damage = npc.defDamage;
+                    NPC.damage = NPC.defDamage;
 
                     // Face the correct direction
-                    if (npc.velocity.X < 0f)
-                        npc.direction = -1;
+                    if (NPC.velocity.X < 0f)
+                        NPC.direction = -1;
                     else
-                        npc.direction = 1;
+                        NPC.direction = 1;
 
-                    npc.spriteDirection = npc.direction;
+                    NPC.spriteDirection = NPC.direction;
 
                     // Get which side of the player the boss is on
                     int chargeDirection = 1;
-                    if (npc.Center.X < Main.player[npc.target].Center.X)
+                    if (NPC.Center.X < Main.player[NPC.target].Center.X)
                         chargeDirection = -1;
 
                     // If boss is in correct position, slow down, if not, reset
                     bool shouldCharge = false;
-                    if (npc.direction == chargeDirection && Math.Abs(npc.Center.X - Main.player[npc.target].Center.X) > chargeDistanceX)
+                    if (NPC.direction == chargeDirection && Math.Abs(NPC.Center.X - Main.player[NPC.target].Center.X) > chargeDistanceX)
                     {
-                        npc.ai[2] = 1f;
+                        NPC.ai[2] = 1f;
                         shouldCharge = true;
                     }
-                    if (Math.Abs(npc.Center.Y - Main.player[npc.target].Center.Y) > chargeDistanceX * 1.5f)
+                    if (Math.Abs(NPC.Center.Y - Main.player[NPC.target].Center.Y) > chargeDistanceX * 1.5f)
                     {
-                        npc.ai[2] = 1f;
+                        NPC.ai[2] = 1f;
                         shouldCharge = true;
                     }
                     if (enrageScale > 0f && shouldCharge)
-                        npc.velocity *= MathHelper.Lerp(0.5f, 1f, 1f - enrageScale / maxEnrageScale);
+                        NPC.velocity *= MathHelper.Lerp(0.5f, 1f, 1f - enrageScale / maxEnrageScale);
 
                     // Keep moving
-                    if (npc.ai[2] != 1f)
+                    if (NPC.ai[2] != 1f)
                     {
                         // Velocity fix if Queen Bee is slowed
-                        if (npc.velocity.Length() < velocity)
-                            npc.velocity.X = velocity * npc.direction;
+                        if (NPC.velocity.Length() < velocity)
+                            NPC.velocity.X = velocity * NPC.direction;
 
                         float accelerateGateValue = phase6 ? 30f : phase5 ? 10f : 90f;
                         if (enrageScale > 0f)
@@ -198,57 +199,57 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
                         calamityGlobalNPC.newAI[0] += 1f;
                         if (calamityGlobalNPC.newAI[0] > accelerateGateValue)
                         {
-                            npc.SyncExtraAI();
+                            NPC.SyncExtraAI();
                             float velocityXLimit = velocity * 2f;
-                            if (Math.Abs(npc.velocity.X) < velocityXLimit)
-                                npc.velocity.X *= 1.01f;
+                            if (Math.Abs(NPC.velocity.X) < velocityXLimit)
+                                NPC.velocity.X *= 1.01f;
                         }
-                        npc.localAI[0] = 1f;
+                        NPC.localAI[0] = 1f;
                         return false;
                     }
 
                     // Avoid cheap bullshit
-                    npc.damage = 0;
+                    NPC.damage = 0;
 
-                    float playerLocation = npc.Center.X - Main.player[npc.target].Center.X;
-                    npc.direction = playerLocation < 0 ? 1 : -1;
-                    npc.spriteDirection = npc.direction;
+                    float playerLocation = NPC.Center.X - Main.player[NPC.target].Center.X;
+                    NPC.direction = playerLocation < 0 ? 1 : -1;
+                    NPC.spriteDirection = NPC.direction;
 
                     // Slow down
-                    npc.localAI[0] = 0f;
-                    npc.velocity *= (0.9f);
+                    NPC.localAI[0] = 0f;
+                    NPC.velocity *= (0.9f);
 
                     float chargeDeceleration = 0.1f;
                     if (phase2)
                     {
-                        npc.velocity *= 0.9f;
+                        NPC.velocity *= 0.9f;
                         chargeDeceleration += 0.05f;
                     }
                     if (phase4)
                     {
-                        npc.velocity *= 0.8f;
+                        NPC.velocity *= 0.8f;
                         chargeDeceleration += 0.1f;
                     }
 
                     if (enrageScale > 0f)
-                        npc.velocity *= MathHelper.Lerp(0.7f, 1f, 1f - enrageScale / maxEnrageScale);
+                        NPC.velocity *= MathHelper.Lerp(0.7f, 1f, 1f - enrageScale / maxEnrageScale);
 
-                    if (Math.Abs(npc.velocity.X) + Math.Abs(npc.velocity.Y) < chargeDeceleration)
+                    if (Math.Abs(NPC.velocity.X) + Math.Abs(NPC.velocity.Y) < chargeDeceleration)
                     {
-                        npc.ai[2] = 0f;
-                        npc.ai[1] += 1f;
+                        NPC.ai[2] = 0f;
+                        NPC.ai[1] += 1f;
                         calamityGlobalNPC.newAI[0] = 0f;
-                        npc.SyncExtraAI();
+                        NPC.SyncExtraAI();
                     }
 
-                    npc.netUpdate = true;
+                    NPC.netUpdate = true;
 
-                    if (npc.netSpam > 10)
-                        npc.netSpam = 10;
+                    if (NPC.netSpam > 10)
+                        NPC.netSpam = 10;
                 }
                 return false;
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

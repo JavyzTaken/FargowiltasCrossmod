@@ -5,8 +5,10 @@ Mods: {
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''
-				Toggles [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
-				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
+				Enables [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
+
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.  [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 
 				-Deviantt provides a starter pack
@@ -25,8 +27,10 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
-				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
-				Expanded AI for some vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses. [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+				Eternity-Death only: Expands AI for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 
 				-Deviantt provides a starter pack
@@ -40,23 +44,12 @@ Mods: {
 		}
 
 		Configs: {
-			DLCCalamityConfig: {
+			CalDLCConfig: {
 				DisplayName: Calamity Config
 
 				Headers: {
 					Modes: Modes
 					Balance: Balance
-				}
-
-				BalanceRework: {
-					Label: Calamity/Souls Balance Rework
-					Tooltip:
-						'''
-						Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
-						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. 
-						Makes Souls content interact with Calamity mechanics, for example Defense Damage.
-						Recommended to keep enabled.
-						'''
 				}
 
 				ConsumableSummons: {
@@ -386,10 +379,11 @@ Mods: {
 				DisplayName: Aerospec Enchantment
 				Tooltip:
 					'''
-					Grants two Aero jumps
-					For every double jump used, you gain critical strike chance
-					This includes jumps not granted by this enchantment
+					Gain +5% critical strike chance and summon damage whenever you use a jump or double jump
+					This bonus lasts until your jumps are reset
 					'''
+				CritUp: +{0}% crit
+				CritReset: -{0}% crit
 			}
 
 			MarniteEnchantment: {
@@ -398,17 +392,25 @@ Mods: {
 					'''
 					10% increased placement speed and +5 tile placement range
 					Lasers strike nearby enemies when building and mining
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					'''
 			}
 
 			DesertProwlerEnchantment: {
 				DisplayName: Desert Prowler Enchantment
-				Tooltip: Replaces jumping with a powerful charge jump that boosts your horizontal speed as well
+				Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
 			}
 
 			WulfrumEnchantment: {
 				DisplayName: Wulfrum Enchantment
-				Tooltip: Summons a drone that brings far away items to you
+				Tooltip:
+					'''
+					Summons a wulfrum drone that follows your cursor
+					The drone scans enemies it collides with
+					Scanning enemies tells you their debuff weaknesses and resistances
+					Green means weakness, red means resistance
+					Scanned enemies also take extra damage over time when afflicted with any debuff
+					'''
 			}
 
 			ExplorationForce: {
@@ -417,9 +419,12 @@ Mods: {
 					'''
 					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
 					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
-					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone collects items for you
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping with a charged sand jump that boosts you horizontally
-					[i:FargowiltasCrossmod/AerospecEnchantment] Grants 5 aero jumps and grants crit chance for every jump used
+					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
+					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
+					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance and summon damage
+					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
+					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					'''
 			}
 
@@ -507,17 +512,30 @@ Mods: {
 
 			StatigelEnchantment: {
 				DisplayName: Statigel Enchantment
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increases your maximum speed
+					Massively decreases your acceleration and deceleration
+					Gain up to +15% increased damage, depending on how fast you're moving
+					'''
 			}
 
 			SulphurEnchantment: {
 				DisplayName: Sulphur Enchantment
-				Tooltip: ""
+				Tooltip:
+					'''
+					Grants a sulphur jump that spawns a sulphur bubble on use
+					The bubble releases damaging gas when hit by you
+					'''
 			}
 
 			VictideEnchantment: {
 				DisplayName: Victide Enchantment
-				Tooltip: ""
+				Tooltip:
+					'''
+					Grants urchin spikes that protrude from your body
+					Attacking charges the spikes, which launch outward when you stop attacking
+					'''
 			}
 		}
 
@@ -598,7 +616,7 @@ Mods: {
 			BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
 			BrimstoneTeleport.DisplayName: Brimstone Teleport
 			BrimstoneFireblast.DisplayName: Brimstone Fireblast
-			FeatherJumpFeather.DisplayName: Feather Jump Feather
+			FeatherJumpFeather.DisplayName: Feather
 			MarniteDagger.DisplayName: Marnite Dagger
 			MarniteLaser.DisplayName: Marnite Laser
 			ProwlerTornado.DisplayName: Prowler Tornado
@@ -611,6 +629,14 @@ Mods: {
 			SulphurBubble.DisplayName: Sulphur Bubble
 			VictideSpike.DisplayName: Victide Spike
 			GoldenShowerShot.DisplayName: Golden Shower Shot
+			HiveMindFiretrail.DisplayName: Cursed Fire
+			BrainMassProjectile.DisplayName: Rotten Brainmass
+			GravityVileClot.DisplayName: Vile Clot
+			VileClotDrop.DisplayName: Vile Clot
+			SulphurCloud.DisplayName: Sulphur Cloud
+			PureGel.DisplayName: Pure Gel
+			HiveMindPulse.DisplayName: Hive Mind Pulse
+			ScourgeSandstream.DisplayName: Scourge Sandstream
 		}
 
 		Buffs: {
@@ -631,6 +657,7 @@ Mods: {
 		}
 
 		Toggler: {
+			CalamitySoulHeader: Soul of Calamity
 			VagabondsSoulHeader: Vagabond's Soul
 			NanotechEffect: Nanotech
 			EclipseMirrorEffect: Eclipse Mirror
@@ -659,27 +686,28 @@ Mods: {
 			CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
 			SplendorJamEffect: Splendor Jam
 			ExplorationHeader: Force of Exploration
-			AerospecJumpEffect: Aerospec Jumps
-			MarniteStatsEffect: Marnite Building
+			AerospecJumpEffect: Jump Crit
+			MarniteRepulsionEffect: Marnite Repulsion
 			MarniteLasersEffect: Marnite Lasers
 			DesertProwlerEffect: Charge Jump
-			WulfrumEffect: Collector Drones
+			WulfrumEffect: Wulfrum Drone
 			SnowRuffianEffect: Better Gliding
 			DaedalusEffect: Daedalus Flight Limit
 			ReaverEffect: Reaver Stats
 			HydrothermicEffect: Overheat
 			PlaguebringerEffect: Debuff Spread
+			StatigelEffect: Statigel Acceleration and Damage
+			SulphurEffect: Bubble Jump
+			VictideEffect: Urchin Spikes
+			TitanHeartEffect: Titan Size
+			UmbraphileEffect: Bat Healing
 		}
 
-		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
-	}
-
-	FargowiltasSouls: {
 		WizardEffect: {
-			Aerospec: Total of 5 jumps, jumping grants more crit
+			Aerospec: Crit and damage bonus doubled
 			Marnite: Stronger daggers, +15% placement speed and +5 placement range
 			DesertProwler: Stronger jumps
-			Wulfrum: The drone is faster and occasionally finds bonus items
+			Wulfrum: Scanned Enemies take even more extra damage from debuffs
 			Hydrothermic: Longer overheat charge, more attack speed increase
 			Daedalus: Grants wings if you don't have any, Can fly higher
 			SnowRuffian: Grants some flight time
@@ -687,9 +715,14 @@ Mods: {
 			Plaguebringer:
 				'''
 				Debuffs spread from farther 
-				Enemies are tagged to spread debuffs for longer
+				Enemies spread debuffs for a longer amount of time
 				'''
-			Umbraphile: Bats do more damage and travel faster
+			Umbraphile: Bats deal more damage and travel faster
+			Sulphur: Jumps create 3 bubbles with increased damage
+			Victide: Spikes are no longer affected by gravity and inflict venom
+			Statigel: Higher maximum speed, damage bonus doubled
 		}
+
+		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 	}
 }

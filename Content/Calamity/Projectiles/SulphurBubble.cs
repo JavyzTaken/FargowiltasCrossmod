@@ -1,6 +1,9 @@
-﻿using CalamityMod.Projectiles.Magic;
+﻿using CalamityMod.Particles;
+using CalamityMod.Projectiles.Magic;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -10,7 +13,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
@@ -22,22 +27,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "CalamityMod/Projectiles/Enemy/SulphuricAcidBubble";
         public override void SetStaticDefaults()
         {
-
+            Main.projFrames[Type] = 7;
         }
         public override void SetDefaults()
         {
-            Main.projFrames[Type] = 7;
             Projectile.width = 30;
             Projectile.height = 30;
-            Projectile.friendly = true;
+            Projectile.friendly = false;
             Projectile.hostile = false;
-            Projectile.scale = 3;
+            Projectile.scale = 3f;
             Projectile.Opacity = 0;
+            Projectile.tileCollide = false;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -45,7 +51,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void OnKill(int timeLeft)
         {
-            base.OnKill(timeLeft);
+            Color color = new Color(100, 120, 50);
+            Particle p = new TimedSmokeParticle(Projectile.Center + new Vector2(Main.rand.NextFloat(0, 16), 0).RotatedByRandom(MathHelper.PiOver2), Projectile.velocity + new Vector2(0, Main.rand.NextFloat(-2, 0)).RotatedBy(Main.rand.NextFloat(-MathHelper.PiOver2, MathHelper.PiOver2)), Color.Gray, color, 2, 0.7f, 50);
+            GeneralParticleHandler.SpawnParticle(p);
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -55,6 +63,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI()
         {
+            if (Projectile.localAI[2] == 0) // just spawned
+            {
+                Projectile.localAI[2] = 1;
+                Projectile.ai[1] = 15;
+            }
+            if (Projectile.ai[0] > 2)
+                Projectile.Kill();
+
             Projectile.frameCounter++;
             if (Projectile.frameCounter >= 10)
             {
@@ -67,18 +83,54 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             }
             if (Projectile.Opacity < 0.7f) Projectile.Opacity += 0.01f;
             Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -4, 0.01f);
+            Projectile.velocity.X *= 0.97f;
 
-            for (int i = 0; i < Main.maxProjectiles; i++)
+
+            if (Projectile.ai[1] <= 0)
             {
-                if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>() != null && (Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>().HitBubble.Count <= 0 || !Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>().HitBubble.Contains(i)) && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<MiasmaGas>())
+                if (Main.myPlayer == Projectile.owner)
                 {
-                    Main.projectile[i].GetGlobalProjectile<CalamityAddonGlobalProjectile>().HitBubble.Add(Projectile.whoAmI);
-                    for (int j = 0; j < 1; j++)
+                    for (int i = 0; i < Main.maxProjectiles; i++)
                     {
-                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(3, 6)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<MiasmaGas>(), 20, 1, Projectile.owner);
+                        if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<SulphurCloud>())
+                        {
+                            OnHitEffect(Main.projectile[i].damage);
+                            break;
+                        }
                     }
                 }
             }
+            else
+            {
+                Projectile.ai[1]--;
+            }
+        }
+        public void OnHitEffect(int baseDamage)
+        {
+            Projectile.ai[1] = 30;
+            Projectile.ai[0]++;
+            Projectile.scale -= 0.4f;
+            int gasSpeedMin = 3;
+            int gasSpeedMax = 6;
+            int damage = (int)(baseDamage * 0.5f);
+            damage += 8;
+            int count = 3;
+
+
+            if (Projectile.ai[0] > 2)
+            {
+                gasSpeedMin *= 2;
+                gasSpeedMax *= 2;
+                damage *= 2;
+                count *= 2;
+            }
+            for (int j = 0; j < count; j++)
+            {
+                int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(gasSpeedMin, gasSpeedMax)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), damage, 0, Projectile.owner);
+                NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+            }
+            SoundEngine.PlaySound(SoundID.Item85, Projectile.Center);
+            NetMessage.SendData(MessageID.SyncProjectile, number: Projectile.whoAmI);
         }
     }
 }

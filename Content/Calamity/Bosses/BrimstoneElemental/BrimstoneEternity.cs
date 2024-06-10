@@ -24,39 +24,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class BrimstoneEternity : EModeCalBehaviour
+    public class BrimstoneEternity : CalDLCEmodeBehavior
     {
         public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
-        public override bool InstancePerEntity => true;
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>());
+        public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>();
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
         }
-        public override void SetDefaults(NPC entity)
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            base.SetDefaults(entity);
-        }
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev)
-                return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+            if (!NPC.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev)
+                return true;
 
             //drawing the aura
+            /*
             Asset<Texture2D> aura = ModContent.Request<Texture2D>("FargowiltasSouls/Assets/ExtraTextures/AdditiveTextures/SoftEdgeRing");
             Color auraColor = Color.Red;
             auraColor.A = 0;
             spriteBatch.Draw(aura.Value, auraPos - Main.screenPosition, null, auraColor * auraOpacity, 0, aura.Size() / 2, 4, SpriteEffects.None, 1);
+            */
 
-            
-            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+            return true;
         }
-        public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
-        {
-            return base.CanHitPlayer(npc, target, ref cooldownSlot);
-        }
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.WriteVector2(offset);
             binaryWriter.WriteVector2(auraPos);
@@ -64,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             binaryWriter.Write7BitEncodedInt(phase);
             binaryWriter.Write7BitEncodedInt(smolAttack);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             offset = binaryReader.ReadVector2();
             auraPos = binaryReader.ReadVector2();
@@ -83,39 +75,40 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         //ai[1] is attack/phase or whatever
         //ai[2] is a timer
         //ai[3] is whatever else
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
 
-            if (!npc.HasValidTarget || !DLCCalamityConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) 
+            if (!NPC.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev) 
                 return true;
             //return true;
-            
+
+            NPC.damage = NPC.defDamage;
 
             //useful values
-            Player target = Main.player[npc.target];
-            Vector2 totarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
-            Vector2 eyePos = npc.Center + new Vector2(10 * npc.spriteDirection, -60);
+            Player target = Main.player[NPC.target];
+            Vector2 totarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            Vector2 eyePos = NPC.Center + new Vector2(10 * NPC.spriteDirection, -60);
             Vector2 toTargetfromEye = (target.Center - eyePos).SafeNormalize(Vector2.Zero);
             //main attack is the int of the value, decimals on ai[1] can be used for extra data
-            int mainAttack = (int)npc.ai[1];
-            ref float attack = ref npc.ai[1];
-            ref float timer = ref npc.ai[2];
-            ref float data = ref npc.ai[3];
+            int mainAttack = (int)NPC.ai[1];
+            ref float attack = ref NPC.ai[1];
+            ref float timer = ref NPC.ai[2];
+            ref float data = ref NPC.ai[3];
             int predeterminedSmolAttack = -1;
             //animation of 1 to be converted to angry moving later in code
             //animation of 2 to be converted to cocoon later in code
             //anything else converted to normal moving
             int animation = 0;
             //same logic as base cals' brimstone elemental frame logic, allowing to easily check which animation its on later in code
-            if (npc.ai[0] == 3 || npc.ai[0] == 5) animation = 1;
-            else if (npc.ai[0] > 2) animation = 2;
+            if (NPC.ai[0] == 3 || NPC.ai[0] == 5) animation = 1;
+            else if (NPC.ai[0] > 2) animation = 2;
 
             int laserProj = -1;
             //set this to prevent the once per second simple attacks from happening this frame
             bool dontBasicAttack = false;
             for (int i = 0; i < Main.projectile.Length; i++)
             {
-                if (Main.projectile[i].active && Main.projectile[i].type == ModContent.ProjectileType<BrimBeam>() && Main.projectile[i].ai[0] == npc.whoAmI)
+                if (Main.projectile[i].active && Main.projectile[i].type == ModContent.ProjectileType<BrimBeam>() && Main.projectile[i].ai[0] == NPC.whoAmI)
                 {
                     dontBasicAttack = true;
                     laserProj = i;
@@ -127,15 +120,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 
             //make sure the aura doesnt come from space on spawn (default position is 0, 0)
             if (auraPos == Vector2.Zero)
-                auraPos = npc.Center;
+                auraPos = NPC.Center;
             //move aura towards brimstone ele
-            auraPos = Vector2.Lerp(auraPos, npc.Center, 0.03f);
+            auraPos = Vector2.Lerp(auraPos, NPC.Center, 0.03f);
 
             //debuff if too far away
             if (target.Distance(auraPos) > 220 * 4 && auraOpacity >= 1)
             {
                 target.AddBuff(ModContent.BuffType<BrimstoneFlames>(), 2);
-                target.AddBuff(BuffID.Obstructed, 2);
+                //target.AddBuff(BuffID.Obstructed, 2);
             }
 
 
@@ -143,33 +136,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //face the player
             if (laserProj < 0)
             {
-                if (npc.Center.X > target.Center.X)
-                    npc.spriteDirection = -1;
+                if (NPC.Center.X > target.Center.X)
+                    NPC.spriteDirection = -1;
                 else
-                    npc.spriteDirection = 1;
+                    NPC.spriteDirection = 1;
             }
             if (mainAttack == 0)
             {
-                npc.Opacity = 0;
-                npc.velocity *= 0;
+                NPC.Opacity = 0;
+                NPC.velocity *= 0;
                 if (timer == 1)
                 {
-                    npc.dontTakeDamage = true;
+                    NPC.dontTakeDamage = true;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), target.Center + new Vector2(0, -300), Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: npc.whoAmI, ai1: target.whoAmI, ai2: 0);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), target.Center + new Vector2(0, -300), Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: NPC.whoAmI, ai1: target.whoAmI, ai2: 0);
                 }
                 if (timer == 201)
                 {
-                    npc.dontTakeDamage = false;
+                    NPC.dontTakeDamage = false;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
-                    npc.Opacity = 1;
+                    NPC.Opacity = 1;
                     attack = 1;
                     timer = 0;
-                    auraPos = npc.Center;
+                    auraPos = NPC.Center;
                     if (DLCUtils.HostCheck)
                     {
                         offset = new Vector2(Main.rand.Next(900, 900), Main.rand.Next(-200, 200));
-                        NetSync(npc);
+                        NetSync(NPC);
                     }
                 }
                 return false;
@@ -177,6 +170,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //move towards the target position (close to edge of screen), occasionally change y offset, occasionally teleport
             if (mainAttack == 1)
             {
+                const int teleportTime = 540;
+
                 if (auraOpacity < 1) auraOpacity += 0.02f;
                 animation = 0;
                 if (attack > 2.4f) animation = 1;
@@ -184,29 +179,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 if (timer % 180 == 0 && laserProj < 0 && DLCUtils.HostCheck)
                 {
 
-                    offset = new Vector2(Main.rand.Next(900, 900), Main.rand.Next(-200, 200));
+                    offset = new Vector2(Main.rand.Next(950, 950), Main.rand.Next(-200, 200));
                     
 
-                    NetSync(npc);
+                    NetSync(NPC);
                     
                 }
                 //be in a decent position for laser attack
                 if (timer == 740 && phase > 0 && DLCUtils.HostCheck)
                 {
                     offset.Y = Main.rand.NextBool() ? 200 : -200;
-                    NetSync(npc);
+                    NetSync(NPC);
                 }
                 int lasertime = 800; 
-                if (timer == lasertime && npc.GetLifePercent() < 0.67)
+                if (timer == lasertime && NPC.GetLifePercent() < 0.67)
                 {
                     predeterminedSmolAttack = 5;
                 }
-                offset.X = Math.Abs(offset.X) * -npc.spriteDirection;
+                offset.X = Math.Abs(offset.X) * -NPC.spriteDirection;
 
                 //summon the teleport telegraph every 3 moves
-                if (timer % 540 == 0 && DLCUtils.HostCheck)
+                if (timer % teleportTime == 0 && DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: npc.whoAmI, ai1: target.whoAmI, ai2: npc.spriteDirection);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: NPC.whoAmI, ai1: target.whoAmI, ai2: NPC.spriteDirection);
                     
                 }
                 //phase 3 attack where it shoots in a sweeping motion up and down
@@ -221,18 +216,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
-                        NetSync(npc);
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 4).RotatedBy(MathHelper.ToRadians((int)data)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        NetSync(NPC);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, (toTargetfromEye * 4).RotatedBy(MathHelper.ToRadians((int)data)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                     }
                     dontBasicAttack = true;
                     if ((timer-20) % 60 == 0)
                     {
-                        SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, npc.Center);
+                        SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                         if (DLCUtils.HostCheck)
                         {
                             for (int i = -2; i < 3; i++)
-                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(i * 5)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
-                            NetSync(npc);
+                                Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(i * 5)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            NetSync(NPC);
                         }
                     }
                 }
@@ -245,7 +240,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         if (data == 0 && DLCUtils.HostCheck)
                         {
                             data = Main.rand.Next(-40, 40);
-                            NetSync(npc);
+                            NetSync(NPC);
                         }
                         else
                         {
@@ -255,20 +250,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                                 int angle = i * 10 - 70;
                                 if (DLCUtils.HostCheck)
                                 {
-                                    if (angle < data * npc.spriteDirection - 10 || angle > data * npc.spriteDirection + 10)
-                                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                                    if (angle < data * NPC.spriteDirection - 10 || angle > data * NPC.spriteDirection + 10)
+                                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                                     
                                 }
                             }
-                            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, npc.Center);
+                            SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                         }
                     }
-                    if ((timer+20) %120 == 0)
+                    if ((timer+20) % 120 == 0)
                     {
                         SoundEngine.PlaySound(SoundID.Item20, eyePos);
                         if (DLCUtils.HostCheck)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 8), ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, (toTargetfromEye * 8), ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                             
                         }
                     }
@@ -286,7 +281,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     }
                     for (int i = 0; i < 150; i++)
                     {
-                        Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.LifeDrain, Main.rand.NextFloat(-7, 7), Main.rand.NextFloat(-7, 7), Scale: 2).noGravity = true;
+                        Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.LifeDrain, Main.rand.NextFloat(-7, 7), Main.rand.NextFloat(-7, 7), Scale: 2).noGravity = true;
                     }
                     offset.X *= -1;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
@@ -300,18 +295,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     }
                 }
                 //moving to target position
-                if (npc.ai[0] != 4)
+                if (NPC.ai[0] != 4)
                 {
-                    Vector2 topos = (target.Center + offset - npc.Center).SafeNormalize(Vector2.Zero);
-                    Vector2 targVel = topos * npc.Distance(target.Center + offset) / 30;
+                    Vector2 topos = (target.Center + offset - NPC.Center).SafeNormalize(Vector2.Zero);
+                    float baseSpeed = 0.2f;
+                    Vector2 targVel = topos * NPC.Distance(target.Center + offset) / 30;
                     float maxVel = 20;
+                    float progress = (timer % teleportTime) / teleportTime; // ratio of time progressed to teleport
+                    maxVel *= progress * 0.99f + 0.01f;
+                    maxVel += baseSpeed;
                     if (laserProj >= 0)
                     {
                         maxVel = 3;
                     }
+
+
                     if (targVel.Length() > maxVel)
                         targVel = targVel.SafeNormalize(Vector2.Zero) * maxVel;
-                    npc.velocity = Vector2.Lerp(npc.velocity, targVel, 0.05f);
+
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, targVel, 0.05f);
 
                     
                 }
@@ -319,26 +321,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //cocoon phase
             if (mainAttack == 2)
             {
+                const int cocoonTime = 1000;
+                int rocks = phase >= 2 ? 3 : 2;
+                int rockModulo = cocoonTime / rocks;
+                float rockTimer = timer % rockModulo;
                 //summon brimlings at the start
                 if (timer == 1)
                 {
-                    npc.defense = 50;
+                    NPC.defense = 50;
                     if (DLCUtils.HostCheck)
                     {
-                        NPC minion1 = NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<Brimling>(), 0, npc.whoAmI, 0, Main.rand.Next(0, 360), 2);
-                        NPC minion2 = NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<Brimling>(), 0, npc.whoAmI, 0, Main.rand.Next(0, 360) + 0.4f, 3.5f);
+                        NPC minion1 = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, ModContent.NPCType<Brimling>(), 0, NPC.whoAmI, 0, Main.rand.Next(0, 360), 2);
+                        NPC minion2 = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, ModContent.NPCType<Brimling>(), 0, NPC.whoAmI, 0, Main.rand.Next(0, 360) + 0.4f, 3.5f);
                         NetSync(minion1);
                         NetSync(minion2);
-                        if (npc.GetLifePercent() < 0.67f)
+                        if (NPC.GetLifePercent() < 0.67f)
                         {
-                            NPC minion3 = NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<Brimling>(), 0, npc.whoAmI, 1, 0);
-                            NPC minion4 = NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<Brimling>(), 0, npc.whoAmI, 1, 50);
+                            NPC minion3 = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, ModContent.NPCType<Brimling>(), 0, NPC.whoAmI, 1, 0);
+                            NPC minion4 = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, ModContent.NPCType<Brimling>(), 0, NPC.whoAmI, 1, 50);
                             NetSync(minion3);
                             NetSync(minion4);
                         }
                         else
                         {
-                            NPC minion5 = NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<Brimling>(), 0, npc.whoAmI, 0, Main.rand.Next(0, 360) + 0.2f, 3);
+                            NPC minion5 = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, ModContent.NPCType<Brimling>(), 0, NPC.whoAmI, 0, Main.rand.Next(0, 360) + 0.2f, 3);
                             NetSync(minion5);
                         }
                         for (int i = 0; i < Main.projectile.Length; i++)
@@ -349,14 +355,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                             }
                         }
                     }
-                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/BloodflareRangerActivation"), npc.Center);
+                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/BloodflareRangerActivation"), NPC.Center);
                 }
                 //ROCK STUFF
                 if (timer < 60)
                 {
                     animation = 1;
-                    Vector2 topos = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
-                    Vector2 targVel = topos * npc.Distance(target.Center) / 30;
+                    Vector2 topos = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                    Vector2 targVel = topos * NPC.Distance(target.Center) / 30;
                     float maxVel = 20;
                     if (laserProj >= 0)
                     {
@@ -364,46 +370,46 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     }
                     if (targVel.Length() > maxVel)
                         targVel = targVel.SafeNormalize(Vector2.Zero) * maxVel;
-                    npc.velocity = Vector2.Lerp(npc.velocity, targVel, 0.05f);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, targVel, 0.05f);
                     
                 }
-                if (timer < 220)
+                if (rockTimer < 220)
                 {
                     dontBasicAttack = true;
                 }
-                if (timer == 60)
+                if (rockTimer == 60)
                 {
                     animation = 2;
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 7; i++)
                         {
-                            Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-30, 30)));
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, -1, vel.X, vel.Y);
+                            Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-15, 15)));
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, -1, vel.X, vel.Y);
                         }
                     }
                 }
-                if (timer == 160)
+                if (rockTimer == 160)
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, npc.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 60; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
                 }
-                if (timer > 60)
+                if (rockTimer > 60)
                 {
                     animation = 2;
-                    npc.velocity *= 0.7f;
+                    NPC.velocity *= 0.7f;
                 }
                 
                 
                 
-                
+                /*
                 if (phase == 2 && timer >= 480 && timer <= 640)
                 {
                     dontBasicAttack = true;
@@ -413,29 +419,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     for (int i = 0; i < 7; i++)
                     {
                         Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-30, 30)));
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, -1, vel.X, vel.Y);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, -1, vel.X, vel.Y);
                     }
                 }
                 if (phase == 2 && timer == 620)
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, npc.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 60; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(360 / 60f * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
                 }
-                
+                */
                 
 
-                if (timer > 940)
+                if (timer > cocoonTime - 60)
                 {
                     dontBasicAttack = true;
                 }
-                if (timer >= 1000)
+                if (timer >= cocoonTime)
                 {
                     animation = 0;
                     timer = 0;
@@ -447,7 +453,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             }
 
             //phase transition 1
-            if (npc.GetLifePercent() < 0.67f && phase == 0 && mainAttack == 1 && timer > 100)
+            if (NPC.GetLifePercent() < 0.67f && phase == 0 && mainAttack == 1 && timer > 100)
             {
                 attack = 3;
                 timer = 0;
@@ -457,12 +463,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (mainAttack == 3)
             {
                 animation = 0;
-                npc.velocity *= 0.97f;
+                NPC.velocity *= 0.97f;
                 if (timer == 100)
                 {
-                    SoundEngine.PlaySound(SoundID.NPCDeath39, npc.Center);
+                    SoundEngine.PlaySound(SoundID.NPCDeath39, NPC.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 5);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 5);
                 }
                 if (timer >= 140)
                 {
@@ -473,7 +479,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             }
 
             //phase transition 2
-            if (npc.GetLifePercent() < 0.33f && phase == 1 && mainAttack == 1 && timer > 100)
+            if (NPC.GetLifePercent() < 0.33f && phase == 1 && mainAttack == 1 && timer > 100)
             {
                 attack = 4;
                 timer = 0;
@@ -483,13 +489,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (mainAttack == 4)
             {
                 animation = 0;
-                npc.velocity *= 0.97f;
+                NPC.velocity *= 0.97f;
                 if (timer == 100)
                 {
-                    SoundEngine.PlaySound(SoundID.NPCDeath39, npc.Center);
-                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/BloodflareRangerActivation"), npc.Center);
+                    SoundEngine.PlaySound(SoundID.NPCDeath39, NPC.Center);
+                    SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/AbilitySounds/BloodflareRangerActivation"), NPC.Center);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 5);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 5);
                     
                 }
                 if (timer >= 140)
@@ -510,36 +516,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 16; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 16 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 16 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else if (phase == 0)
                 {
                     if (DLCUtils.HostCheck)
                         for (int i = 0; i < 5; i++)
                         {
-                         Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye * (i / 2f + 3), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye * (i / 2f + 3), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                 }
                 else
                 {
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, npc.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         int safeangle = Main.rand.Next(-30, 30);
                         for (int i = 0; i < 14; i++)
                         {
                             int angle = i * 10 - 70;
-                            if (angle < safeangle * npc.spriteDirection - 10 || angle > safeangle * npc.spriteDirection + 10)
-                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            if (angle < safeangle * NPC.spriteDirection - 10 || angle > safeangle * NPC.spriteDirection + 10)
+                                Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, (toTargetfromEye * 3).RotatedBy(MathHelper.ToRadians(angle)), ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                     }
                 }
@@ -550,22 +558,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 14; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else
                 {
                     if (DLCUtils.HostCheck)
                         for (int i = 0; i < 4; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians((i - 1) * 10 - 5f)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians((i - 1) * 10 - 5f)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                 }
@@ -576,17 +586,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 7; i++)
                         {
-                            Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 5, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(Main.rand.NextFloat(0, MathHelper.TwoPi)) * 5, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                             proj.timeLeft = Main.rand.Next(80, 100);
                             proj.netUpdate = true;
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else
                 {
@@ -595,7 +607,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 2; i++)
                         {
-                            Projectile proj = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-50, 50))) * 10, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-50, 50))) * 10, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                             proj.timeLeft = 35;
                             proj.netUpdate = true;
                         }
@@ -608,29 +620,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i)) * 6, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                         for (int i = 0; i < 12; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 12 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 12 * i)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i + 18)) * 2, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(MathHelper.ToRadians(360 / 10 * i + 18)) * 2, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai1: 10);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else
                 {
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(npc.GetSource_FromAI(), eyePos, toTargetfromEye * 4, ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye * 4, ModContent.ProjectileType<BrimstoneFireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                 }
             }
             //laser
@@ -638,10 +652,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (DLCUtils.HostCheck)
                 {
-                    int side = ((offset.Y > 0 && target.Center.X > npc.Center.X) || (offset.Y < 0 && target.Center.X < npc.Center.X)) ? -1 : 1;
+                    int side = ((offset.Y > 0 && target.Center.X > NPC.Center.X) || (offset.Y < 0 && target.Center.X < NPC.Center.X)) ? -1 : 1;
 
-                    float rotation = MathHelper.PiOver2 * (npc.Center.X > target.Center.X ? 1 : -1) + MathHelper.ToRadians(60 * -side);
-                    Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BrimBeam>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, -1, npc.whoAmI, side, rotation);
+                    float rotation = MathHelper.PiOver2 * (NPC.Center.X > target.Center.X ? 1 : -1) + MathHelper.ToRadians(60 * -side);
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimBeam>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, -1, NPC.whoAmI, side, rotation);
                 }
             }
             if (smolAttack != 0) smolAttack = 0;
@@ -650,14 +664,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
 
                 smolAttack = Main.rand.Next(1, 4);
-                NetSync(npc);
+                NetSync(NPC);
             }
             if (predeterminedSmolAttack > 0 && !dontBasicAttack) smolAttack = predeterminedSmolAttack;
 
             //set the actual animation stuff with the animation value
-            if (animation == 1) npc.ai[0] = 3;
-            else if (animation == 2) npc.ai[0] = 4;
-            else npc.ai[0] = 0;
+            if (animation == 1) NPC.ai[0] = 3;
+            else if (animation == 2) NPC.ai[0] = 4;
+            else NPC.ai[0] = 0;
 
             return false;
         }

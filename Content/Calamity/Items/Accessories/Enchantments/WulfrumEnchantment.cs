@@ -15,6 +15,10 @@ using FargowiltasSouls.Core.Toggler;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
+using CalamityMod;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Tools;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -24,7 +28,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new Color(206, 201, 170);
         public override void SetDefaults()
@@ -41,11 +46,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Wulfrum.WulfrumHat>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Wulfrum.WulfrumJacket>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Wulfrum.WulfrumOveralls>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Summon.WulfrumController>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.TrinketofChi>(), 1);
+            recipe.AddIngredient<CalamityMod.Items.Armor.Wulfrum.WulfrumHat>();
+            recipe.AddIngredient<CalamityMod.Items.Armor.Wulfrum.WulfrumJacket>();
+            recipe.AddIngredient<CalamityMod.Items.Armor.Wulfrum.WulfrumOveralls>();
+            recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.WulfrumController>();
+            recipe.AddIngredient<CalamityMod.Items.Tools.WulfrumTreasurePinger>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -56,17 +61,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<WulfrumEnchantment>();
+        public override bool MinionEffect => true;
         public override void PostUpdateEquips(Player player)
         {
             if (player.ownedProjectileCounts[ModContent.ProjectileType<WulfrumScanner>()] < 1)
             {
                 Projectile.NewProjectile(player.GetSource_EffectItem<WulfrumEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<WulfrumScanner>(), 0, 0, player.whoAmI);
             }
-            
         }
     }
 }

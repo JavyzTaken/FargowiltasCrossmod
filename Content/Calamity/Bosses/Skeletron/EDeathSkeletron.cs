@@ -16,48 +16,48 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathSkeletron : EternityDeathBehaviour
+    public class EDeathSkeletron : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.SkeletronHead);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.SkeletronHead;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.WriteVector2(telePos);
             binaryWriter.Write7BitEncodedInt(timer);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             telePos = binaryReader.ReadVector2();
             timer = binaryReader.Read7BitEncodedInt();
         }
         Vector2 telePos = Vector2.Zero;
         int timer = 0;
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget)
+            if (!NPC.HasValidTarget)
             {
                 return true;
             }
-            Player target = Main.player[npc.target];
-            if (npc.ai[1] == 1 && npc.ai[2] == 280)
+            Player target = Main.player[NPC.target];
+            if (NPC.ai[1] == 1 && NPC.ai[2] == 280)
             {
-                telePos = target.Center + (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
+                telePos = target.Center + (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
                 timer = 120;
             }
             if (timer > 0)
             {
                 timer--;
                 for (int i = 0; i < 2; i++)
-                    Dust.NewDustDirect(telePos, npc.width, npc.height, DustID.Shadowflame, Scale: 2);
+                    Dust.NewDustDirect(telePos, NPC.width, NPC.height, DustID.Shadowflame, Scale: 2);
                 if (timer == 0)
                 {
                     for (int i = 0; i < 100; i++)
                     {
-                        Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.Shadowflame, Scale: 2);
+                        Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.Shadowflame, Scale: 2);
                     }
-                    npc.position = telePos;
+                    NPC.position = telePos;
                     foreach (NPC n in Main.npc)
                     {
-                        if (n != null && n.active && n.type == NPCID.SkeletronHand && n.ai[1] == npc.whoAmI)
+                        if (n != null && n.active && n.type == NPCID.SkeletronHand && n.ai[1] == NPC.whoAmI)
                         {
                             n.position = telePos;
                         }
@@ -69,16 +69,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
 
                         float skullSpeed = 6f;
                         int type = ProjectileID.Skull;
-                        int damage = npc.GetProjectileDamage(type);
+                        int damage = NPC.GetProjectileDamage(type);
 
-                        float boltTargetXDist = Main.player[npc.target].Center.X - npc.Center.X;
-                        float boltTargetYDist = Main.player[npc.target].Center.Y - npc.Center.Y;
+                        float boltTargetXDist = Main.player[NPC.target].Center.X - NPC.Center.X;
+                        float boltTargetYDist = Main.player[NPC.target].Center.Y - NPC.Center.Y;
                         float boltTargetDistance = (float)Math.Sqrt(boltTargetXDist * boltTargetXDist + boltTargetYDist * boltTargetYDist);
 
                         boltTargetDistance = skullSpeed / boltTargetDistance;
                         boltTargetXDist *= boltTargetDistance;
                         boltTargetYDist *= boltTargetDistance;
-                        Vector2 center = npc.Center;
+                        Vector2 center = NPC.Center;
                         center.X += boltTargetXDist * 5f;
                         center.Y += boltTargetYDist * 5f;
 
@@ -101,34 +101,34 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                             baseSpeed = originalBaseSpeed;
                             baseSpeed *= velocityScalar;
                             offsetAngle = startAngle + deltaAngle * i;
-                            int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), center.X, center.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), type, damage, 0f, Main.myPlayer, -2f);
+                            int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), center.X, center.Y, baseSpeed * (float)Math.Sin(offsetAngle), baseSpeed * (float)Math.Cos(offsetAngle), type, damage, 0f, Main.myPlayer, -2f);
                             Main.projectile[proj].timeLeft = 600;
                         }
 
-                        npc.netUpdate = true;
+                        NPC.netUpdate = true;
 
                         // OLD SHOTS 
                         /*
                         for (int i = -2; i < 3; i++)
                         {
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(15 * i)) * 15, ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(15 * i)) * 15, ProjectileID.Skull, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                         */
                     }
                         
-                    SoundEngine.PlaySound(SoundID.Item66, npc.Center);
+                    SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
 
                 }
             }
-            if (npc.ai[1] == 2)
+            if (NPC.ai[1] == 2)
             {
                 if (timer <= 0)
                 {
-                    telePos = target.Center + (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
+                    telePos = target.Center + (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
                     timer = 120;
                 }
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

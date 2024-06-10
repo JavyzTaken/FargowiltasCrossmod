@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
@@ -15,52 +16,53 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Destroyer
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathDestroyerBody : EternityDeathBehaviour
+    public class EDeathDestroyerBody : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.TheDestroyerBody);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.TheDestroyerBody;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write7BitEncodedInt(timer);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             timer = binaryReader.Read7BitEncodedInt();
         }
         public int timer = 0;
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
+            if (!NPC.HasValidTarget) return true;
 
-            NPC destroyer = FargoSoulsUtil.NPCExists(npc.realLife, NPCID.TheDestroyer);
-            Player target = Main.player[npc.target];
+            NPC destroyer = FargoSoulsUtil.NPCExists(NPC.realLife, NPCID.TheDestroyer);
+            Player target = Main.player[NPC.target];
             if (destroyer != null && !destroyer.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Destroyer>().InPhase2)
             {
-                npc.GetGlobalNPC<DestroyerSegment>().AttackTimer = 0;
-                NPC prevSegment = FargoSoulsUtil.NPCExists(npc.ai[1], NPCID.TheDestroyerBody);
+                NPC.GetGlobalNPC<DestroyerSegment>().AttackTimer = 0;
+                NPC prevSegment = FargoSoulsUtil.NPCExists(NPC.ai[1], NPCID.TheDestroyerBody);
                 if (prevSegment != null)
                 {
-                    if (prevSegment.GetGlobalNPC<EDeathDestroyerBody>().timer == 10)
+                    var behavior = prevSegment.GetDLCBehavior<EDeathDestroyerBody>();
+                    if (behavior != null && behavior.timer == 10)
                     {
                         timer++;
                     }
                 }
-                if (npc.ai[1] == npc.realLife || timer > 0)
+                if (NPC.ai[1] == NPC.realLife || timer > 0)
                 {
                     timer++;
                     if (timer == 800)
                     {
                         timer = 0;
-                        if (DLCUtils.HostCheck && Collision.CanHitLine(npc.Center, 1, 1, target.Center, 1, 1))
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        if (DLCUtils.HostCheck && Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1))
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 7, ProjectileID.DeathLaser, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                     }
                 }
             }
-            //if (npc.whoAmI == 7)
+            //if (NPC.whoAmI == 7)
             //{
-            //    Main.NewText("ai: " + npc.ai[0] + ", " + npc.ai[1] + ", " + npc.ai[2] + ", " + npc.ai[3]);
-            //    Main.NewText("localai: " + npc.localAI[0] + ", " + npc.localAI[1] + ", " + npc.localAI[2] + ", " + npc.localAI[3]);
+            //    Main.NewText("ai: " + NPC.ai[0] + ", " + NPC.ai[1] + ", " + NPC.ai[2] + ", " + NPC.ai[3]);
+            //    Main.NewText("localai: " + NPC.localAI[0] + ", " + NPC.localAI[1] + ", " + NPC.localAI[2] + ", " + NPC.localAI[3]);
             //}
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

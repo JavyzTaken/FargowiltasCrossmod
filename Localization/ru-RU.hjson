@@ -6,12 +6,15 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Включает [c/00FFFF:Режим Вечность] и [c/880808:Режим Месть], а также предметы режима Мастера.
-				Добавляет новые атаки [c/00FFFF:Режима Вечность] для некоторых боссов Calamity.
+
+				Добавляет новое поведение [c/00FFFF:Режима Вечность] для некоторых боссов Calamity.
+				[c/00FFFF:На данный момент поведение добавлено у боссов до Криогена и Серного элементаля.]
+
 				По умолчанию, изменения боссов [c/00FFFF:Режима Вечность] стоят в приоритете. Это можно изменить в конфигурациях.
 
 				-Девиантт предоставляет стартовый набор
 				-Улучшение базовых показателей
-				-Отрицательные эффекты спадают быстрее, если не атаковать
+				-Отрицательные эффекты спадают быстрее, пока игрок не атакует
 				[i:1612][c/00ff00:Рекомендуется использовать Отображение Дебаффов от мода Fargo's Mutant (в конфигурациях)]
 
 				'''
@@ -25,14 +28,18 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Включает [c/00FFFF:Режим Вечность] и [c/800080:Режим Смерть], а также предметы режима Мастера.
-				Добавляет новые атаки [c/00FFFF:Режима Вечность] для некоторых боссов Calamity.
-				Расширенный ИИ некоторых ванильных боссов [c/00FFFF:Режима Вечность],
+
+				Добавляет новое поведение [c/00FFFF:Режима Вечность] для некоторых боссов Calamity.
+				[c/00FFFF:На данный момент поведение добавлено у боссов до Криогена и Серного элементаля.]
+
+				Только в режиме Вечная Смерть: Расширенный ИИ некоторых ванильных боссов [c/00FFFF:Режима Вечность],
 				включает в себя части ИИ Calamity или новые ИИ, вдохновлённые Calamity.
+
 				По умолчанию, изменения боссов [c/00FFFF:Режима Вечность] стоят в приоритете. Это можно изменить в конфигурациях.
 
 				-Девиантт предоставляет стартовый набор
 				-Улучшение базовых показателей
-				-Отрицательные эффекты спадают быстрее, если не атаковать
+				-Отрицательные эффекты спадают быстрее, пока игрок не атакует
 				[i:1612][c/00ff00:Рекомендуется использовать Отображение Дебаффов от мода Fargo's Mutant (в конфигурациях)]
 
 				'''
@@ -41,25 +48,12 @@ Mods: {
 		}
 
 		Configs: {
-			DLCCalamityConfig: {
+			CalDLCConfig: {
 				DisplayName: Конфигурация Calamity
 
 				Headers: {
 					Modes: Режимы
 					Balance: Баланс
-				}
-
-				BalanceRework: {
-					Label: Изменения баланса Calamity/Souls
-					Tooltip:
-						'''
-						Изменяет рецепты, чтобы добавить сбалансированную прогрессию между Calamity и модом Souls,
-						в основном для боссов после Лунного Лорда.
-						Изменяет экипировку и боссов Calamity/Souls для достижения более доработанного
-						и сбалансированного процесса игры.
-						Контент мода Souls теперь взаимодействует с механиками Calamity, например Уроном по защите
-						Рекомендуется оставить включённым.
-						'''
 				}
 
 				ConsumableSummons: {
@@ -389,55 +383,68 @@ Mods: {
 			}
 
 			AerospecEnchantment: {
-				// DisplayName: Aerospec Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Аэрофаза
+				Tooltip:
 					'''
-					Grants two Aero jumps
-					For every double jump used, you gain critical strike chance
-					This includes jumps not granted by this enchantment
-					''' */
+					Вы получаете +5% шанса критического урона и урона призывателя после
+					прыжка и каждого использования двойного прыжка
+					Бонус пропадает по восстанавлению прыжков
+					'''
+				CritUp: +{0}% крит
+				CritReset: -{0}% крит
 			}
 
 			MarniteEnchantment: {
-				// DisplayName: Marnite Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Мранитового Архитектора
+				Tooltip:
 					'''
-					10% increased placement speed and +5 tile placement range
-					Lasers strike nearby enemies when building and mining
-					''' */
+					Увеличивает скорость размещения блоков на 10% и дальность размещения блоков на 5
+					Пока вы ставите или копаете блоки, из них выходят лазеры, которые атакуют ближайших врагов
+					Эффекты [i:CalamityMod/MarniteRepulsionShield] Мранитового репульсионного щита
+					'''
 			}
 
 			DesertProwlerEnchantment: {
-				// DisplayName: Desert Prowler Enchantment
-				// Tooltip: Replaces jumping with a powerful charge jump that boosts your horizontal speed as well
+				DisplayName: Зачарование Пустынного Мародёра
+				Tooltip: Задержите ВВЕРХ, чтобы зарядить мощный заряжаемый прыжок, который также увеличивает горизонтальную скорость
 			}
 
 			WulfrumEnchantment: {
-				// DisplayName: Wulfrum Enchantment
-				// Tooltip: Summons a drone that brings far away items to you
+				DisplayName: Зачарование Вульфрума
+				Tooltip:
+					'''
+					Призывает вульфрумового дрона, который преследует ваш курсок
+					Дрон сканирует врагов, с которыми сталкивается
+					Сканирование врагов показывает их слабости и устойчивости к дебаффам
+					Зелёный - слабость, красный - устойчивость
+					Также просканированным врагам наносится дополнительный постепенный урон от любого дебаффа
+					'''
 			}
 
 			ExplorationForce: {
-				// DisplayName: Force of Exploration
-				/* Tooltip:
+				DisplayName: Артефакт Исследования
+				Tooltip:
 					'''
-					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
-					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
-					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone collects items for you
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping with a charged sand jump that boosts you horizontally
-					[i:FargowiltasCrossmod/AerospecEnchantment] Grants 5 aero jumps and grants crit chance for every jump used
-					''' */
+					[i:FargowiltasCrossmod/MarniteEnchantment] Увеличивает скорость размещения блоков на 25% и дальность размещения блоков на 5
+					[i:FargowiltasCrossmod/MarniteEnchantment] Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
+					[i:FargowiltasCrossmod/WulfrumEnchantment] Вульфрумовый дрон показывает слабости врагов к дебаффам и делает их менее устойчивым к любым дебаффам с уроном
+					[i:FargowiltasCrossmod/DesertProwlerEnchantment] ВВЕРХ чтобы зарядить прыжок, который также увеличивает скорость передвижения
+					[i:FargowiltasCrossmod/AerospecEnchantment] Прыжок и двойные прыжки увеличивают шанс критического удара и урон призывателя
+					[i:FargowiltasCrossmod/SulphurEnchantment] Дарует дополнительный прыжок с пузырём, атакуйте пузырь, чтобы выпустить токсичные газы
+					[i:FargowiltasCrossmod/VictideEnchantment] Даёт морские иглы, которые вылетают, если какое-то время атаковать и перестать
+					Эффекты [i:CalamityMod/MarniteRepulsionShield] Мранитового репульсионного щита
+					'''
 			}
 
 			SnowRuffianEnchantment: {
-				// DisplayName: Snow Ruffian Enchantment
-				/* Tooltip:
+				DisplayName: Зачарование Снежного Бандита
+				Tooltip:
 					'''
-					Grants the ability to glide if you do not have wings already
-					While slow falling with wings, you accelerate
-					Press UP while slow falling to direct your momentum upward
-					Press DOWN while slow falling to accelerate faster
-					''' */
+					Позволяет планировать в воздухе, если на вас нет крыльев
+					При медленном падении на крыльях, вы ускоряетесь
+					Нажмите ВВЕРХ в медленном падении, чтобы перенаправить движение вверх
+					Нажмите ВНИЗ в медленном падении, чтобы сильнее ускоряться
+					'''
 			}
 
 			DaedalusEnchantment: {
@@ -512,18 +519,31 @@ Mods: {
 			}
 
 			StatigelEnchantment: {
-				// DisplayName: Statigel Enchantment
-				// Tooltip: ""
+				DisplayName: Зачарование Статигеля
+				Tooltip:
+					'''
+					Увеличивает максимальную скорость передвижения
+					Значительно уменьшает ускорение и замедление
+					Чем быстрее вы двигаетесь, тем больше урона наносите, до +15%
+					'''
 			}
 
 			SulphurEnchantment: {
-				// DisplayName: Sulphur Enchantment
-				// Tooltip: ""
+				DisplayName: Зачарование Сернистости
+				Tooltip:
+					'''
+					Дарует сернистый прыжок, который оставляет за собой сернистый пузырь
+					Если атаковать пузырь, то он начнёт выпускать газ, наносящий урон врагам
+					'''
 			}
 
 			VictideEnchantment: {
-				// DisplayName: Victide Enchantment
-				// Tooltip: ""
+				DisplayName: Зачарование Прилива
+				Tooltip:
+					'''
+					Дарует морские иглы, которые торчат из вашего тела
+					Иглы заряжаются, пока вы атакуете, и вылетают наружу, когда вы перестаёте
+					'''
 			}
 		}
 
@@ -598,25 +618,33 @@ Mods: {
 			PermafrostRitual.DisplayName: Ритуал Пермафроста
 			IceCloud.DisplayName: Обмораживающий Снег
 			BrimstoneDebris.DisplayName: Серные Обломки
-			// BrimstonePulse.DisplayName: Brimstone Pulse
-			// BrimstoneClone.DisplayName: Brimstone Clone
-			// BrimBeam.DisplayName: Brim Beam
-			// BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
-			// BrimstoneTeleport.DisplayName: Brimstone Teleport
-			// BrimstoneFireblast.DisplayName: Brimstone Fireblast
-			// FeatherJumpFeather.DisplayName: Feather Jump Feather
+			BrimstonePulse.DisplayName: Серный Пульс
+			BrimstoneClone.DisplayName: Серный Клон
+			BrimBeam.DisplayName: Серолуч
+			BrimstoneChainExplosion.DisplayName: Серный Цепной Взрыв
+			BrimstoneTeleport.DisplayName: Серный Телепорт
+			BrimstoneFireblast.DisplayName: Шар Серного Огня
+			// FeatherJumpFeather.DisplayName: Feather
 			// MarniteDagger.DisplayName: Marnite Dagger
-			// MarniteLaser.DisplayName: Marnite Laser
+			MarniteLaser.DisplayName: Мранитовый Лазер
 			// ProwlerTornado.DisplayName: Prowler Tornado
 			// WulfrumCollector.DisplayName: Wulfrum Collector
-			// WulfrumScanner.DisplayName: Wulfrum Scanner
-			// CrystalPlatform.DisplayName: Crystal Platform
+			WulfrumScanner.DisplayName: Вульфрумовый Сканер
+			CrystalPlatform.DisplayName: Кристальная Платформа
 			// PlagueCloud.DisplayName: Plague Cloud
 			// Eruption.DisplayName: Eruption
 			// VampireBat.DisplayName: Vampire Bat
-			// SulphurBubble.DisplayName: Sulphur Bubble
-			// VictideSpike.DisplayName: Victide Spike
-			// GoldenShowerShot.DisplayName: Golden Shower Shot
+			SulphurBubble.DisplayName: Сернистый Пузырь
+			VictideSpike.DisplayName: Приливной Шип
+			GoldenShowerShot.DisplayName: Выстрел Золотого Дождя
+			HiveMindFiretrail.DisplayName: Проклятый Огонь
+			BrainMassProjectile.DisplayName: Гнилое Мозговое Вещество
+			GravityVileClot.DisplayName: Мерзкий Сгусток
+			VileClotDrop.DisplayName: Мерзкий Сгусток
+			SulphurCloud.DisplayName: Сернистое Облако
+			PureGel.DisplayName: Чистейший Гель
+			HiveMindPulse.DisplayName: Разум Улей Пульс
+			ScourgeSandstream.DisplayName: Пещаный Поток Бича
 		}
 
 		Buffs: {
@@ -637,6 +665,7 @@ Mods: {
 		}
 
 		Toggler: {
+			CalamitySoulHeader: Душа Бедствия
 			VagabondsSoulHeader: Душа Беглеца
 			NanotechEffect: Нанотехнология
 			EclipseMirrorEffect: Зеркало Затмения
@@ -663,39 +692,45 @@ Mods: {
 			YharimsGiftEffect: Дар Ярима
 			DraedonsHeartEffect: Сердце Дрэйдона
 			CalamityEffect: Бедствие
-			// SplendorJamEffect: Splendor Jam
-			// ExplorationHeader: Force of Exploration
-			// AerospecJumpEffect: Aerospec Jumps
-			// MarniteStatsEffect: Marnite Building
-			// MarniteLasersEffect: Marnite Lasers
-			// DesertProwlerEffect: Charge Jump
-			// WulfrumEffect: Collector Drones
-			// SnowRuffianEffect: Better Gliding
+			SplendorJamEffect: Варенье Великолепия
+			ExplorationHeader: Артефакт Исследования
+			AerospecJumpEffect: Крит Прыжки
+			MarniteRepulsionEffect: Мранитовая Репульсия
+			MarniteLasersEffect: Мранитовые Лазеры
+			DesertProwlerEffect: Заряжающийся Прыжок
+			WulfrumEffect: Вульфрумовый Дрон
+			SnowRuffianEffect: Улучшенное Медленное Падение
 			// DaedalusEffect: Daedalus Flight Limit
 			// ReaverEffect: Reaver Stats
 			// HydrothermicEffect: Overheat
 			// PlaguebringerEffect: Debuff Spread
+			StatigelEffect: Ускорение и Урон Статигеля
+			SulphurEffect: Прыжок с Пузырём
+			VictideEffect: Морские Иглы
+			// TitanHeartEffect: Titan Size
+			// UmbraphileEffect: Bat Healing
 		}
 
-		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
-	}
-
-	FargowiltasSouls: {
 		WizardEffect: {
-			// Aerospec: Total of 5 jumps, jumping grants more crit
-			// Marnite: Stronger daggers, +15% placement speed and +5 placement range
-			// DesertProwler: Stronger jumps
-			// Wulfrum: The drone is faster and occasionally finds bonus items
+			Aerospec: Бонус к шансу крит. удара и урону призыва удвоен
+			Marnite: Усиленные лазеры, +15% скорость размещения и +5 дальность размещения блоков
+			DesertProwler: Более сильные прыжки
+			Wulfrum: Отсканированные враги получают ещё больше доп. урона от дебаффов
 			// Hydrothermic: Longer overheat charge, more attack speed increase
 			// Daedalus: Grants wings if you don't have any, Can fly higher
-			// SnowRuffian: Grants some flight time
+			SnowRuffian: Даёт немного полёта
 			// Reaver: More drastic stat changes
 			/* Plaguebringer:
 				'''
 				Debuffs spread from farther 
-				Enemies are tagged to spread debuffs for longer
+				Enemies spread debuffs for a longer amount of time
 				''' */
-			// Umbraphile: Bats do more damage and travel faster
+			// Umbraphile: Bats deal more damage and travel faster
+			Sulphur: Прыжки создают 3 пузыря, которые наносят больше урона
+			Victide: Иглы игнорируют гравитацию и накладывают дебафф Кислотный яд
+			Statigel: Увеличена максимальная скорость, бонус к урону удвоен
 		}
+
+		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 	}
 }

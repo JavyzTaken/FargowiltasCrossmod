@@ -19,8 +19,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             if (ModCompatibility.Calamity.Loaded)
             {
-                ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", DLCCalamityConfig.Instance.EternityPriorityOverRev);
-                if (DLCCalamityConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
+                ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", CalDLCConfig.Instance.EternityPriorityOverRev);
+                if (CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
                     CalamityMod.CalamityMod.ExternalFlag_DisableNonRevBossAI = true;
             }
 
@@ -37,14 +37,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     WorldSavingSystem.SpawnedDevi = true;
                 }
             }
+            
             if (ModCompatibility.InfernumMode.Loaded)
             {
                 if (ModCompatibility.InfernumMode.InfernumDifficulty && !InfernumStateLastFrame)
                 {
-                    DLCCalamityConfig.Instance.EternityPriorityOverRev = false;
+                    //CalDLCConfig.Instance.EternityPriorityOverRev = false;
 
 
-                    if (DLCCalamityConfig.Instance.InfernumDisablesEternity)
+                    if (CalDLCConfig.Instance.InfernumDisablesEternity)
                     {
                         WorldSavingSystem.EternityMode = false;
                         WorldSavingSystem.ShouldBeEternityMode = false;
@@ -54,13 +55,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     }
                     else
                     {
-                        Main.NewText("[c/9c0000:Infernum Mode] detected. [c/00ffee:Eternity Priority over Calamity Bosses] has been disabled to prevent bugs.\n" +
-                            "[c/00ffee:Eternity Priority over Calamity Bosses] can be re-enabled in the config, but things will break.");
+                        //Main.NewText("[c/9c0000:Infernum Mode] detected. [c/00ffee:Eternity Priority over Calamity Bosses] has been disabled to prevent bugs.\n" +
+                            //"[c/00ffee:Eternity Priority over Calamity Bosses] can be re-enabled in the config, but things will break.");
                     }
                 }
                 if (ModCompatibility.InfernumMode.InfernumDifficulty) InfernumStateLastFrame = true;
                 else InfernumStateLastFrame = false;
             }
+            
             base.PostUpdateWorld();
         }
     }

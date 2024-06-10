@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Core.Calamity
                 }
                 bool emode = value;
                 if (ModCompatibility.InfernumMode.Loaded)
-                    if (ModCompatibility.InfernumMode.InfernumDifficulty && DLCCalamityConfig.Instance.InfernumDisablesEternity)
+                    if (ModCompatibility.InfernumMode.InfernumDifficulty && CalDLCConfig.Instance.InfernumDisablesEternity)
                         emode = false;
 
                 FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = emode;

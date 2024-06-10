@@ -15,17 +15,17 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathDeerclops : EternityDeathBehaviour
+    public class EDeathDeerclops : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Deerclops);
-        public override bool SafePreAI(NPC npc)
+        public override int NPCOverrideID => NPCID.Deerclops;
+        public override bool PreAI()
         {
             // Code mostly from Calamity Mod Deerclops.
 
             DeerclopsAI.shouldDrawEnrageBorder = WorldSavingSystem.EternityMode;
             float modifier = 1f; // multiplier for aura size
 
-            if (npc.target.WithinBounds(Main.player.Length) && Main.player[npc.target].dead)
+            if (NPC.target.WithinBounds(Main.player.Length) && Main.player[NPC.target].dead)
             {
                 DeerclopsAI.hasTargetBeenInRange = false;
                 DeerclopsAI.borderScalar = 0.9f * modifier;
@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             if (DeerclopsAI.borderDelay > 0f)
                 DeerclopsAI.borderDelay -= 1f;
 
-            if (!DeerclopsAI.hasTargetBeenInRange && npc.target.WithinBounds(Main.player.Length) && !Main.player[npc.target].dead)
+            if (!DeerclopsAI.hasTargetBeenInRange && NPC.target.WithinBounds(Main.player.Length) && !Main.player[NPC.target].dead)
             {
                 // Target entered the border for the first time
                 DeerclopsAI.hasTargetBeenInRange = true;
@@ -56,8 +56,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 // Fade in, with full opacity only available after being inside the border for the first time
                 DeerclopsAI.borderScalar = MathHelper.Clamp(DeerclopsAI.borderScalar + 0.015f, 0f, (DeerclopsAI.hasTargetBeenInRange ? 1f : 0.9f) * modifier);
             }
-            DeerclopsAI.lastDeerclopsPosition = npc.Center;
-            return base.SafePreAI(npc);
+            DeerclopsAI.lastDeerclopsPosition = NPC.Center;
+            return true;
         }
     }
 }

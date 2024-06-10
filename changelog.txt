@@ -1,16 +1,9 @@
-New Update: v1.0.7
-Eternity-Death changes:
--Queen Bee: Uses new Calamity deathmode charges
--Brain of Cthulhu: Deleted old change, Now uses a modified version of new Calamity charge in Phase 2
--Deerclops: Reduced health, Added visual Calamity darkness border
--Wall of Flesh: Changed visuals, behavior (to match Calamity) and timing for sickle attack
-Decreased Wall of Flesh HP
+New Update: v1.1.0.4
 
-Fixed several instances of Calamity drawing extra textures for enemies/bosses, unintendedly interfering with the Eternity Mode versions:
--Wall of Flesh
--Destroyer
--Brain of Cthulhu creepers
-Fixed Slime God contact damage not applying correctly during special attacks
-Fixed Slime God slam telegraphs not rendering
-Vanilla bosses now correctly refund summoning items
-Hardmode crate recipes now correctly use Hardmode crates
+-Eternity Desert Scourge: Now hides during the summon phase in Master Mode aswell
+-Eternity Cryogen: Permafrost breaks out at 90% Cryogen health instead of 80%
+-Master Eternity+ Skeletron Prime now displays Eternity sprite properly
+-Several multiplayer boss sync fixes
+
+-Updated Aerospec wizard effect tooltip
+-Updated Russian localization

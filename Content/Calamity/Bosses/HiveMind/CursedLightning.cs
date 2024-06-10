@@ -20,6 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             ProjectileID.Sets.TrailingMode[Type] = 1;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
         }
         public override void SetDefaults()
         {
@@ -29,8 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
             Projectile.extraUpdates = 4;
-            Projectile.scale = 2;
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+            Projectile.scale = 1;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

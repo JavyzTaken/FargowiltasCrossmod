@@ -32,7 +32,7 @@ using ReLogic.Content;
 using CalamityMod.Projectiles.Typeless;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
-using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -94,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 maxCharge = 1400;
                 attackSpeed = 0.6f;
             }
-            CalamityAddonPlayer dlc = player.CalamityAddon();
+            CalDLCAddonPlayer dlc = player.CalamityAddon();
             if (player.controlUseItem && player.HeldItem.damage > 0 && player.HeldItem.shoot > 0 && !dlc.Overheating)
             {
                 dlc.ThermalCharge += 2;

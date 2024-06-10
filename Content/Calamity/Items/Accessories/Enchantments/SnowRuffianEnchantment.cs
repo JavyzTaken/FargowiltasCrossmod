@@ -22,6 +22,11 @@ using CalamityMod.Items.Weapons.Melee;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
 using CalamityMod.Items.Accessories.Wings;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using FargowiltasCrossmod.Core.Calamity;
+using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Items.Weapons.Magic;
+using CalamityMod.Items.Armor.SnowRuffian;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -31,7 +36,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new Color(160, 185, 213);
         
@@ -54,11 +60,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             //recipe
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.SnowRuffian.SnowRuffianMask>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.SnowRuffian.SnowRuffianChestplate>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.SnowRuffian.SnowRuffianGreaves>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Magic.IcicleStaff>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Summon.FrostBlossomStaff>(), 1);
+            recipe.AddIngredient<SnowRuffianMask>();
+            recipe.AddIngredient<SnowRuffianChestplate>();
+            recipe.AddIngredient<SnowRuffianGreaves>();
+            recipe.AddIngredient<IcicleStaff>();
+            recipe.AddIngredient<FrostBlossomStaff>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -69,9 +75,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
         public override int ToggleItemType => ModContent.ItemType<SnowRuffianEnchantment>();
         public override void DrawEffects(Player player, PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
@@ -102,7 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 
             }
             
-            if (player.jump == 0 && player.wingTime <= 0 && player.controlJump)
+            if (player.jump == 0 && player.wingTime <= 0 && player.controlJump && player.velocity.X != 0)
             {
                 if (((player.direction == 1 && player.velocity.X < 15) || (player.direction == -1 && player.velocity.X > -15)) && !player.controlUp && player.velocity.Y > 0)
                 {
@@ -128,6 +135,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 }
                 player.fullRotation = player.velocity.ToRotation() + (player.velocity.X > 0 ? 0 : MathHelper.Pi);
                 player.fullRotationOrigin = player.Size / 2;
+                player.direction = player.velocity.X.DirectionalSign();
+                player.CalamityAddon().RuffianModifiedRotation = true;
             }
             else
             {

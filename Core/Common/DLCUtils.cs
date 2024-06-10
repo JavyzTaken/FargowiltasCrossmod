@@ -16,6 +16,25 @@ namespace FargowiltasCrossmod.Core.Common
     public static partial class DLCUtils
     {
         public static bool HostCheck => Main.netMode != NetmodeID.MultiplayerClient;
+
+        public static int ClosestNPCExcludingOne(Vector2 position, float range, int exclude, bool lineOfSight)
+        {
+            int target = -1;
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC n = Main.npc[i];
+                if (n == null || !n.active || n.friendly || n.lifeMax <= 5 || i == exclude) continue;
+                if (lineOfSight && !Collision.CanHitLine(n.Center, 1, 1, position, 1, 1))
+                {
+                    continue;
+                }
+                if (target == -1 || (n.Distance(position) < Main.npc[target].Distance(position)))
+                {
+                    target = i;
+                }
+            }
+            return target;
+        }
         //copy psated from fargo but changed so it can be from any mod
         public static void DropSummon(NPC npc, string mod, string itemName, bool downed, ref bool droppedSummonFlag, bool prerequisite = true)
         {

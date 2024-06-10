@@ -16,16 +16,16 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathPlantera : EternityDeathBehaviour
+    public class EDeathPlantera : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.Plantera);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.Plantera;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(dashTimer);
             binaryWriter.Write(dashing);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             timer = binaryReader.Read7BitEncodedInt();
             dashTimer = binaryReader.Read7BitEncodedInt();
@@ -35,13 +35,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
         public int timer = 0;
         public int dashTimer = 0;
         public bool dashing = false;
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
-            Player target = Main.player[npc.target];
-            FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera plant = npc.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera>();
+            if (!NPC.HasValidTarget) return true;
+            Player target = Main.player[NPC.target];
+            FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera plant = NPC.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera>();
 
-            if (npc.localAI[0] == 1)
+            if (NPC.localAI[0] == 1)
             {
 
                 timer++;
@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                 {
                     timer = 0;
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<HomingGasBulb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<HomingGasBulb>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                 }
             }
             else
@@ -58,13 +58,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                 {
                     if (dashTimer == 0)
                     {
-                        SoundEngine.PlaySound(SoundID.Roar, npc.Center);
-                        npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 15;
+                        SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
+                        NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
                         if (DLCUtils.HostCheck)
                         {
                             for (int i = 0; i < 15; i++)
                             {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(0, Main.rand.Next(5, 10)).RotatedBy(MathHelper.ToRadians(360 / 15f * i)), ModContent.ProjectileType<SporeGasPlantera>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage / 2), 0);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, Main.rand.Next(5, 10)).RotatedBy(MathHelper.ToRadians(360 / 15f * i)), ModContent.ProjectileType<SporeGasPlantera>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage / 2), 0);
                             }
                         }
                     }
@@ -82,7 +82,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                 }
                 //Main.NewText(plant.TentacleTimer);
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

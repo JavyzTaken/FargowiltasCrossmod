@@ -1,4 +1,4 @@
-
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
@@ -6,15 +6,8 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\HydrothermicEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\PlaguebringerEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\ReaverEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\StatigelEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\SulphurEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\TitanHeartEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\UmbraphileEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\VictideEnchantment.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Forces\DevastationForce.png" />
+    <None Remove="Assets\AutoloadedEffects\Shaders\BrimstoneArenaShader.fx" />
+    <None Remove="Content\Calamity\Projectiles\WulfrumScanner.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />
@@ -22,9 +15,6 @@
     <Reference Remove="Libraries\FargowiltasSouls.dll" />
     <Reference Remove="Libraries\Luminance.dll" />
     <Reference Remove="Libraries\ThoriumMod.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Common\Systems\" />
   </ItemGroup>
   <ItemGroup>
 	<Reference Include="CalamityMod">
