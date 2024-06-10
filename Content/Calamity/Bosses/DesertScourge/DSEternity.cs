@@ -93,6 +93,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             binaryWriter.Write(DoSlam);
             binaryWriter.Write(CanDoSlam);
             binaryWriter.Write7BitEncodedInt(AttackIndex);
+            binaryWriter.Write7BitEncodedInt(SlamCooldown);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
@@ -108,6 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             DoSlam = binaryReader.ReadBoolean();
             CanDoSlam = binaryReader.ReadBoolean();
             AttackIndex = binaryReader.Read7BitEncodedInt();
+            SlamCooldown = binaryReader.Read7BitEncodedInt();
         }
 
         public override bool PreAI()
@@ -245,6 +247,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                     CanDoSlam = false;
                     SlamCooldown = 60 * 10;
                     DoSlam = true;
+                    NPC.netUpdate = true;
                     NetSync(NPC);
                 }
                 if (ai[0] == 500)

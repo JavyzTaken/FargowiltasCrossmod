@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void SetDefaults()
         {
             Projectile.width = Projectile.height = 1;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 60 * 10;
             Projectile.hostile = false;
             Projectile.friendly = false;
 
@@ -47,6 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             base.OnHitPlayer(target, info);
         }
         ref float Weapon => ref Projectile.ai[0];
+        ref float TimeLeft => ref Projectile.localAI[2];
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
@@ -122,6 +123,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 return;
             }
 
+            if (Projectile.localAI[1] == 0)
+            {
+                Projectile.localAI[1] = 1;
+                TimeLeft = Weapon switch
+                {
+                    0 => 60,
+                    1 => 54,
+                    2 => 79,
+                    3 => 180,
+                    4 => 120,
+                    _ => 165
+                };
+                Projectile.netUpdate = true;
+            }
+
             float angle = Projectile.ai[1];
             float scale = 1;
             //Ice Trident
@@ -137,7 +153,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     for (int i = 0; i < 5; i++)
                         Dust.NewDustDirect(Projectile.Center + thing * Main.rand.NextFloat(0f, 1f), 0, 0, DustID.SnowflakeIce).noGravity = true;
                 }
-                if (Projectile.timeLeft == 1)
+                if (TimeLeft == 1)
                 {
                     Vector2 thing = new Vector2(0, -50 * Projectile.localAI[0]).RotatedBy(Projectile.rotation);
                     if (Weapon == 0) thing = thing.RotatedBy(MathHelper.PiOver4);
@@ -161,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     Projectile.rotation = owner.AngleTo(Main.player[owner.target].Center);
                 }
                 
-                if (Projectile.timeLeft == 1)
+                if (TimeLeft == 1)
                 {
                     for (int i = 0; i < 50; i++)
                     {
@@ -183,7 +199,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     for (int i = 0; i < 5; i++)
                         Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.SnowflakeIce).noGravity = true;
                 }
-                if (Projectile.timeLeft == 1)
+                if (TimeLeft == 1)
                 {
                     for (int i = 0; i < 50; i++)
                     {
@@ -205,7 +221,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         Dust.NewDustDirect(Projectile.position + new Vector2(Main.rand.Next(-26, 0) * Projectile.localAI[0], Main.rand.Next(0, 30) * Projectile.localAI[0]).RotatedBy(Projectile.rotation), 0, 0, DustID.SnowflakeIce).noGravity = true;
                     }
                 }
-                if (Projectile.timeLeft == 1)
+                if (TimeLeft == 1)
                 {
                     for (int i = 0; i < 50; i++)
                     {
@@ -225,13 +241,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 }
                 if (owner.HasValidTarget)
                 {
-                    float x = 1- ((Projectile.timeLeft - 20) / 10f);
-                    if (Projectile.timeLeft < 20) x = 1;
-                    if (Projectile.timeLeft > 30) x = 0;
+                    float x = 1- ((TimeLeft - 20) / 10f);
+                    if (TimeLeft < 20) x = 1;
+                    if (TimeLeft > 30) x = 0;
                     float angleAdd = MathHelper.Lerp(0, MathHelper.PiOver2, x);
                     Projectile.rotation = owner.AngleTo(Main.player[owner.target].Center) + angleAdd;
                 }
-                if (Projectile.timeLeft == 1)
+                if (TimeLeft == 1)
                 {
 
                     for (int i = 0; i < 50; i++)
@@ -254,7 +270,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     Projectile.rotation = owner.AngleTo(Main.player[owner.target].Center);
                 }
-                if (Projectile.timeLeft == 1)
+                if (TimeLeft == 1)
                 {
 
                     for (int i = 0; i < 50; i++)
@@ -264,27 +280,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     }
                 }
             }
-            if (Projectile.localAI[0] == 0.06f)
-            {
-                if (Weapon == 1)
-                    Projectile.timeLeft = 54;
-                if (Weapon == 2)
-                {
-                    Projectile.timeLeft = 79;
-                }
-                if (Weapon == 3)
-                {
-                    Projectile.timeLeft = 180;
-                }
-                if (Weapon == 4)
-                {
-                    Projectile.timeLeft = 120;
-                }
-                if (Weapon == 5)
-                {
-                    Projectile.timeLeft = 165;
-                }
-            }
+            TimeLeft--;
+            if (TimeLeft == 0)
+                Projectile.Kill();
             Projectile.Center = owner.Center;
             
             
