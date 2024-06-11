@@ -732,5 +732,12 @@ Mods: {
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
+
+		ExpandedTooltips: {
+			// FountainAstral: Forces surrounding biome state to Astral Infection upon activation
+			// FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
+			// FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
+			// FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
+		}
 	}
 }

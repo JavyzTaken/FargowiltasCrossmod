@@ -21,78 +21,43 @@ using CalamityMod.Items;
 using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls;
+using Luminance.Core.Hooking;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalDLCDetours : ModSystem
+    public class CalDLCDetours : ICustomDetourProvider
     {
-        public override void Load()
-        {
-
-            CalamityPreAIHook = new(CalamityPreAIMethod, CalamityPreAI_Detour);
-            CalamityPreAIHook.Apply();
-
-            CalamityProjectilePreAIHook = new(CalamityProjectilePreAIMethod, CalamityProjectilePreAI_Detour);
-            CalamityProjectilePreAIHook.Apply();
-
-            CalamityPreDrawHook = new(CalamityPreDrawMethod, CalamityPreDraw_Detour);
-            CalamityPreDrawHook.Apply();
-
-            CalamityPostDrawHook = new(CalamityPostDrawMethod, CalamityPostDraw_Detour);
-            CalamityPostDrawHook.Apply();
-
-            CalamityShootHook = new(CalamityShootMethod, CalamityShoot_Detour);
-            CalamityShootHook.Apply();
-
-            FMSVerticalSpeedHook = new(FMSVerticalSpeedMethod, FMSVerticalSpeed_Detour);
-            FMSVerticalSpeedHook.Apply();
-
-            FMSHorizontalSpeedHook = new(FMSHorizontalSpeedMethod, FMSHorizontalSpeed_Detour);
-            FMSHorizontalSpeedHook.Apply();
-        }
-
-        public override void Unload()
-        {
-            CalamityPreAIHook.Undo();
-            CalamityProjectilePreAIHook.Undo();
-
-            CalamityPreDrawHook.Undo();
-            CalamityPostDrawHook.Undo();
-
-            CalamityShootHook.Undo();
-
-            FMSVerticalSpeedHook.Undo();
-            FMSHorizontalSpeedHook.Undo();
-        }
-
-        Hook CalamityPreAIHook;
-        Hook CalamityProjectilePreAIHook;
-        public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
-        public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
         private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityProjectilePreAIMethod = typeof(CalamityGlobalProjectile).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
-
-        Hook CalamityPreDrawHook;
-        Hook CalamityPostDrawHook;
-        public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
-        public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
-
-        Hook CalamityShootHook;
-        public delegate bool Orig_CalamityShoot(CalamityGlobalItem self, Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack);
         private static readonly MethodInfo CalamityShootMethod = typeof(CalamityGlobalItem).GetMethod("Shoot", LumUtils.UniversalBindingFlags);
-
-        Hook FMSVerticalSpeedHook;
-        Hook FMSHorizontalSpeedHook;
-        public delegate void Orig_FMSVerticalSpeed(FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
-            ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
-        public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
         private static readonly MethodInfo FMSVerticalSpeedMethod = typeof(FlightMasteryWings).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FMSHorizontalSpeedMethod = typeof(FlightMasteryWings).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
 
+        public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
+        public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
+        public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        public delegate bool Orig_CalamityShoot(CalamityGlobalItem self, Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack);
+        public delegate void Orig_FMSVerticalSpeed(FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
+        public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
+
+        void ICustomDetourProvider.ModifyMethods()
+        {
+            // Boss override
+            HookHelper.ModifyMethodWithDetour(CalamityPreAIMethod, CalamityPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityProjectilePreAIMethod, CalamityProjectilePreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
+
+            // Misc compatibility, fixes and balance
+            HookHelper.ModifyMethodWithDetour(CalamityShootMethod, CalamityShoot_Detour);
+            HookHelper.ModifyMethodWithDetour(FMSVerticalSpeedMethod, FMSVerticalSpeed_Detour);
+            HookHelper.ModifyMethodWithDetour(FMSHorizontalSpeedMethod, FMSHorizontalSpeed_Detour);
+        }
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
         {
             bool wasRevenge = CalamityWorld.revenge;

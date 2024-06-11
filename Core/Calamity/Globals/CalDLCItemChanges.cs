@@ -6,6 +6,7 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using CalamityMod.Items.Placeables.Furniture.Fountains;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Magic;
@@ -13,6 +14,7 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
+using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
@@ -240,8 +242,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
             }
         }
+        // Copied from Mutant Mod
+        static string ExpandedTooltipLoc(string line) => Language.GetTextValue($"Mods.FargowiltasCrossmod.ExpandedTooltips.{line}");
+        TooltipLine FountainTooltip(string biome) => new TooltipLine(Mod, "Tooltip0", $"[i:909] [c/AAAAAA:{ExpandedTooltipLoc($"Fountain{biome}")}]");
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            var mutantServerConfig = FargoServerConfig.Instance;
+
             if (WorldSavingSystem.EternityMode)
             {
                 for (int i = 0; i < tooltips.Count; i++)
@@ -332,6 +339,30 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     Language.GetTextValue(key + "CalamityColossus") + "\n" +
                     Language.GetTextValue(key + "AngelTreads") + "\n" +
                     Language.GetTextValue(key + "CalamityTrawler")));
+            }
+
+            if (FargoClientConfig.Instance.ExpandedTooltips)
+            {
+                if (item.type == ModContent.ItemType<AstralFountainItem>())
+                {
+                    if (mutantServerConfig.Fountains)
+                        tooltips.Add(FountainTooltip("Astral"));
+                }
+                if (item.type == ModContent.ItemType<BrimstoneLavaFountainItem>())
+                {
+                    if (mutantServerConfig.Fountains)
+                        tooltips.Add(FountainTooltip("Crags"));
+                }
+                if (item.type == ModContent.ItemType<SulphurousFountainItem>())
+                {
+                    if (mutantServerConfig.Fountains)
+                        tooltips.Add(FountainTooltip("Sulphur"));
+                }
+                if (item.type == ModContent.ItemType<SunkenSeaFountain>())
+                {
+                    if (mutantServerConfig.Fountains)
+                        tooltips.Add(FountainTooltip("Sunken"));
+                }
             }
         }
     }
