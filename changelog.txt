@@ -1,9 +1,9 @@
-New Update: v1.1.0.4
+New Update: v1.1.0.5
 
--Eternity Desert Scourge: Now hides during the summon phase in Master Mode aswell
--Eternity Cryogen: Permafrost breaks out at 90% Cryogen health instead of 80%
--Master Eternity+ Skeletron Prime now displays Eternity sprite properly
--Several multiplayer boss sync fixes
+-Eternity Brimstone Elemental:
+--Now enrages outside the Underworld, running AI at double speed
+--Multiplayer sync fixes
 
--Updated Aerospec wizard effect tooltip
--Updated Russian localization
+-Added "and extra Vanilla boss AI" to Eternity-Death short description
+-Calamity Fountains now work with Mutant Mod's "Fountains Cause Biomes" config, except for Abyss
+-Calamity Cirrus candles now work with Mutant Mod's "Automatic Station Buffs When Nearby" config
