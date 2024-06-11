@@ -6,6 +6,7 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using CalamityMod.Items.Placeables.Furniture;
 using CalamityMod.Items.Placeables.Furniture.Fountains;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
@@ -14,6 +15,8 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Tiles.Furniture;
+using Fargowiltas;
 using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using FargowiltasCrossmod.Content.Calamity;
@@ -343,24 +346,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (FargoClientConfig.Instance.ExpandedTooltips)
             {
-                if (item.type == ModContent.ItemType<AstralFountainItem>())
+                if (mutantServerConfig.Fountains)
                 {
-                    if (mutantServerConfig.Fountains)
+                    if (item.type == ModContent.ItemType<AstralFountainItem>())
                         tooltips.Add(FountainTooltip("Astral"));
-                }
-                if (item.type == ModContent.ItemType<BrimstoneLavaFountainItem>())
-                {
-                    if (mutantServerConfig.Fountains)
+                    if (item.type == ModContent.ItemType<BrimstoneLavaFountainItem>())
                         tooltips.Add(FountainTooltip("Crags"));
-                }
-                if (item.type == ModContent.ItemType<SulphurousFountainItem>())
-                {
-                    if (mutantServerConfig.Fountains)
+                    if (item.type == ModContent.ItemType<SulphurousFountainItem>())
                         tooltips.Add(FountainTooltip("Sulphur"));
-                }
-                if (item.type == ModContent.ItemType<SunkenSeaFountain>())
-                {
-                    if (mutantServerConfig.Fountains)
+                    if (item.type == ModContent.ItemType<SunkenSeaFountain>())
                         tooltips.Add(FountainTooltip("Sunken"));
                 }
             }
