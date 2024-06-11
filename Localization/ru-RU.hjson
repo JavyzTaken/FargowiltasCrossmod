@@ -24,7 +24,7 @@ Mods: {
 
 		EternityDeathDifficulty: {
 			Name: Вечная Смерть
-			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/800080:Режима Смерть][c/00FFFF:.]"
+			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/800080:Режима Смерть][c/00FFFF: и дополненные ИИ ванильных боссов.]"
 			ExpandedDescription:
 				'''
 				Включает [c/00FFFF:Режим Вечность] и [c/800080:Режим Смерть], а также предметы режима Мастера.
@@ -734,10 +734,10 @@ Mods: {
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 
 		ExpandedTooltips: {
-			// FountainAstral: Forces surrounding biome state to Astral Infection upon activation
-			// FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
-			// FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
-			// FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
+			FountainAstral: Заставляет окружающий биом смениться на Астральную Инфекцию при активации
+			FountainCrags: Заставляет окружающий биом смениться на Серную Скалу при активации
+			FountainSulphur: Заставляет окружающий биом смениться на Сернистое Море при активации
+			FountainSunken: Заставляет окружающий биом смениться на Затерянное Море при активации
 		}
 	}
 }
