@@ -30,11 +30,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
     {
         public override void Load()
         {
-            if (ModLoader.TryGetMod(ModCompatibility.Calamity.Name, out Mod calamity))
-            {
-                calamity.Call("AddDifficultyToUI", new EternityRevDifficulty());
-                calamity.Call("AddDifficultyToUI", new EternityDeathDifficulty());
-            }
 
             CalamityPreAIHook = new(CalamityPreAIMethod, CalamityPreAI_Detour);
             CalamityPreAIHook.Apply();

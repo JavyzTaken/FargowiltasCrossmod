@@ -87,6 +87,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 
 
             NPC.damage = NPC.defDamage;
+            NPC.dontTakeDamage = false;
+            NPC.Opacity = 1;
             CalamityGlobalNPC.brimstoneElemental = NPC.whoAmI;
 
             //useful values
@@ -157,21 +159,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (mainAttack == 0)
             {
                 NPC.Opacity = 0;
+                NPC.dontTakeDamage = true;
                 NPC.velocity *= 0;
                 if (timer == 1)
                 {
-                    NPC.dontTakeDamage = true;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
                     Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), target.Center + new Vector2(0, -300), Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: NPC.whoAmI, ai1: target.whoAmI, ai2: 0);
+                    NPC.netUpdate = true;
                 }
                 if (timer == 201)
                 {
-                    NPC.dontTakeDamage = false;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
-                    NPC.Opacity = 1;
                     attack = 1;
                     timer = 0;
                     auraPos = NPC.Center;
+                    NPC.netUpdate = true;
                     if (DLCUtils.HostCheck)
                     {
                         offset = new Vector2(Main.rand.Next(900, 900), Main.rand.Next(-200, 200));
