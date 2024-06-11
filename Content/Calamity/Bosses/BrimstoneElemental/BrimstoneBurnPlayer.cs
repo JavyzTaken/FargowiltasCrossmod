@@ -33,6 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         {
             if (!CalDLCWorldSavingSystem.E_EternityRev)
                 return;
+
             BrimstoneBurnEffectDrawer.Update();
             BrimstoneBurnEffectDrawer.ParticleSpawnRate = int.MaxValue;
             int brimID = ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>();
