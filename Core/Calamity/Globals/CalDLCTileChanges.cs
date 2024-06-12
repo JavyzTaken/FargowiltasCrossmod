@@ -15,6 +15,8 @@ using Fargowiltas.Common.Configs;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalDLCTileChanges : GlobalTile
     {
         public override void NearbyEffects(int i, int j, int type, bool closer)

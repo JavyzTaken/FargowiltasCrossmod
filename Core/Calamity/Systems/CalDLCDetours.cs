@@ -140,7 +140,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             // Luxor's Gift banlist
             if (item.type == ModContent.ItemType<KamikazeSquirrelStaff>())
                 player.Calamity().luxorsGift = false;
-
             return orig(self, item, player, source, position, velocity, type, damage, knockBack);
         }
         public static bool NonFargoBossAlive() => Main.npc.Any(n => n.Alive() && n.boss && n.ModNPC != null && n.ModNPC.Mod != ModCompatibility.SoulsMod.Mod);

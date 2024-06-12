@@ -22,6 +22,8 @@ using CalamityMod;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalDLCFountainDetours : ICustomDetourProvider
     {
         private static readonly MethodInfo AstralInfectionActiveMethod = typeof(AstralInfectionBiome).GetMethod("IsBiomeActive", LumUtils.UniversalBindingFlags);
