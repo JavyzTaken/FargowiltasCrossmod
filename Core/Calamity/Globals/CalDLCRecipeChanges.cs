@@ -502,6 +502,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             AddBannerToItemRecipe(ItemType<CuttlefishBanner>(),
                 ItemType<InkBomb>());
             AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<CocosFeather>(), 5, 1);
+            AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<SkyGlaze>());
             AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ItemType<BurntSienna>());
             AddBannerToItemRecipe(ItemID.DemonBanner, ItemType<BladecrestOathsword>());
             AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ItemType<PlasmaRod>());
