@@ -624,6 +624,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #endregion QoLRecipes
+            #region Other
+                Recipe.Create(ItemType<MechLure>())
+                .AddRecipeGroup(RecipeGroupID.IronBar, 4)
+                .AddIngredient(ItemID.EnchantedNightcrawler, 3)
+                .AddIngredient(ItemID.SoulofFlight, 5)
+                .AddIngredient(ItemID.ArmoredCavefish, 1)
+                .AddTile(TileID.Anvils)
+                .Register();
+            #endregion
         }
         public override void PostAddRecipes()
         {
@@ -890,8 +899,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.AddIngredient(ItemID.SoulofNight, 3);
                 }
-                if (recipe.HasResult<MechLure>())
+                if (recipe.HasResult<MechLure>() && recipe.HasTile(TileID.MythrilAnvil))
                 {
+                    recipe.DisableRecipe();
+                    /*
                     if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
                     {
                         recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
@@ -900,6 +911,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     {
                         recipe.AddTile(TileID.Anvils);
                     }
+                    */
                 }
                 if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
                 {
