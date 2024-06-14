@@ -1,9 +1,5 @@
-New Update: v1.1.0.5
-
--Eternity Brimstone Elemental:
---Now enrages outside the Underworld, running AI at double speed
---Multiplayer sync fixes
-
--Added "and extra Vanilla boss AI" to Eternity-Death short description
--Calamity Fountains now work with Mutant Mod's "Fountains Cause Biomes" config, except for Abyss
--Calamity Cirrus candles now work with Mutant Mod's "Automatic Station Buffs When Nearby" config
+New Update: v1.1.0.6
+-Added Harpy Banner -> Sky Glaze banner recipe
+-Decreased Eternity-Rev+Skeletron hand damage (it doubled dipped on Eternity and Calamity buffs)
+-Tweaked DLC Enchantment price values
+-Fixed Mechanical Lure recipe
