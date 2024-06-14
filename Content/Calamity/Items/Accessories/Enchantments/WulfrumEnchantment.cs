@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             base.SetDefaults();
             Item.rare = ItemRarityID.Blue;
+            Item.value = 10000;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
