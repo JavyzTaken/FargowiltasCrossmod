@@ -184,7 +184,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         break;
                     case NPCID.SkeletronHand:
                         if (CalDLCWorldSavingSystem.E_EternityRev)
+                        {
                             npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.3f);
+                            npc.damage = 36;
+                        }
                         break;
                     case NPCID.BrainofCthulhu:
                         npc.lifeMax = (int)(npc.lifeMax * 0.65f);
