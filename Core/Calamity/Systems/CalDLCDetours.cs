@@ -22,6 +22,7 @@ using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls;
 using Luminance.Core.Hooking;
+using Fargowiltas.NPCs;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -36,6 +37,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo CalamityShootMethod = typeof(CalamityGlobalItem).GetMethod("Shoot", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FMSVerticalSpeedMethod = typeof(FlightMasteryWings).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FMSHorizontalSpeedMethod = typeof(FlightMasteryWings).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo IsFargoSoulsItemMethod = typeof(Squirrel).GetMethod("IsFargoSoulsItem", LumUtils.UniversalBindingFlags);
 
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
@@ -44,6 +46,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_CalamityShoot(CalamityGlobalItem self, Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockBack);
         public delegate void Orig_FMSVerticalSpeed(FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
         public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
+        public delegate bool Orig_IsFargoSoulsItem(Item item);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -57,6 +60,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(CalamityShootMethod, CalamityShoot_Detour);
             HookHelper.ModifyMethodWithDetour(FMSVerticalSpeedMethod, FMSVerticalSpeed_Detour);
             HookHelper.ModifyMethodWithDetour(FMSHorizontalSpeedMethod, FMSHorizontalSpeed_Detour);
+            HookHelper.ModifyMethodWithDetour(IsFargoSoulsItemMethod, IsFargoSoulsItem_Detour);
         }
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
         {
@@ -191,6 +195,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 orig(self, player, ref speed, ref acceleration);
             }
+        }
+
+        internal static bool IsFargoSoulsItem_Detour(Orig_IsFargoSoulsItem orig, Item item)
+        {
+            bool result = orig(item);
+            if (item.ModItem is not null && item.ModItem.Mod == FargowiltasCrossmod.Instance)
+                return true;
+            return result;
         }
     }
 }
