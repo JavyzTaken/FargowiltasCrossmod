@@ -24,6 +24,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
@@ -128,6 +129,9 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 }
 
             }
+
+            if (calamityPlayer.luxorsGift && Player.HeldItem != null && Player.HeldItem.type == ItemType<KamikazeSquirrelStaff>())
+                calamityPlayer.luxorsGift = false;
 
         }
         public bool[] PreUpdateBuffImmune;
