@@ -822,7 +822,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (recipe.HasResult(ItemType<ConjuristsSoul>()) && recipe.HasIngredient(ItemID.PygmyNecklace))
                 {
-                    if (recipe.RemoveIngredient(ItemID.PygmyNecklace))
+                    if (recipe.RemoveIngredient(ItemID.PygmyNecklace) && recipe.RemoveIngredient(ItemID.PapyrusScarab))
                         recipe.AddIngredient<Nucleogenesis>();
                     if (recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
                         recipe.AddIngredient<EndoHydraStaff>();

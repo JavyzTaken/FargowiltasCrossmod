@@ -1,5 +1,2 @@
-New Update: v1.1.0.6
--Added Harpy Banner -> Sky Glaze banner recipe
--Decreased Eternity-Rev+Skeletron hand damage (it doubled dipped on Eternity and Calamity buffs)
--Tweaked DLC Enchantment price values
--Fixed Mechanical Lure recipe
+New Update: v1.1.0.7
+-Squirrel can now sell DLC items such as Enchantments
