@@ -375,7 +375,7 @@ Mods: {
 					'''
 			}
 
-			AerospecEnchantment: {
+			AerospecEnchant: {
 				DisplayName: Aerospec Enchantment
 				Tooltip:
 					'''
@@ -386,7 +386,7 @@ Mods: {
 				CritReset: -{0}% crit
 			}
 
-			MarniteEnchantment: {
+			MarniteEnchant: {
 				DisplayName: Marnite Enchantment
 				Tooltip:
 					'''
@@ -396,12 +396,12 @@ Mods: {
 					'''
 			}
 
-			DesertProwlerEnchantment: {
+			DesertProwlerEnchant: {
 				DisplayName: Desert Prowler Enchantment
 				Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
 			}
 
-			WulfrumEnchantment: {
+			WulfrumEnchant: {
 				DisplayName: Wulfrum Enchantment
 				Tooltip:
 					'''
@@ -417,18 +417,18 @@ Mods: {
 				DisplayName: Force of Exploration
 				Tooltip:
 					'''
-					[i:FargowiltasCrossmod/MarniteEnchantment] 25% Increased placement speed and +10 placement range
-					[i:FargowiltasCrossmod/MarniteEnchantment] Lasers strike nearby enemies when building and mining
-					[i:FargowiltasCrossmod/WulfrumEnchantment] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
-					[i:FargowiltasCrossmod/AerospecEnchantment] Jumping and using double jumps increase critical strike chance and summon damage
-					[i:FargowiltasCrossmod/SulphurEnchantment] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
-					[i:FargowiltasCrossmod/VictideEnchantment] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
+					[i:FargowiltasCrossmod/MarniteEnchant] 25% Increased placement speed and +10 placement range
+					[i:FargowiltasCrossmod/MarniteEnchant] Lasers strike nearby enemies when building and mining
+					[i:FargowiltasCrossmod/WulfrumEnchant] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
+					[i:FargowiltasCrossmod/DesertProwlerEnchant] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
+					[i:FargowiltasCrossmod/AerospecEnchant] Jumping and using double jumps increase critical strike chance and summon damage
+					[i:FargowiltasCrossmod/SulphurEnchant] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
+					[i:FargowiltasCrossmod/VictideEnchant] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
 					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					'''
 			}
 
-			SnowRuffianEnchantment: {
+			SnowRuffianEnchant: {
 				DisplayName: Snow Ruffian Enchantment
 				Tooltip:
 					'''
@@ -439,7 +439,7 @@ Mods: {
 					'''
 			}
 
-			DaedalusEnchantment: {
+			DaedalusEnchant: {
 				DisplayName: Daedalus Enchantment
 				Tooltip:
 					'''
@@ -448,7 +448,7 @@ Mods: {
 					'''
 			}
 
-			PlagueReaperEnchantment: {
+			PlagueReaperEnchant: {
 				DisplayName: Plague Reaper Enchantment
 				Tooltip:
 					'''
@@ -458,12 +458,12 @@ Mods: {
 					'''
 			}
 
-			PlaguebringerEnchantment: {
+			PlaguebringerEnchant: {
 				DisplayName: Plaguebringer Enchantment
 				Tooltip: All damage over time debuffs spread between enemies
 			}
 
-			ReaverEnchantment: {
+			ReaverEnchant: {
 				DisplayName: Reaver Enchantment
 				Tooltip:
 					'''
@@ -474,7 +474,7 @@ Mods: {
 					'''
 			}
 
-			HydrothermicEnchantment: {
+			HydrothermicEnchant: {
 				DisplayName: Hydrothermic Enchantment
 				Tooltip:
 					'''
@@ -487,16 +487,16 @@ Mods: {
 				DisplayName: Devastation Force
 				Tooltip:
 					'''
-					[i:FargowiltasCrossmod/SnowRuffianEnchantment] Improves wing gliding
-					[i:FargowiltasCrossmod/DaedalusEnchantment] Flight is limited by a maximum height rather than flight time
-					[i:FargowiltasCrossmod/ReaverEnchantment] Several stats increased, but these stats decrease when hit
-					[i:FargowiltasCrossmod/HydrothermicEnchantment] After attacking for too long, your weapon overheats
-					[i:FargowiltasCrossmod/HydrothermicEnchantment] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
-					[i:FargowiltasCrossmod/PlaguebringerEnchantment] Debuffs spread between enemies
+					[i:FargowiltasCrossmod/SnowRuffianEnchant] Improves wing gliding
+					[i:FargowiltasCrossmod/DaedalusEnchant] Flight is limited by a maximum height rather than flight time
+					[i:FargowiltasCrossmod/ReaverEnchant] Several stats increased, but these stats decrease when hit
+					[i:FargowiltasCrossmod/HydrothermicEnchant] After attacking for too long, your weapon overheats
+					[i:FargowiltasCrossmod/HydrothermicEnchant] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					[i:FargowiltasCrossmod/PlaguebringerEnchant] Debuffs spread between enemies
 					'''
 			}
 
-			UmbraphileEnchantment: {
+			UmbraphileEnchant: {
 				DisplayName: Umbraphile Enchantment
 				Tooltip:
 					'''
@@ -505,12 +505,12 @@ Mods: {
 					'''
 			}
 
-			TitanHeartEnchantment: {
+			TitanHeartEnchant: {
 				DisplayName: Titan Heart Enchantment
 				Tooltip: ""
 			}
 
-			StatigelEnchantment: {
+			StatigelEnchant: {
 				DisplayName: Statigel Enchantment
 				Tooltip:
 					'''
@@ -520,7 +520,7 @@ Mods: {
 					'''
 			}
 
-			SulphurEnchantment: {
+			SulphurEnchant: {
 				DisplayName: Sulphur Enchantment
 				Tooltip:
 					'''
@@ -529,7 +529,7 @@ Mods: {
 					'''
 			}
 
-			VictideEnchantment: {
+			VictideEnchant: {
 				DisplayName: Victide Enchantment
 				Tooltip:
 					'''

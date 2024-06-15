@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DesertProwlerEnchantment : BaseEnchant
+    public class DesertProwlerEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<DesertProwlerEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<DesertProwlerEnchant>();
         public override void PostUpdateEquips(Player player)
         {
             CalDLCAddonPlayer addonPlayer = player.CalamityAddon();

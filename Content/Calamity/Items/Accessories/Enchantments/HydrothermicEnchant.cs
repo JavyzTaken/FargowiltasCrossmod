@@ -38,7 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class HydrothermicEnchantment : BaseEnchant
+    public class HydrothermicEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -83,7 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<HydrothermicEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<HydrothermicEnchant>();
 
         public override void PostUpdateEquips(Player player)
         {

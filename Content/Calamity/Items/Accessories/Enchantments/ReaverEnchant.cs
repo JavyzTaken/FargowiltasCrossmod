@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class ReaverEnchantment : BaseEnchant
+    public class ReaverEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -79,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<ReaverEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<ReaverEnchant>();
         public override void OnHitByEither(Player player, NPC npc, Projectile proj)
         {
             player.CalamityAddon().ReaverBuff /= 2;

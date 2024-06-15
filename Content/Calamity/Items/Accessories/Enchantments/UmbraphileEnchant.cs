@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class UmbraphileEnchantment : BaseEnchant
+    public class UmbraphileEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -76,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<UmbraphileEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<UmbraphileEnchant>();
         
         public override void PostUpdateEquips(Player player)
         {

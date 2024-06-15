@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class SulphurEnchantment : BaseEnchant
+    public class SulphurEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<SulphurEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<SulphurEnchant>();
         public override bool ExtraAttackEffect => true;
 
         public override void PostUpdateEquips(Player player)

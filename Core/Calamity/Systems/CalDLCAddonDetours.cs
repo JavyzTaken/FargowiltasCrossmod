@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 int critPerJump = self.ForceEffect<AerospecJumpEffect>() ? 10 : 5;
                 int critLost = critPerJump * addonPlayer.NumJumpsUsed;
                 addonPlayer.NumJumpsUsed = 0;
-                CombatText.NewText(self.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchantment.CritReset", critLost), true);
+                CombatText.NewText(self.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchant.CritReset", critLost), true);
             }
             orig(self);
         }

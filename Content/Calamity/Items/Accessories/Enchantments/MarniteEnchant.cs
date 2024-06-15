@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [AutoloadEquip(EquipType.Back)]
-    public class MarniteEnchantment : BaseEnchant
+    public class MarniteEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -79,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<MarniteEnchant>();
         public override bool ExtraAttackEffect => true;
         public override void PostUpdateEquips(Player player)
         {
@@ -109,7 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<MarniteEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<MarniteEnchant>();
         public override bool ExtraAttackEffect => true;
         public static void MarniteTileEffect(Player player, Vector2 worldPos)
         {

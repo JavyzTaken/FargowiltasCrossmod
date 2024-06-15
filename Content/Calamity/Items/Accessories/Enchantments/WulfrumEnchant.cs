@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class WulfrumEnchantment : BaseEnchant
+    public class WulfrumEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<WulfrumEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<WulfrumEnchant>();
         public override bool MinionEffect => true;
         public override void PostUpdateEquips(Player player)
         {

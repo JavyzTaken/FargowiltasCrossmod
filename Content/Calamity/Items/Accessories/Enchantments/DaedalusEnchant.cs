@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class DaedalusEnchantment : BaseEnchant
+    public class DaedalusEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyDaedalusHelms", 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusBreastplate>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusLeggings>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SnowRuffianEnchantment>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<SnowRuffianEnchant>(), 1);
             recipe.AddIngredient(ItemID.IceRod, 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.Wings.StarlightWings>(), 1);
             recipe.AddTile(TileID.CrystalBall);
@@ -70,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<DaedalusEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<DaedalusEnchant>();
         public override void PreUpdate(Player player)
         {
             

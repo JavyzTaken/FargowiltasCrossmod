@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class SnowRuffianEnchantment : BaseEnchant
+    public class SnowRuffianEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -80,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
-        public override int ToggleItemType => ModContent.ItemType<SnowRuffianEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<SnowRuffianEnchant>();
         public override void DrawEffects(Player player, PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             if (player.wings >= 0 && player.wingTime <= 0 && player.controlUp)

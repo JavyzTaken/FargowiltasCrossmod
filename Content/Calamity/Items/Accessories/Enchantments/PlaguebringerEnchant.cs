@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class PlaguebringerEnchantment : BaseEnchant
+    public class PlaguebringerEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -77,7 +77,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<PlaguebringerEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<PlaguebringerEnchant>();
         public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
             target.GetGlobalNPC<CalDLCAddonGlobalNPC>().PBGDebuffTag = 500;

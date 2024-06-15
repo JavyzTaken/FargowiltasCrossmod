@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class StatigelEnchantment : BaseEnchant
+    public class StatigelEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
-        public override int ToggleItemType => ModContent.ItemType<StatigelEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<StatigelEnchant>();
         
         public override void PostUpdateEquips(Player player)
         {

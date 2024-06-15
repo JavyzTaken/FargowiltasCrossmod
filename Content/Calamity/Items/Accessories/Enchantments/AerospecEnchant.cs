@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class AerospecEnchantment : BaseEnchant
+    public class AerospecEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -74,7 +74,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             return true;
         }
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<AerospecEnchantment>();
+        public override int ToggleItemType => ModContent.ItemType<AerospecEnchant>();
         
         public override void PostUpdateEquips(Player player)
         {
@@ -103,7 +103,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 mplayer.NumJumpsUsed++;
                 mplayer.AllowJumpsUsedInc = false;
-                CombatText.NewText(player.Hitbox, Color.Yellow, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchantment.CritUp", critPerJump));
+                CombatText.NewText(player.Hitbox, Color.Yellow, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchant.CritUp", critPerJump));
             }
             mplayer.AllowJumpsUsedInc = player.jump == 0;
         }
