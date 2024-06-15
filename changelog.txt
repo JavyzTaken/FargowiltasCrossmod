@@ -1,2 +1,5 @@
 New Update: v1.1.0.7
 -Squirrel can now sell DLC items such as Enchantments
+-Conjurist Soul recipe no longer has Papyrus Scarab since it's a material of Nucleogenesis, which is in the recipe
+-Prevented Brimstone Monsters from running faulty code, which caused them to apply Vunerability Hex to player whenever alive
+-Fixed Luxor's Gift not working correctly
