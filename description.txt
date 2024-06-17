@@ -3,6 +3,7 @@ Officially maintained by Fargo's Mods developers.
 
 Currently supports:
 Calamity Mod
+Wrath of the Gods
 
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
