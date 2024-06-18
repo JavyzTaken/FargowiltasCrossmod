@@ -26,6 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("DaedalusEnchantment")]
     public class DaedalusEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

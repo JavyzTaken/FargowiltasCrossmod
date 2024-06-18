@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("StatigelEnchantment")]
     public class StatigelEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

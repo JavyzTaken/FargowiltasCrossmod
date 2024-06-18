@@ -26,6 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [AutoloadEquip(EquipType.Back)]
+    [LegacyName("MarniteEnchantment")]
     public class MarniteEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

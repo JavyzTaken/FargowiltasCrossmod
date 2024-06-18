@@ -33,6 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("SulphurEnchantment")]
     public class SulphurEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

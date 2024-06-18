@@ -33,6 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("ReaverEnchantment")]
     public class ReaverEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

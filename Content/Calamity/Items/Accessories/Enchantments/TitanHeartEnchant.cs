@@ -35,6 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("TitanHeartEnchantment")]
     public class TitanHeartEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

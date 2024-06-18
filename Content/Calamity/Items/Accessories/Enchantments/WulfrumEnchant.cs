@@ -24,6 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("WulfrumEnchantment")]
     public class WulfrumEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

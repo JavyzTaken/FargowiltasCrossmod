@@ -27,6 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [LegacyName("AerospecEnchantment")]
     public class AerospecEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

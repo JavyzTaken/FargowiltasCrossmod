@@ -31,6 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [LegacyName("DesertProwlerEnchantment")]
     public class DesertProwlerEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)

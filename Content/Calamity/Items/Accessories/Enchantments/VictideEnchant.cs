@@ -32,6 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [LegacyName("VictideEnchantment")]
     public class VictideEnchant : BaseEnchant
     {
         public override bool IsLoadingEnabled(Mod mod)
