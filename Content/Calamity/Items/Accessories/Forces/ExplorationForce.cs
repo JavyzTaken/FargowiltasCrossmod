@@ -31,21 +31,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<AerospecJumpEffect>(Item);
-            MarniteEnchantment.AddEffects(player, Item);
+            MarniteEnchant.AddEffects(player, Item);
             player.AddEffect<DesertProwlerEffect>(Item);
             player.AddEffect<WulfrumEffect>(Item);
-            SulphurEnchantment.AddEffects(player, Item);
-            VictideEnchantment.AddEffects(player, Item);
+            SulphurEnchant.AddEffects(player, Item);
+            VictideEnchant.AddEffects(player, Item);
         }
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<AerospecEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<DesertProwlerEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<MarniteEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<WulfrumEnchantment>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SulphurEnchantment>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<VictideEnchantment>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<AerospecEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<DesertProwlerEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<MarniteEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<WulfrumEnchant>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<SulphurEnchant>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<VictideEnchant>(), 1);
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }

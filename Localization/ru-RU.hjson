@@ -24,7 +24,7 @@ Mods: {
 
 		EternityDeathDifficulty: {
 			Name: Вечная Смерть
-			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/800080:Режима Смерть][c/00FFFF:.]"
+			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/800080:Режима Смерть][c/00FFFF: и дополненные ИИ ванильных боссов.]"
 			ExpandedDescription:
 				'''
 				Включает [c/00FFFF:Режим Вечность] и [c/800080:Режим Смерть], а также предметы режима Мастера.
@@ -382,7 +382,7 @@ Mods: {
 					'''
 			}
 
-			AerospecEnchantment: {
+			AerospecEnchant: {
 				DisplayName: Зачарование Аэрофаза
 				Tooltip:
 					'''
@@ -394,7 +394,7 @@ Mods: {
 				CritReset: -{0}% крит
 			}
 
-			MarniteEnchantment: {
+			MarniteEnchant: {
 				DisplayName: Зачарование Мранитового Архитектора
 				Tooltip:
 					'''
@@ -404,12 +404,12 @@ Mods: {
 					'''
 			}
 
-			DesertProwlerEnchantment: {
+			DesertProwlerEnchant: {
 				DisplayName: Зачарование Пустынного Мародёра
 				Tooltip: Задержите ВВЕРХ, чтобы зарядить мощный заряжаемый прыжок, который также увеличивает горизонтальную скорость
 			}
 
-			WulfrumEnchantment: {
+			WulfrumEnchant: {
 				DisplayName: Зачарование Вульфрума
 				Tooltip:
 					'''
@@ -425,18 +425,18 @@ Mods: {
 				DisplayName: Артефакт Исследования
 				Tooltip:
 					'''
-					[i:FargowiltasCrossmod/MarniteEnchantment] Увеличивает скорость размещения блоков на 25% и дальность размещения блоков на 5
-					[i:FargowiltasCrossmod/MarniteEnchantment] Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
-					[i:FargowiltasCrossmod/WulfrumEnchantment] Вульфрумовый дрон показывает слабости врагов к дебаффам и делает их менее устойчивым к любым дебаффам с уроном
-					[i:FargowiltasCrossmod/DesertProwlerEnchantment] ВВЕРХ чтобы зарядить прыжок, который также увеличивает скорость передвижения
-					[i:FargowiltasCrossmod/AerospecEnchantment] Прыжок и двойные прыжки увеличивают шанс критического удара и урон призывателя
-					[i:FargowiltasCrossmod/SulphurEnchantment] Дарует дополнительный прыжок с пузырём, атакуйте пузырь, чтобы выпустить токсичные газы
-					[i:FargowiltasCrossmod/VictideEnchantment] Даёт морские иглы, которые вылетают, если какое-то время атаковать и перестать
+					[i:FargowiltasCrossmod/MarniteEnchant] Увеличивает скорость размещения блоков на 25% и дальность размещения блоков на 5
+					[i:FargowiltasCrossmod/MarniteEnchant] Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
+					[i:FargowiltasCrossmod/WulfrumEnchant] Вульфрумовый дрон показывает слабости врагов к дебаффам и делает их менее устойчивым к любым дебаффам с уроном
+					[i:FargowiltasCrossmod/DesertProwlerEnchant] ВВЕРХ чтобы зарядить прыжок, который также увеличивает скорость передвижения
+					[i:FargowiltasCrossmod/AerospecEnchant] Прыжок и двойные прыжки увеличивают шанс критического удара и урон призывателя
+					[i:FargowiltasCrossmod/SulphurEnchant] Дарует дополнительный прыжок с пузырём, атакуйте пузырь, чтобы выпустить токсичные газы
+					[i:FargowiltasCrossmod/VictideEnchant] Даёт морские иглы, которые вылетают, если какое-то время атаковать и перестать
 					Эффекты [i:CalamityMod/MarniteRepulsionShield] Мранитового репульсионного щита
 					'''
 			}
 
-			SnowRuffianEnchantment: {
+			SnowRuffianEnchant: {
 				DisplayName: Зачарование Снежного Бандита
 				Tooltip:
 					'''
@@ -447,7 +447,7 @@ Mods: {
 					'''
 			}
 
-			DaedalusEnchantment: {
+			DaedalusEnchant: {
 				// DisplayName: Daedalus Enchantment
 				/* Tooltip:
 					'''
@@ -456,7 +456,7 @@ Mods: {
 					''' */
 			}
 
-			PlagueReaperEnchantment: {
+			PlagueReaperEnchant: {
 				// DisplayName: Plague Reaper Enchantment
 				/* Tooltip:
 					'''
@@ -466,12 +466,12 @@ Mods: {
 					''' */
 			}
 
-			PlaguebringerEnchantment: {
+			PlaguebringerEnchant: {
 				// DisplayName: Plaguebringer Enchantment
 				// Tooltip: All damage over time debuffs spread between enemies
 			}
 
-			ReaverEnchantment: {
+			ReaverEnchant: {
 				// DisplayName: Reaver Enchantment
 				/* Tooltip:
 					'''
@@ -482,7 +482,7 @@ Mods: {
 					''' */
 			}
 
-			HydrothermicEnchantment: {
+			HydrothermicEnchant: {
 				// DisplayName: Hydrothermic Enchantment
 				/* Tooltip:
 					'''
@@ -495,16 +495,16 @@ Mods: {
 				// DisplayName: Devastation Force
 				/* Tooltip:
 					'''
-					[i:FargowiltasCrossmod/SnowRuffianEnchantment] Improves wing gliding
-					[i:FargowiltasCrossmod/DaedalusEnchantment] Flight is limited by a maximum height rather than flight time
-					[i:FargowiltasCrossmod/ReaverEnchantment] Several stats increased, but these stats decrease when hit
-					[i:FargowiltasCrossmod/HydrothermicEnchantment] After attacking for too long, your weapon overheats
-					[i:FargowiltasCrossmod/HydrothermicEnchantment] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
-					[i:FargowiltasCrossmod/PlaguebringerEnchantment] Debuffs spread between enemies
+					[i:FargowiltasCrossmod/SnowRuffianEnchant] Improves wing gliding
+					[i:FargowiltasCrossmod/DaedalusEnchant] Flight is limited by a maximum height rather than flight time
+					[i:FargowiltasCrossmod/ReaverEnchant] Several stats increased, but these stats decrease when hit
+					[i:FargowiltasCrossmod/HydrothermicEnchant] After attacking for too long, your weapon overheats
+					[i:FargowiltasCrossmod/HydrothermicEnchant] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					[i:FargowiltasCrossmod/PlaguebringerEnchant] Debuffs spread between enemies
 					''' */
 			}
 
-			UmbraphileEnchantment: {
+			UmbraphileEnchant: {
 				// DisplayName: Umbraphile Enchantment
 				/* Tooltip:
 					'''
@@ -513,12 +513,12 @@ Mods: {
 					''' */
 			}
 
-			TitanHeartEnchantment: {
+			TitanHeartEnchant: {
 				// DisplayName: Titan Heart Enchantment
 				// Tooltip: ""
 			}
 
-			StatigelEnchantment: {
+			StatigelEnchant: {
 				DisplayName: Зачарование Статигеля
 				Tooltip:
 					'''
@@ -528,7 +528,7 @@ Mods: {
 					'''
 			}
 
-			SulphurEnchantment: {
+			SulphurEnchant: {
 				DisplayName: Зачарование Сернистости
 				Tooltip:
 					'''
@@ -537,7 +537,7 @@ Mods: {
 					'''
 			}
 
-			VictideEnchantment: {
+			VictideEnchant: {
 				DisplayName: Зачарование Прилива
 				Tooltip:
 					'''
@@ -826,5 +826,12 @@ Mods: {
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
+
+		ExpandedTooltips: {
+			FountainAstral: Заставляет окружающий биом смениться на Астральную Инфекцию при активации
+			FountainCrags: Заставляет окружающий биом смениться на Серную Скалу при активации
+			FountainSulphur: Заставляет окружающий биом смениться на Сернистое Море при активации
+			FountainSunken: Заставляет окружающий биом смениться на Затерянное Море при активации
+		}
 	}
 }

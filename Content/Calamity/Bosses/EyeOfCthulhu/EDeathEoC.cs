@@ -51,8 +51,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             ref float ai_AttackState = ref NPC.ai[1];
             ref float ai_Timer = ref NPC.ai[2];
 
-            if (!NPC.HasValidTarget || NPC == null)
+            if (NPC == null || !NPC.HasValidTarget)
             {
+                NPC.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = true;
                 return true;
             }
             NPC.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = true;
@@ -60,6 +61,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             {
                 NPC.GetGlobalNPC<EyeofCthulhu>().RunEmodeAI = false;
                 NPC.dontTakeDamage = false;
+                NPC.alpha = 0;
                 HorizontalDash(NPC);
                 return true;
             }

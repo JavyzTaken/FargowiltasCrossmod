@@ -29,6 +29,8 @@ using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
+using Fargowiltas;
+using CalamityMod.Items.Placeables.Furniture;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -67,6 +69,11 @@ namespace FargowiltasCrossmod.Core.Calamity
         public override void PostSetupContent()
         {
             #region Items
+            FargoSets.Items.BuffStation[ItemType<ResilientCandle>()] = true;
+            FargoSets.Items.BuffStation[ItemType<SpitefulCandle>()] = true;
+            FargoSets.Items.BuffStation[ItemType<VigorousCandle>()] = true;
+            FargoSets.Items.BuffStation[ItemType<WeightlessCandle>()] = true;
+
             SetFactory itemFactory = ItemID.Sets.Factory;
             Items.RockItem = itemFactory.CreateBoolSet(false,
                 ItemType<Rock>(),

@@ -41,10 +41,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void AddRecipes()
         {
             Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ModContent.ItemType<DaedalusEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<ReaverEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<HydrothermicEnchantment>());
-            recipe.AddIngredient(ModContent.ItemType<PlaguebringerEnchantment>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<DaedalusEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<ReaverEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<HydrothermicEnchant>());
+            recipe.AddIngredient(ModContent.ItemType<PlaguebringerEnchant>(), 1);
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }

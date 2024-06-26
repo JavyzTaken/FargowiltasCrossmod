@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (!npc.HasValidTarget)
                 return;
 
-            var target = Main.player[Main.myPlayer];
+            var target = Main.LocalPlayer;
             var burnIntensity = target.GetModPlayer<BrimstoneBurnPlayer>().BurnFadeIntensity;
 
 
