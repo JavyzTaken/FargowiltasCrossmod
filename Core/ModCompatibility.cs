@@ -38,7 +38,7 @@ public static class ModCompatibility
         public const string Name = "InfernumMode";
         public static bool Loaded => ModLoader.HasMod(Name);
         public static Mod Mod => ModLoader.GetMod(Name);
-        public static bool InfernumDifficulty => (bool)Mod.Call("GetInfernumActive");
+        public static bool InfernumDifficulty => Loaded && (bool)Mod.Call("GetInfernumActive");
     }
     public static class WrathoftheGods
     {

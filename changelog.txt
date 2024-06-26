@@ -1,24 +1,9 @@
-New Update: v1.1
--ADDED 8 NEW ENCHANTMENTS, one per pre-Hardmode Calamity armor
--Added Force of Exploration
--Reworked Eternity Hive Mind
+New Update: v1.1.0.4
 
--Brimstone Elemental:
---Added new burning shader aura
---Tweaked movement during mobile phases
---Increased visibility for several projectiles
---Brimstone barrages now accelerate after 2 seconds
---No longer inflicts Obstructed with aura
---Reworked cocoon phase
---Brimlings now damage the boss when dying
---Brimlings no longer spawn a clone on death and are immortal on Masochist Mode
---Added burning effect when outside aura
+-Eternity Desert Scourge: Now hides during the summon phase in Master Mode aswell
+-Eternity Cryogen: Permafrost breaks out at 90% Cryogen health instead of 80%
+-Master Eternity+ Skeletron Prime now displays Eternity sprite properly
+-Several multiplayer boss sync fixes
 
--Improved Permafrost's movement
-
--Ported to new Calamity update
--Adjusted some recipes
--Resprited Outlaws Essence and Vagabond Soul
--Loading a world with Infernum Mod enabled no longer disables Eternity priority automatically
--Fixed enemy spawn adjustments applying outside of Eternity Mode
--Large internal rewrites, restructuring, and some optimization
+-Updated Aerospec wizard effect tooltip
+-Updated Russian localization

@@ -370,7 +370,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 }
                 if (NPC.Opacity < 1)
                 {
-                    NPC.Opacity += 0.7f * (1 / 120f); //takes 2 seconds
+                    NPC.Opacity += 0.7f * (1 / 180f); //takes 3 seconds
                     NPC.velocity *= 0.95f;
                 }
                 else
@@ -392,6 +392,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 3f, Main.myPlayer);
                         }
                     }
+                    AttackReset();
                     attack = Main.rand.NextFromCollection(AttackCycle);
                     NPC.netUpdate = true;
                     NetSync(NPC);
@@ -408,7 +409,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 const int partialAttacks = 3;
                 if (partialTimer <= 0)
                 {
-                    const int minDistance = 200;
+                    const int minDistance = 230;
                     float dir = Main.rand.NextBool() ? 1 : -1;
                     LockVector = (player.DirectionTo(NPC.Center) * minDistance).RotatedBy(dir * MathHelper.Pi / 3f);
                     NetSync(NPC);
@@ -435,7 +436,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                             }
                             NPC.rotation = rot;
                         }
-                        if (partialTimer % (partialAttackTime / 10) == 5) //shoot
+                        if (partialTimer % (partialAttackTime / 10) == 5 && partialTimer > (partialAttackTime / 4) + (partialAttackTime / 20)) //shoot
                         {
                             SoundEngine.PlaySound(ShotSound, NPC.Center);
                             if (DLCUtils.HostCheck)

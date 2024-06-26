@@ -52,17 +52,6 @@ Mods: {
 					Balance: Balance
 				}
 
-				BalanceRework: {
-					Label: Calamity/Souls Balance Rework
-					Tooltip:
-						'''
-						Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
-						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. 
-						Makes Souls content interact with Calamity mechanics, for example Defense Damage.
-						Recommended to keep enabled.
-						'''
-				}
-
 				ConsumableSummons: {
 					Label: Summon Items are Consumable in Eternity Mode
 					Tooltip:
@@ -741,6 +730,7 @@ Mods: {
 			LingeringPlasmaFireball.DisplayName: Plasma Fireball
 			SmallTeslaArc.DisplayName: Tesla Arc
 			ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
+			ScourgeSandstream.DisplayName: Scourge Sandstream
 		}
 
 		Buffs: {
@@ -808,7 +798,7 @@ Mods: {
 		}
 
 		WizardEffect: {
-			Aerospec: Crit bonus doubled
+			Aerospec: Crit and damage bonus doubled
 			Marnite: Stronger daggers, +15% placement speed and +5 placement range
 			DesertProwler: Stronger jumps
 			Wulfrum: Scanned Enemies take even more extra damage from debuffs

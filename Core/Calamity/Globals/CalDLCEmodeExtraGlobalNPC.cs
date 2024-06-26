@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!(CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements()))
+            if (!(CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements() && !WorldSavingSystem.SwarmActive))
             {
                 return true;
             }

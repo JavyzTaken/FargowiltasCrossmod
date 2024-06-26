@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
@@ -23,6 +24,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 {
@@ -65,6 +67,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 NPC.ai[1] = Main.rand.NextFloat(0f, maxRadians);
             }
             
+        }
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(NPC.localAI[1]);
+        }
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
+        {
+            NPC.localAI[1] = binaryReader.ReadSingle();
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -275,16 +285,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 NPC.velocity *= 0.925f;
             }
 
+            if (NPC.localAI[1] == 0) // initial
+            {
+                NPC.localAI[1] = Main.rand.Next(0, 440);
+                NPC.netUpdate = true;
+            }
+                
+            //if (!Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height))
+            //NPC.localAI[1] = Main.rand.Next(0, 440);
+
+            //if (NPC.Distance(desiredPosition) < 100)
+            NPC.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(6f, 1f, (float)blobs.Count / P1Blobs);
+
             if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                if (NPC.localAI[1] == 0) // initial
-                    NPC.localAI[1] = Main.rand.Next(0, 440);
-                //if (!Collision.CanHit(NPC.position, NPC.width, NPC.height, Main.player[NPC.target].position, Main.player[NPC.target].width, Main.player[NPC.target].height))
-                    //NPC.localAI[1] = Main.rand.Next(0, 440);
-
-                //if (NPC.Distance(desiredPosition) < 100)
-                NPC.localAI[1] += (Main.rand.Next(2) + 1f) * MathHelper.Lerp(6f, 1f, (float)blobs.Count / P1Blobs);
-
                 if (NPC.localAI[1] >= 480f && NPC.velocity.Length() < 2f)// && Vector2.Distance(target.Center, NPC.Center) > 400f)
                 {
                     NPC.localAI[1] = 1f;

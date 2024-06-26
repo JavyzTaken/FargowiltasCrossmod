@@ -234,6 +234,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.netUpdate = true;
                     }
                     break;
+                    /*
                 case 21: //straight dash spam p2
                     if (Calamity)
                     {
@@ -241,6 +242,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.netUpdate = true;
                     }
                     break;
+                    */
                 case 24: //spawn destroyers
                 case 19: //pillar toss
                     if (FirstFrame)

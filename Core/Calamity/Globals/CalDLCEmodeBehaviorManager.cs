@@ -14,6 +14,7 @@ using FargowiltasCrossmod.Core.Calamity.Systems;
 using Microsoft.Xna.Framework;
 using CalamityMod.NPCs.HiveMind;
 using Mono.Cecil;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -69,7 +70,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
                     DLCBehaviour.OnFirstTick();
                 }
-                return DLCBehaviour.PreAI();
+                if (!WorldSavingSystem.SwarmActive)
+                    return DLCBehaviour.PreAI();
             }
 
             return true;

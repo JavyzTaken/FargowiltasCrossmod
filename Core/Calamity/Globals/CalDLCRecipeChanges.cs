@@ -727,8 +727,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     recipe.AddIngredient<WulfrumAcrobaticsPack>()
                         .AddIngredient<TundraLeash>()
                         .AddIngredient<FollyFeed>()
-                        .AddIngredient<TheCartofGods>()
-                        .AddIngredient<AuricBar>(10);
+                        .AddIngredient<TheCartofGods>();
                 }
                 if (recipe.HasResult<FlightMasterySoul>() && recipe.HasIngredient(ItemID.EmpressFlightBooster))
                 {
@@ -737,8 +736,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     recipe.AddIngredient<SkylineWings>()
                         .AddIngredient<HadarianWings>()
                         .AddIngredient<TarragonWings>()
-                        .AddIngredient<SilvaWings>()
-                        .AddIngredient<AuricBar>(10);
+                        .AddIngredient<SilvaWings>();
 
                 }
                 if (recipe.HasResult<ColossusSoul>() && recipe.HasIngredient(ItemID.WormScarf))
@@ -883,54 +881,51 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 #endregion
 
                 #region Balance and Progression Locks
-                if (CalDLCConfig.Instance.BalanceRework)
+                if (recipe.HasIngredient<EternalEnergy>() && recipe.createItem != null && CalDLCSets.Items.RockItem[recipe.createItem.type] && !recipe.HasIngredient<Rock>())
                 {
-                    if (recipe.HasIngredient<EternalEnergy>() && recipe.createItem != null && CalDLCSets.Items.RockItem[recipe.createItem.type] && !recipe.HasIngredient<Rock>())
+                    recipe.AddIngredient<Rock>();
+                }
+                if (recipe.HasResult(ItemID.AnkhShield) && !recipe.HasIngredient(ItemID.SoulofNight))
+                {
+                    recipe.AddIngredient(ItemID.SoulofNight, 3);
+                }
+                if (recipe.HasResult<MechLure>())
+                {
+                    if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
                     {
-                        recipe.AddIngredient<Rock>();
+                        recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
                     }
-                    if (recipe.HasResult(ItemID.AnkhShield) && !recipe.HasIngredient(ItemID.SoulofNight))
+                    if (recipe.RemoveTile(TileID.MythrilAnvil))
                     {
-                        recipe.AddIngredient(ItemID.SoulofNight, 3);
+                        recipe.AddTile(TileID.Anvils);
                     }
-                    if (recipe.HasResult<MechLure>())
-                    {
-                        if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
-                        {
-                            recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
-                        }
-                        if (recipe.RemoveTile(TileID.MythrilAnvil))
-                        {
-                            recipe.AddTile(TileID.Anvils);
-                        }
-                    }
-                    if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
-                    {
-                        recipe.AddIngredient<DivineGeode>(5);
-                    }
-                    if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient<DivineGeode>())
-                    {
-                        recipe.AddIngredient<DivineGeode>(4);
-                    }
-                    if (recipe.HasResult<AbomsCurse>() && !recipe.HasIngredient<AuricBar>())
-                    {
-                        recipe.AddIngredient<AuricBar>(2);
-                    }
-                    List<int> Tier2Souls =
-                    [
-                        ItemType<TerrariaSoul>(),
+                }
+                if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
+                {
+                    recipe.AddIngredient<DivineGeode>(5);
+                }
+                if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient<DivineGeode>())
+                {
+                    recipe.AddIngredient<DivineGeode>(4);
+                }
+                if (recipe.HasResult<AbomsCurse>() && !recipe.HasIngredient<AuricBar>())
+                {
+                    recipe.AddIngredient<AuricBar>(2);
+                }
+                List<int> Tier2Souls =
+                [
+                    ItemType<TerrariaSoul>(),
                         ItemType<UniverseSoul>(),
                         ItemType<DimensionSoul>(),
                         ItemType<MasochistSoul>()
-                    ];
+                ];
 
-                    if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
+                if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
+                {
+                    recipe.AddIngredient<ShadowspecBar>(5);
+                    if (recipe.RemoveTile(TileType<CrucibleCosmosSheet>()))
                     {
-                        recipe.AddIngredient<ShadowspecBar>(5);
-                        if (recipe.RemoveTile(TileType<CrucibleCosmosSheet>()))
-                        {
-                            recipe.AddTile<DraedonsForge>();
-                        }
+                        recipe.AddTile<DraedonsForge>();
                     }
                 }
                 #endregion

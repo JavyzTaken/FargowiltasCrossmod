@@ -109,7 +109,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     player.GetJumpState(ExtraJump.FartInAJar).Enable();
                 }
-
+            }
+            if (item.type == ModContent.ItemType<AeolusBoots>()) // add angel treads effects
+            {
+                CalamityPlayer modPlayer = player.Calamity();
+                modPlayer.angelTreads = true;
+                player.accRunSpeed = 7.5f;
+                player.moveSpeed += 0.04f; // angel provides 0.12. aeolus provides 0.08. leftover is 0.04
+                player.iceSkate = true;
+                player.waterWalk = true;
+                player.fireWalk = true;
+                player.buffImmune[BuffID.OnFire] = true;
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -205,7 +215,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<Terminus>())
                 return WorldSavingSystem.DownedMutant;
 
-            if (item.type == ModContent.ItemType<CelestialOnion>() && CalDLCConfig.Instance.BalanceRework && WorldSavingSystem.EternityMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
             return true;
@@ -264,13 +274,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
-            if (item.type == ModContent.ItemType<CelestialOnion>() && CalDLCConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
 
 
             string key = "Mods.FargowiltasCrossmod.Items.AddedEffects.";
+            if (item.type == ModContent.ItemType<AeolusBoots>() && !item.social)
+            {
+                tooltips.Insert(11, new TooltipLine(Mod, "CalAeolus", Language.GetTextValue(key + "AngelTreads")));
+            }
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
@@ -328,7 +342,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
-            if (Player.Calamity().extraAccessoryML && CalDLCConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
+            if (Player.Calamity().extraAccessoryML && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 if (MutantsPactSlot)
                 {

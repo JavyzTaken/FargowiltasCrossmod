@@ -319,6 +319,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             #region Phase 1: Stationary
             if (Phase == 1)
             {
+                ref float burrowTimer = ref NPC.ai[3];
+
                 timer++;
 
                 NPC.noGravity = false;
@@ -387,7 +389,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                 CalamityBurrow(NPC, target);
 
-                if (!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>()))
+                if (!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>()) && burrowTimer > 0)
                 {
                     SoundEngine.PlaySound(roar with { Pitch = 0.5f }, NPC.Center);
                     Phase = 2;
@@ -477,6 +479,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                             if (NPC.alpha > 0)
                                 NPC.alpha -= 3;
+                            else
+                                NPC.alpha = 0;
 
                             int creeperCount = attackCounter == 0 ? 4 : 3;
                             var creepers = Main.npc.Where(n => n.TypeAlive<DankCreeper>());
@@ -484,17 +488,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 SpawnCreepers(1);
                             void SpawnCreepers(int count)
                             {
-                                for (int i = 0; i < count; i++)
+                                if (DLCUtils.HostCheck)
                                 {
-                                    int n = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-NPC.width / 2, NPC.width / 2), (int)NPC.Center.Y + Main.rand.Next(-NPC.height / 2, NPC.height / 2), ModContent.NPCType<DankCreeper>(), ai0: NPC.whoAmI);
-                                    if (n.IsWithinBounds(Main.maxNPCs))
+                                    for (int i = 0; i < count; i++)
                                     {
-                                        Main.npc[n].velocity = Main.rand.NextVector2Circular(3, 3);
+                                        int n = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X + Main.rand.Next(-NPC.width / 2, NPC.width / 2), (int)NPC.Center.Y + Main.rand.Next(-NPC.height / 2, NPC.height / 2), ModContent.NPCType<DankCreeper>(), ai0: NPC.whoAmI);
+                                        if (n.IsWithinBounds(Main.maxNPCs))
+                                        {
+                                            Main.npc[n].velocity = Main.rand.NextVector2Circular(3, 3);
+                                        }
                                     }
                                 }
                             }
                             float speedMod = MathF.Min(1f, timer / 60f);
-                            float speed = 12 * speedMod;
+                            float speed = 16 * speedMod;
                             NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.Normalize(target.Center - NPC.Center) * speed, 0.02f);
 
                             if (timer == MidwayIdleStart + 10)
@@ -539,18 +546,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         break;
                     case P2States.I_OffscreenDash1: // back off, dash,  go offscreen and dash in from offscreen at 90 degree angle
                         {
+                            ref float dashRotation = ref NPC.localAI[1];
+
                             targetAfterimages = 10;
-                            if (timer == 1) // start of attack
+                            if (timer == 1) // set random direction, wait 5 frames to sync for mp
                             {
-                                NPC.velocity = -NPC.DirectionTo(target.Center).RotatedBy(MathF.PI * Main.rand.NextFloat(0.35f, 0.5f) * (Main.rand.NextBool() ? 1 : -1)) * 25;
+                                dashRotation = (Main.rand.NextBool() ? 1 : -1) * Main.rand.NextFloat(0.35f, 0.5f);
+                                NPC.netUpdate = true;
+                            }
+                            if (timer < 6)
+                                break;
+                            if (timer == 6) // start of attack
+                            {
+                                NPC.velocity = -NPC.DirectionTo(target.Center).RotatedBy(MathF.PI * dashRotation) * 25;
                                 SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.RoarSound, NPC.Center);
                             }
-                            float attackTime = 120f;
-                            float fadeTime = 100f;
+                            float attackTime = 120f + 5f;
+                            float fadeTime = 100f + 5f;
 
                             bool fade = timer > fadeTime;
 
-                            float telegraphTime = 50;
+                            float telegraphTime = 50 + 5;
                             bool accelerate = timer > telegraphTime;
                             float accelStraightTime = telegraphTime + 0f;
 
@@ -631,14 +647,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             if (timer % 9 == 0)
                             {
                                 SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+
+                                }
                                 for (int i = -1; i < 2; i += 2)
                                 {
-                                    if (FargoSoulsUtil.HostCheck)
-                                    {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), -NPC.velocity.RotatedBy(MathF.PI / 3f * i) * 0.8f, ModContent.ProjectileType<BrainMassProjectile>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 1);
-                                    }
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), -NPC.velocity.RotatedBy(MathF.PI / 3f * i) * 0.8f, ModContent.ProjectileType<BrainMassProjectile>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 1);
                                 }
-                                
                             }
                             float dashTime = 80;
                             float decelTime = 25;
@@ -748,6 +764,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             else
                             {
+                                NPC.alpha = 0;
                                 timer -= 2;
                                 if (ai3 != 1)
                                 {
@@ -863,7 +880,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                         float spininProg = (timer - spinoutTime) / (totalTime - spinoutTime);
                                         teleportRadius = (int)MathHelper.Lerp(teleportRadius, 0, spininProg);
 
-                                        if (Subphase(NPC) >= 2 && timer % 25 == 0 && timer < totalTime - 40 && NPC.CountNPCS(ModContent.NPCType<DarkHeart>()) < 2)
+                                        if (Subphase(NPC) >= 2 && timer % 25 == 0 && timer < totalTime - 40 && NPC.CountNPCS(ModContent.NPCType<DarkHeart>()) < 1)
                                         {
                                             NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.position.X + Main.rand.Next(NPC.width), (int)NPC.position.Y + Main.rand.Next(NPC.height), ModContent.NPCType<DarkHeart>());
                                         }

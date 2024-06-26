@@ -9,9 +9,12 @@ using Terraria;
 using Terraria.ModLoader;
 using CalamityMod;
 using Microsoft.Xna.Framework;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 {
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class BrimstoneBurnFireLayer : PlayerDrawLayer
     {
         public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.BackAcc);
