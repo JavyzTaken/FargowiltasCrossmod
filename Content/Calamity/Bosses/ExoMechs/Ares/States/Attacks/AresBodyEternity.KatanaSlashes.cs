@@ -73,9 +73,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// </summary>
         public void DoBehavior_KatanaSlashes()
         {
-            if (Main.mouseRight && Main.mouseRightRelease)
-                AITimer = 0;
-
             if (AITimer == 1)
             {
                 ScreenShakeSystem.StartShake(10f);
