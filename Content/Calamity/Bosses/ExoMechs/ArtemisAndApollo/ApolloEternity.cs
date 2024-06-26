@@ -370,7 +370,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             CommonExoTwinFunctionalities.DrawBase(NPC, this, BaseTexture.Value, Glowmask.Value, lightColor, screenPos, Frame);
-            DrawPlasmaFlameEngulfEffect(screenPos);
+            DrawPlasmaFlameEngulfEffect();
             return false;
         }
 
@@ -390,7 +390,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             return NPC.GetAlpha(trailColor) * (1 - completionRatio) * FlameEngulfInterpolant;
         }
 
-        public void DrawPlasmaFlameEngulfEffect(Vector2 screenPos)
+        public void DrawPlasmaFlameEngulfEffect()
         {
             if (FlameEngulfInterpolant <= 0f)
                 return;
