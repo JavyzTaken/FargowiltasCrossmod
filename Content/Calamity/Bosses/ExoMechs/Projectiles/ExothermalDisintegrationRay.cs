@@ -1,5 +1,6 @@
 ﻿using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Artemis;
+using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using Luminance.Assets;
@@ -78,6 +79,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             float scaleFactor = EasingCurves.Elastic.Evaluate(EasingType.Out, Utilities.InverseLerp(0f, 60f, Time)) * Utilities.InverseLerp(0f, 12f, Projectile.timeLeft);
             Projectile.width = (int)(scaleFactor * 100f);
+
+            for (int i = 0; i < 18; i++)
+            {
+                Vector2 fireSpawnPosition = Projectile.Center + Projectile.velocity * Main.rand.NextFloat(LaserbeamLength * 0.9f);
+                Vector2 fireVelocity = Main.rand.NextVector2Circular(14f, 14f) + artemis.velocity;
+                Color fireGlowColor = Utilities.MulticolorLerp(Main.rand.NextFloat(0.75f), Color.Yellow, Color.Orange, Color.Red) * Main.rand.NextFloat(0.5f, 0.8f);
+                Vector2 fireGlowScaleFactor = Vector2.One * Main.rand.NextFloat(0.095f, 0.175f);
+                BloomPixelParticle fire = new(fireSpawnPosition, fireVelocity, Color.White, fireGlowColor, Main.rand.Next(17, 37), Vector2.One * 2f, null, fireGlowScaleFactor);
+                fire.Spawn();
+            }
 
             Time++;
         }
