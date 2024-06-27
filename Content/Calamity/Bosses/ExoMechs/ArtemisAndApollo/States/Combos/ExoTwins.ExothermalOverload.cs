@@ -244,7 +244,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// Draws a gleam on Artemis' pupil/central exo crystal as a telegraph for her laserbeam during the Exothermal Overload attack.
         /// </summary>
-        /// <param name="drawPosition">The base draw position of the Empress.</param>
+        /// <param name="drawPosition">The base draw position of the Exo Twin.</param>
         public static void DoBehavior_ExothermalOverload_ArtemisRenderGleam(Vector2 drawPosition, float glimmerInterpolant)
         {
             Texture2D flare = MiscTexturesRegistry.ShineFlareTexture.Value;
