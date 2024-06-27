@@ -24,6 +24,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static int ExothermalDisintegrationRayDamage => Main.expertMode ? 650 : 400;
 
         /// <summary>
+        /// How many laser cycles should be performed during the Exothermal Overload attack before a new attack is selected.
+        /// </summary>
+        public static int ExothermalOverload_CycleCount => 2;
+
+        /// <summary>
         /// AI update loop method for the ExothermalOverload attack.
         /// </summary>
         /// <param name="npc">The Twins' NPC instance.</param>
@@ -59,6 +64,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 hoverOffsetAngle = Utilities.WrapAngle360(hoverOffsetAngle + Main.rand.NextFromList(-1f, 1f) * MathHelper.PiOver2);
                 npc.netUpdate = true;
+
+                int totalPerformedCycles = AITimer / (hoverRedirectTime + slowDownTime + chargeUpTime + energyGleamTime + laserShootTime);
+                if (totalPerformedCycles >= ExothermalOverload_CycleCount)
+                    ExoTwinsStateManager.TransitionToNextState();
             }
 
             // Reposition in anticipation of the laser firing.
