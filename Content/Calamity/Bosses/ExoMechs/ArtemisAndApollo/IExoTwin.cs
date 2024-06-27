@@ -1,6 +1,8 @@
 ﻿using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using Terraria;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 {
@@ -94,6 +96,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// A specific, optionally definable draw action that may be used for specific, circumstantial effects.
         /// </summary>
         public Action? SpecificDrawAction
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A specific, optionally defineable shader action that may be used to prepare special effects in place of the standard afterimage blur shader.
+        /// </summary>
+        /// 
+        /// <remarks>
+        /// Returning <see langword="true"/> in this function indicates that an override has happened.
+        /// </remarks>
+        public Func<Texture2D, NPC, bool> SpecialShaderAction
         {
             get;
             set;

@@ -175,6 +175,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
+        /// Apollo's specific shader action.
+        /// </summary>
+        public Func<Texture2D, NPC, bool> SpecialShaderAction
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Artemis' optic nerve colors.
         /// </summary>
         public Color[] OpticNervePalette => [new(75, 14, 6), new(145, 35, 4), new(204, 101, 24), new(254, 172, 84), new(224, 147, 40)];
@@ -301,6 +310,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             ThrusterBoost = MathHelper.Clamp(ThrusterBoost - 0.035f, 0f, 10f);
             MotionBlurInterpolant = Utilities.Saturate(MotionBlurInterpolant - 0.05f);
             SpecificDrawAction = null;
+            SpecialShaderAction = (_, _2) => false;
 
             if (!Inactive)
                 NPC.Opacity = 1f;

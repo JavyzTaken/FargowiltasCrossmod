@@ -194,6 +194,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             Vector2 drawPosition = twin.Center - screenPos;
             Rectangle frameRectangle = texture.Frame(10, 9, frame / 9, frame % 9);
+            twin.frame = frameRectangle;
 
             Main.spriteBatch.PrepareForShaders();
 
@@ -201,11 +202,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             for (int i = 0; i < blurWeights.Length; i++)
                 blurWeights[i] = Utilities.GaussianDistribution(i / (float)(blurWeights.Length - 1f) * 1.5f, 0.6f);
 
-            ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.MotionBlurShader");
-            shader.TrySetParameter("blurInterpolant", twinInterface.MotionBlurInterpolant);
-            shader.TrySetParameter("blurWeights", blurWeights);
-            shader.TrySetParameter("blurDirection", Vector2.UnitY);
-            shader.Apply();
+            if (!twinInterface.SpecialShaderAction(texture, twin))
+            {
+                ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.MotionBlurShader");
+                shader.TrySetParameter("blurInterpolant", twinInterface.MotionBlurInterpolant);
+                shader.TrySetParameter("blurWeights", blurWeights);
+                shader.TrySetParameter("blurDirection", Vector2.UnitY);
+                shader.Apply();
+            }
 
             Vector2 scale = Vector2.One * twin.scale;
             Main.spriteBatch.Draw(texture, drawPosition, frameRectangle, twin.GetAlpha(lightColor), twin.rotation + MathHelper.PiOver2, frameRectangle.Size() * 0.5f, scale, 0, 0f);

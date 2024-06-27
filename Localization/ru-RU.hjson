@@ -716,7 +716,6 @@ Mods: {
 			SulphurCloud.DisplayName: Сернистое Облако
 			PureGel.DisplayName: Чистейший Гель
 			HiveMindPulse.DisplayName: Разум Улей Пульс
-			ScourgeSandstream.DisplayName: Пещаный Поток Бича
 			// ApolloLineTelegraph.DisplayName: Telegraph
 			// ApolloMissile.DisplayName: Plasma Missile
 			// AresMissile.DisplayName: Thermal Missile
@@ -739,6 +738,7 @@ Mods: {
 			// LingeringPlasmaFireball.DisplayName: Plasma Fireball
 			// SmallTeslaArc.DisplayName: Tesla Arc
 			// ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
+			ScourgeSandstream.DisplayName: Пещаный Поток Бича
 		}
 
 		Buffs: {
