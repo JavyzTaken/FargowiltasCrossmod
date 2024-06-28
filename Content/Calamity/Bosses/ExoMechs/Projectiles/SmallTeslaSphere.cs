@@ -58,8 +58,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Utils.PlotTileLine(Projectile.Top, Projectile.Bottom, Projectile.width, DelegateMethods.CastLight);
 
             Time++;
-            if (Time >= Lifetime)
-                Projectile.Kill();
         }
 
         public override bool PreDraw(ref Color lightColor)
