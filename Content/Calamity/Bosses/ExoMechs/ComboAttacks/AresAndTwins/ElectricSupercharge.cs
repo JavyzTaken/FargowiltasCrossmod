@@ -83,7 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public override bool Perform(NPC npc)
         {
             if (npc.type == ExoMechNPCIDs.AresBodyID)
-                return Perform_Ares(npc);
+                Perform_Ares(npc);
             if (npc.type == ExoMechNPCIDs.ArtemisID)
                 Perform_Artemis(npc);
             if (npc.type == ExoMechNPCIDs.ApolloID)
@@ -96,12 +96,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// Performs Ares' part in the ElectricSupercharge attack.
         /// </summary>
         /// <param name="npc">Ares' NPC instance.</param>
-        public static bool Perform_Ares(NPC npc)
+        public static void Perform_Ares(NPC npc)
         {
             if (!npc.TryGetDLCBehavior(out AresBodyEternity ares) || !Main.npc.IndexInRange(CalamityGlobalNPC.draedonExoMechTwinRed) || !Main.npc.IndexInRange(CalamityGlobalNPC.draedonExoMechTwinGreen))
             {
                 npc.active = false;
-                return false;
+                return;
             }
 
             if (AITimer == 1)
@@ -131,8 +131,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), leftHandAimDestination, 1));
             ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), rightHandAimDestination, 2));
             ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(430f, 50f), rightHandAimDestination, 3));
-
-            return false;
         }
 
         /// <summary>
