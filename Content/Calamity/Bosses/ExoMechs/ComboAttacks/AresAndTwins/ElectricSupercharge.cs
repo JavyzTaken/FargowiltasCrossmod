@@ -83,9 +83,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <param name="npc">Ares' NPC instance.</param>
         public static bool Perform_Ares(NPC npc)
         {
-            if (Main.mouseRight && Main.mouseRightRelease)
-                AITimer = 0;
-
             if (!npc.TryGetDLCBehavior(out AresBodyEternity ares) || !Main.npc.IndexInRange(CalamityGlobalNPC.draedonExoMechTwinRed) || !Main.npc.IndexInRange(CalamityGlobalNPC.draedonExoMechTwinGreen))
             {
                 npc.active = false;
