@@ -66,6 +66,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static int SmallTeslaSphereDamage => Main.expertMode ? 350 : 225;
 
         /// <summary>
+        /// The speed interpolant at which Artemis readjusts her rotation to aim towards the target.
+        /// </summary>
+        public static float ArtemisTurnSpeedInterpolant => 0.145f;
+
+        /// <summary>
         /// The speed of projectiles Apollo releases upon doing a burst dash.
         /// </summary>
         public static float DashSpreadProjectileSpeed => 2.25f;
@@ -248,7 +253,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (fastRedirectInterpolant > 0f)
                 npc.SmoothFlyNear(hoverDestination, fastRedirectInterpolant * 0.2f, 1f - fastRedirectInterpolant * 0.09f);
 
-            npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.25f);
+            npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), ArtemisTurnSpeedInterpolant);
 
             bool doneAttacking = AITimer >= ElectrifyTime + AttackDuration - LumUtils.SecondsToFrames(1.25f);
             if (Main.netMode != NetmodeID.MultiplayerClient && !doneAttacking && AITimer % ArtemisShootRate == 0)
