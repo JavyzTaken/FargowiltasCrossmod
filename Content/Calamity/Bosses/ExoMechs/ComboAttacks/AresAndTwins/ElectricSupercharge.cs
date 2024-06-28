@@ -281,9 +281,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity *= 1.02f;
             else
             {
-                Vector2 idealVelocity = npc.SafeDirectionTo(Target.Center) * 26f;
-                npc.velocity += idealVelocity.SafeNormalize(Vector2.Zero) * 0.95f;
-                npc.velocity = Vector2.Lerp(npc.velocity, idealVelocity, 0.0145f);
+                Vector2 idealVelocity = npc.SafeDirectionTo(Target.Center) * 22f;
+                npc.velocity += idealVelocity.SafeNormalize(Vector2.Zero) * 0.8f;
+                npc.velocity = Vector2.Lerp(npc.velocity, idealVelocity, 0.012f);
 
                 if (npc.velocity.Length() >= 35f)
                     npc.velocity *= 0.985f;
