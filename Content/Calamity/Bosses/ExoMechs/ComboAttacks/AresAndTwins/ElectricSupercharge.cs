@@ -40,6 +40,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static int AresRedirectTime => LumUtils.SecondsToFrames(1.5f);
 
+        /// <summary>
+        /// How many electric projectiles Apollo releases upon doing a burst dash.
+        /// </summary>
+        public static int DashSpreadProjectileCount => 11;
+
         public override bool Perform(NPC npc)
         {
             if (npc.type == ExoMechNPCIDs.AresBodyID)
@@ -239,9 +244,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    for (int i = 0; i < 11; i++)
+                    for (int i = 0; i < DashSpreadProjectileCount; i++)
                     {
-                        Vector2 teslaBurstVelocity = npc.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.TwoPi * i / 11f) * 2f;
+                        Vector2 teslaBurstVelocity = npc.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.TwoPi * i / DashSpreadProjectileCount) * 2f;
                         LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, teslaBurstVelocity, ModContent.ProjectileType<HomingTeslaBurst>(), AresBodyEternity.TeslaBurstDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
                     }
 
