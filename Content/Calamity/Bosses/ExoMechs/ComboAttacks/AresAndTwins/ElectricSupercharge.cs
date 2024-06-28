@@ -41,14 +41,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static int AresRedirectTime => LumUtils.SecondsToFrames(1.5f);
 
         /// <summary>
+        /// The rate at which Ares' cannons shoot tesla spheres after electrifying Artemis and Apollo.
+        /// </summary>
+        public static int TeslaSphereShootRate => LumUtils.SecondsToFrames(2.54f);
+
+        /// <summary>
         /// How many electric projectiles Apollo releases upon doing a burst dash.
         /// </summary>
         public static int DashSpreadProjectileCount => 11;
 
         /// <summary>
+        /// How much damage Ares' small tesla spheres do.
+        /// </summary>
+        public static int SmallTeslaSphereDamage => Main.expertMode ? 350 : 225;
+
+        /// <summary>
         /// The speed of projectiles Apollo releases upon doing a burst dash.
         /// </summary>
         public static float DashSpreadProjectileSpeed => 2.25f;
+
+        /// <summary>
+        /// The speed of tesla spheres shot by Ares.
+        /// </summary>
+        public static float TeslaSphereShootSpeed => 10.5f;
 
         public override bool Perform(NPC npc)
         {
@@ -131,25 +146,59 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             hand.ArmSide = (armIndex >= AresBodyEternity.ArmCount / 2).ToDirectionInt();
             hand.HandType = AresHandType.TeslaCannon;
             hand.ArmEndpoint = handNPC.Center + handNPC.velocity;
-            hand.EnergyDrawer.chargeProgress = MathF.Sqrt(Utilities.InverseLerpBump(0f, ElectrifyTime * 0.75f, ElectrifyTime * 0.81f, ElectrifyTime, AITimer));
             hand.GlowmaskDisabilityInterpolant = 0f;
             handNPC.spriteDirection = 1;
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.3f);
 
-            handNPC.SmoothFlyNear(hoverDestination, 0.6f, 0.5f);
+            handNPC.SmoothFlyNear(hoverDestination, 0.25f, 0.75f);
             handNPC.rotation = handNPC.AngleTo(aimDestination);
 
+            Vector2 cannonEnd = handNPC.Center + new Vector2(handNPC.spriteDirection * 54f, 8f).RotatedBy(handNPC.rotation);
             if (AITimer <= ElectrifyTime)
             {
                 float arcCreationChance = MathF.Pow(LumUtils.InverseLerp(0f, ElectrifyTime, AITimer), 0.75f) * 0.6f;
                 for (int i = 0; i < 2; i++)
                 {
-                    Vector2 arcSpawnPosition = handNPC.Center + new Vector2(handNPC.spriteDirection * 54f, 8f).RotatedBy(handNPC.rotation);
                     if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(arcCreationChance))
                     {
-                        Vector2 arcLength = (aimDestination - arcSpawnPosition).RotatedByRandom(0.02f) * Main.rand.NextFloat(0.97f, 1.03f);
-                        Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
+                        Vector2 arcLength = (aimDestination - cannonEnd).RotatedByRandom(0.02f) * Main.rand.NextFloat(0.97f, 1.03f);
+                        Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
                     }
+                }
+                hand.EnergyDrawer.chargeProgress = MathF.Sqrt(Utilities.InverseLerpBump(0f, ElectrifyTime * 0.75f, ElectrifyTime * 0.81f, ElectrifyTime, AITimer));
+            }
+            else
+            {
+                int shootTimer = (AITimer + armIndex * 11) % TeslaSphereShootRate;
+                hand.EnergyDrawer.chargeProgress = Utilities.InverseLerp(TeslaSphereShootRate * 0.35f, TeslaSphereShootRate * 0.95f, shootTimer);
+
+                if (shootTimer == TeslaSphereShootRate - 1)
+                {
+                    Vector2 aimDirection = (aimDestination - cannonEnd).SafeNormalize(Vector2.Zero);
+
+                    SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound, handNPC.Center);
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        for (int i = 0; i < 9; i++)
+                        {
+                            Vector2 arcLength = aimDirection.RotatedByRandom(1.85f) * Main.rand.NextFloat(80f, 365f);
+                            Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 32));
+                        }
+
+                        Vector2 sphereVelocity = aimDirection * TeslaSphereShootSpeed;
+                        Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, sphereVelocity, ModContent.ProjectileType<SmallTeslaSphere>(), SmallTeslaSphereDamage, 0f);
+                    }
+
+                    for (int i = 0; i < 15; i++)
+                    {
+                        Dust electricity = Dust.NewDustPerfect(cannonEnd + Main.rand.NextVector2Circular(10f, 10f), 226);
+                        electricity.velocity = aimDirection * 10.5f + Main.rand.NextVector2Circular(3.6f, 3.6f);
+                        electricity.scale = Main.rand.NextFloat(0.8f, 1.25f);
+                        electricity.noGravity = true;
+                    }
+
+                    handNPC.velocity -= aimDirection * 18f;
+                    handNPC.netUpdate = true;
                 }
             }
         }
@@ -204,7 +253,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     electricity.Spawn();
                 }
 
-                Vector2 laserVelocity = npc.rotation.ToRotationVector2() * 4f;
+                Vector2 laserVelocity = npc.rotation.ToRotationVector2() * 3.4f;
                 if (Main.rand.NextBool(3))
                 {
                     LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), laserSpawnPosition, laserVelocity * 4.5f / ArtemisLaserImproved.TotalUpdates, ModContent.ProjectileType<ArtemisLaserImproved>(), ExoTwinsStates.BasicShotDamage, 0f);
@@ -235,13 +284,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 Vector2 idealVelocity = npc.SafeDirectionTo(Target.Center) * 26f;
                 npc.velocity += idealVelocity.SafeNormalize(Vector2.Zero) * 0.95f;
                 npc.velocity = Vector2.Lerp(npc.velocity, idealVelocity, 0.0145f);
+
+                if (npc.velocity.Length() >= 35f)
+                    npc.velocity *= 0.985f;
             }
             npc.rotation = npc.velocity.ToRotation();
 
             npc.damage = npc.defDamage;
 
             bool dashWouldCauseTelefrag = npc.velocity.AngleBetween(npc.SafeDirectionTo(Target.Center)) <= 0.37f;
-            if (AITimer % 120 == 119 && !npc.WithinRange(Target.Center, 360f) && !dashWouldCauseTelefrag)
+            if (AITimer % 150 == 149 && !npc.WithinRange(Target.Center, 360f) && !dashWouldCauseTelefrag)
             {
                 SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound);
                 SoundEngine.PlaySound(Artemis.ChargeSound);

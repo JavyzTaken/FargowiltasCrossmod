@@ -739,6 +739,7 @@ Mods: {
 			// SmallTeslaArc.DisplayName: Tesla Arc
 			// ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
 			ScourgeSandstream.DisplayName: Пещаный Поток Бича
+			// SmallTeslaSphere.DisplayName: Tesla Sphere
 		}
 
 		Buffs: {
