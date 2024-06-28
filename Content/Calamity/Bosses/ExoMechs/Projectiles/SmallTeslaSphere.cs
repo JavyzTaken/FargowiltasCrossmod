@@ -52,6 +52,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.frameCounter++;
             Projectile.frame = Projectile.frameCounter / 6 % Main.projFrames[Projectile.type];
             Projectile.velocity = (Projectile.velocity * 1.015f).ClampLength(0f, 30f);
+            Projectile.Opacity = LumUtils.InverseLerp(0f, 45f, Projectile.timeLeft);
 
             DelegateMethods.v3_1 = new Vector3(0.24f, 0.86f, 1f);
             Utils.PlotTileLine(Projectile.Top, Projectile.Bottom, Projectile.width, DelegateMethods.CastLight);
@@ -67,9 +68,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             return false;
         }
 
-        public override void OnKill(int timeLeft)
-        {
-
-        }
+        public override bool? CanDamage() => Projectile.Opacity >= 0.75f;
     }
 }
