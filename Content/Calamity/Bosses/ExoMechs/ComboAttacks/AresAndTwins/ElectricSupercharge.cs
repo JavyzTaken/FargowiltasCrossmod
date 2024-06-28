@@ -46,6 +46,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static int TeslaSphereShootRate => LumUtils.SecondsToFrames(2.54f);
 
         /// <summary>
+        /// How long the Electric Supercharge attack should go on for.
+        /// </summary>
+        public static int AttackDuration => LumUtils.SecondsToFrames(11f);
+
+        /// <summary>
+        /// The rate at which Artemis shoots projectiles.
+        /// </summary>
+        public static int ArtemisShootRate => LumUtils.SecondsToFrames(0.3167f);
+
+        /// <summary>
         /// How many electric projectiles Apollo releases upon doing a burst dash.
         /// </summary>
         public static int DashSpreadProjectileCount => 11;
@@ -74,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (npc.type == ExoMechNPCIDs.ApolloID)
                 Perform_Apollo(npc);
 
-            return false;
+            return AITimer >= ElectrifyTime + AttackDuration;
         }
 
         /// <summary>
@@ -126,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <param name="npc">Ares' NPC instance.</param>
         public static void Perform_Ares_RedirectAbovePlayer(NPC npc)
         {
-            float redirectSpeed = MathHelper.Lerp(0.05f, 0.2f, Utilities.Convert01To010(Utilities.InverseLerp(0f, 30f, AITimer).Squared()));
+            float redirectSpeed = MathHelper.Lerp(0.05f, 0.2f, LumUtils.Convert01To010(LumUtils.InverseLerp(0f, 30f, AITimer).Squared()));
             redirectSpeed *= LumUtils.InverseLerp(AresRedirectTime, AresRedirectTime - 45f, AITimer);
 
             Vector2 hoverDestination = Target.Center + new Vector2(MathF.Cos(MathHelper.TwoPi * AITimer / 90f) * 300f, -410f);
@@ -145,7 +155,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             hand.ArmEndpoint = handNPC.Center + handNPC.velocity;
             hand.GlowmaskDisabilityInterpolant = 0f;
             handNPC.spriteDirection = 1;
-            handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.3f);
+            handNPC.Opacity = LumUtils.Saturate(handNPC.Opacity + 0.3f);
 
             handNPC.SmoothFlyNear(hoverDestination, 0.25f, 0.75f);
             handNPC.rotation = handNPC.AngleTo(aimDestination);
@@ -159,15 +169,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(arcCreationChance))
                     {
                         Vector2 arcLength = (aimDestination - cannonEnd).RotatedByRandom(0.02f) * Main.rand.NextFloat(0.97f, 1.03f);
-                        Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
+                        LumUtils.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
                     }
                 }
-                hand.EnergyDrawer.chargeProgress = MathF.Sqrt(Utilities.InverseLerpBump(0f, ElectrifyTime * 0.75f, ElectrifyTime * 0.81f, ElectrifyTime, AITimer));
+                hand.EnergyDrawer.chargeProgress = MathF.Sqrt(LumUtils.InverseLerpBump(0f, ElectrifyTime * 0.75f, ElectrifyTime * 0.81f, ElectrifyTime, AITimer));
             }
             else
             {
                 int shootTimer = (AITimer + armIndex * 11) % TeslaSphereShootRate;
-                hand.EnergyDrawer.chargeProgress = Utilities.InverseLerp(TeslaSphereShootRate * 0.35f, TeslaSphereShootRate * 0.95f, shootTimer);
+                hand.EnergyDrawer.chargeProgress = LumUtils.InverseLerp(TeslaSphereShootRate * 0.35f, TeslaSphereShootRate * 0.95f, shootTimer);
 
                 if (shootTimer == TeslaSphereShootRate - 1)
                 {
@@ -179,11 +189,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                         for (int i = 0; i < 9; i++)
                         {
                             Vector2 arcLength = aimDirection.RotatedByRandom(1.85f) * Main.rand.NextFloat(80f, 365f);
-                            Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 32));
+                            LumUtils.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 32));
                         }
 
                         Vector2 sphereVelocity = aimDirection * TeslaSphereShootSpeed;
-                        Utilities.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, sphereVelocity, ModContent.ProjectileType<SmallTeslaSphere>(), SmallTeslaSphereDamage, 0f);
+                        LumUtils.NewProjectileBetter(handNPC.GetSource_FromAI(), cannonEnd, sphereVelocity, ModContent.ProjectileType<SmallTeslaSphere>(), SmallTeslaSphereDamage, 0f);
                     }
 
                     for (int i = 0; i < 15; i++)
@@ -240,7 +250,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.25f);
 
-            if (Main.netMode != NetmodeID.MultiplayerClient && AITimer % 19 == 0)
+            bool doneAttacking = AITimer >= ElectrifyTime + AttackDuration - LumUtils.SecondsToFrames(1.25f);
+            if (Main.netMode != NetmodeID.MultiplayerClient && !doneAttacking && AITimer % ArtemisShootRate == 0)
             {
                 Vector2 laserSpawnPosition = npc.Center + npc.rotation.ToRotationVector2() * 76f;
                 for (int i = 0; i < 15; i++)
@@ -324,7 +335,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (twinInstance is null)
                 return;
 
-            float electricityChargeUpInterpolant = LumUtils.InverseLerp(0f, ElectrifyTime, AITimer).Squared();
+            float electricityChargeUpInterpolant = LumUtils.InverseLerp(0f, ElectrifyTime, AITimer).Squared() * LumUtils.InverseLerp(AttackDuration, AttackDuration - 30f, AITimer - ElectrifyTime);
             float gleamInterpolant = LumUtils.InverseLerp(0.42f, 1f, electricityChargeUpInterpolant);
             twinInstance.SpecialShaderAction = (texture, n) =>
             {
@@ -359,7 +370,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 ScreenShakeSystem.StartShakeAtPoint(npc.Center, 9.5f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    Utilities.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<LargeTeslaSphereExplosion>(), 0, 0f);
+                    LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<LargeTeslaSphereExplosion>(), 0, 0f);
                     npc.velocity += npc.SafeDirectionTo(Target.Center) * 32f;
                     npc.netUpdate = true;
                 }
@@ -382,7 +393,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 Vector2 arcStart = npc.Center + Main.rand.NextVector2Circular(30f, 30f);
                 Vector2 aimDestination = arcStart + Main.rand.NextVector2Unit() * Main.rand.NextFloat(75f, 150f);
                 Vector2 arcLength = (aimDestination - arcStart).RotatedByRandom(0.095f) * Main.rand.NextFloat(0.97f, 1.03f);
-                Utilities.NewProjectileBetter(npc.GetSource_FromAI(), arcStart, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
+                LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), arcStart, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
             }
         }
 
@@ -395,8 +406,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             Texture2D flare = MiscTexturesRegistry.ShineFlareTexture.Value;
             Texture2D bloom = MiscTexturesRegistry.BloomCircleSmall.Value;
 
-            float flareOpacity = Utilities.InverseLerp(1f, 0.75f, glimmerInterpolant);
-            float flareScale = MathF.Pow(Utilities.Convert01To010(glimmerInterpolant), 1.4f) * 1.9f + 0.1f;
+            float flareOpacity = LumUtils.InverseLerp(1f, 0.75f, glimmerInterpolant);
+            float flareScale = MathF.Pow(LumUtils.Convert01To010(glimmerInterpolant), 1.4f) * 1.9f + 0.1f;
             flareScale *= LumUtils.InverseLerp(0f, 0.09f, glimmerInterpolant);
 
             float flareRotation = MathHelper.SmoothStep(0f, MathHelper.TwoPi, MathF.Pow(glimmerInterpolant, 0.2f)) + MathHelper.PiOver4;
