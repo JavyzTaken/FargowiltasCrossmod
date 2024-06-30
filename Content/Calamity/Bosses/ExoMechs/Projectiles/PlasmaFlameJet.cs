@@ -173,8 +173,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public void RenderPixelatedPrimitives(SpriteBatch spriteBatch)
         {
             ManagedShader flameShader = ShaderManager.GetShader("FargowiltasCrossmod.PlasmaFlameJetShader");
-            flameShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
             flameShader.TrySetParameter("localTime", Main.GlobalTimeWrappedHourly + Projectile.identity * 0.412f);
+            flameShader.TrySetParameter("glowPower", 2.5f);
+            flameShader.TrySetParameter("glowColor", new Vector4(3f, 3f, 1.5f, 0f));
+            flameShader.TrySetParameter("edgeFadeThreshold", 0.1f);
+            flameShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
 
             PrimitiveSettings settings = new(FlameJetWidthFunction, FlameJetColorFunction, _ => Vector2.Zero, Pixelate: true, Shader: flameShader);
             PrimitiveRenderer.RenderTrail(ControlPoints, settings, 35);

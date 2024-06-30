@@ -1,6 +1,9 @@
 sampler gradientMapTexture : register(s1);
 
 float localTime;
+float glowPower;
+float edgeFadeThreshold;
+float4 glowColor;
 matrix uWorldViewProjection;
 
 struct VertexShaderInput
@@ -49,18 +52,18 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     // 3. Vertical distance from the center of the laser, at the start and end.
     //    This ensures that the results naturally dissipate at the end points, rather than having an unnatural, flat cutoff.
     float horizontalDistanceFromCenter = distance(coords.y, 0.5);
-    float cutoffOffsetNoise = horizontalDistanceFromCenter;
-    cutoffOffsetNoise += tex2D(gradientMapTexture, coords * float2(4.1, 0.854) + float2(localTime * -5.9 - noise * 0.4, 0) - noise * 0.1) * 0.6;
-    cutoffOffsetNoise += smoothstep(0.1, 0, coords.x) * 0.6;
-    cutoffOffsetNoise += smoothstep(0.8, 1, coords.x);
+    float cutoffValue = horizontalDistanceFromCenter;
+    cutoffValue += tex2D(gradientMapTexture, coords * float2(4.1, 0.854) + float2(localTime * -5.9 - noise * 0.4, 0) - noise * 0.1) * 0.6;
+    cutoffValue += smoothstep(0.1, 0, coords.x) * 0.6;
+    cutoffValue += smoothstep(0.8, 1, coords.x);
     
     // Use the above value to calculate the cutoff interpolant
-    float cutoffInterpolant = smoothstep(0.5, 0.4, cutoffOffsetNoise);
+    float cutoffOpacity = smoothstep(0.5, 0.5 - edgeFadeThreshold, cutoffValue);
     
     // Calculate the glow intensity value. This will dictate how bright the pixel is.
-    float glow = saturate(noise - horizontalDistanceFromCenter) + pow(0.1 / horizontalDistanceFromCenter, 2.5);
+    float glow = saturate(noise - horizontalDistanceFromCenter) + pow(0.1 / horizontalDistanceFromCenter, glowPower);
     
-    return saturate(color + float4(2, 2, 1, 0) * glow * 1.5) * cutoffInterpolant;
+    return saturate(color + glowColor * glow) * cutoffOpacity;
 }
 
 technique Technique1
