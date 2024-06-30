@@ -2,6 +2,7 @@
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using Luminance.Assets;
@@ -119,7 +120,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.hostile = true;
-            Projectile.timeLeft = 9000000;
+            Projectile.timeLeft = PlasmaChaseSequence.AttackDuration;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
@@ -135,6 +136,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.Center = cannonEnd;
             Projectile.velocity = Vector2.UnitY;
             JetLength = MathHelper.Clamp(JetLength + 150f, 0f, MaxJetLength);
+
+            if (Projectile.timeLeft <= 30)
+                Projectile.width = (int)(Projectile.width * 0.935f);
 
             BezierCurve shapeCurve = new(ControlPoints);
             for (int i = 0; i < 10; i++)
