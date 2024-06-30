@@ -37,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Exo Twins spend idly hovering during the dash sequence.
         /// </summary>
-        public static int ExoTwinIdleHoverTime => LumUtils.SecondsToFrames(1.15f);
+        public static int ExoTwinIdleHoverTime => LumUtils.SecondsToFrames(0.75f);
 
         /// <summary>
         /// How long Exo Twins spend reeling back during the dash sequence.
@@ -202,7 +202,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
             }
 
-            PerformDashSequence_ExoTwin(npc, apollo, ExoTwinIdleHoverTime + 4);
+            PerformDashSequence_ExoTwin(npc, apollo, (ExoTwinIdleHoverTime + ExoTwinReelBackTime + ExoTwinDashSpinTime) / 2);
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
 
             NPC ares = Main.npc[CalamityGlobalNPC.draedonExoMechPrime];
-            Vector2 hoverDestination = Target.Center + new Vector2(ares.OnRightSideOf(Target).ToDirectionInt() * -(reelBackDistance + 700f), verticalHoverDirection * 210f);
+            Vector2 hoverDestination = Target.Center + new Vector2(ares.OnRightSideOf(Target).ToDirectionInt() * -(reelBackDistance + 700f), verticalHoverDirection * 120f);
 
             npc.SmoothFlyNear(hoverDestination, hoverSpeedInterpolant * 0.09f, 1f - hoverSpeedInterpolant * 0.14f);
             if (hoverSpeedInterpolant > 1f)
@@ -242,7 +242,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             int verticalHoverDirection = (npc.type == ExoMechNPCIDs.ArtemisID).ToDirectionInt();
 
             if (AITimer <= PlasmaCannonChargeUpTime)
-                wrappedTimer = 0;
+                wrappedTimer = ExoTwinIdleHoverTime + ExoTwinReelBackTime / 2;
 
             // Hover near the target and reel back.
             if (wrappedTimer < ExoTwinIdleHoverTime + ExoTwinReelBackTime)
@@ -251,7 +251,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     SoundEngine.PlaySound(Artemis.ChargeTelegraphSound, npc.Center);
 
                 float hoverSpeedInterpolant = MathHelper.Lerp(0.4f, 1f, LumUtils.InverseLerp(0f, ExoTwinIdleHoverTime + ExoTwinReelBackTime, wrappedTimer).Squared());
-
                 float reelBackDistance = LumUtils.InverseLerp(0f, ExoTwinReelBackTime, wrappedTimer - ExoTwinIdleHoverTime).Cubed() * 1080f;
                 HoverNearTarget_ExoTwin(npc, verticalHoverDirection, reelBackDistance, hoverSpeedInterpolant);
 
@@ -295,6 +294,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 npc.rotation = npc.velocity.ToRotation();
                 exoTwin.Animation = ExoTwinAnimation.Attacking;
+                exoTwin.MotionBlurInterpolant = 1f;
+                exoTwin.ThrusterBoost = 1f;
             }
 
             exoTwin.Frame = exoTwin.Animation.CalculateFrame(AITimer / 36f % 1f, exoTwin.InPhase2);

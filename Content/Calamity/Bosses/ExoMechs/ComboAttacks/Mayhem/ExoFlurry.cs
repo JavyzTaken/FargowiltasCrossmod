@@ -225,6 +225,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity = (npc.velocity + npc.velocity.SafeNormalize(Vector2.UnitY) * 15f).ClampLength(0f, maxDashSpeed);
                 npc.damage = npc.defDamage;
                 npc.rotation = npc.velocity.ToRotation();
+                if (twinInfo is not null)
+                {
+                    twinInfo.MotionBlurInterpolant = 1f;
+                    twinInfo.ThrusterBoost = 1.35f;
+                }
 
                 animation = ExoTwinAnimation.Attacking;
 
