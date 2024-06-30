@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
         public override bool Perform(NPC npc)
         {
-            if (npc.type == ModContent.NPCType<AresBody>())
+            if (npc.type == ExoMechNPCIDs.AresBodyID)
                 Perform_Ares(npc);
 
             return false;
@@ -94,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.netUpdate = true;
             }
 
-            npc.rotation = npc.velocity.X * 0.0062f;
+            npc.rotation = npc.velocity.X * 0.015f;
 
             float chargeUpInterpolant = LumUtils.InverseLerp(0f, PlasmaCannonChargeUpTime, AITimer);
             float handRepositionInterpolant = chargeUpInterpolant.Squared();
@@ -143,7 +143,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 hand.Frame += 24;
                 hand.EnergyDrawer.chargeProgress = 0f;
-                handNPC.velocity += Main.rand.NextVector2Circular(1f, 2f);
             }
 
             handNPC.SmoothFlyNear(hoverDestination, 0.35f, 0.65f);
