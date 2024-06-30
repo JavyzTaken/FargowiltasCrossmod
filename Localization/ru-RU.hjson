@@ -740,6 +740,7 @@ Mods: {
 			// ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
 			ScourgeSandstream.DisplayName: Пещаный Поток Бича
 			// SmallTeslaSphere.DisplayName: Tesla Sphere
+			// PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
 		}
 
 		Buffs: {

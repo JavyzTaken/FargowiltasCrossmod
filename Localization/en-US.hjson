@@ -732,6 +732,7 @@ Mods: {
 			ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
 			ScourgeSandstream.DisplayName: Scourge Sandstream
 			SmallTeslaSphere.DisplayName: Tesla Sphere
+			PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
 		}
 
 		Buffs: {
