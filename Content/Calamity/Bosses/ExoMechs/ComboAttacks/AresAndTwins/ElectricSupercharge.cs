@@ -146,6 +146,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             npc.SmoothFlyNearWithSlowdownRadius(hoverDestination, redirectSpeed, 1f - redirectSpeed, 50f);
         }
 
+        /// <summary>
+        /// Handles updating for Ares' hands during the ElectricSupercharge attack.
+        /// </summary>
+        /// <param name="aresBody">Ares' NPC instance.</param>
+        /// <param name="hand">The hand ModNPC instance.</param>
+        /// <param name="hoverOffset">The offset for the hand relative to the body's position.</param>
+        /// <param name="aimDestination">Where the hand should aim.</param>
+        /// <param name="armIndex">The arm's index in the overall set.</param>
         public static void AresHandUpdate(NPC aresBody, AresHand hand, Vector2 hoverOffset, Vector2 aimDestination, int armIndex)
         {
             NPC handNPC = hand.NPC;
