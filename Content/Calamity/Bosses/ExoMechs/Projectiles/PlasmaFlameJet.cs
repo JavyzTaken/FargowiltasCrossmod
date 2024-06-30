@@ -146,7 +146,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
                 float particleScale = 2f;
                 Color fireColor = Color.Lerp(FireParticleColorA, FireParticleColorB, Main.rand.NextFloat(0.7f));
                 Vector2 fireSpawnPosition = shapeCurve.Evaluate(Main.rand.NextFloat(0.06f, 1f));
-                var particle = new HeavySmokeParticle(fireSpawnPosition, Main.rand.NextVector2Circular(20f, 7f), fireColor, 26, particleScale, 1f, 0.03f, true, -0.0045f, true);
+                var particle = new HeavySmokeParticle(fireSpawnPosition, Main.rand.NextVector2Circular(20f, 7f) + Vector2.UnitY * 14f, fireColor, 26, particleScale, 1f, 0.03f, true, -0.0045f, true);
                 GeneralParticleHandler.SpawnParticle(particle);
             }
 
