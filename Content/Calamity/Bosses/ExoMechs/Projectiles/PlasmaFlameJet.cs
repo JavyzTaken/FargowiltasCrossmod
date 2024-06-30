@@ -171,7 +171,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <param name="completionRatio">How far along the trail the sampled position is.</param>
         public float FlameJetBloomWidthFunction(float completionRatio)
         {
-            float widthFactor = MathHelper.SmoothStep(0f, 1f, LumUtils.InverseLerp(0.012f, 0.09f, completionRatio)) * 1.4f;
+            float widthFactor = MathHelper.SmoothStep(0f, 1f, LumUtils.InverseLerp(0.012f, 0.115f, completionRatio)) * 1.4f;
             return FlameJetWidthFunction(completionRatio) * widthFactor;
         }
 
