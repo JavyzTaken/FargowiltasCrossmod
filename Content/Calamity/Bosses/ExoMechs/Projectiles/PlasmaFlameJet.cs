@@ -76,6 +76,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// </summary>
         public static float MaxJetLength => 2400f;
 
+        /// <summary>
+        /// The base color of this fire jet, before the shader is applied.
+        /// </summary>
+        public static Color BaseJetColor => new(97, 206, 74);
+
+        /// <summary>
+        /// The color of this fire jet's back bloom.
+        /// </summary>
+        public static Color BloomColor => new(99, 204, 5);
+
+        /// <summary>
+        /// The first fire particle color. Is intended to be interpolated with <see cref="FireParticleColorB"/>.
+        /// </summary>
+        public static Color FireParticleColorA => new(0, 255, 0);
+
+        /// <summary>
+        /// The second fire particle color. Is intended to be interpolated with <see cref="FireParticleColorA"/>.
+        /// </summary>
+        public static Color FireParticleColorB => new(255, 255, 193);
+
+        /// <summary>
+        /// The glow color applied to this fire jet in the shader.
+        /// </summary>
+        public static Vector4 GlowColor => new(3f, 3f, 1.5f, 0f);
+
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Plasma;
@@ -115,7 +140,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             for (int i = 0; i < 10; i++)
             {
                 float particleScale = 2f;
-                Color fireColor = Color.Lerp(Color.Lime, new(255, 255, 193), Main.rand.NextFloat(0.7f));
+                Color fireColor = Color.Lerp(FireParticleColorA, FireParticleColorB, Main.rand.NextFloat(0.7f));
                 Vector2 fireSpawnPosition = shapeCurve.Evaluate(Main.rand.NextFloat(0.06f, 1f));
                 var particle = new HeavySmokeParticle(fireSpawnPosition, Main.rand.NextVector2Circular(20f, 7f), fireColor, 26, particleScale, 1f, 0.03f, true, -0.0045f, true);
                 GeneralParticleHandler.SpawnParticle(particle);
@@ -138,7 +163,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// The color function for the flame jet primitives.
         /// </summary>
         /// <param name="completionRatio">How far along the trail the sampled position is.</param>
-        public Color FlameJetColorFunction(float completionRatio) => new Color(97, 206, 74) * Projectile.Opacity;
+        public Color FlameJetColorFunction(float completionRatio) => BaseJetColor * Projectile.Opacity;
 
         /// <summary>
         /// The width function for the flame jet bloom primitives.
@@ -157,7 +182,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public Color FlameJetBloomColorFunction(float completionRatio)
         {
             float opacity = Projectile.Opacity * LumUtils.InverseLerp(0.94f, 0.8f, completionRatio);
-            return new Color(99, 204, 5) * opacity;
+            return BloomColor * opacity;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -175,7 +200,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             ManagedShader flameShader = ShaderManager.GetShader("FargowiltasCrossmod.PlasmaFlameJetShader");
             flameShader.TrySetParameter("localTime", Main.GlobalTimeWrappedHourly + Projectile.identity * 0.412f);
             flameShader.TrySetParameter("glowPower", 2.5f);
-            flameShader.TrySetParameter("glowColor", new Vector4(3f, 3f, 1.5f, 0f));
+            flameShader.TrySetParameter("glowColor", GlowColor);
             flameShader.TrySetParameter("edgeFadeThreshold", 0.1f);
             flameShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
 

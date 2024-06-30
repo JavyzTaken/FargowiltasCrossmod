@@ -469,7 +469,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 armOrigin.X = armTexture.Width - armOrigin.X;
             }
 
-            Vector2 magnetLineOffset = new Vector2(ArmSide * 50f, -10f).RotatedBy(armRotation) * NPC.scale + Main.screenPosition;
+            Vector2 magnetLineOffset = new Vector2(ArmSide * 50f, -22f).RotatedBy(armRotation) * NPC.scale + Main.screenPosition;
             DrawMagneticLine(aresBody, armStart + magnetLineOffset, elbowDrawPosition + magnetLineOffset);
 
             Color armColor = aresBody.GetAlpha(Lighting.GetColor((elbowDrawPosition + screenPosition).ToTileCoordinates()));
