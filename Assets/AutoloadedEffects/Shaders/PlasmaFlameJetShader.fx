@@ -57,7 +57,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     cutoffValue += smoothstep(0.1, 0, coords.x) * 0.6;
     cutoffValue += smoothstep(0.8, 1, coords.x);
     
-    // Use the above value to calculate the cutoff interpolant
+    // Use the above value to calculate the cutoff interpolant.
     float cutoffOpacity = smoothstep(0.5, 0.5 - edgeFadeThreshold, cutoffValue);
     
     // Calculate the glow intensity value. This will dictate how bright the pixel is.

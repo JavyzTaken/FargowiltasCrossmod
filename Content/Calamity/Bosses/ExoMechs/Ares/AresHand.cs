@@ -294,15 +294,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             float magnetismWidthFunction(float completionRatio) => aresBody.Opacity * aresBody.scale * 12f;
             Color magnetismColorFunction(float completionRatio) => aresBody.GetAlpha(Color.Cyan) * opacity * 0.45f;
 
-            PrimitivePixelationSystem.RenderToPrimsNextFrame(() =>
-            {
-                ManagedShader magnetismShader = ShaderManager.GetShader("FargowiltasCrossmod.AresMagneticConnectionShader");
-                magnetismShader.SetTexture(MiscTexturesRegistry.TurbulentNoise.Value, 1, SamplerState.PointWrap);
+            ManagedShader magnetismShader = ShaderManager.GetShader("FargowiltasCrossmod.AresMagneticConnectionShader");
+            magnetismShader.SetTexture(MiscTexturesRegistry.TurbulentNoise.Value, 1, SamplerState.PointWrap);
 
-                PrimitiveSettings magnetismLineSettings = new(magnetismWidthFunction, magnetismColorFunction, Pixelate: true, Shader: magnetismShader);
-                PrimitiveRenderer.RenderTrail(controlPoints, magnetismLineSettings, 24);
+            PrimitiveSettings magnetismLineSettings = new(magnetismWidthFunction, magnetismColorFunction, Shader: magnetismShader);
+            PrimitiveRenderer.RenderTrail(controlPoints, magnetismLineSettings, 24);
 
-            }, PixelationPrimitiveLayer.BeforeNPCs);
+            Main.spriteBatch.ResetToDefault();
         }
 
         /// <summary>
@@ -413,16 +411,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             forearmDrawPosition += new Vector2(ArmSide * 20f, 16f).RotatedBy(forearmRotation) * aresBody.scale;
 
+            Vector2 magnetismEnd = forearmDrawPosition + Main.screenPosition - new Vector2(-ArmSide, 0.3f).RotatedBy(forearmRotation) * aresBody.scale * 86f;
+            DrawMagneticLine(aresBody, segmentDrawPosition + Main.screenPosition, magnetismEnd, NPC.Opacity.Cubed());
+            DrawMagneticLine(aresBody, magnetismEnd - Vector2.UnitY.RotatedBy(forearmRotation) * aresBody.scale * 16f, ArmEndpoint, NPC.Opacity.Cubed());
+
             spriteBatch.Draw(armSegmentTexture, segmentDrawPosition, shoulderFrame, segmentColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(armSegmentTextureGlowmask, segmentDrawPosition, shoulderFrame, glowmaskColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
 
             spriteBatch.Draw(forearmTexture, forearmDrawPosition, forearmFrame, segmentColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(forearmTextureGlowmask, forearmDrawPosition, forearmFrame, glowmaskColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-
-            Vector2 magnetismEnd = forearmDrawPosition + Main.screenPosition - new Vector2(-ArmSide, 0.3f).RotatedBy(forearmRotation) * aresBody.scale * 86f;
-            DrawMagneticLine(aresBody, segmentDrawPosition + Main.screenPosition, magnetismEnd, NPC.Opacity.Cubed());
-
-            DrawMagneticLine(aresBody, magnetismEnd - Vector2.UnitY.RotatedBy(forearmRotation) * aresBody.scale * 16f, ArmEndpoint, NPC.Opacity.Cubed());
         }
 
         /// <summary>
@@ -472,13 +469,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 armOrigin.X = armTexture.Width - armOrigin.X;
             }
 
+            Vector2 magnetLineOffset = new Vector2(ArmSide * 50f, -10f).RotatedBy(armRotation) * NPC.scale + Main.screenPosition;
+            DrawMagneticLine(aresBody, armStart + magnetLineOffset, elbowDrawPosition + magnetLineOffset);
+
             Color armColor = aresBody.GetAlpha(Lighting.GetColor((elbowDrawPosition + screenPosition).ToTileCoordinates()));
             Color glowmaskColor = aresBody.GetAlpha(Color.White);
             spriteBatch.Draw(armTexture, armStart, armFrame, armColor, armRotation, armOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(armTextureGlowmask, armStart, armFrame, glowmaskColor, armRotation, armOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-
-            Vector2 magnetLineOffset = new Vector2(ArmSide * 50f, -10f).RotatedBy(armRotation) * NPC.scale + Main.screenPosition;
-            DrawMagneticLine(aresBody, armStart + magnetLineOffset, elbowDrawPosition + magnetLineOffset);
 
             ShoulderToHandDirection = (ArmEndpoint - screenPosition - elbowDrawPosition).ToRotation();
 
@@ -508,12 +505,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 forearmOrigin.X = forearmTexture.Width - forearmOrigin.X;
             }
 
+            DrawMagneticLine(aresBody, armStart + Main.screenPosition, ArmEndpoint, NPC.Opacity.Cubed());
+
             Color forearmColor = aresBody.GetAlpha(Lighting.GetColor((armStart + screenPosition).ToTileCoordinates()));
             Color glowmaskColor = aresBody.GetAlpha(Color.Wheat);
             spriteBatch.Draw(forearmTexture, armStart, forearmFrame, forearmColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(forearmTextureGlowmask, armStart, forearmFrame, glowmaskColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-
-            DrawMagneticLine(aresBody, armStart + Main.screenPosition, ArmEndpoint, NPC.Opacity.Cubed());
         }
 
         /// <summary>
