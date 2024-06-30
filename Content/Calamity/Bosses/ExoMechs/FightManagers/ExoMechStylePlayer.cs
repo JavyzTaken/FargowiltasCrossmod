@@ -1,5 +1,6 @@
 ﻿using CalamityMod;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -135,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
 
         public override void PostUpdate()
         {
-            if (ResetData)
+            if (ResetData || ExoMechFightStateManager.CurrentPhase is null || !CalDLCWorldSavingSystem.E_EternityRev)
             {
                 Reset();
                 return;
