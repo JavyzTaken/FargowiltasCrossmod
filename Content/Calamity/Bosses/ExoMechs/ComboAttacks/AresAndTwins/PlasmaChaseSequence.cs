@@ -220,7 +220,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             NPC ares = Main.npc[CalamityGlobalNPC.draedonExoMechPrime];
             Vector2 hoverDestination = Target.Center + new Vector2(ares.OnRightSideOf(Target).ToDirectionInt() * -(reelBackDistance + 700f), verticalHoverDirection * 120f);
 
-            npc.SmoothFlyNear(hoverDestination, hoverSpeedInterpolant * 0.09f, 1f - hoverSpeedInterpolant * 0.14f);
+            npc.SmoothFlyNear(hoverDestination, hoverSpeedInterpolant * 0.07f, 1f - hoverSpeedInterpolant * 0.112f);
             if (hoverSpeedInterpolant > 1f)
                 npc.Center = Vector2.Lerp(npc.Center, hoverDestination, (hoverSpeedInterpolant - 1f) * 0.03f);
         }
@@ -262,7 +262,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
 
             // Dash.
-            else if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime)
+            else if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime && AITimer >= PlasmaCannonChargeUpTime + 60)
             {
                 npc.velocity = npc.rotation.ToRotationVector2() * 90f;
                 npc.netUpdate = true;
