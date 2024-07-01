@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long this laserbeam should exist for, in frames.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(99999f);
+        public static int Lifetime => Utilities.SecondsToFrames(10f);
 
         /// <summary>
         /// The maximum length of this laserbeam.
@@ -119,7 +119,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             float widthPulsation = MathF.Cos(completionRatio * 100f - Main.GlobalTimeWrappedHourly * 50f) * 3f;
             float initialBulge = Utilities.Convert01To010(Utilities.InverseLerp(0.15f, 0.85f, LaserbeamLength / MaxLaserbeamLength)) * Utilities.InverseLerp(0f, 0.05f, completionRatio) * 32f;
             float idealWidth = widthPulsation + initialBulge + 14f - Utilities.InverseLerp(0.05f, 0f, completionRatio) * 4f;
-            float closureInterpolant = Utilities.InverseLerp(0f, 8f, Lifetime - Time);
+            float closureInterpolant = Utilities.InverseLerp(0f, 15f, Projectile.timeLeft);
             return Utils.Remap(LaserbeamLength, 0f, MaxLaserbeamLength, 4f, idealWidth) * closureInterpolant;
         }
 
