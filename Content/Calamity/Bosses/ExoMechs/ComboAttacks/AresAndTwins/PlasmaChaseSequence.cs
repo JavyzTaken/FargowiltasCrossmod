@@ -59,6 +59,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static float AresChaseSpeedInterpolant => 0.033f;
 
+        /// <summary>
+        /// The speed at which the Exo Twins dash at their target.
+        /// </summary>
+        public static float ExoTwinDashSpeed => 90f;
+
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<AresBody>(), ModContent.NPCType<Apollo>()];
 
         public override bool Perform(NPC npc)
@@ -251,20 +256,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     SoundEngine.PlaySound(Artemis.ChargeTelegraphSound, npc.Center);
 
                 float hoverSpeedInterpolant = MathHelper.Lerp(0.4f, 1f, LumUtils.InverseLerp(0f, ExoTwinIdleHoverTime + ExoTwinReelBackTime, wrappedTimer).Squared());
-                float reelBackDistance = LumUtils.InverseLerp(0f, ExoTwinReelBackTime, wrappedTimer - ExoTwinIdleHoverTime).Cubed() * 1080f;
+                float reelBackDistanceInterpolant = LumUtils.InverseLerp(0f, ExoTwinReelBackTime, wrappedTimer - ExoTwinIdleHoverTime).Cubed();
+                float reelBackDistance = reelBackDistanceInterpolant * 1080f;
                 HoverNearTarget_ExoTwin(npc, verticalHoverDirection, reelBackDistance, hoverSpeedInterpolant);
 
-                if (reelBackDistance <= 840f)
-                    npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.1f);
-
-                if (reelBackDistance >= 50f)
+                if (reelBackDistanceInterpolant >= 0.05f)
                     exoTwin.Animation = ExoTwinAnimation.ChargingUp;
+                if (reelBackDistanceInterpolant <= 0.77f)
+                    npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.1f);
             }
 
             // Dash.
             else if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime && AITimer >= PlasmaCannonChargeUpTime + 60)
             {
-                npc.velocity = npc.rotation.ToRotationVector2() * 90f;
+                npc.velocity = npc.rotation.ToRotationVector2() * ExoTwinDashSpeed;
                 npc.netUpdate = true;
 
                 SoundEngine.PlaySound(Artemis.ChargeSound, npc.Center);
