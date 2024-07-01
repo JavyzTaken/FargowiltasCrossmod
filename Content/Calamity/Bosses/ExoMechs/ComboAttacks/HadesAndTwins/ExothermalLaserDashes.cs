@@ -147,7 +147,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 twin.Animation = ExoTwinAnimation.ChargingUp;
                 twin.Frame = twin.Animation.CalculateFrame(AITimer / 40f % 1f, twin.InPhase2);
-                twin.OpticNerveAngleSensitivity = MathHelper.Lerp(1.6f, 4f, LumUtils.Cos01(MathHelper.TwoPi * AITimer / 54f + npc.whoAmI * 4f));
+                twin.OpticNerveAngleSensitivity = MathHelper.Lerp(-1.6f, -4f, LumUtils.Cos01(MathHelper.TwoPi * AITimer / 54f + npc.whoAmI * 4f));
             }
         }
 
