@@ -39,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// </summary>
         /// <param name="twin">The Exo Twin's NPC instance.</param>
         /// <param name="nerveEndingPalette">The palette for the nerve endings.</param>
-        public static void DrawNerveEndings(NPC twin, params Color[] nerveEndingPalette)
+        public static void DrawNerveEndings(NPC twin, IExoTwin twinInterface, params Color[] nerveEndingPalette)
         {
             Color nerveEndingColorFunction(float completionRatio)
             {
@@ -60,7 +60,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
                 float totalAngularChange = 0f;
                 for (int i = 0; i < 8; i++)
-                    totalAngularChange += MathHelper.WrapAngle(twin.rotation - twin.oldRot[i]) / 8f;
+                    totalAngularChange += MathHelper.WrapAngle(twin.rotation - twin.oldRot[i]) * twinInterface.OpticNerveAngleSensitivity / 8f;
 
                 for (int i = 0; i < nerveDrawPositions.Length; i++)
                 {
@@ -190,7 +190,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static void DrawBase(NPC twin, IExoTwin twinInterface, Texture2D texture, Texture2D glowmask, Color lightColor, Vector2 screenPos, int frame)
         {
             Main.instance.GraphicsDevice.BlendState = BlendState.AlphaBlend;
-            DrawNerveEndings(twin, twinInterface.OpticNervePalette);
+            DrawNerveEndings(twin, twinInterface, twinInterface.OpticNervePalette);
 
             Vector2 drawPosition = twin.Center - screenPos;
             Rectangle frameRectangle = texture.Frame(10, 9, frame / 9, frame % 9);

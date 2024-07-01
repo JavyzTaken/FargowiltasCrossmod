@@ -11,6 +11,7 @@ using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -62,12 +63,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How far the Exo Twins should be away from Hades' head when spinning.
         /// </summary>
-        public static float ExoTwinSpinRadius => 384f;
+        public static float ExoTwinSpinRadius => 408f;
 
         /// <summary>
         /// The angular velocity of the Exo Twins.
         /// </summary>
-        public static float ExoTwinSpinAngularVelocity => MathHelper.ToRadians(0.67f);
+        public static float ExoTwinSpinAngularVelocity => MathHelper.ToRadians(2f);
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<Apollo>()];
 
@@ -101,9 +102,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
 
             float angularVelocity = LumUtils.InverseLerp(200f, 500f, npc.Distance(Target.Center)) * MathHelper.ToRadians(2f);
-            float idealRotation = npc.AngleTo(Target.Center);
+            float idealRotation = npc.AngleTo(Target.Center) + MathF.Cos(MathHelper.TwoPi * AITimer / 90f) * 0.34f;
             float idealSpeed = Utils.Remap(npc.Distance(Target.Center), 200f, 450f, 13.75f, 25f);
-            npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.008f);
+            npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.007f);
             npc.velocity = npc.velocity.RotateTowards(idealRotation, angularVelocity);
             npc.velocity = npc.velocity.SafeNormalize(Vector2.UnitY) * MathHelper.Lerp(npc.velocity.Length(), idealSpeed, 0.15f);
 
@@ -149,6 +150,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 twin.Animation = ExoTwinAnimation.ChargingUp;
                 twin.Frame = twin.Animation.CalculateFrame(AITimer / 40f % 1f, twin.InPhase2);
+                twin.OpticNerveAngleSensitivity = MathHelper.Lerp(1.6f, 4f, LumUtils.Cos01(MathHelper.TwoPi * AITimer / 54f + npc.whoAmI * 4f));
             }
         }
 

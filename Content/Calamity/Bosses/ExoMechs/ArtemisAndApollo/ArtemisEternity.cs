@@ -121,6 +121,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
+        /// The sensitivity of the optic nerve's angular reach.
+        /// </summary>
+        public float OpticNerveAngleSensitivity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The intensity boost of thrusters for Artemis.
         /// </summary>
         public float ThrusterBoost
@@ -314,6 +323,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (!Inactive)
                 NPC.Opacity = 1f;
+            OpticNerveAngleSensitivity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive;
             NPC.As<Artemis>().SecondaryAIState = (int)Artemis.SecondaryPhase.Nothing;
             NPC.damage = 0;

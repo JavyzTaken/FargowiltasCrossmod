@@ -130,6 +130,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
+        /// The sensitivity of the optic nerve's angular reach.
+        /// </summary>
+        public float OpticNerveAngleSensitivity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// How much Apollo's form should be engulfed in frames, as a 0-1 interpolant.
         /// </summary>
         public float FlameEngulfInterpolant
@@ -298,6 +307,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (!Inactive)
                 NPC.Opacity = 1f;
+            OpticNerveAngleSensitivity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive;
             NPC.As<Apollo>().SecondaryAIState = (int)Apollo.SecondaryPhase.Nothing;
 

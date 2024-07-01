@@ -58,6 +58,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
+        /// The sensitivity of the optic nerve's angular reach.
+        /// </summary>
+        public float OpticNerveAngleSensitivity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The current animation of this Exo Twin.
         /// </summary>
         public ExoTwinAnimation Animation
