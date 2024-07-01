@@ -733,6 +733,7 @@ Mods: {
 			ScourgeSandstream.DisplayName: Scourge Sandstream
 			SmallTeslaSphere.DisplayName: Tesla Sphere
 			PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
+			BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
 		}
 
 		Buffs: {

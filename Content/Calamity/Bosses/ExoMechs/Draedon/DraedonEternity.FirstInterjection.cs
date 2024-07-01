@@ -27,6 +27,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         public const int MajorDamageThreshold = 1000;
 
         /// <summary>
+        /// The life ratio players have to be in order for their wounds to be considered near-lethal for the purposes of Draedon's dialogue.
+        /// </summary>
+        public const float NearLethalDamageLifeRatio = 0.33f;
+
+        /// <summary>
         /// The AI method that makes Draedon speak to the player after an Exo Mech has been defeated.
         /// </summary>
         public void DoBehavior_FirstInterjection()
@@ -95,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             string damagePrefix = "Minor";
 
             bool majorDamage = damageIncurred >= MajorDamageThreshold;
-            bool nearLethalDamage = majorDamage && playerLifeRatio <= 0.25f;
+            bool nearLethalDamage = majorDamage && playerLifeRatio <= NearLethalDamageLifeRatio;
 
             if (majorDamage)
                 damagePrefix = "Major";

@@ -9,7 +9,6 @@
         Thermal,
         Plasma,
         Electricity,
-        Magnetism,
         Internal,
         BluntForceTrauma,
 
