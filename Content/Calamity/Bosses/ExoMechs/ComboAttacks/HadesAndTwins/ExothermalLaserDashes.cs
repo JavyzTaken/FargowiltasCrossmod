@@ -74,9 +74,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
         public override bool Perform(NPC npc)
         {
-            if (Main.mouseRight && Main.mouseRightRelease)
-                AITimer = 0;
-
             if (npc.type == ExoMechNPCIDs.HadesHeadID)
             {
                 Perform_Hades(npc);
