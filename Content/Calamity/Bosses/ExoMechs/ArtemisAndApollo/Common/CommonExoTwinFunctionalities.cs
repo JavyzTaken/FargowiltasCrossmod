@@ -60,7 +60,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
                 float totalAngularChange = 0f;
                 for (int i = 0; i < 8; i++)
-                    totalAngularChange += MathHelper.WrapAngle(twin.rotation - twin.oldRot[i]) * twinInterface.OpticNerveAngleSensitivity / 8f;
+                    totalAngularChange -= MathHelper.WrapAngle(twin.rotation - twin.oldRot[i]) * twinInterface.OpticNerveAngleSensitivity / 8f;
 
                 for (int i = 0; i < nerveDrawPositions.Length; i++)
                 {
