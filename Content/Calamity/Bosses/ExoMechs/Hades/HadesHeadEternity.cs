@@ -362,7 +362,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public static BodySegmentCondition AllSegments() => new((segment, segmentIndex) => true);
 
         /// <summary>
-        /// An action that opens a segment's vents. Meant to be used in conjunction with <see cref="BodyBehaviorAction"/>.
+        /// An action that opens a segment's vents and creates smoke. Meant to be used in conjunction with <see cref="BodyBehaviorAction"/>.
         /// </summary>
         /// <param name="segmentOpenRate">The amount by which the segment open interpolant changes every frame.</param>
         /// <param name="smokeQuantityInterpolant">A multiplier for how much smoke should be released.</param>
@@ -381,7 +381,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 if (behaviorOverride.SegmentOpenInterpolant >= 0.91f)
                 {
                     CreateSmoke(behaviorOverride, bigInterpolant, smokeQuantityInterpolant);
-                    ModContent.GetInstance<HeatDistortionMetaball>().CreateParticle(behaviorOverride.TurretPosition, Main.rand.NextVector2Circular(3f, 3f), 70f);
+
+                    if (Main.rand.NextBool(smokeQuantityInterpolant))
+                        ModContent.GetInstance<HeatDistortionMetaball>().CreateParticle(behaviorOverride.TurretPosition, Main.rand.NextVector2Circular(3f, 3f), 70f);
                 }
             });
         }
