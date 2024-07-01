@@ -1,12 +1,15 @@
 ﻿using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -59,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How far the Exo Twins should be away from Hades' head when spinning.
         /// </summary>
-        public static float ExoTwinSpinRadius => 335f;
+        public static float ExoTwinSpinRadius => 384f;
 
         /// <summary>
         /// The angular velocity of the Exo Twins.
@@ -129,15 +132,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (hoverDestination.Y < 300f)
                 hoverDestination.Y = 300f;
 
-            npc.SmoothFlyNear(hoverDestination, hoverFlySpeedInterpolant * 0.25f, 1f - hoverFlySpeedInterpolant * 0.2f);
+            npc.SmoothFlyNear(hoverDestination, hoverFlySpeedInterpolant * 0.21f, 1f - hoverFlySpeedInterpolant * 0.175f);
 
             npc.rotation = npc.AngleFrom(hades.Center).AngleLerp(hoverOffsetAngle, hoverFlySpeedInterpolant);
 
             if (AITimer == RedirectTime + 1)
             {
+                ScreenShakeSystem.StartShake(9.5f);
+
                 // TODO -- Play a laser shoot sound.
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2(), ModContent.ProjectileType<BlazingExoLaserbeam>(), BlazingLaserbeamDamage, 0f, -1, npc.whoAmI);
+            }
+
+            if (npc.TryGetDLCBehavior(out CalDLCEmodeBehavior behavior) && behavior is IExoTwin twin)
+            {
+                twin.Animation = ExoTwinAnimation.ChargingUp;
+                twin.Frame = twin.Animation.CalculateFrame(AITimer / 40f % 1f, twin.InPhase2);
             }
         }
 

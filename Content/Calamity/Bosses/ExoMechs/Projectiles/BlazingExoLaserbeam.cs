@@ -1,4 +1,5 @@
-﻿using CalamityMod.NPCs.ExoMechs.Ares;
+﻿using CalamityMod;
+using CalamityMod.NPCs.ExoMechs.Ares;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
@@ -68,6 +69,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.ignoreWater = true;
             Projectile.hostile = true;
             Projectile.timeLeft = Lifetime;
+            Projectile.Calamity().DealsDefenseDamage = true;
+
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
