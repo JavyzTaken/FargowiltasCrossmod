@@ -200,9 +200,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture = TextureAssets.Npc[NPC.type].Value;
+            Texture2D glowmask = CalamityMod.NPCs.ExoMechs.Draedon.Texture_Glow.Value;
             Rectangle frame = texture.Frame(4, Main.npcFrameCount[NPC.type], (int)Frame / Main.npcFrameCount[NPC.type], (int)Frame % Main.npcFrameCount[NPC.type]);
             Vector2 drawPosition = NPC.Center - screenPos;
             Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
+            Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
 
             bool drawHologramShader = HologramInterpolant > 0f;
             if (drawHologramShader)
@@ -219,6 +221,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             }
 
             Main.spriteBatch.Draw(texture, drawPosition, frame, drawColor, NPC.rotation, frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            Main.spriteBatch.Draw(glowmask, drawPosition, frame, glowmaskColor, NPC.rotation, frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
 
             if (drawHologramShader)
                 Main.spriteBatch.ResetToDefault();
