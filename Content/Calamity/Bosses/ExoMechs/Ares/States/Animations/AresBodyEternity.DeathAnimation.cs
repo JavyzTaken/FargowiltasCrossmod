@@ -178,9 +178,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             int handNPC = ModContent.NPCType<AresHand>();
             foreach (NPC otherNPC in Main.ActiveNPCs)
             {
-                if (otherNPC.type == handNPC)
+                if (otherNPC.type == handNPC && Main.rand.NextBool())
                 {
-                    otherNPC.velocity -= otherNPC.SafeDirectionTo(NPC.Center) * 32f;
+                    otherNPC.velocity -= otherNPC.SafeDirectionTo(NPC.Center).RotatedByRandom(MathHelper.Pi) * 32f;
                     otherNPC.netUpdate = true;
                 }
             }
