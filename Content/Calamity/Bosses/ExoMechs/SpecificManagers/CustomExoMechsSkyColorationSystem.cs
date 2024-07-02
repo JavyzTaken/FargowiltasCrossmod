@@ -16,6 +16,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             float redSirenInterpolant = CustomExoMechsSky.RedSirensIntensity * CustomExoMechsSky.Opacity * 0.7f;
             backgroundColor = Color.Lerp(backgroundColor, new(255, 79, 72), redSirenInterpolant);
             tileColor = Color.Lerp(tileColor, new(206, 97, 95), redSirenInterpolant);
+
+            float redSkyInterpolant = CustomExoMechsSky.RedSkyInterpolant * CustomExoMechsSky.Opacity * 0.925f;
+            backgroundColor = Color.Lerp(backgroundColor, new(255, 39, 74), redSkyInterpolant);
+            tileColor = Color.Lerp(tileColor, new(255, 39, 74), redSkyInterpolant);
         }
     }
 }

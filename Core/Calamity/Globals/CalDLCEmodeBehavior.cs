@@ -1,6 +1,4 @@
 ﻿using FargowiltasCrossmod.Core.Calamity.Systems;
-using FargowiltasSouls.Core.NPCMatching;
-using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
@@ -96,7 +94,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         /// </summary>
         public virtual void PostAI() { }
 
-
         /// <summary>
         /// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
         /// <br/> This hook only runs once during mod loading, any dynamic behavior must be contained in the rules themselves.
@@ -161,6 +158,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         /// <param name="lightColor">The color of light at the NPC's center.</param>
         /// <returns><see langword="false"/> if base drawing should be ignored, <see langword="true"/> otherwise.</returns>
         public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor) => true;
+
+        public virtual bool CheckDead() => true;
 
         public virtual void DrawBehind(int index) { }
 

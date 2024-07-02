@@ -42,6 +42,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             Inactive,
             ReturnToBeingActive,
 
+            DeathAnimation,
+
             PerformComboAttack = ExoMechComboAttackManager.ComboAttackValue
         }
 
@@ -138,6 +140,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Ares' silhouette opacity. If this is 0, no silhouette is drawn.
+        /// </summary>
+        public float SilhouetteOpacity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// How much Ares' silhouette show dissolve.
+        /// </summary>
+        public float SilhouetteDissolveInterpolant
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether Ares and his hands need to be rendered to a render target for secondary draw operations, such as his silhouette.
+        /// </summary>
+        public bool NeedsToBeDrawnToRenderTarget => SilhouetteOpacity > 0f;
+
+        /// <summary>
         /// The set of instructions that should be performed by each of Ares' arms.
         /// </summary>
         public HandInstructions[] InstructionsForHands
@@ -145,6 +170,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             get;
             set;
         } = new HandInstructions[ArmCount];
+
+        /// <summary>
+        /// An optional draw action that is applied to Ares' body after everything else when in use.
+        /// </summary>
+        public Action OptionalDrawAction
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The target that Ares will attempt to attack.
@@ -220,7 +254,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.rotation = NPC.rotation.AngleLerp(NPC.velocity.X * 0.015f, 0.2f);
             NPC.scale = 1f / (ZPosition + 1f);
             NPC.Opacity = Utils.Remap(ZPosition, 0.6f, 2f, 1f, 0.67f);
-            NPC.Calamity().ShouldCloseHPBar = Inactive;
+            NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == AresAIState.DeathAnimation;
 
             AITimer++;
 
@@ -272,6 +306,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     break;
                 case AresAIState.ReturnToBeingActive:
                     DoBehavior_ReturnToBeingActive();
+                    break;
+                case AresAIState.DeathAnimation:
+                    DoBehavior_DeathAnimation();
                     break;
                 case AresAIState.PerformComboAttack:
                     AITimer = ExoMechComboAttackManager.ComboAttackTimer;
@@ -341,6 +378,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.ShowNameOnHover = true;
             NPC.immortal = true;
             NPC.As<AresBody>().SecondaryAIState = (int)AresBody.SecondaryPhase.Nothing;
+            SilhouetteOpacity = 0f;
+            SilhouetteDissolveInterpolant = 0f;
+            OptionalDrawAction = null;
 
             CalamityGlobalNPC.draedonExoMechPrime = NPC.whoAmI;
         }
@@ -398,12 +438,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             Main.spriteBatch.ResetToDefault();
 
+            OptionalDrawAction?.Invoke();
+
             return false;
         }
 
         public override void OnKill()
         {
             DropHelper.BlockDrops(ModContent.ItemType<AresExoskeleton>(), ModContent.ItemType<PhotonRipper>(), ModContent.ItemType<TheJailor>(), ModContent.ItemType<DraedonBag>());
+        }
+
+        public override bool CheckDead()
+        {
+            if (CurrentState == AresAIState.DeathAnimation && AITimer >= 10)
+                return true;
+
+            NPC.life = 1;
+            NPC.dontTakeDamage = true;
+            AITimer = 0;
+            CurrentState = AresAIState.DeathAnimation;
+            ExoMechFightStateManager.ClearExoMechProjectiles();
+
+            NPC.netUpdate = true;
+
+            return false;
         }
 
         public override void HitEffect(NPC.HitInfo hit)

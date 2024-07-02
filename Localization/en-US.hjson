@@ -734,6 +734,7 @@ Mods: {
 			SmallTeslaSphere.DisplayName: Tesla Sphere
 			PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
 			BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
+			AresDeathAnimationExplosion.DisplayName: Explosion
 		}
 
 		Buffs: {

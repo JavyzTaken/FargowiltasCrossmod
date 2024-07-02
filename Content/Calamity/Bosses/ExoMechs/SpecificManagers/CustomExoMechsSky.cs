@@ -1,5 +1,4 @@
-﻿using CalamityMod.Skies;
-using FargowiltasCrossmod.Assets;
+﻿using FargowiltasCrossmod.Assets;
 using FargowiltasCrossmod.Assets.Models;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon;
 using FargowiltasCrossmod.Core.Calamity;
@@ -9,7 +8,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -54,6 +52,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
         /// The intensity of the red sirens effect.
         /// </summary>
         public static float RedSirensIntensity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// How much the sky colors should be biased towards red.
+        /// </summary>
+        public static float RedSkyInterpolant
         {
             get;
             set;
@@ -119,9 +126,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
                 Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, backgroundMatrix);
             }
 
-            // Get out of my head get out of my head get out of my head get out of my head get out of my head
-            ((ExoMechsSky)SkyManager.Instance["CalamityMod:ExoMechs"]).LightningBolts.Clear();
-
             if (maxDepth < float.MaxValue || minDepth >= float.MaxValue)
             {
                 PrimitivePixelationSystem.RenderToPrimsNextFrame(() =>
@@ -141,7 +145,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
                     Lightning[i].Update();
             }
 
-            if (Main.rand.NextBool(600))
+            int lightningSpawnChance = (int)MathHelper.Lerp(600f, 60f, RedSkyInterpolant);
+            if (Main.rand.NextBool(lightningSpawnChance))
                 CreateLightning();
 
             Vector2 screenSize = new(Main.instance.GraphicsDevice.Viewport.Width, Main.instance.GraphicsDevice.Viewport.Height);
@@ -174,15 +179,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             Texture2D cloud = NoiseTexturesRegistry.CloudDensityMap.Value;
             Vector2 drawPosition = screenSize * 0.5f;
             Vector2 skyScale = screenSize / cloud.Size();
-            Main.spriteBatch.Draw(cloud, drawPosition, null, new Color(48, 57, 70), 0f, cloud.Size() * 0.5f, skyScale, 0, 0f);
+            Color redSkyColor = Color.Lerp(new(255, 66, 78), new(255, 190, 184), LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 6f));
+            Color cloudColor = Color.Lerp(new(48, 57, 70), redSkyColor, RedSkyInterpolant);
+            Main.spriteBatch.Draw(cloud, drawPosition, null, cloudColor, 0f, cloud.Size() * 0.5f, skyScale, 0, 0f);
         }
 
         public static void CreateLightning(Vector2? lightningPosition = null)
         {
             if (Main.netMode == NetmodeID.Server || Main.gamePaused)
                 return;
-
-            SoundEngine.PlaySound(SoundID.Thunder);
 
             Vector2 screenSize = new(Main.instance.GraphicsDevice.Viewport.Width, Main.instance.GraphicsDevice.Viewport.Height);
             lightningPosition ??= new Vector2(Main.rand.NextFloat(0.2f, 0.8f), Main.rand.NextFloat(-0.07f, -0.02f)) * screenSize;
@@ -209,7 +214,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
                 SkyManager.Instance["CalamityMod:ExoMechs"]?.Deactivate();
 
             if (!skyActive)
-                ResetVariablesWhileInactivity();
+                ResetVariablesWhileInactive();
+            if (!Main.gamePaused)
+                RedSkyInterpolant = LumUtils.Saturate(RedSkyInterpolant - 0.01f);
         }
 
         public static void DrawPlane(float forwardInterpolant)
@@ -253,7 +260,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             }
         }
 
-        public static void ResetVariablesWhileInactivity()
+        public static void ResetVariablesWhileInactive()
         {
             RedSirensIntensity = Utilities.Saturate(RedSirensIntensity - 0.1f);
         }

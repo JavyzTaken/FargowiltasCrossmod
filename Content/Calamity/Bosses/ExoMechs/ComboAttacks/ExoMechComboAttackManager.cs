@@ -40,7 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static readonly ExoMechComboAttack NullComboState = new(n => false);
 
         /// <summary>
-        /// The underlying value that should be used for all AI state enumerations across the Exo Mechs.
+        /// The underlying value that should be used for all AI state enumerations across the Exo Mechs to represent a combo attack.
         /// </summary>
         public const int ComboAttackValue = 1000;
 

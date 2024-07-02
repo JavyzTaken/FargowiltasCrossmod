@@ -281,6 +281,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
         public void DrawMagneticLine(NPC aresBody, Vector2 start, Vector2 end, float opacity = 1f)
         {
+            if (aresBody.TryGetDLCBehavior(out AresBodyEternity aresBodyBehavior) || aresBodyBehavior.SilhouetteOpacity > 0f)
+                return;
+
             Vector2[] controlPoints = new Vector2[8];
             for (int i = 0; i < controlPoints.Length; i++)
                 controlPoints[i] = Vector2.Lerp(start, end, i / 7f);
@@ -585,6 +588,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 SoundEngine.PlaySound(CommonCalamitySounds.ExoHitSound, NPC.Center);
             }
 
+            // REALLY stupid hack to get the cannons to call CheckDead, since realLife having a defined value makes the CheckDead call propagate to the owner, instead of the
+            // NPC that got killed.
+            if (NPC.life <= 0)
+            {
+                NPC.life = 1;
+                Main.npc[NPC.realLife].checkDead();
+                NPC.realLife = -1;
+            }
+
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
                 Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
@@ -623,6 +635,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public override bool CanHitNPC(NPC target) => MeleeHitCounts(target.Hitbox);
 
         public override bool CheckActive() => false;
+
+        public override bool CheckDead()
+        {
+            NPC.life = 1;
+            NPC.dontTakeDamage = true;
+            return false;
+        }
 
         public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
         {
