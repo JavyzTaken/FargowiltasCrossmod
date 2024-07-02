@@ -436,5 +436,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     projectile.Kill();
             }
         }
+
+        public override bool CheckDead() => CommonExoTwinFunctionalities.HandleDeath(NPC);
     }
 }

@@ -86,6 +86,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             PlaneFlyForwardInterpolant = Utilities.InverseLerp(0f, ExoMechPlaneFlyTime, AITimer - ExoMechSummonDelay);
             CustomExoMechsSky.RedSirensIntensity = MathF.Pow(Utilities.Sin01(MathHelper.TwoPi * (AITimer - SirenDelay) / 240f), 0.7f) * (1f - PlaneFlyForwardInterpolant) * 0.7f;
 
+            if (PlaneFlyForwardInterpolant >= 1f)
+            {
+                ChangeAIState(DraedonAIState.MoveAroundDuringBattle);
+                PlaneFlyForwardInterpolant = 0f;
+            }
+
             if (AITimer == ExoMechPlaneFlyTime + ExoMechSummonDelay - 2f - (CalamityWorld.DraedonMechToSummon == ExoMech.Prime ? 12f : 0f))
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)

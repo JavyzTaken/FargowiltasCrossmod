@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
         EnterSecondPhase,
 
-        UltimateAttack,
+        DeathAnimation,
 
         PerformIndividualAttacks,
 

@@ -412,5 +412,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             CommonExoTwinFunctionalities.DrawBase(NPC, this, BaseTexture.Value, Glowmask.Value, lightColor, screenPos, Frame);
             return false;
         }
+
+        public override bool CheckDead() => CommonExoTwinFunctionalities.HandleDeath(NPC);
     }
 }

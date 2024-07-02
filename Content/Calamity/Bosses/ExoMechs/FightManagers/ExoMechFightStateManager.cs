@@ -71,6 +71,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         }
 
         /// <summary>
+        /// Whether phase transitions should be disabled for debug reasons.
+        /// </summary>
+        public static bool DebugDisablePhaseTransition => true;
+
+        /// <summary>
         /// Represents an undefined Exo Mech phase transition condition that always evaluates false regardless of context.
         /// </summary>
         /// 
@@ -204,7 +209,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             if (nextPhase is null)
                 return;
 
-            if (nextPhase.StartCondition(FightState))
+            if (!DebugDisablePhaseTransition && nextPhase.StartCondition(FightState))
             {
                 CurrentPhase = nextPhase;
                 nextPhase.OnStart?.Invoke(FightState);

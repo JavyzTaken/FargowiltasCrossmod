@@ -24,6 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             StartingMonologue,
             ExoMechSpawnAnimation,
             MoveAroundDuringBattle,
+            TemporarilyLeave,
 
             FirstInterjection,
             SecondInterjection,
@@ -146,6 +147,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 case DraedonAIState.MoveAroundDuringBattle:
                     DoBehavior_MoveAroundDuringBattle();
                     break;
+                case DraedonAIState.TemporarilyLeave:
+                    DoBehavior_TemporarilyLeave();
+                    break;
                 case DraedonAIState.FirstInterjection:
                     DoBehavior_FirstInterjection();
                     break;
@@ -161,6 +165,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             // Stay within the world.
             NPC.position.Y = MathHelper.Clamp(NPC.position.Y, 150f, Main.maxTilesY * 16f - 150f);
+
+            NPC.ShowNameOnHover = HologramInterpolant <= 0.75f && NPC.Opacity >= 0.25f;
 
             AITimer++;
             FrameTimer++;

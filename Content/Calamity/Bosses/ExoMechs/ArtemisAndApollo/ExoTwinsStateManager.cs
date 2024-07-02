@@ -89,7 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static void PerformUpdateLoop(NPC twin, IExoTwin twinAttributes)
         {
             bool shouldEnterSecondPhase = twin.life < twin.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase == ExoMechFightDefinitions.BerserkSoloPhaseDefinition;
-            if (shouldEnterSecondPhase && !twinAttributes.InPhase2 && SharedState.AIState != ExoTwinsAIState.EnterSecondPhase)
+            if (shouldEnterSecondPhase && !twinAttributes.InPhase2 && SharedState.AIState != ExoTwinsAIState.EnterSecondPhase && SharedState.AIState != ExoTwinsAIState.DeathAnimation)
                 TransitionToNextState(ExoTwinsAIState.EnterSecondPhase);
 
             if (twinAttributes is IExoMech exoMech)
@@ -134,6 +134,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
                 case ExoTwinsAIState.EnterSecondPhase:
                     ExoTwinsStates.DoBehavior_EnterSecondPhase(twin, twinAttributes);
+                    break;
+
+                case ExoTwinsAIState.DeathAnimation:
+                    ExoTwinsStates.DoBehavior_DeathAnimation(twin, twinAttributes);
                     break;
             }
         }

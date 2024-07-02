@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+﻿using CalamityMod.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -221,6 +222,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             DrawThrusters(twin, twinInterface);
 
             twinInterface.SpecificDrawAction?.Invoke();
+        }
+
+        /// <summary>
+        /// Handles death effects for the Exo Twins.
+        /// </summary>
+        /// <param name="npc">The Exo Twins' NPC data.</param>
+        public static bool HandleDeath(NPC npc)
+        {
+            if (ExoTwinsStateManager.SharedState.AIState != ExoTwinsAIState.DeathAnimation || ExoTwinsStateManager.SharedState.AITimer <= 10)
+            {
+                npc.dontTakeDamage = true;
+                npc.life = 1;
+                npc.active = true;
+
+                // Don't you just love NPC.realLife quirks?
+                if (CalamityGlobalNPC.draedonExoMechTwinRed != -1)
+                {
+                    NPC artemis = Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed];
+                    artemis.dontTakeDamage = true;
+                    artemis.life = 1;
+                    artemis.active = true;
+                }
+
+                ExoMechFightStateManager.ClearExoMechProjectiles();
+                ExoTwinsStateManager.TransitionToNextState(ExoTwinsAIState.DeathAnimation);
+                return false;
+            }
+
+            return true;
         }
     }
 }
