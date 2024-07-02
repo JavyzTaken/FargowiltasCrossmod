@@ -92,6 +92,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             /// Represents an undefined Exo Mech phase.
             /// </summary>
             public static readonly PhaseDefinition UndefinedPhase = new(0, false, UndefinedPhaseTransitionCondition, null);
+
+            public static bool operator >(PhaseDefinition phaseA, PhaseDefinition phaseB) => phaseA.PhaseOrdering > phaseB.PhaseOrdering;
+            public static bool operator >=(PhaseDefinition phaseA, PhaseDefinition phaseB) => phaseA.PhaseOrdering >= phaseB.PhaseOrdering;
+
+            public static bool operator <(PhaseDefinition phaseA, PhaseDefinition phaseB) => phaseA.PhaseOrdering < phaseB.PhaseOrdering;
+            public static bool operator <=(PhaseDefinition phaseA, PhaseDefinition phaseB) => phaseA.PhaseOrdering <= phaseB.PhaseOrdering;
         }
 
         /// <summary>
