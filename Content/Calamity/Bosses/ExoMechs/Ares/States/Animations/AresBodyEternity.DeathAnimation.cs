@@ -35,27 +35,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares spends sitting in place, releasing smoke, during his death animation.
         /// </summary>
-        public static int DeathAnimation_SmokeReleaseBuildupTime => LumUtils.SecondsToFrames(5.4f);
+        public static int DeathAnimation_SmokeReleaseBuildupTime => LumUtils.SecondsToFrames(2.3f);
 
         /// <summary>
         /// How frequently Ares' core pulses during his death animation.
         /// </summary>
-        public static int DeathAnimation_PulseRate => LumUtils.SecondsToFrames(0.3f);
+        public static int DeathAnimation_PulseRate => LumUtils.SecondsToFrames(0.27f);
 
         /// <summary>
         /// How long Ares spends performing pulses before exploding.
         /// </summary>
-        public static int DeathAnimation_PulseTime => LumUtils.SecondsToFrames(6.5f);
+        public static int DeathAnimation_PulseTime => LumUtils.SecondsToFrames(4.8f);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to appear.
         /// </summary>
-        public static int DeathAnimation_SilhouetteAppearDelay => LumUtils.SecondsToFrames(0.6f);
+        public static int DeathAnimation_SilhouetteAppearDelay => LumUtils.SecondsToFrames(0.4f);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to fade in.
         /// </summary>
-        public static int DeathAnimation_SilhouetteFadeInTime => LumUtils.SecondsToFrames(0.4f);
+        public static int DeathAnimation_SilhouetteFadeInTime => LumUtils.SecondsToFrames(0.5f);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to start dissolving.
@@ -75,7 +75,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How far along Ares is with his jittering during his death animation.
         /// </summary>
-        public float DeathAnimation_JitterInterpolant => LumUtils.InverseLerpBump(0f, 0.6f, 0.74f, 1f, AITimer / (float)DeathAnimation_SmokeReleaseBuildupTime);
+        public float DeathAnimation_JitterInterpolant =>
+            LumUtils.InverseLerp(0f, 0.6f, AITimer / (float)DeathAnimation_SmokeReleaseBuildupTime) *
+            Utils.Remap(AITimer / (float)DeathAnimation_SmokeReleaseBuildupTime, 0.75f, 1f, 1f, 0.25f) *
+            LumUtils.InverseLerp(DeathAnimation_PulseTime * 0.85f, DeathAnimation_PulseTime * 0.4f, AITimer - DeathAnimation_SmokeReleaseBuildupTime);
 
         /// <summary>
         /// The probability that Ares will create smoke on a given frame during his death animation.
@@ -97,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.velocity *= 0.95f;
             NPC.dontTakeDamage = true;
             NPC.damage = 0;
-            NPC.velocity += Main.rand.NextVector2Circular(3.2f, 2f) * DeathAnimation_JitterInterpolant;
+            NPC.velocity += Main.rand.NextVector2Circular(4.4f, 2.4f) * DeathAnimation_JitterInterpolant;
             NPC.rotation = NPC.velocity.X * 0.02f;
             if (Collision.SolidCollision(NPC.TopLeft, NPC.width, NPC.height + 540))
                 NPC.velocity.Y -= 0.5f;
@@ -106,7 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             CustomExoMechsSky.RedSkyInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_PulseTime, AITimer - DeathAnimation_SmokeReleaseBuildupTime);
 
             // Make the screen rumble in accoradance with how much Ares is jittering.
-            ScreenShakeSystem.SetUniversalRumble(DeathAnimation_JitterInterpolant * 6.4f);
+            ScreenShakeSystem.SetUniversalRumble(DeathAnimation_JitterInterpolant * 8f);
 
             HandleDeathAnimationCoreVisualEffects();
             DeathAnimationHandUpdateWrapper();
@@ -196,7 +199,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             SilhouetteDissolveInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_SilhouetteDissolveTime, AITimer - DeathAnimation_SmokeReleaseBuildupTime - DeathAnimation_PulseTime - DeathAnimation_SilhouetteAppearDelay - DeathAnimation_SilhouetteFadeInTime - DeathAnimation_SilhouetteDissolveDelay);
 
             if (SilhouetteOpacity > 0f)
+            {
                 DeathAnimation_FlareOpacity = 0f;
+                NPC.velocity *= 0.9f;
+            }
         }
 
         /// <summary>
