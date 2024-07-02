@@ -158,7 +158,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             DeathAnimation_FlareScale += LumUtils.InverseLerp(DeathAnimation_PulseTime * 0.51f, DeathAnimation_PulseTime * 0.9f, AITimer - DeathAnimation_SmokeReleaseBuildupTime) * scalePulsationFactor * 0.34f;
 
             DelegateMethods.v3_1 = Color.Wheat.ToVector3() * DeathAnimation_FlareOpacity;
-            Utils.PlotTileLine(NPC.Top, NPC.Bottom, (int)((NPC.width + 200) * DeathAnimation_FlareOpacity), DelegateMethods.CastLight);
+            Utils.PlotTileLine(NPC.Top - Vector2.UnitY * 250f, NPC.Bottom + Vector2.UnitY * 250f, (int)((NPC.width + 400) * DeathAnimation_FlareScale * 6f), DelegateMethods.CastLight);
 
             // Ensure that Ares draws visuals over his core.
             OptionalDrawAction = RenderDeathAnimationVisuals;

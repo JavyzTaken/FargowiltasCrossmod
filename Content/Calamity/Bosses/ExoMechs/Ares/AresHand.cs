@@ -571,7 +571,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
         public override void DrawBehind(int index)
         {
-            Main.instance.DrawCacheNPCProjectiles.Add(index);
+            Main.instance.DrawCacheNPCsMoonMoon.Add(index);
         }
 
         public override void ModifyTypeName(ref string typeName)
