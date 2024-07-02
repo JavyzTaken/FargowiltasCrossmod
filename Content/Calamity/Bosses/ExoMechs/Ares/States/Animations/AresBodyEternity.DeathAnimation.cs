@@ -155,7 +155,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             DeathAnimation_FlareScale += LumUtils.InverseLerp(0f, DeathAnimation_PulseTime, AITimer - DeathAnimation_SmokeReleaseBuildupTime).Squared() * 0.2f;
 
             float scalePulsationFactor = LumUtils.Cos01(MathHelper.TwoPi * AITimer / 5f);
-            DeathAnimation_FlareScale += LumUtils.InverseLerp(DeathAnimation_PulseTime * 0.51f, DeathAnimation_PulseTime * 0.9f, AITimer - DeathAnimation_SmokeReleaseBuildupTime) * scalePulsationFactor * 0.41f;
+            DeathAnimation_FlareScale += LumUtils.InverseLerp(DeathAnimation_PulseTime * 0.51f, DeathAnimation_PulseTime * 0.9f, AITimer - DeathAnimation_SmokeReleaseBuildupTime) * scalePulsationFactor * 0.34f;
 
             DelegateMethods.v3_1 = Color.Wheat.ToVector3() * DeathAnimation_FlareOpacity;
             Utils.PlotTileLine(NPC.Top, NPC.Bottom, (int)((NPC.width + 200) * DeathAnimation_FlareOpacity), DelegateMethods.CastLight);
