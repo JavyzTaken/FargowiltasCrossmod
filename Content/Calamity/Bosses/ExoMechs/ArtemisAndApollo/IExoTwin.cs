@@ -31,6 +31,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
+        /// Whether this Exo Twin has been destroyed due to impact during its death animation.
+        /// </summary>
+        public bool HasBeenDestroyed
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The opacity of wingtip vortices on this Exo Twin.
         /// </summary>
         public float WingtipVorticesOpacity

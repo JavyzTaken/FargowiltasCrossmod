@@ -188,10 +188,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <param name="twinInterface">The Exo Twin's interfaced data.</param>
         /// <param name="texture">The base texture.</param>
         /// <param name="glowmask">The glowmask texture.</param>
+        /// <param name="destroyedTexture">The destroyed texture.</param>
         /// <param name="lightColor">The color of light at the Exo Twin's position.</param>
         /// <param name="screenPos">The screen position offset.</param>
         /// <param name="frame">The frame of the Exo Twin.</param>
-        public static void DrawBase(NPC twin, IExoTwin twinInterface, Texture2D texture, Texture2D glowmask, Color lightColor, Vector2 screenPos, int frame)
+        public static void DrawBase(NPC twin, IExoTwin twinInterface, Texture2D texture, Texture2D glowmask, Texture2D destroyedTexture, Color lightColor, Vector2 screenPos, int frame)
         {
             Main.instance.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             DrawNerveEndings(twin, twinInterface, twinInterface.OpticNervePalette);
@@ -216,8 +217,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             }
 
             Vector2 scale = Vector2.One * twin.scale;
-            Main.spriteBatch.Draw(texture, drawPosition, frameRectangle, twin.GetAlpha(lightColor), twin.rotation + MathHelper.PiOver2, frameRectangle.Size() * 0.5f, scale, 0, 0f);
-            Main.spriteBatch.Draw(glowmask, drawPosition, frameRectangle, twin.GetAlpha(Color.White), twin.rotation + MathHelper.PiOver2, frameRectangle.Size() * 0.5f, scale, 0, 0f);
+
+            if (twinInterface.HasBeenDestroyed)
+                Main.spriteBatch.Draw(destroyedTexture, drawPosition, null, twin.GetAlpha(lightColor), twin.rotation + MathHelper.PiOver2, destroyedTexture.Size() * 0.5f, scale, 0, 0f);
+            else
+            {
+                Main.spriteBatch.Draw(texture, drawPosition, frameRectangle, twin.GetAlpha(lightColor), twin.rotation + MathHelper.PiOver2, frameRectangle.Size() * 0.5f, scale, 0, 0f);
+                Main.spriteBatch.Draw(glowmask, drawPosition, frameRectangle, twin.GetAlpha(Color.White), twin.rotation + MathHelper.PiOver2, frameRectangle.Size() * 0.5f, scale, 0, 0f);
+            }
 
             Main.spriteBatch.ResetToDefault();
 

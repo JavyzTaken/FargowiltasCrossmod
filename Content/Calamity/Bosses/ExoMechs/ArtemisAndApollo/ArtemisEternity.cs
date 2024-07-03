@@ -94,6 +94,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         }
 
         /// <summary>
+        /// Whether Artemis has been destroyed due to impact during her death animation.
+        /// </summary>
+        public bool HasBeenDestroyed
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Whether Artemis has verified that Apollo is alive or not.
         /// </summary>
         public bool ApolloSummonCheckPerformed
@@ -208,6 +217,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         internal static LazyAsset<Texture2D> Glowmask;
 
         /// <summary>
+        /// Artemis' destroyed texture.
+        /// </summary>
+        internal static LazyAsset<Texture2D> DestroyedTexture;
+
+        /// <summary>
         /// The engine loop sound Artemis and Apollo idly play.
         /// </summary>
         public static readonly SoundStyle EngineSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/EngineLoop");
@@ -242,6 +256,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             BaseTexture = LazyAsset<Texture2D>.Request("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/ArtemisAndApollo/Textures/Artemis");
             Glowmask = LazyAsset<Texture2D>.Request("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/ArtemisAndApollo/Textures/ArtemisGlow");
+            DestroyedTexture = LazyAsset<Texture2D>.Request("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/ArtemisAndApollo/Textures/ArtemisDestroyed");
         }
 
         public override void Unload()
@@ -384,7 +399,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
 
                 for (int i = 1; i <= 5; i++)
-                    Gore.NewGore(deathSource, npc.position, npc.velocity, calamity.Find<ModGore>($"Artemis{i}").Type, npc.scale);
+                    Gore.NewGore(deathSource, npc.position, npc.velocity + Main.rand.NextVector2Circular(24f, 24f), calamity.Find<ModGore>($"Artemis{i}").Type, npc.scale);
             }
         }
 
@@ -412,7 +427,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            CommonExoTwinFunctionalities.DrawBase(NPC, this, BaseTexture.Value, Glowmask.Value, lightColor, screenPos, Frame);
+            CommonExoTwinFunctionalities.DrawBase(NPC, this, BaseTexture.Value, Glowmask.Value, DestroyedTexture.Value, lightColor, screenPos, Frame);
             return false;
         }
 

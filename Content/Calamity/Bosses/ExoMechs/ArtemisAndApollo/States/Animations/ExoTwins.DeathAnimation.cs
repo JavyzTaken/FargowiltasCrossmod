@@ -86,14 +86,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             npc.dontTakeDamage = true;
             npc.Calamity().ShouldCloseHPBar = true;
 
-            if (Main.mouseRight && Main.mouseRightRelease)
-            {
-                twinAttributes.WingtipVorticesOpacity = 0f;
-                DeathAnimation_BeepDelayIndex = 0f;
-                AITimer = 0;
-                DeathAnimation_SuccessfullyCollided = false;
-            }
-
             if (!DeathAnimation_SuccessfullyCollided)
             {
                 if (AITimer <= DeathAnimation_HoverNearPlayerTime)
@@ -154,11 +146,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         {
             float reorientInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_ReorientTime, relativeTimer);
             float flySpeedInterpolant = MathF.Pow(reorientInterpolant, 0.6f);
-            float hoverOffsetAngleDirection = (npc.type == ExoMechNPCIDs.ArtemisID).ToDirectionInt();
             float hoverOffsetAngle = MathHelper.SmoothStep(MathHelper.PiOver2, MathHelper.PiOver4, reorientInterpolant);
+            if (npc.type == ExoMechNPCIDs.ArtemisID)
+                hoverOffsetAngle += MathHelper.Pi;
+
             float hoverOffset = MathHelper.Lerp(350f, 560f, reorientInterpolant);
 
-            Vector2 hoverDestination = Target.Center - Vector2.UnitY.RotatedBy(hoverOffsetAngle * hoverOffsetAngleDirection) * hoverOffset;
+            Vector2 hoverDestination = Target.Center - Vector2.UnitY.RotatedBy(hoverOffsetAngle) * hoverOffset;
             npc.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.25f, 1f - flySpeedInterpolant * 0.24f);
             npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.16f);
 
@@ -191,7 +185,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             float hoverOffset = MathHelper.Lerp(560f, 1000f, chargeUpInterpolant.Squared());
             Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(npc.Center) * hoverOffset;
-            npc.SmoothFlyNear(hoverDestination, 0.15f, 0.85f);
+            if (npc.type == ExoMechNPCIDs.ArtemisID)
+                hoverDestination = Target.Center + Target.SafeDirectionTo(Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].Center) * -hoverOffset;
+
+            npc.SmoothFlyNear(hoverDestination, 0.27f, 0.8f);
             npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.16f);
 
             twinAttributes.ThrusterBoost = chargeUpInterpolant * 2.95f;
@@ -251,16 +248,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 impactFrameShader.TrySetParameter("darkFrameColor", darkFrameColor);
                 impactFrameShader.TrySetParameter("lightFrameColor", lightFrameColor);
                 impactFrameShader.TrySetParameter("contrastMatrix", CalculateContrastMatrix(1f));
-                impactFrameShader.TrySetParameter("impactFrameInterpolant", LumUtils.InverseLerp(90f, 72f, AITimer));
+                impactFrameShader.TrySetParameter("impactFrameInterpolant", LumUtils.InverseLerp(50f, 35f, AITimer));
                 impactFrameShader.SetTexture(ExoTwinsRenderTargetSystem.ExoTwinsTarget, 1);
                 impactFrameShader.Activate();
             }
 
-            if (AITimer >= 120)
+            if (AITimer >= 75)
             {
                 npc.life = 0;
                 npc.HitEffect();
-                npc.checkDead();
+                if (npc.realLife == -1)
+                    npc.checkDead();
                 npc.active = false;
                 npc.NPCLoot();
 
@@ -270,7 +268,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     Utilities.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<GaussNukeBoom>(), 0, 0f, -1, 2400f, 0f, 4f);
             }
 
-            npc.velocity *= 0.8f;
+            twinAttributes.HasBeenDestroyed = true;
+            npc.velocity *= 0.85f;
         }
 
         /// <summary>
