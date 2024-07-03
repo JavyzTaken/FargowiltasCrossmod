@@ -2,6 +2,7 @@
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -42,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             NPC.GetGlobalNPC<Spazmatism>().RunEmodeAI = true;
             if (Fireballs)
             {
+
                 NPC.GetGlobalNPC<Spazmatism>().RunEmodeAI = true;
                 timer++;
                 Player target = Main.player[NPC.target];
@@ -54,6 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
                 {
                     Fireballs = false;
                     timer = 0;
+                    NPC.netUpdate = true;
                 }
                 NPC.rotation = NPC.AngleTo(target.Center) - MathHelper.PiOver2;
                 return false;
@@ -61,6 +64,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
             if (NPC.ai[0] == 3 && NPC.ai[1] == 0 && NPC.ai[2] == 398)
             {
                 Fireballs = true;
+                NPC.netUpdate = true;
             }
 
             return true;

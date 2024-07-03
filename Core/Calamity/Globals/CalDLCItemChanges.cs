@@ -6,6 +6,8 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using CalamityMod.Items.Placeables.Furniture;
+using CalamityMod.Items.Placeables.Furniture.Fountains;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Magic;
@@ -13,6 +15,9 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Tiles.Furniture;
+using Fargowiltas;
+using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
@@ -109,7 +114,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     player.GetJumpState(ExtraJump.FartInAJar).Enable();
                 }
-
+            }
+            if (item.type == ModContent.ItemType<AeolusBoots>()) // add angel treads effects
+            {
+                CalamityPlayer modPlayer = player.Calamity();
+                modPlayer.angelTreads = true;
+                player.accRunSpeed = 7.5f;
+                player.moveSpeed += 0.04f; // angel provides 0.12. aeolus provides 0.08. leftover is 0.04
+                player.iceSkate = true;
+                player.waterWalk = true;
+                player.fireWalk = true;
+                player.buffImmune[BuffID.OnFire] = true;
             }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -205,7 +220,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<Terminus>())
                 return WorldSavingSystem.DownedMutant;
 
-            if (item.type == ModContent.ItemType<CelestialOnion>() && CalDLCConfig.Instance.BalanceRework && WorldSavingSystem.EternityMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
             return true;
@@ -230,8 +245,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
             }
         }
+        // Copied from Mutant Mod
+        static string ExpandedTooltipLoc(string line) => Language.GetTextValue($"Mods.FargowiltasCrossmod.ExpandedTooltips.{line}");
+        TooltipLine FountainTooltip(string biome) => new TooltipLine(Mod, "Tooltip0", $"[i:909] [c/AAAAAA:{ExpandedTooltipLoc($"Fountain{biome}")}]");
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            var mutantServerConfig = FargoServerConfig.Instance;
+
             if (WorldSavingSystem.EternityMode)
             {
                 for (int i = 0; i < tooltips.Count; i++)
@@ -264,13 +284,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
-            if (item.type == ModContent.ItemType<CelestialOnion>() && CalDLCConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
+            if (item.type == ModContent.ItemType<CelestialOnion>() && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
             }
 
 
             string key = "Mods.FargowiltasCrossmod.Items.AddedEffects.";
+            if (item.type == ModContent.ItemType<AeolusBoots>() && !item.social)
+            {
+                tooltips.Insert(11, new TooltipLine(Mod, "CalAeolus", Language.GetTextValue(key + "AngelTreads")));
+            }
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
@@ -319,6 +343,21 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     Language.GetTextValue(key + "AngelTreads") + "\n" +
                     Language.GetTextValue(key + "CalamityTrawler")));
             }
+
+            if (FargoClientConfig.Instance.ExpandedTooltips)
+            {
+                if (mutantServerConfig.Fountains)
+                {
+                    if (item.type == ModContent.ItemType<AstralFountainItem>())
+                        tooltips.Add(FountainTooltip("Astral"));
+                    if (item.type == ModContent.ItemType<BrimstoneLavaFountainItem>())
+                        tooltips.Add(FountainTooltip("Crags"));
+                    if (item.type == ModContent.ItemType<SulphurousFountainItem>())
+                        tooltips.Add(FountainTooltip("Sulphur"));
+                    if (item.type == ModContent.ItemType<SunkenSeaFountain>())
+                        tooltips.Add(FountainTooltip("Sunken"));
+                }
+            }
         }
     }
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
@@ -328,7 +367,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
-            if (Player.Calamity().extraAccessoryML && CalDLCConfig.Instance.BalanceRework && !Main.masterMode && WorldSavingSystem.EternityMode)
+            if (Player.Calamity().extraAccessoryML && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 if (MutantsPactSlot)
                 {

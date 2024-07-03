@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
             }
             if (NPC.GetLifePercent() <= 0.5 && !summonedJewel)
             {
-                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - 50, ModContent.NPCType<KingSlimeJewel>());
+                NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - 50, ModContent.NPCType<KingSlimeJewelRuby>());
                 summonedJewel = true;
                 SoundEngine.PlaySound(SoundID.Item38, NPC.Center);
                 for (int i = 0; i < 100; i++)

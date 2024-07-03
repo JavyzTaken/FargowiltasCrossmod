@@ -24,6 +24,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
@@ -89,16 +90,13 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             // Player.statManaMax2 += 100;
             //Player.manaRegenDelay = Math.Min(Player.manaRegenDelay, 30);
             Player.manaRegenBonus -= 5;
-            if (CalDLCConfig.Instance.BalanceRework)
+            if (BossRushEvent.BossRushActive)
             {
-                if (BossRushEvent.BossRushActive)
-                {
-                    Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
-                }
-                if (NPC.AnyNPCs(NPCType<MutantBoss>()))
-                {
-                    Player.ClearBuff(BuffType<Enraged>());
-                }
+                Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
+            }
+            if (NPC.AnyNPCs(NPCType<MutantBoss>()))
+            {
+                Player.ClearBuff(BuffType<Enraged>());
             }
             //Player.wellFed = true; //no longer expert half regen unless fed
         }
@@ -131,6 +129,9 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 }
 
             }
+
+            if (calamityPlayer.luxorsGift && Player.HeldItem != null && Player.HeldItem.type == ItemType<KamikazeSquirrelStaff>())
+                calamityPlayer.luxorsGift = false;
 
         }
         public bool[] PreUpdateBuffImmune;

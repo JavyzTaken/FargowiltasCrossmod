@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EDeathCrownJewel : CalDLCEDeathBehavior
     {
-        public override int NPCOverrideID => ModContent.NPCType<KingSlimeJewel>();
+        public override int NPCOverrideID => ModContent.NPCType<KingSlimeJewelRuby>();
         public int Timer = 0;
 
         public override bool PreAI()

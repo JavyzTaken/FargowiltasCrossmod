@@ -502,6 +502,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             AddBannerToItemRecipe(ItemType<CuttlefishBanner>(),
                 ItemType<InkBomb>());
             AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<CocosFeather>(), 5, 1);
+            AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<SkyGlaze>());
             AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ItemType<BurntSienna>());
             AddBannerToItemRecipe(ItemID.DemonBanner, ItemType<BladecrestOathsword>());
             AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ItemType<PlasmaRod>());
@@ -623,6 +624,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #endregion QoLRecipes
+            #region Other
+                Recipe.Create(ItemType<MechLure>())
+                .AddRecipeGroup(RecipeGroupID.IronBar, 4)
+                .AddIngredient(ItemID.EnchantedNightcrawler, 3)
+                .AddIngredient(ItemID.SoulofFlight, 5)
+                .AddIngredient(ItemID.ArmoredCavefish, 1)
+                .AddTile(TileID.Anvils)
+                .Register();
+            #endregion
         }
         public override void PostAddRecipes()
         {
@@ -727,8 +737,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     recipe.AddIngredient<WulfrumAcrobaticsPack>()
                         .AddIngredient<TundraLeash>()
                         .AddIngredient<FollyFeed>()
-                        .AddIngredient<TheCartofGods>()
-                        .AddIngredient<AuricBar>(10);
+                        .AddIngredient<TheCartofGods>();
                 }
                 if (recipe.HasResult<FlightMasterySoul>() && recipe.HasIngredient(ItemID.EmpressFlightBooster))
                 {
@@ -737,8 +746,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     recipe.AddIngredient<SkylineWings>()
                         .AddIngredient<HadarianWings>()
                         .AddIngredient<TarragonWings>()
-                        .AddIngredient<SilvaWings>()
-                        .AddIngredient<AuricBar>(10);
+                        .AddIngredient<SilvaWings>();
 
                 }
                 if (recipe.HasResult<ColossusSoul>() && recipe.HasIngredient(ItemID.WormScarf))
@@ -814,7 +822,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (recipe.HasResult(ItemType<ConjuristsSoul>()) && recipe.HasIngredient(ItemID.PygmyNecklace))
                 {
-                    if (recipe.RemoveIngredient(ItemID.PygmyNecklace))
+                    if (recipe.RemoveIngredient(ItemID.PygmyNecklace) && recipe.RemoveIngredient(ItemID.PapyrusScarab))
                         recipe.AddIngredient<Nucleogenesis>();
                     if (recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
                         recipe.AddIngredient<EndoHydraStaff>();
@@ -883,54 +891,54 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 #endregion
 
                 #region Balance and Progression Locks
-                if (CalDLCConfig.Instance.BalanceRework)
+                if (recipe.HasIngredient<EternalEnergy>() && recipe.createItem != null && CalDLCSets.Items.RockItem[recipe.createItem.type] && !recipe.HasIngredient<Rock>())
                 {
-                    if (recipe.HasIngredient<EternalEnergy>() && recipe.createItem != null && CalDLCSets.Items.RockItem[recipe.createItem.type] && !recipe.HasIngredient<Rock>())
+                    recipe.AddIngredient<Rock>();
+                }
+                if (recipe.HasResult(ItemID.AnkhShield) && !recipe.HasIngredient(ItemID.SoulofNight))
+                {
+                    recipe.AddIngredient(ItemID.SoulofNight, 3);
+                }
+                if (recipe.HasResult<MechLure>() && recipe.HasTile(TileID.MythrilAnvil))
+                {
+                    recipe.DisableRecipe();
+                    /*
+                    if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
                     {
-                        recipe.AddIngredient<Rock>();
+                        recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
                     }
-                    if (recipe.HasResult(ItemID.AnkhShield) && !recipe.HasIngredient(ItemID.SoulofNight))
+                    if (recipe.RemoveTile(TileID.MythrilAnvil))
                     {
-                        recipe.AddIngredient(ItemID.SoulofNight, 3);
+                        recipe.AddTile(TileID.Anvils);
                     }
-                    if (recipe.HasResult<MechLure>())
-                    {
-                        if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
-                        {
-                            recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
-                        }
-                        if (recipe.RemoveTile(TileID.MythrilAnvil))
-                        {
-                            recipe.AddTile(TileID.Anvils);
-                        }
-                    }
-                    if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
-                    {
-                        recipe.AddIngredient<DivineGeode>(5);
-                    }
-                    if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient<DivineGeode>())
-                    {
-                        recipe.AddIngredient<DivineGeode>(4);
-                    }
-                    if (recipe.HasResult<AbomsCurse>() && !recipe.HasIngredient<AuricBar>())
-                    {
-                        recipe.AddIngredient<AuricBar>(2);
-                    }
-                    List<int> Tier2Souls =
-                    [
-                        ItemType<TerrariaSoul>(),
+                    */
+                }
+                if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
+                {
+                    recipe.AddIngredient<DivineGeode>(5);
+                }
+                if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient<DivineGeode>())
+                {
+                    recipe.AddIngredient<DivineGeode>(4);
+                }
+                if (recipe.HasResult<AbomsCurse>() && !recipe.HasIngredient<AuricBar>())
+                {
+                    recipe.AddIngredient<AuricBar>(2);
+                }
+                List<int> Tier2Souls =
+                [
+                    ItemType<TerrariaSoul>(),
                         ItemType<UniverseSoul>(),
                         ItemType<DimensionSoul>(),
                         ItemType<MasochistSoul>()
-                    ];
+                ];
 
-                    if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
+                if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
+                {
+                    recipe.AddIngredient<ShadowspecBar>(5);
+                    if (recipe.RemoveTile(TileType<CrucibleCosmosSheet>()))
                     {
-                        recipe.AddIngredient<ShadowspecBar>(5);
-                        if (recipe.RemoveTile(TileType<CrucibleCosmosSheet>()))
-                        {
-                            recipe.AddTile<DraedonsForge>();
-                        }
+                        recipe.AddTile<DraedonsForge>();
                     }
                 }
                 #endregion
@@ -953,91 +961,86 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             //reaver head group
             RecipeGroup ReaverHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Reaver Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadExplore>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>());
+                ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadExplore>(),
+                ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>(),
+                ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyReaverHelms", ReaverHelmsGroup);
             //daedalus head group
             RecipeGroup DeadalusHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Daedalus Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMelee>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadSummon>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRogue>());
+                ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMelee>(),
+                ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadSummon>(),
+                ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyDaedalusHelms", DeadalusHelmsGroup);
             //bloodflare head group
             RecipeGroup BloodflareHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Bloodflare Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadMelee>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadSummon>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRogue>());
+                ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadMelee>(),
+                ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadSummon>(),
+                ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyBloodflareHelms", BloodflareHelmsGroup);
             //victide head group
             RecipeGroup VictideHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Victide Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMelee>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadSummon>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRogue>());
+                ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMelee>(),
+                ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Victide.VictideHeadSummon>(),
+                ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyVictideHelms", VictideHelmsGroup);
             //aerospec head group
             RecipeGroup AerospecHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Aerospec Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelm>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHood>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHat>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelmet>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHeadgear>());
+                ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelm>(),
+                ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHood>(),
+                ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHat>(),
+                ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelmet>(),
+                ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHeadgear>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyAerospecHelms", AerospecHelmsGroup);
             //statigel head group
             RecipeGroup StatigelHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Statigel Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMelee>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRogue>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadSummon>());
+                ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMelee>(),
+                ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRogue>(),
+                ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadSummon>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyStatisHelms", StatigelHelmsGroup);
             //aerospec head group
             RecipeGroup HydrothermHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Hydrothermic Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMelee>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadSummon>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRogue>());
+                ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMelee>(),
+                ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadSummon>(),
+                ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyHydrothermHelms", HydrothermHelmsGroup);
             //statigel head group
             RecipeGroup SlayerHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"God Slayer Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadMelee>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadRogue>());
+                ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadMelee>(),
+                ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.GodSlayer.GodSlayerHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySlayerHelms", SlayerHelmsGroup);
             RecipeGroup TarragonHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Tarragon Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadRanged>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadSummon>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadRogue>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadMelee>());
+                ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadRanged>(),
+                ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadSummon>(),
+                ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadRogue>(),
+                ItemType<CalamityMod.Items.Armor.Tarragon.TarragonHeadMelee>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyTarragonHelms", TarragonHelmsGroup);
             RecipeGroup SilvaHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Silva Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Silva.SilvaHeadMagic>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Silva.SilvaHeadSummon>());
+                ItemType<CalamityMod.Items.Armor.Silva.SilvaHeadMagic>(),
+                ItemType<CalamityMod.Items.Armor.Silva.SilvaHeadSummon>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnySilvaHelms", SilvaHelmsGroup);
             RecipeGroup AuricHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Auric Headpiece"}",
-                ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaRoyalHelm>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaPlumedHelm>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaSpaceHelmet>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaWireHemmedVisage>(),
-                ModContent.ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaHoodedFacemask>());
+                ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaRoyalHelm>(),
+                ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaPlumedHelm>(),
+                ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaSpaceHelmet>(),
+                ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaWireHemmedVisage>(),
+                ItemType<CalamityMod.Items.Armor.Auric.AuricTeslaHoodedFacemask>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyAuricHelms", AuricHelmsGroup);
             RecipeGroup RailgunsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Railgun"}",
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.AdamantiteParticleAccelerator>(),
-                ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.TitaniumRailgun>());
+                ItemType<AdamantiteParticleAccelerator>(),
+                ItemType<TitaniumRailgun>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyRailguns", RailgunsGroup);
-
-            RecipeGroup marniteGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Marnite Tool"}",
-                ItemType<MarniteObliterator>(),
-                ItemType<MarniteDeconstructor>());
-            RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyMarniteTool", marniteGroup);
             #endregion
         }
     }

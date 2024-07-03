@@ -1,5 +1,6 @@
 ﻿
 using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
@@ -39,11 +40,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 return true;
 
             //drawing the aura
+            /*
             Asset<Texture2D> aura = ModContent.Request<Texture2D>("FargowiltasSouls/Assets/ExtraTextures/AdditiveTextures/SoftEdgeRing");
             Color auraColor = Color.Red;
             auraColor.A = 0;
             spriteBatch.Draw(aura.Value, auraPos - Main.screenPosition, null, auraColor * auraOpacity, 0, aura.Size() / 2, 4, SpriteEffects.None, 1);
-
+            */
 
             return true;
         }
@@ -74,6 +76,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         //ai[1] is attack/phase or whatever
         //ai[2] is a timer
         //ai[3] is whatever else
+
+        bool extraAI = false;
         public override bool PreAI()
         {
 
@@ -81,10 +85,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 return true;
             //return true;
 
+
             NPC.damage = NPC.defDamage;
+            NPC.dontTakeDamage = false;
+            NPC.Opacity = 1;
+            CalamityGlobalNPC.brimstoneElemental = NPC.whoAmI;
 
             //useful values
             Player target = Main.player[NPC.target];
+
+            if (!target.ZoneUnderworldHeight && !extraAI)
+            {
+                extraAI = true;
+                PreAI();
+            }
+            extraAI = false;
+
             Vector2 totarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
             Vector2 eyePos = NPC.Center + new Vector2(10 * NPC.spriteDirection, -60);
             Vector2 toTargetfromEye = (target.Center - eyePos).SafeNormalize(Vector2.Zero);
@@ -124,10 +140,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             auraPos = Vector2.Lerp(auraPos, NPC.Center, 0.03f);
 
             //debuff if too far away
-            if (target.Distance(auraPos) > 220 * 4 && auraOpacity >= 1)
+            if (Main.LocalPlayer.Distance(auraPos) > 220 * 4 && auraOpacity >= 1)
             {
-                target.AddBuff(ModContent.BuffType<BrimstoneFlames>(), 2);
-                target.AddBuff(BuffID.Obstructed, 2);
+                Main.LocalPlayer.AddBuff(ModContent.BuffType<BrimstoneFlames>(), 2);
+                //target.AddBuff(BuffID.Obstructed, 2);
             }
 
 
@@ -143,21 +159,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (mainAttack == 0)
             {
                 NPC.Opacity = 0;
+                NPC.dontTakeDamage = true;
                 NPC.velocity *= 0;
                 if (timer == 1)
                 {
-                    NPC.dontTakeDamage = true;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
                     Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), target.Center + new Vector2(0, -300), Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: NPC.whoAmI, ai1: target.whoAmI, ai2: 0);
+                    NPC.netUpdate = true;
                 }
                 if (timer == 201)
                 {
-                    NPC.dontTakeDamage = false;
                     SoundEngine.PlaySound(SoundID.Item109, target.Center);
-                    NPC.Opacity = 1;
                     attack = 1;
                     timer = 0;
                     auraPos = NPC.Center;
+                    NPC.netUpdate = true;
                     if (DLCUtils.HostCheck)
                     {
                         offset = new Vector2(Main.rand.Next(900, 900), Main.rand.Next(-200, 200));
@@ -169,14 +185,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //move towards the target position (close to edge of screen), occasionally change y offset, occasionally teleport
             if (mainAttack == 1)
             {
-                if (auraOpacity < 1) auraOpacity += 0.02f;
+                const int teleportTime = 540;
+
+                if (auraOpacity < 1) 
+                    auraOpacity += 0.02f;
                 animation = 0;
                 if (attack > 2.4f) animation = 1;
                 //change random Y offset every 3 seconds
                 if (timer % 180 == 0 && laserProj < 0 && DLCUtils.HostCheck)
                 {
 
-                    offset = new Vector2(Main.rand.Next(900, 900), Main.rand.Next(-200, 200));
+                    offset = new Vector2(Main.rand.Next(950, 950), Main.rand.Next(-200, 200));
                     
 
                     NetSync(NPC);
@@ -196,7 +215,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 offset.X = Math.Abs(offset.X) * -NPC.spriteDirection;
 
                 //summon the teleport telegraph every 3 moves
-                if (timer % 540 == 0 && DLCUtils.HostCheck)
+                if (timer % teleportTime == 0 && DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneTeleport>(), 0, 0, ai0: NPC.whoAmI, ai1: target.whoAmI, ai2: NPC.spriteDirection);
                     
@@ -255,7 +274,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                         }
                     }
-                    if ((timer+20) %120 == 0)
+                    if ((timer+20) % 120 == 0)
                     {
                         SoundEngine.PlaySound(SoundID.Item20, eyePos);
                         if (DLCUtils.HostCheck)
@@ -295,14 +314,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 if (NPC.ai[0] != 4)
                 {
                     Vector2 topos = (target.Center + offset - NPC.Center).SafeNormalize(Vector2.Zero);
+                    float baseSpeed = 0.2f;
                     Vector2 targVel = topos * NPC.Distance(target.Center + offset) / 30;
                     float maxVel = 20;
+                    float progress = (timer % teleportTime) / teleportTime; // ratio of time progressed to teleport
+                    maxVel *= progress * 0.99f + 0.01f;
+                    maxVel += baseSpeed;
                     if (laserProj >= 0)
                     {
                         maxVel = 3;
                     }
+
+
                     if (targVel.Length() > maxVel)
                         targVel = targVel.SafeNormalize(Vector2.Zero) * maxVel;
+
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targVel, 0.05f);
 
                     
@@ -311,6 +337,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             //cocoon phase
             if (mainAttack == 2)
             {
+                const int cocoonTime = 1000;
+                int rocks = phase >= 2 ? 3 : 2;
+                int rockModulo = cocoonTime / rocks;
+                float rockTimer = timer % rockModulo;
                 //summon brimlings at the start
                 if (timer == 1)
                 {
@@ -359,23 +389,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     NPC.velocity = Vector2.Lerp(NPC.velocity, targVel, 0.05f);
                     
                 }
-                if (timer < 220)
+                if (rockTimer < 220)
                 {
                     dontBasicAttack = true;
                 }
-                if (timer == 60)
+                if (rockTimer == 60)
                 {
                     animation = 2;
                     if (DLCUtils.HostCheck)
                     {
                         for (int i = 0; i < 7; i++)
                         {
-                            Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-30, 30)));
+                            Vector2 vel = new Vector2(Main.rand.Next(12, 15), 0).RotatedBy(MathHelper.ToRadians(360f / 7 * i + Main.rand.NextFloat(-15, 15)));
                             Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstoneDebris>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, -1, vel.X, vel.Y);
                         }
                     }
                 }
-                if (timer == 160)
+                if (rockTimer == 160)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, NPC.Center);
                     if (DLCUtils.HostCheck)
@@ -387,7 +417,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
                 }
-                if (timer > 60)
+                if (rockTimer > 60)
                 {
                     animation = 2;
                     NPC.velocity *= 0.7f;
@@ -395,7 +425,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 
                 
                 
-                
+                /*
                 if (phase == 2 && timer >= 480 && timer <= 640)
                 {
                     dontBasicAttack = true;
@@ -420,14 +450,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
                 }
-                
+                */
                 
 
-                if (timer > 940)
+                if (timer > cocoonTime - 60)
                 {
                     dontBasicAttack = true;
                 }
-                if (timer >= 1000)
+                if (timer >= cocoonTime)
                 {
                     animation = 0;
                     timer = 0;
@@ -502,6 +532,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
@@ -511,6 +542,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         }
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else if (phase == 0)
                 {
@@ -542,6 +574,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
@@ -551,6 +584,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         }
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else
                 {
@@ -568,6 +602,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
@@ -579,6 +614,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         }
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else
                 {
@@ -600,6 +636,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             {
                 if (animation == 2)
                 {
+                    /*
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                     if (DLCUtils.HostCheck)
                     {
@@ -617,6 +654,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         }
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BrimstonePulse>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 10);
                     }
+                    */
                 }
                 else
                 {

@@ -88,7 +88,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         #endregion summonloadingbullshit
         public override void PostSetupContent()
         {
-
+            if (!ModCompatibility.Calamity.Loaded)
+                return;
             #region summons
             Mod mutant = ModLoader.GetMod("Fargowiltas");
             mutant.Call("AddSummon", 1.5f, "FargowiltasCrossmod", "MedallionoftheDesert",
@@ -266,6 +267,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             DeathEffectsList.Remove(ModContent.NPCType<SupremeCalamitas>());
             #endregion bossrush
             cal.Call("RegisterModCooldowns", FargowiltasCrossmod.Instance);
+            cal.Call("AddDifficultyToUI", new EternityRevDifficulty());
+            cal.Call("AddDifficultyToUI", new EternityDeathDifficulty());
             #region CalDebuffListCompat
             CalamityLists.debuffList.Add(ModContent.BuffType<AnticoagulationBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<AntisocialBuff>());

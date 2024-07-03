@@ -3,6 +3,7 @@ Officially maintained by Fargo's Mods developers.
 
 Currently supports:
 Calamity Mod
+Wrath of the Gods
 
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
@@ -27,7 +28,7 @@ Why does this mod not have the old enchantments/souls?
 This mod is essentially a remake of the DLC, built from the ground up, with vastly raised quality standards. The old enchantments don't make that cut, both for being too uninteresting (they're literally just set bonus/accessory effects) and for balance reasons.
 
 Will you readd enchantments / souls for Calamity / (other mod)?
-Modded enchantments will be reintroduced in a reworked state to fit current quality standards. This will take a while since it's a lot to do, there's many effects to make. Making new content takes time.
+Currently, this mod features 8 new and improved Enchantments, one for each Pre-Hardmode armor. The rest are being worked on.
 
 How does this mod work with Infernum?
 Infernum and Eternity Mode are inherently conflicting, since they both focus on full-scale reworks for bosses. Both already have fully developed and boss AI pushed to limits, meaning it's not feasible to try to mesh them together. That means you have to choose between them, in terms of boss AI.
@@ -48,7 +49,32 @@ No, way too much effort to maintain. Also, things like Class Setups wiki pages a
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Newest Update: v1.0.7
+Newest Update: v1.1
+-ADDED 8 NEW ENCHANTMENTS, one per pre-Hardmode Calamity armor
+-Added Force of Exploration
+-Reworked Eternity Hive Mind
+
+-Brimstone Elemental:
+--Added new burning shader aura
+--Tweaked movement during mobile phases
+--Increased visibility for several projectiles
+--Brimstone barrages now accelerate after 2 seconds
+--No longer inflicts Obstructed with aura
+--Reworked cocoon phase
+--Brimlings now damage the boss when dying
+--Brimlings no longer spawn a clone on death and are immortal on Masochist Mode
+--Added burning effect when outside aura
+
+-Improved Permafrost's movement
+
+-Ported to new Calamity update
+-Adjusted some recipes
+-Resprited Outlaws Essence and Vagabond Soul
+-Loading a world with Infernum Mod enabled no longer disables Eternity priority automatically
+-Fixed enemy spawn adjustments applying outside of Eternity Mode
+-Large internal rewrites, restructuring, and some optimization
+
+Previous Update: v1.0.7
 Eternity-Death changes:
 -Queen Bee: Uses new Calamity deathmode charges
 -Brain of Cthulhu: Deleted old change, Now uses a modified version of new Calamity charge in Phase 2
@@ -64,7 +90,3 @@ Fixed Slime God contact damage not applying correctly during special attacks
 Fixed Slime God slam telegraphs not rendering
 Vanilla bosses now correctly refund summoning items
 Hardmode crate recipes now correctly use Hardmode crates
-
-Previous Update: v1.0.6.3
--Updated to be compatible with Calamity Mod version 1.0.4.1
--Tweaked several boss health values
