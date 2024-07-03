@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares spends sitting in place, releasing smoke, during his death animation.
         /// </summary>
-        public static int DeathAnimation_SmokeReleaseBuildupTime => LumUtils.SecondsToFrames(2.3f);
+        public static int DeathAnimation_SmokeReleaseBuildupTime => LumUtils.SecondsToFrames(2.2f);
 
         /// <summary>
         /// How frequently Ares' core pulses during his death animation.
@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares spends performing pulses before exploding.
         /// </summary>
-        public static int DeathAnimation_PulseTime => LumUtils.SecondsToFrames(4.8f);
+        public static int DeathAnimation_PulseTime => LumUtils.SecondsToFrames(4f);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to appear.
