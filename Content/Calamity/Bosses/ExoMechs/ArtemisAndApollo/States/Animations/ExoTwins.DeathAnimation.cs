@@ -267,7 +267,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 ScreenShakeSystem.StartShake(19f);
 
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Utilities.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<GaussNukeBoom>(), 0, 0f, -1, 2400f, 0f, 3f);
+                    Utilities.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<GaussNukeBoom>(), 0, 0f, -1, 2400f, 0f, 4f);
             }
 
             npc.velocity *= 0.8f;
