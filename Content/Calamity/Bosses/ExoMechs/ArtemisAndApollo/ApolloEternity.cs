@@ -314,6 +314,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             // Use base Calamity's ChargeCombo AIState at all times, since Apollo needs that to be enabled for his CanHitPlayer hook to return true.
             NPC.As<Apollo>().AIState = (int)Apollo.Phase.ChargeCombo;
 
+            NPC.timeLeft = 7200;
+
             NPC.damage = 0;
         }
 
@@ -363,7 +365,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 npc.soundDelay = 3;
             }
 
-            if (Main.netMode != NetmodeID.Server && npc.life <= 0)
+            if (Main.netMode != NetmodeID.Server && npc.life <= 0 && ExoTwinsStateManager.SharedState.AIState == ExoTwinsAIState.DeathAnimation && ExoTwinsStateManager.SharedState.AITimer >= 10)
             {
                 IEntitySource deathSource = npc.GetSource_Death();
                 Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();

@@ -94,7 +94,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             return state.TotalKilledMechs >= 1;
         }, state =>
         {
-            ClearExoMechProjectiles();
             SetDraedonState(DraedonEternity.DraedonAIState.FirstInterjection);
         });
 
@@ -137,7 +136,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             return state.TotalKilledMechs >= 2;
         }, state =>
         {
-            ClearExoMechProjectiles();
             SetDraedonState(DraedonEternity.DraedonAIState.SecondInterjection);
         });
 
@@ -161,7 +159,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             return state.TotalKilledMechs >= 3;
         }, state =>
         {
-            ClearExoMechProjectiles();
             SetDraedonState(DraedonEternity.DraedonAIState.PostBattleInterjection);
         });
 

@@ -200,7 +200,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public static Color FlameTrailColorFunction(float completionRatio)
         {
-            float trailOpacity = Utils.GetLerpValue(0.8f, 0.27f, completionRatio, true) * Utils.GetLerpValue(0f, 0.067f, completionRatio, true);
+            float trailOpacity = LumUtils.InverseLerp(0.8f, 0.27f, completionRatio) * LumUtils.InverseLerp(0f, 0.067f, completionRatio);
             Color startingColor = Color.Lerp(Color.SkyBlue, Color.White, 0.6f);
             Color middleColor = Color.Lerp(Color.Lime, Color.Yellow, 0.32f);
             Color endColor = Color.Lerp(Color.DarkGreen, Color.Red, 0.2f);

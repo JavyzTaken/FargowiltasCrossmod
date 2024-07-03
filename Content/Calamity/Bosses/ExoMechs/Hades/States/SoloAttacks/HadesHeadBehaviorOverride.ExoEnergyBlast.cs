@@ -75,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             if (AITimer < ExoEnergyBlast_InitialRedirectTime)
             {
                 float idealHoverSpeed = MathHelper.Lerp(43.5f, 72.5f, AITimer / (float)ExoEnergyBlast_InitialRedirectTime);
-                idealHoverSpeed *= Utils.GetLerpValue(35f, 300f, NPC.Distance(outerHoverDestination), true);
+                idealHoverSpeed *= LumUtils.InverseLerp(35f, 300f, NPC.Distance(outerHoverDestination));
 
                 Vector2 idealVelocity = NPC.SafeDirectionTo(outerHoverDestination) * MathHelper.Lerp(NPC.velocity.Length(), idealHoverSpeed, 0.135f);
                 NPC.velocity = NPC.velocity.RotateTowards(idealVelocity.ToRotation(), 0.045f);

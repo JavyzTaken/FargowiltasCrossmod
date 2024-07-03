@@ -20,9 +20,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
     public class GaussNukeBoom : ModProjectile, IProjOwnedByBoss<AresBody>, IExoMechProjectile
     {
         /// <summary>
-        /// How long this sphere has existed, in frames.
+        /// How long this explosion has existed, in frames.
         /// </summary>
         public ref float Time => ref Projectile.ai[1];
+
+        // This exists because using ai[0] for super big radii doesn't work because of stupid "Oh? A projectile it outside of the world? Kill it!" mechanic.
+        /// <summary>
+        /// The scale of this explosion.
+        /// </summary>
+        public ref float Scale => ref Projectile.ai[2];
 
         /// <summary>
         /// How long the explosion lasts.
@@ -32,6 +38,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Thermal;
+
+        public override void SetStaticDefaults() => ProjectileID.Sets.DrawScreenCheckFluff[Type] = 24000;
 
         public override void SetDefaults()
         {
@@ -61,17 +69,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
 
             Main.spriteBatch.PrepareForShaders();
+            Vector2 size = Projectile.Size * Projectile.scale;
+            if (Scale > 0f)
+                size *= Scale;
 
             float lifetimeRatio = Time / Lifetime;
             ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.GaussNukeExplosionShader");
             shader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
             shader.TrySetParameter("lifetimeRatio", lifetimeRatio);
-            shader.TrySetParameter("textureSize0", Projectile.Size);
+            shader.TrySetParameter("textureSize0", size);
             shader.Apply();
 
             Color color = Projectile.GetAlpha(new Color(1f, 0.54f, 0.09f));
             Texture2D pixel = MiscTexturesRegistry.Pixel.Value;
-            Main.spriteBatch.Draw(pixel, drawPosition, null, color, 0f, pixel.Size() * 0.5f, Projectile.Size * Projectile.scale / pixel.Size() * 1.2f, 0, 0f);
+
+            Main.spriteBatch.Draw(pixel, drawPosition, null, color, 0f, pixel.Size() * 0.5f, size / pixel.Size() * 1.2f, 0, 0f);
 
             Main.spriteBatch.ResetToDefault();
 

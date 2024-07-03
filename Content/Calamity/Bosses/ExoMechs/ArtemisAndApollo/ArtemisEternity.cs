@@ -326,6 +326,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             OpticNerveAngleSensitivity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive;
             NPC.As<Artemis>().SecondaryAIState = (int)Artemis.SecondaryPhase.Nothing;
+
+            NPC.timeLeft = 7200;
+
             NPC.damage = 0;
         }
 
@@ -375,7 +378,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 npc.soundDelay = 3;
             }
 
-            if (Main.netMode != NetmodeID.Server && npc.life <= 0)
+            if (Main.netMode != NetmodeID.Server && npc.life <= 0 && ExoTwinsStateManager.SharedState.AIState == ExoTwinsAIState.DeathAnimation && ExoTwinsStateManager.SharedState.AITimer >= 10)
             {
                 IEntitySource deathSource = npc.GetSource_Death();
                 Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();

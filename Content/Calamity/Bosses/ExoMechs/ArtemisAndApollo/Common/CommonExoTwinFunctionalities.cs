@@ -145,12 +145,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             }
 
             // Draw some bloom over everything.
-            Vector2 thrusterBloomPosition = twin.Center - Main.screenPosition - twin.rotation.ToRotationVector2() * twin.scale * 12f;
-            Texture2D thrusterBloom = MiscTexturesRegistry.BloomCircleSmall.Value;
-            Color thrusterBloomColor = Color.SkyBlue * (twinInterface.ThrusterBoost * 0.6f + 0.33f);
-            thrusterBloomColor.A = 0;
-            Main.spriteBatch.Draw(thrusterBloom, thrusterBloomPosition, null, thrusterBloomColor, 0f, thrusterBloom.Size() * 0.5f, 0.5f, 0, 0f);
-            Main.spriteBatch.Draw(thrusterBloom, thrusterBloomPosition, null, thrusterBloomColor * 0.5f, 0f, thrusterBloom.Size() * 0.5f, 1f, 0, 0f);
+            if (!ExoTwinsStates.DeathAnimation_SuccessfullyCollided)
+            {
+                Vector2 thrusterBloomPosition = twin.Center - Main.screenPosition - twin.rotation.ToRotationVector2() * twin.scale * 12f;
+                Texture2D thrusterBloom = MiscTexturesRegistry.BloomCircleSmall.Value;
+                Color thrusterBloomColor = Color.SkyBlue * (twinInterface.ThrusterBoost * 0.6f + 0.33f);
+                thrusterBloomColor.A = 0;
+                Main.spriteBatch.Draw(thrusterBloom, thrusterBloomPosition, null, thrusterBloomColor, 0f, thrusterBloom.Size() * 0.5f, 0.5f, 0, 0f);
+                Main.spriteBatch.Draw(thrusterBloom, thrusterBloomPosition, null, thrusterBloomColor * 0.5f, 0f, thrusterBloom.Size() * 0.5f, 1f, 0, 0f);
+            }
 
             PrimitivePixelationSystem.RenderToPrimsNextFrame(() =>
             {

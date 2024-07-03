@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// <summary>
         /// Whether phase transitions should be disabled for debug reasons.
         /// </summary>
-        public static bool DebugDisablePhaseTransition => true;
+        public static bool DebugDisablePhaseTransition => false;
 
         /// <summary>
         /// Represents an undefined Exo Mech phase transition condition that always evaluates false regardless of context.
