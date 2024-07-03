@@ -242,9 +242,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 ManagedScreenFilter impactFrameShader = ShaderManager.GetFilter("FargowiltasCrossmod.ImpactFrameShader");
                 Color darkFrameColor = Color.Black;
                 Color lightFrameColor = Color.White;
-                if (MathHelper.Distance(AITimer, 10f) <= 2f || MathHelper.Distance(AITimer, 20f) <= 2f)
-                    (darkFrameColor, lightFrameColor) = (lightFrameColor, darkFrameColor);
-
                 impactFrameShader.TrySetParameter("darkFrameColor", darkFrameColor);
                 impactFrameShader.TrySetParameter("lightFrameColor", lightFrameColor);
                 impactFrameShader.TrySetParameter("contrastMatrix", CalculateContrastMatrix(1f));
