@@ -65,10 +65,7 @@ float CalculateCloudDensityAtPoint(float3 p)
     float densityA = densityData.r;
     float densityB = densityData.b;
     float density = lerp(densityA, densityB, sin(p.z * 6.283) * 0.5 + 0.5);
-    
-    // Add secondary cloud density values in accordance with the general cloud density shader parameter.
-    density += densityData.g * cloudDensity - p.y * (0.1 - cloudDensity) * 0.5 - uvOffset * 5;
-    
+   
     // Combine things together.
     return density * cloudDensity * lerp(0.15, 0.9, cloudDensity);
 }
@@ -159,15 +156,6 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float4 cloudLight = CalculateScatteredLight(float3(position.xy, -1), float3(0, 0, 1));
     cloudLight.rgb = 1 - exp(cloudLight.rgb * -cloudExposure);
     cloudLight *= lerp(4, 1, cloudDensity);
-    
-    float glowUVOffset = 1 + tex2D(baseTexture, coords * 0.8 + globalTime * 0.03) * 5.4;
-    float2 aspectRatio = float2(screenSize.x / screenSize.y, 1);
-    for (int i = 0; i < 10; i++)
-    {
-        float lightningIntensity = lightningIntensities[i];
-        float distanceGlow = 0.15 / distance((coords - 0.5) * aspectRatio + 0.5, (lightningPositions[i] / screenSize - 0.5) * aspectRatio + 0.5);
-        cloudLight *= clamp(1 + lightningIntensity * pow(1 - coords.y, 2.7 - lightningIntensity * 2.5) * distanceGlow * glowUVOffset.r, 1, 10);
-    }
     
     // Combine the scattered light with the sample color, allowing for dynamic colorations and opacities to the final result.
     return saturate(cloudLight * sampleColor);
