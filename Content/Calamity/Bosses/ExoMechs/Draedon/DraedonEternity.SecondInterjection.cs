@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Calamity.Globals;
+﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -16,7 +17,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             Add("Interjection7").
             Add("Interjection8").
             Add("Interjection9").
-            Add("Interjection10").
+            Add(() =>
+            {
+                if (NPC.AnyNPCs(ExoMechNPCIDs.ApolloID))
+                    return "Interjection10Plural";
+                return "Interjection10";
+            }).
             Add("Interjection11", CalamityMod.NPCs.ExoMechs.Draedon.TextColorEdgy);
 
         /// <summary>
