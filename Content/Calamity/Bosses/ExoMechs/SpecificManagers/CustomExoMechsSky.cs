@@ -78,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
         /// <summary>
         /// The default cloud exposure value.
         /// </summary>
-        public static float DefaultCloudExposure => 0.7f;
+        public static float DefaultCloudExposure => 0.5f;
 
         /// <summary>
         /// The lightning instances.
