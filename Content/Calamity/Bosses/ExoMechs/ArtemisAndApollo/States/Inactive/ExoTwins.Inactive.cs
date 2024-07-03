@@ -17,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static void DoBehavior_Inactive(NPC npc, IExoTwin twinAttributes)
         {
             bool isApollo = npc.type == ExoMechNPCIDs.ApolloID;
-            Vector2 hoverDestination = Target.Center + new Vector2(isApollo.ToDirectionInt() * 900f, -750f);
+            Vector2 hoverDestination = Target.Center + new Vector2(isApollo.ToDirectionInt() * 900f, -1050f);
 
             npc.dontTakeDamage = true;
             npc.SmoothFlyNear(hoverDestination, 0.09f, 0.9f);

@@ -50,12 +50,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long it takes for Ares' silhouette to appear.
         /// </summary>
-        public static int DeathAnimation_SilhouetteAppearDelay => LumUtils.SecondsToFrames(0.4f);
+        public static int DeathAnimation_SilhouetteAppearDelay => LumUtils.SecondsToFrames(0f);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to fade in.
         /// </summary>
-        public static int DeathAnimation_SilhouetteFadeInTime => LumUtils.SecondsToFrames(0.5f);
+        public static int DeathAnimation_SilhouetteFadeInTime => LumUtils.SecondsToFrames(0.05f);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to start dissolving.
