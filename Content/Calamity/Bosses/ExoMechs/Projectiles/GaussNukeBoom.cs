@@ -56,6 +56,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.Resize((int)Projectile.ai[0] + 360, (int)Projectile.ai[0] + 360);
+            if (Scale >= 0.01f)
+                Scale += 0.6f;
         }
 
         public override void AI()
