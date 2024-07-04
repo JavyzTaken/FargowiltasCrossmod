@@ -281,7 +281,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
         public void DrawMagneticLine(NPC aresBody, Vector2 start, Vector2 end, float opacity = 1f)
         {
-            if (aresBody.TryGetDLCBehavior(out AresBodyEternity aresBodyBehavior) || aresBodyBehavior.SilhouetteOpacity > 0f)
+            if (!aresBody.TryGetDLCBehavior(out AresBodyEternity aresBodyBehavior) || aresBodyBehavior.SilhouetteOpacity > 0f)
                 return;
 
             Vector2[] controlPoints = new Vector2[8];
