@@ -37,6 +37,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             ExoEnergyBlast,
             Inactive,
 
+            DeathAnimation,
+
             PerformComboAttack = ExoMechComboAttackManager.ComboAttackValue
         }
 
@@ -244,7 +246,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             ExecuteCurrentState();
 
             NPC.Opacity = 1f;
-            NPC.Calamity().ShouldCloseHPBar = Inactive;
+            NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == HadesAIState.DeathAnimation;
 
             AITimer++;
             return false;
@@ -323,6 +325,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     break;
                 case HadesAIState.Inactive:
                     DoBehavior_Inactive();
+                    break;
+                case HadesAIState.DeathAnimation:
+                    DoBehavior_DeathAnimation();
                     break;
                 case HadesAIState.PerformComboAttack:
                     AITimer = ExoMechComboAttackManager.ComboAttackTimer;
@@ -431,6 +436,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         /// <param name="segmentCloseRate">The amount by which the segment open interpolant changes every frame.</param>
         public static BodySegmentAction CloseSegment(float segmentCloseRate = StandardSegmentCloseRate) => OpenSegment(-segmentCloseRate);
+
+        public override bool CheckDead()
+        {
+            if (CurrentState == HadesAIState.DeathAnimation && AITimer >= 10)
+                return true;
+
+            NPC.life = 1;
+            NPC.dontTakeDamage = true;
+            SelectNewState();
+            CurrentState = HadesAIState.DeathAnimation;
+            return false;
+        }
 
         public override void OnKill()
         {

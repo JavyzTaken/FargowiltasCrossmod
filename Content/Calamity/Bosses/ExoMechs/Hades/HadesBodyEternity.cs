@@ -55,6 +55,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// How much the <see cref="PlatingOffset"/> should be changed.
+        /// </summary>
+        public float PlatingOffsetVelocity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Whether this segment should draw as a tail.
         /// </summary>
         public bool IsTailSegment => NPC.ai[1] == 1f;
@@ -107,16 +116,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
         public override bool PreAI()
         {
-            PlatingOffset = 0f;
-            if (Main.mouseRight)
-                PlatingOffset = LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 36f) * 14f + 0.01f;
-
             ExistenceTimer++;
             if (ExistenceTimer <= ActivationDelay)
                 return false;
 
-            if (!ValidateAheadSegment())
+            if (!ValidateAheadSegment(out bool segmentIsSimplyInactive))
             {
+                // If the head is still present, that means that the worm was partially destroyed.
+                // Correct for this.
+                if (segmentIsSimplyInactive && CalamityGlobalNPC.draedonExoMechWorm != -1)
+                {
+                    Main.npc[AheadSegmentIndex].realLife = NPC.realLife;
+                    Main.npc[AheadSegmentIndex].life = 1;
+                    Main.npc[AheadSegmentIndex].active = true;
+                    return false;
+                }
+
                 NPC.active = false;
                 return false;
             }
@@ -139,7 +154,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.Center = aheadSegment.Center - directionToNextSegment.SafeNormalize(Vector2.Zero) * NPC.width * NPC.scale * 0.97f;
             NPC.rotation = directionToNextSegment.ToRotation() + MathHelper.PiOver2;
             NPC.spriteDirection = directionToNextSegment.X.NonZeroSign();
+            NPC.life = aheadSegment.lifeMax;
+            NPC.dontTakeDamage = aheadSegment.dontTakeDamage;
+            NPC.velocity *= 0.84f;
             ShouldReorientDirection = true;
+
+            PlatingOffset += PlatingOffsetVelocity;
+            PlatingOffsetVelocity = MathHelper.Lerp(PlatingOffsetVelocity, -PlatingOffset, 0.15f);
+            if (PlatingOffset < 0.1f)
+            {
+                PlatingOffset = 0f;
+                PlatingOffsetVelocity *= 0.3f;
+            }
 
             NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
 
@@ -207,25 +233,40 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// Validates whether the ahead segment is valid.
         /// </summary>
         /// <returns>Whether this segment can still exist due to having a valid ahead segment.</returns>
-        public bool ValidateAheadSegment()
+        public bool ValidateAheadSegment(out bool segmentIsSimplyInactive)
         {
+            segmentIsSimplyInactive = false;
             if (!Main.npc.IndexInRange(AheadSegmentIndex))
                 return false;
 
             NPC aheadSegment = Main.npc[AheadSegmentIndex];
-            bool connectedToSameWorm = NPC.realLife == aheadSegment.realLife;
-            bool aheadSegmentIsHead = aheadSegment.type == ExoMechNPCIDs.HadesHeadID;
-            if (!connectedToSameWorm && !aheadSegmentIsHead)
+            if (aheadSegment.type != NPCOverrideID && aheadSegment.type != ExoMechNPCIDs.HadesHeadID)
                 return false;
 
+            segmentIsSimplyInactive = true;
             if (!aheadSegment.active)
                 return false;
 
+            segmentIsSimplyInactive = false;
             return true;
         }
 
         public override void HitEffect(NPC.HitInfo hit)
         {
+            // REALLY stupid hack to get the cannons to call CheckDead, since realLife having a defined value makes the CheckDead call propagate to the owner, instead of the
+            // NPC that got killed.
+            if (NPC.life <= 0)
+            {
+                NPC.life = NPC.lifeMax;
+                NPC.dontTakeDamage = true;
+
+                if (NPC.realLife >= 0 && NPC.realLife < Main.maxNPCs)
+                {
+                    Main.npc[NPC.realLife].checkDead();
+                    NPC.realLife = -1;
+                }
+            }
+
             if (Main.netMode == NetmodeID.Server || NPC.life >= 1)
                 return;
 
@@ -251,6 +292,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
         }
 
+        public override bool CheckDead()
+        {
+            NPC.life = 1;
+            NPC.dontTakeDamage = true;
+            return false;
+        }
+
         public override void FindFrame(int frameHeight)
         {
             int frame = Utils.Clamp((int)(SegmentOpenInterpolant * Main.npcFrameCount[NPC.type]), 0, Main.npcFrameCount[NPC.type] - 1);
@@ -267,7 +315,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             // TODO -- Cache these.
             string platingPrefix = $"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/Plates/HadesBody{(IsSecondaryBodySegment ? 2 : 1)}";
 
-            float localPlatingOffset = PlatingOffset * LumUtils.AperiodicSin(RelativeIndex * 3f + Main.GlobalTimeWrappedHourly * -10f);
             Color color = NPC.GetAlpha(lightColor);
             SpriteEffects direction = NPC.spriteDirection.ToSpriteDirection();
             Texture2D spine = ModContent.Request<Texture2D>($"{platingPrefix}Spine").Value;
@@ -285,32 +332,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 Texture2D leftPlating4 = ModContent.Request<Texture2D>($"{platingPrefix}Part4Left").Value;
                 Texture2D rightPlating4 = ModContent.Request<Texture2D>($"{platingPrefix}Part4Right").Value;
 
-                Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-13f - localPlatingOffset, 20f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(15f + localPlatingOffset, 19f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-13f - PlatingOffset, 20f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(15f + PlatingOffset, 19f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
 
                 Main.spriteBatch.Draw(spine, drawPosition, null, color, NPC.rotation, spine.Size() * 0.5f, NPC.scale, direction, 0f);
 
-                Main.spriteBatch.Draw(leftPlating2, drawPosition + Transform(new(-15f - localPlatingOffset, 4f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, leftPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating2, drawPosition + Transform(new(15f + localPlatingOffset, 4f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, rightPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating2, drawPosition + Transform(new(-15f - PlatingOffset, 4f - PlatingOffset * 0.85f)), null, color, NPC.rotation, leftPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating2, drawPosition + Transform(new(15f + PlatingOffset, 4f - PlatingOffset * 0.85f)), null, color, NPC.rotation, rightPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
 
-                Main.spriteBatch.Draw(leftPlating3, drawPosition + Transform(new(-31f - localPlatingOffset * 0.5f, 13f)), null, color, NPC.rotation, leftPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating3, drawPosition + Transform(new(33f + localPlatingOffset * 0.5f, 13f)), null, color, NPC.rotation, rightPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating3, drawPosition + Transform(new(-31f - PlatingOffset * 0.5f, 13f)), null, color, NPC.rotation, leftPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating3, drawPosition + Transform(new(33f + PlatingOffset * 0.5f, 13f)), null, color, NPC.rotation, rightPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
 
-                Main.spriteBatch.Draw(leftPlating4, drawPosition + Transform(new(-43f - localPlatingOffset * 0.5f, -17f)), null, color, NPC.rotation, leftPlating4.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating4, drawPosition + Transform(new(41f + localPlatingOffset * 0.5f, -17f)), null, color, NPC.rotation, rightPlating4.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating4, drawPosition + Transform(new(-43f - PlatingOffset * 0.5f, -17f)), null, color, NPC.rotation, leftPlating4.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating4, drawPosition + Transform(new(41f + PlatingOffset * 0.5f, -17f)), null, color, NPC.rotation, rightPlating4.Size() * 0.5f, NPC.scale, direction, 0f);
             }
             else
             {
                 Main.spriteBatch.Draw(spine, drawPosition, null, color, NPC.rotation, spine.Size() * 0.5f, NPC.scale, direction, 0f);
 
-                Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-11f - localPlatingOffset, 33f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(11f + localPlatingOffset, 33f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-11f - PlatingOffset, 33f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(11f + PlatingOffset, 33f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
 
-                Main.spriteBatch.Draw(leftPlating2, drawPosition + Transform(new(-20f - localPlatingOffset, 13f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, leftPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating2, drawPosition + Transform(new(19f + localPlatingOffset, 13f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, rightPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating2, drawPosition + Transform(new(-20f - PlatingOffset, 13f - PlatingOffset * 0.85f)), null, color, NPC.rotation, leftPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating2, drawPosition + Transform(new(19f + PlatingOffset, 13f - PlatingOffset * 0.85f)), null, color, NPC.rotation, rightPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
 
-                Main.spriteBatch.Draw(leftPlating3, drawPosition + Transform(new(-36f - localPlatingOffset * 0.5f, -13f)), null, color, NPC.rotation, leftPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
-                Main.spriteBatch.Draw(rightPlating3, drawPosition + Transform(new(36f + localPlatingOffset * 0.5f, -13f)), null, color, NPC.rotation, rightPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(leftPlating3, drawPosition + Transform(new(-36f - PlatingOffset * 0.5f, -13f)), null, color, NPC.rotation, leftPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating3, drawPosition + Transform(new(36f + PlatingOffset * 0.5f, -13f)), null, color, NPC.rotation, rightPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
             }
         }
 
