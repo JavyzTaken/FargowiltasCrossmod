@@ -245,7 +245,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             RecordActiveMechs();
 
             bool draedonIsPresent = NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>());
-            bool fightIsOngoing = ActiveManagingExoMechs.Count >= 1 || draedonIsPresent;
+            bool anyExoMechs = false;
+            foreach (NPC npc in Main.ActiveNPCs)
+            {
+                if (ExoMechNPCIDs.ManagingExoMechIDs.Contains(npc.type))
+                {
+                    anyExoMechs = true;
+                    break;
+                }
+            }
+
+            bool fightIsOngoing = anyExoMechs || draedonIsPresent;
             if (!fightIsOngoing)
             {
                 ResetBattleState();
