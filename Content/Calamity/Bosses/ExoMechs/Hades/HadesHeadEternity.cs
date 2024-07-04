@@ -446,6 +446,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.dontTakeDamage = true;
             SelectNewState();
             CurrentState = HadesAIState.DeathAnimation;
+            ExoMechFightStateManager.ClearExoMechProjectiles();
+
             return false;
         }
 
