@@ -13,6 +13,8 @@ namespace FargowiltasCrossmod.Assets.Particles
 
         public float ScaleGrowRate;
 
+        public float RotationOffset;
+
         public override int FrameCount => 8;
 
         public override string AtlasTextureName => "FargowiltasCrossmod.SmokeParticle.png";
@@ -28,11 +30,12 @@ namespace FargowiltasCrossmod.Assets.Particles
             Variant = Main.rand.Next(FrameCount);
             Lifetime = lifetime;
             ScaleGrowRate = scaleGrowRate;
+            RotationOffset = -MathHelper.PiOver2 + Main.rand.NextFloatDirection() * 0.51f;
         }
 
         public override void Update()
         {
-            Rotation = Velocity.ToRotation() - MathHelper.PiOver2;
+            Rotation = Velocity.ToRotation() + RotationOffset;
             Velocity *= 0.89f;
             Scale += Vector2.One * LifetimeRatio * ScaleGrowRate;
 
