@@ -68,8 +68,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                     monologue[i].SayInChat();
             }
 
-            HologramInterpolant = 0f;
-
             Vector2 hoverDestination = PlayerToFollow.Center + new Vector2((PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign() * -450f, -5f);
             NPC.SmoothFlyNear(hoverDestination, 0.05f, 0.94f);
 
@@ -92,6 +90,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 if (HologramInterpolant >= 1f)
                     NPC.active = false;
             }
+            else
+                HologramInterpolant = 0f;
 
             PerformStandardFraming();
         }
