@@ -121,6 +121,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             // Get near the target.
             if (AITimer < EnterSecondPhase_SlowDownTime)
             {
+                if (AITimer <= 2)
+                    npc.velocity *= 0.3f;
+
                 if (isApollo)
                     npc.Center = Vector2.Lerp(npc.Center, Target.Center + Target.SafeDirectionTo(npc.Center) * 640f, AITimer / (float)EnterSecondPhase_SlowDownTime * 0.07f);
 

@@ -169,7 +169,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
 
         public static void MakeExoMechLeaveOrReappear(bool leave, Func<NPC, IExoMech, bool> condition)
         {
-            KeepExoTwinsAliveSystem.KeepAliveCountdown = 10;
+            if (NPC.AnyNPCs(ExoMechNPCIDs.ApolloID))
+                KeepExoTwinsAliveSystem.KeepAliveCountdown = 10;
 
             if (leave)
                 ClearExoMechProjectiles();

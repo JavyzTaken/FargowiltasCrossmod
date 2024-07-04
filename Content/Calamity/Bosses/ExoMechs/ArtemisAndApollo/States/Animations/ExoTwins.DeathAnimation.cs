@@ -1,5 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.NPCs;
+using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
@@ -254,10 +255,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 npc.life = 0;
                 npc.HitEffect();
-                if (npc.realLife == -1)
+                if (npc.realLife == -1 && AresBody.CanDropLoot())
                     npc.checkDead();
+
                 npc.active = false;
-                npc.NPCLoot();
 
                 ScreenShakeSystem.StartShake(19f);
 

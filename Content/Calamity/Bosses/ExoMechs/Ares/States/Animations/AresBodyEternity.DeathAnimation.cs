@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Assets.Particles;
+﻿using CalamityMod.NPCs.ExoMechs.Ares;
+using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -135,9 +136,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (AITimer >= DeathAnimation_SmokeReleaseBuildupTime + DeathAnimation_PulseTime + DeathAnimation_SilhouetteAppearDelay + DeathAnimation_SilhouetteFadeInTime + DeathAnimation_SilhouetteDissolveDelay + DeathAnimation_DeathDelay)
             {
                 NPC.life = 0;
+                if (AresBody.CanDropLoot())
+                    NPC.checkDead();
+
                 NPC.active = false;
-                NPC.checkDead();
-                NPC.NPCLoot();
 
                 if (Main.netMode != NetmodeID.Server)
                 {
