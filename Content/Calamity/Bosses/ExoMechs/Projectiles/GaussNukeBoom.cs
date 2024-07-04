@@ -70,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         {
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
 
-            Main.spriteBatch.PrepareForShaders();
+            Main.spriteBatch.PrepareForShaders(BlendState.Additive);
             Vector2 size = Projectile.Size * Projectile.scale;
             if (Scale > 0f)
                 size *= Scale;

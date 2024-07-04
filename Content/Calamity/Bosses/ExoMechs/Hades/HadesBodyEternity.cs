@@ -46,6 +46,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// How much this segment's plating should be offset.
+        /// </summary>
+        public float PlatingOffset
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Whether this segment should draw as a tail.
         /// </summary>
         public bool IsTailSegment => NPC.ai[1] == 1f;
@@ -98,6 +107,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
         public override bool PreAI()
         {
+            PlatingOffset = 0f;
+            if (Main.mouseRight)
+                PlatingOffset = LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 36f) * 14f + 0.01f;
+
             ExistenceTimer++;
             if (ExistenceTimer <= ActivationDelay)
                 return false;
@@ -249,6 +262,58 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             typeName = Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.ThanatosRename");
         }
 
+        public void DrawManualBodyPlating(Vector2 drawPosition, Color lightColor)
+        {
+            // TODO -- Cache these.
+            string platingPrefix = $"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/Plates/HadesBody{(IsSecondaryBodySegment ? 2 : 1)}";
+
+            float localPlatingOffset = PlatingOffset * LumUtils.AperiodicSin(RelativeIndex * 3f + Main.GlobalTimeWrappedHourly * -10f);
+            Color color = NPC.GetAlpha(lightColor);
+            SpriteEffects direction = NPC.spriteDirection.ToSpriteDirection();
+            Texture2D spine = ModContent.Request<Texture2D>($"{platingPrefix}Spine").Value;
+            Texture2D leftPlating1 = ModContent.Request<Texture2D>($"{platingPrefix}Part1Left").Value;
+            Texture2D rightPlating1 = ModContent.Request<Texture2D>($"{platingPrefix}Part1Right").Value;
+            Texture2D leftPlating2 = ModContent.Request<Texture2D>($"{platingPrefix}Part2Left").Value;
+            Texture2D rightPlating2 = ModContent.Request<Texture2D>($"{platingPrefix}Part2Right").Value;
+            Texture2D leftPlating3 = ModContent.Request<Texture2D>($"{platingPrefix}Part3Left").Value;
+            Texture2D rightPlating3 = ModContent.Request<Texture2D>($"{platingPrefix}Part3Right").Value;
+
+            Vector2 Transform(Vector2 offset) => (offset * new Vector2(NPC.spriteDirection, 1f)).RotatedBy(NPC.rotation);
+
+            if (!IsSecondaryBodySegment)
+            {
+                Texture2D leftPlating4 = ModContent.Request<Texture2D>($"{platingPrefix}Part4Left").Value;
+                Texture2D rightPlating4 = ModContent.Request<Texture2D>($"{platingPrefix}Part4Right").Value;
+
+                Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-13f - localPlatingOffset, 20f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(15f + localPlatingOffset, 19f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(spine, drawPosition, null, color, NPC.rotation, spine.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(leftPlating2, drawPosition + Transform(new(-15f - localPlatingOffset, 4f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, leftPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating2, drawPosition + Transform(new(15f + localPlatingOffset, 4f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, rightPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(leftPlating3, drawPosition + Transform(new(-31f - localPlatingOffset * 0.5f, 13f)), null, color, NPC.rotation, leftPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating3, drawPosition + Transform(new(33f + localPlatingOffset * 0.5f, 13f)), null, color, NPC.rotation, rightPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(leftPlating4, drawPosition + Transform(new(-43f - localPlatingOffset * 0.5f, -17f)), null, color, NPC.rotation, leftPlating4.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating4, drawPosition + Transform(new(41f + localPlatingOffset * 0.5f, -17f)), null, color, NPC.rotation, rightPlating4.Size() * 0.5f, NPC.scale, direction, 0f);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(spine, drawPosition, null, color, NPC.rotation, spine.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-11f - localPlatingOffset, 33f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(11f + localPlatingOffset, 33f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(leftPlating2, drawPosition + Transform(new(-20f - localPlatingOffset, 13f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, leftPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating2, drawPosition + Transform(new(19f + localPlatingOffset, 13f - localPlatingOffset * 0.85f)), null, color, NPC.rotation, rightPlating2.Size() * 0.5f, NPC.scale, direction, 0f);
+
+                Main.spriteBatch.Draw(leftPlating3, drawPosition + Transform(new(-36f - localPlatingOffset * 0.5f, -13f)), null, color, NPC.rotation, leftPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+                Main.spriteBatch.Draw(rightPlating3, drawPosition + Transform(new(36f + localPlatingOffset * 0.5f, -13f)), null, color, NPC.rotation, rightPlating3.Size() * 0.5f, NPC.scale, direction, 0f);
+            }
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             Texture2D texture = TextureAssets.Npc[NPC.type].Value;
@@ -269,11 +334,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 glowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Thanatos/ThanatosTailGlow").Value;
             }
 
-            int frame = NPC.frame.Y / NPC.frame.Height;
             Vector2 drawPosition = NPC.Center - screenPos;
+            int frame = NPC.frame.Y / NPC.frame.Height;
             Rectangle rectangleFrame = texture.Frame(1, Main.npcFrameCount[NPC.type], 0, frame);
-            Main.spriteBatch.Draw(texture, drawPosition, rectangleFrame, NPC.GetAlpha(lightColor), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
-            Main.spriteBatch.Draw(glowmask, drawPosition, rectangleFrame, NPC.GetAlpha(Color.White), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
+
+            if (!IsTailSegment && PlatingOffset > 0f)
+                DrawManualBodyPlating(drawPosition, lightColor);
+            else
+            {
+                Main.spriteBatch.Draw(texture, drawPosition, rectangleFrame, NPC.GetAlpha(lightColor), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
+                Main.spriteBatch.Draw(glowmask, drawPosition, rectangleFrame, NPC.GetAlpha(Color.White), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
+            }
 
             float bloomOpacity = SegmentOpenInterpolant.Squared() * 0.56f;
             Vector2 bloomDrawPosition = TurretPosition - screenPos;
