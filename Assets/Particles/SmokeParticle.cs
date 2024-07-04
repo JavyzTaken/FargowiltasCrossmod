@@ -49,7 +49,13 @@ namespace FargowiltasCrossmod.Assets.Particles
             int width = 28;
             int height = 28;
             Rectangle frame = new(width * horizontalFrame, height * Variant, width, height);
-            spriteBatch.Draw(Texture, Position - Main.screenPosition, frame, DrawColor * opacity, Rotation, null, Scale * 2f, 0);
+
+            Vector2 origin = Vector2.Zero;
+            float x = MathHelper.Clamp(frame.X + Texture.Frame.X, Texture.Frame.X, Texture.Frame.X + Texture.Frame.Width - width);
+            float y = MathHelper.Clamp(frame.Y + Texture.Frame.Y, Texture.Frame.Y, Texture.Frame.Y + Texture.Frame.Height - height);
+            Rectangle frameOnAtlas = new((int)x, (int)y, (int)width, (int)height);
+
+            spriteBatch.Draw(Texture.Atlas.Texture.Value, Position - Main.screenPosition, frameOnAtlas, DrawColor * opacity, Rotation, origin, Scale * 2f, 0, 0f);
         }
     }
 }
