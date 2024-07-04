@@ -19,12 +19,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
     public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
+        /// <summary>
+        /// How long Hades spends redirecting towards the player at a slow pace during his death animation.
+        /// </summary>
         public static int DeathAnimation_HomeInTime => LumUtils.SecondsToFrames(0.75f);
 
+        /// <summary>
+        /// How long Hades spends becoming unstable and emitting smoke during his death animation.
+        /// </summary>
         public static int DeathAnimation_BecomeUnstableTime => LumUtils.SecondsToFrames(2f);
 
+        /// <summary>
+        /// How long Hades spends creating small explosions during his death animation.
+        /// </summary>
         public static int DeathAnimation_SmallExplosionsTime => LumUtils.SecondsToFrames(4.5f);
 
+        /// <summary>
+        /// How long Hades spends waiting for his big explosion during his death animation.
+        /// </summary>
         public static int DeathAnimation_BigExplosionDelay => LumUtils.SecondsToFrames(1.75f);
 
         /// <summary>
