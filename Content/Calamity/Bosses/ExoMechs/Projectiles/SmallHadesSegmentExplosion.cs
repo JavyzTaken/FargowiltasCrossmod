@@ -42,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.penetrate = -1;
             Projectile.timeLeft = Lifetime;
             Projectile.Calamity().DealsDefenseDamage = true;
-            Projectile.scale = 2.5f;
+            Projectile.scale = Main.rand?.NextFloat(2.2f, 2.75f) ?? 2.2f;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
