@@ -150,6 +150,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     {
                         SoundEngine.PlaySound(CommonCalamitySounds.ExoPlasmaShootSound, npc.Center);
 
+                        // TODO -- Use a custom projectile for this.
+                        // Calamity has a long history of being "finished" with boss things only to then change them later unannounced and certain aspects of the
+                        // ApolloFireball projectile look a bit boring, such as the explosion dust.
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             Vector2 aimDirection = npc.rotation.ToRotationVector2();
