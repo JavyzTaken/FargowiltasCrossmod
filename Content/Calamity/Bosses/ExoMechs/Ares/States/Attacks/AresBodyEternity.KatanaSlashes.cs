@@ -24,6 +24,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static int KatanaSlashes_AttackCycleTime => Utilities.SecondsToFrames(1.6f);
 
         /// <summary>
+        /// How much damage katanas from Ares' core do.
+        /// </summary>
+        public static int KatanaDamage => Main.expertMode ? 450 : 300;
+
+        /// <summary>
         /// The animation easing curve used when Ares' back arms are slashing.
         /// </summary>
         public static readonly PiecewiseCurve SlashAnimationCurve_BackArm = new PiecewiseCurve().
@@ -113,7 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             hand.EnergyDrawer.chargeProgress = Utilities.InverseLerp(0f, 30f, AITimer);
             hand.GlowmaskDisabilityInterpolant = 0f;
             hand.Frame = 0;
-            handNPC.damage = katanasDoDamage ? 450 : 0; // TODO -- Store this somewhere.
+            handNPC.damage = katanasDoDamage ? KatanaDamage : 0;
             handNPC.spriteDirection = 1;
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.3f);
 
