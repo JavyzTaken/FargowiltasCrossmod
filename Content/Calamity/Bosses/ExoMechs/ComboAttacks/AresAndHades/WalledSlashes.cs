@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// Ares' fly acceleration while he attempts to slash the player.
         /// </summary>
-        public static Vector2 AresAcceleration => new(0.35f, 0.17f);
+        public static Vector2 AresAcceleration => new(0.3f, 0.14f);
 
         /// <summary>
         /// The rate at which Hades releases mines.
@@ -102,7 +102,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             npc.velocity = (npc.velocity + idealDirection * acceleration).ClampLength(0f, AresMaxFlySpeed);
             if (npc.velocity.AngleBetween(idealDirection) >= 1.37f)
-                npc.velocity *= 0.92f;
+                npc.velocity *= 0.93f;
 
             bool attackHasCompleted = AITimer >= AttackDuration;
             return attackHasCompleted;
