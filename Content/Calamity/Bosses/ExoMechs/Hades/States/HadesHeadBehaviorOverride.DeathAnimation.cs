@@ -27,17 +27,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends becoming unstable and emitting smoke during his death animation.
         /// </summary>
-        public static int DeathAnimation_BecomeUnstableTime => LumUtils.SecondsToFrames(2f);
+        public static int DeathAnimation_BecomeUnstableTime => LumUtils.SecondsToFrames(1.5f);
 
         /// <summary>
         /// How long Hades spends creating small explosions during his death animation.
         /// </summary>
-        public static int DeathAnimation_SmallExplosionsTime => LumUtils.SecondsToFrames(4.5f);
+        public static int DeathAnimation_SmallExplosionsTime => LumUtils.SecondsToFrames(3f);
 
         /// <summary>
         /// How long Hades spends waiting for his big explosion during his death animation.
         /// </summary>
-        public static int DeathAnimation_BigExplosionDelay => LumUtils.SecondsToFrames(1.75f);
+        public static int DeathAnimation_BigExplosionDelay => LumUtils.SecondsToFrames(1.25f);
 
         /// <summary>
         /// AI update loop method for the death animation.
