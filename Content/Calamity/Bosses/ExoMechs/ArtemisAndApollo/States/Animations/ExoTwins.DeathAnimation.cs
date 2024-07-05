@@ -48,11 +48,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// </summary>
         public static int DeathAnimation_DashChargeUpTime => LumUtils.SecondsToFrames(1.2f);
 
-        // TODO -- Change this from a property to a readonly field
         /// <summary>
         /// The set of beep delays that should be used in a sequential order.
         /// </summary>
-        public static int[] BeepDelays =>
+        public static readonly int[] BeepDelays =
         [
             LumUtils.SecondsToFrames(0.667f),
             LumUtils.SecondsToFrames(0.526f),
