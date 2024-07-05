@@ -76,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public Color LaserColorFunction(float completionRatio)
         {
             Color startingColor = new(255, 16, 47);
-            Color endingColor = new(244, 205, 236);
+            Color endingColor = startingColor.HueShift(-0.1f);
             return Color.Lerp(startingColor, endingColor, completionRatio * 0.81f) * Projectile.Opacity;
         }
 

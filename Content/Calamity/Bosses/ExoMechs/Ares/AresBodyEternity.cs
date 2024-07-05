@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NukeAoEAndPlasmaBlasts,
             AimedLaserBursts,
             KatanaSlashes,
+            KatanaSwingDashes,
 
             BackgroundCoreLaserBeams,
 
@@ -311,6 +312,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     break;
                 case AresAIState.KatanaSlashes:
                     DoBehavior_KatanaSlashes();
+                    break;
+                case AresAIState.KatanaSwingDashes:
+                    DoBehavior_KatanaSwingDashes();
                     break;
                 case AresAIState.AimedLaserBursts:
                     DoBehavior_AimedLaserBursts();

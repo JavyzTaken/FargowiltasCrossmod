@@ -29,6 +29,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                     CurrentState = AresAIState.BackgroundCoreLaserBeams;
 
+                CurrentState = AresAIState.KatanaSwingDashes;
+
                 if (WaitingToStartComboAttack)
                 {
                     CurrentState = AresAIState.PerformComboAttack;

@@ -91,6 +91,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Whether this hand/arm can be rendered.
+        /// </summary>
+        public bool CanRender
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// How disabled the glow masks are, as a 0-1 interpolant.
         /// </summary>
         public float GlowmaskDisabilityInterpolant
@@ -180,6 +189,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             NPC.noTileCollide = true;
 
+            CanRender = true;
             KatanaInUse = false;
             OptionalDrawAction = null;
             KatanaAfterimageOpacity = Utilities.Saturate(KatanaAfterimageOpacity * 0.84f - 0.07f);
@@ -191,7 +201,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             EnergyDrawer.Update();
 
-            NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage;
+            NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage || !CanRender;
             NPC.realLife = CalamityGlobalNPC.draedonExoMechPrime;
             NPC.scale = aresBody.scale;
         }
@@ -220,10 +230,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public void RotateToLookAt(Vector2 lookDestination) =>
             RotateToLookAt(NPC.AngleTo(lookDestination));
 
-        public override void FindFrame(int frameHeight)
-        {
-        }
-
         public override Color? GetAlpha(Color drawColor)
         {
             if (CalamityGlobalNPC.draedonExoMechPrime == -1)
@@ -234,7 +240,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
-            if (HandType is null || CalamityGlobalNPC.draedonExoMechPrime == -1)
+            if (HandType is null || CalamityGlobalNPC.draedonExoMechPrime == -1 || !CanRender)
                 return false;
 
             Texture2D texture = ModContent.Request<Texture2D>(HandType.TexturePath).Value;
@@ -313,6 +319,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <param name="screenPosition"></param>
         public void DrawArm(SpriteBatch spriteBatch, Vector2 screenPosition)
         {
+            if (!CanRender)
+                return;
+
             NPC aresBody = Main.npc[CalamityGlobalNPC.draedonExoMechPrime];
 
             if (UsesBackArm)
