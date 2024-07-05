@@ -253,6 +253,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (AITimer >= 75)
             {
+                if (npc.DeathSound.HasValue)
+                    SoundEngine.PlaySound(npc.DeathSound.Value with { Volume = 2.4f });
+
                 npc.life = 0;
                 npc.HitEffect();
                 if (npc.realLife == -1 && AresBody.CanDropLoot())
