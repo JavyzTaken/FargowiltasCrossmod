@@ -177,6 +177,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             return false;
         }
 
+        public override void BossHeadSlot(ref int index)
+        {
+            if (IsSecondaryBodySegment)
+                index = SegmentOpenInterpolant >= 0.75f ? ThanatosBody2.vulnerableIconIndex : ThanatosBody2.normalIconIndex;
+            if (IsTailSegment)
+                index = SegmentOpenInterpolant >= 0.75f ? ThanatosTail.vulnerableIconIndex : ThanatosTail.normalIconIndex;
+        }
+
         /// <summary>
         /// Listens to incoming instructions from the head's <see cref="HadesHeadEternity.BodyBehaviorAction"/>.
         /// </summary>

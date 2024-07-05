@@ -84,6 +84,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             DLCBehaviour?.FindFrame(frameHeight);
         }
 
+        public override void BossHeadSlot(NPC npc, ref int index)
+        {
+            if (!ShouldBeActive)
+                return;
+
+            DLCBehaviour?.BossHeadSlot(ref index);
+        }
+
         public override void ModifyTypeName(NPC npc, ref string typeName)
         {
             if (!ShouldBeActive)

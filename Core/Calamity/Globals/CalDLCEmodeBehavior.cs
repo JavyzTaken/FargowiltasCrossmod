@@ -68,6 +68,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         /// <param name="typeName">The NPC's <see cref="NPC.TypeName"/.></param>
         public virtual void ModifyTypeName(ref string typeName) { }
 
+        public virtual void BossHeadSlot(ref int index) { }
+
         /// <summary>
         /// Sends arbitrary NPC state data across the network when an NPC sync occurs.
         /// </summary>
