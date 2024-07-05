@@ -110,6 +110,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                             CalamityUtils.SpawnBossBetter(exoMechSpawnPosition + Vector2.UnitX * 350f, ModContent.NPCType<Apollo>());
                             break;
                     }
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        CalamityWorld.DraedonMechToSummon = ExoMech.None;
+
+                        ModPacket packet = ModContent.GetInstance<CalamityMod.CalamityMod>().GetPacket();
+                        packet.Write((byte)CalamityModMessageType.ExoMechSelection);
+                        packet.Write((int)CalamityWorld.DraedonMechToSummon);
+                        packet.Send();
+                    }
                 }
 
                 SoundEngine.PlaySound(Artemis.ChargeSound);
