@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Calamity.Globals;
+﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -24,6 +25,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (AITimer >= 45)
             {
                 CurrentState = Main.rand.NextFromList(AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts);
+
+                if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+                    CurrentState = AresAIState.BackgroundCoreLaserBeams;
+
+                if (WaitingToStartComboAttack)
+                {
+                    CurrentState = AresAIState.PerformComboAttack;
+                    WaitingToStartComboAttack = false;
+                }
+
                 AITimer = 0;
                 NPC.netUpdate = true;
             }

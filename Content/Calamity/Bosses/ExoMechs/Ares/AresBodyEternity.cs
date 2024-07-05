@@ -61,10 +61,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             get => CurrentState == AresAIState.PerformComboAttack;
             set
             {
+                if (value && CurrentState == AresAIState.SpawnAnimation)
+                {
+                    WaitingToStartComboAttack = true;
+                    return;
+                }
+
                 SelectNewState();
                 if (value)
                     CurrentState = AresAIState.PerformComboAttack;
             }
+        }
+
+        /// <summary>
+        /// Whether Ares is waiting for his current state to conclude before he performs combo attacks.
+        /// </summary>
+        public bool WaitingToStartComboAttack
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -214,6 +229,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             bitWriter.WriteBit(HasCreatedArms);
             bitWriter.WriteBit(Inactive);
             bitWriter.WriteBit(IsPrimaryMech);
+            bitWriter.WriteBit(WaitingToStartComboAttack);
 
             binaryWriter.Write(ZPosition);
             binaryWriter.Write(AITimer);
@@ -227,6 +243,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             HasCreatedArms = bitReader.ReadBit();
             Inactive = bitReader.ReadBit();
             IsPrimaryMech = bitReader.ReadBit();
+            WaitingToStartComboAttack = bitReader.ReadBit();
 
             ZPosition = binaryReader.ReadSingle();
             AITimer = binaryReader.ReadInt32();

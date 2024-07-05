@@ -66,8 +66,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.Center = NPC.Center.MoveTowards(new Vector2(NPC.Center.X, Target.Center.Y - 70f), slowDownInterpolant * 1.7f);
             NPC.velocity *= 0.93f;
 
-            NPC.dontTakeDamage = true;
-
             if (AITimer == 1)
             {
                 ScreenShakeSystem.StartShake(10f);

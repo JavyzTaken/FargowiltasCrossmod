@@ -37,6 +37,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             NPC handNPC = hand.NPC;
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.025f);
+            if (CurrentState == AresAIState.SpawnAnimation)
+                handNPC.Center = NPC.Center + hoverOffset * NPC.scale;
+
             handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.7f, 0.5f);
             handNPC.rotation = handNPC.rotation.AngleLerp(handNPC.spriteDirection * MathHelper.PiOver2, 0.12f);
             handNPC.damage = 0;
