@@ -5,10 +5,10 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
-using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
@@ -75,11 +75,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (SharedState.AIState == ExoTwinsAIState.PerformComboAttack)
                 SharedState.AITimer = ExoMechComboAttackManager.ComboAttackTimer;
+            else if (Main.netMode == NetmodeID.Server && SharedState.AITimer % 60 == 0)
+                PacketManager.SendPacket<ExoMechExoTwinStatePacket>();
         }
-
-        public override void NetSend(BinaryWriter writer) => SharedState.WriteTo(writer);
-
-        public override void NetReceive(BinaryReader reader) => SharedState.ReadFrom(reader);
 
         /// <summary>
         /// Performs the central AI state update loop for a given Exo Twin.
@@ -171,6 +169,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     break;
             }
             twinAttributes.IndividualState.AITimer++;
+
+            if (Main.netMode == NetmodeID.Server && twin.netUpdate)
+                PacketManager.SendPacket<ExoMechExoTwinStatePacket>();
         }
 
         /// <summary>
@@ -263,6 +264,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (SharedState.AIState == ExoTwinsAIState.PerformIndividualAttacks)
                 PickIndividualAIStates();
+
+            if (Main.netMode == NetmodeID.Server)
+                PacketManager.SendPacket<ExoMechExoTwinStatePacket>();
         }
     }
 }

@@ -73,7 +73,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <param name="writer">The binary writer.</param>
         public void WriteTo(BinaryWriter writer)
         {
+            writer.Write(AITimer);
             writer.Write((int)AIState);
+            writer.Write(TotalFinishedAttacks);
             writer.Write(Values.Length);
             for (int i = 0; i < Values.Length; i++)
                 writer.Write(Values[i]);
@@ -85,10 +87,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <param name="reader">The binary reader.</param>
         public void ReadFrom(BinaryReader reader)
         {
+            AITimer = reader.ReadInt32();
             AIState = (ExoTwinsAIState)reader.ReadInt32();
-            int totalStates = reader.ReadInt32();
+            TotalFinishedAttacks = reader.ReadInt32();
 
-            Values = new float[totalStates];
+            int totalValues = reader.ReadInt32();
+
+            Values = new float[totalValues];
             for (int i = 0; i < Values.Length; i++)
                 Values[i] = reader.ReadSingle();
         }
