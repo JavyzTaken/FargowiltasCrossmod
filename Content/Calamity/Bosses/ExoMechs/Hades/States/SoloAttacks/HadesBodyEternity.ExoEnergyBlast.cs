@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The speed at which Hades turns the laser during the ExoEnergyBlast attack.
         /// </summary>
-        public static float ExoEnergyBlast_LaserTurnSpeed => MathHelper.ToRadians(1.45f);
+        public static float ExoEnergyBlast_LaserTurnSpeed => MathHelper.ToRadians(1.18f);
 
         /// <summary>
         /// The sound Hades plays when charging up energy for his deathray.
@@ -125,7 +125,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 SoundEngine.PlaySound(DeathrayFireSound);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<ExoEnergyBlast>(), ExoEnergyBlastDamage, 0f);
+                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<ExoEnergyBlast>(), ExoEnergyBlastDamage, 0f, NPC.target);
             }
 
             // SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
