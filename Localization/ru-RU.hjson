@@ -744,8 +744,9 @@ Mods: {
 			// PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
 			// BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
 			// AresDeathAnimationExplosion.DisplayName: Explosion
-			// SmallHadesSegmentExplosion.DisplayName: Small Hades Segment Explosion
-			// BigHadesSegmentExplosion.DisplayName: Big Hades Segment Explosion
+			// SmallHadesSegmentExplosion.DisplayName: Explosion
+			// BigHadesSegmentExplosion.DisplayName: Explosion
+			// AresCoreLaserSmall.DisplayName: Energized Spark
 		}
 
 		Buffs: {
