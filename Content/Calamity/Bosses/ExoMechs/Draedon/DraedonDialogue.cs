@@ -1,6 +1,8 @@
 ﻿using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
@@ -22,6 +24,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// Says this dialogue instance in the chat.
         /// </summary>
-        public void SayInChat() => Utilities.BroadcastLocalizedText(LocalizationKey(), TextColor);
+        public void SayInChat()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+                return;
+
+            Utilities.BroadcastLocalizedText(LocalizationKey(), TextColor);
+        }
     }
 }
