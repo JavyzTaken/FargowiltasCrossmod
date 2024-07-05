@@ -1,7 +1,8 @@
-﻿using System;
+﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
+using FargowiltasSouls.Core.Systems;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using FargowiltasSouls.Core.Systems;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -162,6 +163,33 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalDLCWorldSavingSystem.EternityRev = containmentFlagWrapper[1];
             WorldSavingSystem.EternityMode = containmentFlagWrapper[2];
             WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[3];
+        }
+    }
+
+    public class ExoMechComboTimerPacket : BaseDLCPacket
+    {
+        public override void Write(ModPacket packet, params object[] context) =>
+            packet.Write(ExoMechComboAttackManager.ComboAttackTimer);
+
+        public override void Read(BinaryReader reader) =>
+            ExoMechComboAttackManager.ComboAttackTimer = reader.ReadInt32();
+    }
+
+    public class ExoMechComboAttackPacket : BaseDLCPacket
+    {
+        public override void Write(ModPacket packet, params object[] context)
+        {
+            int comboAttackIndex = ExoMechComboAttackManager.RegisteredComboAttacks.IndexOf(ExoMechComboAttackManager.CurrentState);
+            packet.Write(comboAttackIndex);
+        }
+
+        public override void Read(BinaryReader reader)
+        {
+            int comboAttackIndex = reader.ReadInt32();
+            if (comboAttackIndex >= 0 && comboAttackIndex < ExoMechComboAttackManager.RegisteredComboAttacks.Count)
+                ExoMechComboAttackManager.CurrentState = ExoMechComboAttackManager.RegisteredComboAttacks[comboAttackIndex];
+            else
+                ExoMechComboAttackManager.CurrentState = ExoMechComboAttackManager.NullComboState;
         }
     }
 }

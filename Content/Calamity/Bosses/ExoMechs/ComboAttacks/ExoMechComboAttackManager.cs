@@ -3,9 +3,11 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
@@ -14,7 +16,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ExoMechComboAttackManager : ModSystem
     {
-        // TODO -- This is definitely gonna need to be synced somewhere.
         /// <summary>
         /// The current attack timer for the combo attack.
         /// </summary>
@@ -31,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static ExoMechComboAttack CurrentState
         {
             get;
-            private set;
+            internal set;
         }
 
         /// <summary>
@@ -90,8 +91,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         private static void Reset()
         {
-            CurrentState = NullComboState;
-            ComboAttackTimer = 0;
+            if (CurrentState != NullComboState)
+            {
+                CurrentState = NullComboState;
+                if (Main.netMode == NetmodeID.Server)
+                    PacketManager.SendPacket<ExoMechComboAttackPacket>();
+            }
+
+            if (ComboAttackTimer != 0)
+            {
+                ComboAttackTimer = 0;
+                if (Main.netMode == NetmodeID.Server)
+                    PacketManager.SendPacket<ExoMechComboTimerPacket>();
+            }
         }
 
         /// <summary>
@@ -160,6 +172,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         private static void SelectNewComboAttackState()
         {
             ComboAttackTimer = 0;
+            if (Main.netMode == NetmodeID.Server)
+                PacketManager.SendPacket<ExoMechComboTimerPacket>();
 
             var potentialCandidates = RegisteredComboAttacks.Where(VerifyComboStateIsValid).OrderBy(_ => Main.rand.NextFloat());
             var previousState = CurrentState;
@@ -168,7 +182,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 CurrentState = potentialCandidates.FirstOrDefault() ?? NullComboState;
                 if (CurrentState != previousState)
+                {
+                    if (Main.netMode == NetmodeID.Server)
+                        PacketManager.SendPacket<ExoMechComboAttackPacket>();
+
                     break;
+                }
             }
         }
 
@@ -178,10 +197,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         private static void PuppeteerActiveExoMechs()
         {
             bool hadesIsPresent = false;
+            bool shouldSyncTimer = false;
             foreach (NPC npc in Main.ActiveNPCs)
             {
                 if (!ExoMechNPCIDs.ExoMechIDs.Contains(npc.type) || !npc.TryGetDLCBehavior(out CalDLCEmodeBehavior behavior))
                     continue;
+
+                // Check if any of the Exo Mechs want to sync.
+                // If they do, that could mean a time sensitive event has occurred, and as such it's best to be safe and sync the timer.
+                if (npc.netUpdate)
+                    shouldSyncTimer = true;
 
                 if (behavior is IExoMech exoMech && !exoMech.Inactive)
                 {
@@ -207,6 +232,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     }
                 }
             }
+
+            // Automatically sync the AI timer periodically, to ensure nothing drifts too much.
+            if (ComboAttackTimer % 60 == 0)
+                shouldSyncTimer = true;
+
+            if (shouldSyncTimer && Main.netMode == NetmodeID.Server)
+                PacketManager.SendPacket<ExoMechComboTimerPacket>();
         }
     }
 }
