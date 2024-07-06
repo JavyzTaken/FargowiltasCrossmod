@@ -172,10 +172,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.AddEffect<DynamoStemCellsEffect>(item))
-                {
-                    ModContent.GetInstance<DynamoStemCells>().UpdateAccessory(player, hideVisual);
-                }
             }
             if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {

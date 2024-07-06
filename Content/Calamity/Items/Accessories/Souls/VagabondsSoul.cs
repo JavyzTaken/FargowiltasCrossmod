@@ -49,15 +49,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 .AddIngredient<DragonScales>()
                 .AddIngredient<VeneratedLocket>()
 
-                .AddIngredient<WaveSkipper>()
-                .AddIngredient<GraveGrimreaver>()
-                .AddIngredient<SpentFuelContainer>()
-                .AddIngredient<TheSyringe>()
-                .AddIngredient<RegulusRiot>()
-                .AddIngredient<CelestialReaper>()
                 .AddIngredient<Valediction>()
-                .AddIngredient<ExecutionersBlade>()
-                .AddIngredient<SearedPan>()
+                .AddIngredient<GodsParanoia>()
+                .AddIngredient<Eradicator>()
+                .AddIngredient<Wrathwing>()
+                .AddIngredient<Seraphim>()
 
                 .AddTile<CrucibleCosmosSheet>()
                 .Register();

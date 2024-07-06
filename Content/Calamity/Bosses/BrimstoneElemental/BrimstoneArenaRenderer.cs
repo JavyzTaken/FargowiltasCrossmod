@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
     {
         #region Fields/Properties
 
-        public override DrawLayer Layer => DrawLayer.BeforeTiles;
+        public override DrawLayer Layer => DrawLayer.AfterEverything;
 
         public static CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental Brimmy
         {
