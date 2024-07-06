@@ -5,6 +5,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,6 +21,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public sealed class HadesBodyEternity : CalDLCEmodeBehavior, IHadesSegment
     {
+        internal static LazyAsset<Texture2D>[] SpineTextures;
+
+        internal static LazyAsset<Texture2D>[][] LeftPlatingTextures;
+
+        internal static LazyAsset<Texture2D>[][] RightPlatingTextures;
+
         // This uses newAI[2] of all things because that happens to coincide with the immunity timer base Hades has, which makes incoming hits basically not matter if it hasn't exceeded a certain threshold.
         // By using it for the general existence timer, that guarantees that the immunity timer doesn't stay at zero 24/7 and effectively make Hades unable to be damaged.
         /// <summary>
@@ -114,6 +121,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
         public override int NPCOverrideID => ModContent.NPCType<ThanatosBody1>();
 
+        public override void SetStaticDefaults()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            SpineTextures = new LazyAsset<Texture2D>[2];
+
+            LeftPlatingTextures = new LazyAsset<Texture2D>[2][];
+            LeftPlatingTextures[0] = new LazyAsset<Texture2D>[4];
+            LeftPlatingTextures[1] = new LazyAsset<Texture2D>[3];
+
+            RightPlatingTextures = new LazyAsset<Texture2D>[2][];
+            RightPlatingTextures[0] = new LazyAsset<Texture2D>[4];
+            RightPlatingTextures[1] = new LazyAsset<Texture2D>[3];
+
+            string platingPrefix = $"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/Plates";
+            for (int i = 0; i < 4; i++)
+            {
+                LeftPlatingTextures[0][i] = LazyAsset<Texture2D>.Request($"{platingPrefix}/HadesBody1Part{i + 1}Left");
+                RightPlatingTextures[0][i] = LazyAsset<Texture2D>.Request($"{platingPrefix}/HadesBody1Part{i + 1}Right");
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                LeftPlatingTextures[1][i] = LazyAsset<Texture2D>.Request($"{platingPrefix}/HadesBody2Part{i + 1}Left");
+                RightPlatingTextures[1][i] = LazyAsset<Texture2D>.Request($"{platingPrefix}/HadesBody2Part{i + 1}Right");
+            }
+
+            SpineTextures[0] = LazyAsset<Texture2D>.Request($"{platingPrefix}/HadesBody1Spine");
+            SpineTextures[1] = LazyAsset<Texture2D>.Request($"{platingPrefix}/HadesBody2Spine");
+        }
+
         public override bool PreAI()
         {
             ExistenceTimer++;
@@ -200,7 +238,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             if (!hadesAI.BodyBehaviorAction?.Condition(NPC, RelativeIndex) ?? false)
                 return;
 
-            // TODO -- Move this.
             if (hades.damage <= 0)
                 NPC.damage = 0;
 
@@ -320,25 +357,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
         public void DrawManualBodyPlating(Vector2 drawPosition, Color lightColor)
         {
-            // TODO -- Cache these.
-            string platingPrefix = $"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/Plates/HadesBody{(IsSecondaryBodySegment ? 2 : 1)}";
-
+            int textureIndex = IsSecondaryBodySegment.ToInt();
             Color color = NPC.GetAlpha(lightColor);
             SpriteEffects direction = NPC.spriteDirection.ToSpriteDirection();
-            Texture2D spine = ModContent.Request<Texture2D>($"{platingPrefix}Spine").Value;
-            Texture2D leftPlating1 = ModContent.Request<Texture2D>($"{platingPrefix}Part1Left").Value;
-            Texture2D rightPlating1 = ModContent.Request<Texture2D>($"{platingPrefix}Part1Right").Value;
-            Texture2D leftPlating2 = ModContent.Request<Texture2D>($"{platingPrefix}Part2Left").Value;
-            Texture2D rightPlating2 = ModContent.Request<Texture2D>($"{platingPrefix}Part2Right").Value;
-            Texture2D leftPlating3 = ModContent.Request<Texture2D>($"{platingPrefix}Part3Left").Value;
-            Texture2D rightPlating3 = ModContent.Request<Texture2D>($"{platingPrefix}Part3Right").Value;
+            Texture2D spine = SpineTextures[textureIndex].Value;
+            Texture2D leftPlating1 = LeftPlatingTextures[textureIndex][0].Value;
+            Texture2D rightPlating1 = RightPlatingTextures[textureIndex][0].Value;
+            Texture2D leftPlating2 = LeftPlatingTextures[textureIndex][1].Value;
+            Texture2D rightPlating2 = RightPlatingTextures[textureIndex][1].Value;
+            Texture2D leftPlating3 = LeftPlatingTextures[textureIndex][2].Value;
+            Texture2D rightPlating3 = RightPlatingTextures[textureIndex][2].Value;
 
             Vector2 Transform(Vector2 offset) => (offset * new Vector2(NPC.spriteDirection, 1f)).RotatedBy(NPC.rotation);
 
             if (!IsSecondaryBodySegment)
             {
-                Texture2D leftPlating4 = ModContent.Request<Texture2D>($"{platingPrefix}Part4Left").Value;
-                Texture2D rightPlating4 = ModContent.Request<Texture2D>($"{platingPrefix}Part4Right").Value;
+                Texture2D leftPlating4 = LeftPlatingTextures[textureIndex][3].Value;
+                Texture2D rightPlating4 = RightPlatingTextures[textureIndex][3].Value;
 
                 Main.spriteBatch.Draw(leftPlating1, drawPosition + Transform(new(-13f - PlatingOffset, 20f)), null, color, NPC.rotation, leftPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
                 Main.spriteBatch.Draw(rightPlating1, drawPosition + Transform(new(15f + PlatingOffset, 19f)), null, color, NPC.rotation, rightPlating1.Size() * 0.5f, NPC.scale, direction, 0f);
