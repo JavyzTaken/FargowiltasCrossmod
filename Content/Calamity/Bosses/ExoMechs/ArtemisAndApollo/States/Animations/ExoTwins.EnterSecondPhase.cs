@@ -307,7 +307,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             Main.spriteBatch.Draw(invisible, spreadDrawPosition, null, Color.White, apollo.rotation, invisible.Size() * 0.5f, Vector2.One * opacity * spreadScale * 1.6f, 0, 0f);
 
             hologramSpread.Parameters["mainOpacity"].SetValue(0.2f);
-            hologramSpread.Parameters["halfSpreadAngle"].SetValue(opacity * 0.57f);
+            hologramSpread.Parameters["halfSpreadAngle"].SetValue(opacity * 0.56f);
             hologramSpread.CurrentTechnique.Passes[0].Apply();
             Main.spriteBatch.Draw(invisible, spreadDrawPosition, null, Color.White, apollo.rotation + 0.09f, invisible.Size() * 0.5f, Vector2.One * opacity * spreadScale, 0, 0f);
 
