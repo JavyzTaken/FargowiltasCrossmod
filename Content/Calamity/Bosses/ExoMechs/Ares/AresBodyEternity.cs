@@ -429,7 +429,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.defense = NPC.defDefense;
             NPC.dontTakeDamage = false;
             NPC.ShowNameOnHover = true;
-            NPC.immortal = true;
             NPC.As<AresBody>().SecondaryAIState = (int)AresBody.SecondaryPhase.Nothing;
             SilhouetteOpacity = 0f;
             SilhouetteDissolveInterpolant = 0f;
