@@ -1,5 +1,6 @@
 ﻿using CalamityMod.NPCs.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
@@ -88,7 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     NPC.velocity = NPC.SafeDirectionTo(Target.Center) * 37f;
 
                     KatanaCycloneDashes_SlashCounter++;
-                    if (KatanaCycloneDashes_SlashCounter >= KatanaCycloneDashes_SlashCount)
+                    if (KatanaCycloneDashes_SlashCounter > KatanaCycloneDashes_SlashCount)
                     {
                         IProjOwnedByBoss<AresBody>.KillAll();
                         NPC.Center = Target.Center - Vector2.UnitY * 800f;
@@ -98,6 +99,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
                     NPC.netUpdate = true;
                 }
+
+                if (Main.rand.NextBool(10))
+                    CustomExoMechsSky.CreateLightning((NPC.Center - Main.screenPosition) / Main.ScreenSize.ToVector2());
 
                 if (AITimer % 11f == 10f)
                     SoundEngine.PlaySound(SlashSound, NPC.Center);

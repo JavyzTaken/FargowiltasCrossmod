@@ -1,4 +1,6 @@
 sampler baseTexture : register(s0);
+sampler backTexture : register(s1);
+sampler backOverlayNoiseTexture : register(s2);
 
 bool invertedGravity;
 float globalTime;
@@ -77,6 +79,7 @@ float CalculateOpticalDepth(float3 rayOrigin, float3 rayDirection, float rayLeng
     float stepSize = rayLength / (numOpticalDepthPoints - 1);
     float opticalDepth = 0;
 
+    [unroll]
     for (int i = 0; i < numOpticalDepthPoints; i++)
     {
         float localDensity = CalculateCloudDensityAtPoint(densitySamplePoint);
@@ -111,6 +114,8 @@ float4 CalculateScatteredLight(float3 rayOrigin, float3 rayDirection)
     // This process attempts to discretely model the integral used along the ray in real-world atmospheric scattering calculations.
     float3 boxStart = rayOrigin + intersectionDistances.x * rayDirection;
     float3 inScatterSamplePosition = boxStart;
+    
+    [unroll]
     for (int i = 0; i < inScatterPoints; i++)
     {
         // Calculate the direction from the in-scatter point to the sun.
@@ -144,6 +149,11 @@ float4 CalculateScatteredLight(float3 rayOrigin, float3 rayDirection)
     return light * inScatterStep * phaseMie * 320;
 }
 
+float3 ColorBurn(float3 a, float3 b)
+{
+    return 1 - (1 - b) / a;
+}
+
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0, float4 position : SV_Position) : COLOR0
 {
     position.xy = round(position.xy / 0.25) * 0.25;
@@ -158,7 +168,25 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     cloudLight *= lerp(4, 1, cloudDensity);
     
     // Combine the scattered light with the sample color, allowing for dynamic colorations and opacities to the final result.
-    return saturate(cloudLight * sampleColor);
+    float4 cloudColor = saturate(cloudLight * sampleColor);
+    
+    float cloudColorIntensity = 0;
+    float distanceNoise = tex2D(backOverlayNoiseTexture, coords * 3.9);
+    for (int i = 0; i < 10; i++)
+    {
+        float intensity = lightningIntensities[i];
+        float distanceToLocalLightning = distance(lightningPositions[i], coords) + distanceNoise * 0.2;
+        cloudColorIntensity += pow(saturate(0.1 * intensity / distanceToLocalLightning), 1.6) * intensity;
+    }
+    
+    float backNoise = tex2D(backTexture, coords * 3.2 + float2(-0.045, 0.023) * globalTime) + tex2D(backTexture, coords * 5.6 + float2(0.04, 0.03) * globalTime) * 0.4;
+    float backOverlayInterpolant = tex2D(backOverlayNoiseTexture, coords * 1.32 + float2(globalTime * 0.2, 0));
+    float4 backColor = float4(ColorBurn(float3(0.6, 0.87, 1), backNoise), 1) * smoothstep(0.1, 0.4, backNoise);
+    backColor = pow(backColor, 2) * 4;
+    
+    cloudColor += backColor * smoothstep(0.2, 0.75, cloudColorIntensity) * 2;
+    
+    return cloudColor;
 }
 
 technique Technique1

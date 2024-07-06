@@ -2,6 +2,7 @@
 using FargowiltasCrossmod.Assets.Models;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon;
 using FargowiltasCrossmod.Core.Calamity;
+using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -24,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
 
             public void Update()
             {
-                Brightness = Utilities.Saturate(Brightness * 0.984f - 0.003f);
+                Brightness = Utilities.Saturate(Brightness * 0.991f - 0.0011f);
             }
         }
 
@@ -145,7 +146,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
                     Lightning[i].Update();
             }
 
-            int lightningSpawnChance = (int)MathHelper.Lerp(600f, 60f, RedSkyInterpolant);
+            int lightningSpawnChance = (int)MathHelper.Lerp(300f, 30f, RedSkyInterpolant);
             if (Main.rand.NextBool(lightningSpawnChance))
                 CreateLightning();
 
@@ -174,6 +175,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             cloudShader.TrySetParameter("pixelationFactor", 4f);
             cloudShader.TrySetParameter("lightningIntensities", lightningIntensities);
             cloudShader.TrySetParameter("lightningPositions", lightningPositions);
+            cloudShader.SetTexture(ModContent.Request<Texture2D>("CalamityMod/ExtraTextures/GreyscaleGradients/TechyNoise"), 1, SamplerState.LinearWrap);
+            cloudShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 2, SamplerState.LinearWrap);
             cloudShader.Apply();
 
             Texture2D cloud = NoiseTexturesRegistry.CloudDensityMap.Value;
@@ -189,14 +192,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             if (Main.netMode == NetmodeID.Server || Main.gamePaused)
                 return;
 
-            Vector2 screenSize = new(Main.instance.GraphicsDevice.Viewport.Width, Main.instance.GraphicsDevice.Viewport.Height);
-            lightningPosition ??= new Vector2(Main.rand.NextFloat(0.2f, 0.8f), Main.rand.NextFloat(-0.07f, -0.02f)) * screenSize;
+            lightningPosition ??= new Vector2(Main.rand.NextFloat(0.2f, 0.8f), Main.rand.NextFloat(-0.07f, 0.9f));
 
             for (int i = 0; i < Lightning.Length; i++)
             {
                 if (Lightning[i].Brightness < 0.03f)
                 {
-                    Lightning[i].Brightness = Main.rand.NextFloat(0.6f, 1f);
+                    Lightning[i].Brightness = Main.rand.NextFloat(0.75f, 1f);
                     Lightning[i].LightningPosition = lightningPosition.Value;
                     break;
                 }
