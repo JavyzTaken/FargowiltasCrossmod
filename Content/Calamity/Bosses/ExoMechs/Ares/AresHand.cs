@@ -109,6 +109,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Whether this hand is magnetically attached to its arm or not.
+        /// </summary>
+        public bool AttachedToArm
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// How disabled the glow masks are, as a 0-1 interpolant.
         /// </summary>
         public float GlowmaskDisabilityInterpolant
@@ -199,6 +208,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.noTileCollide = true;
 
             CanRender = true;
+            AttachedToArm = true;
             KatanaInUse = false;
             OptionalDrawAction = null;
             KatanaAfterimageOpacity = Utilities.Saturate(KatanaAfterimageOpacity * 0.84f - 0.07f);
@@ -443,7 +453,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             Vector2 magnetismEnd = forearmDrawPosition + Main.screenPosition - new Vector2(-ArmSide, 0.3f).RotatedBy(forearmRotation) * aresBody.scale * 86f;
             DrawMagneticLine(aresBody, segmentDrawPosition + Main.screenPosition, magnetismEnd, NPC.Opacity.Cubed());
-            DrawMagneticLine(aresBody, magnetismEnd - Vector2.UnitY.RotatedBy(forearmRotation) * aresBody.scale * 16f, ArmEndpoint, NPC.Opacity.Cubed());
+            if (AttachedToArm)
+                DrawMagneticLine(aresBody, magnetismEnd - Vector2.UnitY.RotatedBy(forearmRotation) * aresBody.scale * 16f, ArmEndpoint, NPC.Opacity.Cubed());
 
             spriteBatch.Draw(armSegmentTexture, segmentDrawPosition, shoulderFrame, segmentColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
             spriteBatch.Draw(armSegmentTextureGlowmask, segmentDrawPosition, shoulderFrame, glowmaskColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
@@ -535,7 +546,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 forearmOrigin.X = forearmTexture.Width - forearmOrigin.X;
             }
 
-            DrawMagneticLine(aresBody, armStart + Main.screenPosition, ArmEndpoint, NPC.Opacity.Cubed());
+            if (AttachedToArm)
+                DrawMagneticLine(aresBody, armStart + Main.screenPosition, ArmEndpoint, NPC.Opacity.Cubed());
 
             Color forearmColor = aresBody.GetAlpha(Lighting.GetColor((armStart + screenPosition).ToTileCoordinates()));
             Color glowmaskColor = aresBody.GetAlpha(Color.Wheat);

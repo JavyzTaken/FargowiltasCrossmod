@@ -55,6 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (handNPC.velocity.Y < 0f)
                 handNPC.velocity.Y *= 0.9f;
 
+            hand.AttachedToArm = false;
             hand.UsesBackArm = armIndex == 0 || armIndex == ArmCount - 1;
             hand.ArmSide = (armIndex >= ArmCount / 2).ToDirectionInt();
             hand.Frame = AITimer / 3 % Math.Min(hand.HandType.TotalHorizontalFrames * hand.HandType.TotalVerticalFrames, 12);
