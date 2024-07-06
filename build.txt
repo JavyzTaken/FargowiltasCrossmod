@@ -1,5 +1,4 @@
 displayName = Fargo's Souls DLC (Calamity)
-
 author = Javyz, Shipmans Agla, Dominic Karma, Zavarski, Fargowilta
 version = 1.1.0.7
 modReferences = Fargowiltas@3.3.4.1, FargowiltasSouls@1.6.9, Luminance
