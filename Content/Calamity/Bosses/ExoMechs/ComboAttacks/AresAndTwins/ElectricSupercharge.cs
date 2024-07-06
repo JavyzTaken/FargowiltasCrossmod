@@ -159,7 +159,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             NPC handNPC = hand.NPC;
             Vector2 hoverDestination = aresBody.Center + hoverOffset * aresBody.scale;
 
-            hand.KatanaInUse = true;
             hand.UsesBackArm = armIndex == 0 || armIndex == AresBodyEternity.ArmCount - 1;
             hand.ArmSide = (armIndex >= AresBodyEternity.ArmCount / 2).ToDirectionInt();
             hand.HandType = AresHandType.TeslaCannon;

@@ -6,11 +6,13 @@ using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.Particles;
 using CalamityMod.Sounds;
+using CalamityMod.UI;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -28,6 +30,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -244,6 +247,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 }, HitEffectILEdit).Apply();
             }
 
+            MethodInfo? addBarMethod = typeof(BossHealthBarManager).GetMethod("AttemptToAddBar");
+            if (addBarMethod is not null)
+            {
+                new ManagedILEdit("Change Apollo's name on Calamity's boss bar", Mod, edit =>
+                {
+                    hitEffectHook = new(addBarMethod, new(c => edit.EditingFunction(c, edit)));
+                }, edit =>
+                {
+                    hitEffectHook?.Undo();
+                    hitEffectHook?.Dispose();
+                }, RenameILEdit).Apply();
+            }
+
             if (Main.netMode == NetmodeID.Server)
                 return;
 
@@ -390,7 +406,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             }
         }
 
-        public static void HitEffectILEdit(ILContext context, ManagedILEdit edit)
+        private static void HitEffectILEdit(ILContext context, ManagedILEdit edit)
         {
             ILCursor cursor = new(context);
 
@@ -399,9 +415,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             cursor.Emit(OpCodes.Ret);
         }
 
+        private static void RenameILEdit(ILContext context, ManagedILEdit edit)
+        {
+            ILCursor cursor = new(context);
+
+            if (!cursor.TryGotoNext(i => i.MatchLdstr("UI.ExoTwinsName")))
+            {
+                edit.LogFailure("Could not locate the 'UI.ExoTwinsName' base string.");
+                return;
+            }
+
+            if (!cursor.TryGotoNext(MoveType.After, i => i.MatchCall(typeof(CalamityUtils).GetMethod("GetTextValue"))))
+            {
+                edit.LogFailure("Could not locate the GetTextValue call.");
+                return;
+            }
+
+            cursor.EmitDelegate((string originalText) =>
+            {
+                if (CalDLCWorldSavingSystem.E_EternityRev)
+                    return Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.ExoTwinsRenameNormal");
+
+                return originalText;
+            });
+        }
+
         public override void OnKill()
         {
             DropHelper.BlockDrops(ModContent.ItemType<TheAtomSplitter>(), ModContent.ItemType<SurgeDriver>(), ModContent.ItemType<DraedonBag>());
+        }
+
+        public override void ModifyTypeName(ref string typeName)
+        {
+            typeName = Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.ApolloRename");
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
