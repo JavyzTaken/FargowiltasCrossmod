@@ -64,6 +64,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// How much the energy katana has appeared.
+        /// </summary>
+        public float KatanaAppearanceInterpolant
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The frame of this arm.
         /// </summary>
         public int Frame
@@ -198,6 +207,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.damage = NPC.defDamage;
             NPC.Calamity().ShouldCloseHPBar = true;
             body.InstructionsForHands[LocalIndex]?.Action?.Invoke(this);
+
+            float oldAppearanceInterpolant = KatanaAppearanceInterpolant;
+            KatanaAppearanceInterpolant = LumUtils.Saturate(KatanaAppearanceInterpolant + KatanaInUse.ToDirectionInt() * 0.072f);
+            if (KatanaInUse && oldAppearanceInterpolant == 0f && KatanaAppearanceInterpolant >= 0.001f)
+            {
+                SoundEngine.PlaySound(AresBodyEternity.KatanaUnsheatheSound, NPC.Center);
+                ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 4f);
+            }
 
             EnergyDrawer.Update();
 
@@ -536,25 +553,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (!npc.As<AresHand>().KatanaInUse)
                 return;
 
+            float appearanceInterpolant = npc.As<AresHand>().KatanaAppearanceInterpolant;
             float squishInterpolant = Utils.Remap(npc.position.Distance(npc.oldPosition), 30f, 50f, 0f, 0.6f);
-
-            int bladeFrameNumber = (int)((Main.GlobalTimeWrappedHourly * 16f + npc.whoAmI * 7.13f) % 9f);
-            float bladeRotation = npc.rotation + npc.spriteDirection * MathHelper.PiOver2;
-            Texture2D bladeTexture = ModContent.Request<Texture2D>("CalamityMod/Projectiles/DraedonsArsenal/PhaseslayerBlade").Value;
-            Rectangle bladeFrame = bladeTexture.Frame(3, 7, bladeFrameNumber / 7, bladeFrameNumber % 7);
-            Vector2 bladeOrigin = bladeFrame.Size() * new Vector2(0.5f, 1f);
-            Vector2 bladeDrawPosition = drawPosition - npc.rotation.ToRotationVector2() * npc.scale * npc.spriteDirection * -24f;
-            Vector2 bladeScale = new Vector2(1f - squishInterpolant, 1f) * npc.scale;
-            Vector2 bloomScale = new Vector2(1f, 1f + squishInterpolant * 2f) * npc.scale;
+            Vector2 bladeDrawPosition = drawPosition - npc.rotation.ToRotationVector2() * npc.scale * npc.spriteDirection * -48f;
+            Vector2 bloomScale = new Vector2(1f, 1f + squishInterpolant * 2f) * npc.scale * appearanceInterpolant;
             Color bloomColor = Color.Lerp(Color.Crimson, Color.Wheat, squishInterpolant * 0.7f);
             SpriteEffects bladeDirection = npc.spriteDirection.ToSpriteDirection();
 
+            float swordBloomRotation = npc.rotation - npc.As<AresHand>().ArmSide * 0.1f;
             Texture2D bloom = MiscTexturesRegistry.BloomCircleSmall.Value;
-            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(bloomColor) with { A = 0 } * 0.6f, npc.rotation, bloom.Size() * new Vector2(0.2f, 0.5f), bloomScale * new Vector2(2.6f, 1.56f), bladeDirection, 0);
-            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(bloomColor) with { A = 0 } * 0.7f, npc.rotation, bloom.Size() * new Vector2(0.2f, 0.5f), bloomScale * new Vector2(2.6f, 1.1f), bladeDirection, 0);
+            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(bloomColor) with { A = 0 } * 0.6f, swordBloomRotation, bloom.Size() * new Vector2(0.25f, 0.5f), bloomScale * new Vector2(2.6f, appearanceInterpolant * 0.97f), bladeDirection, 0);
+            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(bloomColor) with { A = 0 } * 0.7f, swordBloomRotation, bloom.Size() * new Vector2(0.25f, 0.5f), bloomScale * new Vector2(2.6f, appearanceInterpolant * 0.71f), bladeDirection, 0);
             Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(Color.Red) with { A = 0 } * 0.7f, 0f, bloom.Size() * 0.5f, npc.scale, bladeDirection, 0);
 
-            Main.EntitySpriteDraw(bladeTexture, bladeDrawPosition, bladeFrame, npc.GetAlpha(Color.White), bladeRotation, bladeOrigin, bladeScale, bladeDirection, 0);
+            float katanaWidthFunction(float completionRatio) => npc.Opacity * npc.scale * MathHelper.Lerp(11f, 8f, squishInterpolant);
+            Color katanaColorFunction(float completionRatio) => npc.GetAlpha(Color.Crimson);
+
+            ManagedShader katanaShader = ShaderManager.GetShader("FargowiltasCrossmod.AresEnergyKatanaShader");
+            katanaShader.TrySetParameter("flip", npc.As<AresHand>().ArmSide == 1);
+            katanaShader.TrySetParameter("appearanceInterpolant", appearanceInterpolant);
+            katanaShader.SetTexture(MiscTexturesRegistry.TurbulentNoise.Value, 1, SamplerState.PointWrap);
+
+            PrimitiveSettings katanaPrimitiveSettings = new(katanaWidthFunction, katanaColorFunction, Shader: katanaShader);
+
+            Vector2 katanaReach = npc.rotation.ToRotationVector2() * appearanceInterpolant * 274f;
+            Vector2 orthogonalOffset = (npc.rotation + npc.As<AresHand>().ArmSide * -MathHelper.PiOver2).ToRotationVector2() * appearanceInterpolant * 30f;
+
+            Vector2[] katanaPositions = new Vector2[8];
+            for (int i = 0; i < katanaPositions.Length; i++)
+            {
+                float completionRatio = i / (float)(katanaPositions.Length - 1f);
+                katanaPositions[i] = bladeDrawPosition + katanaReach * completionRatio + Main.screenPosition;
+                katanaPositions[i] += orthogonalOffset * completionRatio.Squared();
+            }
+
+            PrimitiveRenderer.RenderTrail(katanaPositions, katanaPrimitiveSettings, 40);
         }
 
         /// <summary>

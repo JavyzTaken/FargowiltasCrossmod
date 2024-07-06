@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
         private static AresHandType New(string nameLocalizationKey, string texturePath, string glowmaskPath, int totalHorizontalFrames, int totalVerticalFrames, Color energyTelegraphColor, Action<NPC, Vector2>? extraDrawAction, params string[] customGoreNames)
         {
-            AresHandType hand = new(nameLocalizationKey, texturePath, glowmaskPath, totalVerticalFrames, totalHorizontalFrames, energyTelegraphColor, extraDrawAction, customGoreNames);
+            AresHandType hand = new(nameLocalizationKey, texturePath, glowmaskPath, totalHorizontalFrames, totalVerticalFrames, energyTelegraphColor, extraDrawAction, customGoreNames);
             hands.Add(hand);
 
             return hand;

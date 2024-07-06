@@ -40,6 +40,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static readonly SoundStyle SlashSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/Slash") with { Volume = 1.2f, MaxInstances = 0 };
 
         /// <summary>
+        /// The sound played when Ares unsheathes his katanas.
+        /// </summary>
+        public static readonly SoundStyle KatanaUnsheatheSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/EnergyKatanaUnsheathe") with { Volume = 1.2f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
+
+        /// <summary>
         /// AI update loop method for the KatanaSlashes attack.
         /// </summary>
         public void DoBehavior_KatanaSwingDashes()
@@ -143,8 +148,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             handNPC.damage = 0;
             handNPC.spriteDirection = 1;
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.3f);
-            handNPC.Center = hoverDestination;
-            handNPC.velocity = Vector2.Zero;
+            handNPC.SmoothFlyNear(hoverDestination, 0.5f, 0.5f);
             handNPC.rotation = handNPC.AngleFrom(NPC.Center).AngleLerp(hand.ShoulderToHandDirection, 0.3f);
 
             if (canRender)

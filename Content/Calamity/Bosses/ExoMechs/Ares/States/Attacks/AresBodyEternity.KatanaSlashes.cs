@@ -162,6 +162,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 handNPC.damage = 0;
             }
 
+            handNPC.Center = Vector2.Lerp(handNPC.Center, hoverDestination, 0.075f);
             handNPC.SmoothFlyNear(hoverDestination, 0.6f, 0.5f);
             handNPC.rotation = handNPC.AngleFrom(NPC.Center).AngleLerp(hand.ShoulderToHandDirection, rotateForwardInterpolant);
         }
