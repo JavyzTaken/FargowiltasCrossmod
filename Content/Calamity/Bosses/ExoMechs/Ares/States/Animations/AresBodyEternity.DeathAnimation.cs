@@ -137,7 +137,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             {
                 NPC.life = 0;
                 if (AresBody.CanDropLoot())
-                    NPC.checkDead();
+                    NPC.NPCLoot();
 
                 NPC.active = false;
 
