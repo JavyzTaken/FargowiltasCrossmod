@@ -440,9 +440,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             });
         }
 
-        public override void OnKill()
+        public override bool PreKill()
         {
             DropHelper.BlockDrops(ModContent.ItemType<TheAtomSplitter>(), ModContent.ItemType<SurgeDriver>(), ModContent.ItemType<DraedonBag>());
+            return true;
         }
 
         public override void ModifyTypeName(ref string typeName)

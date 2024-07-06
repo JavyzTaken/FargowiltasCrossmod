@@ -496,9 +496,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             return false;
         }
 
-        public override void OnKill()
+        public override bool PreKill()
         {
             DropHelper.BlockDrops(ModContent.ItemType<AresExoskeleton>(), ModContent.ItemType<PhotonRipper>(), ModContent.ItemType<TheJailor>(), ModContent.ItemType<DraedonBag>());
+            return true;
         }
 
         public override bool CheckDead()

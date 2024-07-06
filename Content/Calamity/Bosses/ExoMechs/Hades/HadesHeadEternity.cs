@@ -461,9 +461,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             return false;
         }
 
-        public override void OnKill()
+        public override bool PreKill()
         {
             DropHelper.BlockDrops(ModContent.ItemType<SpineOfThanatos>(), ModContent.ItemType<RefractionRotor>(), ModContent.ItemType<AtlasMunitionsBeacon>(), ModContent.ItemType<DraedonBag>());
+            return true;
         }
 
         public override void ModifyTypeName(ref string typeName)
