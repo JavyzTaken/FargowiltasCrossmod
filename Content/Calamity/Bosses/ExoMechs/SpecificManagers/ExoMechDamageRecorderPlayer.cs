@@ -47,7 +47,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             get
             {
                 // Fallback case.
-                // TODO -- Should this be a separate enumeration value?
                 if (damageDonePerSource.Count <= 0)
                     return ExoMechDamageSource.Thermal;
 
