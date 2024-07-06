@@ -32,7 +32,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                         CurrentState = AresAIState.BackgroundCoreLaserBeams;
                 }
                 while (CurrentState == PreviousState);
-                CurrentState = AresAIState.KatanaSwingDashes;
 
                 PreviousState = CurrentState;
 
