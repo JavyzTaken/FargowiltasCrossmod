@@ -527,6 +527,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Draws the katana on top of the actual energy katana.
+        /// </summary>
+        /// <param name="npc">The katana's NPC instance.</param>
+        /// <param name="drawPosition">The draw position of the katana.</param>
+        public static void DrawEnergyKatana(NPC npc, Vector2 drawPosition)
+        {
+            if (!npc.As<AresHand>().KatanaInUse)
+                return;
+
+            float squishInterpolant = Utils.Remap(npc.position.Distance(npc.oldPosition), 30f, 50f, 0f, 0.6f);
+
+            int bladeFrameNumber = (int)((Main.GlobalTimeWrappedHourly * 16f + npc.whoAmI * 7.13f) % 9f);
+            float bladeRotation = npc.rotation + npc.spriteDirection * MathHelper.PiOver2;
+            Texture2D bladeTexture = ModContent.Request<Texture2D>("CalamityMod/Projectiles/DraedonsArsenal/PhaseslayerBlade").Value;
+            Rectangle bladeFrame = bladeTexture.Frame(3, 7, bladeFrameNumber / 7, bladeFrameNumber % 7);
+            Vector2 bladeOrigin = bladeFrame.Size() * new Vector2(0.5f, 1f);
+            Vector2 bladeDrawPosition = drawPosition - npc.rotation.ToRotationVector2() * npc.scale * npc.spriteDirection * -24f;
+            Vector2 bladeScale = new Vector2(1f - squishInterpolant, 1f) * npc.scale;
+            Vector2 bloomScale = new Vector2(1f, 1f + squishInterpolant * 2f) * npc.scale;
+            Color bloomColor = Color.Lerp(Color.Crimson, Color.Wheat, squishInterpolant * 0.7f);
+            SpriteEffects bladeDirection = npc.spriteDirection.ToSpriteDirection();
+
+            Texture2D bloom = MiscTexturesRegistry.BloomCircleSmall.Value;
+            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(bloomColor) with { A = 0 } * 0.6f, npc.rotation, bloom.Size() * new Vector2(0.2f, 0.5f), bloomScale * new Vector2(2.6f, 1.56f), bladeDirection, 0);
+            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(bloomColor) with { A = 0 } * 0.7f, npc.rotation, bloom.Size() * new Vector2(0.2f, 0.5f), bloomScale * new Vector2(2.6f, 1.1f), bladeDirection, 0);
+            Main.EntitySpriteDraw(bloom, bladeDrawPosition, null, npc.GetAlpha(Color.Red) with { A = 0 } * 0.7f, 0f, bloom.Size() * 0.5f, npc.scale, bladeDirection, 0);
+
+            Main.EntitySpriteDraw(bladeTexture, bladeDrawPosition, bladeFrame, npc.GetAlpha(Color.White), bladeRotation, bladeOrigin, bladeScale, bladeDirection, 0);
+        }
+
+        /// <summary>
         /// The width function for slash afterimage trails used by Ares' hands when they're energy katanas.
         /// </summary>
         /// <param name="completionRatio">The completion ratio along the primitives.</param>
