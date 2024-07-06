@@ -25,12 +25,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends redirecting before releasing mines during the MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_RedirectTime => Utilities.SecondsToFrames(2.5f);
+        public static int MineBarrages_RedirectTime => Utilities.SecondsToFrames(2.3f);
 
         /// <summary>
         /// How long Hades spends releasing mines during the MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_MineReleaseTime => Utilities.SecondsToFrames(3.5f);
+        public static int MineBarrages_MineReleaseTime => Utilities.SecondsToFrames(2.7f);
 
         /// <summary>
         /// How long Hades spends releasing mines during the MineBarrages attack.
@@ -74,16 +74,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             NPC segment = behaviorOverride.NPC;
 
-            if ((segment.whoAmI * 53 + AITimer) % 125 == 0)
+            if ((segment.whoAmI * 53 + AITimer) % 110 == 0)
             {
                 Vector2 mineSpawnPosition = behaviorOverride.TurretPosition;
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     int time = AITimer % MineBarrages_AttackCycleTime - MineBarrages_RedirectTime - Main.rand.Next(60);
-                    float mineSpeed = Main.rand.NextFloat(30f, 100f);
+                    int mineLifetime = LumUtils.SecondsToFrames(Main.rand.NextFloat(4f, 10f));
+                    float mineSpeed = Main.rand.NextFloat(30f, 175f);
                     float mineOffsetAngle = Main.rand.NextGaussian(0.14f);
                     Vector2 mineVelocity = (Target.Center - mineSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(mineOffsetAngle) * mineSpeed;
-                    Utilities.NewProjectileBetter(segment.GetSource_FromAI(), mineSpawnPosition, mineVelocity, ModContent.ProjectileType<HadesMine>(), MineDamage, 0f, -1, time);
+                    Utilities.NewProjectileBetter(segment.GetSource_FromAI(), mineSpawnPosition, mineVelocity, ModContent.ProjectileType<HadesMine>(), MineDamage, 0f, -1, mineLifetime, time);
                 }
 
                 SoundEngine.PlaySound(Apollo.MissileLaunchSound with { Volume = 0.6f, MaxInstances = 0 }, mineSpawnPosition);

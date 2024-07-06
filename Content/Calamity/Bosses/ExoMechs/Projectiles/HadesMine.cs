@@ -29,14 +29,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public ExoMechDamageSource DamageType => ExoMechDamageSource.BluntForceTrauma;
 
         /// <summary>
-        /// The general purpose frame timer of this mine.
-        /// </summary>
-        public ref float Time => ref Projectile.ai[0];
-
-        /// <summary>
         /// How long this mine should exist before exploding, in frames.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(4.5f);
+        public ref float Lifetime => ref Projectile.ai[0];
+
+        /// <summary>
+        /// The general purpose frame timer of this mine.
+        /// </summary>
+        public ref float Time => ref Projectile.ai[1];
 
         /// <summary>
         /// The diameter of explosions created by this mine.
@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = Lifetime;
+            Projectile.timeLeft = 72000;
             Projectile.Calamity().DealsDefenseDamage = true;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -128,7 +128,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Main.spriteBatch.Draw(glow, drawPosition, null, glowColor, 0f, glow.Size() * 0.5f, 0.14f, 0, 0f);
         }
 
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) => Utilities.CircularHitboxCollision(Projectile.Center, Projectile.width * 0.5f, targetHitbox) && Projectile.velocity.Length() <= 5f;
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) => Utilities.CircularHitboxCollision(Projectile.Center, Projectile.width * 0.5f, targetHitbox) && Projectile.velocity.Length() <= 3.2f;
 
         public override void OnKill(int timeLeft)
         {
