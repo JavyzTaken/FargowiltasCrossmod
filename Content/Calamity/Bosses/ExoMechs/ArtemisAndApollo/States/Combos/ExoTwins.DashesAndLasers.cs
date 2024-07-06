@@ -21,7 +21,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// </summary>
         public static ref float DashesAndLasers_AttackCycleCounter => ref SharedState.Values[0];
 
-        // TODO -- Move this somewhere else.
         /// <summary>
         /// The amount of damage basic shots from the Exo Twins do.
         /// </summary>
