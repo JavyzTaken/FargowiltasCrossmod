@@ -1,4 +1,5 @@
 ﻿using CalamityMod.Items.Weapons.DraedonsArsenal;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.Particles;
 using FargowiltasCrossmod.Assets;
@@ -59,6 +60,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
+            if (CalamityGlobalNPC.draedonExoMechPrime == -1)
+            {
+                Projectile.Kill();
+                return;
+            }
+
             for (int i = 0; i < 2; i++)
                 CreateElectricSpark();
 

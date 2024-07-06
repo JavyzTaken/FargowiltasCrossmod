@@ -223,6 +223,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             PerformPreUpdateResets();
 
+            // Disapear if the player is dead.
+            if (Target.dead || !Target.active)
+            {
+                NPC.active = false;
+                return false;
+            }
+
             if (Inactive && CurrentState != HadesAIState.Inactive)
             {
                 CurrentState = HadesAIState.Inactive;

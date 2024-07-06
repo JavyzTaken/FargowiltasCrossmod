@@ -279,6 +279,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (Main.netMode != NetmodeID.MultiplayerClient && !HasCreatedArms)
                 CreateArms();
 
+            // Disapear if the player is dead.
+            if (Target.dead || !Target.active)
+            {
+                NPC.active = false;
+                return false;
+            }
+
             if (Inactive && CurrentState != AresAIState.Inactive)
             {
                 CurrentState = AresAIState.Inactive;
