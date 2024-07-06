@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             {
                 do
                 {
-                    CurrentState = Main.rand.NextFromList(AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts, AresAIState.KatanaSwingDashes);
+                    CurrentState = Main.rand.NextFromList(AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts, AresAIState.KatanaCycloneDashes);
 
                     if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                         CurrentState = AresAIState.BackgroundCoreLaserBeams;

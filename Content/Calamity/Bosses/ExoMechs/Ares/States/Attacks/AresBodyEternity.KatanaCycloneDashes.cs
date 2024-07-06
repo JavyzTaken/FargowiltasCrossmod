@@ -15,24 +15,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
     public sealed partial class AresBodyEternity : CalDLCEmodeBehavior
     {
         /// <summary>
-        /// The amount of slash dashes Ares has performed during the KatanaSwingDashes attack.
+        /// The amount of slash dashes Ares has performed during the KatanaCycloneDashes attack.
         /// </summary>
-        public ref float KatanaSwingDashes_SlashCounter => ref NPC.ai[0];
+        public ref float KatanaCycloneDashes_SlashCounter => ref NPC.ai[0];
 
         /// <summary>
-        /// How long Ares spends redirecting to get near the target during the KatanaSwingDashes attack.
+        /// How long Ares spends redirecting to get near the target during the KatanaCycloneDashes attack.
         /// </summary>
-        public static int KatanaSwingDashes_RedirectTime => LumUtils.SecondsToFrames(0.6f);
+        public static int KatanaCycloneDashes_RedirectTime => LumUtils.SecondsToFrames(0.6f);
 
         /// <summary>
-        /// How long Ares spends flying away from the target during the KatanaSwingDashes attack.
+        /// How long Ares spends flying away from the target during the KatanaCycloneDashes attack.
         /// </summary>
-        public static int KatanaSwingDashes_FlyAwayTime => LumUtils.SecondsToFrames(1.1f);
+        public static int KatanaCycloneDashes_FlyAwayTime => LumUtils.SecondsToFrames(1.1f);
 
         /// <summary>
-        /// How many slash dashes should be performed during the KatanaSwingDashes attack. 
+        /// How many slash dashes should be performed during the KatanaCycloneDashes attack. 
         /// </summary>
-        public static int KatanaSwingDashes_SlashCount => 9;
+        public static int KatanaCycloneDashes_SlashCount => 9;
 
         /// <summary>
         /// The sound played when Ares performs a slash.
@@ -47,26 +47,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// AI update loop method for the KatanaSlashes attack.
         /// </summary>
-        public void DoBehavior_KatanaSwingDashes()
+        public void DoBehavior_KatanaCycloneDashes()
         {
             AnimationState = AresFrameAnimationState.Laugh;
 
             bool drawBlurSlash = false;
 
-            if (AITimer <= KatanaSwingDashes_RedirectTime)
+            if (AITimer <= KatanaCycloneDashes_RedirectTime)
             {
                 float redirectSpeed = MathHelper.Lerp(0.05f, 0.2f, LumUtils.Convert01To010(LumUtils.InverseLerp(0f, 30f, AITimer).Squared()));
-                redirectSpeed *= LumUtils.InverseLerp(KatanaSwingDashes_RedirectTime, KatanaSwingDashes_RedirectTime - 45f, AITimer);
+                redirectSpeed *= LumUtils.InverseLerp(KatanaCycloneDashes_RedirectTime, KatanaCycloneDashes_RedirectTime - 45f, AITimer);
 
                 Vector2 hoverDestination = Target.Center + new Vector2(NPC.HorizontalDirectionTo(Target.Center) * -400f, -150f);
                 NPC.SmoothFlyNearWithSlowdownRadius(hoverDestination, redirectSpeed, 1f - redirectSpeed, 50f);
             }
-            else if (AITimer <= KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime)
+            else if (AITimer <= KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime)
             {
                 NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.velocity.X.NonZeroSign() * 93f, 0.099f);
                 NPC.velocity.Y *= 1.018f;
 
-                if (AITimer == KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime)
+                if (AITimer == KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime)
                 {
                     ScreenShakeSystem.StartShake(10f);
                     SoundEngine.PlaySound(LaughSound with { Volume = 10f });
@@ -75,20 +75,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             else
             {
                 // Teleport to the other side of the player.
-                if (Main.netMode != NetmodeID.MultiplayerClient && AITimer == KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime + 1)
+                if (Main.netMode != NetmodeID.MultiplayerClient && AITimer == KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime + 1)
                 {
                     if (LumUtils.CountProjectiles(ModContent.ProjectileType<AresSwingingKatanas>()) <= 0)
                         LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<AresSwingingKatanas>(), KatanaDamage, 0f);
 
                     Vector2 teleportOffset = (NPC.SafeDirectionTo(Target.Center) * new Vector2(1f, 0.5f)).SafeNormalize(Vector2.UnitX);
-                    if (KatanaSwingDashes_SlashCounter <= 0f)
+                    if (KatanaCycloneDashes_SlashCounter <= 0f)
                         teleportOffset *= -1f;
 
                     NPC.Center = Target.Center + teleportOffset * 1850f;
                     NPC.velocity = NPC.SafeDirectionTo(Target.Center) * 37f;
 
-                    KatanaSwingDashes_SlashCounter++;
-                    if (KatanaSwingDashes_SlashCounter >= KatanaSwingDashes_SlashCount)
+                    KatanaCycloneDashes_SlashCounter++;
+                    if (KatanaCycloneDashes_SlashCounter >= KatanaCycloneDashes_SlashCount)
                     {
                         IProjOwnedByBoss<AresBody>.KillAll();
                         NPC.Center = Target.Center - Vector2.UnitY * 800f;
@@ -104,9 +104,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
                 NPC.velocity *= 1.025f;
 
-                if (AITimer >= KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, 1950f))
+                if (AITimer >= KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, 1950f))
                 {
-                    AITimer = KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime;
+                    AITimer = KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime;
                     NPC.netUpdate = true;
                 }
 
