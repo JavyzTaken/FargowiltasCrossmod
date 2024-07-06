@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long the walled slashes attack goes on for until a new combo is selected.
         /// </summary>
-        public static int AttackDuration => Utilities.SecondsToFrames(9f);
+        public static int AttackDuration => Utilities.SecondsToFrames(9.5f);
 
         /// <summary>
         /// Ares' slash cycle time, which dictates how fast each set of slashes are.
@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares waits before slashing.
         /// </summary>
-        public static int AresSlashDelay => Utilities.SecondsToFrames(3.5f);
+        public static int AresSlashDelay => Utilities.SecondsToFrames(5.4f);
 
         /// <summary>
         /// The max speed at which Ares can fly when trying to reach the player.
