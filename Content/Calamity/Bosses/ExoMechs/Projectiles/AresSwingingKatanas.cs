@@ -56,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             NPC ares = Main.npc[CalamityGlobalNPC.draedonExoMechPrime];
             Projectile.Center = ares.Center;
-            Projectile.rotation = ares.rotation * 0.25f;
+            Projectile.rotation = ares.rotation * 0.04f;
             Projectile.velocity = ares.velocity.SafeNormalize(Vector2.Zero);
 
             DelegateMethods.v3_1 = Color.Crimson.ToVector3();

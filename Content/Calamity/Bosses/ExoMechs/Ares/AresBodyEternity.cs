@@ -156,6 +156,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Whether Ares should use his standard rotation method, based on his horizontal speed.
+        /// </summary>
+        public bool UseStandardRotation
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Ares' silhouette opacity. If this is 0, no silhouette is drawn.
         /// </summary>
         public float SilhouetteOpacity
@@ -269,7 +278,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             PerformPreUpdateResets();
             ExecuteCurrentState();
 
-            NPC.rotation = NPC.rotation.AngleLerp(NPC.velocity.X * 0.015f, 0.2f);
+            if (UseStandardRotation)
+                NPC.rotation = NPC.rotation.AngleLerp(NPC.velocity.X * 0.015f, 0.2f);
             NPC.scale = 1f / (ZPosition + 1f);
             NPC.Opacity = Utils.Remap(ZPosition, 0.6f, 2f, 1f, 0.67f);
             NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == AresAIState.DeathAnimation;
@@ -288,6 +298,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             AnimationState = AresFrameAnimationState.Default;
             ZPosition = 0f;
             AITimer = 0;
+
+            for (int i = 0; i < NPC.maxAI; i++)
+                NPC.ai[i] = 0f;
+
             NPC.netUpdate = true;
         }
 
@@ -402,6 +416,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             SilhouetteOpacity = 0f;
             SilhouetteDissolveInterpolant = 0f;
             OptionalDrawAction = null;
+            UseStandardRotation = true;
 
             CalamityGlobalNPC.draedonExoMechPrime = NPC.whoAmI;
         }

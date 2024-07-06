@@ -1,5 +1,7 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
+﻿using CalamityMod.NPCs.ExoMechs.Ares;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -12,21 +14,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 {
     public sealed partial class AresBodyEternity : CalDLCEmodeBehavior
     {
-        public static int KatanaSwingDashes_RedirectTime => LumUtils.SecondsToFrames(1.4f);
+        /// <summary>
+        /// The amount of slash dashes Ares has performed during the KatanaSwingDashes attack.
+        /// </summary>
+        public ref float KatanaSwingDashes_SlashCounter => ref NPC.ai[0];
 
-        public static int KatanaSwingDashes_FlyAwayTime => LumUtils.SecondsToFrames(3f);
+        /// <summary>
+        /// How long Ares spends redirecting to get near the target during the KatanaSwingDashes attack.
+        /// </summary>
+        public static int KatanaSwingDashes_RedirectTime => LumUtils.SecondsToFrames(0.6f);
+
+        /// <summary>
+        /// How long Ares spends flying away from the target during the KatanaSwingDashes attack.
+        /// </summary>
+        public static int KatanaSwingDashes_FlyAwayTime => LumUtils.SecondsToFrames(1.1f);
+
+        /// <summary>
+        /// How many slash dashes should be performed during the KatanaSwingDashes attack. 
+        /// </summary>
+        public static int KatanaSwingDashes_SlashCount => 9;
+
+        /// <summary>
+        /// The sound played when Ares performs a slash.
+        /// </summary>
+        public static readonly SoundStyle SlashSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/Slash") with { Volume = 1.2f, MaxInstances = 0 };
 
         /// <summary>
         /// AI update loop method for the KatanaSlashes attack.
         /// </summary>
         public void DoBehavior_KatanaSwingDashes()
         {
-            if (AITimer == 1)
-            {
-                ScreenShakeSystem.StartShake(10f);
-                SoundEngine.PlaySound(LaughSound with { Volume = 10f });
-            }
-
             AnimationState = AresFrameAnimationState.Laugh;
 
             bool drawBlurSlash = false;
@@ -41,8 +58,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             }
             else if (AITimer <= KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime)
             {
-                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.velocity.X.NonZeroSign() * 67f, 0.1f);
-                NPC.velocity.Y *= 1.01f;
+                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, NPC.velocity.X.NonZeroSign() * 93f, 0.099f);
+                NPC.velocity.Y *= 1.018f;
+
+                if (AITimer == KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime)
+                {
+                    ScreenShakeSystem.StartShake(10f);
+                    SoundEngine.PlaySound(LaughSound with { Volume = 10f });
+                }
             }
             else
             {
@@ -53,10 +76,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                         LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<AresSwingingKatanas>(), KatanaDamage, 0f);
 
                     Vector2 teleportOffset = (NPC.SafeDirectionTo(Target.Center) * new Vector2(1f, 0.5f)).SafeNormalize(Vector2.UnitX);
+                    if (KatanaSwingDashes_SlashCounter <= 0f)
+                        teleportOffset *= -1f;
+
                     NPC.Center = Target.Center + teleportOffset * 1750f;
                     NPC.velocity = NPC.SafeDirectionTo(Target.Center) * 37f;
+
+                    KatanaSwingDashes_SlashCounter++;
+                    if (KatanaSwingDashes_SlashCounter >= KatanaSwingDashes_SlashCount)
+                    {
+                        IProjOwnedByBoss<AresBody>.KillAll();
+                        SelectNewState();
+                    }
+
                     NPC.netUpdate = true;
                 }
+
+                if (AITimer % 11f == 10f)
+                    SoundEngine.PlaySound(SlashSound, NPC.Center);
 
                 NPC.velocity *= 1.025f;
 
@@ -67,11 +104,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 }
 
                 drawBlurSlash = true;
-
                 ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 6f, MathHelper.PiOver2, NPC.velocity.SafeNormalize(Vector2.Zero), 0.3f, 700f, 950f);
             }
 
-            NPC.rotation = NPC.velocity.X * 0.002f;
+            NPC.rotation *= 0.45f;
 
             InstructionsForHands[0] = new(h => KatanaSwingHandUpdate(h, new Vector2(-400f, 40f), KatanaSlashes_AttackDelay, KatanaSlashes_AttackCycleTime, 0, !drawBlurSlash));
             InstructionsForHands[1] = new(h => KatanaSwingHandUpdate(h, new Vector2(-280f, 224f), KatanaSlashes_AttackDelay, KatanaSlashes_AttackCycleTime, 1, !drawBlurSlash));
@@ -105,8 +141,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             handNPC.damage = 0;
             handNPC.spriteDirection = 1;
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.3f);
-
-            handNPC.SmoothFlyNear(hoverDestination, 0.6f, 0.5f);
+            handNPC.Center = hoverDestination;
+            handNPC.velocity = Vector2.Zero;
             handNPC.rotation = handNPC.AngleFrom(NPC.Center).AngleLerp(hand.ShoulderToHandDirection, 0.3f);
 
             if (canRender)
