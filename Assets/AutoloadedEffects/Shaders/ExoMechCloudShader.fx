@@ -184,7 +184,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float4 backColor = float4(ColorBurn(float3(0.6, 0.87, 1), backNoise), 1) * smoothstep(0.1, 0.4, backNoise);
     backColor = pow(backColor, 2) * 4;
     
-    cloudColor += backColor * smoothstep(0.2, 0.75, cloudColorIntensity) * 2;
+    cloudColor += backColor * smoothstep(0.2, 0.75, cloudColorIntensity) * cloudColor.a * 2;
     
     return cloudColor;
 }
