@@ -34,8 +34,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 1050;
-            Projectile.height = 226;
+            Projectile.width = 1120;
+            Projectile.height = 232;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;

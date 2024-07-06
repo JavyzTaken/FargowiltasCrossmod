@@ -79,13 +79,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     if (KatanaSwingDashes_SlashCounter <= 0f)
                         teleportOffset *= -1f;
 
-                    NPC.Center = Target.Center + teleportOffset * 1750f;
+                    NPC.Center = Target.Center + teleportOffset * 1850f;
                     NPC.velocity = NPC.SafeDirectionTo(Target.Center) * 37f;
 
                     KatanaSwingDashes_SlashCounter++;
                     if (KatanaSwingDashes_SlashCounter >= KatanaSwingDashes_SlashCount)
                     {
                         IProjOwnedByBoss<AresBody>.KillAll();
+                        NPC.Center = Target.Center - Vector2.UnitY * 800f;
+                        NPC.velocity = Vector2.Zero;
                         SelectNewState();
                     }
 
@@ -97,7 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
                 NPC.velocity *= 1.025f;
 
-                if (AITimer >= KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, 1900f))
+                if (AITimer >= KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, 1950f))
                 {
                     AITimer = KatanaSwingDashes_RedirectTime + KatanaSwingDashes_FlyAwayTime;
                     NPC.netUpdate = true;
