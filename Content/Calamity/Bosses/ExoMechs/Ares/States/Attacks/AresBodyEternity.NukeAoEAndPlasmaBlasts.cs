@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares waits before transitioning to the next state following the explosion during the NukeAoEAndPlasmaBlasts attack.
         /// </summary>
-        public static int NukeAoEAndPlasmaBlasts_AttackTransitionDelay => Utilities.SecondsToFrames(2.3f);
+        public static int NukeAoEAndPlasmaBlasts_AttackTransitionDelay => Utilities.SecondsToFrames(1.2f);
 
         /// <summary>
         /// How big the nuke explosion should be during the NukeAoEAndPlasmaBlasts attack.
