@@ -111,6 +111,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// The previous non-combo state Ares performed.
+        /// </summary>
+        public AresAIState PreviousState
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Ares' current frame animation state.
         /// </summary>
         public AresFrameAnimationState AnimationState
@@ -244,6 +253,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             binaryWriter.Write(ZPosition);
             binaryWriter.Write(AITimer);
             binaryWriter.Write((int)CurrentState);
+            binaryWriter.Write((int)PreviousState);
 
             binaryWriter.WriteVector2(AimedLaserBursts_AimOffset);
         }
@@ -258,6 +268,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             ZPosition = binaryReader.ReadSingle();
             AITimer = binaryReader.ReadInt32();
             CurrentState = (AresAIState)binaryReader.ReadInt32();
+            PreviousState = (AresAIState)binaryReader.ReadInt32();
 
             AimedLaserBursts_AimOffset = binaryReader.ReadVector2();
         }
