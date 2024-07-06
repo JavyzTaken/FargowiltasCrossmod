@@ -186,15 +186,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// </summary>
         public static ExoTwinsAIState MakeAIStateChoice()
         {
-            if (SharedState.TotalFinishedAttacks % 2 == 1)
-                return ExoTwinsAIState.PerformIndividualAttacks;
-
             bool phase2 = false;
             if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
                 phase2 = apollo.InPhase2;
 
             if (Main.rand.NextBool() && phase2)
                 return Main.rand.NextFromList(ExoTwinsAIState.MachineGunLasers, ExoTwinsAIState.ExothermalOverload);
+
+            if (SharedState.TotalFinishedAttacks % 2 == 1)
+                return ExoTwinsAIState.PerformIndividualAttacks;
 
             return Main.rand.NextFromList(ExoTwinsAIState.DashesAndLasers, ExoTwinsAIState.CloseShots);
         }

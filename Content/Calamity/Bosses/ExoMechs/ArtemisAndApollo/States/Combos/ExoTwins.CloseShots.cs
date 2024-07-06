@@ -1,7 +1,7 @@
 ﻿using CalamityMod.NPCs.ExoMechs.Artemis;
-using CalamityMod.Projectiles.Boss;
 using CalamityMod.Sounds;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -150,15 +150,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     {
                         SoundEngine.PlaySound(CommonCalamitySounds.ExoPlasmaShootSound, npc.Center);
 
-                        // TODO -- Use a custom projectile for this.
-                        // Calamity has a long history of being "finished" with boss things only to then change them later unannounced and certain aspects of the
-                        // ApolloFireball projectile look a bit boring, such as the explosion dust.
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             Vector2 aimDirection = npc.rotation.ToRotationVector2();
                             Vector2 fireballSpawnPosition = npc.Center + aimDirection * 70f;
                             Vector2 fireballShootVelocity = aimDirection * CloseShots_ApolloFireballShootSpeed;
-                            Utilities.NewProjectileBetter(npc.GetSource_FromAI(), fireballSpawnPosition, fireballShootVelocity, ModContent.ProjectileType<ApolloFireball>(), BasicShotDamage, 0f, -1, Target.Center.X, Target.Center.Y, 1f);
+                            Utilities.NewProjectileBetter(npc.GetSource_FromAI(), fireballSpawnPosition, fireballShootVelocity, ModContent.ProjectileType<ApolloPlasmaFireball>(), BasicShotDamage, 0f, -1, Target.Center.X, Target.Center.Y, 1f);
                         }
                     }
 

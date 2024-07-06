@@ -459,7 +459,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
         public float FlameEngulfWidthFunction(float completionRatio)
         {
-            float baseWidth = 114f - completionRatio * 64f;
+            float baseWidth = MathHelper.Lerp(114f, 50f, completionRatio);
             float tipSmoothenFactor = MathF.Sqrt(1f - Utilities.InverseLerp(0.3f, 0.015f, completionRatio).Cubed());
             return NPC.scale * baseWidth * tipSmoothenFactor;
         }
