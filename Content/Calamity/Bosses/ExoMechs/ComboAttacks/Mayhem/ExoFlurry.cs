@@ -31,12 +31,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares spends charging up before firing his nuke.
         /// </summary>
-        public static int NukeChargeUpTime => Utilities.SecondsToFrames(2.3f);
+        public static int NukeChargeUpTime => Utilities.SecondsToFrames(3f);
 
         /// <summary>
         /// How long Ares waits after firing his nuke before being able to begin attempting to fire a new one.
         /// </summary>
-        public static int NukeShotDelay => Utilities.SecondsToFrames(9f);
+        public static int NukeShotDelay => Utilities.SecondsToFrames(8.5f);
 
         /// <summary>
         /// The diameter of the explosion from Ares' nukes.
