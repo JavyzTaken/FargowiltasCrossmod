@@ -6,6 +6,7 @@ using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -107,6 +108,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     SoundEngine.PlaySound(SlashSound, NPC.Center);
 
                 NPC.velocity *= 1.025f;
+
+                float rotateToPlayerInterpolant = LumUtils.InverseLerp(12f, 22f, MathF.Abs(Target.velocity.Y));
+                NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), rotateToPlayerInterpolant * 0.0136f);
 
                 if (AITimer >= KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, 1950f))
                 {
