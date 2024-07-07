@@ -12,8 +12,8 @@ float2 parallax;
 float2 screenSize;
 float2 worldPosition;
 float3 sunPosition;
-float lightningIntensities[10];
-float2 lightningPositions[10];
+float lightningIntensities[5];
+float2 lightningPositions[5];
 
 float2 GetRayBoxIntersectionOffsets(float3 rayOrigin, float3 rayDirection, float3 boxMin, float3 boxMax)
 {
@@ -94,8 +94,8 @@ float4 CalculateScatteredLight(float3 rayOrigin, float3 rayDirection)
     float3 boxMin = float3(-999999, -999999, 0);
     float3 boxMax = float3(999999, 999999, 2);
     
-    float inScatterPoints = 4;
-    float sunIntersectionPoints = 4;
+    float inScatterPoints = 2;
+    float sunIntersectionPoints = 2;
     float2 intersectionDistances = GetRayBoxIntersectionOffsets(rayOrigin, rayDirection, boxMin, boxMax);
     
     // Calculate how far the cloud intersection must travel.
@@ -172,7 +172,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     float cloudColorIntensity = 0;
     float distanceNoise = tex2D(backOverlayNoiseTexture, coords * 3.9);
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 5; i++)
     {
         float intensity = lightningIntensities[i];
         float distanceToLocalLightning = distance(lightningPositions[i], coords) + distanceNoise * 0.2;

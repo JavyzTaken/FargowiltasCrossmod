@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
         /// <summary>
         /// The lightning instances.
         /// </summary>
-        public static readonly LightningData[] Lightning = new LightningData[10];
+        public static readonly LightningData[] Lightning = new LightningData[5];
 
         /// <summary>
         /// The identifier key for this sky.
