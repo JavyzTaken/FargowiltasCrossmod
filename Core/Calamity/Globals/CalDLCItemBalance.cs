@@ -223,6 +223,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
             }
+            if (item.type == ModContent.ItemType<AdamantiteEnchant>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not work with any Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
+            }
             if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));

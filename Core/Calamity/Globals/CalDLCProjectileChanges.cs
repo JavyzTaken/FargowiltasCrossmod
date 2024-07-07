@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (entity.ModProjectile != null && entity.ModProjectile is BaseLaserbeamProjectile)
             {
-                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().GrazeCheck =
+                entity.FargoSouls().GrazeCheck =
                 Projectile =>
                 {
                     float num6 = 0f;
@@ -54,13 +54,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                     return false;
                 };
-                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 1;
+                entity.FargoSouls().DeletionImmuneRank = 1;
             }
+
+            if (entity.ModProjectile != null && entity.ModProjectile.Mod == ModCompatibility.Calamity.Mod) // Global disables on all Calamity projectiles. Currently: Adamantite Enchantment
+            {
+                entity.FargoSouls().CanSplit = false;
+            }
+                
+
             if (new List<int>() {ModContent.ProjectileType<Flarenado>(), ModContent.ProjectileType<BrimstoneMonster>(), ModContent.ProjectileType<YharonBulletHellVortex>(),
             ModContent.ProjectileType<OldDukeVortex>(), ModContent.ProjectileType<Infernado>(),ModContent.ProjectileType<Infernado2>(),ModContent.ProjectileType<InfernadoRevenge>(),
             ModContent.ProjectileType<SkyFlareRevenge>(), ModContent.ProjectileType<ProvidenceCrystal>(), ModContent.ProjectileType<AresGaussNukeProjectileBoom>(),}.Contains(entity.type))
             {
-                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 2;
+                entity.FargoSouls().DeletionImmuneRank = 2;
             }
             if (BossRushEvent.BossRushActive && new List<int> { ModContent.ProjectileType<DeviSparklingLove>(), ModContent.ProjectileType<DeviBigDeathray>(), ModContent.ProjectileType<PlanteraTentacle>(), ProjectileID.PhantasmalDeathray }.Contains(entity.type))
             {
