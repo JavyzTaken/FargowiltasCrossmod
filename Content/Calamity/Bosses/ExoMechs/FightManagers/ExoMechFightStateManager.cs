@@ -1,4 +1,5 @@
-﻿using CalamityMod.NPCs.ExoMechs.Apollo;
+﻿using CalamityMod;
+using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
@@ -127,6 +128,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
                 DetermineBattleState();
         }
 
+        public override void PostUpdateNPCs()
+        {
+            if (CalDLCWorldSavingSystem.E_EternityRev && FightOngoing)
+                GrantInfiniteFlight();
+        }
+
         /// <summary>
         /// Creates and registers a new phase for the Exo Mechs fight.
         /// </summary>
@@ -190,6 +197,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             FightState = new(draedonState, totalAliveMechs, ExoMechStateFromNPC(primaryMech, true), stateOfOtherExoMechs);
 
             FightOngoing = true;
+        }
+
+        /// <summary>
+        /// Grantes infinite flight to all players for the purposes of the Exo Mechs fight.
+        /// </summary>
+        private static void GrantInfiniteFlight()
+        {
+            foreach (Player player in Main.ActivePlayers)
+            {
+                player.GrantInfiniteFlight();
+                player.Calamity().infiniteFlight = true;
+            }
         }
 
         /// <summary>
