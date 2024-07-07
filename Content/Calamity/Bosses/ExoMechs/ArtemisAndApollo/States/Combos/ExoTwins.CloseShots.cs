@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How fast Apollo's shot fireballs are during the CloseShots attack.
         /// </summary>
-        public static float CloseShots_ApolloFireballShootSpeed => 23f;
+        public static float CloseShots_ApolloFireballShootSpeed => 33f;
 
         /// <summary>
         /// AI update loop method for the CloseShots attack.
@@ -139,7 +139,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 }
 
                 idealRotation += MathF.Sin(MathHelper.TwoPi * wrappedTimer * spinDirection / 70f) * 0.08f;
-                idealRotation = idealRotation.AngleLerp(npc.AngleTo(Target.Center + Target.velocity * 12f), 0.1f);
+                idealRotation = idealRotation.AngleLerp(npc.AngleTo(Target.Center + Target.velocity * 24f), 0.1f);
                 npc.rotation = npc.rotation.AngleLerp(MathHelper.WrapAngle(idealRotation), 0.25f);
                 npc.velocity *= 0.825f;
                 npc.Center = Vector2.Lerp(npc.Center, Target.Center - Vector2.UnitX * isApollo.ToDirectionInt() * 150f, 0.02f);
