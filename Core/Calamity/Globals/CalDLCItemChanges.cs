@@ -146,11 +146,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                //ModContent.GetInstance<ReaperToothNecklace>().UpdateAccessory(player, hideVisual);
-                player.GetArmorPenetration<GenericDamageClass>() += 15f;
-            }
-            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
-            {
                 if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
@@ -173,10 +168,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.AddEffect<DynamoStemCellsEffect>(item))
-                {
-                    ModContent.GetInstance<DynamoStemCells>().UpdateAccessory(player, hideVisual);
-                }
             }
             if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -195,14 +186,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<EclipseMirrorEffect>(item))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<DragonScalesEffect>(item))
-                {
-                    ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<VeneratedLocketEffect>(item))
-                {
-                    ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
