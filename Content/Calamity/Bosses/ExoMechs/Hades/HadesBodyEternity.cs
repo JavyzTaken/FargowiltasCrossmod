@@ -267,7 +267,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         public void ModifyDRBasedOnOpenInterpolant()
         {
-            float damageReduction = MathHelper.SmoothStep(0.9999f, 0f, SegmentOpenInterpolant);
+            float damageReduction = MathHelper.SmoothStep(0.9999f, 0.27f, SegmentOpenInterpolant);
             CalamityGlobalNPC globalNPC = NPC.Calamity();
             globalNPC.unbreakableDR = damageReduction >= 0.999f;
             globalNPC.DR = damageReduction;
