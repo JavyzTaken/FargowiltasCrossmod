@@ -17,12 +17,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Apollo spends hovering/reeling back before dashing during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_HoverTime => Utilities.SecondsToFrames(1.25f);
+        public static int LoopDashBombardment_HoverTime => Utilities.SecondsToFrames(1.5f);
 
         /// <summary>
         /// The amount of time before the dash's happening that Apollo uses to determine when he should play a telegraph beep sound during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_TelegraphSoundBuffer => Utilities.SecondsToFrames(0.467f);
+        public static int LoopDashBombardment_TelegraphSoundBuffer => Utilities.SecondsToFrames(0.6f);
 
         /// <summary>
         /// How long Apollo spends performing his initial straight dash during the LoopDashBombardment attack.
