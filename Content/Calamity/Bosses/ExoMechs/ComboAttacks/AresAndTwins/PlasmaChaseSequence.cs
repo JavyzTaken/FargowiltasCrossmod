@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// The speed at which Ares chases his target.
         /// </summary>
-        public static float AresChaseSpeedInterpolant => 0.033f;
+        public static float AresChaseSpeedInterpolant => 0.0284f;
 
         /// <summary>
         /// The speed at which the Exo Twins dash at their target.
