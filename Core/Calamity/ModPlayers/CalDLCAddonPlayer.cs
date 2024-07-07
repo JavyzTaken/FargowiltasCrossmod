@@ -16,6 +16,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using Luminance.Common.Utilities;
+using CalamityMod.Projectiles.Ranged;
+using CalamityMod;
+using CalamityMod.Events;
 
 namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
@@ -59,10 +62,21 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
-           if (Player.HasEffect<DesertProwlerEffect>())
+            if (Player.HasEffect<DesertProwlerEffect>())
             {
                 DesertProwlerEffect.ProwlerEffect(Player);
             }
+            //testing adamantite ench interactions. disregard!
+            //int c = 0;
+            //for (int i = 0; i < Main.maxProjectiles; i++)
+            //{
+            //    if (Main.projectile[i].type == ModContent.ProjectileType<PhotovisceratorHoldout>() && Main.projectile[i].active)
+            //    {
+            //        c++;
+                    
+            //    }
+            //}
+            //Main.NewText(c);
         }
         public override void MeleeEffects(Item item, Rectangle hitbox)
         {

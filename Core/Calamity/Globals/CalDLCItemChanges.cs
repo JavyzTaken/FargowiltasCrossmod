@@ -8,6 +8,7 @@ using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
 using CalamityMod.Items.Placeables.Furniture;
 using CalamityMod.Items.Placeables.Furniture.Fountains;
+using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Magic;
@@ -258,16 +259,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
                     tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                    /*
-                    if (tooltips[i].Text.Contains("Not consumable"))
-                    {
-                        tooltips[i].Text = "";
-                    }
-                    */
+                    
+                    
+                    
                 }
             }
-
-
+            for (int i = 0; i < tooltips.Count; i++)
+            {
+                if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
+                {
+                    tooltips[i].Text = "";
+                }
+            }
             if (item.type == ModContent.ItemType<Rock>())
             {
                 tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));

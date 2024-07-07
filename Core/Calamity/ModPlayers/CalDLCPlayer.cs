@@ -21,6 +21,7 @@ using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
@@ -65,7 +66,8 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
-
+            
+            //Main.NewText(BossRushEvent.BossRushStage);
         }
         public override void PreUpdateMovement()
         {
