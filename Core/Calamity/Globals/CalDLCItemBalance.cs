@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public static float TrueMeleeTungstenScaleNerf(Player player)
         {
             FargoSoulsPlayer soulsPlayer = player.FargoSouls();
-            return player.HasEffect<TungstenEffect>() && soulsPlayer.ForceEffect<TungstenEnchant>() ? 1.5f : 1.5f;
+            return player.HasEffect<TungstenEffect>() && soulsPlayer.ForceEffect<TungstenEnchant>() ? 1.6f : 1.6f;
         }
         public override void ModifyItemScale(Item item, Player player, ref float scale)
         {
