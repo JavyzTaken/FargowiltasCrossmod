@@ -145,11 +145,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                //ModContent.GetInstance<ReaperToothNecklace>().UpdateAccessory(player, hideVisual);
-                player.GetArmorPenetration<GenericDamageClass>() += 15f;
-            }
-            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
-            {
                 if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
