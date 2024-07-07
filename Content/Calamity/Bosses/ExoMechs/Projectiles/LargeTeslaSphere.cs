@@ -163,15 +163,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
 
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 24; i++)
             {
-                Vector2 burstVelocity = (MathHelper.TwoPi * i / 16f).ToRotationVector2() * 0.5f;
+                Vector2 burstVelocity = (MathHelper.TwoPi * i / 24f).ToRotationVector2() * 0.57f;
                 Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), Projectile.Center, burstVelocity, ModContent.ProjectileType<HomingTeslaBurst>(), AresBodyEternity.TeslaBurstDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 11; i++)
             {
-                Vector2 burstVelocity = (MathHelper.TwoPi * i / 8f + MathHelper.Pi / 6f).ToRotationVector2() * 0.97f;
+                Vector2 burstVelocity = (MathHelper.TwoPi * i / 11f + MathHelper.Pi / 6f).ToRotationVector2() * 0.97f;
+                Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), Projectile.Center, burstVelocity, ModContent.ProjectileType<HomingTeslaBurst>(), AresBodyEternity.TeslaBurstDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
+            }
+
+            Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
+            for (int i = 0; i < 7; i++)
+            {
+                Vector2 burstVelocity = Projectile.SafeDirectionTo(target.Center).RotatedBy(MathHelper.Lerp(-0.51f, 0.51f, i / 6f)) * 1.4f;
                 Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), Projectile.Center, burstVelocity, ModContent.ProjectileType<HomingTeslaBurst>(), AresBodyEternity.TeslaBurstDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
             }
 

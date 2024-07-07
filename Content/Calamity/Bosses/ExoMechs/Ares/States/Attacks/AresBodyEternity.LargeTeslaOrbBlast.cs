@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long the tesla orb spends charging energy before firing during the LargeTeslaOrbBlast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_OrbChargeUpTime => Utilities.SecondsToFrames(2.5f);
+        public static int LargeTeslaOrbBlast_OrbChargeUpTime => Utilities.SecondsToFrames(1.4f);
 
         /// <summary>
         /// How long the tesla orb waits after charging energy before releasing homing bursts during the LargeTeslaOrbBlast attack.
@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// The rate at which homing bursts are shot from the tesla orb during the LargeTeslaOrbBlast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_BurstReleaseRate => Utilities.SecondsToFrames(0.3574f);
+        public static int LargeTeslaOrbBlast_BurstReleaseRate => Utilities.SecondsToFrames(0.25f);
 
         /// <summary>
         /// How much time is spent releasing homing tesla bursts during the LargeTeslaOrbBlast attack.
@@ -46,12 +46,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long the tesla orb spends collapsing in anticipation of its explosion during the LargeTeslaOrbBlast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_ExplodeAnticipationTime => Utilities.SecondsToFrames(1.1f);
+        public static int LargeTeslaOrbBlast_ExplodeAnticipationTime => Utilities.SecondsToFrames(0.8f);
 
         /// <summary>
         /// How long Ares waits before transitioning to the next state following the explosion during the LargeTeslaOrbBlast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_AttackTransitionDelay => Utilities.SecondsToFrames(3.2f);
+        public static int LargeTeslaOrbBlast_AttackTransitionDelay => Utilities.SecondsToFrames(2f);
 
         /// <summary>
         /// The default offset of Ares' orb during the LargeTeslaOrbBlast attack.
@@ -137,7 +137,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             float burstOffsetAngle = MathF.Cos(MathHelper.TwoPi * AITimer / 120f) * MathHelper.PiOver2;
             Vector2 burstShootDirection = teslaSphere.SafeDirectionTo(Target.Center).RotatedBy(burstOffsetAngle);
             Vector2 burstSpawnPosition = teslaSphere.Center + burstShootDirection * teslaSphere.width * Main.rand.NextFloat(0.1f);
-            Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), burstSpawnPosition, burstShootDirection * 42f, ModContent.ProjectileType<HomingTeslaBurst>(), TeslaBurstDamage, 0f);
+            Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), burstSpawnPosition, burstShootDirection * 54f, ModContent.ProjectileType<HomingTeslaBurst>(), TeslaBurstDamage, 0f);
         }
 
         public void LargeTeslaOrbBlastHandUpdate(AresHand hand, Projectile? teslaSphere, Vector2 hoverOffset, int armIndex)
