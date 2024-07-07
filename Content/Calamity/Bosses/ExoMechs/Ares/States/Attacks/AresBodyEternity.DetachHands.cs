@@ -26,10 +26,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 if (StateQueue.Count <= 0)
                     ResetStateQueue();
                 CurrentState = StateQueue.Dequeue();
+                PreviousState = CurrentState;
+
                 if (StateQueue.Count <= 0)
                     ResetStateQueue();
-
-                PreviousState = CurrentState;
 
                 if (WaitingToStartComboAttack)
                 {
