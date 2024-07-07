@@ -151,7 +151,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     float tungScale = 1f + (soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1f);
                     scale /= tungScale;
                 }
-                else if (item != null && (item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>()))
+                else if (item != null && item.DamageType.CountsAsClass(DamageClass.Melee))
                 {
                     scale /= TrueMeleeTungstenScaleNerf(player);
                 }
@@ -213,7 +213,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<TungstenEnchant>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on true melee weapons"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on melee weapons"));
             }
             if (item.type == ModContent.ItemType<MythrilEnchant>())
             {
@@ -225,7 +225,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<AdamantiteEnchant>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not work with any Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
             }
             if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
             {
