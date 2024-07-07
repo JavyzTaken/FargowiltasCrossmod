@@ -6,6 +6,9 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
+using CalamityMod.Items.Placeables.Furniture;
+using CalamityMod.Items.Placeables.Furniture.Fountains;
+using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Magic;
@@ -13,6 +16,9 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
+using CalamityMod.Tiles.Furniture;
+using Fargowiltas;
+using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
@@ -140,11 +146,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                //ModContent.GetInstance<ReaperToothNecklace>().UpdateAccessory(player, hideVisual);
-                player.GetArmorPenetration<GenericDamageClass>() += 15f;
-            }
-            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
-            {
                 if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
@@ -167,10 +168,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.AddEffect<DynamoStemCellsEffect>(item))
-                {
-                    ModContent.GetInstance<DynamoStemCells>().UpdateAccessory(player, hideVisual);
-                }
             }
             if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -189,14 +186,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<EclipseMirrorEffect>(item))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<DragonScalesEffect>(item))
-                {
-                    ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<VeneratedLocketEffect>(item))
-                {
-                    ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
@@ -240,24 +229,31 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
             }
         }
+        // Copied from Mutant Mod
+        static string ExpandedTooltipLoc(string line) => Language.GetTextValue($"Mods.FargowiltasCrossmod.ExpandedTooltips.{line}");
+        TooltipLine FountainTooltip(string biome) => new TooltipLine(Mod, "Tooltip0", $"[i:909] [c/AAAAAA:{ExpandedTooltipLoc($"Fountain{biome}")}]");
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            var mutantServerConfig = FargoServerConfig.Instance;
+
             if (WorldSavingSystem.EternityMode)
             {
                 for (int i = 0; i < tooltips.Count; i++)
                 {
                     tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
                     tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                    /*
-                    if (tooltips[i].Text.Contains("Not consumable"))
-                    {
-                        tooltips[i].Text = "";
-                    }
-                    */
+                    
+                    
+                    
                 }
             }
-
-
+            for (int i = 0; i < tooltips.Count; i++)
+            {
+                if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
+                {
+                    tooltips[i].Text = "";
+                }
+            }
             if (item.type == ModContent.ItemType<Rock>())
             {
                 tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));
@@ -332,6 +328,21 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     Language.GetTextValue(key + "CalamityColossus") + "\n" +
                     Language.GetTextValue(key + "AngelTreads") + "\n" +
                     Language.GetTextValue(key + "CalamityTrawler")));
+            }
+
+            if (FargoClientConfig.Instance.ExpandedTooltips)
+            {
+                if (mutantServerConfig.Fountains)
+                {
+                    if (item.type == ModContent.ItemType<AstralFountainItem>())
+                        tooltips.Add(FountainTooltip("Astral"));
+                    if (item.type == ModContent.ItemType<BrimstoneLavaFountainItem>())
+                        tooltips.Add(FountainTooltip("Crags"));
+                    if (item.type == ModContent.ItemType<SulphurousFountainItem>())
+                        tooltips.Add(FountainTooltip("Sulphur"));
+                    if (item.type == ModContent.ItemType<SunkenSeaFountain>())
+                        tooltips.Add(FountainTooltip("Sunken"));
+                }
             }
         }
     }

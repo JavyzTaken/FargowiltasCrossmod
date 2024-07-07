@@ -502,6 +502,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             AddBannerToItemRecipe(ItemType<CuttlefishBanner>(),
                 ItemType<InkBomb>());
             AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<CocosFeather>(), 5, 1);
+            AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<SkyGlaze>());
             AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ItemType<BurntSienna>());
             AddBannerToItemRecipe(ItemID.DemonBanner, ItemType<BladecrestOathsword>());
             AddBannerToItemRecipe(ItemID.GoblinSorcererBanner, ItemType<PlasmaRod>());
@@ -623,6 +624,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #endregion QoLRecipes
+            #region Other
+                Recipe.Create(ItemType<MechLure>())
+                .AddRecipeGroup(RecipeGroupID.IronBar, 4)
+                .AddIngredient(ItemID.EnchantedNightcrawler, 3)
+                .AddIngredient(ItemID.SoulofFlight, 5)
+                .AddIngredient(ItemID.ArmoredCavefish, 1)
+                .AddTile(TileID.Anvils)
+                .Register();
+            #endregion
         }
         public override void PostAddRecipes()
         {
@@ -751,39 +761,25 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient<RampartofDeities>();
                     recipe.AddIngredient<AbomEnergy>(10);
                 }
+
                 if (recipe.HasResult<BerserkerSoul>() && recipe.HasIngredient(ItemID.StingerNecklace))
                 {
-                    if (recipe.RemoveIngredient(ItemID.StingerNecklace))
-                        recipe.AddIngredient<ReaperToothNecklace>();
-                    if (recipe.RemoveIngredient(ItemID.FireGauntlet))
-                        recipe.AddIngredient<ElementalGauntlet>();
-                    if (recipe.RemoveIngredient(ItemID.ScourgeoftheCorruptor))
-                        recipe.AddIngredient<ScourgeoftheCosmos>();
-                    recipe.AddIngredient<BadgeofBravery>()
-                            .AddIngredient<CelestialClaymore>()
-                            .AddIngredient<Greentide>()
-                            .AddIngredient<PulseDragon>()
-                            .AddIngredient<DevilsDevastation>()
+                    /*if (recipe.RemoveIngredient(ItemID.StingerNecklace))
+                        recipe.AddIngredient<ReaperToothNecklace>();*/
+                    if (recipe.RemoveIngredient(ItemID.FireGauntlet) && recipe.RemoveIngredient(ItemID.BerserkerGlove))
+                        recipe.AddIngredient<ElementalGauntlet>()
+                            .AddIngredient<BadgeofBravery>();
+                    if (recipe.RemoveIngredient(ItemID.KOCannon) && recipe.RemoveIngredient(ItemID.IceSickle))
+                        recipe.AddIngredient<DefiledGreatsword>();
+                    if (recipe.RemoveIngredient(ItemID.DripplerFlail) && recipe.RemoveIngredient(ItemID.ScourgeoftheCorruptor))
+                        recipe.AddIngredient<NeptunesBounty>();
+                    if (recipe.RemoveIngredient(ItemID.Kraken) && recipe.RemoveIngredient(ItemID.Flairon))
+                        recipe.AddIngredient<DevilsDevastation>();
+                    if (recipe.RemoveIngredient(ItemID.MonkStaffT3) && recipe.RemoveIngredient(ItemID.NorthPole))
+                        recipe.AddIngredient<Orderbringer>();
+                    if (recipe.RemoveIngredient(ItemID.Zenith))
+                        recipe.AddIngredient<DragonPow>()
                             .AddIngredient<AbomEnergy>(10);
-                }
-                if (recipe.HasResult<ArchWizardsSoul>() && recipe.HasIngredient(ItemID.MagnetSphere))
-                {
-                    if (recipe.RemoveIngredient(ItemID.ArcaneFlower) && recipe.RemoveIngredient(ItemID.ManaCloak) && recipe.RemoveIngredient(ItemID.MagnetFlower) && recipe.RemoveIngredient(ItemID.CelestialEmblem))
-                        recipe.AddIngredient<EtherealTalisman>();
-                    if (recipe.RemoveIngredient(ItemID.RainbowGun))
-                        recipe.AddIngredient<CosmicRainbow>();
-                    if (recipe.RemoveIngredient(ItemID.MagnetSphere))
-                        recipe.AddIngredient<VoidVortex>();
-                    if (recipe.RemoveIngredient(ItemID.SparkleGuitar))
-                        recipe.AddIngredient<FaceMelter>();
-                    if (recipe.RemoveIngredient(ItemID.RazorbladeTyphoon))
-                        recipe.AddIngredient<Atlantis>();
-                    if (recipe.RemoveIngredient(ItemID.LaserMachinegun))
-                        recipe.AddIngredient<Omicron>();
-                    if (recipe.RemoveIngredient(ItemID.LastPrism))
-                        recipe.AddIngredient<DarkSpark>();
-                    recipe.AddIngredient<VitriolicViper>()
-                             .AddIngredient<AbomEnergy>(10);
                 }
                 if (recipe.HasResult(ItemType<SnipersSoul>()) && recipe.HasIngredient(ItemID.MoltenQuiver))
                 {
@@ -792,40 +788,49 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient<ElementalQuiver>();
                         recipe.AddIngredient<QuiverofNihility>();
                     }
-                    if (recipe.RemoveIngredient(ItemID.Megashark))
+                    if (recipe.RemoveIngredient(ItemID.DartPistol) && recipe.RemoveIngredient(ItemID.Megashark) && recipe.RemoveIngredient(ItemID.PulseBow))
                         recipe.AddIngredient<Seadragon>();
-                    if (recipe.RemoveIngredient(ItemID.PulseBow))
-                        recipe.AddIngredient<Ultima>();
-                    if (recipe.RemoveIngredient(ItemID.PiranhaGun))
+                    if (recipe.RemoveIngredient(ItemID.NailGun) && recipe.RemoveIngredient(ItemID.PiranhaGun))
+                        recipe.AddIngredient<PearlGod>();
+                    if (recipe.RemoveIngredient(ItemID.SniperRifle) && recipe.RemoveIngredient(ItemID.Tsunami))
                         recipe.AddIngredient<Starmageddon>();
-                    if (recipe.RemoveIngredient(ItemID.SniperRifle))
-                        recipe.AddIngredient<AntiMaterielRifle>();
-                    if (recipe.RemoveIngredient(ItemID.Tsunami))
-                        recipe.AddIngredient<Alluvion>();
-                    if (recipe.RemoveIngredient(ItemID.Xenopopper))
-                        recipe.AddIngredient<Vortexpopper>();
-                    recipe.AddIngredient<HalleysInferno>();
-                    recipe.AddIngredient<StormDragoon>();
-                    recipe.AddIngredient<PridefulHuntersPlanarRipper>();
-                    recipe.AddIngredient<DynamoStemCells>();
-                    recipe.AddIngredient<AbomEnergy>(10);
+                    if (recipe.RemoveIngredient(ItemID.StakeLauncher) && recipe.RemoveIngredient(ItemID.ElfMelter))
+                        recipe.AddIngredient<TyrannysEnd>();
+                    if (recipe.RemoveIngredient(ItemID.Xenopopper) && recipe.RemoveIngredient(ItemID.Celeb2))
+                        recipe.AddIngredient<Drataliornus>()
+                            .AddIngredient<AbomEnergy>(10);
+                }
+                if (recipe.HasResult<ArchWizardsSoul>() && recipe.HasIngredient(ItemID.MagnetSphere))
+                {
+                    if (recipe.RemoveIngredient(ItemID.ArcaneFlower) && recipe.RemoveIngredient(ItemID.ManaCloak) && recipe.RemoveIngredient(ItemID.MagnetFlower) && recipe.RemoveIngredient(ItemID.CelestialEmblem))
+                        recipe.AddIngredient<EtherealTalisman>();
+                    if (recipe.RemoveIngredient(ItemID.MedusaHead) && recipe.RemoveIngredient(ItemID.SharpTears))
+                        recipe.AddIngredient<AethersWhisper>();
+                    if (recipe.RemoveIngredient(ItemID.MagnetSphere) && recipe.RemoveIngredient(ItemID.RainbowGun))
+                        recipe.AddIngredient<DarkSpark>();
+                    if (recipe.RemoveIngredient(ItemID.ApprenticeStaffT3) && recipe.RemoveIngredient(ItemID.SparkleGuitar))
+                        recipe.AddIngredient<Omicron>();
+                    if (recipe.RemoveIngredient(ItemID.RazorbladeTyphoon) && recipe.RemoveIngredient(ItemID.LaserMachinegun))
+                        recipe.AddIngredient<EventHorizon>();
+                    if (recipe.RemoveIngredient(ItemID.LastPrism))
+                        recipe.AddIngredient<VoidVortex>()
+                             .AddIngredient<AbomEnergy>(10);
                 }
                 if (recipe.HasResult(ItemType<ConjuristsSoul>()) && recipe.HasIngredient(ItemID.PygmyNecklace))
                 {
-                    if (recipe.RemoveIngredient(ItemID.PygmyNecklace))
+                    if (recipe.RemoveIngredient(ItemID.PygmyNecklace) && recipe.RemoveIngredient(ItemID.PapyrusScarab))
                         recipe.AddIngredient<Nucleogenesis>();
-                    if (recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
-                        recipe.AddIngredient<EndoHydraStaff>();
-                    if (recipe.RemoveIngredient(ItemID.RavenStaff))
+                    if (recipe.RemoveIngredient(ItemID.Smolstar) && recipe.RemoveIngredient(ItemID.PirateStaff))
+                        recipe.AddIngredient<EtherealSubjugator>();
+                    if (recipe.RemoveIngredient(ItemID.OpticStaff) && recipe.RemoveIngredient(ItemID.DeadlySphereStaff))
+                        recipe.AddIngredient<CadaverousCarrion>();
+                    if (recipe.RemoveIngredient(ItemID.StormTigerStaff) && recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
                         recipe.AddIngredient<CorvidHarbringerStaff>();
-                    if (recipe.RemoveIngredient(ItemID.XenoStaff))
-                        recipe.AddIngredient<MidnightSunBeacon>();
-                    if (recipe.RemoveIngredient(ItemID.EmpressBlade) && recipe.RemoveIngredient(ItemID.Smolstar))
-                        recipe.AddIngredient<ElementalAxe>();
-                    recipe.AddIngredient<ResurrectionButterfly>();
-                    recipe.AddIngredient<GlacialEmbrace>();
-                    recipe.AddIngredient<GuidelightofOblivion>();
-                    recipe.AddIngredient<AbomEnergy>(10);
+                    if (recipe.RemoveIngredient(ItemID.TempestStaff) && recipe.RemoveIngredient(ItemID.RavenStaff))
+                        recipe.AddIngredient<SarosPossession>();
+                    if (recipe.RemoveIngredient(ItemID.XenoStaff) && recipe.RemoveIngredient(ItemID.EmpressBlade))
+                        recipe.AddIngredient<YharonsKindleStaff>()
+                            .AddIngredient<AbomEnergy>(10);
                 }
                 if (recipe.HasResult<VagabondsSoul>() && !recipe.HasIngredient<AbomEnergy>())
                     recipe.AddIngredient<AbomEnergy>(10);
@@ -889,8 +894,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.AddIngredient(ItemID.SoulofNight, 3);
                 }
-                if (recipe.HasResult<MechLure>())
+                if (recipe.HasResult<MechLure>() && recipe.HasTile(TileID.MythrilAnvil))
                 {
+                    recipe.DisableRecipe();
+                    /*
                     if (recipe.RemoveRecipeGroup(RecipeGroup.recipeGroupIDs["FargowiltasSouls:AnyMythrilBar"]))
                     {
                         recipe.AddRecipeGroup(RecipeGroupID.IronBar, 4);
@@ -899,6 +906,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     {
                         recipe.AddTile(TileID.Anvils);
                     }
+                    */
                 }
                 if (recipe.HasResult(ItemType<SigilOfChampions>()) && !recipe.HasIngredient<DivineGeode>())
                 {

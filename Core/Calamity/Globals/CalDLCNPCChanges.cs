@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatDebuffs;
@@ -13,12 +12,10 @@ using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SulphurCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Materials;
-using CalamityMod.Items.Placeables.Banners;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs.Abyss;
-using CalamityMod.NPCs.AcidRain;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.Astral;
 using CalamityMod.NPCs.AstrumAureus;
@@ -38,7 +35,6 @@ using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
-using CalamityMod.NPCs.GreatSandShark;
 using CalamityMod.NPCs.HiveMind;
 using CalamityMod.NPCs.Leviathan;
 using CalamityMod.NPCs.NormalNPCs;
@@ -63,7 +59,6 @@ using CalamityMod.World;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
-using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.ItemDropRules;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
@@ -87,11 +82,6 @@ using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using FargowiltasSouls.Content.Items.Accessories.Souls;
-using FargowiltasSouls.Content.Items.Ammos;
-using FargowiltasSouls.Content.Items.Armor;
-using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
-using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
@@ -103,7 +93,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DLCCalamityConfig = FargowiltasCrossmod.Core.Calamity.CalDLCConfig;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -184,7 +173,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         break;
                     case NPCID.SkeletronHand:
                         if (CalDLCWorldSavingSystem.E_EternityRev)
+                        {
                             npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.3f);
+                            npc.damage = 36;
+                        }
                         break;
                     case NPCID.BrainofCthulhu:
                         npc.lifeMax = (int)(npc.lifeMax * 0.65f);
@@ -395,7 +387,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (npc.type == NPCID.Golem || npc.type == NPCID.GolemFistLeft || npc.type == NPCID.GolemFistRight || npc.type == NPCID.GolemHead)
                 {
-                    npc.lifeMax /= 10;
+                    npc.lifeMax /= 2;
                 }
                 //reduce health of bosses that are either too tanky or impossible to dodge
                 //increase hp of bosses that die fast
@@ -405,7 +397,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 //golem: flies into space and deals tons of damage and is impossible to dodge
                 //if (npc.type == NPCID.Golem) npc.lifeMax /= 10;
                 //impossible to dodge in final phase
-                if (npc.type == NPCID.DukeFishron) npc.lifeMax /= 2;
+                //if (npc.type == NPCID.DukeFishron) npc.lifeMax /= 2;
                 //dies fast because is really big
                 if (npc.type == ModContent.NPCType<Providence>()) npc.lifeMax *= 3;
                 //tanky by design of original boss
@@ -1027,44 +1019,44 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //the thing
 
 
-            if (npc.type == ModContent.NPCType<TimberChampionHead>() && BossRushEvent.BossRushActive)
-            {
-                for (int playerIndex = 0; playerIndex < 255; playerIndex++)
-                {
-                    Player p = Main.player[playerIndex];
-                    if (p != null && p.active)
-                    {
-                        p.Calamity().BossRushReturnPosition = p.Center;
-                        Vector2 underworld = new Vector2(Main.maxTilesX * 16 / 2, Main.maxTilesY * 16 - 2400);
-                        CalamityPlayer.ModTeleport(p, underworld, false, 2);
-                        SoundStyle teleportSound = BossRushEvent.TeleportSound;
-                        teleportSound.Volume = 1.6f;
-                        SoundEngine.PlaySound(teleportSound, p.Center);
-                    }
-                }
-            }
-            if (npc.type == ModContent.NPCType<NatureChampion>() && BossRushEvent.BossRushActive)
-            {
-                for (int playerIndex = 0; playerIndex < 255; playerIndex++)
-                {
-                    Player p = Main.player[playerIndex];
-                    if (p != null && p.active)
-                    {
-                        if (p.Calamity().BossRushReturnPosition != null)
-                        {
-                            CalamityPlayer.ModTeleport(p, p.Calamity().BossRushReturnPosition.Value, false, 2);
-                            p.Calamity().BossRushReturnPosition = null;
-                        }
-                        p.Calamity().BossRushReturnPosition = null;
-                        SoundStyle teleportSound = BossRushEvent.TeleportSound;
-                        teleportSound.Volume = 1.6f;
-                        SoundEngine.PlaySound(teleportSound, p.Center);
-                    }
-                }
-            }
+            //if (npc.type == ModContent.NPCType<TimberChampionHead>() && BossRushEvent.BossRushActive)
+            //{
+            //    for (int playerIndex = 0; playerIndex < 255; playerIndex++)
+            //    {
+            //        Player p = Main.player[playerIndex];
+            //        if (p != null && p.active)
+            //        {
+            //            p.Calamity().BossRushReturnPosition = p.Center;
+            //            Vector2 underworld = new Vector2(Main.maxTilesX * 16 / 2, Main.maxTilesY * 16 - 2400);
+            //            CalamityPlayer.ModTeleport(p, underworld, false, 2);
+            //            SoundStyle teleportSound = BossRushEvent.TeleportSound;
+            //            teleportSound.Volume = 1.6f;
+            //            SoundEngine.PlaySound(teleportSound, p.Center);
+            //        }
+            //    }
+            //}
+            //if (npc.type == ModContent.NPCType<NatureChampion>() && BossRushEvent.BossRushActive)
+            //{
+            //    for (int playerIndex = 0; playerIndex < 255; playerIndex++)
+            //    {
+            //        Player p = Main.player[playerIndex];
+            //        if (p != null && p.active)
+            //        {
+            //            if (p.Calamity().BossRushReturnPosition != null)
+            //            {
+            //                CalamityPlayer.ModTeleport(p, p.Calamity().BossRushReturnPosition.Value, false, 2);
+            //                p.Calamity().BossRushReturnPosition = null;
+            //            }
+            //            p.Calamity().BossRushReturnPosition = null;
+            //            SoundStyle teleportSound = BossRushEvent.TeleportSound;
+            //            teleportSound.Volume = 1.6f;
+            //            SoundEngine.PlaySound(teleportSound, p.Center);
+            //        }
+            //    }
+            //}
             if ((npc.type == ModContent.NPCType<TrojanSquirrel>() || npc.type == ModContent.NPCType<LifeChallenger>() || DLCSets.NPCs.Champion[npc.type] || npc.type == ModContent.NPCType<DeviBoss>() || npc.type == ModContent.NPCType<AbomBoss>()) && BossRushEvent.BossRushActive && npc.type != ModContent.NPCType<TimberChampion>() || npc.type == ModContent.NPCType<BanishedBaron>())
             {
-                BossRushEvent.BossRushStage++;
+                //BossRushEvent.BossRushStage++;
             }
             if ((npc.type == NPCID.SolarCorite || npc.type == NPCID.SolarCrawltipedeHead || npc.type == NPCID.SolarCrawltipedeTail
                 || npc.type == NPCID.StardustJellyfishBig || npc.type == NPCID.NebulaBrain || npc.type == NPCID.VortexHornetQueen) && !NPC.downedAncientCultist)
@@ -1367,35 +1359,38 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             #endregion SummonDrops
-            if (BossRushEvent.BossRushActive)
-            {
-                if (!killedAquatic && BossRushEvent.BossRushStage > 19)
-                {
-                    BossRushEvent.BossRushStage = 19;
-                }
-                if (NPC.AnyNPCs(ModContent.NPCType<AquaticScourgeHead>()))
-                {
-                    killedAquatic = true;
-                }
-            }
-            else
-            {
-                killedAquatic = false;
-                if (CalDLCConfig.Instance.EternityPriorityOverRev)
-                {
-                    if (npc.type == NPCID.AncientLight && CalDLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
-                    {
-                        npc.Center += npc.velocity * 0.75f;
-                        npc.dontTakeDamage = true;
-                    }
-                }
-            }
+            //if (BossRushEvent.BossRushActive)
+            //{
+            //    if (!killedAquatic && BossRushEvent.BossRushStage > 19)
+            //    {
+            //        BossRushEvent.BossRushStage = 19;
+            //    }
+            //    if (NPC.AnyNPCs(ModContent.NPCType<AquaticScourgeHead>()))
+            //    {
+            //        killedAquatic = true;
+            //    }
+            //}
+            //else
+            //{
+            //    killedAquatic = false;
+            //    if (CalDLCConfig.Instance.EternityPriorityOverRev)
+            //    {
+            //        if (npc.type == NPCID.AncientLight && CalDLCWorldSavingSystem.EternityDeath && NPC.AnyNPCs(NPCID.CultistBoss))
+            //        {
+            //            npc.Center += npc.velocity * 0.75f;
+            //            npc.dontTakeDamage = true;
+            //        }
+            //    }
+            //}
 
             //BossRushEvent.BossRushStage = 18;
             //BossRushEvent.BossRushStage = 36;
             if (BossRushEvent.BossRushActive)
             {
-
+                if ((npc.type == ModContent.NPCType<AstrumDeusHead>() || npc.type == ModContent.NPCType<AstrumDeusBody>() || npc.type == ModContent.NPCType<AstrumDeusTail>()) && BossRushEvent.BossRushStage >= 43)
+                {
+                    npc.active = false;
+                }
                 if (npc.type == NPCID.HallowBoss && npc.ai[0] == 13)
                 {
                     Main.dayTime = true;
@@ -1452,35 +1447,28 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 Main.dayTime = false;
                 Main.time = Main.nightLength / 2;
             }
-            if (npc.type == ModContent.NPCType<TerraChampion>() && BossRushEvent.BossRushActive)
-            {
-                Main.player[Main.myPlayer].ZoneUnderworldHeight = false;
-            }
+            
             if (npc.type == ModContent.NPCType<EarthChampion>() && BossRushEvent.BossRushActive)
             {
                 Main.player[Main.myPlayer].ZoneUnderworldHeight = true;
             }
-            if (npc.type == ModContent.NPCType<NatureChampion>() && BossRushEvent.BossRushActive)
-            {
-                Main.player[Main.myPlayer].ZoneUnderworldHeight = false;
-
-            }
+            
             if (npc.type == ModContent.NPCType<MutantBoss>() && BossRushEvent.BossRushActive)
             {
                 npc.ModNPC.SceneEffectPriority = SceneEffectPriority.None;
-                if (npc.ai[0] == -7 && npc.ai[1] >= 250)
-                {
-                    npc.StrikeInstantKill();
+                //if (npc.ai[0] == -7 && npc.ai[1] >= 250)
+                //{
+                //    npc.StrikeInstantKill();
 
-                    CalamityUtils.KillAllHostileProjectiles();
-                    BossRushEvent.HostileProjectileKillCounter = 3;
-                    DownedBossSystem.downedBossRush = true;
-                    CalamityNetcode.SyncWorld();
-                    if (DLCUtils.HostCheck)
-                    {
-                        Projectile.NewProjectile(new EntitySource_WorldEvent(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BossRushEndEffectThing>(), 0, 0f, Main.myPlayer);
-                    }
-                }
+                //    CalamityUtils.KillAllHostileProjectiles();
+                //    BossRushEvent.HostileProjectileKillCounter = 3;
+                //    DownedBossSystem.downedBossRush = true;
+                //    CalamityNetcode.SyncWorld();
+                //    if (DLCUtils.HostCheck)
+                //    {
+                //        Projectile.NewProjectile(new EntitySource_WorldEvent(), npc.Center, Vector2.Zero, ModContent.ProjectileType<BossRushEndEffectThing>(), 0, 0f, Main.myPlayer);
+                //    }
+                //}
             }
             //Main.NewText(FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
             #region Balance Changes

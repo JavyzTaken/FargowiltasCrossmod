@@ -3,6 +3,7 @@ Officially maintained by Fargo's Mods developers.
 
 Currently supports:
 Calamity Mod
+Wrath of the Gods
 
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
@@ -27,7 +28,7 @@ Why does this mod not have the old enchantments/souls?
 This mod is essentially a remake of the DLC, built from the ground up, with vastly raised quality standards. The old enchantments don't make that cut, both for being too uninteresting (they're literally just set bonus/accessory effects) and for balance reasons.
 
 Will you readd enchantments / souls for Calamity / (other mod)?
-Modded enchantments will be reintroduced in a reworked state to fit current quality standards. This will take a while since it's a lot to do, there's many effects to make. Making new content takes time.
+Currently, this mod features 8 new and improved Enchantments, one for each Pre-Hardmode armor. The rest are being worked on.
 
 How does this mod work with Infernum?
 Infernum and Eternity Mode are inherently conflicting, since they both focus on full-scale reworks for bosses. Both already have fully developed and boss AI pushed to limits, meaning it's not feasible to try to mesh them together. That means you have to choose between them, in terms of boss AI.

@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
     {
         #region Fields/Properties
 
-        public override DrawLayer Layer => DrawLayer.BeforeTiles;
+        public override DrawLayer Layer => DrawLayer.AfterEverything;
 
         public static CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental Brimmy
         {
@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (!npc.HasValidTarget)
                 return;
 
-            var target = Main.player[Main.myPlayer];
+            var target = Main.LocalPlayer;
             var burnIntensity = target.GetModPlayer<BrimstoneBurnPlayer>().BurnFadeIntensity;
 
 
