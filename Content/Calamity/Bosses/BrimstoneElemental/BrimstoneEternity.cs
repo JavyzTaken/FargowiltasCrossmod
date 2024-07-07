@@ -158,6 +158,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             }
             if (mainAttack == 0)
             {
+                NPC.defense = 15;
                 NPC.Opacity = 0;
                 NPC.dontTakeDamage = true;
                 NPC.velocity *= 0;
@@ -186,7 +187,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (mainAttack == 1)
             {
                 const int teleportTime = 540;
-
+                NPC.defense = 15;
                 if (auraOpacity < 1) 
                     auraOpacity += 0.02f;
                 animation = 0;
@@ -478,6 +479,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             }
             if (mainAttack == 3)
             {
+                NPC.defense = 15;
                 animation = 0;
                 NPC.velocity *= 0.97f;
                 if (timer == 100)

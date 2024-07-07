@@ -104,16 +104,12 @@ Mods: {
 					Эффекты Сладкой мести, Обсидиановой чешуи, Террариевого защитника,
 					Филактерии, Сердца из камня и Колючего панцыря
 					'''
-				CalamityBerserker: Эффекты Ожерелья из зубов жнеца, Знака храбрости и Элементальной рукавицы
+				CalamityBerserker: Эффекты Знака храбрости и Элементальной рукавицы
 				ThoriumBerserker: Эффекты Эмблемы рапиры
 				CalamityWizard: Эффекты Эфирного талисмана
 				ThoriumWizard: Эффекты Мутного катализатора
-				CalamitySniper: Эффекты Элементального колчана, Колчана небытия и Генератора стволовых клеток
-				Vagabond:
-					'''
-					Эффекты Нанотехнологии и Зеркала затмения
-					Эффекты Драконьей чешуи и Почитаемого медальона
-					'''
+				CalamitySniper: Эффекты Элементального колчана и Колчана небытия
+				Vagabond: Эффекты Нанотехнологии и Зеркала затмения
 				ThoriumSniper: Эффекты Сотрясающей боеголовки
 				CalamityConjurist: Эффект Нуклеосинтеза
 				ThoriumConjurist: Эффекты Подвески Юмы и Кристаллического скорпиона
@@ -669,8 +665,6 @@ Mods: {
 			VagabondsSoulHeader: Душа Беглеца
 			NanotechEffect: Нанотехнология
 			EclipseMirrorEffect: Зеркало Затмения
-			DragonScalesEffect: Чешуя Дракона
-			VeneratedLocketEffect: Почитаемый Медальон
 			AmalgamEffect: Слияние
 			AsgardianAegisEffect: Асгардская Эгида
 			RampartofDeitiesEffect: Оплот Божества
@@ -679,7 +673,6 @@ Mods: {
 			CalamitySniperHeader: Душа Снайпера: Calamity
 			ElementalQuiverEffect: Элементальный Колчан
 			QuiverofNihilityEffect: Колчан Небытия
-			DynamoStemCellsEffect: Генератор Стволовых Клеток
 			NucleogenesisEffect: Нуклеосинтез
 			AbyssalDivingSuitEffect: Глубоководный Водолазный Костюм
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
