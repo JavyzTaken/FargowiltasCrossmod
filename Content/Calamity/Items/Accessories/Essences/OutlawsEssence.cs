@@ -33,8 +33,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences
                 .AddIngredient<SkyStabber>()
                 .AddIngredient<HardenedHoneycomb>(300)
                 .AddIngredient<InfernalKris>(300)
-                .AddIngredient(ItemID.HallowedBar, 5)
                 .AddIngredient<RogueEmblem>()
+                .AddIngredient(ItemID.HallowedBar, 5)
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
 

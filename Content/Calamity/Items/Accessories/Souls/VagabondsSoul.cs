@@ -46,8 +46,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
                 .AddIngredient<OutlawsEssence>()
                 .AddIngredient<EclipseMirror>()
                 .AddIngredient<Nanotech>()
-                .AddIngredient<DragonScales>()
-                .AddIngredient<VeneratedLocket>()
 
                 .AddIngredient<Valediction>()
                 .AddIngredient<GodsParanoia>()

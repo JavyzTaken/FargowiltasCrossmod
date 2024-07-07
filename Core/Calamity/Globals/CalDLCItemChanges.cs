@@ -186,14 +186,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
                 }
-                if (player.AddEffect<DragonScalesEffect>(item))
-                {
-                    ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<VeneratedLocketEffect>(item))
-                {
-                    ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
-                }
             }
             if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {

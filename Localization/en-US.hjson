@@ -102,11 +102,7 @@ Mods: {
 				CalamityWizard: Effects of Ethereal Talisman
 				ThoriumWizard: Effects of Murky Catalyst
 				CalamitySniper: Effects of Elemental Quiver and Quiver of Nihility
-				Vagabond:
-					'''
-					Effects of Nanotech and Eclipse Mirror
-					Effects of Dragon Scales and Venerated Locket
-					'''
+				Vagabond: Effects of Nanotech and Eclipse Mirror
 				ThoriumSniper: Effects of Concussive Warhead
 				CalamityConjurist: Effects of Nucleogenesis
 				ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
@@ -661,8 +657,6 @@ Mods: {
 			VagabondsSoulHeader: Vagabond's Soul
 			NanotechEffect: Nanotech
 			EclipseMirrorEffect: Eclipse Mirror
-			DragonScalesEffect: Dragon Scales
-			VeneratedLocketEffect: Venerated Locket
 			AmalgamEffect: The Amalgam
 			AsgardianAegisEffect: Asgardian Aegis
 			RampartofDeitiesEffect: Rampart of Deities
@@ -671,7 +665,6 @@ Mods: {
 			CalamitySniperHeader: Calamity Sniper's Soul
 			ElementalQuiverEffect: Elemental Quiver
 			QuiverofNihilityEffect: Quiver of Nihility
-			DynamoStemCellsEffect: Dynamo Stem Cells
 			NucleogenesisEffect: Nucleogenesis
 			AbyssalDivingSuitEffect: Abyssal Diving Suit
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
