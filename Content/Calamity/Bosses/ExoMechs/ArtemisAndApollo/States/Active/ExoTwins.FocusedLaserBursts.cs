@@ -129,8 +129,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (!npc.WithinRange(Target.Center, 700f))
                 npc.SmoothFlyNear(Target.Center, 0.03f, 0.93f);
-            else
+            else if (!npc.WithinRange(Target.Center, 136f))
                 npc.velocity *= 0.951f;
+            else
+                npc.velocity -= npc.SafeDirectionTo(Target.Center) * 2f;
 
             if (AITimer % FocusedLaserBursts_RapidShotRate == FocusedLaserBursts_RapidShotRate - 1)
                 ShootArtemisLaser(npc, FocusedLaserBursts_RapidShotShootSpeed);
