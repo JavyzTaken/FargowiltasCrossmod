@@ -44,6 +44,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         public void DoBehavior_DeathAnimation()
         {
+            NPC.damage = 0;
             NPC.dontTakeDamage = true;
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
 
