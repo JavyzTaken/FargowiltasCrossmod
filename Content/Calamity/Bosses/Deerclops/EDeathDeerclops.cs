@@ -4,9 +4,11 @@ using CalamityMod.NPCs.VanillaNPCAIOverrides.Bosses;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -57,6 +59,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 DeerclopsAI.borderScalar = MathHelper.Clamp(DeerclopsAI.borderScalar + 0.015f, 0f, (DeerclopsAI.hasTargetBeenInRange ? 1f : 0.9f) * modifier);
             }
             DeerclopsAI.lastDeerclopsPosition = NPC.Center;
+
+            Deerclops deerclops = NPC.GetGlobalNPC<Deerclops>();
+            if (deerclops.TeleportTimer > 780 && NPC.HasPlayerTarget)
+                DeerclopsAI.lastDeerclopsPosition = Main.player[NPC.target].Center;
             return true;
         }
     }
