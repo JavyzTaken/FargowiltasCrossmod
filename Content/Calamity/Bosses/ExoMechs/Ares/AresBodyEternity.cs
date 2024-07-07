@@ -192,6 +192,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// The set of attacks that Ares will do in the future.
+        /// </summary>
+        public Queue<AresAIState> StateQueue = [];
+
+        /// <summary>
         /// Whether Ares and his hands need to be rendered to a render target for secondary draw operations, such as his silhouette.
         /// </summary>
         public bool NeedsToBeDrawnToRenderTarget => SilhouetteOpacity > 0f;
@@ -255,6 +260,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             binaryWriter.Write((int)CurrentState);
             binaryWriter.Write((int)PreviousState);
 
+            binaryWriter.Write(StateQueue.Count);
+            for (int i = 0; i < StateQueue.Count; i++)
+                binaryWriter.Write((int)StateQueue.ElementAt(i));
+
             binaryWriter.WriteVector2(AimedLaserBursts_AimOffset);
         }
 
@@ -269,6 +278,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             AITimer = binaryReader.ReadInt32();
             CurrentState = (AresAIState)binaryReader.ReadInt32();
             PreviousState = (AresAIState)binaryReader.ReadInt32();
+
+            StateQueue.Clear();
+            int stateQueueCount = binaryReader.ReadInt32();
+            for (int i = 0; i < stateQueueCount; i++)
+                StateQueue.Enqueue((AresAIState)binaryReader.ReadInt32());
 
             AimedLaserBursts_AimOffset = binaryReader.ReadVector2();
         }
@@ -295,6 +309,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             PerformPreUpdateResets();
             ExecuteCurrentState();
+
+            // Reset the state queue during combo attacks, to ensure that a fresh set is chosen if he's fought alone.
+            if (PerformingComboAttack && StateQueue.Count >= 1)
+                StateQueue.Clear();
 
             if (UseStandardRotation)
                 NPC.rotation = NPC.rotation.AngleLerp(NPC.velocity.X * 0.015f, 0.2f);
@@ -436,6 +454,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             UseStandardRotation = true;
 
             CalamityGlobalNPC.draedonExoMechPrime = NPC.whoAmI;
+        }
+
+        /// <summary>
+        /// Resets the <see cref="StateQueue"/>, effectively rerolling the set of attacks Ares will perform.
+        /// </summary>
+        public void ResetStateQueue()
+        {
+            // Generate the list of states the perform, and shuffle them randomly in such a manner that the first state in the list is never the previous state.
+            List<AresAIState> states = [AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts];
+            if (ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+                states.Add(AresAIState.BackgroundCoreLaserBeams);
+            if (NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+                states.Add(AresAIState.KatanaCycloneDashes);
+
+            IOrderedEnumerable<AresAIState> shuffledStates;
+            do
+            {
+                shuffledStates = states.OrderBy(s => Main.rand.NextFloat());
+            }
+            while (shuffledStates.First() == PreviousState);
+
+            StateQueue.Clear();
+            foreach (AresAIState state in shuffledStates)
+                StateQueue.Enqueue(state);
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, MathF.Cbrt(1f - NPC.Opacity)) * NPC.Opacity;

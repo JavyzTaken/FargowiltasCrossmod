@@ -1,5 +1,4 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
-using FargowiltasCrossmod.Core.Calamity.Globals;
+﻿using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -24,16 +23,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             if (AITimer >= 45)
             {
-                do
-                {
-                    CurrentState = Main.rand.NextFromList(AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts);
-
-                    if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
-                        CurrentState = AresAIState.BackgroundCoreLaserBeams;
-                    if (Main.rand.NextBool() && (NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition))
-                        CurrentState = AresAIState.KatanaCycloneDashes;
-                }
-                while (CurrentState == PreviousState);
+                if (StateQueue.Count <= 0)
+                    ResetStateQueue();
+                CurrentState = StateQueue.Dequeue();
+                if (StateQueue.Count <= 0)
+                    ResetStateQueue();
 
                 PreviousState = CurrentState;
 
