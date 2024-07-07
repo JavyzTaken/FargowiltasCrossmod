@@ -845,5 +845,11 @@ Mods: {
 			FountainSulphur: Заставляет окружающий биом смениться на Сернистое Море при активации
 			FountainSunken: Заставляет окружающий биом смениться на Затерянное Море при активации
 		}
+
+		UI: {
+			// HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
+			// AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
+			// ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+		}
 	}
 }
