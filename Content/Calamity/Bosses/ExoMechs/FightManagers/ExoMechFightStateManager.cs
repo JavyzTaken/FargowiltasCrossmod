@@ -52,6 +52,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             private set;
         }
 
+        // This doesn't need syncing since the timer is only used in the context of summoning NPCs, which is not a client-side effect.
+        /// <summary>
+        /// A counter used in conjunction with <see cref="ExoMechFightDefinitions.NoDraedonExoMechReturnDelay"/> to create a time buffer before Exo Mechs return if Draedon is not present.
+        /// </summary>
+        public static int ExoMechSummonDelayTimer
+        {
+            get;
+            internal set;
+        }
+
         /// <summary>
         /// The current phase of the Exo Mechs fight, as calculated via the <see cref="PreUpdateEntities"/> hook in this system every frame.
         /// </summary>
@@ -265,6 +275,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             RecordPreviouslySummonedMechs();
             CalculateFightState();
             EvaluatePhase();
+
+            ExoMechSummonDelayTimer++;
         }
 
         /// <summary>
@@ -292,6 +304,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             if (PreviouslySummonedMechIDs.Count >= 1)
                 PreviouslySummonedMechIDs.Clear();
 
+            ExoMechSummonDelayTimer = 0;
             FightOngoing = false;
             CurrentPhase = PhaseDefinition.UndefinedPhase;
             FightState = ExoMechFightState.UndefinedFightState;

@@ -14,6 +14,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
     /// </summary>
     public static class ExoMechFightDefinitions
     {
+        // NOTE -- Update XML comments if the life ratios are changed.
+        public static float SummonOtherMechsLifeRatio => 0.7f;
+
+        public static float FightAloneLifeRatio => 0.4f;
+
+        /// <summary>
+        /// How long it takes for the Exo Mechs to return to combat after a death animation if Draedon is not present.
+        /// </summary>
+        public static int NoDraedonExoMechReturnDelay => LumUtils.SecondsToFrames(2f);
+
         /// <summary>
         /// The first phase definition.
         /// </summary>
@@ -94,6 +104,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             return state.TotalKilledMechs >= 1;
         }, state =>
         {
+            ExoMechSummonDelayTimer = 0;
             SetDraedonState(DraedonEternity.DraedonAIState.FirstInterjection);
         });
 
@@ -106,7 +117,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// </remarks>
         public static readonly PhaseDefinition SecondTwoAtOncePhaseDefinition = CreateNewPhase(6, state =>
         {
-            return state.DraedonState is null || state.DraedonState != DraedonEternity.DraedonAIState.FirstInterjection;
+            if (state.DraedonState is null)
+                return ExoMechSummonDelayTimer >= NoDraedonExoMechReturnDelay;
+
+            return state.DraedonState != DraedonEternity.DraedonAIState.FirstInterjection;
         }, state => MakeExoMechLeaveOrReappear(false, (npc, exoMech) => true));
 
         /// <summary>
@@ -136,6 +150,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             return state.TotalKilledMechs >= 2;
         }, state =>
         {
+            ExoMechSummonDelayTimer = 0;
             SetDraedonState(DraedonEternity.DraedonAIState.SecondInterjection);
         });
 
@@ -148,7 +163,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// </remarks>
         public static readonly PhaseDefinition BerserkSoloPhaseDefinition = CreateNewPhase(9, state =>
         {
-            return state.DraedonState is null || state.DraedonState != DraedonEternity.DraedonAIState.SecondInterjection;
+            if (state.DraedonState is null)
+                return ExoMechSummonDelayTimer >= NoDraedonExoMechReturnDelay;
+
+            return state.DraedonState != DraedonEternity.DraedonAIState.SecondInterjection;
         }, state => MakeExoMechLeaveOrReappear(false, (npc, exoMech) => true));
 
         /// <summary>
@@ -161,11 +179,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         {
             SetDraedonState(DraedonEternity.DraedonAIState.PostBattleInterjection);
         });
-
-        // NOTE -- Update XML comments if these are changed.
-        public static float SummonOtherMechsLifeRatio => 0.7f;
-
-        public static float FightAloneLifeRatio => 0.4f;
 
         public static void MakeExoMechLeaveOrReappear(bool leave, Func<NPC, IExoMech, bool> condition)
         {
