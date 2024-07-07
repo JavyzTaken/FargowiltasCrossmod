@@ -100,8 +100,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             float angularVelocity = LumUtils.InverseLerp(200f, 500f, npc.Distance(Target.Center)) * MathHelper.ToRadians(2f);
             float idealRotation = npc.AngleTo(Target.Center) + MathF.Cos(MathHelper.TwoPi * AITimer / 90f) * 0.34f;
-            float idealSpeed = Utils.Remap(npc.Distance(Target.Center), 200f, 450f, 13.75f, 25f);
-            npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.007f);
+            float idealSpeed = Utils.Remap(npc.Distance(Target.Center), 200f, 450f, 12.25f, 21.75f);
+            npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.0061f);
             npc.velocity = npc.velocity.RotateTowards(idealRotation, angularVelocity);
             npc.velocity = npc.velocity.SafeNormalize(Vector2.UnitY) * MathHelper.Lerp(npc.velocity.Length(), idealSpeed, 0.15f);
 
