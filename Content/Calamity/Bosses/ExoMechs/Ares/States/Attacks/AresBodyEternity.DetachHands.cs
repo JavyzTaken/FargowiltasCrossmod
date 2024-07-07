@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
                     if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                         CurrentState = AresAIState.BackgroundCoreLaserBeams;
-                    if (Main.rand.NextBool() && NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio)
+                    if (Main.rand.NextBool() && (NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition))
                         CurrentState = AresAIState.BackgroundCoreLaserBeams;
                 }
                 while (CurrentState == PreviousState);
