@@ -167,9 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             if (wrappedAITimer == 1)
             {
-                float snapAngle = MathHelper.TwoPi / 4f;
-                spinOffsetAngle = MathF.Round(Utilities.WrapAngle360(npc.AngleFrom(Target.Center) + MathHelper.PiOver2) / snapAngle) * snapAngle;
-
+                spinOffsetAngle = Main.rand.Next(8) * MathHelper.TwoPi / 8f;
                 spinRadius = 200f;
                 npc.netUpdate = true;
             }
