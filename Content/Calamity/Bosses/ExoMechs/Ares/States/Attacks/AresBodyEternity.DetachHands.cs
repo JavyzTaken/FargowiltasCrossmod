@@ -26,9 +26,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             {
                 do
                 {
-                    CurrentState = Main.rand.NextFromList(AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts, AresAIState.KatanaCycloneDashes);
+                    CurrentState = Main.rand.NextFromList(AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts);
 
                     if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+                        CurrentState = AresAIState.BackgroundCoreLaserBeams;
+                    if (Main.rand.NextBool() && NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio)
                         CurrentState = AresAIState.BackgroundCoreLaserBeams;
                 }
                 while (CurrentState == PreviousState);
