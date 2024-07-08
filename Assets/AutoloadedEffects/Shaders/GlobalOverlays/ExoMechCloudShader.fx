@@ -79,8 +79,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     position.xy = round(position.xy / 0.25) * 0.25;
     
     // Account for the pesky gravity potions...
-    if (invertedGravity)
-        position.y = screenSize.y - position.y;
+    position.y = lerp(position.y, screenSize.y - position.y, invertedGravity);
     
     // Calculate how much scattered light will end up in the current fragment.
     float4 cloudLight = CalculateScatteredLight(float3(position.xy, -1), float3(0, 0, 1)) * (1 - coords.y);

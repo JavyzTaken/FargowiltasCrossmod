@@ -65,8 +65,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (MathHelper.Distance(Target.Center.X, NPC.Center.X) <= 120f)
                 hoverDestination.X = Target.Center.X;
 
-            NPC.Center = Vector2.Lerp(NPC.Center, hoverDestination, 0.01f);
-            StandardFlyTowards(hoverDestination);
+            NPC.Center = Vector2.Lerp(NPC.Center, hoverDestination, 0.0051f);
+            if (NPC.WithinRange(hoverDestination, 85f))
+                NPC.velocity *= 0.93f;
+            else
+                NPC.SimpleFlyMovement(NPC.SafeDirectionTo(hoverDestination) * 11.5f, 0.24f);
 
             InstructionsForHands[0] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(-430f, 50f), 0, AimedLaserBursts_CannonChargeUpTime));
             InstructionsForHands[1] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(-280f, 224f), 1, AimedLaserBursts_CannonChargeUpTime));
