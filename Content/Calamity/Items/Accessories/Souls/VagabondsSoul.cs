@@ -31,14 +31,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
             {
                 ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
             }
-            if (player.AddEffect<DragonScalesEffect>(Item))
-            {
-                ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
-            }
-            if (player.AddEffect<VeneratedLocketEffect>(Item))
-            {
-                ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
-            }
         }
         public override void AddRecipes()
         {
@@ -76,17 +68,5 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
     {
         public override int ToggleItemType => ModContent.ItemType<EclipseMirror>();
         public override bool IgnoresMutantPresence => true;
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DragonScalesEffect : VagabondEffect
-    {
-        public override int ToggleItemType => ModContent.ItemType<EclipseMirror>();
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class VeneratedLocketEffect : VagabondEffect
-    {
-        public override int ToggleItemType => ModContent.ItemType<VeneratedLocket>();
     }
 }

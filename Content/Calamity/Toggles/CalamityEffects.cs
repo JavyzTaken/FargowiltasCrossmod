@@ -47,12 +47,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class DynamoStemCellsEffect : UniverseEffect
-    {
-        public override int ToggleItemType => ModContent.ItemType<DynamoStemCells>();
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ElementalGauntletEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<ElementalGauntlet>();
