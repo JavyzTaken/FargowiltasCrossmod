@@ -15,23 +15,6 @@ float3 sunPosition;
 float lightningIntensities[5];
 float2 lightningPositions[5];
 
-float2 GetRayBoxIntersectionOffsets(float3 rayOrigin, float3 rayDirection, float3 boxMin, float3 boxMax)
-{
-    // Add a tiny nudge to the ray direction, since the compiler gets upset about the potential for division by zero otherwise.
-    rayDirection += 1e-8;
-    
-    float3 tMin = (boxMin - rayOrigin) / rayDirection;
-    float3 tMax = (boxMax - rayOrigin) / rayDirection;
-    
-    float3 t1 = min(tMin, tMax);
-    float3 t2 = max(tMin, tMax);
-    
-    float tNear = max(max(t1.x, t1.y), t1.z);
-    float tFar = min(min(t2.x, t2.y), t2.z);
-    
-    return float2(tNear, tFar);
-}
-
 // Density corresponds to how compact one can expect the cloud to be at a given point.
 float CalculateCloudDensityAtPoint(float3 p)
 {
@@ -72,81 +55,18 @@ float CalculateCloudDensityAtPoint(float3 p)
     return density * cloudDensity * lerp(0.15, 0.9, cloudDensity);
 }
 
-// Optical depth in this context basically is a measure of how much air is present along a given ray.
-float CalculateOpticalDepth(float3 rayOrigin, float3 rayDirection, float rayLength, float numOpticalDepthPoints)
-{
-    float3 densitySamplePoint = rayOrigin;
-    float stepSize = rayLength / (numOpticalDepthPoints - 1);
-    float opticalDepth = 0;
-
-    [unroll]
-    for (int i = 0; i < numOpticalDepthPoints; i++)
-    {
-        float localDensity = CalculateCloudDensityAtPoint(densitySamplePoint);
-        opticalDepth += localDensity * stepSize;
-        densitySamplePoint += rayDirection * stepSize;
-    }
-    return opticalDepth;
-}
-
 float4 CalculateScatteredLight(float3 rayOrigin, float3 rayDirection)
 {
-    float3 boxMin = float3(-999999, -999999, 0);
-    float3 boxMax = float3(999999, 999999, 2);
-    
-    float inScatterPoints = 2;
-    float sunIntersectionPoints = 2;
-    float2 intersectionDistances = GetRayBoxIntersectionOffsets(rayOrigin, rayDirection, boxMin, boxMax);
-    
-    // Calculate how far the cloud intersection must travel.
-    // If no intersection happened, simply return 0.
-    float cloudIntersectionLength = intersectionDistances.y - intersectionDistances.x;
-    if (cloudIntersectionLength <= 0)
-        return 0;
-    
-    // Calculate how much each step along the in-scatter ray must travel.
-    float inScatterStep = cloudIntersectionLength / (inScatterPoints - 1);
-    
     // Initialize the light accumulation value at 0.
-    float4 light = 0;
-    
-    // Start the in-scatter sample position at the edge of the box.
-    // This process attempts to discretely model the integral used along the ray in real-world atmospheric scattering calculations.
-    float3 boxStart = rayOrigin + intersectionDistances.x * rayDirection;
-    float3 inScatterSamplePosition = boxStart;
-    
-    [unroll]
-    for (int i = 0; i < inScatterPoints; i++)
-    {
-        // Calculate the direction from the in-scatter point to the sun.
-        float3 directionToSun = normalize(sunPosition - inScatterSamplePosition);
-        
-        // Perform a ray intersection from the sample position towards the sun.
-        // This does not need a safety "is there any intersection at all?" check since by definition the sample position is already in the box, since it's an intersection
-        // of a line in said box.
-        float2 sunRayLengthDistances = GetRayBoxIntersectionOffsets(inScatterSamplePosition, directionToSun, boxMin, boxMax);
-        float sunIntersectionRayLength = sunRayLengthDistances.y - sunRayLengthDistances.x;
-        
-        // Calculate the optical depth along the ray from the sample point to the sun.
-        float sunIntersectionOpticalDepth = CalculateOpticalDepth(inScatterSamplePosition, directionToSun, sunIntersectionRayLength, sunIntersectionPoints);
-        
-        // Combine the two optical depths via exponential decay.
-        float3 localScatteredLight = exp(-sunIntersectionOpticalDepth);
-        
-        // Combine the local scattered light, along with the density of the current position.
-        light += CalculateCloudDensityAtPoint(inScatterSamplePosition) * float4(localScatteredLight, 1);
-        
-        // Move onto the next movement iteration by stepping forward on the in-scatter position.
-        inScatterSamplePosition += rayDirection * inScatterStep;
-    }
+    float4 light = CalculateCloudDensityAtPoint(rayOrigin * 2) + CalculateCloudDensityAtPoint(rayOrigin * 1.72);
     
     // Perform Mie scattering on the result.
     float g = 0.67;
     float gSquared = g * g;
-    float cosTheta = dot(rayDirection, normalize(sunPosition - boxStart));
+    float cosTheta = dot(rayDirection, normalize(sunPosition - rayOrigin));
     float cosThetaSquared = cosTheta * cosTheta;
     float phaseMie = ((1 - gSquared) * (cosThetaSquared + 1)) / (pow(1 + gSquared - cosTheta * g * 2, 1.5) * (gSquared + 2)) * 0.1193662; // This constant is equal to 3/(8pi)
-    return light * inScatterStep * phaseMie * 320;
+    return light * phaseMie * 560;
 }
 
 float3 ColorBurn(float3 a, float3 b)
@@ -163,7 +83,8 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
         position.y = screenSize.y - position.y;
     
     // Calculate how much scattered light will end up in the current fragment.
-    float4 cloudLight = CalculateScatteredLight(float3(position.xy, -1), float3(0, 0, 1));
+    float4 cloudLight = CalculateScatteredLight(float3(position.xy, -1), float3(0, 0, 1)) * (1 - coords.y);
+    cloudLight.a = 1;
     cloudLight.rgb = 1 - exp(cloudLight.rgb * -cloudExposure);
     cloudLight *= lerp(4, 1, cloudDensity);
     
