@@ -84,7 +84,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     // Calculate how much scattered light will end up in the current fragment.
     float4 cloudLight = CalculateScatteredLight(float3(position.xy, -1), float3(0, 0, 1)) * (1 - coords.y);
-    cloudLight.a = 1;
+    cloudLight.a = cloudDensity;
     cloudLight.rgb = 1 - exp(cloudLight.rgb * -cloudExposure);
     cloudLight *= lerp(4, 1, cloudDensity);
     
