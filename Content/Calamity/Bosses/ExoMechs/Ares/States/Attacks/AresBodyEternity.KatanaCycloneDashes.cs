@@ -37,6 +37,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static int KatanaCycloneDashes_SlashCount => 9;
 
         /// <summary>
+        /// Ares' starting speed during the KatanaCycloneDashes attack. 
+        /// </summary>
+        public static float KatanaCycloneDashes_StartingDashSpeed => 33.5f;
+
+        /// <summary>
+        /// Ares' acceleration during the KatanaCycloneDashes attack. 
+        /// </summary>
+        public static float KatanaCycloneDashes_Acceleration => 1.024f;
+
+        /// <summary>
         /// The sound played when Ares performs a slash.
         /// </summary>
         public static readonly SoundStyle SlashSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/Slash") with { Volume = 1.2f, MaxInstances = 0 };
@@ -87,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                         teleportOffset *= -1f;
 
                     NPC.Center = Target.Center + teleportOffset * 1850f;
-                    NPC.velocity = NPC.SafeDirectionTo(Target.Center) * 37f;
+                    NPC.velocity = NPC.SafeDirectionTo(Target.Center) * KatanaCycloneDashes_StartingDashSpeed;
 
                     KatanaCycloneDashes_SlashCounter++;
                     if (KatanaCycloneDashes_SlashCounter > KatanaCycloneDashes_SlashCount)
@@ -107,7 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 if (AITimer % 11f == 10f)
                     SoundEngine.PlaySound(SlashSound, NPC.Center);
 
-                NPC.velocity *= 1.025f;
+                NPC.velocity *= KatanaCycloneDashes_Acceleration;
 
                 float rotateToPlayerInterpolant = LumUtils.InverseLerp(12f, 22f, MathF.Abs(Target.velocity.Y));
                 NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), rotateToPlayerInterpolant * 0.0136f);
