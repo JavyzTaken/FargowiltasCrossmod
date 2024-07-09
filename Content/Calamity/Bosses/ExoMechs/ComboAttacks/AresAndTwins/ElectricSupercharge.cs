@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// The rate at which Artemis shoots projectiles.
         /// </summary>
-        public static int ArtemisShootRate => LumUtils.SecondsToFrames(0.3167f);
+        public static int ArtemisShootRate => LumUtils.SecondsToFrames(0.4f);
 
         /// <summary>
         /// How many electric projectiles Apollo releases upon doing a burst dash.
@@ -68,17 +68,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// The speed interpolant at which Artemis readjusts her rotation to aim towards the target.
         /// </summary>
-        public static float ArtemisTurnSpeedInterpolant => 0.145f;
+        public static float ArtemisTurnSpeedInterpolant => 0.133f;
 
         /// <summary>
         /// The speed of projectiles Apollo releases upon doing a burst dash.
         /// </summary>
-        public static float DashSpreadProjectileSpeed => 2.25f;
+        public static float DashSpreadProjectileSpeed => 2.1f;
 
         /// <summary>
         /// The speed of tesla spheres shot by Ares.
         /// </summary>
-        public static float TeslaSphereShootSpeed => 10.5f;
+        public static float TeslaSphereShootSpeed => 9.5f;
+
+        /// <summary>
+        /// Apollo's maximum speed before he begins to decelerate.
+        /// </summary>
+        public static float ApolloMaxSpeed => 28.5f;
 
         public override bool Perform(NPC npc)
         {
@@ -303,7 +308,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity += idealVelocity.SafeNormalize(Vector2.Zero) * 0.8f;
                 npc.velocity = Vector2.Lerp(npc.velocity, idealVelocity, 0.012f);
 
-                if (npc.velocity.Length() >= 35f)
+                if (npc.velocity.Length() >= ApolloMaxSpeed)
                     npc.velocity *= 0.985f;
             }
             npc.rotation = npc.velocity.ToRotation();
