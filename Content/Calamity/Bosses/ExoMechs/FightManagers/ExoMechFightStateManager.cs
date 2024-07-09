@@ -238,7 +238,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             if (nextPhase is null)
                 return;
 
-            if (!DebugDisablePhaseTransition && nextPhase.StartCondition(FightState))
+            bool anyPlayersAreAlive = false;
+            foreach (Player player in Main.ActivePlayers)
+            {
+                if (!player.dead)
+                    anyPlayersAreAlive = true;
+            }
+
+            if (!DebugDisablePhaseTransition && nextPhase.StartCondition(FightState) && anyPlayersAreAlive)
             {
                 CurrentPhase = nextPhase;
                 nextPhase.OnStart?.Invoke(FightState);

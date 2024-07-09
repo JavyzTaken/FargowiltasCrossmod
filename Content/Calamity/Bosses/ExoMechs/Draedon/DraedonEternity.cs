@@ -26,6 +26,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             MoveAroundDuringBattle,
             TemporarilyLeave,
 
+            StandardPlayerDeathMonologue,
+            FunnyPlayerDeathMonologue,
+
             FirstInterjection,
             SecondInterjection,
             PostBattleInterjection
@@ -122,12 +125,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 NPC.TargetClosest(false);
 
                 // Fuck off if no living target exists.
-                if (PlayerToFollow.dead || !PlayerToFollow.active)
+                bool deathAnimation = AIState == DraedonAIState.StandardPlayerDeathMonologue || AIState == DraedonAIState.FunnyPlayerDeathMonologue;
+                if ((PlayerToFollow.dead || !PlayerToFollow.active) && !deathAnimation)
                 {
-                    NPC.life = 0;
-                    NPC.HitEffect();
-                    NPC.active = false;
-                    NPC.netUpdate = true;
+                    if (AIState == DraedonAIState.MoveAroundDuringBattle)
+                        ChangeAIState(DraedonAIState.StandardPlayerDeathMonologue);
+                    else if (AIState == DraedonAIState.FirstInterjection || AIState == DraedonAIState.SecondInterjection || AIState == DraedonAIState.PostBattleInterjection)
+                        ChangeAIState(DraedonAIState.FunnyPlayerDeathMonologue);
+                    else
+                        NPC.active = false;
                 }
             }
 
@@ -158,6 +164,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                     break;
                 case DraedonAIState.PostBattleInterjection:
                     DoBehavior_PostBattleInterjection();
+                    break;
+                case DraedonAIState.StandardPlayerDeathMonologue:
+                case DraedonAIState.FunnyPlayerDeathMonologue:
+                    DoBehavior_PlayerDeathMonologue();
                     break;
             }
 

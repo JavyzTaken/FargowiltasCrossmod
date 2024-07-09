@@ -610,6 +610,9 @@ Mods: {
 				EndOfBattle_FirstDefeatReconBodyKill1: Intriguing...
 				EndOfBattle_FirstDefeatReconBodyKill2: A tempermental disposition is not a data point I had not considered.
 				EndOfBattle_FirstDefeatReconBodyKill3: Regardless, as I was saying...
+				Death: Precisely within the margins of my calculations.
+				DeathAtAmusingTime1: Ah, they've perished.
+				DeathAtAmusingTime2: That was rather inopportune, but still within the margins of my calculations.
 				Error: This text should not be displayed.
 			}
 
