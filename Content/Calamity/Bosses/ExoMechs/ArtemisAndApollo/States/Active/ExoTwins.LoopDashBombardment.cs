@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Apollo spends spinning after dashing during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_SpinTime => Utilities.SecondsToFrames(0.8f);
+        public static int LoopDashBombardment_SpinTime => Utilities.SecondsToFrames(0.9f);
 
         /// <summary>
         /// How long Apollo spends dashing after spinning during the LoopDashBombardment attack.
@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The maximum speed that Apollo flies at while spinning during the LoopDashBombardment attack. When above this speed he will slow down.
         /// </summary>
-        public static float LoopDashBombardment_MaxApolloSpinSpeed => 33f;
+        public static float LoopDashBombardment_MaxApolloSpinSpeed => 30f;
 
         /// <summary>
         /// The speed of missiles shot by Apollo during the LoopDashBombardment attack.
@@ -70,12 +70,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The acceleration of Apollo when performing his final straight dash during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_ApolloFinalDashAcceleration => 2.6f;
+        public static float LoopDashBombardment_ApolloFinalDashAcceleration => 2.1f;
 
         /// <summary>
         /// The max speed of Apollo when performing his final straight dash during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_MaxApolloFinalDashSpeed => 250f;
+        public static float LoopDashBombardment_MaxApolloFinalDashSpeed => 210f;
 
         /// <summary>
         /// AI update loop method for the LoopDashBombardment attack.
@@ -154,7 +154,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             // Release missiles.
             bool canFireMissiles = localAITimer >= hoverTime + straightDashTime && npc.velocity.Length() <= 150f;
             bool tooCloseToFireMissiles = npc.WithinRange(Target.Center, LoopDashBombardment_ApolloMissileSpawnDistanceThreshold);
-            if (localAITimer % 6 == 5 && canFireMissiles && !tooCloseToFireMissiles)
+            if (localAITimer % 7 == 6 && canFireMissiles && !tooCloseToFireMissiles)
                 DoBehavior_LoopDashBombardment_ReleasePlasmaMissile(npc);
 
             if (acceleratingAfterSpin && npc.velocity.Length() <= LoopDashBombardment_MaxApolloFinalDashSpeed)

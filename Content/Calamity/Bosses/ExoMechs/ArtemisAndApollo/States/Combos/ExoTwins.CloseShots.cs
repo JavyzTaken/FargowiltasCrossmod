@@ -38,12 +38,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The rate at which Artemis releases lasers during the CloseShots attack.
         /// </summary>
-        public static int CloseShots_ArtemisShootRate => Utilities.SecondsToFrames(0.216f);
+        public static int CloseShots_ArtemisShootRate => Utilities.SecondsToFrames(0.24f);
 
         /// <summary>
         /// The rate at which Apollo releases fireballs during the CloseShots attack.
         /// </summary>
-        public static int CloseShots_ApolloShootRate => Utilities.SecondsToFrames(0.333f);
+        public static int CloseShots_ApolloShootRate => Utilities.SecondsToFrames(0.38f);
 
         /// <summary>
         /// The amount of attack cycles performed during the CloseShots attack.
@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How fast Artemis and Apollo dash during the CloseShots attack.
         /// </summary>
-        public static float CloseShots_DashSpeed => 100f;
+        public static float CloseShots_DashSpeed => 88f;
 
         /// <summary>
         /// How fast Artemis' shot lasers are during the CloseShots attack.

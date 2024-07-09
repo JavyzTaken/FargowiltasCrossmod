@@ -43,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Apollo spends telegraphing in anticipation of his dash during the MachineGunLasers attack.
         /// </summary>
-        public static int MachineGunLasers_ApolloTelegraphTime => Utilities.SecondsToFrames(0.75f);
+        public static int MachineGunLasers_ApolloTelegraphTime => Utilities.SecondsToFrames(0.85f);
 
         /// <summary>
         /// How long Apollo spends dashing during the MachineGunLasers attack.

@@ -158,9 +158,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static void DoBehavior_ExothermalOverload_ApolloHaloPlasmaDashes(NPC npc, IExoTwin apolloAttributes)
         {
             int spinTime = 45;
-            int dashDelay = 10;
+            int dashDelay = 14;
             int dashRepositionTime = 5;
-            int dashTime = 26;
+            int dashTime = 27;
             int wrappedAITimer = AITimer % (spinTime + dashDelay + dashRepositionTime + dashTime);
             ref float spinOffsetAngle = ref SharedState.Values[0];
             ref float spinRadius = ref SharedState.Values[1];

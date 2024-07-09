@@ -38,11 +38,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 float idealDirection = npc.AngleTo(Target.Center);
                 npc.velocity += idealDirection.ToRotationVector2() * 1.015f;
-                if (npc.velocity.Length() > 25f)
+                if (npc.velocity.Length() > 20.5f)
                     npc.velocity *= 0.98f;
-                if (npc.velocity.Length() > 40f)
+                if (npc.velocity.Length() > 34f)
                     npc.velocity *= 0.97f;
-                if (npc.velocity.Length() > 60f)
+                if (npc.velocity.Length() > 50f)
                     npc.velocity *= 0.97f;
             }
 
