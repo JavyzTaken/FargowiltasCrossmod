@@ -104,6 +104,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.0061f);
             npc.velocity = npc.velocity.RotateTowards(idealRotation, angularVelocity);
             npc.velocity = npc.velocity.SafeNormalize(Vector2.UnitY) * MathHelper.Lerp(npc.velocity.Length(), idealSpeed, 0.15f);
+            npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * idealSpeed, 0.0285f);
 
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f));
 
