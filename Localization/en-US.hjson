@@ -743,6 +743,7 @@ Mods: {
 			AresCoreLaserSmall.DisplayName: Energized Spark
 			AresSwingingKatanas.DisplayName: XF-09 Ares Energy Katana
 			ApolloPlasmaFireball.DisplayName: Plasma Fireball
+			HyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
 		}
 
 		Buffs: {

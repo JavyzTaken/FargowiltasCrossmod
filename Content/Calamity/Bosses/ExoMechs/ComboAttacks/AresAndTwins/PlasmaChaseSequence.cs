@@ -3,10 +3,12 @@ using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.Sounds;
+using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using Luminance.Common.Utilities;
@@ -257,20 +259,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 float hoverSpeedInterpolant = MathHelper.Lerp(0.4f, 1f, LumUtils.InverseLerp(0f, ExoTwinIdleHoverTime + ExoTwinReelBackTime, wrappedTimer).Squared());
                 float reelBackDistanceInterpolant = LumUtils.InverseLerp(0f, ExoTwinReelBackTime, wrappedTimer - ExoTwinIdleHoverTime).Cubed();
-                float reelBackDistance = reelBackDistanceInterpolant * 1080f;
-                HoverNearTarget_ExoTwin(npc, verticalHoverDirection, reelBackDistance, hoverSpeedInterpolant);
+                float reelBackDistance = reelBackDistanceInterpolant * 920f;
+                HoverNearTarget_ExoTwin(npc, verticalHoverDirection, reelBackDistance, hoverSpeedInterpolant + reelBackDistanceInterpolant * 1.3f);
 
                 if (reelBackDistanceInterpolant >= 0.05f)
                     exoTwin.Animation = ExoTwinAnimation.ChargingUp;
-                if (reelBackDistanceInterpolant <= 0.77f)
-                    npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.1f);
+                if (reelBackDistanceInterpolant <= 0.85f)
+                    npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.2f);
             }
 
             // Dash.
             else if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime && AITimer >= PlasmaCannonChargeUpTime + 60)
             {
-                npc.velocity = npc.rotation.ToRotationVector2() * ExoTwinDashSpeed;
-                npc.netUpdate = true;
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    npc.velocity = npc.rotation.ToRotationVector2() * ExoTwinDashSpeed;
+                    npc.netUpdate = true;
+
+                    Vector2 portalDirection = -npc.velocity.SafeNormalize(Vector2.Zero);
+                    LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center + npc.velocity * 12f, portalDirection, ModContent.ProjectileType<HyperfuturisticPortal>(), 0, 0f);
+                }
 
                 SoundEngine.PlaySound(Artemis.ChargeSound, npc.Center);
             }
@@ -278,7 +286,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             // Spin after the dash.
             else
             {
-                if (wrappedTimer >= ExoTwinIdleHoverTime + ExoTwinReelBackTime + 10)
+                if (wrappedTimer >= ExoTwinIdleHoverTime + ExoTwinReelBackTime + 11)
                 {
                     npc.velocity.Y -= 2.2f;
                     npc.velocity.X *= 0.875f;
@@ -286,7 +294,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 else
                     npc.velocity *= 1.02f;
 
-                npc.damage = npc.defDamage;
+                npc.Opacity = LumUtils.InverseLerp(12f, 10f, wrappedTimer - ExoTwinIdleHoverTime - ExoTwinReelBackTime);
+                if (npc.Opacity >= 0.5f)
+                    npc.damage = npc.defDamage;
+                else
+                    npc.dontTakeDamage = true;
+
+                if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 10)
+                {
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        for (int i = 0; i < 14; i++)
+                        {
+                            Vector2 arcSpawnPosition = npc.Center + Main.rand.NextVector2Circular(100f, 100f);
+                            Vector2 arcDestination = arcSpawnPosition - npc.velocity.SafeNormalize(Vector2.UnitY).RotatedByRandom(MathHelper.Pi / 3f) * Main.rand.NextFloat(84f, 900f);
+                            Vector2 arcLength = (arcDestination - arcSpawnPosition).RotatedByRandom(0.12f) * Main.rand.NextFloat(0.9f, 1f);
+                            LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(10, 20));
+                        }
+                    }
+                    for (int i = 0; i < 30; i++)
+                    {
+                        Color streakColor = Color.Lerp(Color.Green, Color.DeepSkyBlue, Main.rand.NextFloat(0.75f));
+                        streakColor = Color.Lerp(streakColor, Color.White, 0.5f);
+
+                        Vector2 streakVelocity = -npc.velocity.SafeNormalize(Vector2.UnitY).RotatedByRandom(0.1f) * Main.rand.NextFloat(17f, 47f);
+                        Vector2 streakScale = new(2f, 0.02f);
+                        Vector2 endingStreakScale = new(0.45f, 0.065f);
+                        Vector2 streakSpawnPosition = npc.Center + Main.rand.NextVector2Circular(192f, 192f);
+                        LineStreakParticle streak = new(streakSpawnPosition, streakVelocity, streakColor, Main.rand.Next(12, 28), streakVelocity.ToRotation(), streakScale, endingStreakScale);
+                        streak.Spawn();
+                    }
+                    CustomExoMechsSky.CreateLightning((npc.Center - Main.screenPosition) / Main.ScreenSize.ToVector2());
+                }
 
                 // Loop around to the other side of the player.
                 if (wrappedTimer >= ExoTwinIdleHoverTime + ExoTwinReelBackTime + ExoTwinDashSpinTime - 2)

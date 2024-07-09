@@ -198,7 +198,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             {
                 if (Lightning[i].Brightness < 0.03f)
                 {
-                    Lightning[i].Brightness = Main.rand.NextFloat(0.75f, 1f);
+                    Lightning[i].Brightness = Main.rand.NextFloat(0.9f, 1f);
                     Lightning[i].LightningPosition = lightningPosition.Value;
                     break;
                 }
