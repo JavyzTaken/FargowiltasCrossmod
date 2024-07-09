@@ -40,6 +40,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// </summary>
         internal static LazyAsset<Texture2D> Glowmask;
 
+        public bool SetActiveFalseInsteadOfKill => true;
+
         /// <summary>
         /// The Y position that determines whether this missile can do damage. Once the Y position of this projectile's center exceeds this value, tile collisions are enabled again.
         /// </summary>
