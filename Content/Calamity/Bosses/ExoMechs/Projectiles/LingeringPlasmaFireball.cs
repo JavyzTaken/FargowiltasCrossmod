@@ -67,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             }
         }
 
-        public override bool? CanDamage() => Projectile.Opacity >= 0.5f;
+        public override bool? CanDamage() => Projectile.Opacity >= 0.5f && Time >= 30f;
 
         public override bool PreDraw(ref Color lightColor)
         {
