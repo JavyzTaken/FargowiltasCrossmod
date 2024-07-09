@@ -94,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
         {
             // Calculate the maximum sky opacity value.
-            // If Draedon is not present it is assumed that the Exo Mechs were just spawned in via cheating, and as such they sky should immediately draw at its maximum intensity, rather than not at all.
+            // If Draedon is not present it is assumed that the Exo Mechs were just spawned in via cheating, and as such the sky should immediately draw at its maximum intensity, rather than not at all.
             float maxSkyOpacity = 1f;
             float planeForwardInterpolant = 0f;
             int draedonIndex = NPC.FindFirstNPC(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>());
@@ -146,7 +146,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
                     Lightning[i].Update();
             }
 
-            int lightningSpawnChance = (int)MathHelper.Lerp(300f, 30f, RedSkyInterpolant);
+            int lightningSpawnChance = (int)MathHelper.Lerp(480f, 45f, RedSkyInterpolant);
             if (Main.rand.NextBool(lightningSpawnChance))
                 CreateLightning();
 
