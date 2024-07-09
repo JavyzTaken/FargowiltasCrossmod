@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Thermal;
 
-        public override void SetStaticDefaults() => ProjectileID.Sets.DrawScreenCheckFluff[Type] = 24000;
+        public override void SetStaticDefaults() => ProjectileID.Sets.DrawScreenCheckFluff[Type] = 720;
 
         public override void SetDefaults()
         {

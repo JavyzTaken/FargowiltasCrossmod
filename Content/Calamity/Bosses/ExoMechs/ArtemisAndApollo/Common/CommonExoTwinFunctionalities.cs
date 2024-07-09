@@ -207,7 +207,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             for (int i = 0; i < blurWeights.Length; i++)
                 blurWeights[i] = Utilities.GaussianDistribution(i / (float)(blurWeights.Length - 1f) * 1.5f, 0.6f);
 
-            if (!twinInterface.SpecialShaderAction(texture, twin))
+            if (!twinInterface.SpecialShaderAction?.Invoke(texture, twin) ?? true)
             {
                 ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.MotionBlurShader");
                 shader.TrySetParameter("blurInterpolant", twinInterface.MotionBlurInterpolant);
