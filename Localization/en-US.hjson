@@ -97,16 +97,12 @@ Mods: {
 					Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
 					Phylactery, Heart of Stone, and Spiny Shell
 					'''
-				CalamityBerserker: Effects of Reaper Tooth Necklace, Badge of Bravery, and Elemental Gauntlet
+				CalamityBerserker: Effects of Badge of Bravery and Elemental Gauntlet
 				ThoriumBerserker: Effects of Rapier Badge
 				CalamityWizard: Effects of Ethereal Talisman
 				ThoriumWizard: Effects of Murky Catalyst
 				CalamitySniper: Effects of Elemental Quiver and Quiver of Nihility
-				Vagabond:
-					'''
-					Effects of Nanotech and Eclipse Mirror
-					Effects of Dragon Scales and Venerated Locket
-					'''
+				Vagabond: Effects of Nanotech and Eclipse Mirror
 				ThoriumSniper: Effects of Concussive Warhead
 				CalamityConjurist: Effects of Nucleogenesis
 				ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
@@ -137,7 +133,6 @@ Mods: {
 					15% increased rogue projectile velocity
 					15% increased rogue critical chance
 					Effects of Nanotech and Eclipse Mirror
-					Effects of Dragon Scales and Venerated Locket
 					'''
 			}
 
@@ -768,8 +763,6 @@ Mods: {
 			VagabondsSoulHeader: Vagabond's Soul
 			NanotechEffect: Nanotech
 			EclipseMirrorEffect: Eclipse Mirror
-			DragonScalesEffect: Dragon Scales
-			VeneratedLocketEffect: Venerated Locket
 			AmalgamEffect: The Amalgam
 			AsgardianAegisEffect: Asgardian Aegis
 			RampartofDeitiesEffect: Rampart of Deities
@@ -778,7 +771,6 @@ Mods: {
 			CalamitySniperHeader: Calamity Sniper's Soul
 			ElementalQuiverEffect: Elemental Quiver
 			QuiverofNihilityEffect: Quiver of Nihility
-			DynamoStemCellsEffect: Dynamo Stem Cells
 			NucleogenesisEffect: Nucleogenesis
 			AbyssalDivingSuitEffect: Abyssal Diving Suit
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"

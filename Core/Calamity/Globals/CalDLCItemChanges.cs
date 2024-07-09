@@ -8,6 +8,7 @@ using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
 using CalamityMod.Items.Placeables.Furniture;
 using CalamityMod.Items.Placeables.Furniture.Fountains;
+using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Magic;
@@ -145,11 +146,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
-                //ModContent.GetInstance<ReaperToothNecklace>().UpdateAccessory(player, hideVisual);
-                player.GetArmorPenetration<GenericDamageClass>() += 15f;
-            }
-            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
-            {
                 if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
@@ -190,14 +186,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<EclipseMirrorEffect>(item))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<DragonScalesEffect>(item))
-                {
-                    ModContent.GetInstance<DragonScales>().UpdateAccessory(player, hideVisual);
-                }
-                if (player.AddEffect<VeneratedLocketEffect>(item))
-                {
-                    ModContent.GetInstance<VeneratedLocket>().UpdateAccessory(player, hideVisual);
                 }
             }
             if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
@@ -254,16 +242,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
                     tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                    /*
-                    if (tooltips[i].Text.Contains("Not consumable"))
-                    {
-                        tooltips[i].Text = "";
-                    }
-                    */
+                    
+                    
+                    
                 }
             }
-
-
+            for (int i = 0; i < tooltips.Count; i++)
+            {
+                if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
+                {
+                    tooltips[i].Text = "";
+                }
+            }
             if (item.type == ModContent.ItemType<Rock>())
             {
                 tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));

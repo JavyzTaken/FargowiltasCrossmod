@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
 using CalamityMod.Events;
@@ -18,11 +19,13 @@ using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Content.Projectiles.Souls;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -43,7 +46,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (entity.ModProjectile != null && entity.ModProjectile is BaseLaserbeamProjectile)
             {
-                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().GrazeCheck =
+                entity.FargoSouls().GrazeCheck =
                 Projectile =>
                 {
                     float num6 = 0f;
@@ -54,19 +57,28 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                     return false;
                 };
-                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 1;
+                entity.FargoSouls().DeletionImmuneRank = 1;
             }
+
+            if (entity.ModProjectile != null && entity.ModProjectile.Mod == ModCompatibility.Calamity.Mod) // Global disables on all Calamity projectiles. Currently: Adamantite Enchantment
+            {
+                entity.FargoSouls().CanSplit = false;
+            }
+                
+
             if (new List<int>() {ModContent.ProjectileType<Flarenado>(), ModContent.ProjectileType<BrimstoneMonster>(), ModContent.ProjectileType<YharonBulletHellVortex>(),
             ModContent.ProjectileType<OldDukeVortex>(), ModContent.ProjectileType<Infernado>(),ModContent.ProjectileType<Infernado2>(),ModContent.ProjectileType<InfernadoRevenge>(),
             ModContent.ProjectileType<SkyFlareRevenge>(), ModContent.ProjectileType<ProvidenceCrystal>(), ModContent.ProjectileType<AresGaussNukeProjectileBoom>(),}.Contains(entity.type))
             {
-                entity.GetGlobalProjectile<FargoSoulsGlobalProjectile>().DeletionImmuneRank = 2;
+                entity.FargoSouls().DeletionImmuneRank = 2;
             }
             if (BossRushEvent.BossRushActive && new List<int> { ModContent.ProjectileType<DeviSparklingLove>(), ModContent.ProjectileType<DeviBigDeathray>(), ModContent.ProjectileType<PlanteraTentacle>(), ProjectileID.PhantasmalDeathray }.Contains(entity.type))
             {
                 entity.extraUpdates += 1;
 
             }
+
+            
         }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
@@ -86,7 +98,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     Player player = Main.player[projectile.owner];
                     Item item = player.HeldItem;
-                    if (item != null && item.DamageType == ModContent.GetInstance<TrueMeleeDamageClass>() || item.DamageType == ModContent.GetInstance<TrueMeleeNoSpeedDamageClass>())
+                    if (item != null && item.DamageType.CountsAsClass(DamageClass.Melee))
                     {
                         float scale = CalDLCItemBalance.TrueMeleeTungstenScaleNerf(player);
                         projectile.position = projectile.Center;
@@ -98,7 +110,25 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 
             }
-            
+            if (projectile.owner >= 0)
+            {
+                //attempt to make adamantite ench work with held proj weapons. didnt work.
+                //Player player = Main.player[projectile.owner];
+                //if (player.HasEffect<AdamantiteEffect>()
+                //&& FargoSoulsUtil.OnSpawnEnchCanAffectProjectile(projectile, false)
+                //&& projectile.FargoSouls().CanSplit && Array.IndexOf(FargoSoulsGlobalProjectile.NoSplit, projectile.type) <= -1
+                //&& projectile.aiStyle != ProjAIStyleID.Spear) {
+                //    if (projectile.owner == Main.myPlayer
+                //    && !(AdamantiteEffect.AdamIgnoreItems.Contains(player.HeldItem.type) || player.heldProj == projectile.whoAmI)
+                //    &&
+                //    source is EntitySource_Parent parent1 && parent1.Entity is Projectile sourceProj && !(sourceProj.aiStyle == ProjAIStyleID.Spear || sourceProj.minion || sourceProj.sentry || ProjectileID.Sets.IsAWhip[sourceProj.type] && !ProjectileID.Sets.IsAWhip[projectile.type]))
+                //    {
+                //        projectile.ArmorPenetration += projectile.damage / 2;
+                //        AdamantiteEffect.AdamantiteSplit(projectile, player.FargoSouls(), 1 + (int)player.FargoSouls().AdamantiteSpread);
+                //        projectile.FargoSouls().AdamModifier = player.FargoSouls().ForceEffect<AdamantiteEnchant>() ? 3 : 2;
+                //    }
+                //}
+            }
             if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalDLCProjectileChanges>().Ricoshot)
             {
                 projectile.hostile = false;
@@ -112,6 +142,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     typeof(SlimeBall).GetField("oil", LumUtils.UniversalBindingFlags).SetValue(projectile.ModProjectile, false);
                 }
             }
+            
 
         }
         public bool Ricoshot = false;

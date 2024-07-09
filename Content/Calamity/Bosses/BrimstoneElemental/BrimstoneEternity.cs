@@ -34,6 +34,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         {
             base.SetStaticDefaults();
         }
+        public override void SetDefaults()
+        {
+            NPC.lifeMax = (int)(NPC.lifeMax * 1.4f);
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (!NPC.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev)
@@ -158,6 +162,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             }
             if (mainAttack == 0)
             {
+                NPC.defense = 15;
                 NPC.Opacity = 0;
                 NPC.dontTakeDamage = true;
                 NPC.velocity *= 0;
@@ -186,7 +191,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             if (mainAttack == 1)
             {
                 const int teleportTime = 540;
-
+                NPC.defense = 15;
                 if (auraOpacity < 1) 
                     auraOpacity += 0.02f;
                 animation = 0;
@@ -478,6 +483,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             }
             if (mainAttack == 3)
             {
+                NPC.defense = 15;
                 animation = 0;
                 NPC.velocity *= 0.97f;
                 if (timer == 100)
@@ -623,7 +629,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                     {
                         for (int i = 0; i < 2; i++)
                         {
-                            Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-50, 50))) * 10, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-50, 50))) * 10 * 0.5f, ModContent.ProjectileType<BrimstoneHellfireball>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                             proj.timeLeft = 35;
                             proj.netUpdate = true;
                         }

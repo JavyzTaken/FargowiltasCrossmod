@@ -1,5 +1,17 @@
-New Update: v1.1.0.7
--Squirrel can now sell DLC items such as Enchantments
--Conjurist Soul recipe no longer has Papyrus Scarab since it's a material of Nucleogenesis, which is in the recipe
--Prevented Brimstone Monsters from running faulty code, which caused them to apply Vunerability Hex to player whenever alive
--Fixed Luxor's Gift not working correctly
+New Update: v1.1.0.8
+-Eternity Hive Mind: Dark Hearts now use old, less volatile AI
+-Eternity Brimstone Elemental: 
+--Shader aura now draws on top of literally everything so it can't possibly be missed (previously didn't draw in Hell if background was disabled, for example)
+--Decreased speed of inferno fork-like fireball projectiles
+--Fixed bug causing bonus defense to linger after exiting shell phase
+--HP +40%
+
+-Disabled Adamantite Enchantment on all Calamity projectiles until issues are resolved
+-Reduced Tungsten Enchantment scale nerf and now applies to all Melee weapons rather than just True Melee
+-Eternity-Death deerclops border is now centered on the player during flicker teleport
+-Reworked several recipes, notably of Class Souls
+
+-Fixed EoC not despawning during horizontal dash
+-Assured EoC can't be invincible during horizontal dash
+-Attempted to fix Boss Rush not working correctly
+-Astral Injection no longer grants infinite at 30 stack

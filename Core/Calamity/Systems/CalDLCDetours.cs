@@ -24,6 +24,14 @@ using FargowiltasSouls;
 using Luminance.Core.Hooking;
 using Fargowiltas.NPCs;
 using CalamityMod.Projectiles.Boss;
+using FargowiltasSouls.Content.Projectiles;
+using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Projectiles.Ranged;
+using Fargowiltas.Items;
+using CalamityMod.Items.Potions;
+using FargowiltasSouls.Content.Bosses.Champions.Nature;
+using FargowiltasSouls.Content.Bosses.Champions.Terra;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -39,6 +47,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo FMSHorizontalSpeedMethod = typeof(FlightMasteryWings).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo IsFargoSoulsItemMethod = typeof(Squirrel).GetMethod("IsFargoSoulsItem", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BrimstoneMonsterCanHitPlayerMethod = typeof(BrimstoneMonster).GetMethod("CanHitPlayer", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo FargoSoulsOnSpawnProjMethod = typeof(FargoSoulsGlobalProjectile).GetMethod("OnSpawn", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo TryUnlimBuffMethod = typeof(FargoGlobalItem).GetMethod("TryUnlimBuff", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo NatureChampAIMethod = typeof(NatureChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo TerraChampAIMethod = typeof(TerraChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
 
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
@@ -48,6 +62,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
         public delegate bool Orig_IsFargoSoulsItem(Item item);
         public delegate bool Orig_BrimstoneMonsterCanHitPlayer(BrimstoneMonster self, Player player);
+        public delegate void Orig_FargoSoulsOnSpawnProj(FargoSoulsGlobalProjectile self, Projectile projectile, IEntitySource source);
+        public delegate void Orig_TryUnlimBuff( Item item, Player player);
+        public delegate void Orig_NatureChampAI(NatureChampion self);
+        public delegate void Orig_TerraChampAI(TerraChampion self);
+        public delegate bool Orig_CheckTempleWalls(Vector2 pos);
+        public delegate bool Orig_DukeFishronPreAI(DukeFishron self, NPC npc);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -62,22 +82,31 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(FMSHorizontalSpeedMethod, FMSHorizontalSpeed_Detour);
             HookHelper.ModifyMethodWithDetour(IsFargoSoulsItemMethod, IsFargoSoulsItem_Detour);
             HookHelper.ModifyMethodWithDetour(BrimstoneMonsterCanHitPlayerMethod, BrimstoneMonsterCanHitPlayer_Detour);
+            HookHelper.ModifyMethodWithDetour(FargoSoulsOnSpawnProjMethod, FargoSoulsOnSpawnProj_Detour);
+            HookHelper.ModifyMethodWithDetour(TryUnlimBuffMethod, TryUnlimBuff_Detour);
+            HookHelper.ModifyMethodWithDetour(NatureChampAIMethod, NatureChampAI_Detour);
+            HookHelper.ModifyMethodWithDetour(TerraChampAIMethod, TerraChampAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CheckTempleWallsMethod, CheckTempleWalls_Detour);
+            HookHelper.ModifyMethodWithDetour(DukeFishronPreAIMethod, DukeFishronPreAI_Detour);
         }
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
         {
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
+            bool wasBossRush = BossRushEvent.BossRushActive;
             bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
             if (shouldDisable)
             {
                 CalamityWorld.revenge = false;
                 CalamityWorld.death = false;
+                BossRushEvent.BossRushActive = false;
             }
             bool result = orig(self, npc);
             if (shouldDisable)
             {
                 CalamityWorld.revenge = wasRevenge;
                 CalamityWorld.death = wasDeath;
+                BossRushEvent.BossRushActive = wasBossRush;
             }
             return result;
         }
@@ -205,6 +234,74 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (distSQ > radiusSQ)
                 return false;
             return orig(self, player);
+        }
+        internal static void FargoSoulsOnSpawnProj_Detour(Orig_FargoSoulsOnSpawnProj orig, FargoSoulsGlobalProjectile self, Projectile proj, IEntitySource source)
+        {
+            if (proj.type == ModContent.ProjectileType<TitaniumRailgunScope>())
+            {
+                proj.FargoSouls().CanSplit = false;
+            }
+            
+            orig(self, proj, source);
+        }
+        internal static void TryUnlimBuff_Detour(Orig_TryUnlimBuff orig, Item item, Player player)
+        {
+            if (item.type != ModContent.ItemType<AstralInjection>())
+            {
+                orig(item, player);
+
+            }
+            
+        }
+        internal static void NatureChampAI_Detour(Orig_NatureChampAI orig, NatureChampion self)
+        {
+            NPC npc = self.NPC;
+            double originalSurface = Main.worldSurface;
+            if (BossRushEvent.BossRushActive)
+            {
+                Main.worldSurface = 0;
+            }
+            orig(self);
+            if (BossRushEvent.BossRushActive)
+            {
+                Main.worldSurface = originalSurface;
+            }
+        }
+        internal static void TerraChampAI_Detour(Orig_TerraChampAI orig, TerraChampion self)
+        {
+            NPC npc = self.NPC;
+            double originalSurface = Main.worldSurface;
+            if (BossRushEvent.BossRushActive)
+            {
+                Main.worldSurface = 0;
+            }
+            orig(self);
+            if (BossRushEvent.BossRushActive)
+            {
+                Main.worldSurface = originalSurface;
+            }
+        }
+        internal static bool CheckTempleWalls_Detour(Orig_CheckTempleWalls orig, Vector2 pos)
+        {
+            
+            if (BossRushEvent.BossRushActive)
+            {
+                return true;
+            }
+            return orig(pos);
+        }
+        internal static bool DukeFishronPreAI_Detour(Orig_DukeFishronPreAI orig, DukeFishron self, NPC npc)
+        {
+            if (BossRushEvent.BossRushActive && npc.HasValidTarget)
+            {
+                Main.player[npc.target].ZoneBeach = true;
+            }
+            bool result = orig(self, npc);
+            if (BossRushEvent.BossRushActive && npc.HasValidTarget)
+            {
+                Main.player[npc.target].ZoneBeach = false;
+            }
+            return result;
         }
     }
 }

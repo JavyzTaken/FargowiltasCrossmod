@@ -372,7 +372,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                         }
                         break;
                 }
-                if (NPC.GetLifePercent() <= 0.9f && !BossRushEvent.BossRushActive)
+                if (NPC.GetLifePercent() <= 0.9f /*&& !BossRushEvent.BossRushActive*/)
                 {
                     attack = 3;
                     timer = 0;
