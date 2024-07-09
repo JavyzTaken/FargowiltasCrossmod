@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage mines from Hades do.
         /// </summary>
-        public static int MineDamage => Main.expertMode ? 350 : 250;
+        public static int MineDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// How many mine barrages Hades should do during his MineBarrages attack.

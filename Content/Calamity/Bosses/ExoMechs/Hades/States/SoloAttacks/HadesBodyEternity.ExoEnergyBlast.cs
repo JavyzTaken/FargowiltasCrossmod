@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage the Exo Energy Blast from Hades does.
         /// </summary>
-        public static int ExoEnergyBlastDamage => Main.expertMode ? 700 : 450;
+        public static int ExoEnergyBlastDamage => Main.expertMode ? 515 : 400;
 
         /// <summary>
         /// The maximum time Hades spends opening his jaw the ExoEnergyBlast attack.

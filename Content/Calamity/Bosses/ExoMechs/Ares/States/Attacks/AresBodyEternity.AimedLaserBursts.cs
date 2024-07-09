@@ -46,12 +46,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much damage small lasers from Ares' core do.
         /// </summary>
-        public static int SmallLaserDamage => Main.expertMode ? 350 : 225;
+        public static int SmallLaserDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// How much damage laserbeams from Ares' laser cannons do.
         /// </summary>
-        public static int CannonLaserbeamDamage => Main.expertMode ? 550 : 400;
+        public static int CannonLaserbeamDamage => Main.expertMode ? 500 : 350;
 
         /// <summary>
         /// AI update loop method for the AimedLaserBursts attack.

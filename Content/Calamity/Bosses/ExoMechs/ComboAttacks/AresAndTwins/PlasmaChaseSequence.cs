@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How much damage plasma flame jets from Ares' plasma cannons do.
         /// </summary>
-        public static int PlasmaJetDamage => Main.expertMode ? 500 : 360;
+        public static int PlasmaJetDamage => Main.expertMode ? 420 : 300;
 
         /// <summary>
         /// How long Exo Twins spend idly hovering during the dash sequence.

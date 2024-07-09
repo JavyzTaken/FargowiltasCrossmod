@@ -39,17 +39,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much Ares' nuke (not its resulting explosion!) does.
         /// </summary>
-        public static int NukeWeaponDamage => Main.expertMode ? 450 : 300;
+        public static int NukeWeaponDamage => Main.expertMode ? 400 : 275;
 
         /// <summary>
         /// How much Ares' nuke explosion does.
         /// </summary>
-        public static int NukeExplosionDamage => Main.expertMode ? 650 : 425;
+        public static int NukeExplosionDamage => Main.expertMode ? 540 : 385;
 
         /// <summary>
         /// How much damage Ares' lingering plasma blasts do.
         /// </summary>
-        public static int LingeringPlasmaDamage => Main.expertMode ? 350 : 225;
+        public static int LingeringPlasmaDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// AI update loop method for the NukeAoEAndPlasmaBlasts attack.

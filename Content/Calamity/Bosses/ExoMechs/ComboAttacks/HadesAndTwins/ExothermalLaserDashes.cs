@@ -58,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How much damage blazing exo laserbeams from the Exo Twins do.
         /// </summary>
-        public static int BlazingLaserbeamDamage => Main.expertMode ? 550 : 400;
+        public static int BlazingLaserbeamDamage => Main.expertMode ? 500 : 350;
 
         /// <summary>
         /// How far the Exo Twins should be away from Hades' head when spinning.

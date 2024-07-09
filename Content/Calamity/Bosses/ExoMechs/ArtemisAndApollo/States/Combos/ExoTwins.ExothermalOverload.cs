@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The amount of damage the Exothermal Disintegration Ray from Artemis does.
         /// </summary>
-        public static int ExothermalDisintegrationRayDamage => Main.expertMode ? 650 : 400;
+        public static int ExothermalDisintegrationRayDamage => Main.expertMode ? 515 : 350;
 
         /// <summary>
         /// How many laser cycles should be performed during the Exothermal Overload attack before a new attack is selected.

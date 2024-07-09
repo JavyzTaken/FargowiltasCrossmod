@@ -24,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The amount of damage basic shots from the Exo Twins do.
         /// </summary>
-        public static int BasicShotDamage => Main.expertMode ? 350 : 250;
+        public static int BasicShotDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// How long Apollo spends hovering during the DashesAndLasers attack.

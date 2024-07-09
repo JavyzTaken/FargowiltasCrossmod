@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much damage katanas from Ares' core do.
         /// </summary>
-        public static int KatanaDamage => Main.expertMode ? 450 : 300;
+        public static int KatanaDamage => Main.expertMode ? 375 : 220;
 
         /// <summary>
         /// The animation easing curve used when Ares' back arms are slashing.

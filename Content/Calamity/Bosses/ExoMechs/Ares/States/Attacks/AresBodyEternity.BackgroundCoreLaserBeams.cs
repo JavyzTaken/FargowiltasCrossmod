@@ -30,12 +30,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much damage missiles from Ares' core do.
         /// </summary>
-        public static int MissileDamage => Main.expertMode ? 350 : 250;
+        public static int MissileDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// How much damage laserbeams from Ares' core do.
         /// </summary>
-        public static int CoreLaserbeamDamage => Main.expertMode ? 560 : 400;
+        public static int CoreLaserbeamDamage => Main.expertMode ? 515 : 350;
 
         /// <summary>
         /// How long Ares waits before starting the looped blender sound during the BackgroundCoreLaserBeams attack.

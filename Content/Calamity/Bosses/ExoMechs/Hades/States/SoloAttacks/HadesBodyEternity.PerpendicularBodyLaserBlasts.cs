@@ -85,7 +85,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage basic lasers from Hades do.
         /// </summary>
-        public static int BasicLaserDamage => Main.expertMode ? 350 : 250;
+        public static int BasicLaserDamage => Main.expertMode ? 300 : 200;
 
         public static readonly SoundStyle LaserChargeUpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/LaserChargeUp");
 

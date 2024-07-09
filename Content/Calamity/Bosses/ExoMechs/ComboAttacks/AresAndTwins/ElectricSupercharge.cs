@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How much damage Ares' small tesla spheres do.
         /// </summary>
-        public static int SmallTeslaSphereDamage => Main.expertMode ? 350 : 225;
+        public static int SmallTeslaSphereDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// The speed interpolant at which Artemis readjusts her rotation to aim towards the target.

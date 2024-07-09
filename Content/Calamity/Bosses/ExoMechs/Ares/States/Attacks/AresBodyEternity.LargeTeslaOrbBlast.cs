@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much damage tesla bursts shot by Ares do.
         /// </summary>
-        public static int TeslaBurstDamage => Main.expertMode ? 350 : 225;
+        public static int TeslaBurstDamage => Main.expertMode ? 300 : 200;
 
         /// <summary>
         /// How long the tesla orb spends charging energy before firing during the LargeTeslaOrbBlast attack.
