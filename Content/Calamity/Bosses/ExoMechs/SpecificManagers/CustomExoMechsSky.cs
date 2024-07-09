@@ -107,7 +107,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
             if (!Main.gamePaused)
             {
                 CloudExposure = MathHelper.Lerp(CloudExposure, DefaultCloudExposure, 0.03f);
-                Opacity = MathHelper.Clamp(Opacity + skyActive.ToDirectionInt() * 0.005f, 0f, maxSkyOpacity);
+                Opacity = MathHelper.Clamp(Opacity + skyActive.ToDirectionInt() * 0.0011f, 0f, maxSkyOpacity);
             }
 
             // Prevent drawing beyond the back layer.
