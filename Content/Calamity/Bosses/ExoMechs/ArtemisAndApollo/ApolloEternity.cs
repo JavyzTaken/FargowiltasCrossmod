@@ -296,7 +296,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 ArtemisSummonCheckPerformed = true;
                 NPC.netUpdate = true;
             }
-            else if (CalamityGlobalNPC.draedonExoMechTwinRed == -1)
+            else if (CalamityGlobalNPC.draedonExoMechTwinRed == -1 && ExoTwinsStateManager.SharedState.AIState != ExoTwinsAIState.Leave)
                 NPC.active = false;
 
             Vector2 actualHitboxSize = new(164f, 164f);

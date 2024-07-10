@@ -11,6 +11,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         ExothermalOverload,
 
         Inactive,
+        Leave,
 
         EnterSecondPhase,
 

@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             MineBarrages,
             ExoEnergyBlast,
             Inactive,
+            Leave,
 
             DeathAnimation,
 
@@ -223,11 +224,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             PerformPreUpdateResets();
 
-            // Disapear if the player is dead.
-            if (Target.dead || !Target.active)
+            // Leave if the player is dead.
+            if ((Target.dead || !Target.active) && CurrentState != HadesAIState.Leave)
             {
-                NPC.active = false;
-                return false;
+                SelectNewState();
+                CurrentState = HadesAIState.Leave;
             }
 
             if (Inactive && CurrentState != HadesAIState.Inactive)
@@ -332,6 +333,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     break;
                 case HadesAIState.Inactive:
                     DoBehavior_Inactive();
+                    break;
+                case HadesAIState.Leave:
+                    DoBehavior_Leave();
                     break;
                 case HadesAIState.DeathAnimation:
                     DoBehavior_DeathAnimation();

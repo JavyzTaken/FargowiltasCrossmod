@@ -298,7 +298,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 if (Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
                     Inactive = apollo.Inactive;
             }
-            else
+            else if (ExoTwinsStateManager.SharedState.AIState != ExoTwinsAIState.Leave)
                 NPC.active = false;
 
             // Use base Calamity's Charge AIState at all times, since Artemis needs that to be enabled for her CanHitPlayer hook to return true.

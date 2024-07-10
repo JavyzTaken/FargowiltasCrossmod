@@ -102,12 +102,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             if (SharedState.AIState != ExoTwinsAIState.PerformComboAttack)
                 twin.damage = 0;
 
-            // Disapear if the target is dead.
-            if (ExoMechTargetSelector.Target.dead || !ExoMechTargetSelector.Target.active)
-            {
-                twin.active = false;
-                return;
-            }
+            // Leave if the target is dead.
+            if ((ExoMechTargetSelector.Target.dead || !ExoMechTargetSelector.Target.active) && SharedState.AIState != ExoTwinsAIState.Leave)
+                TransitionToNextState(ExoTwinsAIState.Leave);
 
             twin.defense = twin.defDefense;
             twin.dontTakeDamage = false;
@@ -135,6 +132,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
                 case ExoTwinsAIState.Inactive:
                     ExoTwinsStates.DoBehavior_Inactive(twin, twinAttributes);
+                    break;
+                case ExoTwinsAIState.Leave:
+                    ExoTwinsStates.DoBehavior_Leave(twin, twinAttributes);
                     break;
 
                 case ExoTwinsAIState.EnterSecondPhase:

@@ -112,8 +112,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         private static void EnsureAllExoMechsArePerformingCombo()
         {
             bool everyoneIsPerformingCombo = ExoMechFightStateManager.ActiveManagingExoMechs.All(m => ((IExoMech)m).PerformingComboAttack);
+            bool anyPlayersAreAlive = false;
+            foreach (Player player in Main.ActivePlayers)
+            {
+                if (!player.dead)
+                    anyPlayersAreAlive = true;
+            }
 
-            if (!everyoneIsPerformingCombo)
+            if (!everyoneIsPerformingCombo && anyPlayersAreAlive)
             {
                 if (CurrentState?.Undefined ?? true)
                     SelectNewComboAttackState();

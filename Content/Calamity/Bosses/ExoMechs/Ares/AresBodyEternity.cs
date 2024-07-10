@@ -42,6 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             Inactive,
             ReturnToBeingActive,
+            Leave,
 
             DeathAnimation,
 
@@ -293,16 +294,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (Main.netMode != NetmodeID.MultiplayerClient && !HasCreatedArms)
                 CreateArms();
 
-            // Disapear if the player is dead.
-            if (Target.dead || !Target.active)
-            {
-                NPC.active = false;
-                return false;
-            }
-
             if (Inactive && CurrentState != AresAIState.Inactive)
             {
                 CurrentState = AresAIState.Inactive;
+                AITimer = 0;
+                NPC.netUpdate = true;
+            }
+
+            // Leave if the player is dead.
+            if ((Target.dead || !Target.active) && CurrentState != AresAIState.Leave)
+            {
+                CurrentState = AresAIState.Leave;
                 AITimer = 0;
                 NPC.netUpdate = true;
             }
@@ -371,6 +373,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     break;
                 case AresAIState.BackgroundCoreLaserBeams:
                     DoBehavior_BackgroundCoreLaserBeams();
+                    break;
+                case AresAIState.Leave:
+                    DoBehavior_Leave();
                     break;
                 case AresAIState.Inactive:
                     DoBehavior_Inactive();
