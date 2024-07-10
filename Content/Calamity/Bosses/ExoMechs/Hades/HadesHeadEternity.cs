@@ -224,13 +224,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             PerformPreUpdateResets();
 
-            // Leave if the player is dead.
-            if ((Target.dead || !Target.active) && CurrentState != HadesAIState.Leave)
-            {
-                SelectNewState();
-                CurrentState = HadesAIState.Leave;
-            }
-
             if (Inactive && CurrentState != HadesAIState.Inactive)
             {
                 CurrentState = HadesAIState.Inactive;
@@ -242,6 +235,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 CurrentState = HadesAIState.MineBarrages;
                 AITimer = 0;
                 NPC.netUpdate = true;
+            }
+
+            // Leave if the player is dead.
+            if ((Target.dead || !Target.active) && CurrentState != HadesAIState.Leave)
+            {
+                SelectNewState();
+                CurrentState = HadesAIState.Leave;
             }
 
             if (!HasCreatedSegments)
