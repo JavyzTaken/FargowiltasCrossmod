@@ -69,8 +69,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             NPC hades = Main.npc[CalamityGlobalNPC.draedonExoMechWorm];
             Projectile.rotation = hades.velocity.ToRotation();
-            Projectile.scale = Utilities.InverseLerpBump(0f, 0.4f, 0.91f, 0.95f, LifetimeRatio);
-            Projectile.Center = hades.Center + Projectile.rotation.ToRotationVector2() * Projectile.width * 0.7f;
+            Projectile.scale = Utilities.InverseLerpBump(0f, 0.4f, 0.7f, 0.92f, LifetimeRatio);
+
+            float reachInterpolant = LumUtils.InverseLerp(0.92f, 0.75f, LifetimeRatio);
+            Projectile.Center = hades.Center + Projectile.rotation.ToRotationVector2() * Projectile.width * MathHelper.Lerp(0.25f, 0.7f, reachInterpolant);
 
             CreateElectricParticles();
 

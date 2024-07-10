@@ -1,7 +1,9 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
+﻿using FargowiltasCrossmod.Assets.Particles;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -34,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The delay of the blast during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_BlastDelay => Utilities.SecondsToFrames(3.15f);
+        public static int ExoEnergyBlast_BlastDelay => Utilities.SecondsToFrames(2.45f);
 
         /// <summary>
         /// The rate at which bursts of electricity are shot from the orb during the ExoEnergyBlast attack.
@@ -62,14 +64,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void DoBehavior_ExoEnergyBlast()
         {
             bool beamIsOverheating = AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime - ExoEnergyBlast.OverheatStartingTime;
-            float pointAtTargetSpeed = 7.5f;
+            float pointAtTargetSpeed = 4f;
             Vector2 outerHoverDestination = Target.Center + new Vector2(NPC.OnRightSideOf(Target).ToDirectionInt() * 1050f, -400f);
 
             BodyBehaviorAction = new(AllSegments(), beamIsOverheating ? OpenSegment() : CloseSegment());
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant + (beamIsOverheating ? 2f : -1f) * StandardSegmentOpenRate);
 
-            if (AITimer < ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime)
-                JawRotation = Utilities.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer).Squared() * 0.74f;
+            JawRotation = MathHelper.Lerp(JawRotation, Utilities.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer).Squared() * 1.3f, 0.07f);
 
             // Attempt to get into position for the light attack.
             if (AITimer < ExoEnergyBlast_InitialRedirectTime)
@@ -102,17 +103,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                         Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesExoEnergyOrb>(), 0, 0f, -1, ExoEnergyBlast_BlastDelay);
                 }
 
-                // Release tesla bursts.
-                if (AITimer % ExoEnergyBlast_ProjectileBurstReleaseRate == ExoEnergyBlast_ProjectileBurstReleaseRate - 1 && AITimer < ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay - 40)
+                float chargeUpInterpolant = LumUtils.InverseLerp(0f, ExoEnergyBlast_BlastDelay, AITimer - ExoEnergyBlast_InitialRedirectTime);
+                for (int i = 0; i < 2; i++)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    if (Main.rand.NextBool(MathF.Sqrt(chargeUpInterpolant)) && chargeUpInterpolant <= 0.72f)
                     {
-                        for (int i = 0; i < 7; i++)
-                        {
-                            Vector2 burstShootDirection = NPC.velocity.SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.Lerp(-1.4f, 1.4f, i / 6f));
-                            Vector2 burstSpawnPosition = NPC.Center + NPC.velocity.SafeNormalize(Vector2.UnitY) * (pointAtTargetSpeed * 25f + 60f);
-                            Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), burstSpawnPosition, burstShootDirection * 0.85f, ModContent.ProjectileType<HomingTeslaBurst>(), BasicLaserDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
-                        }
+                        Vector2 mouthPosition = NPC.Center + NPC.velocity.SafeNormalize(Vector2.Zero) * 150f;
+                        Vector2 streakPosition = mouthPosition + Main.rand.NextVector2Unit() * Main.rand.NextFloat(100f, 500f);
+                        Vector2 streakVelocity = (mouthPosition - streakPosition) * 0.085f;
+                        Vector2 startingScale = new(0.3f, 0.01f);
+                        Vector2 endingScale = new(1.7f, 0.035f);
+                        LineStreakParticle energy = new(streakPosition, streakVelocity, Color.White, 13, streakVelocity.ToRotation(), startingScale, endingScale);
+                        energy.Spawn();
+                    }
+
+                    if (Main.rand.NextBool(chargeUpInterpolant * 0.8f) && chargeUpInterpolant <= 0.5f)
+                    {
+                        Vector2 mouthPosition = NPC.Center + NPC.velocity.SafeNormalize(Vector2.Zero) * 90f;
+                        Vector2 pixelPosition = mouthPosition + Main.rand.NextVector2Unit() * Main.rand.NextFloat(90f, 400f);
+                        Vector2 pixelVelocity = (mouthPosition - pixelPosition).RotatedBy(MathHelper.PiOver2) * 0.06f;
+                        BloomPixelParticle pixel = new(pixelPosition, pixelVelocity, Color.White, Color.Cyan * 0.53f, 90, Vector2.One * Main.rand.NextFloat(1f, 2f), NPC.Center + NPC.velocity * 85f);
+                        pixel.Spawn();
                     }
                 }
 
@@ -130,7 +141,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             // SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
             if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay && AITimer < ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime)
-                NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), ExoEnergyBlast_LaserTurnSpeed) * 0.986f;
+            {
+                NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), ExoEnergyBlast_LaserTurnSpeed);
+                if (NPC.velocity.Length() >= 3f)
+                    NPC.velocity *= 0.99f;
+            }
 
             // Accelerate after the blast.
             if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime)

@@ -69,17 +69,16 @@ namespace FargowiltasCrossmod.Assets.Particles
                 Velocity *= 0.96f;
             else
             {
-                float radius = HomeInDestination.Value.Distance(Position);
-                float angle = HomeInDestination.Value.AngleTo(Position);
+                Vector2 homeInDestination = HomeInDestination.Value;
+                float flySpeedInterpolant = Utilities.InverseLerp(0f, 30f, Time);
+                float currentDirection = Velocity.ToRotation();
+                float idealDirection = (homeInDestination - Position).ToRotation();
+                Velocity = currentDirection.AngleLerp(idealDirection, flySpeedInterpolant * 0.076f).ToRotationVector2() * Velocity.Length();
+                Velocity = Vector2.Lerp(Velocity, idealDirection.ToRotationVector2() * (Time * 0.2f + 15f), flySpeedInterpolant * 0.023f);
+                if (Position.WithinRange(homeInDestination, 300f))
+                    Velocity *= 0.97f;
 
-                radius -= 1.5f;
-                radius *= 0.925f;
-                angle += MathHelper.TwoPi * SpinSpeed / radius;
-
-                Vector2 newPosition = HomeInDestination.Value + angle.ToRotationVector2() * radius;
-                Velocity = Vector2.Lerp(Velocity, newPosition - Position, 0.9f);
-
-                if (Position.WithinRange(HomeInDestination.Value, 10f))
+                if (Position.WithinRange(homeInDestination, 20f))
                     Kill();
             }
 

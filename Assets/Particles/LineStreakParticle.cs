@@ -37,7 +37,11 @@ namespace FargowiltasCrossmod.Assets.Particles
         {
             Scale = Vector2.Lerp(StartingScale, EndingScale, LifetimeRatio);
             DrawColor *= Utils.Remap(LifetimeRatio, 0.7f, 1f, 1f, 0.85f);
-            Velocity *= 0.965f;
+
+            if (LifetimeRatio <= 0.3f || LifetimeRatio >= 0.75f)
+                Velocity *= 0.76f;
+            else
+                Velocity *= 1.2f;
         }
     }
 }
