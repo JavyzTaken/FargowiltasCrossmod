@@ -14,6 +14,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
     public static class CommonExoTwinFunctionalities
     {
         /// <summary>
+        /// How much damage the Exo Twins do via contact.
+        /// </summary>
+        public static int ContactDamage => Main.expertMode ? 400 : 300;
+
+        /// <summary>
+        /// How much defense the Exo Twins have.
+        /// </summary>
+        public static int Defense => 50;
+
+        /// <summary>
+        /// How much DR the Exo Twins have.
+        /// </summary>
+        public static float DamageReductionFactor => 0.25f;
+
+        /// <summary>
         /// How perpendicularly offset the optic nerves next to the Exo Twins' thrusters are at the start of the rendered primitive.
         /// </summary>
         public const float StartingOpticNerveExtrusion = 32f;

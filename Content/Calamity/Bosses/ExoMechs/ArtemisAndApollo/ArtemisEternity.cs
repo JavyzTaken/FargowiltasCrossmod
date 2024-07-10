@@ -265,6 +265,45 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             hitEffectHook?.Dispose();
         }
 
+        public override void SetDefaults()
+        {
+            NPC.npcSlots = 5f;
+            NPC.width = 204;
+            NPC.height = 226;
+
+            NPC.damage = CommonExoTwinFunctionalities.ContactDamage;
+            NPC.Calamity().canBreakPlayerDefense = true;
+            if (Main.masterMode)
+                NPC.damage /= 3;
+            else if (Main.expertMode)
+                NPC.damage /= 2;
+
+            NPC.defense = CommonExoTwinFunctionalities.Defense;
+            NPC.DR_NERD(CommonExoTwinFunctionalities.DamageReductionFactor);
+
+            float healthBoostFactor = CalamityConfig.Instance.BossHealthBoost * 0.01f + 1f;
+            NPC.LifeMaxNERB(1250000, 1495000, 650000);
+            NPC.lifeMax = (int)MathF.Round(NPC.lifeMax * healthBoostFactor);
+
+            NPC.aiStyle = -1;
+            NPC.Opacity = 0f;
+            NPC.knockBackResist = 0f;
+            NPC.value = Item.buyPrice(15, 0, 0, 0);
+
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+
+            // The hit sound is played via the HitEffectOverride method, rather than vanilla code.
+            NPC.DeathSound = CommonCalamitySounds.ExoDeathSound;
+
+            NPC.netAlways = true;
+            NPC.boss = true;
+            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+
+            NPC.Calamity().VulnerableToSickness = false;
+            NPC.Calamity().VulnerableToElectricity = true;
+        }
+
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             bitWriter.WriteBit(Inactive);
