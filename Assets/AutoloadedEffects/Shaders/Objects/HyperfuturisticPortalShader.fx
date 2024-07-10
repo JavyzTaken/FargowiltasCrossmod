@@ -1,6 +1,8 @@
 sampler baseTexture : register(s0);
 sampler noiseTexture : register(s1);
+sampler distanceTexture : register(s2);
 
+bool useTextureForDistanceField;
 float globalTime;
 float scale;
 float biasToMainSwirlColorPower;
@@ -26,10 +28,11 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     // Calculate two distance values that are interpolated between when calculating the edge shape of the portal.
     float noisyDistance = (tex2D(noiseTexture, polar * 2 + float2(0.9, 1.3) * globalTime) * 0.06 + 0.36);
-    float lemniscateDistance = pow(cos(angleFromCenter * 2 + globalTime * -20), 2) * pow(cos(angleFromCenter + globalTime * 8), 2) * 0.4;
+    float fadeOutDistance = pow(cos(angleFromCenter * 2 + globalTime * -20), 2) * pow(cos(angleFromCenter + globalTime * 8), 2) * 0.4;
+    fadeOutDistance = lerp(fadeOutDistance, tex2D(distanceTexture, coords), useTextureForDistanceField);
     
     // Interpolate between the distance values to calculate the distance to the edge of the portal.
-    float distanceToEdge = lerp(lemniscateDistance, noisyDistance, scale) * scale;
+    float distanceToEdge = lerp(fadeOutDistance, noisyDistance, pow(scale, 3)) * scale;
     
     // Use the above calculations to determine a swirl color within the rift.
     float innerColorInterpolant = smoothstep(distanceToEdge, distanceToEdge * 0.7, distanceFromCenter);

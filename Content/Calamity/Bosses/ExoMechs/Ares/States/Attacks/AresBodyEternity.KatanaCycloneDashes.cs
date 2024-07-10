@@ -39,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// Ares' starting speed during the KatanaCycloneDashes attack. 
         /// </summary>
-        public static float KatanaCycloneDashes_StartingDashSpeed => 33.5f;
+        public static float KatanaCycloneDashes_StartingDashSpeed => 35f;
 
         /// <summary>
         /// Ares' acceleration during the KatanaCycloneDashes attack. 
@@ -67,6 +67,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             if (AITimer <= KatanaCycloneDashes_RedirectTime)
             {
+                NPC.Opacity = 1f;
+
                 float redirectSpeed = MathHelper.Lerp(0.05f, 0.2f, LumUtils.Convert01To010(LumUtils.InverseLerp(0f, 30f, AITimer).Squared()));
                 redirectSpeed *= LumUtils.InverseLerp(KatanaCycloneDashes_RedirectTime, KatanaCycloneDashes_RedirectTime - 45f, AITimer);
 
@@ -96,8 +98,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     if (KatanaCycloneDashes_SlashCounter <= 0f)
                         teleportOffset *= -1f;
 
-                    NPC.Center = Target.Center + teleportOffset * 1850f;
+                    NPC.Center = Target.Center + teleportOffset * 1450f;
                     NPC.velocity = NPC.SafeDirectionTo(Target.Center) * KatanaCycloneDashes_StartingDashSpeed;
+
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center - NPC.velocity * 2f, Vector2.Zero, ModContent.ProjectileType<AresHyperfuturisticPortal>(), 0, 0f);
 
                     KatanaCycloneDashes_SlashCounter++;
                     if (KatanaCycloneDashes_SlashCounter > KatanaCycloneDashes_SlashCount)
@@ -118,6 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     SoundEngine.PlaySound(SlashSound, NPC.Center);
 
                 NPC.velocity *= KatanaCycloneDashes_Acceleration;
+                NPC.Opacity = LumUtils.InverseLerp(0f, 7f, AITimer - KatanaCycloneDashes_RedirectTime - KatanaCycloneDashes_FlyAwayTime);
 
                 float rotateToPlayerInterpolant = LumUtils.InverseLerp(12f, 22f, MathF.Abs(Target.velocity.Y));
                 NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), rotateToPlayerInterpolant * 0.0136f);

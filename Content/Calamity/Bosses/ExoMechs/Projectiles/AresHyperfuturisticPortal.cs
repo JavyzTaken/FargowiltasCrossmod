@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class HyperfuturisticPortal : ModProjectile, IProjOwnedByBoss<AresBody>, IExoMechProjectile
+    public class AresHyperfuturisticPortal : ModProjectile, IProjOwnedByBoss<AresBody>, IExoMechProjectile
     {
         /// <summary>
         /// How long this portal has existed, in frames.
@@ -27,9 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long this portal should exist for, in frames.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(0.45f);
-
-        public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
+        public static int Lifetime => Utilities.SecondsToFrames(0.72f);
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Thermal;
 
@@ -37,8 +36,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 432;
-            Projectile.height = 1000;
+            Projectile.width = 496;
+            Projectile.height = 1520;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
@@ -74,12 +73,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Main.spriteBatch.PrepareForShaders();
             Vector2 size = Projectile.Size;
             ManagedShader portalShader = ShaderManager.GetShader("FargowiltasCrossmod.HyperfuturisticPortalShader");
-            portalShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
+            portalShader.TrySetParameter("useTextureForDistanceField", true);
             portalShader.TrySetParameter("textureSize0", size);
             portalShader.TrySetParameter("scale", Projectile.scale);
-            portalShader.TrySetParameter("biasToMainSwirlColorPower", 2.4f);
-            portalShader.TrySetParameter("mainSwirlColor", new Vector3(0.65f, 1.56f, 0.95f));
-            portalShader.TrySetParameter("secondarySwirlColor", new Vector3(0f, 2.1f, 4.2f));
+            portalShader.TrySetParameter("biasToMainSwirlColorPower", 2.74f);
+            portalShader.TrySetParameter("mainSwirlColor", new Vector3(1.6f, 1.2f, 0.5f));
+            portalShader.TrySetParameter("secondarySwirlColor", new Vector3(3f, 0f, 0.5f));
+            portalShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
+            portalShader.SetTexture(TextureAssets.Projectile[Type], 2, SamplerState.LinearWrap);
             portalShader.Apply();
 
             Texture2D pixel = MiscTexturesRegistry.Pixel.Value;

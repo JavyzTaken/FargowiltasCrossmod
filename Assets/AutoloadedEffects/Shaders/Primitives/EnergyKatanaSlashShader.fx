@@ -45,7 +45,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float metalOpacity = smoothstep(0.03, 0.1, distanceFromCenter) * sqrt(bladeEndFade);
     
     // Combine colors.
-    return lerp(slashColor, saturate(metalColor + metalGlow) * metalOpacity, metalColorInterpolant);
+    return lerp(slashColor, saturate(metalColor + metalGlow) * metalOpacity, metalColorInterpolant) * pow(sampleColor.a, 1.5);
 }
 technique Technique1
 {

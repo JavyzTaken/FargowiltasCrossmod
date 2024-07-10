@@ -58,6 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.Center = ares.Center;
             Projectile.rotation = ares.rotation * 0.04f;
             Projectile.velocity = ares.velocity.SafeNormalize(Vector2.Zero);
+            Projectile.Opacity = ares.Opacity;
 
             DelegateMethods.v3_1 = Color.Crimson.ToVector3();
             Utils.PlotTileLine(Projectile.Center - Vector2.UnitY * 50f, Projectile.Center + Vector2.UnitY * 50f, Projectile.width, DelegateMethods.CastLight);

@@ -278,7 +278,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.netUpdate = true;
 
                     Vector2 portalDirection = -npc.velocity.SafeNormalize(Vector2.Zero);
-                    LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center + npc.velocity * 12f, portalDirection, ModContent.ProjectileType<HyperfuturisticPortal>(), 0, 0f);
+                    LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center + npc.velocity * 12f, portalDirection, ModContent.ProjectileType<ExoTwinHyperfuturisticPortal>(), 0, 0f);
                 }
 
                 SoundEngine.PlaySound(Artemis.ChargeSound, npc.Center);
