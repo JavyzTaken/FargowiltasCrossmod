@@ -97,7 +97,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             if (AITimer <= PlasmaCannonChargeUpTime)
             {
-                npc.Center = Vector2.Lerp(npc.Center, Target.Center - Vector2.UnitY * 300f, 0.016f);
+                Vector2 hoverOffset = new(npc.HorizontalDirectionTo(Target.Center) * -350f, -300f);
+                npc.Center = Vector2.Lerp(npc.Center, Target.Center + hoverOffset, 0.016f);
                 npc.velocity *= 0.95f;
                 ares.AnimationState = AresBodyEternity.AresFrameAnimationState.Default;
             }
