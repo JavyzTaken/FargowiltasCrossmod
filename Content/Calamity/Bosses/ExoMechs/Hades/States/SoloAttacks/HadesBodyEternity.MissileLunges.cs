@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How many lunges Hades should perform during his Missile Lunges attack.
         /// </summary>
-        public static int MissileLunges_LungeCount => 2;
+        public static int MissileLunges_LungeCount => 3;
 
         /// <summary>
         /// The horizontal direction in which Hades should lunge during his Missile Lunges attack.
@@ -104,7 +104,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 AITimer = 0;
                 MissileLunges_LungeCounter++;
-                if (MissileLunges_LungeCounter > MissileLunges_LungeCount)
+                if (MissileLunges_LungeCounter >= MissileLunges_LungeCount)
                     SelectNewState();
 
                 NPC.netUpdate = true;
