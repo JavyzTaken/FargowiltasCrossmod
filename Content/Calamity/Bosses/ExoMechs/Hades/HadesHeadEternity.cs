@@ -364,6 +364,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     CurrentState = HadesAIState.ExoEnergyBlast;
             }
             while (CurrentState == oldState);
+            CurrentState = HadesAIState.MissileLunges;
 
             for (int i = 0; i < NPC.maxAI; i++)
                 NPC.ai[i] = 0f;
@@ -401,7 +402,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     SoundEngine.PlaySound(ThanatosHead.VentSound with { MaxInstances = 8, Volume = 0.3f }, behaviorOverride.NPC.Center);
 
                 float bigInterpolant = Utilities.InverseLerp(1f, 0.91f, behaviorOverride.SegmentOpenInterpolant);
-                if (behaviorOverride.SegmentOpenInterpolant >= 0.91f)
+                if (behaviorOverride.SegmentOpenInterpolant >= 0.91f && !Collision.SolidCollision(behaviorOverride.NPC.TopLeft, behaviorOverride.NPC.width, behaviorOverride.NPC.height))
                 {
                     CreateSmoke(behaviorOverride, bigInterpolant, smokeQuantityInterpolant);
 
@@ -495,6 +496,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             Texture2D rightJawTexture = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/HadesJawRight").Value;
 
             Vector2 drawPosition = NPC.Center - screenPos;
+            Color glowmaskColor = Color.White * LumUtils.InverseLerp(5f, 15f, (lightColor.R + lightColor.G + lightColor.B) * 0.333f);
             Rectangle leftJawFrame = leftJawTexture.Frame(1, Main.npcFrameCount[NPC.type], 0, frame);
             Rectangle rightJawFrame = rightJawTexture.Frame(1, Main.npcFrameCount[NPC.type], 0, frame);
             Vector2 leftJawOrigin = leftJawFrame.Size() * new Vector2(0.38f, 0.54f);
@@ -505,7 +507,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             Main.spriteBatch.Draw(rightJawTexture, rightJawPosition, rightJawFrame, NPC.GetAlpha(lightColor), NPC.rotation - JawRotation + MathHelper.Pi, rightJawOrigin, NPC.scale, SpriteEffects.FlipVertically, 0f);
 
             Main.spriteBatch.Draw(texture, drawPosition, NPC.frame, NPC.GetAlpha(lightColor), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, 0, 0f);
-            Main.spriteBatch.Draw(glowmask, drawPosition, NPC.frame, NPC.GetAlpha(Color.White), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, 0, 0f);
+            Main.spriteBatch.Draw(glowmask, drawPosition, NPC.frame, NPC.GetAlpha(glowmaskColor), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, 0, 0f);
 
             if (ReticleOpacity >= 0.01f)
                 DrawReticle(ReticleOpacity);

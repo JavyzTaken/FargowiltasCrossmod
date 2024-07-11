@@ -39,6 +39,13 @@ namespace FargowiltasCrossmod.Assets.Particles
             Velocity *= 0.89f;
             Scale += Vector2.One * LifetimeRatio * ScaleGrowRate;
 
+            int area = (int)(Scale.X * 50f);
+            if (Collision.SolidCollision(Position - Vector2.One * area * 0.5f, area, area))
+            {
+                Time += 9;
+                Velocity *= 0.75f;
+            }
+
             DrawColor = Color.Lerp(DrawColor, Color.White, 0.055f);
         }
 

@@ -426,17 +426,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             Vector2 drawPosition = NPC.Center - screenPos;
             int frame = NPC.frame.Y / NPC.frame.Height;
+            float glowmaskOpacity = LumUtils.InverseLerp(5f, 15f, (lightColor.R + lightColor.G + lightColor.B) * 0.333f);
             Rectangle rectangleFrame = texture.Frame(1, Main.npcFrameCount[NPC.type], 0, frame);
 
             if (!IsTailSegment && PlatingOffset > 0f)
                 DrawManualBodyPlating(drawPosition, lightColor);
             else
             {
+                Color glowmaskColor = Color.White * glowmaskOpacity;
                 Main.spriteBatch.Draw(texture, drawPosition, rectangleFrame, NPC.GetAlpha(lightColor), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
-                Main.spriteBatch.Draw(glowmask, drawPosition, rectangleFrame, NPC.GetAlpha(Color.White), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
+                Main.spriteBatch.Draw(glowmask, drawPosition, rectangleFrame, NPC.GetAlpha(glowmaskColor), NPC.rotation, rectangleFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
             }
 
-            float bloomOpacity = SegmentOpenInterpolant.Squared() * 0.56f;
+            float bloomOpacity = SegmentOpenInterpolant.Squared() * glowmaskOpacity * 0.56f;
             Vector2 bloomDrawPosition = TurretPosition - screenPos;
             Main.spriteBatch.Draw(bloom, bloomDrawPosition, null, NPC.GetAlpha(Color.Red with { A = 0 }) * bloomOpacity, 0f, bloom.Size() * 0.5f, NPC.scale * 0.4f, 0, 0f);
             Main.spriteBatch.Draw(bloom, bloomDrawPosition, null, NPC.GetAlpha(Color.Wheat with { A = 0 }) * bloomOpacity * 0.5f, 0f, bloom.Size() * 0.5f, NPC.scale * 0.2f, 0, 0f);
