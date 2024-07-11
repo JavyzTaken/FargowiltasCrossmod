@@ -106,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 {
                     Vector2 focusPoint = npc.Center + npc.rotation.ToRotationVector2() * 76f;
                     Vector2 energySpawnPosition = focusPoint + (Main.rand.NextVector2Unit() * new Vector2(200f, 540f)).RotatedBy(hoverOffsetAngle);
-                    Vector2 energyVelocity = (focusPoint - energySpawnPosition).RotatedByRandom(MathHelper.Pi * 0.75f) * 0.4f;
+                    Vector2 energyVelocity = (focusPoint - energySpawnPosition).RotatedByRandom(MathHelper.Pi * 0.75f) * 0.07f;
                     BloomPixelParticle pixel = new(energySpawnPosition, energyVelocity, new(255, 255, 50), Color.OrangeRed, 60, Vector2.One * 3f, focusPoint, new Vector2(0.13f, 0.08f));
                     pixel.Spawn();
                 }

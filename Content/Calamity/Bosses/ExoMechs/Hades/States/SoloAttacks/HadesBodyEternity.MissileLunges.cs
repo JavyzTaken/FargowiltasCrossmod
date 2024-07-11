@@ -82,20 +82,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     ScreenShakeSystem.StartShake(13f);
                 }
 
-                NPC.velocity *= 0.5f;
-
+                // Open Hades' jaws after he does the dash charge-up roar sound.
                 if (AITimer >= MissileLunges_RedirectMaxTime + 13)
                     JawRotation = MathHelper.Lerp(JawRotation, 0.93f, 0.1f);
 
                 float animationCompletion = LumUtils.InverseLerp(0f, MissileLunges_LungeDuration, AITimer - MissileLunges_RedirectMaxTime);
+
+                // Bias the animation completion towards 0.5, effectively making the midpoint (aka the apex of the lunge) more pronounced.
                 animationCompletion = MathHelper.Lerp(animationCompletion, 0.5f, 0.25f);
 
                 float height = MathHelper.Lerp(3900f, -600f, MathF.Pow(LumUtils.Convert01To010(animationCompletion) + 0.001f, 0.7f));
                 Vector2 idealPosition = Target.Center + new Vector2(MathHelper.Lerp(1700f, -1700f, animationCompletion) * MissileLunges_LungeDirection, height);
-
                 Vector2 oldPosition = NPC.Center;
-                NPC.Center = Vector2.Lerp(NPC.Center, idealPosition, 0.9f);
-
+                NPC.Center = Vector2.Lerp(NPC.Center, idealPosition, 0.45f);
+                NPC.velocity *= 0.5f;
                 NPC.rotation = oldPosition.AngleTo(NPC.Center) + MathHelper.PiOver2;
 
                 SegmentOpenInterpolant = LumUtils.Saturate(SegmentOpenInterpolant + 0.1f);
