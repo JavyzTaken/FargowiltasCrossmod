@@ -751,6 +751,7 @@ Mods: {
 			// ApolloPlasmaFireball.DisplayName: Plasma Fireball
 			// AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
 			// ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+			// HadesMissile.DisplayName: Fortified Missile
 		}
 
 		Buffs: {

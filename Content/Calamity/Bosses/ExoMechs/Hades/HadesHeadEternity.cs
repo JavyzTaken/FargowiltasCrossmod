@@ -35,6 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             ContinuousLaserBarrage,
             MineBarrages,
             ExoEnergyBlast,
+            MissileLunges,
             Inactive,
             Leave,
 
@@ -328,6 +329,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 case HadesAIState.MineBarrages:
                     DoBehavior_MineBarrages();
                     break;
+                case HadesAIState.MissileLunges:
+                    DoBehavior_MissileLunges();
+                    break;
                 case HadesAIState.ExoEnergyBlast:
                     DoBehavior_ExoEnergyBlast();
                     break;
@@ -354,7 +358,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             HadesAIState oldState = CurrentState;
             do
             {
-                CurrentState = Main.rand.NextFromList(HadesAIState.ContinuousLaserBarrage, HadesAIState.MineBarrages, HadesAIState.PerpendicularBodyLaserBlasts);
+                CurrentState = Main.rand.NextFromList(HadesAIState.ContinuousLaserBarrage, HadesAIState.MineBarrages, HadesAIState.PerpendicularBodyLaserBlasts, HadesAIState.MissileLunges);
 
                 if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                     CurrentState = HadesAIState.ExoEnergyBlast;
