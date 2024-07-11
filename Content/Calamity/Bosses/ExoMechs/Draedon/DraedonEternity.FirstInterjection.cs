@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
+﻿using CalamityMod;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -53,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             // Reset the variables to their controls by healing the player.
             if (speakTimer == monologue[4].SpeakDelay - 60)
-                HealPlayer();
+                ResetPlayerFightVariables();
 
             if (speakTimer == monologue.OverallDuration - 60)
             {
@@ -72,13 +73,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         }
 
         /// <summary>
-        /// Heals the player.
+        /// "Resets the variables to their controls", as Draedon puts it. This heals the player and resets their rage, adrenaline, and mana.
         /// </summary>
-        public static void HealPlayer()
+        public static void ResetPlayerFightVariables()
         {
             if (Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax2)
                 Main.LocalPlayer.Heal(Main.LocalPlayer.statLifeMax2 - Main.LocalPlayer.statLife);
             Main.LocalPlayer.statMana = Main.LocalPlayer.statManaMax2;
+            Main.LocalPlayer.Calamity().rage = 0f;
+            Main.LocalPlayer.Calamity().adrenaline = 0f;
 
             ScreenShakeSystem.StartShake(3f);
             SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/OrbHeal", 5) with { Volume = 0.9f });

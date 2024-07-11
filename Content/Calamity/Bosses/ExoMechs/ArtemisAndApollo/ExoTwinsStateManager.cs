@@ -261,7 +261,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             SharedState.ResetForNextState();
             SharedState.AIState = stateToUse ?? MakeAIStateChoice();
 
-            SoundEngine.PlaySound(Artemis.AttackSelectionSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew });
+            if (SharedState.AIState != ExoTwinsAIState.Leave)
+                SoundEngine.PlaySound(Artemis.AttackSelectionSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew });
 
             if (CalamityGlobalNPC.draedonExoMechTwinRed != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed].TryGetDLCBehavior(out ArtemisEternity artemis))
                 artemis.ResetLocalStateData();

@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             // Reset the variables to their controls by healing the player.
             if (speakTimer == monologue[3].SpeakDelay - 60)
-                HealPlayer();
+                ResetPlayerFightVariables();
 
             if (monologueIsFinished)
             {
