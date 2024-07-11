@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
-            float homeInAcceleration = LumUtils.InverseLerp(120f, 30f, Time) * 2f;
+            float homeInAcceleration = LumUtils.InverseLerp(90f, 30f, Time) * 2f;
             Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
             Vector2 aimDestination = target.Center + (Projectile.identity / 3f).ToRotationVector2() * (Projectile.identity / 7f % 1f * 200f);
 
