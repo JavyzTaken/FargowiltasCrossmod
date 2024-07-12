@@ -8,7 +8,6 @@ using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Effects;
@@ -284,9 +283,5 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             spread.CurrentTechnique.Passes[0].Apply();
             Main.spriteBatch.Draw(invisible, drawPosition, null, Color.White, telegraphDirection.ToRotation(), invisible.Size() * 0.5f, Vector2.One * fadeOut * telegraphSize, SpriteEffects.None, 0f);
         }
-
-        public static float LaserTelegraphWidthFunction(float completionRatio, float telegraphIntensity) => MathF.Pow(telegraphIntensity, 2.5f) * 10f;
-
-        public static Color LaserTelegraphColorFunction(float completionRatio, float telegraphIntensity) => Color.Lerp(Color.SkyBlue, Color.Green, completionRatio) * MathF.Pow(telegraphIntensity, 5f) * 0.5f;
     }
 }
