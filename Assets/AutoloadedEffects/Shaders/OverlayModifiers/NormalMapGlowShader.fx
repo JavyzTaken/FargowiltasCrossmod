@@ -27,7 +27,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
             float baseBrightness = tex2D(baseTexture, blurredCoords).x;
             float rightBrightness = tex2D(baseTexture, blurredCoords + float2(textureOffset.x, 0)).x;
             float bottomBrightness = tex2D(baseTexture, blurredCoords + float2(0, textureOffset.y)).x;
-            normal += (baseBrightness - float2(rightBrightness, rightBrightness)) * 0.4;
+            normal += (baseBrightness - float2(rightBrightness, bottomBrightness)) * 0.444;
         }
     }
     
