@@ -17,34 +17,49 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
     public sealed partial class AresBodyEternity : CalDLCEmodeBehavior
     {
         /// <summary>
-        /// The amount of slash dashes Ares has performed during the KatanaCycloneDashes attack.
+        /// The amount of slash dashes Ares has performed during the Katana Cyclone Dashes attack.
         /// </summary>
         public ref float KatanaCycloneDashes_SlashCounter => ref NPC.ai[0];
 
         /// <summary>
-        /// How long Ares spends redirecting to get near the target during the KatanaCycloneDashes attack.
+        /// How long Ares spends redirecting to get near the target during the Katana Cyclone Dashes attack.
         /// </summary>
         public static int KatanaCycloneDashes_RedirectTime => LumUtils.SecondsToFrames(0.6f);
 
         /// <summary>
-        /// How long Ares spends flying away from the target during the KatanaCycloneDashes attack.
+        /// How long Ares spends flying away from the target during the Katana Cyclone Dashes attack.
         /// </summary>
         public static int KatanaCycloneDashes_FlyAwayTime => LumUtils.SecondsToFrames(1.1f);
 
         /// <summary>
-        /// How many slash dashes should be performed during the KatanaCycloneDashes attack. 
+        /// How many slash dashes should be performed during the Katana Cyclone Dashes attack.
         /// </summary>
         public static int KatanaCycloneDashes_SlashCount => 9;
 
         /// <summary>
-        /// Ares' starting speed during the KatanaCycloneDashes attack. 
+        /// Ares' starting speed during the Katana Cyclone Dashes attack.
         /// </summary>
         public static float KatanaCycloneDashes_StartingDashSpeed => 35f;
 
         /// <summary>
-        /// Ares' acceleration during the KatanaCycloneDashes attack. 
+        /// Ares' acceleration during the Katana Cyclone Dashes attack.
         /// </summary>
         public static float KatanaCycloneDashes_Acceleration => 1.024f;
+
+        /// <summary>
+        /// How far Ares teleports away from the player when performing a dash during the Katana Cyclone Dashes attack.
+        /// </summary>
+        public static float KatanaCycloneDashes_TeleportOffset => 1450f;
+
+        /// <summary>
+        /// How far away Ares must be from the player, at minimum, to teleport to the opposite side and start a new dash during the Katana Cyclone Dashes attack.
+        /// </summary>
+        public static float KatanaCycloneDashes_MinimumRestartDistance => 1932f;
+
+        /// <summary>
+        /// Ares' maximum possible rotational velocity as a result of the player's relative Y position during the Katana Cyclone Dashes attack.
+        /// </summary>
+        public static float KatanaCycloneDashes_MaxRotationalVelocity => MathHelper.ToRadians(0.78f);
 
         /// <summary>
         /// The sound played when Ares performs a slash.
@@ -57,7 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static readonly SoundStyle KatanaUnsheatheSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/EnergyKatanaUnsheathe") with { Volume = 1.2f, MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew };
 
         /// <summary>
-        /// AI update loop method for the KatanaSlashes attack.
+        /// AI update loop method for the Katana Cyclone Dashes attack.
         /// </summary>
         public void DoBehavior_KatanaCycloneDashes()
         {
@@ -98,12 +113,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     if (KatanaCycloneDashes_SlashCounter <= 0f)
                         teleportOffset *= -1f;
 
-                    NPC.Center = Target.Center + teleportOffset * 1450f;
+                    NPC.Center = Target.Center + teleportOffset * KatanaCycloneDashes_TeleportOffset;
                     NPC.velocity = NPC.SafeDirectionTo(Target.Center) * KatanaCycloneDashes_StartingDashSpeed;
 
                     LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center - NPC.velocity * 2f, Vector2.Zero, ModContent.ProjectileType<AresHyperfuturisticPortal>(), 0, 0f);
 
                     KatanaCycloneDashes_SlashCounter++;
+
+                    // Teleport above the player and reset Ares' velocity to zero for consistency once he's done with the attack.
                     if (KatanaCycloneDashes_SlashCounter > KatanaCycloneDashes_SlashCount)
                     {
                         IProjOwnedByBoss<AresBody>.KillAll();
@@ -125,9 +142,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 NPC.Opacity = LumUtils.InverseLerp(0f, 7f, AITimer - KatanaCycloneDashes_RedirectTime - KatanaCycloneDashes_FlyAwayTime);
 
                 float rotateToPlayerInterpolant = LumUtils.InverseLerp(12f, 22f, MathF.Abs(Target.velocity.Y));
-                NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), rotateToPlayerInterpolant * 0.0136f);
+                NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), rotateToPlayerInterpolant * KatanaCycloneDashes_MaxRotationalVelocity);
 
-                if (AITimer >= KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, 1950f))
+                if (AITimer >= KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime + 24 && !NPC.WithinRange(Target.Center, KatanaCycloneDashes_MinimumRestartDistance))
                 {
                     AITimer = KatanaCycloneDashes_RedirectTime + KatanaCycloneDashes_FlyAwayTime;
                     NPC.netUpdate = true;

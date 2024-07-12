@@ -23,11 +23,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public LoopedSoundInstance ExoOverloadLoopedSound;
 
         /// <summary>
-        /// The center position of Ares' core.
-        /// </summary>
-        public Vector2 CorePosition => NPC.Center + Vector2.UnitY.RotatedBy(NPC.rotation) * NPC.scale * 22f;
-
-        /// <summary>
         /// How much damage missiles from Ares' core do.
         /// </summary>
         public static int MissileDamage => Main.expertMode ? 300 : 200;
@@ -38,12 +33,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static int CoreLaserbeamDamage => Main.expertMode ? 515 : 350;
 
         /// <summary>
-        /// How long Ares waits before starting the looped blender sound during the BackgroundCoreLaserBeams attack.
+        /// The rate at which Ares releases missiles during the Background Core Laserbeams attack.
+        /// </summary>
+        public static int MissileReleaseRate => LumUtils.SecondsToFrames(0.133f);
+
+        /// <summary>
+        /// How long Ares waits before starting the looped blender sound during the Background Core Laserbeams attack.
         /// </summary>
         public static int BackgroundCoreLaserBeams_LoopSoundDelay => Utilities.SecondsToFrames(3f);
 
         /// <summary>
-        /// How long Ares waits before releasing missiles during the BackgroundCoreLaserBeams attack.
+        /// How long Ares waits before releasing missiles during the Background Core Laserbeams attack.
         /// </summary>
         public static int BackgroundCoreLaserBeams_MissileShootDelay => Utilities.SecondsToFrames(1.5f);
 
@@ -53,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static readonly SoundStyle DistantMissileLaunchSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/DistantMissileLaunch") with { MaxInstances = 0, Volume = 0.6f, PitchVariance = 0.15f };
 
         /// <summary>
-        /// AI update loop method for the BackgroundCoreLaserBeams attack.
+        /// AI update loop method for the Background Core Laserbeams attack.
         /// </summary>
         public void DoBehavior_BackgroundCoreLaserBeams()
         {
@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 });
             }
 
-            if (!doneAttacking && AITimer >= BackgroundCoreLaserBeams_MissileShootDelay && AITimer % 8 == 7)
+            if (!doneAttacking && AITimer >= BackgroundCoreLaserBeams_MissileShootDelay && AITimer % MissileReleaseRate == 0)
             {
                 Vector2 velocity = NPC.position - NPC.oldPosition;
                 Vector2 sparkSpawnPosition = NPC.Center - Vector2.UnitY.RotatedByRandom(1.1f) * NPC.scale * 70f;

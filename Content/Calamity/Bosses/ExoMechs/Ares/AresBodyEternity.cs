@@ -221,6 +221,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// The center position of Ares' core.
+        /// </summary>
+        public Vector2 CorePosition => NPC.Center + Vector2.UnitY.RotatedBy(NPC.rotation) * NPC.scale * 22f;
+
+        /// <summary>
         /// The target that Ares will attempt to attack.
         /// </summary>
         public static Player Target => ExoMechTargetSelector.Target;

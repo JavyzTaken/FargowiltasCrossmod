@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
     public sealed partial class AresBodyEternity : CalDLCEmodeBehavior
     {
         /// <summary>
-        /// How much forward Ares should aim his lasers on the second sweep during the AimedLaserBursts attack.
+        /// How much forward Ares should aim his lasers on the second sweep during the Aimed Laser Bursts attack.
         /// </summary>
         public Vector2 AimedLaserBursts_AimOffset
         {
@@ -29,19 +29,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
-        /// The amount of sweeps that have happened so far during the AimedLaserBursts attack.
+        /// The amount of sweeps that have happened so far during the Aimed Laser Bursts attack.
         /// </summary>
         public ref float AimedLaserBursts_SweepCounter => ref NPC.ai[1];
 
         /// <summary>
-        /// How long it takes for cannons to charge up energy during the AimedLaserBursts attack.
+        /// How long it takes for cannons to charge up energy during the Aimed Laser Bursts attack.
         /// </summary>
-        public int AimedLaserBursts_CannonChargeUpTime => Utilities.SecondsToFrames(AimedLaserBursts_SweepCounter >= 1f ? 1.36f : 2.05f);
+        public int AimedLaserBursts_CannonChargeUpTime => LumUtils.SecondsToFrames(AimedLaserBursts_SweepCounter >= 1f ? 1.36f : 2.05f);
 
         /// <summary>
-        /// The rate at which Ares releases small lasers during the AimedLaserBursts attack.
+        /// The rate at which Ares releases small lasers during the Aimed Laser Bursts attack.
         /// </summary>
         public static int AimedLaserBursts_SmallLaserShootRate => LumUtils.SecondsToFrames(0.67f);
+
+        /// <summary>
+        /// The amount of small lasers Ares releases per burst during the Aimed Laser Bursts attack.
+        /// </summary>
+        public static int AimedLaserBursts_SmallLaserCount => 5;
 
         /// <summary>
         /// How much damage small lasers from Ares' core do.
@@ -54,7 +59,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public static int CannonLaserbeamDamage => Main.expertMode ? 500 : 350;
 
         /// <summary>
-        /// AI update loop method for the AimedLaserBursts attack.
+        /// The maximum speed at which Ares hovers during the Aimed Laser Bursts attack.
+        /// </summary>
+        public static float AimedLaserBursts_MaxHoverSpeed => 11.5f;
+
+        /// <summary>
+        /// The acceleration at which Ares hovers during the Aimed Laser Bursts attack.
+        /// </summary>
+        public static float AimedLaserBursts_MaxHoverAcceleration => 0.24f;
+
+        /// <summary>
+        /// The shoot speed of small lasers from Ares core during the Aimed Laser Bursts attack.
+        /// </summary>
+        public static float AimedLaserBursts_SmallLaserShootSpeed => 7f;
+
+        /// <summary>
+        /// AI update loop method for the Aimed Laser Bursts attack.
         /// </summary>
         public void DoBehavior_AimedLaserBursts()
         {
@@ -69,7 +89,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (NPC.WithinRange(hoverDestination, 85f))
                 NPC.velocity *= 0.93f;
             else
-                NPC.SimpleFlyMovement(NPC.SafeDirectionTo(hoverDestination) * 11.5f, 0.24f);
+                NPC.SimpleFlyMovement(NPC.SafeDirectionTo(hoverDestination) * AimedLaserBursts_MaxHoverSpeed, AimedLaserBursts_MaxHoverAcceleration);
 
             InstructionsForHands[0] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(-430f, 50f), 0, AimedLaserBursts_CannonChargeUpTime));
             InstructionsForHands[1] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(-280f, 224f), 1, AimedLaserBursts_CannonChargeUpTime));
@@ -80,11 +100,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             {
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < AimedLaserBursts_SmallLaserCount; i++)
                     {
                         Vector2 laserSpawnPosition = CorePosition;
-                        Vector2 laserDirection = (Target.Center - laserSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.TwoPi * i / 5f);
-                        Vector2 laserVelocity = laserDirection * 7f;
+                        Vector2 laserDirection = (Target.Center - laserSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.TwoPi * i / AimedLaserBursts_SmallLaserCount);
+                        Vector2 laserVelocity = laserDirection * AimedLaserBursts_SmallLaserShootSpeed;
                         laserSpawnPosition += laserDirection * 24f;
 
                         LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), laserSpawnPosition, laserVelocity, ModContent.ProjectileType<AresCoreLaserSmall>(), SmallLaserDamage, 0f);
@@ -111,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             NPC handNPC = hand.NPC;
             handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.3f, 0.8f);
-            handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.2f);
+            handNPC.Opacity = LumUtils.Saturate(handNPC.Opacity + 0.2f);
             hand.UsesBackArm = armIndex == 0 || armIndex == ArmCount - 1;
             hand.ArmSide = (armIndex >= ArmCount / 2).ToDirectionInt();
             hand.HandType = AresHandType.LaserCannon;
@@ -120,14 +140,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             hand.Frame = AITimer / 5 % 12;
             hand.OptionalDrawAction = () =>
             {
-                float sizeFadeout = Utilities.InverseLerp(1f, 0.83f, hand.EnergyDrawer.chargeProgress).Cubed();
-                float opacity = Utilities.InverseLerp(0f, 60f, AITimer);
+                float sizeFadeout = LumUtils.InverseLerp(1f, 0.83f, hand.EnergyDrawer.chargeProgress).Cubed();
+                float opacity = LumUtils.InverseLerp(0f, 60f, AITimer);
                 float telegraphSize = (MathF.Cos(hand.NPC.position.X / 390f + AITimer / 23f) * 132f + 500f) * MathF.Sqrt(hand.EnergyDrawer.chargeProgress) * sizeFadeout;
                 RenderLaserTelegraph(hand, opacity, sizeFadeout, telegraphSize, handNPC.rotation.ToRotationVector2() * handNPC.spriteDirection);
             };
 
             int relativeTimer = AITimer + handNPC.whoAmI * 101 % 30;
-            hand.EnergyDrawer.chargeProgress = Utilities.InverseLerp(0f, chargeUpTime, relativeTimer);
+            hand.EnergyDrawer.chargeProgress = LumUtils.InverseLerp(0f, chargeUpTime, relativeTimer);
             if (hand.EnergyDrawer.chargeProgress >= 1f)
                 hand.EnergyDrawer.chargeProgress = 0f;
 
@@ -146,7 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (hand.EnergyDrawer.chargeProgress < 0.9f)
             {
                 float chargeUpCompletion = hand.EnergyDrawer.chargeProgress;
-                float particleSpawnChance = Utilities.InverseLerp(0f, 0.85f, chargeUpCompletion).Squared();
+                float particleSpawnChance = LumUtils.InverseLerp(0f, 0.85f, chargeUpCompletion).Squared();
                 for (int i = 0; i < 2; i++)
                 {
                     if (Main.rand.NextBool(particleSpawnChance))
@@ -182,7 +202,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
                 SoundEngine.PlaySound(AresLaserCannon.LaserbeamShootSound, handNPC.Center);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), handNPC.Center, handNPC.rotation.ToRotationVector2() * handNPC.spriteDirection, ModContent.ProjectileType<CannonLaserbeam>(), CannonLaserbeamDamage, 0f, -1, handNPC.whoAmI);
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), handNPC.Center, handNPC.rotation.ToRotationVector2() * handNPC.spriteDirection, ModContent.ProjectileType<CannonLaserbeam>(), CannonLaserbeamDamage, 0f, -1, handNPC.whoAmI);
             }
 
             Vector2 aimDestination = Target.Center;
@@ -201,7 +221,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             else
             {
                 // Release bursts of bloom over the cannon.
-                float bloomScaleFactor = MathHelper.Lerp(0.9f, 1.1f, Utilities.Cos01(handNPC.whoAmI * 3f + relativeTimer));
+                float bloomScaleFactor = MathHelper.Lerp(0.9f, 1.1f, LumUtils.Cos01(handNPC.whoAmI * 3f + relativeTimer));
                 if (AITimer % 6 == 0)
                 {
                     StrongBloom bloom = new(cannonEnd + handNPC.velocity, handNPC.velocity, Color.White, bloomScaleFactor * 0.5f, 12);
@@ -221,7 +241,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 // This doesn't use hand.RotateToLookAt because that changes the spriteDirection of the cannon.
                 // For most cases this looks natural, but when a laser is being fired from the cannon it's super important that it never "jump" in terms of position.
                 // By locking the spriteDirection in place and just rotating normally, this issue is avoided.
-                float cannonTurnSpeed = Utilities.InverseLerp(0f, 45f, relativeTimer - chargeUpTime) * 0.072f;
+                float cannonTurnSpeed = LumUtils.InverseLerp(0f, 45f, relativeTimer - chargeUpTime) * 0.072f;
                 float idealCannonRotation = handNPC.AngleTo(Target.Center);
                 if (handNPC.spriteDirection == -1)
                     idealCannonRotation += MathHelper.Pi;
@@ -250,7 +270,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             Effect spread = Filters.Scene["CalamityMod:SpreadTelegraph"].GetShader().Shader;
             spread.Parameters["centerOpacity"].SetValue(0.4f);
             spread.Parameters["mainOpacity"].SetValue(opacity * 0.7f);
-            spread.Parameters["halfSpreadAngle"].SetValue((1.0356f - Utilities.Saturate(opacity) + Utilities.Cos01(Main.GlobalTimeWrappedHourly * 2f + start.X / 99f) * 0.01f) * 1.6f);
+            spread.Parameters["halfSpreadAngle"].SetValue((1.0356f - LumUtils.Saturate(opacity) + LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 2f + start.X / 99f) * 0.01f) * 1.6f);
             spread.Parameters["edgeColor"].SetValue(Vector3.Lerp(new(1.3f, 0.1f, 0.67f), new(4f, 0.6f, 0.08f), telegraphIntensityFactor));
             spread.Parameters["centerColor"].SetValue(new Vector3(1f, 0.1f, 0.1f));
             spread.Parameters["edgeBlendLength"].SetValue(0.07f);

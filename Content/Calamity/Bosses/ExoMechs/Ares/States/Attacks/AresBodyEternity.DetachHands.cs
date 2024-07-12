@@ -9,7 +9,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
     public sealed partial class AresBodyEternity : CalDLCEmodeBehavior
     {
         /// <summary>
-        /// AI update loop method for the DetachHands state.
+        /// How long Ares waits when detaching hands before transitioning to a new AI state.
+        /// </summary>
+        public static int DetachHands_DetachmentDelay => LumUtils.SecondsToFrames(0.75f);
+
+        /// <summary>
+        /// AI update loop method for the Detach Hands state.
         /// </summary>
         public void DoBehavior_DetachHands()
         {
@@ -21,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 InstructionsForHands[i] = new(h => DetachHandsUpdate(h, copyForDelegate));
             }
 
-            if (AITimer >= 45)
+            if (AITimer >= DetachHands_DetachmentDelay)
             {
                 if (StateQueue.Count <= 0)
                     ResetStateQueue();
