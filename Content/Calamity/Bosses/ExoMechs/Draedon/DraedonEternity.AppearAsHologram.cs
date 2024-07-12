@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             if (AITimer == 1f)
                 SoundEngine.PlaySound(CalamityMod.NPCs.ExoMechs.Draedon.TeleportSound, PlayerToFollow.Center);
 
-            HologramInterpolant = Utilities.InverseLerp(HologramAppearTime, 0f, AITimer);
+            HologramOverlayInterpolant = Utilities.InverseLerp(HologramAppearTime, 0f, AITimer);
 
             if (AITimer >= HologramAppearTime)
                 ChangeAIState(DraedonAIState.StartingMonologue);

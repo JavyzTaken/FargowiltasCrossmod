@@ -86,13 +86,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             if (monologueIsFinished)
             {
-                HologramInterpolant = Utilities.Saturate(HologramInterpolant + 0.04f);
-                MaxSkyOpacity = 1f - HologramInterpolant;
-                if (HologramInterpolant >= 1f)
+                HologramOverlayInterpolant = Utilities.Saturate(HologramOverlayInterpolant + 0.02f);
+                MaxSkyOpacity = 1f - HologramOverlayInterpolant;
+                if (HologramOverlayInterpolant >= 1f)
                     NPC.active = false;
             }
             else
-                HologramInterpolant = 0f;
+                HologramOverlayInterpolant = 0f;
 
             PerformStandardFraming();
         }

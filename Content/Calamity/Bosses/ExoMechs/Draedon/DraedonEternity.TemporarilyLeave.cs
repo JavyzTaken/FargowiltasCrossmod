@@ -12,11 +12,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// </summary>
         public void DoBehavior_TemporarilyLeave()
         {
-            HologramInterpolant = LumUtils.Saturate(HologramInterpolant + AnyDyingExoMechs.ToDirectionInt() * 0.02f);
-            if (!AnyDyingExoMechs && HologramInterpolant <= 0f)
+            HologramOverlayInterpolant = LumUtils.Saturate(HologramOverlayInterpolant + AnyDyingExoMechs.ToDirectionInt() * 0.02f);
+            if (!AnyDyingExoMechs && HologramOverlayInterpolant <= 0f)
                 ChangeAIState(DraedonAIState.MoveAroundDuringBattle);
 
-            if (HologramInterpolant >= 1f)
+            if (HologramOverlayInterpolant >= 1f)
                 NPC.SmoothFlyNearWithSlowdownRadius(PlayerToFollow.Center - Vector2.UnitY * 540f, 0.075f, 0.9f, 300f);
             else
                 NPC.velocity *= 0.7f;

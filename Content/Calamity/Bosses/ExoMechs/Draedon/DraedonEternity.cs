@@ -91,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// The 0-1 interpolant which dictates how much Draedon looks like a hologram.
         /// </summary>
-        public ref float HologramInterpolant => ref NPC.localAI[1];
+        public ref float HologramOverlayInterpolant => ref NPC.localAI[1];
 
         /// <summary>
         /// Draedon's local frame timer.
@@ -228,7 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             // Stay within the world.
             NPC.position.Y = MathHelper.Clamp(NPC.position.Y, 150f, Main.maxTilesY * 16f - 150f);
 
-            NPC.ShowNameOnHover = HologramInterpolant <= 0.75f && NPC.Opacity >= 0.25f;
+            NPC.ShowNameOnHover = HologramOverlayInterpolant <= 0.75f && NPC.Opacity >= 0.25f;
 
             AITimer++;
             FrameTimer++;
@@ -270,18 +270,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             Texture2D projectorGlowmask = CalamityMod.NPCs.ExoMechs.Draedon.ProjectorTexture_Glow.Value;
             Texture2D hologram = HologramTexture.Value;
 
-            Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
-            Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
+            Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramOverlayInterpolant);
+            Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramOverlayInterpolant);
 
-            float baseVerticalOffset = MathF.Cos(Main.GlobalTimeWrappedHourly * 3f + NPC.whoAmI) * 12f - MathF.Pow(HologramInterpolant, 1.4f) * 900f;
+            float baseVerticalOffset = MathF.Cos(Main.GlobalTimeWrappedHourly * 3f + NPC.whoAmI) * 12f - MathF.Pow(HologramOverlayInterpolant, 1.4f) * 400f;
             Vector2 hologramDrawPosition = NPC.Center - screenPos + Vector2.UnitY * baseVerticalOffset;
             Vector2 projectorDrawPosition = hologramDrawPosition + Vector2.UnitY * NPC.scale * (ProjectorVerticalOffset + 85f);
             Rectangle projectorFrame = projector.Frame(1, 4, 0, (int)AITimer / 5 % 4);
 
+            Main.spriteBatch.PrepareForShaders();
+
+            // Render the projector's light area.
+            Texture2D pixel = MiscTexturesRegistry.Pixel.Value;
+            Vector2 projectionArea = Vector2.One * 200f / pixel.Size();
+            Color projectionColor = glowmaskColor.MultiplyRGB(new(0.75f, 1f, 1f)) * HologramOpacity;
+            ManagedShader projectionShader = ShaderManager.GetShader("FargowiltasCrossmod.HologramProjectorAreaShader");
+            projectionShader.TrySetParameter("textureSize", projectionArea);
+            projectionShader.TrySetParameter("spread", HologramOpacity * (1f - HologramOverlayInterpolant) * 0.4f);
+            projectionShader.Apply();
+            Main.spriteBatch.Draw(pixel, projectorDrawPosition, null, projectionColor, 0f, pixel.Size() * new Vector2(0.5f, 1f), projectionArea, 0, 0f);
+
+            // Render the projector.
+            Main.pixelShader.CurrentTechnique.Passes[0].Apply();
             Main.spriteBatch.Draw(projector, projectorDrawPosition, projectorFrame, drawColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
             Main.spriteBatch.Draw(projectorGlowmask, projectorDrawPosition, projectorFrame, glowmaskColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
 
-            Main.spriteBatch.PrepareForShaders();
             ManagedShader glitchShader = ShaderManager.GetShader("FargowiltasCrossmod.GlitchShader");
             glitchShader.TrySetParameter("time", Main.GlobalTimeWrappedHourly * 0.89f + NPC.whoAmI * 0.517f);
             glitchShader.TrySetParameter("textureSize", hologram.Size());
@@ -304,18 +317,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             Texture2D glowmask = CalamityMod.NPCs.ExoMechs.Draedon.Texture_Glow.Value;
             Rectangle frame = texture.Frame(4, Main.npcFrameCount[NPC.type], (int)Frame / Main.npcFrameCount[NPC.type], (int)Frame % Main.npcFrameCount[NPC.type]);
             Vector2 drawPosition = NPC.Center - screenPos;
-            Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
-            Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
+            Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramOverlayInterpolant);
+            Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramOverlayInterpolant);
 
-            bool drawHologramShader = HologramInterpolant > 0f;
+            bool drawHologramShader = HologramOverlayInterpolant > 0f;
             if (drawHologramShader)
             {
                 Main.spriteBatch.PrepareForShaders();
 
                 Vector4 frameArea = new(frame.Left / (float)texture.Width, frame.Top / (float)texture.Height, frame.Right / (float)texture.Width, frame.Bottom / (float)texture.Height);
                 ManagedShader hologramShader = ShaderManager.GetShader("FargowiltasCrossmod.HologramShader");
-                hologramShader.TrySetParameter("hologramInterpolant", HologramInterpolant);
-                hologramShader.TrySetParameter("hologramSinusoidalOffset", MathF.Pow(HologramInterpolant, 7f) * 0.02f + LumUtils.InverseLerp(0.4f, 1f, HologramInterpolant) * 0.04f);
+                hologramShader.TrySetParameter("hologramInterpolant", HologramOverlayInterpolant);
+                hologramShader.TrySetParameter("hologramSinusoidalOffset", MathF.Pow(HologramOverlayInterpolant, 7f) * 0.02f + LumUtils.InverseLerp(0.4f, 1f, HologramOverlayInterpolant) * 0.04f);
                 hologramShader.TrySetParameter("textureSize0", texture.Size());
                 hologramShader.TrySetParameter("frameArea", frameArea);
                 hologramShader.Apply();
