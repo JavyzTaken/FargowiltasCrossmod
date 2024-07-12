@@ -32,12 +32,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends telegraphing and moving around during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static int ContinuousLaserBarrage_TelegraphTime => Utilities.SecondsToFrames(2.5f);
+        public static int ContinuousLaserBarrage_TelegraphTime => Utilities.SecondsToFrames(1.6f);
 
         /// <summary>
         /// How long Hades spends shooting lasers during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static int ContinuousLaserBarrage_ShootTime => Utilities.SecondsToFrames(2.3f);
+        public static int ContinuousLaserBarrage_ShootTime => Utilities.SecondsToFrames(2.2f);
 
         /// <summary>
         /// The standard fly speed at which Hades moves during his ContinuousLaserBarrage attack.

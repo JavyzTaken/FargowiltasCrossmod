@@ -44,12 +44,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends snaking around into position in anticipation of attacking during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static int PerpendicularBodyLaserBlasts_RedirectTime => Utilities.SecondsToFrames(3f);
+        public static int PerpendicularBodyLaserBlasts_RedirectTime => Utilities.SecondsToFrames(2.3f);
 
         /// <summary>
         /// How long Hades spends telegraphing prior to firing lasers during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static int PerpendicularBodyLaserBlasts_BlastTelegraphTime => Utilities.SecondsToFrames(1.9f);
+        public static int PerpendicularBodyLaserBlasts_BlastTelegraphTime => Utilities.SecondsToFrames(1.5f);
 
         /// <summary>
         /// The 'n' in 'every Nth segment should fire' for Hades' PerpendicularBodyLaserBlasts attack.

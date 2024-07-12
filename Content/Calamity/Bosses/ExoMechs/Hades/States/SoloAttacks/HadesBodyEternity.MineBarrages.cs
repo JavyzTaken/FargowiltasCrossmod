@@ -25,12 +25,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends redirecting before releasing mines during the MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_RedirectTime => Utilities.SecondsToFrames(2.3f);
+        public static int MineBarrages_RedirectTime => Utilities.SecondsToFrames(2f);
 
         /// <summary>
         /// How long Hades spends releasing mines during the MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_MineReleaseTime => Utilities.SecondsToFrames(2.7f);
+        public static int MineBarrages_MineReleaseTime => Utilities.SecondsToFrames(2.1f);
 
         /// <summary>
         /// How long Hades spends releasing mines during the MineBarrages attack.
