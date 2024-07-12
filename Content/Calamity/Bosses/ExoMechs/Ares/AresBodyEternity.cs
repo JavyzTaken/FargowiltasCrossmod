@@ -10,6 +10,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
+using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -193,6 +194,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// The sound responsible for Ares' idle hum.
+        /// </summary>
+        public LoopedSoundInstance HumLoopedSound;
+
+        /// <summary>
         /// The set of attacks that Ares will do in the future.
         /// </summary>
         public Queue<AresAIState> StateQueue = [];
@@ -245,6 +251,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// The sound played when Ares laughs.
         /// </summary>
         public static readonly SoundStyle LaughSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/Laugh") with { Volume = 1.4f };
+
+        /// <summary>
+        /// The sound played idly by Ares.
+        /// </summary>
+        public static readonly SoundStyle HumSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HumLoop");
 
         /// <summary>
         /// Represents an action that should be performed by hands attached to Ares.
@@ -316,6 +327,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             PerformPreUpdateResets();
             ExecuteCurrentState();
+
+            HumLoopedSound ??= LoopedSoundManager.CreateNew(HumSound, () => !NPC.active);
+            HumLoopedSound?.Update(NPC.Center, sound =>
+            {
+                sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.4f;
+                sound.Volume = NPC.scale * 0.125f;
+            });
 
             // Reset the state queue during combo attacks, to ensure that a fresh set is chosen if he's fought alone.
             if (PerformingComboAttack && StateQueue.Count >= 1)
@@ -488,9 +506,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             StateQueue.Clear();
             foreach (AresAIState state in shuffledStates)
                 StateQueue.Enqueue(state);
-
-            StateQueue.Clear();
-            StateQueue.Enqueue(AresAIState.AimedLaserBursts);
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, MathF.Cbrt(1f - NPC.Opacity)) * NPC.Opacity;
