@@ -364,7 +364,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     CurrentState = HadesAIState.ExoEnergyBlast;
             }
             while (CurrentState == oldState);
-            CurrentState = HadesAIState.MissileLunges;
 
             for (int i = 0; i < NPC.maxAI; i++)
                 NPC.ai[i] = 0f;
