@@ -188,8 +188,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             NPC.spriteDirection = (PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign();
             NPC.dontTakeDamage = true;
 
-            if (AIState != DraedonAIState.ReconBodyKilledInterruption)
-                AIState = DraedonAIState.PostBattleInterjection;
             switch (AIState)
             {
                 case DraedonAIState.AppearAsHologram:
