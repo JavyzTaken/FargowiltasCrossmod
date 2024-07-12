@@ -152,20 +152,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 hand.EnergyDrawer.chargeProgress = 0f;
 
             // Jitter in place.
-            handNPC.velocity += Main.rand.NextVector2CircularEdge(0.27f, 1.6f) * hand.EnergyDrawer.chargeProgress.Squared();
+            float chargeUpCompletion = hand.EnergyDrawer.chargeProgress;
+            handNPC.velocity += Main.rand.NextVector2CircularEdge(0.27f, 1.6f) * chargeUpCompletion.Squared();
 
-            if (AITimer % 15 == 14 && hand.EnergyDrawer.chargeProgress >= 0.4f)
+            if (AITimer % 15 == 14 && chargeUpCompletion >= 0.4f)
             {
-                int pulseCounter = (int)MathF.Round(hand.EnergyDrawer.chargeProgress * 5f);
+                int pulseCounter = (int)MathF.Round(chargeUpCompletion * 5f);
                 hand.EnergyDrawer.AddPulse(pulseCounter);
             }
 
-            // Charge energy in anticipation of the laser shot.
+            // Render pulsating energy atop the cannon.
             Vector2 cannonEnd = handNPC.Center + new Vector2(handNPC.spriteDirection * 74f, 16f).RotatedBy(handNPC.rotation);
             Vector2 aimDirection = NPC.SafeDirectionTo(cannonEnd);
-            if (hand.EnergyDrawer.chargeProgress < 0.9f)
+            hand.OptionalDrawAction = () =>
             {
-                float chargeUpCompletion = hand.EnergyDrawer.chargeProgress;
+                float bloomAppearanceInterpolant = LumUtils.InverseLerpBump(0f, chargeUpTime, chargeUpTime + CannonLaserbeam.Lifetime - 25f, chargeUpTime + CannonLaserbeam.Lifetime, relativeTimer);
+
+                Texture2D bloom = MiscTexturesRegistry.BloomCircleSmall.Value;
+                float scalePulse = MathHelper.Lerp(0.75f, 1.32f, LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 72f + NPC.whoAmI * 19f));
+                float bloomScale = bloomAppearanceInterpolant * scalePulse * 0.5f;
+
+                // Capturing the cannonEnd variable results in a one-frame delay due to that variable being computed in this AI function, rather than
+                // during rendering. As such, it's calculated again manually in here.
+                Vector2 drawPosition = handNPC.Center + new Vector2(handNPC.spriteDirection * 74f, 16f).RotatedBy(handNPC.rotation) - Main.screenPosition;
+
+                Main.spriteBatch.Draw(bloom, drawPosition, null, new Color(255, 255, 255, 0), 0f, bloom.Size() * 0.5f, bloomScale * 0.4f, 0, 0f);
+                Main.spriteBatch.Draw(bloom, drawPosition, null, new Color(255, 255, 174, 0), 0f, bloom.Size() * 0.5f, bloomScale * 0.67f, 0, 0f);
+                Main.spriteBatch.Draw(bloom, drawPosition, null, new Color(255, 0, 32, 0), 0f, bloom.Size() * 0.5f, bloomScale, 0, 0f);
+            };
+
+            // Charge energy in anticipation of the laser shot.
+            if (chargeUpCompletion < 0.9f)
+            {
                 float particleSpawnChance = LumUtils.InverseLerp(0f, 0.85f, chargeUpCompletion).Squared();
                 for (int i = 0; i < 2; i++)
                 {
@@ -175,25 +193,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                         energyColor = Color.Lerp(energyColor, Color.Wheat, Main.rand.NextBool(chargeUpCompletion) ? 0.75f : 0.1f);
 
                         Vector2 energySpawnPosition = cannonEnd + Main.rand.NextVector2Unit() * Main.rand.NextFloat(36f, chargeUpCompletion.Squared() * 100f + 80f);
-                        Vector2 energyVelocity = (cannonEnd - energySpawnPosition) * 0.16f;
+                        Vector2 energyVelocity = (cannonEnd - energySpawnPosition) * 0.16f + handNPC.velocity;
                         LineParticle energy = new(energySpawnPosition, energyVelocity, false, Main.rand.Next(6, 12), chargeUpCompletion * 0.9f, energyColor);
                         GeneralParticleHandler.SpawnParticle(energy);
                     }
                 }
-
-                // Release bursts of bloom over the cannon.
-                if (AITimer % 6 == 0)
-                {
-                    StrongBloom bloom = new(cannonEnd + handNPC.velocity, handNPC.velocity, Color.Wheat * MathHelper.Lerp(0.4f, 1.1f, chargeUpCompletion), chargeUpCompletion * 0.5f, 12);
-                    GeneralParticleHandler.SpawnParticle(bloom);
-
-                    bloom = new(cannonEnd + handNPC.velocity, handNPC.velocity, Color.OrangeRed * MathHelper.Lerp(0.2f, 0.6f, chargeUpCompletion), chargeUpCompletion * 0.84f, 9);
-                    GeneralParticleHandler.SpawnParticle(bloom);
-                }
             }
 
             // Make the screen shake slightly before firing.
-            ScreenShakeSystem.SetUniversalRumble(hand.EnergyDrawer.chargeProgress.Cubed() * 3f);
+            ScreenShakeSystem.SetUniversalRumble(chargeUpCompletion.Cubed() * 3f);
 
             // Fire.
             if (relativeTimer == chargeUpTime)
@@ -220,17 +228,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             // Handle post-firing particles.
             else
             {
-                // Release bursts of bloom over the cannon.
-                float bloomScaleFactor = MathHelper.Lerp(0.9f, 1.1f, LumUtils.Cos01(handNPC.whoAmI * 3f + relativeTimer));
-                if (AITimer % 6 == 0)
-                {
-                    StrongBloom bloom = new(cannonEnd + handNPC.velocity, handNPC.velocity, Color.White, bloomScaleFactor * 0.5f, 12);
-                    GeneralParticleHandler.SpawnParticle(bloom);
-
-                    bloom = new(cannonEnd + handNPC.velocity, handNPC.velocity, new(1f, 0.11f, 0.05f), bloomScaleFactor * 0.84f, 11);
-                    GeneralParticleHandler.SpawnParticle(bloom);
-                }
-
                 Vector2 energyDirection = (handNPC.rotation.ToRotationVector2() * handNPC.spriteDirection).RotatedByRandom(0.6f);
                 BloomPixelParticle energy = new(cannonEnd, energyDirection * Main.rand.NextFloat(3f, 15f), Color.White, Color.Red * 0.45f, 20, Vector2.One);
                 energy.Spawn();

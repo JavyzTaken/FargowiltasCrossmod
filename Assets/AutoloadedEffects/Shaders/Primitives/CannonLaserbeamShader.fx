@@ -50,10 +50,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     float4 innerGlow = float4(0, 0.6, 0.6, 0) * tex2D(noiseScrollTexture, input.Position.xy / 33 - laserDirection * globalTime * 32);
     float4 glow = outerGlow + innerGlow;
     
-    float opacity = smoothstep(0.55, 0.34, distanceFromCenter);
+    float opacity = smoothstep(0.55, 0.34, distanceFromCenter) * color.a;
     color += glow * color.a;
     
-    return color * opacity;
+    return saturate(color) * opacity;
 }
 
 technique Technique1

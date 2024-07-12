@@ -488,6 +488,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             StateQueue.Clear();
             foreach (AresAIState state in shuffledStates)
                 StateQueue.Enqueue(state);
+
+            StateQueue.Clear();
+            StateQueue.Enqueue(AresAIState.AimedLaserBursts);
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, MathF.Cbrt(1f - NPC.Opacity)) * NPC.Opacity;
