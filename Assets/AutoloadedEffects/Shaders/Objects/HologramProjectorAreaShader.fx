@@ -16,7 +16,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float2 offsetFromBottom = coords - float2(0.5, 1);
     float2 directionFromBottom = normalize(offsetFromBottom);
     
-    float opacity = smoothstep(1 - spread, 1, abs(directionFromBottom.y)) * smoothstep(0.75, 0.5, length(offsetFromBottom));
+    float opacity = smoothstep(1 - spread, 1, abs(directionFromBottom.y)) * pow(smoothstep(0.75, 0, length(offsetFromBottom)), 1.5);
     float4 color = tex2D(baseTexture, coords) * opacity;
     
     return color * sampleColor;

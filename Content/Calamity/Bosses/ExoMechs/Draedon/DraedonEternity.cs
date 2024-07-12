@@ -188,6 +188,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             NPC.spriteDirection = (PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign();
             NPC.dontTakeDamage = true;
 
+            if (AIState != DraedonAIState.ReconBodyKilledInterruption)
+                AIState = DraedonAIState.PostBattleInterjection;
             switch (AIState)
             {
                 case DraedonAIState.AppearAsHologram:
@@ -278,6 +280,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             Vector2 projectorDrawPosition = hologramDrawPosition + Vector2.UnitY * NPC.scale * (ProjectorVerticalOffset + 85f);
             Rectangle projectorFrame = projector.Frame(1, 4, 0, (int)AITimer / 5 % 4);
 
+            // Render the projector.
+            Main.spriteBatch.Draw(projector, projectorDrawPosition, projectorFrame, drawColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            Main.spriteBatch.Draw(projectorGlowmask, projectorDrawPosition, projectorFrame, glowmaskColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+
             Main.spriteBatch.PrepareForShaders();
 
             // Render the projector's light area.
@@ -286,14 +292,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             Color projectionColor = glowmaskColor.MultiplyRGB(new(0.75f, 1f, 1f)) * HologramOpacity;
             ManagedShader projectionShader = ShaderManager.GetShader("FargowiltasCrossmod.HologramProjectorAreaShader");
             projectionShader.TrySetParameter("textureSize", projectionArea);
-            projectionShader.TrySetParameter("spread", HologramOpacity * (1f - HologramOverlayInterpolant) * 0.4f);
+            projectionShader.TrySetParameter("spread", HologramOpacity * (1f - HologramOverlayInterpolant) * 0.5f);
             projectionShader.Apply();
             Main.spriteBatch.Draw(pixel, projectorDrawPosition, null, projectionColor, 0f, pixel.Size() * new Vector2(0.5f, 1f), projectionArea, 0, 0f);
-
-            // Render the projector.
-            Main.pixelShader.CurrentTechnique.Passes[0].Apply();
-            Main.spriteBatch.Draw(projector, projectorDrawPosition, projectorFrame, drawColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-            Main.spriteBatch.Draw(projectorGlowmask, projectorDrawPosition, projectorFrame, glowmaskColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
 
             ManagedShader glitchShader = ShaderManager.GetShader("FargowiltasCrossmod.GlitchShader");
             glitchShader.TrySetParameter("time", Main.GlobalTimeWrappedHourly * 0.89f + NPC.whoAmI * 0.517f);
