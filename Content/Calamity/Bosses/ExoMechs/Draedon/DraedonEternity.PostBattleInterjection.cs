@@ -70,6 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             Vector2 hoverDestination = PlayerToFollow.Center + new Vector2((PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign() * -450f, -5f);
             NPC.SmoothFlyNear(hoverDestination, 0.05f, 0.94f);
+            NPC.dontTakeDamage = WasKilled;
 
             bool monologueIsFinished = speakTimer >= monologue.OverallDuration;
 

@@ -1,16 +1,22 @@
 ﻿using CalamityMod.NPCs;
+using CalamityMod.Sounds;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 {
@@ -31,10 +37,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             FirstInterjection,
             SecondInterjection,
-            PostBattleInterjection
+            PostBattleInterjection,
+
+            ReconBodyKilledInterruption
         }
 
+        internal static LazyAsset<Texture2D> HologramTexture;
+
         public Player PlayerToFollow => Main.player[NPC.target];
+
+        /// <summary>
+        /// The AI timer that Draedon had during her post battle interjection before being interruted.
+        /// </summary>
+        public int PostBattleInterjectionTimer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Whether Draedon was "killed" during his post-battle interjection.
+        /// </summary>
+        public bool WasKilled
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Draedon's current AI state.
@@ -78,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// How long Draedon typically waits between spoken dialogue.
         /// </summary>
-        public static readonly int StandardSpeakTime = Utilities.SecondsToFrames(3f);
+        public static readonly int StandardSpeakTime = LumUtils.SecondsToFrames(3f);
 
         /// <summary>
         /// Draedon's starting monologue. This is spoken the first time the player interacts with him.
@@ -98,9 +126,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
         public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>();
 
+        public override void SetStaticDefaults()
+        {
+            if (Main.netMode == NetmodeID.Server)
+                return;
+
+            HologramTexture = LazyAsset<Texture2D>.Request("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Draedon/Hologram");
+        }
+
         public override void OnSpawn(IEntitySource source)
         {
             NPC.TargetClosest(false);
+        }
+
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            bitWriter.WriteBit(WasKilled);
+            binaryWriter.Write(PostBattleInterjectionTimer);
+        }
+
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
+        {
+            WasKilled = bitReader.ReadBit();
+            PostBattleInterjectionTimer = binaryReader.ReadInt32();
         }
 
         public override bool PreAI()
@@ -138,6 +186,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             }
 
             NPC.spriteDirection = (PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign();
+            NPC.dontTakeDamage = true;
 
             switch (AIState)
             {
@@ -164,6 +213,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                     break;
                 case DraedonAIState.PostBattleInterjection:
                     DoBehavior_PostBattleInterjection();
+                    break;
+                case DraedonAIState.ReconBodyKilledInterruption:
+                    DoBehavior_ReconBodyKilledInterruption();
                     break;
                 case DraedonAIState.StandardPlayerDeathMonologue:
                 case DraedonAIState.FunnyPlayerDeathMonologue:
@@ -207,8 +259,47 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             NPC.netUpdate = true;
         }
 
+        /// <summary>
+        /// Renders Draedon's hologram projection.
+        /// </summary>
+        /// <param name="screenPos">The screen position.</param>
+        /// <param name="lightColor">The color of light at Draedon's center.</param>
+        public void RenderHologramProjection(Vector2 screenPos, Color lightColor)
+        {
+            Texture2D projector = CalamityMod.NPCs.ExoMechs.Draedon.ProjectorTexture.Value;
+            Texture2D projectorGlowmask = CalamityMod.NPCs.ExoMechs.Draedon.ProjectorTexture_Glow.Value;
+            Texture2D hologram = HologramTexture.Value;
+
+            Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
+            Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
+
+            float baseVerticalOffset = MathF.Cos(Main.GlobalTimeWrappedHourly * 3f + NPC.whoAmI) * 12f - HologramInterpolant.Squared() * 1300f;
+            Vector2 hologramDrawPosition = NPC.Center - screenPos + Vector2.UnitY * baseVerticalOffset;
+            Vector2 projectorDrawPosition = hologramDrawPosition + Vector2.UnitY * NPC.scale * (ProjectorVerticalOffset + 85f);
+            Rectangle projectorFrame = projector.Frame(1, 4, 0, (int)AITimer / 5 % 4);
+
+            Main.spriteBatch.Draw(projector, projectorDrawPosition, projectorFrame, drawColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            Main.spriteBatch.Draw(projectorGlowmask, projectorDrawPosition, projectorFrame, glowmaskColor, 0f, projectorFrame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+
+            Main.spriteBatch.PrepareForShaders();
+            ManagedShader glitchShader = ShaderManager.GetShader("FargowiltasCrossmod.GlitchShader");
+            glitchShader.TrySetParameter("time", Main.GlobalTimeWrappedHourly * 0.89f + NPC.whoAmI * 0.517f);
+            glitchShader.TrySetParameter("textureSize", hologram.Size());
+            glitchShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
+            glitchShader.Apply();
+
+            Main.spriteBatch.Draw(hologram, hologramDrawPosition, null, glowmaskColor * HologramOpacity, NPC.rotation, hologram.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            Main.spriteBatch.ResetToDefault();
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
+            if (WasKilled)
+            {
+                RenderHologramProjection(screenPos, lightColor);
+                return false;
+            }
+
             Texture2D texture = TextureAssets.Npc[NPC.type].Value;
             Texture2D glowmask = CalamityMod.NPCs.ExoMechs.Draedon.Texture_Glow.Value;
             Rectangle frame = texture.Frame(4, Main.npcFrameCount[NPC.type], (int)Frame / Main.npcFrameCount[NPC.type], (int)Frame % Main.npcFrameCount[NPC.type]);
@@ -224,7 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 Vector4 frameArea = new(frame.Left / (float)texture.Width, frame.Top / (float)texture.Height, frame.Right / (float)texture.Width, frame.Bottom / (float)texture.Height);
                 ManagedShader hologramShader = ShaderManager.GetShader("FargowiltasCrossmod.HologramShader");
                 hologramShader.TrySetParameter("hologramInterpolant", HologramInterpolant);
-                hologramShader.TrySetParameter("hologramSinusoidalOffset", MathF.Pow(HologramInterpolant, 7f) * 0.02f + Utilities.InverseLerp(0.4f, 1f, HologramInterpolant) * 0.04f);
+                hologramShader.TrySetParameter("hologramSinusoidalOffset", MathF.Pow(HologramInterpolant, 7f) * 0.02f + LumUtils.InverseLerp(0.4f, 1f, HologramInterpolant) * 0.04f);
                 hologramShader.TrySetParameter("textureSize0", texture.Size());
                 hologramShader.TrySetParameter("frameArea", frameArea);
                 hologramShader.Apply();
@@ -237,6 +328,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 Main.spriteBatch.ResetToDefault();
 
             return false;
+        }
+
+        public override bool CheckDead()
+        {
+            SoundEngine.PlaySound(CommonCalamitySounds.ExoHitSound, NPC.Center);
+
+            WasKilled = true;
+            PostBattleInterjectionTimer = (int)AITimer;
+            ChangeAIState(DraedonAIState.ReconBodyKilledInterruption);
+
+            NPC.netUpdate = true;
+            return true;
         }
     }
 }
