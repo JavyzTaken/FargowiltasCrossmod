@@ -273,7 +273,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             Color drawColor = lightColor * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
             Color glowmaskColor = Color.White * NPC.Opacity * MathF.Sqrt(1f - HologramInterpolant);
 
-            float baseVerticalOffset = MathF.Cos(Main.GlobalTimeWrappedHourly * 3f + NPC.whoAmI) * 12f - HologramInterpolant.Squared() * 1300f;
+            float baseVerticalOffset = MathF.Cos(Main.GlobalTimeWrappedHourly * 3f + NPC.whoAmI) * 12f - MathF.Pow(HologramInterpolant, 1.4f) * 900f;
             Vector2 hologramDrawPosition = NPC.Center - screenPos + Vector2.UnitY * baseVerticalOffset;
             Vector2 projectorDrawPosition = hologramDrawPosition + Vector2.UnitY * NPC.scale * (ProjectorVerticalOffset + 85f);
             Rectangle projectorFrame = projector.Frame(1, 4, 0, (int)AITimer / 5 % 4);

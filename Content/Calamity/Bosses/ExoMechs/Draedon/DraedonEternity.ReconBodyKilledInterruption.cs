@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// The maximum vertical offset of Draedon's projector.
         /// </summary>
-        public static float MaxProjectorVerticalOffset => 750f;
+        public static float MaxProjectorVerticalOffset => 640f;
 
         /// <summary>
         /// The monologue that Draedon uses upon the Exo Mechs battle concluding after being harmed.
