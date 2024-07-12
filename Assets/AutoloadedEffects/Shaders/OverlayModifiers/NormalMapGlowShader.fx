@@ -1,34 +1,44 @@
 sampler baseTexture : register(s0);
-sampler normalMapTexture : register(s1);
 
+bool cutOffAtTop;
+bool invertCutoff;
 float globalTime;
-float glowIntensity;
-float3 lightColor;
-float2 lightSourcePosition;
-float2 textureSize1;
-
-float3 SampleNormal(float2 coords)
-{
-    float2 offset = 2 / textureSize1;
-    float3 left = tex2D(normalMapTexture, coords + float2(-1, 0) * offset).xyz;
-    float3 right = tex2D(normalMapTexture, coords + float2(1, 0) * offset).xyz;
-    float3 top = tex2D(normalMapTexture, coords + float2(0, -1) * offset).xyz;
-    float3 bottom = tex2D(normalMapTexture, coords + float2(0, 1) * offset).xyz;
-    float3 center = tex2D(normalMapTexture, coords).xyz;
-    
-    return (left + right + top + bottom + center) * 0.2;
-}
+float2 lightPosition;
+float2 textureSize0;
+float4 frame;
+float4 lightColor;
 
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0, float4 screenPosition : SV_POSITION) : COLOR0
 {
-    float4 baseColor = tex2D(baseTexture, coords) * sampleColor;
-    float3 normal = normalize((SampleNormal(coords) * 2 - 1) * float3(1, -0.75, 1) + float3(0, 0, -0.35));
-    float3 directionToLight = normalize(float3(lightSourcePosition, 0) - float3(screenPosition.xy, 0));
-    float brightness = saturate(dot(normal, directionToLight));
-    brightness = pow(brightness, 1.8);
+    float2 framedCoords = (coords * textureSize0 - frame.xy) / frame.zw;
+    framedCoords.y = lerp(framedCoords.y, 1 - framedCoords.y, invertCutoff);
     
-    return baseColor + float4(lightColor, 0) * brightness * baseColor.a * glowIntensity;
+    float4 baseColor = tex2D(baseTexture, coords);
+    float2 lightDirection = normalize(lightPosition - screenPosition.xy) * float2(-1, 1);
+    
+    // Take a blurred sample of the texture and create normals based off of its neighbors in a manner analogous to a derivative.
+    float2 normal = 0;
+    float2 textureOffset = 4 / textureSize0;
+    for (int i = -1; i <= 1; i++)
+    {
+        for (int j = -1; j <= 1; j++)
+        {
+            float2 blurredCoords = coords + float2(i, j) * 2 / textureSize0;
+            float baseBrightness = tex2D(baseTexture, blurredCoords).x;
+            float rightBrightness = tex2D(baseTexture, blurredCoords + float2(textureOffset.x, 0)).x;
+            float bottomBrightness = tex2D(baseTexture, blurredCoords + float2(0, textureOffset.y)).x;
+            normal += (baseBrightness - float2(rightBrightness, rightBrightness)) * 0.4;
+        }
+    }
+    
+    // Calculate light based on the normal vector, along with cut-off calculations.
+    float light = saturate(dot(lightDirection, normal) + (smoothstep(0.3, 0.1, framedCoords.y) - smoothstep(0.45, 0.35, framedCoords.y) * 1.5) * cutOffAtTop);
+    
+    // Combine the lighting together with the base color.
+    baseColor *= sampleColor;
+    return baseColor + lightColor * pow(light, 1.2) * baseColor.a;
 }
+
 technique Technique1
 {
     pass AutoloadPass

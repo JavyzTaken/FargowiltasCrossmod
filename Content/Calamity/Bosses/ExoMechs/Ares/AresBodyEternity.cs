@@ -7,9 +7,11 @@ using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -506,6 +508,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             StateQueue.Clear();
             foreach (AresAIState state in shuffledStates)
                 StateQueue.Enqueue(state);
+
+            StateQueue.Clear();
+            StateQueue.Enqueue(AresAIState.LargeTeslaOrbBlast);
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, MathF.Cbrt(1f - NPC.Opacity)) * NPC.Opacity;
@@ -554,6 +559,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             Texture2D texture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBody").Value;
             Texture2D glowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBodyGlow").Value;
+            ApplyNormalMapShader(texture, NPC.frame, true, false);
 
             Vector2 drawPosition = NPC.Center - screenPos;
             Main.spriteBatch.Draw(texture, drawPosition, NPC.frame, NPC.GetAlpha(lightColor), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
@@ -564,6 +570,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             OptionalDrawAction?.Invoke();
 
             return false;
+        }
+
+        public static void ApplyNormalMapShader(Texture2D texture, Rectangle frame, bool cutOffAtTop, bool invertCutoff)
+        {
+            var teslaSpheres = LumUtils.AllProjectilesByID(ModContent.ProjectileType<LargeTeslaSphere>());
+            Projectile teslaSphere = teslaSpheres.FirstOrDefault();
+            if (teslaSphere is null)
+                return;
+
+            Main.spriteBatch.PrepareForShaders();
+
+            float glowIntensity = LumUtils.Saturate(teslaSphere.width / 560f);
+            ManagedShader normalMapShader = ShaderManager.GetShader("FargowiltasCrossmod.NormalMapGlowShader");
+            normalMapShader.TrySetParameter("textureSize0", texture.Size());
+            normalMapShader.TrySetParameter("lightColor", new Vector4(0f, 0.8f, 1.8f, 0f) * glowIntensity);
+            normalMapShader.TrySetParameter("frame", new Vector4(frame.X, frame.Y, frame.Width, frame.Height));
+            normalMapShader.TrySetParameter("cutOffAtTop", cutOffAtTop);
+            normalMapShader.TrySetParameter("invertCutoff", invertCutoff);
+            normalMapShader.TrySetParameter("lightPosition", teslaSphere.Center - Main.screenPosition);
+            normalMapShader.Apply();
         }
 
         public override bool PreKill()
