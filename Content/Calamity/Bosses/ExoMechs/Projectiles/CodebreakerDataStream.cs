@@ -59,7 +59,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             LaserbeamLength = MathHelper.Clamp(LaserbeamLength + 300f, 0f, MaxLaserbeamLength);
             Projectile.Opacity = LumUtils.InverseLerp(0f, 18f, Time) * LumUtils.InverseLerp(0f, 30f, Projectile.timeLeft).Squared();
             Projectile.scale = LumUtils.InverseLerp(0f, 8f, Time) + LumUtils.InverseLerp(20f, 0f, Projectile.timeLeft);
+
             CreateSinusoidalParticles();
+            CreateSquareParticles();
 
             Time++;
         }
@@ -77,6 +79,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
                 BloomPixelParticle energy = new(energySpawnPosition, energyVelocity, Color.White, Color.DeepSkyBlue * 0.4f, 27, Vector2.One * Main.rand.NextFloat(0.85f, 1.5f));
                 energy.Spawn();
+            }
+        }
+
+        /// <summary>
+        /// Creates square particles along the beam.
+        /// </summary>
+        public void CreateSquareParticles()
+        {
+            if (Main.rand.NextBool(4))
+            {
+                float positionInterpolant = Main.rand.NextFloat();
+                float scaleInterpolant = MathF.Pow(1f - positionInterpolant, 1.9f);
+                float scale = MathHelper.Lerp(0.1f, 0.27f, scaleInterpolant);
+
+                Vector2 squareSpawnPosition = Projectile.Center + Projectile.velocity * LaserbeamLength * positionInterpolant * 0.03f;
+                Vector2 squareVelocity = (Main.rand.NextVector2Circular(6f, 3f) - Vector2.UnitY * 15f) * (1.332f - scaleInterpolant);
+                Color squareColor = Color.Lerp(Color.DeepSkyBlue, Color.Cyan, Main.rand.NextFloat(0.4f, 0.8f));
+                GlowySquareParticle square = new(squareSpawnPosition, squareVelocity, Projectile.GetAlpha(Color.White), Projectile.GetAlpha(squareColor), Main.rand.Next(35, 60), Vector2.One * scale);
+                square.Spawn();
             }
         }
 

@@ -1,23 +1,71 @@
 {
   "frames": {
-    "MagicBurstParticle.png": {
+    "HighDefinitionSmoke.png": {
       "frame": {
         "x": 0,
+        "y": 0,
+        "w": 518,
+        "h": 498
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 26,
+        "w": 518,
+        "h": 498
+      },
+      "sourceSize": {
+        "w": 538,
+        "h": 536
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "MagicBurstParticle.png": {
+      "frame": {
+        "x": 518,
         "y": 0,
         "w": 353,
         "h": 1559
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
-        "y": 50,
+        "y": 0,
         "w": 353,
         "h": 1559
       },
       "sourceSize": {
         "w": 353,
-        "h": 1620
+        "h": 1559
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ElectricSparkParticle.png": {
+      "frame": {
+        "x": 0,
+        "y": 498,
+        "w": 125,
+        "h": 500
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 125,
+        "h": 500
+      },
+      "sourceSize": {
+        "w": 125,
+        "h": 500
       },
       "pivot": {
         "x": 0.5,
@@ -27,12 +75,12 @@
     "SmokeParticle.png": {
       "frame": {
         "x": 0,
-        "y": 1559,
+        "y": 998,
         "w": 80,
         "h": 218
       },
       "rotated": false,
-      "trimmed": true,
+      "trimmed": false,
       "spriteSourceSize": {
         "x": 0,
         "y": 0,
@@ -40,7 +88,7 @@
         "h": 218
       },
       "sourceSize": {
-        "w": 125,
+        "w": 80,
         "h": 218
       },
       "pivot": {
@@ -51,7 +99,7 @@
     "HollowCircle.png": {
       "frame": {
         "x": 0,
-        "y": 1777,
+        "y": 1216,
         "w": 156,
         "h": 156
       },
@@ -72,10 +120,58 @@
         "y": 0.5
       }
     },
+    "GlowSquareParticle.png": {
+      "frame": {
+        "x": 80,
+        "y": 998,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "GlowSquareParticleBlurred.png": {
+      "frame": {
+        "x": 125,
+        "y": 498,
+        "w": 128,
+        "h": 128
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 128,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 128,
+        "h": 128
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
     "BasicMetaballCircle.png": {
       "frame": {
-        "x": 0,
-        "y": 1933,
+        "x": 125,
+        "y": 626,
         "w": 100,
         "h": 100
       },
@@ -98,8 +194,8 @@
     },
     "Pixel.png": {
       "frame": {
-        "x": 0,
-        "y": 2033,
+        "x": 125,
+        "y": 726,
         "w": 2,
         "h": 2
       },
@@ -114,30 +210,6 @@
       "sourceSize": {
         "w": 2,
         "h": 2
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
-    "ElectricSparkParticle.png": {
-      "frame": {
-        "x": 353,
-        "y": 0,
-        "w": 125,
-        "h": 500
-      },
-      "rotated": false,
-      "trimmed": false,
-      "spriteSourceSize": {
-        "x": 0,
-        "y": 0,
-        "w": 125,
-        "h": 500
-      },
-      "sourceSize": {
-        "w": 125,
-        "h": 500
       },
       "pivot": {
         "x": 0.5,
@@ -151,8 +223,8 @@
     "image": "texture.png",
     "format": "RGBA8888",
     "size": {
-      "w": 478,
-      "h": 2035
+      "w": 871,
+      "h": 1559
     },
     "scale": 1
   }
