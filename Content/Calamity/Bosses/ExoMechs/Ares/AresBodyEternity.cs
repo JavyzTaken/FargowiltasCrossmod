@@ -66,6 +66,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             get => CurrentState == AresAIState.PerformComboAttack;
             set
             {
+                if (CurrentState == AresAIState.Leave)
+                    return;
+
                 if (value && CurrentState == AresAIState.SpawnAnimation)
                 {
                     WaitingToStartComboAttack = true;
@@ -312,7 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (Main.netMode != NetmodeID.MultiplayerClient && !HasCreatedArms)
                 CreateArms();
 
-            if (Inactive && CurrentState != AresAIState.Inactive)
+            if (Inactive && CurrentState != AresAIState.Inactive && CurrentState != AresAIState.Leave)
             {
                 CurrentState = AresAIState.Inactive;
                 AITimer = 0;
@@ -357,6 +360,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// </summary>
         public void SelectNewState()
         {
+            if (CurrentState == AresAIState.Leave)
+                return;
+
             CurrentState = AresAIState.DetachHands;
             AnimationState = AresFrameAnimationState.Default;
             ZPosition = 0f;

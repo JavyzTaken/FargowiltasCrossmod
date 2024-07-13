@@ -48,7 +48,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public bool PerformingComboAttack
         {
             get => ExoTwinsStateManager.SharedState.AIState == ExoTwinsAIState.PerformComboAttack;
-            set => ExoTwinsStateManager.TransitionToNextState(value ? ExoTwinsAIState.PerformComboAttack : null);
+            set
+            {
+                if (ExoTwinsStateManager.SharedState.AIState == ExoTwinsAIState.Leave)
+                    return;
+
+                ExoTwinsStateManager.TransitionToNextState(value ? ExoTwinsAIState.PerformComboAttack : null);
+            }
         }
 
         /// <summary>

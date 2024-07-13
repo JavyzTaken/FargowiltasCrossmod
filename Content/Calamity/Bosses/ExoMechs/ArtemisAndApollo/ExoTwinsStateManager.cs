@@ -90,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             if (shouldEnterSecondPhase && !twinAttributes.InPhase2 && SharedState.AIState != ExoTwinsAIState.EnterSecondPhase && SharedState.AIState != ExoTwinsAIState.DeathAnimation)
                 TransitionToNextState(ExoTwinsAIState.EnterSecondPhase);
 
-            if (twinAttributes is IExoMech exoMech)
+            if (twinAttributes is IExoMech exoMech && SharedState.AIState != ExoTwinsAIState.Leave)
             {
                 if (exoMech.Inactive && SharedState.AIState != ExoTwinsAIState.Inactive)
                     TransitionToNextState(ExoTwinsAIState.Inactive);

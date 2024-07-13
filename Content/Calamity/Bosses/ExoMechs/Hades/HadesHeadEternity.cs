@@ -52,6 +52,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             get => CurrentState == HadesAIState.PerformComboAttack;
             set
             {
+                if (CurrentState == HadesAIState.Leave)
+                    return;
+
                 SelectNewState();
                 if (value)
                     CurrentState = HadesAIState.PerformComboAttack;
@@ -225,17 +228,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             PerformPreUpdateResets();
 
-            if (Inactive && CurrentState != HadesAIState.Inactive)
+            if (CurrentState != HadesAIState.Leave)
             {
-                CurrentState = HadesAIState.Inactive;
-                AITimer = 0;
-                NPC.netUpdate = true;
-            }
-            if (!Inactive && CurrentState == HadesAIState.Inactive)
-            {
-                CurrentState = HadesAIState.MineBarrages;
-                AITimer = 0;
-                NPC.netUpdate = true;
+                if (Inactive && CurrentState != HadesAIState.Inactive)
+                {
+                    CurrentState = HadesAIState.Inactive;
+                    AITimer = 0;
+                    NPC.netUpdate = true;
+                }
+                if (!Inactive && CurrentState == HadesAIState.Inactive)
+                {
+                    CurrentState = HadesAIState.MineBarrages;
+                    AITimer = 0;
+                    NPC.netUpdate = true;
+                }
             }
 
             // Leave if the player is dead.

@@ -254,6 +254,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <param name="nextAIState">The AI state to transition to.</param>
         public void ChangeAIState(DraedonAIState nextAIState)
         {
+            if (AIState == DraedonAIState.StandardPlayerDeathMonologue || AIState == DraedonAIState.FunnyPlayerDeathMonologue)
+                return;
+
             AITimer = 0f;
             AIState = nextAIState;
             NPC.netUpdate = true;

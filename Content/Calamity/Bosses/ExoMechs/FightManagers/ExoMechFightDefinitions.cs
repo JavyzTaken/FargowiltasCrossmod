@@ -203,8 +203,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             int draedonIndex = NPC.FindFirstNPC(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>());
             if (draedonIndex >= 0 && Main.npc[draedonIndex].TryGetDLCBehavior(out DraedonEternity behavior))
             {
-                behavior.AIState = state;
-                behavior.AITimer = 0f;
+                behavior.ChangeAIState(state);
                 Main.npc[draedonIndex].netUpdate = true;
             }
         }
