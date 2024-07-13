@@ -231,6 +231,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// </summary>
         private static void EvaluatePhase()
         {
+            if (CurrentPhase is null)
+                return;
+
             // This is a bit weird but it's necessary to ensure that the static readonly fields are initialized and the ExoMechPhases list is populated properly.
             _ = ExoMechFightDefinitions.StartingTwoAtOncePhaseDefinition;
 

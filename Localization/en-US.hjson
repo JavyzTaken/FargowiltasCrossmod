@@ -744,6 +744,7 @@ Mods: {
 			AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
 			ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
 			HadesMissile.DisplayName: Fortified Missile
+			CodebreakerDataStream.DisplayName: Codebreaker Data Stream
 		}
 
 		Buffs: {

@@ -9,9 +9,11 @@ using Luminance.Assets;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
+using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,6 +23,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PlasmaFlameJet : ModProjectile, IPixelatedPrimitiveRenderer, IProjOwnedByBoss<AresBody>, IExoMechProjectile
     {
+        /// <summary>
+        /// The loop sound instance for this plasma jet.
+        /// </summary>
+        public LoopedSoundInstance LoopSoundInstance
+        {
+            get;
+            private set;
+        }
+
         public PixelationPrimitiveLayer LayerToRenderTo => PixelationPrimitiveLayer.AfterProjectiles;
 
         /// <summary>
@@ -102,6 +113,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// </summary>
         public static Vector4 GlowColor => new(3f, 3f, 1.5f, 0f);
 
+        /// <summary>
+        /// The sound played idly by this jet.
+        /// </summary>
+        public static readonly SoundStyle LoopSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/PlasmaJetLoop");
+
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Plasma;
@@ -139,6 +155,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             if (Projectile.timeLeft <= 30)
                 Projectile.width = (int)(Projectile.width * 0.935f);
+
+            LoopSoundInstance ??= LoopedSoundManager.CreateNew(LoopSound, () => !Projectile.active);
+            LoopSoundInstance?.Update(new Vector2(Projectile.Center.X, Main.LocalPlayer.Center.Y), sound =>
+            {
+                sound.Volume = Projectile.width / 372f;
+            });
 
             BezierCurve shapeCurve = new(ControlPoints);
             for (int i = 0; i < 10; i++)

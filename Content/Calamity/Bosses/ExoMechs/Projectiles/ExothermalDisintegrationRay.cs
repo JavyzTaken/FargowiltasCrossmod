@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public ref float Time => ref Projectile.ai[0];
 
         /// <summary>
-        /// How long this laserbeam current is.
+        /// How long this laserbeam currently is.
         /// </summary>
         public ref float LaserbeamLength => ref Projectile.ai[1];
 
