@@ -34,17 +34,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// How long the siren blare spends fading in.
         /// </summary>
-        public static int SirenFadeInTime => Utilities.SecondsToFrames(0.9f);
+        public static int SirenFadeInTime => Utilities.SecondsToFrames(0.6f);
 
         /// <summary>
         /// How long Draedon waits before summoning the first Exo Mech.
         /// </summary>
-        public static int ExoMechSummonDelay => Utilities.SecondsToFrames(5f);
+        public static int ExoMechSummonDelay => Utilities.SecondsToFrames(2.5f);
 
         /// <summary>
         /// How long the cargo plane spends flying overhead.
         /// </summary>
-        public static int ExoMechPlaneFlyTime => Utilities.SecondsToFrames(1.2f);
+        public static int ExoMechPlaneFlyTime => Utilities.SecondsToFrames(1f);
 
         /// <summary>
         /// The siren sound played as the Exo Mechs wait to be summoned.
