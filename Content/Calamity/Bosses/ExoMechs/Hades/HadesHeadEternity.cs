@@ -31,6 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
     {
         public enum HadesAIState
         {
+            SpawnAnimation,
             PerpendicularBodyLaserBlasts,
             ContinuousLaserBarrage,
             MineBarrages,
@@ -326,6 +327,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             switch (CurrentState)
             {
+                case HadesAIState.SpawnAnimation:
+                    DoBehavior_SpawnAnimation();
+                    break;
                 case HadesAIState.PerpendicularBodyLaserBlasts:
                     DoBehavior_PerpendicularBodyLaserBlasts();
                     break;

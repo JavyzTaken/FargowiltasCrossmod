@@ -136,65 +136,73 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             bool inGround = Collision.SolidCollision(NPC.TopLeft, NPC.width, NPC.height);
             if (MissileLunges_InGround != inGround)
             {
-                if (NPC.soundDelay <= 0)
-                {
-                    SoundEngine.PlaySound(GroundImpactSound with { Pitch = inGround ? 0f : 0.5f });
-                    SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound);
-                    ScreenShakeSystem.StartShake(17.5f, shakeStrengthDissipationIncrement: 0.5f);
-                    NPC.soundDelay = 45;
-                }
-
                 MissileLunges_InGround = inGround;
                 NPC.netUpdate = true;
 
-                // Create a centralized burst of dust that flies to the sides.
-                for (int i = 0; i < 40; i++)
-                {
-                    Color dustColor = Color.Lerp(Color.SaddleBrown, Color.DarkGray, Main.rand.NextFloat(0.5f));
-                    Vector2 dustSpawnPosition = NPC.Center + Vector2.UnitY * 20f + Main.rand.NextVector2Circular(30f, 4f);
-                    dustSpawnPosition = LumUtils.FindGround(dustSpawnPosition.ToTileCoordinates(), Vector2.UnitY).ToWorldCoordinates();
+                CreateGroundImpactVisuals();
+            }
+        }
 
-                    Vector2 dustVelocity = Vector2.UnitX.RotatedByRandom(0.2f) * Main.rand.NextFloat(5f, 67f) * Main.rand.NextFromList(-1f, 1f);
-                    float dustScale = dustVelocity.Length() / 32f;
-                    SmallSmokeParticle impactDust = new(dustSpawnPosition, dustVelocity, dustColor, Color.Transparent, dustScale, 200f);
-                    GeneralParticleHandler.SpawnParticle(impactDust);
+        /// <summary>
+        /// Creates sounds and visuals for when Hades interacts with the ground.
+        /// </summary>
+        public void CreateGroundImpactVisuals()
+        {
+            if (NPC.soundDelay <= 0)
+            {
+                SoundEngine.PlaySound(GroundImpactSound);
+                SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound);
+                ScreenShakeSystem.StartShake(17.5f, shakeStrengthDissipationIncrement: 0.5f);
+                NPC.soundDelay = 45;
+            }
+
+            // Create a centralized burst of dust that flies to the sides.
+            for (int i = 0; i < 40; i++)
+            {
+                Color dustColor = Color.Lerp(Color.SaddleBrown, Color.DarkGray, Main.rand.NextFloat(0.5f));
+                Vector2 dustSpawnPosition = NPC.Center + Vector2.UnitY * 20f + Main.rand.NextVector2Circular(30f, 4f);
+                dustSpawnPosition = LumUtils.FindGround(dustSpawnPosition.ToTileCoordinates(), Vector2.UnitY).ToWorldCoordinates();
+
+                Vector2 dustVelocity = Vector2.UnitX.RotatedByRandom(0.2f) * Main.rand.NextFloat(5f, 67f) * Main.rand.NextFromList(-1f, 1f);
+                float dustScale = dustVelocity.Length() / 32f;
+                SmallSmokeParticle impactDust = new(dustSpawnPosition, dustVelocity, dustColor, Color.Transparent, dustScale, 200f);
+                GeneralParticleHandler.SpawnParticle(impactDust);
+            }
+
+            // Create a wide spread of dust that flies upward.
+            for (float dx = -400f; dx < 400f; dx += Main.rand.NextFloat(12f, 31f))
+            {
+                float dustSizeInterpolant = Main.rand.NextFloat();
+                float dustScale = MathHelper.Lerp(1f, 2f, dustSizeInterpolant);
+                Vector2 dustVelocity = (-Vector2.UnitY * Main.rand.NextFloat(30f, 44f) + Main.rand.NextVector2Circular(10f, 20f)) / dustScale;
+                Color dustColor = Color.Lerp(Color.SaddleBrown, Color.DarkGray, Main.rand.NextFloat(0.5f));
+
+                Point groundSearchPoint = (NPC.Center + Vector2.UnitX * dx).ToTileCoordinates();
+                Point groundTilePosition = LumUtils.FindGroundVertical(groundSearchPoint);
+                Vector2 groundPosition = groundTilePosition.ToWorldCoordinates();
+                SmallSmokeParticle dust = new(groundPosition, dustVelocity, dustColor, Color.Transparent, dustScale, 200f);
+                GeneralParticleHandler.SpawnParticle(dust);
+
+                for (int j = 0; j < 2; j++)
+                {
+                    int groundDustIndex = WorldGen.KillTile_MakeTileDust(groundTilePosition.X, groundTilePosition.Y, Main.tile[groundTilePosition]);
+                    Dust groundDust = Main.dust[groundDustIndex];
+                    groundDust.velocity.Y -= Main.rand.NextFloat(6f, 13f);
+                    groundDust.scale *= 1.6f;
                 }
+            }
 
-                // Create a wide spread of dust that flies upward.
-                for (float dx = -400f; dx < 400f; dx += Main.rand.NextFloat(12f, 31f))
+            // Create lightning that flies upward.
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                for (int i = 0; i < 20; i++)
                 {
-                    float dustSizeInterpolant = Main.rand.NextFloat();
-                    float dustScale = MathHelper.Lerp(1f, 2f, dustSizeInterpolant);
-                    Vector2 dustVelocity = (-Vector2.UnitY * Main.rand.NextFloat(30f, 44f) + Main.rand.NextVector2Circular(10f, 20f)) / dustScale;
-                    Color dustColor = Color.Lerp(Color.SaddleBrown, Color.DarkGray, Main.rand.NextFloat(0.5f));
+                    Vector2 arcSpawnPosition = NPC.Center + Vector2.UnitX * Main.rand.NextFloatDirection() * 400f;
+                    arcSpawnPosition = LumUtils.FindGround(arcSpawnPosition.ToTileCoordinates(), Vector2.UnitY).ToWorldCoordinates();
 
-                    Point groundSearchPoint = (NPC.Center + Vector2.UnitX * dx).ToTileCoordinates();
-                    Point groundTilePosition = LumUtils.FindGroundVertical(groundSearchPoint);
-                    Vector2 groundPosition = groundTilePosition.ToWorldCoordinates();
-                    SmallSmokeParticle dust = new(groundPosition, dustVelocity, dustColor, Color.Transparent, dustScale, 200f);
-                    GeneralParticleHandler.SpawnParticle(dust);
-
-                    for (int j = 0; j < 2; j++)
-                    {
-                        int groundDustIndex = WorldGen.KillTile_MakeTileDust(groundTilePosition.X, groundTilePosition.Y, Main.tile[groundTilePosition]);
-                        Dust groundDust = Main.dust[groundDustIndex];
-                        groundDust.velocity.Y -= Main.rand.NextFloat(6f, 13f);
-                        groundDust.scale *= 1.6f;
-                    }
-                }
-
-                // Create lightning that flies upward.
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    for (int i = 0; i < 20; i++)
-                    {
-                        Vector2 arcSpawnPosition = NPC.Center + Vector2.UnitX * Main.rand.NextFloatDirection() * 400f;
-                        arcSpawnPosition = LumUtils.FindGround(arcSpawnPosition.ToTileCoordinates(), Vector2.UnitY).ToWorldCoordinates();
-
-                        Vector2 arcDestination = arcSpawnPosition - Vector2.UnitY.RotatedByRandom(MathHelper.Pi * 0.27f) * Main.rand.NextFloat(150f, 720f);
-                        Vector2 arcLength = (arcDestination - arcSpawnPosition).RotatedByRandom(0.12f) * Main.rand.NextFloat(0.9f, 1f);
-                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(9, 29), 1f);
-                    }
+                    Vector2 arcDestination = arcSpawnPosition - Vector2.UnitY.RotatedByRandom(MathHelper.Pi * 0.27f) * Main.rand.NextFloat(150f, 720f);
+                    Vector2 arcLength = (arcDestination - arcSpawnPosition).RotatedByRandom(0.12f) * Main.rand.NextFloat(0.9f, 1f);
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(9, 29), 1f);
                 }
             }
         }
