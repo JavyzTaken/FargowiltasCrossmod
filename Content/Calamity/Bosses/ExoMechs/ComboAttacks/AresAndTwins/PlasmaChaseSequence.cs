@@ -286,7 +286,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center + npc.velocity * 12f, portalDirection, ModContent.ProjectileType<ExoTwinHyperfuturisticPortal>(), 0, 0f);
                 }
 
-                SoundEngine.PlaySound(Artemis.ChargeSound, npc.Center);
+                SoundEngine.PlaySound(Artemis.ChargeSound with { Volume = 0.74f }, npc.Center);
             }
 
             // Spin after the dash.
@@ -307,7 +307,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.dontTakeDamage = true;
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 2)
-                    SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f }, npc.Center);
+                    SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f });
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 10)
                 {
