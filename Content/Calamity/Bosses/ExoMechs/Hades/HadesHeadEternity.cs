@@ -182,6 +182,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public const float StandardSegmentCloseRate = 0.067f;
 
         /// <summary>
+        /// The amount of DR that body and tail segments should have when opened.
+        /// </summary>
+        public const float StandardOpenSegmentDR = 0.27f;
+
+        /// <summary>
         /// Represents an action that should be performed by segments on Hades' body.
         /// </summary>
         /// <param name="behaviorOverride">The segment's overriding instance.</param>
