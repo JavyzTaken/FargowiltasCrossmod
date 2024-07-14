@@ -162,6 +162,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public ref float JawRotation => ref NPC.localAI[0];
 
         /// <summary>
+        /// The amount of damage Hades' segments do.
+        /// </summary>
+        public static int DefaultSegmentDamage => Main.expertMode ? 300 : 200;
+
+        /// <summary>
         /// The target that Hades will attempt to attack.
         /// </summary>
         public static Player Target => ExoMechTargetSelector.Target;

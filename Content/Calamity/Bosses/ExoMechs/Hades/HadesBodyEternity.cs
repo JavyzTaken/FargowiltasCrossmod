@@ -187,6 +187,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             // Hack to ensure that segments retain Hades' secondary AI state, and thusly use the correct map icon.
             NPC.Calamity().newAI[1] = aheadSegment.Calamity().newAI[1];
+            NPC.defDamage = HadesHeadEternity.DefaultSegmentDamage;
             NPC.damage = NPC.defDamage;
             NPC.Opacity = aheadSegment.Opacity;
             NPC.Center = aheadSegment.Center - directionToNextSegment.SafeNormalize(Vector2.Zero) * NPC.width * NPC.scale * 0.97f;
