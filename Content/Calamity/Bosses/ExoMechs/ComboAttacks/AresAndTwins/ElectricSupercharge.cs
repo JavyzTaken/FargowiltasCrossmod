@@ -136,6 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), leftHandAimDestination, 1));
             ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), rightHandAimDestination, 2));
             ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(430f, 50f), rightHandAimDestination, 3));
+            ares.AnimationState = AresBodyEternity.AresFrameAnimationState.Default;
         }
 
         /// <summary>
