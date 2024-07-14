@@ -55,6 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static int ArtemisShootRate => LumUtils.SecondsToFrames(0.4f);
 
+        // Don't reduce this too much. It plays a key role in minimizing the potential for circle strats.
         /// <summary>
         /// How many electric projectiles Apollo releases upon doing a burst dash.
         /// </summary>
