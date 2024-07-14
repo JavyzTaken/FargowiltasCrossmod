@@ -66,6 +66,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static float ExoTwinDashSpeed => 90f;
 
+        /// <summary>
+        /// The sound the Exo Twins make when warping through their portals.
+        /// </summary>
+        public static readonly SoundStyle PortalWarpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/PortalWarp");
+
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<AresBody>(), ModContent.NPCType<Apollo>()];
 
         public override bool Perform(NPC npc)
@@ -300,6 +305,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.damage = npc.defDamage;
                 else
                     npc.dontTakeDamage = true;
+
+                if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 2)
+                    SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f }, npc.Center);
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 10)
                 {

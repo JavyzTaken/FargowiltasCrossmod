@@ -159,7 +159,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             LoopSoundInstance ??= LoopedSoundManager.CreateNew(LoopSound, () => !Projectile.active);
             LoopSoundInstance?.Update(new Vector2(Projectile.Center.X, Main.LocalPlayer.Center.Y), sound =>
             {
-                sound.Volume = Projectile.width / 372f;
+                sound.Volume = Projectile.width / 976f;
             });
 
             BezierCurve shapeCurve = new(ControlPoints);

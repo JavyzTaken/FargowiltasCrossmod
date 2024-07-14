@@ -546,7 +546,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             int handID = ModContent.NPCType<AresHand>();
-            List<AresHand> handsToDraw = new(4);
+            List<AresHand> handsToDraw = new(ArmCount);
             foreach (NPC n in Main.ActiveNPCs)
             {
                 if (n.type != handID)
