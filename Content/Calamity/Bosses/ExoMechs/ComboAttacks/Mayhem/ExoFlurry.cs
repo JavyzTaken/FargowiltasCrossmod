@@ -39,6 +39,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static int NukeShotDelay => Utilities.SecondsToFrames(8.5f);
 
         /// <summary>
+        /// The minimum Y offset factor on the unit circle the Exo Twins can have when spinning.
+        /// </summary>
+        public static float MinExoTwinYOrientation => 0.33f;
+
+        /// <summary>
+        /// The amount by which Hades turns his head when firing his laser blast.
+        /// </summary>
+        public static float HadesTurnSpeedCoefficient => 4.6f;
+
+        /// <summary>
         /// The diameter of the explosion from Ares' nukes.
         /// </summary>
         public static float NukeExplosionDiameter => 2300f;
@@ -80,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             Vector2 hoverDestination = Target.Center - Vector2.UnitY * 350f;
             Vector2 flyDirection = npc.SafeDirectionTo(hoverDestination);
             if (!npc.WithinRange(hoverDestination, 300f))
-                npc.velocity += flyDirection * 1.1f;
+                npc.velocity += flyDirection * 0.974f;
             if (npc.velocity.AngleBetween(flyDirection) >= 1.4f)
                 npc.velocity *= 0.9f;
 
@@ -146,7 +156,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             // Initialize the random spin orientation of the twins at the very beginning of the attack.
             if (AITimer == 1 && isApollo)
             {
-                ExoTwinsStateManager.SharedState.Values[0] = Main.rand.NextFloat(MathHelper.TwoPi);
+                do
+                {
+                    ExoTwinsStateManager.SharedState.Values[0] = Main.rand.NextFloat(MathHelper.TwoPi);
+                }
+                while (MathF.Abs(MathF.Sin(ExoTwinsStateManager.SharedState.Values[0] + MathHelper.Pi)) <= MinExoTwinYOrientation);
                 npc.netUpdate = true;
             }
 
@@ -236,6 +250,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 if (spinCycleTimer == spinCycleTime - 1 && isApollo)
                 {
                     ExoTwinsStateManager.SharedState.Values[0] = npc.AngleTo(Target.Center) - MathHelper.PiOver2;
+                    while (MathF.Abs(MathF.Sin(ExoTwinsStateManager.SharedState.Values[0] + MathHelper.Pi)) <= MinExoTwinYOrientation)
+                        ExoTwinsStateManager.SharedState.Values[0] += 0.15f;
+
                     npc.netUpdate = true;
                 }
             }
@@ -294,7 +311,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 if (npc.velocity.Length() >= 3f)
                     npc.velocity *= 0.9485f;
-                npc.velocity = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), 0.01f);
+
+                float angularVelocity = HadesTurnSpeedCoefficient / npc.Distance(Target.Center);
+                npc.velocity = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), angularVelocity);
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
 
                 float chargeUpCompletion = Utilities.InverseLerp(0f, beamWindUpTime, wrappedAttackTimer - returnOnScreenTime);
