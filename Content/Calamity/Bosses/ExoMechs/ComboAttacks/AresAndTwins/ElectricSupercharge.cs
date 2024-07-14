@@ -58,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How many electric projectiles Apollo releases upon doing a burst dash.
         /// </summary>
-        public static int DashSpreadProjectileCount => 11;
+        public static int DashSpreadProjectileCount => 19;
 
         /// <summary>
         /// How much damage Ares' small tesla spheres do.
