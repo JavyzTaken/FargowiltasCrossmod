@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// The sound the Exo Twins make when warping through their portals.
         /// </summary>
-        public static readonly SoundStyle PortalWarpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/PortalWarp");
+        public static readonly SoundStyle PortalWarpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/PortalWarp", 2);
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<AresBody>(), ModContent.NPCType<Apollo>()];
 
