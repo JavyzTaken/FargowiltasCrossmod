@@ -377,6 +377,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
                 if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                     CurrentState = HadesAIState.ExoEnergyBlast;
+
+                // Ensure that the continuous laser barrage attack does not occur after the missile lunges attack.
+                // Testing revealed that this attack combination can result in unavoidable damage if the player is near the ground due to Hades' body serving as a damaging shield that the player would need to RoD through to escape.
+                if (CurrentState == HadesAIState.ContinuousLaserBarrage && oldState == HadesAIState.MissileLunges)
+                    CurrentState = HadesAIState.PerpendicularBodyLaserBlasts;
             }
             while (CurrentState == oldState);
 
