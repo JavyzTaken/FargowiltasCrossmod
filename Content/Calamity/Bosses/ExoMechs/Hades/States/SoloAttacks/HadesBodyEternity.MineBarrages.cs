@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 if (!NPC.WithinRange(Target.Center, 600f))
                 {
-                    float newSpeed = MathHelper.Lerp(NPC.velocity.Length(), 34f, 0.09f);
+                    float newSpeed = MathHelper.Lerp(NPC.velocity.Length(), 26f, 0.09f);
                     Vector2 newDirection = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), 0.03f).SafeNormalize(Vector2.UnitY);
                     NPC.velocity = newDirection * newSpeed;
                 }
@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             else
             {
                 if (!NPC.WithinRange(Target.Center, 400f))
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.SafeDirectionTo(Target.Center) * 32f, 0.03f);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.SafeDirectionTo(Target.Center) * 25f, 0.03f);
                 else
                     NPC.velocity *= 1.07f;
 
