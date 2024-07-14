@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
 
-            if (!NPC.WithinRange(Target.Center, 5400f))
+            if (!NPC.WithinRange(Target.Center, 5400f) || Main.LocalPlayer.respawnTimer <= 30)
                 NPC.active = false;
         }
     }

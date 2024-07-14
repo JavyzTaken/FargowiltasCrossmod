@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             npc.velocity.Y -= 1.32f;
             npc.rotation = npc.rotation.AngleLerp(npc.velocity.ToRotation(), 0.15f);
 
-            if (!npc.WithinRange(Target.Center, 2400f))
+            if (!npc.WithinRange(Target.Center, 2400f) || Main.LocalPlayer.respawnTimer <= 30)
                 npc.active = false;
 
             twinAttributes.Animation = ExoTwinAnimation.ChargingUp;

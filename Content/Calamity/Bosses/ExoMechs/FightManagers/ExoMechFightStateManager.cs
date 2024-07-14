@@ -53,6 +53,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             private set;
         }
 
+        /// <summary>
+        /// Whether all players died in the battle.
+        /// </summary>
+        public static bool AllPlayersDied
+        {
+            get;
+            private set;
+        }
+
         // This doesn't need syncing since the timer is only used in the context of summoning NPCs, which is not a client-side effect.
         /// <summary>
         /// A counter used in conjunction with <see cref="ExoMechFightDefinitions.NoDraedonExoMechReturnDelay"/> to create a time buffer before Exo Mechs return if Draedon is not present.
@@ -157,6 +166,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// </remarks>
         private static void CalculateFightState()
         {
+            bool playerIsAlive = false;
+            foreach (Player player in Main.ActivePlayers)
+            {
+                if (!player.dead)
+                    playerIsAlive = true;
+            }
+
+            if (!playerIsAlive)
+                AllPlayersDied = true;
+
             int totalAliveMechs = 0;
             bool checkForPrimaryMech = false;
             List<int> evaluatedMechs = new(4);
@@ -301,6 +320,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
                 return;
             }
 
+            if (AllPlayersDied)
+                return;
+
             RecordPreviouslySummonedMechs();
             CalculateFightState();
             EvaluatePhase();
@@ -337,6 +359,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
             FightOngoing = false;
             CurrentPhase = PhaseDefinition.UndefinedPhase;
             FightState = ExoMechFightState.UndefinedFightState;
+            AllPlayersDied = false;
             ExoTwinsStateManager.SharedState.ResetForEntireBattle();
 
             if (Main.LocalPlayer.TryGetModPlayer(out ExoMechDamageRecorderPlayer recorderPlayer) && !NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>()))

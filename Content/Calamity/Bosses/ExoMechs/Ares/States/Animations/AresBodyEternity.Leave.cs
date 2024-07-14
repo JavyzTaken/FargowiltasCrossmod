@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             BasicHandUpdateWrapper();
 
-            if (ZPosition >= 10f)
+            if (ZPosition >= 10f || Main.LocalPlayer.respawnTimer <= 30)
                 NPC.active = false;
         }
     }
