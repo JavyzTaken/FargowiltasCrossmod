@@ -1,7 +1,6 @@
 using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatDebuffs;
-using CalamityMod.CalPlayer;
 using CalamityMod.Events;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
@@ -52,10 +51,11 @@ using CalamityMod.NPCs.SunkenSea;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.NPCs.Yharon;
-using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Content.Calamity.Items.LoreItems;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core.Calamity.ItemDropRules;
 using FargowiltasCrossmod.Core.Calamity.Systems;
@@ -65,10 +65,8 @@ using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.Champions.Life;
-using FargowiltasSouls.Content.Bosses.Champions.Nature;
 using FargowiltasSouls.Content.Bosses.Champions.Shadow;
 using FargowiltasSouls.Content.Bosses.Champions.Spirit;
-using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
@@ -86,8 +84,6 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -943,6 +939,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //if (npc.type == ModContent.NPCType<>)
             #endregion
 
+            #region Exo Mech Lore Item
+
+            if (ExoMechNPCIDs.ExoMechIDs.Contains(npc.type))
+            {
+                LeadingConditionRule exoMechFirstTimeDropRule = npcLoot.DefineConditionalDropSet(() => !DownedBossSystem.downedExoMechs && AresBody.CanDropLoot());
+                exoMechFirstTimeDropRule.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeAndRevCondition.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<LoreDraedon>()));
+            }
+
+            #endregion Exo Mech Lore Item
+
             npcLoot.Add(emodeRule);
             npcLoot.Add(pMoon);
             npcLoot.Add(fMoon);
@@ -1445,12 +1451,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 Main.dayTime = false;
                 Main.time = Main.nightLength / 2;
             }
-            
+
             if (npc.type == ModContent.NPCType<EarthChampion>() && BossRushEvent.BossRushActive)
             {
                 Main.player[Main.myPlayer].ZoneUnderworldHeight = true;
             }
-            
+
             if (npc.type == ModContent.NPCType<MutantBoss>() && BossRushEvent.BossRushActive)
             {
                 npc.ModNPC.SceneEffectPriority = SceneEffectPriority.None;

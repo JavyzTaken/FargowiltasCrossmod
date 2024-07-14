@@ -532,6 +532,8 @@ Mods: {
 					Attacking charges the spikes, which launch outward when you stop attacking
 					'''
 			}
+
+			Lore.LoreDraedon.DisplayName: Draedon
 		}
 
 		NPCs: {

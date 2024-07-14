@@ -1,4 +1,6 @@
 ﻿using CalamityMod.Items.LoreItems;
+using CalamityMod.Items.Placeables.Furniture.Trophies;
+using CalamityMod.Rarities;
 using FargowiltasCrossmod.Core;
 using Luminance.Core.Hooking;
 using Microsoft.Xna.Framework;
@@ -8,36 +10,37 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
+namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExoMechLoreItemRewritter : GlobalItem
+    public class LoreDraedon : LoreItem
     {
+        public override void SetDefaults()
+        {
+            Item.width = 20;
+            Item.height = 20;
+            Item.rare = ModContent.RarityType<Violet>();
+            Item.consumable = false;
+        }
+
         public override void Load()
         {
             HookHelper.ModifyMethodWithIL(typeof(Main).GetMethod("MouseText_DrawItemTooltip", LumUtils.UniversalBindingFlags), DrawBlackBoxForLoreItem);
         }
 
-        public override bool PreDrawTooltip(Item item, ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+        public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
         {
-            if (item.type == ModContent.ItemType<LoreExoMechs>())
-            {
-                DrawExoMechLore(new(x, y));
-                return true;
-            }
-
+            DrawExoMechLore(new(x, y));
             return true;
         }
 
-        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            if (item.type == ModContent.ItemType<LoreExoMechs>())
-            {
-                tooltips.RemoveAll(t => t.Name.Contains("Tooltip") || t.Name.Contains("Lore") || t.Name == "Favorite" || t.Name == "FavoriteDesc");
-            }
+            tooltips.RemoveAll(t => t.Name.Contains("Tooltip") || t.Name.Contains("Lore") || t.Name == "Favorite" || t.Name == "FavoriteDesc");
         }
 
         private void DrawBlackBoxForLoreItem(ILContext c)
@@ -62,7 +65,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             // Take in the newly created color and modify it safely.
             cursor.EmitDelegate((Color originalColor) =>
             {
-                if (Main.HoverItem.type == ModContent.ItemType<LoreExoMechs>())
+                if (Main.HoverItem.type == ModContent.ItemType<LoreDraedon>())
                     return new(30, 30, 30);
 
                 return originalColor;
@@ -78,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             }
             cursor.EmitDelegate((Vector2 originalBaseDimensions) =>
             {
-                if (Main.HoverItem.type == ModContent.ItemType<LoreExoMechs>())
+                if (Main.HoverItem.type == ModContent.ItemType<LoreDraedon>())
                 {
                     originalBaseDimensions.X += 454f;
                     originalBaseDimensions.Y += 612f;
@@ -95,8 +98,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
         /// <param name="baseDrawPosition">The base draw position of the tooltip</param>
         private static void DrawExoMechLore(Vector2 baseDrawPosition)
         {
-            Texture2D poem = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/DraedonPoem").Value;
+            Texture2D poem = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/LoreItems/DraedonPoem").Value;
             Main.spriteBatch.Draw(poem, baseDrawPosition + Vector2.UnitY * 20f, Color.White);
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe().
+                AddIngredient<AresTrophy>().
+                AddTile(TileID.Bookcases).
+                Register();
+
+            CreateRecipe().
+                AddIngredient<ThanatosTrophy>().
+                AddTile(TileID.Bookcases).
+                Register();
+
+            CreateRecipe().
+                AddIngredient<ArtemisTrophy>().
+                AddTile(TileID.Bookcases).
+                Register();
+
+            CreateRecipe().
+                AddIngredient<ApolloTrophy>().
+                AddTile(TileID.Bookcases).
+                Register();
         }
     }
 }
