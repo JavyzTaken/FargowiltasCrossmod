@@ -2,6 +2,7 @@
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Core;
 using Luminance.Assets;
+using Luminance.Common.Easings;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -32,7 +33,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long this beam should exist for, in frames.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(3f);
+        public static int Lifetime => LumUtils.SecondsToFrames(3f);
+
+        public static int AppearDelay => LumUtils.SecondsToFrames(0.6f);
 
         /// <summary>
         /// The maximum length of this current is.
@@ -56,12 +59,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
-            LaserbeamLength = MathHelper.Clamp(LaserbeamLength + 300f, 0f, MaxLaserbeamLength);
-            Projectile.Opacity = LumUtils.InverseLerp(0f, 18f, Time) * LumUtils.InverseLerp(0f, 30f, Projectile.timeLeft).Squared();
-            Projectile.scale = LumUtils.InverseLerp(0f, 8f, Time) + LumUtils.InverseLerp(20f, 0f, Projectile.timeLeft);
+            Projectile.Opacity = LumUtils.InverseLerp(0f, 12f, Time - AppearDelay) * LumUtils.InverseLerp(0f, 30f, Projectile.timeLeft).Squared();
+            Projectile.scale = LumUtils.InverseLerp(0f, 4f, Time - AppearDelay) + LumUtils.InverseLerp(20f, 0f, Projectile.timeLeft);
 
-            CreateSinusoidalParticles();
-            CreateSquareParticles();
+            if (Time >= AppearDelay)
+            {
+                LaserbeamLength = MathHelper.Clamp(LaserbeamLength + 150f, 0f, MaxLaserbeamLength);
+                CreateSinusoidalParticles();
+                CreateSquareParticles();
+
+                if (Time % 25 == 24)
+                    ScreenShakeSystem.StartShake(3.4f, MathHelper.Pi / 3f, -Vector2.UnitY);
+            }
 
             Time++;
         }
@@ -111,8 +120,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             return Projectile.GetAlpha(new Color(0.4f, 1f, 1f, 0f));
         }
 
+        public void DrawLight()
+        {
+            Texture2D light = MiscTexturesRegistry.BloomCircleSmall.Value;
+            Vector2 drawPosition = Projectile.Center - Main.screenPosition;
+
+            float scaleFadeIn = EasingCurves.Elastic.Evaluate(EasingType.Out, LumUtils.InverseLerp(0f, 55f, Time));
+            float scaleFadeOut = LumUtils.InverseLerp(0f, 10f, Projectile.timeLeft);
+            float opacityFadeIn = LumUtils.InverseLerp(0f, 32f, Time);
+            float scale = MathHelper.Lerp(0.25f, 0.3f, LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 60f)) * scaleFadeIn * scaleFadeOut * (1f + Time / Lifetime);
+
+            Color lightColorA = Color.Aqua with { A = 0 } * opacityFadeIn * 0.5f;
+            Color lightColorB = Color.White with { A = 0 } * opacityFadeIn;
+            Main.spriteBatch.Draw(light, drawPosition, null, lightColorA, 0f, light.Size() * 0.5f, scale * 0.75f, 0, 0f);
+            Main.spriteBatch.Draw(light, drawPosition, null, lightColorB, 0f, light.Size() * 0.5f, scale, 0, 0f);
+
+            float pulse = Main.GlobalTimeWrappedHourly * 2.5f % 1f;
+            float pulseScaleFactor = Time / Lifetime * 4f;
+            Main.spriteBatch.Draw(light, drawPosition, null, lightColorB * (1f - pulse) * scaleFadeOut, 0f, light.Size() * 0.5f, pulse * pulseScaleFactor, 0, 0f);
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
+            DrawLight();
+
             List<Vector2> beamPositions = Projectile.GetLaserControlPoints(12, LaserbeamLength);
 
             ManagedShader dataShader = ShaderManager.GetShader("FargowiltasCrossmod.DataStreamShader");
