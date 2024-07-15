@@ -23,14 +23,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class GaussNuke : ModProjectile, IExoMechProjectile, IProjOwnedByBoss<AresBody>
     {
+        public bool SetActiveFalseInsteadOfKill => true;
+
+        public ExoMechDamageSource DamageType => ExoMechDamageSource.BluntForceTrauma;
+
         /// <summary>
         /// The diameter of the explosion that will result from this nuke.
         /// </summary>
         public ref float ExplosionDiameter => ref Projectile.ai[0];
 
-        public bool SetActiveFalseInsteadOfKill => true;
+        /// <summary>
+        /// The ideal fly speed of this nuke.
+        /// </summary>
+        public static float IdealFlySpeed => 7f;
 
-        public ExoMechDamageSource DamageType => ExoMechDamageSource.BluntForceTrauma;
+        /// <summary>
+        /// The acceleration interpolant of this nuke.
+        /// </summary>
+        public static float FlyAccelerationInterpolant => 0.13f;
+
+        /// <summary>
+        /// The sound this nuke plays when it explodes.
+        /// </summary>
+        public static readonly SoundStyle ExplodeSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/LiveNuclearReaction");
 
         /// <summary>
         /// How long this nuke should exist before exploding, in frames.
@@ -66,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
             if (!Projectile.WithinRange(target.Center, 100f))
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.SafeDirectionTo(target.Center) * 7f, 0.13f);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.SafeDirectionTo(target.Center) * 7f, FlyAccelerationInterpolant);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -107,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Main.EntitySpriteDraw(pixel, drawPosition, null, Color.White, 0, pixel.Size() * 0.5f, Vector2.One * explosionDiameter / pixel.Size(), 0, 0);
         }
 
-        // This IS a heavy chunk of metal, and as such it should do damage as it's flying forward, but otherwise it should just sit in place.
+        // This IS a heavy chunk of metal, and as such it should do damage as it's flying forward, but otherwise it should just fly without causing harm.
         // It'd be rather silly for a nuke that's just sitting in place to do damage.
         public override bool? CanDamage() => Projectile.velocity.Length() >= 15f;
 
@@ -116,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public override void OnKill(int timeLeft)
         {
             ScreenShakeSystem.StartShakeAtPoint(Projectile.Center, 15f, intensityTaperStartDistance: 3000f, intensityTaperEndDistance: 6000f);
-            SoundEngine.PlaySound(AresGaussNuke.NukeExplosionSound, Projectile.Center);
+            SoundEngine.PlaySound(ExplodeSound, Projectile.Center);
 
             if (Main.netMode != NetmodeID.Server)
             {

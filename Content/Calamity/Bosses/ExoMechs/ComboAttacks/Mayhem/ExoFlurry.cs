@@ -8,6 +8,7 @@ using CalamityMod.Sounds;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
@@ -53,23 +54,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static float NukeExplosionDiameter => 2300f;
 
+        /// <summary>
+        /// Ares' acceleration when flying towards the player.
+        /// </summary>
+        public static float AresAcceleration => 0.975f;
+
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<AresBody>(), ModContent.NPCType<Apollo>()];
 
         public override bool Perform(NPC npc)
         {
-            if (npc.type == ModContent.NPCType<Artemis>() || npc.type == ModContent.NPCType<Apollo>())
+            if (npc.type == ExoMechNPCIDs.ArtemisID || npc.type == ExoMechNPCIDs.ApolloID)
             {
                 Perform_ExoTwins(npc);
                 return false;
             }
 
-            if (npc.type == ModContent.NPCType<AresBody>())
+            if (npc.type == ExoMechNPCIDs.AresBodyID)
             {
                 Perform_Ares(npc);
                 return false;
             }
 
-            if (npc.type == ModContent.NPCType<ThanatosHead>())
+            if (npc.type == ExoMechNPCIDs.HadesHeadID)
             {
                 Perform_Hades(npc);
                 return false;
@@ -90,7 +96,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             Vector2 hoverDestination = Target.Center - Vector2.UnitY * 350f;
             Vector2 flyDirection = npc.SafeDirectionTo(hoverDestination);
             if (!npc.WithinRange(hoverDestination, 300f))
-                npc.velocity += flyDirection * 0.974f;
+                npc.velocity += flyDirection * AresAcceleration;
             if (npc.velocity.AngleBetween(flyDirection) >= 1.4f)
                 npc.velocity *= 0.9f;
 
@@ -146,7 +152,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             int dashTime = 32;
             int spinCycleTime = spinTime + spinSlowdownAndRepositionTime + dashTime;
             int spinCycleTimer = AITimer % spinCycleTime;
-            bool isApollo = npc.type == ModContent.NPCType<Apollo>();
+            bool isApollo = npc.type == ExoMechNPCIDs.ApolloID;
             float startingDashSpeed = 10f;
             float maxDashSpeed = 150f;
             float standardSpinRadius = 325f;
