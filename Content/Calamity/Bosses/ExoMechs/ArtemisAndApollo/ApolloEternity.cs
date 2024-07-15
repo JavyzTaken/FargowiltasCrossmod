@@ -542,7 +542,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 modifiers.FinalDamage *= ExoTwinsStates.EnterSecondPhase_ApolloDamageProtectionFactor;
                 if (!CalamityLists.projectileDestroyExceptionList.Contains(projectile.type))
-                    projectile.Kill();
+                    projectile.active = false;
             }
         }
 
