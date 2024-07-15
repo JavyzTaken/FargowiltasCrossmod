@@ -5,6 +5,7 @@ using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using CalamityMod.World;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -115,7 +116,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                     {
                         CalamityWorld.DraedonMechToSummon = ExoMech.None;
 
-                        ModPacket packet = ModContent.GetInstance<CalamityMod.CalamityMod>().GetPacket();
+                        ModPacket packet = ModCompatibility.Calamity.Mod.GetPacket();
                         packet.Write((byte)CalamityModMessageType.ExoMechSelection);
                         packet.Write((int)CalamityWorld.DraedonMechToSummon);
                         packet.Send();

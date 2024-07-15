@@ -135,7 +135,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             if (Main.netMode != NetmodeID.Server)
             {
-                Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
+                Mod calamity = ModCompatibility.Calamity.Mod;
                 Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, Projectile.velocity, calamity.Find<ModGore>("AresGaussNuke1").Type, Projectile.scale);
                 Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, Projectile.velocity, calamity.Find<ModGore>("AresGaussNuke3").Type, Projectile.scale);
             }

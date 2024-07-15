@@ -3,6 +3,7 @@ using CalamityMod.NPCs;
 using CalamityMod.Particles;
 using CalamityMod.Sounds;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
@@ -691,7 +692,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
-                Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
+                Mod calamity = ModCompatibility.Calamity.Mod;
                 for (int i = 1; i <= 3; i++)
                     Gore.NewGore(NPC.GetSource_Death(), NPC.Center, NPC.velocity, calamity.Find<ModGore>($"AresArm_Gore{i}").Type, NPC.scale);
                 for (int i = 0; i < HandType.CustomGoreNames.Length; i++)

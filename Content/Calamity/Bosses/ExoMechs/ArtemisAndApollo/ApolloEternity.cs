@@ -444,7 +444,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             if (Main.netMode != NetmodeID.Server && npc.life <= 0 && ExoTwinsStateManager.SharedState.AIState == ExoTwinsAIState.DeathAnimation && ExoTwinsStateManager.SharedState.AITimer >= 10)
             {
                 IEntitySource deathSource = npc.GetSource_Death();
-                Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
+                Mod calamity = ModCompatibility.Calamity.Mod;
 
                 for (int i = 1; i <= 5; i++)
                     Gore.NewGore(deathSource, npc.position, npc.velocity + Main.rand.NextVector2Circular(24f, 24f), calamity.Find<ModGore>($"Apollo{i}").Type, npc.scale);

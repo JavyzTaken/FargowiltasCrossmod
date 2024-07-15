@@ -621,7 +621,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             if (NPC.life <= 0 && Main.netMode != NetmodeID.Server)
             {
-                Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
+                Mod calamity = ModCompatibility.Calamity.Mod;
 
                 // Left body shell.
                 Gore.NewGore(NPC.GetSource_Death(), NPC.Center, -Vector2.UnitX.RotatedByRandom(0.7f) * 5f, calamity.Find<ModGore>("AresBody1").Type, NPC.scale);

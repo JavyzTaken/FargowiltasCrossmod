@@ -2,6 +2,7 @@
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
+using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
@@ -143,7 +144,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
                 if (Main.netMode != NetmodeID.Server)
                 {
-                    Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
+                    Mod calamity = ModCompatibility.Calamity.Mod;
                     Gore.NewGore(NPC.GetSource_Death(), NPC.Center - Vector2.UnitY.RotatedBy(NPC.rotation) * 44f, Vector2.Zero, calamity.Find<ModGore>("AresBody3").Type, NPC.scale);
                 }
             }
