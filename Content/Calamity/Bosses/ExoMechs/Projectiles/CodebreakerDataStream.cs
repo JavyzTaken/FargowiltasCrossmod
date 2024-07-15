@@ -1,5 +1,6 @@
 ﻿using FargowiltasCrossmod.Assets;
 using FargowiltasCrossmod.Assets.Particles;
+using FargowiltasCrossmod.Assets.Particles.Metaballs;
 using FargowiltasCrossmod.Core;
 using Luminance.Assets;
 using Luminance.Common.Easings;
@@ -10,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -38,9 +40,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public static int AppearDelay => LumUtils.SecondsToFrames(0.6f);
 
         /// <summary>
-        /// The maximum length of this current is.
+        /// The maximum length of this beam.
         /// </summary>
         public static float MaxLaserbeamLength => 8008f;
+
+        /// <summary>
+        /// The sound played when this beam appears and persists throughout its lifetime.
+        /// </summary>
+        public static readonly SoundStyle DroneSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/GeneralExoMechs/CodebreakerDrone") with { Volume = 1.4f };
+
+        /// <summary>
+        /// The sound played when this beam appears.
+        /// </summary>
+        public static readonly SoundStyle PulseSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/GeneralExoMechs/CodebreakerPulse") with { Volume = 0.95f };
 
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
@@ -59,6 +71,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
+            if (Time == 1f)
+                SoundEngine.PlaySound(DroneSound, Projectile.Center);
+
             Projectile.Opacity = LumUtils.InverseLerp(0f, 12f, Time - AppearDelay) * LumUtils.InverseLerp(0f, 30f, Projectile.timeLeft).Squared();
             Projectile.scale = LumUtils.InverseLerp(0f, 4f, Time - AppearDelay) + LumUtils.InverseLerp(20f, 0f, Projectile.timeLeft);
 
@@ -68,9 +83,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
                 CreateSinusoidalParticles();
                 CreateSquareParticles();
 
-                if (Time % 25 == 24)
-                    ScreenShakeSystem.StartShake(3.4f, MathHelper.Pi / 3f, -Vector2.UnitY);
+                if (Time % 25 == 0)
+                    SoundEngine.PlaySound(PulseSound with { MaxInstances = 0, Volume = 1.3f }, Projectile.Center);
             }
+            ModContent.GetInstance<HeatDistortionMetaball>().CreateParticle(Projectile.Center, Main.rand.NextVector2Unit(12f, 12f), 80f);
 
             Time++;
         }

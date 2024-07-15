@@ -1,6 +1,5 @@
 ﻿using CalamityMod;
 using CalamityMod.NPCs.ExoMechs.Ares;
-using CalamityMod.Skies;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
@@ -135,8 +134,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             // NOTE -- There used to be gores spawned here as well, but that effect was removed on account of the fact that realistically the outer shell of the
             // nuke would be obliterated instantly upon its detonation.
-            ExoMechsSky.CreateLightningBolt(12);
-
             if (Main.netMode != NetmodeID.MultiplayerClient)
                 Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GaussNukeBoom>(), AresBodyEternity.NukeExplosionDamage, 0f, -1, ExplosionDiameter);
         }
