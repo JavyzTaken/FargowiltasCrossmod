@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         {
             if (!HasPlayedShootSound)
             {
-                SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound with { MaxInstances = 2 }, Projectile.Center);
+                SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound with { MaxInstances = 2, PitchVariance = 0.2f }, Projectile.Center);
                 HasPlayedShootSound = true;
             }
 

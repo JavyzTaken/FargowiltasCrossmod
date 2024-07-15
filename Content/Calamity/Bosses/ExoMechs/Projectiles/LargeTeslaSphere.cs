@@ -11,6 +11,7 @@ using Luminance.Assets;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
+using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -27,6 +28,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public bool SetActiveFalseInsteadOfKill => true;
 
         /// <summary>
+        /// The loop sound instance for this sphere.
+        /// </summary>
+        public LoopedSoundInstance LoopSoundInstance
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// How long this sphere has existed, in frames.
         /// </summary>
         public ref float Time => ref Projectile.ai[0];
@@ -35,6 +45,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// The effective amount of spin that has elapsed thus far. Used by the sphere shader.
         /// </summary>
         public ref float SphereSpinScrollOffset => ref Projectile.localAI[0];
+
+        /// <summary>
+        /// The sound played idly by this sphere.
+        /// </summary>
+        public static readonly SoundStyle LoopSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/TeslaSphereLoop");
 
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
@@ -75,6 +90,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
                 CreateConvergingCircleParticle();
 
             Projectile.scale = MathHelper.Lerp(1f, 1.06f, Utilities.Cos01(MathHelper.TwoPi * Time / 6.3f));
+
+            LoopSoundInstance ??= LoopedSoundManager.CreateNew(LoopSound, () => !Projectile.active);
+            LoopSoundInstance?.Update(Projectile.Center, sound =>
+            {
+                sound.Volume = LumUtils.InverseLerp(0f, 540f, Projectile.width) * 1.5f;
+            });
 
             SphereSpinScrollOffset += Projectile.width * 0.000023f;
 
