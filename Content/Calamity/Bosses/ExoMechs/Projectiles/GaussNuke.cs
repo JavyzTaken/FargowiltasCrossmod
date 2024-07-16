@@ -79,8 +79,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
             Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
-            if (!Projectile.WithinRange(target.Center, 100f))
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.SafeDirectionTo(target.Center) * 7f, FlyAccelerationInterpolant);
+            float flyAccelerationInterpolant = LumUtils.InverseLerp(100f, 210f, Projectile.Distance(target.Center));
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.SafeDirectionTo(target.Center) * 7f, flyAccelerationInterpolant * FlyAccelerationInterpolant);
         }
 
         public override bool PreDraw(ref Color lightColor)

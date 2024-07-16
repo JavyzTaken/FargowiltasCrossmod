@@ -37,6 +37,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// </summary>
         public static int Lifetime => LumUtils.SecondsToFrames(3f);
 
+        /// <summary>
+        /// How long it takes for the beam to appear on the Codebreaker.
+        /// </summary>
         public static int AppearDelay => LumUtils.SecondsToFrames(0.6f);
 
         /// <summary>
