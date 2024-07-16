@@ -54,7 +54,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             else
                 npc.rotation = npc.velocity.ToRotation();
             if (AITimer >= SpawnAnimation_LookAtPlayerDelay)
-                npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.18f);
+            {
+                float rotationMovementInterpolant = LumUtils.InverseLerp(0f, 20f, AITimer - SpawnAnimation_LookAtPlayerDelay);
+                npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), rotationMovementInterpolant * 0.18f);
+            }
 
             twinAttributes.Animation = ExoTwinAnimation.Idle;
             twinAttributes.Frame = twinAttributes.Animation.CalculateFrame(AITimer / 50f % 1f, twinAttributes.InPhase2);
