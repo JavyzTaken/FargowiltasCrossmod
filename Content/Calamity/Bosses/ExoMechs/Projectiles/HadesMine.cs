@@ -1,7 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using CalamityMod.Particles;
-using CalamityMod.Sounds;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
@@ -43,6 +42,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// </summary>
         public static float ExplosionDiameter => 250f;
 
+        /// <summary>
+        /// The sound played momentarily before this mine explodes.
+        /// </summary>
+        public static readonly SoundStyle ExplosionWarningSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/MineWarning") with { MaxInstances = 0 };
+
+        /// <summary>
+        /// The sound played when this mine explodes.
+        /// </summary>
+        public static readonly SoundStyle ExplodeSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/MineExplode", 3) with { MaxInstances = 0, Volume = 0.8f };
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 4;
@@ -71,6 +80,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             DelegateMethods.v3_1 = new Vector3(1f, 0.8f, 0.35f);
             Utils.PlotTileLine(Projectile.Top, Projectile.Bottom, Projectile.width, DelegateMethods.CastLight);
+
+            if (Time == Lifetime - 75)
+                SoundEngine.PlaySound(ExplosionWarningSound, Projectile.Center);
 
             Time++;
             if (Time >= Lifetime)
@@ -136,7 +148,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.Damage();
 
             ScreenShakeSystem.StartShakeAtPoint(Projectile.Center, 2.5f);
-            SoundEngine.PlaySound(CommonCalamitySounds.ExoPlasmaExplosionSound with { Volume = 0.6f, MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
+            SoundEngine.PlaySound(ExplodeSound, Projectile.Center);
 
             // Create the generic burst explosion.
             MagicBurstParticle burst = new(Projectile.Center, Vector2.Zero, Color.Orange, 13, 1.15f);
