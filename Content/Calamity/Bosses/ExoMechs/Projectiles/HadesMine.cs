@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The sound played momentarily before this mine explodes.
         /// </summary>
-        public static readonly SoundStyle ExplosionWarningSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/MineWarning") with { MaxInstances = 0 };
+        public static readonly SoundStyle ExplosionWarningSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/MineWarning") with { MaxInstances = 0, Volume = 0.54f };
 
         /// <summary>
         /// The sound played when this mine explodes.
