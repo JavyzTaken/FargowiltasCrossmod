@@ -732,5 +732,7 @@ Mods: {
 			FountainSulphur: Заставляет окружающий биом смениться на Сернистое Море при активации
 			FountainSunken: Заставляет окружающий биом смениться на Затерянное Море при активации
 		}
+
+		// EModeBalance.Laudanum: Halved strength of most positive debuff effects
 	}
 }

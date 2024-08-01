@@ -724,5 +724,7 @@ Mods: {
 			FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
 			FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
 		}
+
+		EModeBalance.Laudanum: Halved strength of most positive debuff effects
 	}
 }
