@@ -2,13 +2,18 @@ Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods.
 Officially maintained by Fargo's Mods developers.
 
 Currently supports:
-Calamity Mod
-Wrath of the Gods
+-Calamity Mod
+-Wrath of the Gods
+
+INCOMPATIBLE mods:
+-Infernum Mod
+-Calamity Overhaul
+-Basically anything else that changes Boss AI
 
 -Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
 -Adds new accessories in Fargo's accessory style that make use of Calamity items, mechanics, and the Rogue class
--Countless balance and progression changes to make the mods' content work well together, can be toggled with config
+-Countless balance and progression changes to make the mods' content work well together
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
 Planned potential future features:

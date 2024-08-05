@@ -79,6 +79,7 @@ Mods: {
 					Tooltip:
 						'''
 						Only relevant with the Infernum Mode mod enabled.
+						Keep in mind, INFERNUM IS NOT COMPATIBLE. Regardless of this config, expect issues to occur.
 						Makes the Infernum Mode difficulty fully disable Eternity Mode. 
 						With this disabled, Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
