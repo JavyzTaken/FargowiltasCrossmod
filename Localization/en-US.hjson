@@ -79,6 +79,7 @@ Mods: {
 					Tooltip:
 						'''
 						Only relevant with the Infernum Mode mod enabled.
+						Keep in mind, INFERNUM IS NOT COMPATIBLE. Regardless of this config, expect issues to occur.
 						Makes the Infernum Mode difficulty fully disable Eternity Mode. 
 						With this disabled, Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
@@ -133,7 +134,6 @@ Mods: {
 					15% increased rogue projectile velocity
 					15% increased rogue critical chance
 					Effects of Nanotech and Eclipse Mirror
-					Effects of Dragon Scales and Venerated Locket
 					'''
 			}
 
@@ -724,5 +724,7 @@ Mods: {
 			FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
 			FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
 		}
+
+		EModeBalance.Laudanum: Halved strength of most positive debuff effects
 	}
 }

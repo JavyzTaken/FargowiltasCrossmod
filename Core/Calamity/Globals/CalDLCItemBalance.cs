@@ -167,10 +167,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             Neutral
         }
         //Identical to Eternity nerfs from Souls Mod
-        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, int amount = 0)
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, int amount = 0, string mod = "FargowiltasSouls")
         {
-            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
-            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}", amount == 0 ? null : amount);
+            string prefix = Language.GetTextValue($"Mods.{mod}.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.{mod}.EModeBalance.{key}", amount == 0 ? null : amount);
             tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf}"));
         }
 
@@ -189,6 +189,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (item.type == ModContent.ItemType<NormalityRelocator>())
                 {
                     ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
+                }
+                if (item.type == ModContent.ItemType<Laudanum>())
+                {
+                    ItemBalance(tooltips, EModeChange.Nerf, "Laudanum");
                 }
             }
 
