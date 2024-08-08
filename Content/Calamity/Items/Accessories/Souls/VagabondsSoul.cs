@@ -60,13 +60,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
     public class NanotechEffect : VagabondEffect
     {
         public override int ToggleItemType => ModContent.ItemType<Nanotech>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EclipseMirrorEffect : VagabondEffect
     {
         public override int ToggleItemType => ModContent.ItemType<EclipseMirror>();
-        public override bool IgnoresMutantPresence => true;
     }
 }
