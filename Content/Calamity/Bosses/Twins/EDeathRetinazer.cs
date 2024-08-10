@@ -40,11 +40,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         public int dashCounter = 0;
         public override bool PreAI()
         {
+            NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
             if (!NPC.HasValidTarget)
             {
                 return true;
             }
-            NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
             if (DashAttack && NPC.GetGlobalNPC<Retinazer>().DeathrayState == 0)
             {
                 NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
