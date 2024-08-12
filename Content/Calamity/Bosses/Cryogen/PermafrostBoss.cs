@@ -751,8 +751,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                             float speed = Main.rand.NextFloat(15, 20) + (Timer / Attack1Time) * 4;
                             Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget.RotatedBy((offset * i) + Main.rand.NextFloat(-0.1f, 0.1f)) * speed, ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
                         }
-                        if (WorldSavingSystem.MasochistModeReal)
-                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget * Main.rand.NextFloat(18, 22), ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
+                        //if (WorldSavingSystem.MasochistModeReal)
+                            //Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget * Main.rand.NextFloat(18, 22), ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
                     }
                 }
                 if (Timer >= Attack1Time && Timer <= Attack1Time + DelayTime)

@@ -7,6 +7,7 @@ using CalamityMod.CalPlayer;
 using CalamityMod.Cooldowns;
 using CalamityMod.DataStructures;
 using CalamityMod.Events;
+using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
@@ -185,6 +186,99 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             if (soulsPlayer.MutantFang) //faster life reduction
             {
                 soulsPlayer.LifeReductionUpdateTimer++;
+            }
+
+            // Laudanum nerfs
+            if (calPlayer.laudanum && WorldSavingSystem.EternityMode)
+            {
+                if (Main.myPlayer == Player.whoAmI)
+                {
+                    for (int l = 0; l < Player.MaxBuffs; l++)
+                    {
+                        int hasBuff = Player.buffType[l];
+
+                        switch (hasBuff)
+                        {
+                            // Usual Calamity buffs are commented out; respective nerfs are not; to show them in comparison
+                            case BuffID.Obstructed:
+                                /*
+                                Player.headcovered = false;
+                                Player.statDefense += 50;
+                                Player.GetDamage<GenericDamageClass>() += 0.5f;
+                                Player.GetCritChance<GenericDamageClass>() += 25;
+                                */
+                                Player.statDefense -= 25;
+                                Player.GetDamage<GenericDamageClass>() -= 0.25f;
+                                Player.GetCritChance<GenericDamageClass>() -= 12.5f;
+                                break;
+                            case BuffID.Ichor:
+                                //Player.statDefense += 40;
+                                Player.statDefense -= 20;
+                                break;
+                            case BuffID.Chilled:
+                                /*
+                                Player.chilled = false;
+                                Player.moveSpeed *= 1.3f;
+                                */
+                                break;
+                            case BuffID.BrokenArmor:
+                                /*
+                                Player.brokenArmor = false;
+                                Player.statDefense += (int)(Player.statDefense * 0.25);
+                                */
+                                break;
+                            case BuffID.Weak:
+                                /*
+                                Player.GetDamage<MeleeDamageClass>() += 0.151f;
+                                Player.statDefense += 14;
+                                Player.moveSpeed += 0.3f;
+                                */
+                                Player.GetDamage<MeleeDamageClass>() -= 0.075f;
+                                Player.statDefense -= 7;
+                                Player.moveSpeed -= 0.15f;
+                                break;
+                            case BuffID.Slow:
+                                /*
+                                Player.slow = false;
+                                Player.moveSpeed *= 1.5f;
+                                */
+                                break;
+                            case BuffID.Confused:
+                                /*
+                                Player.confused = false;
+                                Player.statDefense += 30;
+                                Player.GetDamage<GenericDamageClass>() += 0.25f;
+                                Player.GetCritChance<GenericDamageClass>() += 10;
+                                */
+                                Player.statDefense -= 15;
+                                Player.GetDamage<GenericDamageClass>() -= 0.125f;
+                                Player.GetCritChance<GenericDamageClass>() -= 5;
+                                break;
+                            case BuffID.Blackout:
+                                /*
+                                Player.blackout = false;
+                                Player.statDefense += 30;
+                                Player.GetDamage<GenericDamageClass>() += 0.25f;
+                                Player.GetCritChance<GenericDamageClass>() += 10;
+                                */
+                                Player.statDefense -= 15;
+                                Player.GetDamage<GenericDamageClass>() -= 0.15f;
+                                Player.GetCritChance<GenericDamageClass>() -= 5;
+                                break;
+                            case BuffID.Darkness:
+                                /*
+                                Player.blind = false;
+                                Player.statDefense += 15;
+                                Player.GetDamage<GenericDamageClass>() += 0.1f;
+                                Player.GetCritChance<GenericDamageClass>() += 5;
+                                */
+                                Player.statDefense -= 7;
+                                Player.GetDamage<GenericDamageClass>() -= 0.05f;
+                                Player.GetCritChance<GenericDamageClass>() -= 2;
+                                break;
+                        }
+                    }
+                }
             }
             base.PostUpdateMiscEffects();
         }

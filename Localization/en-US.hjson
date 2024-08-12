@@ -79,6 +79,7 @@ Mods: {
 					Tooltip:
 						'''
 						Only relevant with the Infernum Mode mod enabled.
+						Keep in mind, INFERNUM IS NOT COMPATIBLE. Regardless of this config, expect issues to occur.
 						Makes the Infernum Mode difficulty fully disable Eternity Mode. 
 						With this disabled, Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
@@ -844,5 +845,7 @@ Mods: {
 			AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
 			ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
 		}
+
+		EModeBalance.Laudanum: Halved strength of most positive debuff effects
 	}
 }

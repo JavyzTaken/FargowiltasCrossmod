@@ -30,59 +30,56 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     public class NucleogenesisEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<Nucleogenesis>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ElementalQuiverEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<ElementalQuiver>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class QuiverofNihilityEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<QuiverofNihility>();
+        public override bool ExtraAttackEffect => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ElementalGauntletEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<ElementalGauntlet>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EtherealTalismanEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<EtherealTalisman>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public abstract class ColossusEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<ColossusHeader>();
+
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class AmalgamEffect : ColossusEffect
     {
         public override int ToggleItemType => ModContent.ItemType<TheAmalgam>();
+        public override bool MutantsPresenceAffects => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class AsgardianAegisEffect : ColossusEffect
     {
         public override int ToggleItemType => ModContent.ItemType<AsgardianAegis>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class RampartofDeitiesEffect : ColossusEffect
     {
         public override int ToggleItemType => ModContent.ItemType<RampartofDeities>();
-        public override bool IgnoresMutantPresence => true;
     }
 }
