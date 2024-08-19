@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 Vector2 forwardOffset = (MissileTailSnaps_SideOffsetDirection - MathHelper.PiOver2).ToRotationVector2() * BodySegmentCount * NPC.scale * 50f;
                 Vector2 hoverDestination = Target.Center + forwardOffset + sideOffset;
                 NPC.SmoothFlyNearWithSlowdownRadius(hoverDestination, 0.06f, 0.92f, 250f);
-                NPC.rotation = NPC.AngleFrom(Target.Center) + MathHelper.PiOver2;
+                NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
             }
             else
             {
@@ -63,11 +63,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 tail.SpringForce = snapDirection * 0.5f;
             }
 
-            if (AITimer >= MissileTailSnaps_ReorientTime + 150)
+            if (AITimer >= MissileTailSnaps_ReorientTime + 120)
                 SelectNewState();
 
             NPC.damage = 0;
         }
+
         /// <summary>
         /// An action that causes a given segment to release a significant quantity of missiles.
         /// </summary>
