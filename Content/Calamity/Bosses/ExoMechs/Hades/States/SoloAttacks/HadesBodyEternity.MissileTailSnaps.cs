@@ -1,5 +1,6 @@
 ﻿using CalamityMod.Sounds;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -42,14 +43,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
                 Vector2 sideOffset = MissileTailSnaps_SideOffsetDirection.ToRotationVector2() * 400f;
                 Vector2 forwardOffset = (MissileTailSnaps_SideOffsetDirection - MathHelper.PiOver2).ToRotationVector2() * BodySegmentCount * NPC.scale * 50f;
-                Vector2 forwardDestination = Target.Center + forwardOffset + sideOffset;
-                Vector2 backwardsDestination = Target.Center - forwardOffset + sideOffset;
-
-                Vector2 hoverDestination = NPC.Distance(forwardDestination) < NPC.Distance(backwardsDestination) ? forwardDestination : backwardsDestination;
+                Vector2 hoverDestination = Target.Center + forwardOffset + sideOffset;
                 NPC.SmoothFlyNearWithSlowdownRadius(hoverDestination, 0.06f, 0.92f, 250f);
-
-                if (!NPC.WithinRange(hoverDestination, 900f) && AITimer < MissileTailSnaps_ReorientTime * 0.7f)
-                    NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+                NPC.rotation = NPC.AngleFrom(Target.Center) + MathHelper.PiOver2;
             }
             else
             {
@@ -82,18 +78,43 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             return new(behaviorOverride =>
             {
                 NPC segment = behaviorOverride.NPC;
+                bool segmentIsMovingQuickly = !segment.oldPosition.WithinRange(segment.position, 54f);
+                bool segmentWithinDistanceRange = !segment.WithinRange(Target.Center, 270f) && segment.WithinRange(Target.Center, 960f);
 
-                if (!segment.oldPosition.WithinRange(segment.position, 72f) && !segment.WithinRange(Target.Center, 270f) && segment.WithinRange(Target.Center, 960f) && LumUtils.CountProjectiles(ModContent.ProjectileType<HadesMissile>()) < 30)
+                if (segmentIsMovingQuickly && segmentWithinDistanceRange)
                 {
-                    SoundEngine.PlaySound(CommonCalamitySounds.LargeWeaponFireSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew, Volume = 3f });
-                    ScreenShakeSystem.StartShake(6f);
-
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        for (int i = 0; i < 2; i++)
+                        for (int i = 0; i < 3; i++)
                         {
-                            Vector2 missileVelocity = segment.SafeDirectionTo(Target.Center).RotatedByRandom(MathHelper.Pi / 3f) * -29f;
-                            LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), behaviorOverride.TurretPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f);
+                            Vector2 arcSpawnPosition = segment.Center + Main.rand.NextVector2Circular(15f, 15f);
+                            Vector2 arcDestination = arcSpawnPosition + Main.rand.NextVector2Unit() * Main.rand.NextFloat(150f, 1100f);
+                            Vector2 arcLength = (arcDestination - arcSpawnPosition).RotatedByRandom(0.12f) * Main.rand.NextFloat(0.9f, 1f);
+                            LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(9, 18), 1f);
+                        }
+                    }
+
+                    if (Main.rand.NextBool(7))
+                        CustomExoMechsSky.CreateLightning((segment.Center - Main.screenPosition) / Main.ScreenSize.ToVector2());
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(3))
+                            LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), behaviorOverride.TurretPosition + Main.rand.NextVector2Circular(800f, 800f), Vector2.Zero, ModContent.ProjectileType<SmallHadesSegmentExplosion>(), 0, 0f);
+                    }
+
+                    if (LumUtils.CountProjectiles(ModContent.ProjectileType<HadesMissile>()) < 30)
+                    {
+                        SoundEngine.PlaySound(CommonCalamitySounds.LargeWeaponFireSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew, Volume = 3f });
+                        ScreenShakeSystem.StartShake(6f);
+
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = 0; i < 2; i++)
+                            {
+                                Vector2 missileVelocity = segment.SafeDirectionTo(Target.Center).RotatedByRandom(MathHelper.Pi / 5f) * -59f;
+                                LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), behaviorOverride.TurretPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f);
+                            }
                         }
                     }
                 }
