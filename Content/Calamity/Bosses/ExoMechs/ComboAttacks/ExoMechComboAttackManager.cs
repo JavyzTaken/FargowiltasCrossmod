@@ -222,7 +222,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                     if (behavior is HadesHeadEternity hades)
                     {
-                        hades.UpdateSegments();
+                        hades.ActionsToDeferAfterCombo();
                         hadesIsPresent = true;
                     }
                 }

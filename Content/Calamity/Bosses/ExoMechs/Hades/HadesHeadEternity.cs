@@ -145,6 +145,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         } = GenerateSegments();
 
         /// <summary>
+        /// The action Hades should perform either after his AI state execution is complete, or after combo attack puppeteering, assuming he's performing a combo attack.
+        /// </summary>
+        public Action ActionsToDeferAfterCombo
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The action that should be taken by body segments.
         /// </summary>
         /// 
@@ -300,9 +309,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             ExecuteCurrentState();
+            DeferForComboAttack(UpdateSegments);
 
             if (CurrentState != HadesAIState.PerformComboAttack)
-                UpdateSegments();
+                ActionsToDeferAfterCombo();
 
             NPC.Opacity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == HadesAIState.DeathAnimation;
@@ -327,6 +337,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.dontTakeDamage = false;
             NPC.ShowNameOnHover = true;
             NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
+            ActionsToDeferAfterCombo = null;
             BodyBehaviorAction = null;
             BodyRenderAction = null;
             SegmentReorientationStrength = 1f;
@@ -406,6 +417,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     break;
             }
         }
+
+        /// <summary>
+        /// Chains a new action to <see cref="ActionsToDeferAfterCombo"/>.
+        /// </summary>
+        /// <param name="action">The action to chain.</param>
+        public void DeferForComboAttack(Action action) => ActionsToDeferAfterCombo += action;
 
         /// <summary>
         /// Updates all of Hades' segments, keeping them behind each other in a sequential order.
