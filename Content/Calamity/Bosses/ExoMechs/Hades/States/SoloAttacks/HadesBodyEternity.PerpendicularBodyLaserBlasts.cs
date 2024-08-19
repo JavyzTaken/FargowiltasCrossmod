@@ -201,7 +201,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 // Disable natural reorientation of segments, to ensure that they stay in the same place before they fire.
                 behaviorOverride.ShouldReorientDirection = false;
 
-                OpenSegment().Invoke(behaviorOverride);
+                OpenSegment(enableContactDamage: true).Invoke(behaviorOverride);
             }));
         }
 
