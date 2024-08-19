@@ -517,7 +517,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         /// <param name="segmentOpenRate">The amount by which the segment open interpolant changes every frame.</param>
         /// <param name="smokeQuantityInterpolant">A multiplier for how much smoke should be released.</param>
-        public static BodySegmentAction OpenSegment(float segmentOpenRate = StandardSegmentOpenRate, float smokeQuantityInterpolant = 1f)
+        /// <param name="enableContactDamage">Whether contact damage should be activated or not.</param>
+        public static BodySegmentAction OpenSegment(float segmentOpenRate = StandardSegmentOpenRate, float smokeQuantityInterpolant = 1f, bool enableContactDamage = false)
         {
             return new(behaviorOverride =>
             {
@@ -536,8 +537,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     if (Main.rand.NextBool(smokeQuantityInterpolant))
                         ModContent.GetInstance<HeatDistortionMetaball>().CreateParticle(behaviorOverride.TurretPosition, Main.rand.NextVector2Circular(3f, 3f), 70f);
                 }
+
+                if (enableContactDamage)
+                    behaviorOverride.NPC.damage = behaviorOverride.NPC.defDamage;
             });
         }
+
+        /// <summary>
+        /// An action that closes a segment's vents. Meant to be used in conjunction with <see cref="BodyBehaviorAction"/>.
+        /// </summary>
+        /// <param name="segmentCloseRate">The amount by which the segment open interpolant changes every frame.</param>
+        public static BodySegmentAction CloseSegment(float segmentCloseRate = StandardSegmentCloseRate, bool enableContactDamage = false) => OpenSegment(-segmentCloseRate, 1f, enableContactDamage);
 
         /// <summary>
         /// Creates smoke particles perpendicular to a segment NPC.
@@ -576,12 +586,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 smoke.Spawn();
             }
         }
-
-        /// <summary>
-        /// An action that closes a segment's vents. Meant to be used in conjunction with <see cref="BodyBehaviorAction"/>.
-        /// </summary>
-        /// <param name="segmentCloseRate">The amount by which the segment open interpolant changes every frame.</param>
-        public static BodySegmentAction CloseSegment(float segmentCloseRate = StandardSegmentCloseRate) => OpenSegment(-segmentCloseRate);
 
         public override bool CheckDead()
         {

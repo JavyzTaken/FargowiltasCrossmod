@@ -215,8 +215,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void DoBehavior_MissileLunges_ReleaseMissile(HadesBodyEternity behaviorOverride)
         {
             NPC segment = behaviorOverride.NPC;
-            segment.damage = 0;
-
             bool properTimeForMissileRelease = AITimer >= MissileLunges_RedirectMaxTime && AITimer <= MissileLunges_RedirectMaxTime + MissileLunges_LungeDuration;
             bool canReleaseMissiles = properTimeForMissileRelease && segment.Center.Y <= Target.Center.Y + 1100f && behaviorOverride.RelativeIndex % 2 == 0;
             if (canReleaseMissiles && behaviorOverride.GenericCountdown <= 0 && AITimer % 24 == behaviorOverride.RelativeIndex % 24 && behaviorOverride.SegmentOpenInterpolant >= 0.8f)
