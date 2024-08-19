@@ -300,7 +300,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             ExecuteCurrentState();
-            UpdateSegments();
+
+            if (CurrentState != HadesAIState.PerformComboAttack)
+                UpdateSegments();
 
             NPC.Opacity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == HadesAIState.DeathAnimation;

@@ -140,6 +140,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (Main.netMode != NetmodeID.MultiplayerClient && AITimer % HadesMineReleaseRate == HadesMineReleaseRate - 1)
                 Utilities.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, npc.SafeDirectionTo(Target.Center) * Main.rand.NextFloat(50f, 140f), ModContent.ProjectileType<HadesMine>(), HadesHeadEternity.MineDamage, 0f);
 
+            hades.SegmentReorientationStrength = 0f;
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment());
         }
     }

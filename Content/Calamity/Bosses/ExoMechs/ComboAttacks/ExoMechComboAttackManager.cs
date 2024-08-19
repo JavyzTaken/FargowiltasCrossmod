@@ -220,8 +220,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     if (CurrentState?.AttackAction?.Invoke(npc) ?? true)
                         SelectNewComboAttackState();
 
-                    if (behavior is HadesHeadEternity)
+                    if (behavior is HadesHeadEternity hades)
+                    {
+                        hades.UpdateSegments();
                         hadesIsPresent = true;
+                    }
                 }
             }
 
