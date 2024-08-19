@@ -119,6 +119,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     SelectNewState();
             }
 
+            SegmentReorientationStrength = LumUtils.InverseLerp(3f, 9.5f, NPC.velocity.Length()) * 0.1f;
+
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
         }
 

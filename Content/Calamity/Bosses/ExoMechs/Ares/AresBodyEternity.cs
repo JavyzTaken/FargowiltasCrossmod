@@ -516,7 +516,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 StateQueue.Enqueue(state);
         }
 
-        public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, MathF.Cbrt(1f - NPC.Opacity)) * NPC.Opacity;
+        public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, LumUtils.InverseLerp(0.4f, 0f, NPC.Opacity)) * NPC.Opacity;
 
         public override void FindFrame(int frameHeight)
         {

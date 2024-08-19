@@ -8,11 +8,13 @@ using Luminance.Assets;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
+using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,6 +25,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
     public class BlazingExoLaserbeam : ModProjectile, IPixelatedPrimitiveRenderer, IProjOwnedByBoss<AresBody>, IExoMechProjectile
     {
         public PixelationPrimitiveLayer LayerToRenderTo => PixelationPrimitiveLayer.AfterProjectiles;
+
+        /// <summary>
+        /// The local, looped instance of the <see cref="LaserLoopSound"/> for this laserbam.
+        /// </summary>
+        public LoopedSoundInstance LaserLoopSoundInstance
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The <see cref="Owner"/> index in the NPC array.
@@ -53,6 +64,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// The maximum length of this laserbeam.
         /// </summary>
         public static float MaxLaserbeamLength => 4000f;
+
+        /// <summary>
+        /// The sound that this laserbeam loops.
+        /// </summary>
+        public static readonly SoundStyle LaserLoopSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/ApolloLaserLoop");
 
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
@@ -94,6 +110,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             LaserbeamLength = MathHelper.Clamp(LaserbeamLength + 167f, 0f, MaxLaserbeamLength);
 
             CreateSinusoidalParticles();
+            UpdateSoundLoop();
 
             Time++;
         }
@@ -112,6 +129,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
                 BloomPixelParticle energy = new(energySpawnPosition, energyVelocity, Color.White, BloomColorFunction(0.5f) * 0.7f, 13, Vector2.One * Main.rand.NextFloat(1.5f, 2.5f));
                 energy.Spawn();
             }
+        }
+
+        /// <summary>
+        /// Updates the looping laser sound of this laser.
+        /// </summary>
+        public void UpdateSoundLoop()
+        {
+            Vector2 soundPosition = Utils.ClosestPointOnLine(Main.LocalPlayer.Center, Projectile.Center, Projectile.Center + Projectile.velocity * LaserbeamLength);
+            LaserLoopSoundInstance ??= LoopedSoundManager.CreateNew(LaserLoopSound, () => !Projectile.active);
+            LaserLoopSoundInstance?.Update(soundPosition);
         }
 
         public float LaserWidthFunction(float completionRatio)

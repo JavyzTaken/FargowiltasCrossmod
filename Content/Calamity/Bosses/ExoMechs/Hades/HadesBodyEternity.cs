@@ -174,25 +174,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 return false;
             }
 
-            NPC aheadSegment = Main.npc[AheadSegmentIndex];
-            Vector2 directionToNextSegment = aheadSegment.Center - NPC.Center;
-            if (aheadSegment.rotation != NPC.rotation && ShouldReorientDirection)
+            if (NPC.realLife < 0 || NPC.realLife >= Main.maxNPCs || !Main.npc[NPC.realLife].TryGetDLCBehavior(out HadesHeadEternity head))
             {
-                float angleOffset = MathHelper.WrapAngle(aheadSegment.rotation - NPC.rotation) * 0.04f;
-                if (Main.npc[CalamityGlobalNPC.draedonExoMechWorm].velocity.Length() <= 5f)
-                    angleOffset = 0f;
-
-                directionToNextSegment = directionToNextSegment.RotatedBy(angleOffset);
+                NPC.active = false;
+                return false;
             }
+
+            NPC aheadSegment = Main.npc[AheadSegmentIndex];
+            SegmentData segmentData = head.Segments[RelativeIndex];
+            Vector2 aheadPosition = aheadSegment.Center;
 
             // Hack to ensure that segments retain Hades' secondary AI state, and thusly use the correct map icon.
             NPC.Calamity().newAI[1] = aheadSegment.Calamity().newAI[1];
             NPC.defDamage = HadesHeadEternity.DefaultSegmentDamage;
-            NPC.damage = NPC.defDamage;
+            NPC.damage = 0;
             NPC.Opacity = aheadSegment.Opacity;
-            NPC.Center = aheadSegment.Center - directionToNextSegment.SafeNormalize(Vector2.Zero) * NPC.width * NPC.scale * 0.97f;
-            NPC.rotation = directionToNextSegment.ToRotation() + MathHelper.PiOver2;
-            NPC.spriteDirection = directionToNextSegment.X.NonZeroSign();
+            NPC.Center = segmentData.Position;
+            NPC.rotation = NPC.AngleTo(aheadPosition) + MathHelper.PiOver2;
+            NPC.spriteDirection = segmentData.Position.X.NonZeroSign();
             NPC.life = aheadSegment.lifeMax;
             NPC.dontTakeDamage = aheadSegment.dontTakeDamage;
             NPC.velocity *= 0.84f;

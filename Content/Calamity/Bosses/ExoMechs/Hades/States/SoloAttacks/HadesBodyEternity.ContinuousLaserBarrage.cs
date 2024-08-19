@@ -62,6 +62,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             if (AITimer == 1)
                 SoundEngine.PlaySound(LaserChargeUpSound);
 
+            SegmentReorientationStrength = 0.125f;
+
             DoBehavior_ContinuousLaserBarrage_PerformTelegraphing();
             DoBehavior_ContinuousLaserBarrage_FlyAroundTarget();
             DoBehavior_ContinuousLaserBarrage_FireProjectiles();

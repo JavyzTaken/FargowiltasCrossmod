@@ -65,11 +65,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         public static readonly SoundStyle GroundImpactSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/GroundImpact") with { Volume = 1.4f };
 
-        /// AI update loop method for the MineBarrages attack.
+        /// <summary>
+        /// AI update loop method for the MissileLunges attack.
         /// </summary>
         public void DoBehavior_MissileLunges()
         {
             BodyBehaviorAction = new(AllSegments(), DoBehavior_MissileLunges_ReleaseMissile);
+
+            SegmentReorientationStrength = 0.4f;
 
             if (AITimer == 1)
             {
@@ -106,6 +109,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
                 float height = MathHelper.Lerp(3900f, -600f, MathF.Pow(LumUtils.Convert01To010(animationCompletion) + 0.001f, 0.7f));
                 Vector2 idealPosition = Target.Center + new Vector2(MathHelper.Lerp(1700f, -1700f, animationCompletion) * MissileLunges_LungeDirection, height);
+                idealPosition.X += MathF.Cos(MathHelper.TwoPi * AITimer / 45f) * LumUtils.InverseLerp(50f, 500f, height) * 350f;
+
                 Vector2 oldPosition = NPC.Center;
                 NPC.Center = Vector2.Lerp(NPC.Center, idealPosition, 0.45f);
                 NPC.velocity *= 0.5f;

@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             MineBarrages,
             ExoEnergyBlast,
             MissileLunges,
+            MissileTailSnaps,
             Inactive,
             Leave,
 
@@ -126,6 +127,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// The strength of segment reorientation across Hades.
+        /// </summary>
+        public float SegmentReorientationStrength
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The set of segments Hades has.
+        /// </summary>
+        public SegmentData[] Segments
+        {
+            get;
+            set;
+        } = GenerateSegments();
+
+        /// <summary>
         /// The action that should be taken by body segments.
         /// </summary>
         /// 
@@ -213,6 +232,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
         public override int NPCOverrideID => ExoMechNPCIDs.HadesHeadID;
 
+        private static SegmentData[] GenerateSegments()
+        {
+            SegmentData[] segments = new SegmentData[BodySegmentCount];
+            for (int i = 0; i < segments.Length; i++)
+                segments[i] = new();
+
+            return segments;
+        }
+
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             bitWriter.WriteBit(HasCreatedSegments);
@@ -220,6 +248,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             bitWriter.WriteBit(IsPrimaryMech);
 
             binaryWriter.Write(SegmentOpenInterpolant);
+            binaryWriter.Write(SegmentReorientationStrength);
             binaryWriter.Write(AITimer);
             binaryWriter.Write((int)CurrentState);
         }
@@ -231,6 +260,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             IsPrimaryMech = bitReader.ReadBit();
 
             SegmentOpenInterpolant = binaryReader.ReadSingle();
+            SegmentReorientationStrength = binaryReader.ReadSingle();
             AITimer = binaryReader.ReadInt32();
             CurrentState = (HadesAIState)binaryReader.ReadInt32();
         }
@@ -270,6 +300,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             ExecuteCurrentState();
+            UpdateSegments();
 
             NPC.Opacity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == HadesAIState.DeathAnimation;
@@ -296,6 +327,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
             BodyBehaviorAction = null;
             BodyRenderAction = null;
+            SegmentReorientationStrength = 1f;
             NPC.As<ThanatosHead>().SecondaryAIState = (int)ThanatosHead.SecondaryPhase.Nothing;
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant - StandardSegmentOpenRate);
             JawRotation = JawRotation.AngleLerp(0f, 0.01f).AngleTowards(0f, 0.02f);
@@ -352,6 +384,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 case HadesAIState.MissileLunges:
                     DoBehavior_MissileLunges();
                     break;
+                case HadesAIState.MissileTailSnaps:
+                    DoBehavior_MissileTailSnaps();
+                    break;
                 case HadesAIState.ExoEnergyBlast:
                     DoBehavior_ExoEnergyBlast();
                     break;
@@ -371,6 +406,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// Updates all of Hades' segments, keeping them behind each other in a sequential order.
+        /// </summary>
+        public void UpdateSegments()
+        {
+            float offsetPerSegment = NPC.scale * 76f;
+
+            // Update segments.
+            Segments[0].Rotation = NPC.rotation - MathHelper.PiOver2;
+            Segments[0].Position = NPC.Center - Segments[0].Rotation.ToRotationVector2() * offsetPerSegment + NPC.velocity;
+            for (int i = 1; i < Segments.Length; i++)
+            {
+                SegmentData segment = Segments[i];
+                SegmentData aheadSegment = Segments[i - 1];
+                Vector2 directionalBearing = Vector2.Zero;
+
+                if (i >= 2)
+                {
+                    SegmentData aheadSegment2 = Segments[i - 2];
+                    directionalBearing = (aheadSegment.Position - aheadSegment2.Position) * SegmentReorientationStrength * 0.055f;
+                }
+                Vector2 directionToAheadSegment = (segment.Position - aheadSegment.Position).SafeNormalize(Vector2.Zero);
+                directionalBearing += directionToAheadSegment.RotatedBy(MathHelper.PiOver2) * segment.SpringOffset;
+
+                segment.Position = aheadSegment.Position + (directionToAheadSegment + directionalBearing).SafeNormalize(Vector2.Zero) * offsetPerSegment;
+                segment.Rotation = segment.Position.AngleTo(aheadSegment.Position);
+            }
+
+            // Apply spring effects.
+            for (int i = 0; i < Segments.Length; i++)
+            {
+                SegmentData segment = Segments[i];
+
+                segment.SpringOffset += segment.SpringForce;
+                segment.SpringOffset *= 0.88f;
+                segment.SpringForce *= 0.7f;
+
+                if (i >= 1)
+                    Segments[i - 1].SpringOffset = MathHelper.Lerp(Segments[i - 1].SpringOffset, segment.SpringOffset, 0.99f);
+            }
+        }
+
+        /// <summary>
         /// Selects a new state for Hades.
         /// </summary>
         public void SelectNewState()
@@ -378,7 +455,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             HadesAIState oldState = CurrentState;
             do
             {
-                CurrentState = Main.rand.NextFromList(HadesAIState.ContinuousLaserBarrage, HadesAIState.MineBarrages, HadesAIState.PerpendicularBodyLaserBlasts, HadesAIState.MissileLunges);
+                CurrentState = Main.rand.NextFromList(HadesAIState.ContinuousLaserBarrage, HadesAIState.MineBarrages, HadesAIState.PerpendicularBodyLaserBlasts, HadesAIState.MissileLunges, HadesAIState.MissileTailSnaps);
 
                 if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                     CurrentState = HadesAIState.ExoEnergyBlast;
@@ -403,6 +480,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <param name="n">The cycle repeat value.</param>
         /// <param name="cyclicOffset">The offset in the cycle. Defaults to 0.</param>
         public static BodySegmentCondition EveryNthSegment(int n, int cyclicOffset = 0) => new((segment, segmentIndex) => segmentIndex % n == cyclicOffset);
+
+        /// <summary>
+        /// Generates a <see cref="BodySegmentCondition"/> that corresponds only to the tail segment. Meant to be used in conjunction with <see cref="BodyBehaviorAction"/>.
+        /// </summary>
+        /// <param name="n">The cycle repeat value.</param>
+        /// <param name="cyclicOffset">The offset in the cycle. Defaults to 0.</param>
+        public static BodySegmentCondition OnlyTailSegment() => new((segment, segmentIndex) => segmentIndex == BodySegmentCount - 1);
 
         /// <summary>
         /// Generates a <see cref="BodySegmentCondition"/> that corresponds to every single segment. Meant to be used in conjunction with <see cref="BodyBehaviorAction"/>.

@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How many mine barrages Hades should do during his MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_BarrageCount => 2;
+        public static int MineBarrages_BarrageCount => 1;
 
         /// <summary>
         /// How long Hades spends redirecting before releasing mines during the MineBarrages attack.
@@ -42,6 +42,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         public void DoBehavior_MineBarrages()
         {
+            SegmentReorientationStrength = 0.1f;
+
             int wrappedTimer = AITimer % MineBarrages_AttackCycleTime;
             if (wrappedTimer < MineBarrages_RedirectTime)
             {
