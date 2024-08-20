@@ -136,15 +136,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
-        /// The set of segments Hades has.
-        /// </summary>
-        public SegmentData[] Segments
-        {
-            get;
-            set;
-        } = GenerateSegments();
-
-        /// <summary>
         /// The action Hades should perform either after his AI state execution is complete, or after combo attack puppeteering, assuming he's performing a combo attack.
         /// </summary>
         public Action ActionsToDeferAfterCombo
@@ -241,15 +232,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
         public override int NPCOverrideID => ExoMechNPCIDs.HadesHeadID;
 
-        private static SegmentData[] GenerateSegments()
-        {
-            SegmentData[] segments = new SegmentData[BodySegmentCount];
-            for (int i = 0; i < segments.Length; i++)
-                segments[i] = new();
-
-            return segments;
-        }
-
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             bitWriter.WriteBit(HasCreatedSegments);
@@ -309,10 +291,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             ExecuteCurrentState();
-            DeferForComboAttack(UpdateSegments);
 
             if (CurrentState != HadesAIState.PerformComboAttack)
-                ActionsToDeferAfterCombo();
+                ActionsToDeferAfterCombo?.Invoke();
 
             NPC.Opacity = 1f;
             NPC.Calamity().ShouldCloseHPBar = Inactive || CurrentState == HadesAIState.DeathAnimation;
@@ -423,48 +404,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// </summary>
         /// <param name="action">The action to chain.</param>
         public void DeferForComboAttack(Action action) => ActionsToDeferAfterCombo += action;
-
-        /// <summary>
-        /// Updates all of Hades' segments, keeping them behind each other in a sequential order.
-        /// </summary>
-        public void UpdateSegments()
-        {
-            float offsetPerSegment = NPC.scale * 76f;
-
-            // Update segments.
-            Segments[0].Rotation = NPC.rotation - MathHelper.PiOver2;
-            Segments[0].Position = NPC.Center - Segments[0].Rotation.ToRotationVector2() * offsetPerSegment + NPC.velocity;
-            for (int i = 1; i < Segments.Length; i++)
-            {
-                SegmentData segment = Segments[i];
-                SegmentData aheadSegment = Segments[i - 1];
-                Vector2 directionalBearing = Vector2.Zero;
-
-                if (i >= 2)
-                {
-                    SegmentData aheadSegment2 = Segments[i - 2];
-                    directionalBearing = (aheadSegment.Position - aheadSegment2.Position) * SegmentReorientationStrength * 0.055f;
-                }
-                Vector2 directionToAheadSegment = (segment.Position - aheadSegment.Position).SafeNormalize(Vector2.Zero);
-                directionalBearing += directionToAheadSegment.RotatedBy(MathHelper.PiOver2) * segment.SpringOffset;
-
-                segment.Position = aheadSegment.Position + (directionToAheadSegment + directionalBearing).SafeNormalize(Vector2.Zero) * offsetPerSegment;
-                segment.Rotation = segment.Position.AngleTo(aheadSegment.Position);
-            }
-
-            // Apply spring effects.
-            for (int i = 0; i < Segments.Length; i++)
-            {
-                SegmentData segment = Segments[i];
-
-                segment.SpringOffset += segment.SpringForce;
-                segment.SpringOffset *= 0.88f;
-                segment.SpringForce *= 0.7f;
-
-                if (i >= 1)
-                    Segments[i - 1].SpringOffset = MathHelper.Lerp(Segments[i - 1].SpringOffset, segment.SpringOffset, 0.99f);
-            }
-        }
 
         /// <summary>
         /// Selects a new state for Hades.

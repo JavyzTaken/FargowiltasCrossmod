@@ -55,12 +55,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             if (AITimer == MissileTailSnaps_ReorientTime)
             {
-                SegmentData tail = Segments[^1];
-                Vector2 directionToPlayer = tail.Position.SafeDirectionTo(Target.Center);
-                Vector2 tailDirection = tail.Rotation.ToRotationVector2();
-                float snapDirection = Vector2.Dot(tailDirection, directionToPlayer).NonZeroSign();
-
-                tail.SpringForce = snapDirection * 0.5f;
+                BodyBehaviorAction = new(OnlyTailSegment(), new(tail =>
+                {
+                    Vector2 directionToPlayer = tail.NPC.Center.SafeDirectionTo(Target.Center);
+                    Vector2 tailDirection = (tail.NPC.rotation - MathHelper.PiOver2).ToRotationVector2();
+                    float snapDirection = Vector2.Dot(tailDirection, directionToPlayer).NonZeroSign();
+                    tail.SpringForce = snapDirection * 0.5f;
+                }));
             }
 
             if (AITimer >= MissileTailSnaps_ReorientTime + 120)

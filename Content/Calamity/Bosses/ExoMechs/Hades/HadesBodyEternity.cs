@@ -35,6 +35,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public ref float ExistenceTimer => ref NPC.Calamity().newAI[2];
 
         /// <summary>
+        /// The spring force to apply to this segment this frame.
+        /// </summary>
+        public float SpringForce
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The dampening spring offset of this segment.
+        /// </summary>
+        public float SpringOffset
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// How open this body segment is.
         /// </summary>
         public float SegmentOpenInterpolant
@@ -181,17 +199,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             NPC aheadSegment = Main.npc[AheadSegmentIndex];
-            SegmentData segmentData = head.Segments[RelativeIndex];
-            Vector2 aheadPosition = aheadSegment.Center;
+            DecidePositionAndRotation(aheadSegment, head.SegmentReorientationStrength);
 
             // Hack to ensure that segments retain Hades' secondary AI state, and thusly use the correct map icon.
             NPC.Calamity().newAI[1] = aheadSegment.Calamity().newAI[1];
             NPC.defDamage = HadesHeadEternity.DefaultSegmentDamage;
             NPC.damage = 0;
             NPC.Opacity = aheadSegment.Opacity;
-            NPC.Center = segmentData.Position;
-            NPC.rotation = NPC.AngleTo(aheadPosition) + MathHelper.PiOver2;
-            NPC.spriteDirection = segmentData.Position.X.NonZeroSign();
             NPC.life = aheadSegment.lifeMax;
             NPC.dontTakeDamage = aheadSegment.dontTakeDamage;
             NPC.velocity *= 0.84f;
@@ -205,6 +219,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 PlatingOffsetVelocity *= 0.3f;
             }
 
+            // Apply spring effects.
+            SpringOffset += SpringForce;
+            SpringOffset *= 0.88f;
+            SpringForce *= 0.7f;
+            if (RelativeIndex >= 1 && aheadSegment.TryGetDLCBehavior(out HadesBodyEternity aheadSegmentBehavior))
+                aheadSegmentBehavior.SpringOffset = MathHelper.Lerp(aheadSegmentBehavior.SpringOffset, SpringOffset, 0.99f);
+
             NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
 
             ListenToHeadInstructions();
@@ -213,6 +234,40 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             if (GenericCountdown > 0f)
                 GenericCountdown--;
             return false;
+        }
+
+        /// <summary>
+        /// Decides the position and rotation for this segment.
+        /// </summary>
+        /// <param name="aheadSegment">The ahead segment relative to this one.</param>
+        /// <param name="segmentReorientationStrength">The segment reorientation strength. This dictates how rigidly segments reorient into the same direction as the head.</param>
+        public void DecidePositionAndRotation(NPC aheadSegment, float segmentReorientationStrength)
+        {
+            float offsetPerSegment = NPC.scale * 76f;
+
+            if (RelativeIndex == 0)
+            {
+                NPC.rotation = aheadSegment.rotation;
+                NPC.Center = aheadSegment.Center - (NPC.rotation - MathHelper.PiOver2).ToRotationVector2() * offsetPerSegment + aheadSegment.velocity;
+            }
+
+            if (RelativeIndex >= 1)
+            {
+                Vector2 directionalBearing = Vector2.Zero;
+
+                // Apply secondary snaking effects.
+                if (RelativeIndex >= 2 && aheadSegment.TryGetDLCBehavior(out HadesBodyEternity aheadSegmentBehavior))
+                {
+                    NPC aheadSegment2 = Main.npc[aheadSegmentBehavior.AheadSegmentIndex];
+                    directionalBearing = (aheadSegment.Center - aheadSegment2.Center) * segmentReorientationStrength * 0.055f;
+                }
+
+                Vector2 directionToAheadSegment = (NPC.Center - aheadSegment.Center).SafeNormalize(Vector2.Zero);
+                directionalBearing += directionToAheadSegment.RotatedBy(MathHelper.PiOver2) * SpringOffset;
+
+                NPC.Center = aheadSegment.Center + (directionToAheadSegment + directionalBearing).SafeNormalize(Vector2.Zero) * offsetPerSegment;
+                NPC.rotation = NPC.AngleTo(aheadSegment.Center) + MathHelper.PiOver2;
+            }
         }
 
         public override void BossHeadSlot(ref int index)

@@ -16,6 +16,12 @@ namespace FargowiltasCrossmod.Assets.Particles.Metaballs
             bool shouldBeActive = ModContent.GetInstance<HeatDistortionMetaball>().ActiveParticleCount >= 1;
             if (!distortionShader.IsActive && shouldBeActive)
                 ApplyDistortionParameters(distortionShader);
+            else
+            {
+                distortionShader.Deactivate();
+                while (distortionShader.Opacity > 0f)
+                    distortionShader.Update();
+            }
         }
 
         private static void ApplyDistortionParameters(ManagedScreenFilter distortionShader)
