@@ -194,6 +194,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     case NPCID.TheDestroyer:
                         npc.lifeMax = (int)(npc.lifeMax * 0.925f);
                         break;
+                    case NPCID.Probe:
+                        if (CalDLCWorldSavingSystem.E_EternityRev)
+                        {
+                            npc.damage = 50;
+                        }
+                        break;
                     case NPCID.Plantera:
                         npc.lifeMax = (int)(npc.lifeMax * 0.375f);
                         break;
