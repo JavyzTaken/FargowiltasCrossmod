@@ -94,13 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public override bool Perform(NPC npc)
         {
             if (npc.type == ExoMechNPCIDs.HadesHeadID)
-            {
                 Perform_Hades(npc);
-
-                // This is executed by Hades since unless the Exo Twins there is only one instance of him, and as such he can be counted on for
-                // storing and executing attack data.
-                HandleAttackState(npc);
-            }
             if (npc.type == ExoMechNPCIDs.ArtemisID || npc.type == ExoMechNPCIDs.ApolloID)
                 Perform_ExoTwin(npc);
 
@@ -235,14 +229,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
 
             npc.Opacity = LumUtils.InverseLerp(0f, lockOnTime * 0.75f, wrappedAITimer);
-        }
-
-        /// <summary>
-        /// Handles general purpose state variables for the ExothermalLaserDashes attack.
-        /// </summary>
-        /// <param name="hades">Hades' NPC instance.</param>
-        public static void HandleAttackState(NPC hades)
-        {
         }
 
         /// <summary>
