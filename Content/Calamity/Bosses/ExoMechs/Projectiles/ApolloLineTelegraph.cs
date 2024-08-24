@@ -54,7 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         {
             Time++;
 
-            Projectile.Opacity = Utilities.InverseLerpBump(0f, 0.32f, 0.75f, 1f, Time / Lifetime);
+            Projectile.Opacity = Utilities.InverseLerpBump(0f, 0.32f, 0.75f, 1f, Time / Lifetime) * 0.65f;
 
             if (Time >= Lifetime)
                 Projectile.Kill();
@@ -80,5 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             PrimitiveSettings settings = new(TelegraphWidthFunction, TelegraphColorFunction, Pixelate: true, Shader: telegraphShader);
             PrimitiveRenderer.RenderTrail(telegraphPoints, settings, 28);
         }
+
+        public override bool ShouldUpdatePosition() => false;
     }
 }
