@@ -78,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 Perform_Hades(npc);
 
-                // This is executed by Hades since unless the Exo Twins there is only one instance of him, and as such he can be counted on for
+                // This is executed by Hades since unlike the Exo Twins there is only one instance of him, and as such he can be counted on for
                 // storing and executing attack data.
                 // Furthermore, parts of the state rely on him specifically, particularly the part that specifies what value the spin angle should begin at, which is related to Hades' position relative to the target.
                 HandleAttackState(npc);
@@ -123,11 +123,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             NPC hades = Main.npc[CalamityGlobalNPC.draedonExoMechWorm];
 
             float hoverOffsetAngle = ExoTwinSpinAngle;
+            float flyAwayInterpolant = LumUtils.InverseLerp(RedirectTime + BlazingExoLaserbeam.Lifetime - 90f, RedirectTime + BlazingExoLaserbeam.Lifetime, AITimer);
             float hoverFlySpeedInterpolant = LumUtils.InverseLerp(0f, RedirectTime * 0.9f, AITimer);
             if (npc.type == ExoMechNPCIDs.ApolloID)
                 hoverOffsetAngle += MathHelper.Pi;
 
-            Vector2 hoverDestination = hades.Center + hoverOffsetAngle.ToRotationVector2() * ExoTwinSpinRadius;
+            Vector2 hoverDestination = hades.Center + hoverOffsetAngle.ToRotationVector2() * (ExoTwinSpinRadius + flyAwayInterpolant * 400f);
             if (hoverDestination.Y < 300f)
                 hoverDestination.Y = 300f;
 

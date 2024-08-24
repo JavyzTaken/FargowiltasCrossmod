@@ -203,6 +203,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, laserWidth, ref _);
         }
 
+        public override bool? CanDamage() => Time <= Lifetime - 15f;
+
         public override bool ShouldUpdatePosition() => false;
     }
 }
