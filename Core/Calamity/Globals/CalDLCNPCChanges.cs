@@ -1546,6 +1546,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 npc.StrikeInstantKill();
             }
+            // fix calamity contact damage
+            if (npc.type == NPCID.Probe)
+            {
+                npc.damage = npc.defDamage;
+                Main.NewText(npc.damage);
+            }
             return base.PreAI(npc);
         }
         public override void PostAI(NPC npc)

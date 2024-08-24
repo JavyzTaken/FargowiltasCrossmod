@@ -95,6 +95,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasDeath = CalamityWorld.death;
             bool wasBossRush = BossRushEvent.BossRushActive;
             bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+
+            int defDamage = npc.defDamage; // do not fuck with defDamage please
+
             if (shouldDisable)
             {
                 CalamityWorld.revenge = false;
@@ -107,6 +110,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 CalamityWorld.revenge = wasRevenge;
                 CalamityWorld.death = wasDeath;
                 BossRushEvent.BossRushActive = wasBossRush;
+                npc.defDamage = defDamage; // do not fuck with defDamage please
             }
             return result;
         }
