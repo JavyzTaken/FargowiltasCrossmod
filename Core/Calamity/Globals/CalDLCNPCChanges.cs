@@ -194,12 +194,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     case NPCID.TheDestroyer:
                         npc.lifeMax = (int)(npc.lifeMax * 0.925f);
                         break;
-                    case NPCID.Probe:
-                        if (CalDLCWorldSavingSystem.E_EternityRev)
-                        {
-                            npc.damage = 50;
-                        }
-                        break;
                     case NPCID.Plantera:
                         npc.lifeMax = (int)(npc.lifeMax * 0.375f);
                         break;
@@ -1545,12 +1539,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (npc.type == ModContent.NPCType<PlanterasFreeTentacle>())
             {
                 npc.StrikeInstantKill();
-            }
-            // fix calamity contact damage
-            if (npc.type == NPCID.Probe)
-            {
-                npc.damage = npc.defDamage;
-                Main.NewText(npc.damage);
             }
             return base.PreAI(npc);
         }
