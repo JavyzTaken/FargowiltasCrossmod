@@ -121,7 +121,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     apolloAttributes.Animation = ExoTwinAnimation.ChargingUp;
             }
 
-            if (doneHovering)
+            if (doneHovering && !acceleratingAfterSpin)
                 npc.damage = npc.defDamage;
 
             if (localAITimer == hoverTime)
