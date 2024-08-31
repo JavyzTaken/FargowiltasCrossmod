@@ -194,6 +194,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             if (NPC.realLife < 0 || NPC.realLife >= Main.maxNPCs || !Main.npc[NPC.realLife].TryGetDLCBehavior(out HadesHeadEternity head))
             {
+                if (CalamityGlobalNPC.draedonExoMechWorm != -1)
+                {
+                    NPC.realLife = CalamityGlobalNPC.draedonExoMechWorm;
+                    return false;
+                }
+
                 NPC.active = false;
                 return false;
             }

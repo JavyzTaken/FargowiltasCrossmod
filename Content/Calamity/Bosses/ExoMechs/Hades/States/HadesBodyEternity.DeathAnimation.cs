@@ -48,6 +48,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.dontTakeDamage = true;
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
 
+            SegmentReorientationStrength = 0f;
+
             float instabilityInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BecomeUnstableTime, AITimer - DeathAnimation_HomeInTime);
             float explosionInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_SmallExplosionsTime, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime);
             float explosionDelayInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BigExplosionDelay, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime - DeathAnimation_SmallExplosionsTime);
