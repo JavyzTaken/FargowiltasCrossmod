@@ -660,7 +660,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
             {
-                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SulphurousCrate>(), 1, 5, 5));
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HydrothermalCrate>(), 1, 5, 5));
             }
             if (npc.type == ModContent.NPCType<BrimstoneElemental>())
             {
