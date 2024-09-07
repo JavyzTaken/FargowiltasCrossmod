@@ -11,6 +11,7 @@ using CalamityMod.Items.Fishing.AstralCatches;
 using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SulphurCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
+using CalamityMod.Items.LoreItems;
 using CalamityMod.Items.Materials;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
@@ -949,6 +950,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<ZergPotion>(), 1, 1, 1));
             }
             //if (npc.type == ModContent.NPCType<>)
+            #endregion
+
+            #region Other edits
+            switch (npc.type)
+            {
+                case NPCID.Plantera:
+                    LeadingConditionRule leadingConditionRule = new(DropHelper.If(() => !NPC.downedPlantBoss, true, DropHelper.FirstKillText));
+                    leadingConditionRule.Add(DropHelper.PerPlayer(ModContent.ItemType<LivingShard>()));
+                    npcLoot.Add(leadingConditionRule);
+                    break;
+                default:
+                    break;
+            }
+                
             #endregion
 
             npcLoot.Add(emodeRule);
