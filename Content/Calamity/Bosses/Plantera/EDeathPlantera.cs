@@ -93,17 +93,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                     }
                     return false;
                 }
-                if (plant.EnteredPhase3 && !Phase3Clear)
+                if (plant.EnteredPhase3 && !Phase3Clear) // for clearing anything we need to clear
                 {
-                    foreach (NPC n in Main.npc.Where(n => n.TypeAlive(NPCID.Spore))) // delete  spores
-                    {
-                        n.life = 0;
-                        n.HitEffect();
-                        n.checkDead();
-                        n.active = false;
-                        if (Main.netMode == NetmodeID.Server)
-                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n.whoAmI);
-                    }
+                    
                 }
                 if (plant.TentacleTimer == -390)
                 {
