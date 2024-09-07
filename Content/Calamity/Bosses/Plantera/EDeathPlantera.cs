@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -36,6 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
         public int timer = 0;
         public int dashTimer = 0;
         public bool dashing = false;
+        public bool Phase3Clear = false;
         public override bool PreAI()
         {
             if (!NPC.HasValidTarget) return true;
@@ -90,6 +92,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                         dashTimer = 0;
                     }
                     return false;
+                }
+                if (plant.EnteredPhase3 && !Phase3Clear)
+                {
+                    foreach (NPC n in Main.npc.Where(n => n.TypeAlive(NPCID.Spore))) // delete  spores
+                    {
+                        n.life = 0;
+                        n.HitEffect();
+                        n.checkDead();
+                        n.active = false;
+                        if (Main.netMode == NetmodeID.Server)
+                            NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n.whoAmI);
+                    }
                 }
                 if (plant.TentacleTimer == -390)
                 {
