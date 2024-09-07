@@ -213,8 +213,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     case NPCID.CultistBoss:
                         npc.lifeMax = (int)(npc.lifeMax * 0.6f);
                         break;
+                    case NPCID.MoonLordHead:
+                    case NPCID.MoonLordHand:
+                        npc.lifeMax = (int)(npc.lifeMax * 0.75f);
+                        break;
                     case NPCID.MoonLordCore:
-                        npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                        npc.lifeMax = (int)(npc.lifeMax * 0.4f);
                         break;
                 }
             }
