@@ -135,10 +135,6 @@ namespace FargowiltasCrossmod.Core.Common
             foreach (int i in DLCLists.SandstormEnemies)
                 NPCs.SandstormEnemy[i] = true;
             #endregion
-
-            #region Projectiles
-            //SetFactory projectileFactory = new(ProjectileLoader.ProjectileCount);
-            #endregion
         }
     }
 }

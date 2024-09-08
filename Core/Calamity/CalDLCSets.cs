@@ -65,6 +65,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             public static bool[] ProfanedCrystalProj;
             public static bool[] EternityBookProj;
             public static bool[] AngelAllianceProj;
+            public static bool[] DefenseDamage;
         }
         public override void PostSetupContent()
         {
@@ -263,6 +264,9 @@ namespace FargowiltasCrossmod.Core.Calamity
                 ProjectileType<AngelicAllianceArchangel>(),
                 ProjectileType<AngelOrb>(),
                 ProjectileType<AngelRay>()
+                );
+            Projectiles.DefenseDamage = projectileFactory.CreateBoolSet(false
+
                 );
 
             #endregion
