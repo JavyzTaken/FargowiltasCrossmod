@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Golem
         {
             if (!NPC.HasValidTarget) return true;
             //Main.NewText(NPC.ai[0] + ", " + NPC.ai[1] + ", " + NPC.ai[2] + ", " + NPC.ai[3]);
-            if (NPC.ai[0] == 0 && NPC.ai[1] == 0 && NPC.GetLifePercent() <= 0.75f)
+            if (NPC.ai[0] == 0 && NPC.ai[1] == 0 && !NPC.AnyNPCs(NPCID.GolemHeadFree) && NPC.velocity.Y == 0)
             {
                 if (DLCUtils.HostCheck)
                     for (int i = 0; i < 3; i++)

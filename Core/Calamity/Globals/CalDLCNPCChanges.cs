@@ -192,7 +192,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         npc.lifeMax = (int)(npc.lifeMax * 0.375f);
                         break;
                     case NPCID.Golem:
-                        npc.lifeMax = (int)(npc.lifeMax * 0.35f);
+                        npc.lifeMax = (int)(npc.lifeMax * 0.25f);
+                        break;
+                    case NPCID.GolemHead:
+                        npc.lifeMax = (int)(npc.lifeMax * 0.9f);
                         break;
                     case NPCID.DukeFishron:
                         npc.lifeMax = (int)(npc.lifeMax * 0.5f);
@@ -203,8 +206,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     case NPCID.CultistBoss:
                         npc.lifeMax = (int)(npc.lifeMax * 0.6f);
                         break;
+                    case NPCID.MoonLordHead:
+                    case NPCID.MoonLordHand:
+                        npc.lifeMax = (int)(npc.lifeMax * 0.75f);
+                        break;
                     case NPCID.MoonLordCore:
-                        npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                        npc.lifeMax = (int)(npc.lifeMax * 0.4f);
                         break;
                 }
             }
@@ -654,7 +661,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
             {
-                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<SulphurousCrate>(), 1, 5, 5));
+                emodeRule.OnSuccess(ItemDropRule.Common(ModContent.ItemType<HydrothermalCrate>(), 1, 5, 5));
             }
             if (npc.type == ModContent.NPCType<BrimstoneElemental>())
             {
@@ -894,6 +901,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 npcLoot.Add(hardmode);
             }
             #endregion
+
             #region Tim's Concoction drops
             void TimsConcoctionDrop(IItemDropRule rule)
             {
@@ -954,6 +962,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             #endregion Exo Mech Lore Item
+
+            #region Other edits
+            switch (npc.type)
+            {
+                case NPCID.Plantera:
+                    LeadingConditionRule leadingConditionRule = new(DropHelper.If(() => !NPC.downedPlantBoss, true, DropHelper.FirstKillText));
+                    leadingConditionRule.Add(DropHelper.PerPlayer(ModContent.ItemType<LivingShard>()));
+                    npcLoot.Add(leadingConditionRule);
+                    break;
+                default:
+                    break;
+            }
+
+            #endregion
 
             npcLoot.Add(emodeRule);
             npcLoot.Add(pMoon);

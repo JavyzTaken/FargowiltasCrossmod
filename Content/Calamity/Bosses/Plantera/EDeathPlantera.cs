@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -12,6 +13,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using EmodePlantera = FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
 {
@@ -35,21 +37,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
         public int timer = 0;
         public int dashTimer = 0;
         public bool dashing = false;
+        public bool Phase3Clear = false;
         public override bool PreAI()
         {
             if (!NPC.HasValidTarget) return true;
             Player target = Main.player[NPC.target];
-            FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera plant = NPC.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.Plantera>();
+            EmodePlantera plant = NPC.GetGlobalNPC<EmodePlantera>();
 
             if (NPC.localAI[0] == 1)
             {
-
+                NPC.localAI[1] -= 0.5f; // to compensate for spore clouds; less mouth seeds
                 timer++;
                 if (timer >= 800)
                 {
                     timer = 0;
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 10, ModContent.ProjectileType<HomingGasBulb>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                }
+
+                if (plant.CrystalRedirectTimer >= 2 && plant.RingTossTimer == 360 + 65) // crystal redirect
+                {
+                    timer = 800 - (60 * 4); // reset gas bulbs, fire in 3 seconds
+                    for (int i = 0; i < Main.maxProjectiles; i++)
+                    {
+                        Projectile p = Main.projectile[i];
+                        if (p.TypeAlive<HomingGasBulbSporeGas>() && p.ai[1] < 900f)
+                        {
+                            p.ai[1] = 900f;
+                        }
+                            
+                    }
                 }
             }
             else
@@ -75,6 +92,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                         dashTimer = 0;
                     }
                     return false;
+                }
+                if (plant.EnteredPhase3 && !Phase3Clear) // for clearing anything we need to clear
+                {
+                    
                 }
                 if (plant.TentacleTimer == -390)
                 {

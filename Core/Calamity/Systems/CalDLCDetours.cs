@@ -40,6 +40,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
     public class CalDLCDetours : ICustomDetourProvider
     {
         private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityGetNPCDamageMethod = typeof(NPCStats).GetMethod("GetNPCDamage", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityOtherStatChangesMethod = typeof(CalamityGlobalNPC).GetMethod("OtherStatChanges", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityProjectilePreAIMethod = typeof(CalamityGlobalProjectile).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
@@ -55,6 +57,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
 
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
+        public delegate void Orig_CalamityGetNPCDamage(NPC npc);
+        public delegate void Orig_CalamityOtherStatChanges(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
         public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
@@ -73,6 +77,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             // Boss override
             HookHelper.ModifyMethodWithDetour(CalamityPreAIMethod, CalamityPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityGetNPCDamageMethod, CalamityGetNPCDamage_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityProjectilePreAIMethod, CalamityProjectilePreAI_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
@@ -95,6 +101,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasDeath = CalamityWorld.death;
             bool wasBossRush = BossRushEvent.BossRushActive;
             bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+
+            int defDamage = npc.defDamage; // do not fuck with defDamage please
+
             if (shouldDisable)
             {
                 CalamityWorld.revenge = false;
@@ -107,8 +116,34 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 CalamityWorld.revenge = wasRevenge;
                 CalamityWorld.death = wasDeath;
                 BossRushEvent.BossRushActive = wasBossRush;
+                npc.defDamage = defDamage; // do not fuck with defDamage please
             }
             return result;
+        }
+
+        internal static void CalamityGetNPCDamage_Detour(Orig_CalamityGetNPCDamage orig, NPC npc)
+        {
+            // Prevent vanilla bosses and their segments from having their damage overriden by Calamity
+            bool countsAsBoss = npc.boss || NPCID.Sets.ShouldBeCountedAsBoss[npc.type];
+            if (npc.type < NPCID.Count && (countsAsBoss || CalamityLists.bossHPScaleList.Contains(npc.type)))
+                return;
+            orig(npc);
+        }
+
+        internal static void CalamityOtherStatChanges_Detour(Orig_CalamityOtherStatChanges orig, CalamityGlobalNPC self, NPC npc)
+        {
+            orig(self, npc);
+            if (!CalDLCWorldSavingSystem.E_EternityRev)
+                return;
+            switch (npc.type)
+            {
+                case NPCID.DetonatingBubble:
+                    if (NPC.AnyNPCs(NPCID.DukeFishron))
+                        npc.dontTakeDamage = false;
+                    break;
+                default:
+                    break;
+            }
         }
 
         internal static bool CalamityProjectilePreAI_Detour(Orig_CalamityProjectilePreAI orig, CalamityGlobalProjectile self, Projectile projectile)
@@ -116,6 +151,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
             bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            int damage = projectile.damage;
             if (shouldDisable)
             {
                 CalamityWorld.revenge = false;
@@ -126,6 +162,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 CalamityWorld.revenge = wasRevenge;
                 CalamityWorld.death = wasDeath;
+                projectile.damage = damage;
             }
             return result;
         }

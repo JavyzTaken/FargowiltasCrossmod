@@ -190,10 +190,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
             if (projectile.ModProjectile != null)
             {
-                if (projectile.ModProjectile.Mod == ModCompatibility.SoulsMod.Mod && projectile.hostile)
-                {
+                bool defenseDamage = false;
+
+                if (projectile.ModProjectile is BaseDeathray)
+                    defenseDamage = true;
+                if (CalDLCSets.Projectiles.DefenseDamage[projectile.type])
+                    defenseDamage = true;
+
+                if (defenseDamage)
                     ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
-                }
             }
             if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
             {
