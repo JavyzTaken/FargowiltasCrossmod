@@ -36,6 +36,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using CalamityMod.CalPlayer;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -69,6 +70,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TungstenIncreaseWeaponSizeMethod = typeof(TungstenEffect).GetMethod("TungstenIncreaseWeaponSize", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNerfedProjMetod = typeof(TungstenEffect).GetMethod("TungstenNerfedProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo ModifyHurtInfo_CalamityMethod = typeof(CalamityPlayer).GetMethod("ModifyHurtInfo_Calamity", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -96,6 +98,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate float Orig_TungstenIncreaseWeaponSize(FargoSoulsPlayer modPlayer);
         public delegate bool Orig_TungstenNerfedProj(Projectile projectile);
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
+        public delegate void Orig_ModifyHurtInfo_Calamity(CalamityPlayer self, ref Player.HurtInfo info);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -125,6 +128,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TungstenIncreaseWeaponSizeMethod, TungstenIncreaseWeaponSize_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNerfedProjMetod, TungstenNerfedProj_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
+            HookHelper.ModifyMethodWithDetour(ModifyHurtInfo_CalamityMethod, ModifyHurtInfo_Calamity_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -413,7 +417,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         public static bool TungstenNerfedProj_Detour(Orig_TungstenNerfedProj orig, Projectile projectile)
         {
-            bool value = orig(projectile);
+            bool value = orig(projectile); 
             if (!projectile.owner.IsWithinBounds(Main.maxPlayers))
                 return value;
             Player player = Main.player[projectile.owner];
@@ -432,6 +436,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
                 return true;
             return value;
+        }
+        public static void ModifyHurtInfo_Calamity_Detour(Orig_ModifyHurtInfo_Calamity orig, CalamityPlayer self, ref Player.HurtInfo info)
+        {
+            bool chalice = self.chaliceOfTheBloodGod;
+            if (self.Player.FargoSouls().GuardRaised)
+                self.chaliceOfTheBloodGod = false;
+            orig(self, ref info);
+            self.chaliceOfTheBloodGod = chalice;
         }
         #endregion
     }
