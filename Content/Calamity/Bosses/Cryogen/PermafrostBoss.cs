@@ -191,7 +191,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             if (!DLCUtils.HostCheck)
                 return;
-            int n = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, type);
+            int n = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DILF>());
             if (n != Main.maxNPCs)
             {
                 Main.npc[n].homeless = true;

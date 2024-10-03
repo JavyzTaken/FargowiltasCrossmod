@@ -39,12 +39,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalDLCDetours : ICustomDetourProvider
     {
+        // AI override
+        // GlobalNPC
         private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
-        private static readonly MethodInfo CalamityGetNPCDamageMethod = typeof(NPCStats).GetMethod("GetNPCDamage", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityOtherStatChangesMethod = typeof(CalamityGlobalNPC).GetMethod("OtherStatChanges", LumUtils.UniversalBindingFlags);
-        private static readonly MethodInfo CalamityProjectilePreAIMethod = typeof(CalamityGlobalProjectile).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
+        // NPCStats
+        private static readonly MethodInfo CalamityGetNPCDamageMethod = typeof(NPCStats).GetMethod("GetNPCDamage", LumUtils.UniversalBindingFlags);
+        // GlobalProjectile
+        private static readonly MethodInfo CalamityProjectilePreAIMethod = typeof(CalamityGlobalProjectile).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityProjectileCanDamageMethod = typeof(CalamityGlobalProjectile).GetMethod("CanDamage", LumUtils.UniversalBindingFlags);
+
+        // Misc compatibility, fixes and balance
         private static readonly MethodInfo FMSVerticalSpeedMethod = typeof(FlightMasteryWings).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FMSHorizontalSpeedMethod = typeof(FlightMasteryWings).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo IsFargoSoulsItemMethod = typeof(Squirrel).GetMethod("IsFargoSoulsItem", LumUtils.UniversalBindingFlags);
@@ -56,12 +63,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
 
+        // AI override
+        // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
-        public delegate void Orig_CalamityGetNPCDamage(NPC npc);
         public delegate void Orig_CalamityOtherStatChanges(CalamityGlobalNPC self, NPC npc);
-        public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
         public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        // NPCStats
+        public delegate void Orig_CalamityGetNPCDamage(NPC npc);
+        // GlobalProjectile
+        public delegate bool Orig_CalamityProjectilePreAI(CalamityGlobalProjectile self, Projectile projectile);
+        public delegate bool? Orig_CalamityProjectileCanDamage(CalamityGlobalProjectile self, Projectile projectile);
+
+        // Misc compatibility, fixes and balance
         public delegate void Orig_FMSVerticalSpeed(FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
         public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
         public delegate bool Orig_IsFargoSoulsItem(Item item);
@@ -75,7 +89,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         void ICustomDetourProvider.ModifyMethods()
         {
-            // Boss override
+            // AI override
             HookHelper.ModifyMethodWithDetour(CalamityPreAIMethod, CalamityPreAI_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityGetNPCDamageMethod, CalamityGetNPCDamage_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
@@ -95,6 +109,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(CheckTempleWallsMethod, CheckTempleWalls_Detour);
             HookHelper.ModifyMethodWithDetour(DukeFishronPreAIMethod, DukeFishronPreAI_Detour);
         }
+        #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
         {
             bool wasRevenge = CalamityWorld.revenge;
@@ -121,15 +136,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             return result;
         }
 
-        internal static void CalamityGetNPCDamage_Detour(Orig_CalamityGetNPCDamage orig, NPC npc)
-        {
-            // Prevent vanilla bosses and their segments from having their damage overriden by Calamity
-            bool countsAsBoss = npc.boss || NPCID.Sets.ShouldBeCountedAsBoss[npc.type];
-            if (npc.type < NPCID.Count && (countsAsBoss || CalamityLists.bossHPScaleList.Contains(npc.type)))
-                return;
-            orig(npc);
-        }
-
         internal static void CalamityOtherStatChanges_Detour(Orig_CalamityOtherStatChanges orig, CalamityGlobalNPC self, NPC npc)
         {
             orig(self, npc);
@@ -144,27 +150,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 default:
                     break;
             }
-        }
-
-        internal static bool CalamityProjectilePreAI_Detour(Orig_CalamityProjectilePreAI orig, CalamityGlobalProjectile self, Projectile projectile)
-        {
-            bool wasRevenge = CalamityWorld.revenge;
-            bool wasDeath = CalamityWorld.death;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
-            int damage = projectile.damage;
-            if (shouldDisable)
-            {
-                CalamityWorld.revenge = false;
-                CalamityWorld.death = false;
-            }
-            bool result = orig(self, projectile);
-            if (shouldDisable)
-            {
-                CalamityWorld.revenge = wasRevenge;
-                CalamityWorld.death = wasDeath;
-                projectile.damage = damage;
-            }
-            return result;
         }
 
         internal static bool CalamityPreDraw_Detour(Orig_CalamityPreDraw orig, CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -205,7 +190,65 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             }
             orig(self, npc, spriteBatch, screenPos, drawColor);
         }
+        #endregion
 
+        #region NPCStats
+        internal static void CalamityGetNPCDamage_Detour(Orig_CalamityGetNPCDamage orig, NPC npc)
+        {
+            // Prevent vanilla bosses and their segments from having their damage overriden by Calamity
+            bool countsAsBoss = npc.boss || NPCID.Sets.ShouldBeCountedAsBoss[npc.type];
+            if (npc.type < NPCID.Count && (countsAsBoss || CalamityLists.bossHPScaleList.Contains(npc.type)))
+                return;
+            orig(npc);
+        }
+        #endregion
+
+        #region GlobalProjectile
+        internal static bool CalamityProjectilePreAI_Detour(Orig_CalamityProjectilePreAI orig, CalamityGlobalProjectile self, Projectile projectile)
+        {
+            bool wasRevenge = CalamityWorld.revenge;
+            bool wasDeath = CalamityWorld.death;
+            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            int damage = projectile.damage;
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = false;
+                CalamityWorld.death = false;
+            }
+            bool result = orig(self, projectile);
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = wasRevenge;
+                CalamityWorld.death = wasDeath;
+                projectile.damage = damage;
+            }
+            return result;
+        }
+
+        public static bool? CalamityProjectileCanDamage_Detour(Orig_CalamityProjectileCanDamage orig, CalamityGlobalProjectile self, Projectile projectile)
+        {
+            bool wasRevenge = CalamityWorld.revenge;
+            bool wasDeath = CalamityWorld.death;
+            bool wasBossRush = BossRushEvent.BossRushActive;
+            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = false;
+                CalamityWorld.death = false;
+                BossRushEvent.BossRushActive = false;
+            }
+            bool? result = orig(self, projectile);
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = wasRevenge;
+                CalamityWorld.death = wasDeath;
+                BossRushEvent.BossRushActive = wasBossRush;
+            }
+            return result;
+        }
+        #endregion
+
+        #region Misc
         public static bool NonFargoBossAlive() => Main.npc.Any(n => n.Alive() && n.boss && n.ModNPC != null && n.ModNPC.Mod != ModCompatibility.SoulsMod.Mod);
         internal static void FMSVerticalSpeed_Detour(Orig_FMSVerticalSpeed orig, FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
         {
@@ -340,5 +383,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             }
             return result;
         }
+        #endregion
     }
 }
