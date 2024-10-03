@@ -123,7 +123,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             Player player = Main.player[projectile.owner];
             FargoSoulsPlayer modPlayer = player.FargoSouls();
-
             if (projectile.type == ModContent.ProjectileType<RainLightning>() || projectile.type == ModContent.ProjectileType<CursedLightning>())
             {
                 if (Main.projectile.FirstOrDefault(p => p.TypeAlive(ModContent.ProjectileType<RicoshotCoin>()) && projectile.Colliding(projectile.Hitbox, p.Hitbox)) is Projectile coin && coin != null)

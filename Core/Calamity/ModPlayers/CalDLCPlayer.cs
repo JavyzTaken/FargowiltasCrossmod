@@ -130,6 +130,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 {
                     Player.AddCooldown(GlobalDodge.ID, 60, true);
                 }
+                else
+                {
+                    Player.Calamity().cooldowns[GlobalDodge.ID].timeLeft = 1;
+                }
 
             }
 
