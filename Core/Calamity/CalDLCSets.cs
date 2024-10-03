@@ -136,7 +136,8 @@ namespace FargowiltasCrossmod.Core.Calamity
                 ItemType<FracturedArk>(),
                 ItemType<TrueArkoftheAncients>(),
                 ItemType<ArkoftheElements>(),
-                ItemType<ArkoftheCosmos>()
+                ItemType<ArkoftheCosmos>(),
+                ItemType<Animosity>()
             );
             Items.TungstenExclude = itemFactory.CreateBoolSet(false,
                 ItemType<OldLordClaymore>(),
