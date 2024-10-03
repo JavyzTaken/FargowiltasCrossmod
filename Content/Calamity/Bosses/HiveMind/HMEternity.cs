@@ -1220,6 +1220,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
             void Movement(Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
             {
+                accel *= 16;
+                decel *= 16;
+
+                float resistance = NPC.velocity.Length() * accel / (maxSpeed);
+                NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, pos, NPC.velocity, accel - resistance, decel + resistance);
+                /*
                 if (NPC.Distance(pos) > slowdown)
                 {
                     NPC.velocity = Vector2.Lerp(NPC.velocity, (pos - NPC.Center).SafeNormalize(Vector2.Zero) * maxSpeed, accel);
@@ -1228,6 +1234,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 {
                     NPC.velocity = Vector2.Lerp(NPC.velocity, (pos - NPC.Center).SafeNormalize(Vector2.Zero) * lowspeed, decel);
                 }
+                */
             }
 
             bool Targeting()
