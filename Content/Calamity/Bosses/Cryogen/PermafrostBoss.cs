@@ -323,6 +323,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             #region Help Methods
             void Movement(Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
             {
+                accel *= 16;
+                decel *= 16;
+
+                float resistance = NPC.velocity.Length() * accel / (maxSpeed);
+                NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, pos, NPC.velocity, accel - resistance, decel + resistance);
+                /*
                 decel *= 2;
                 if (NPC.Distance(pos) > slowdown)
                 {
@@ -332,6 +338,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     NPC.velocity = Vector2.Lerp(NPC.velocity, (pos - NPC.Center).SafeNormalize(Vector2.Zero) * lowspeed, decel);
                 }
+                */
             }
             void Reset()
             {
@@ -732,9 +739,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                 float progress = Timer / Attack1Time;
 
-                float distance = Timer <= Attack1Time ? 200f : 80f;
+                bool part1 = Timer <= Attack1Time;
+                float distance = part1 ? 400f : 200f;
+                float accel = part1 ? 0.1f : 0.025f;
+                float decel = part1 ? 0.1f : 0.025f;
                 Vector2 desiredPos = target.Center - (toTarget * distance);
-                Movement(desiredPos, accel: 0.1f, lowspeed: 5, decel: 0.1f, slowdown: 300);
+                Movement(desiredPos, accel: accel, lowspeed: 5, decel: decel, slowdown: 300);
 
                 if (Timer == 1 && DLCUtils.HostCheck)
                 {
