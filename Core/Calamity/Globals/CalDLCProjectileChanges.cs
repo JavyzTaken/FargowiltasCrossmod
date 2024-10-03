@@ -82,34 +82,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            if (projectile.TryGetGlobalProjectile(out FargoSoulsGlobalProjectile fargoProj))
-            {
-                if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
-                {
-                    //projectile.FargoSouls().TungstenScale = 1;
-                    float scale = fargoProj.TungstenScale;
-                    projectile.position = projectile.Center;
-                    projectile.width = (int)(projectile.width / scale);
-                    projectile.height = (int)(projectile.height / scale);
-                    projectile.Center = projectile.position;
-                    projectile.scale /= scale;
-                }
-                if (fargoProj.TungstenScale != 1)
-                {
-                    Player player = Main.player[projectile.owner];
-                    Item item = player.HeldItem;
-                    if (item != null && item.DamageType.CountsAsClass(DamageClass.Melee))
-                    {
-                        float scale = CalDLCItemBalance.TrueMeleeTungstenScaleNerf(player);
-                        projectile.position = projectile.Center;
-                        projectile.width = (int)(projectile.width / scale);
-                        projectile.height = (int)(projectile.height / scale);
-                        projectile.Center = projectile.position;
-                        projectile.scale /= scale;
-                    }
-                }
-                
-            }
             if (projectile.owner >= 0)
             {
                 //attempt to make adamantite ench work with held proj weapons. didnt work.
@@ -182,10 +154,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             
-            if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
-            {
-                //projectile.FargoSouls().TungstenScale = 1;
-            }
             #region Balance Changes
             //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
             if (projectile.ModProjectile != null)

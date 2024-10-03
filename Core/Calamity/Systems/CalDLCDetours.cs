@@ -32,6 +32,10 @@ using CalamityMod.Items.Potions;
 using FargowiltasSouls.Content.Bosses.Champions.Nature;
 using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Accessories.Forces;
+using FargowiltasSouls.Core.ModPlayers;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -62,6 +66,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TerraChampAIMethod = typeof(TerraChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo TungstenIncreaseWeaponSizeMethod = typeof(TungstenEffect).GetMethod("TungstenIncreaseWeaponSize", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo TungstenNerfedProjMetod = typeof(TungstenEffect).GetMethod("TungstenNerfedProj", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -86,16 +93,23 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_TerraChampAI(TerraChampion self);
         public delegate bool Orig_CheckTempleWalls(Vector2 pos);
         public delegate bool Orig_DukeFishronPreAI(DukeFishron self, NPC npc);
+        public delegate float Orig_TungstenIncreaseWeaponSize(FargoSoulsPlayer modPlayer);
+        public delegate bool Orig_TungstenNerfedProj(Projectile projectile);
+        public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
 
         void ICustomDetourProvider.ModifyMethods()
         {
             // AI override
+            // GlobalNPC
             HookHelper.ModifyMethodWithDetour(CalamityPreAIMethod, CalamityPreAI_Detour);
-            HookHelper.ModifyMethodWithDetour(CalamityGetNPCDamageMethod, CalamityGetNPCDamage_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
-            HookHelper.ModifyMethodWithDetour(CalamityProjectilePreAIMethod, CalamityProjectilePreAI_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
+            // NPCStats
+            HookHelper.ModifyMethodWithDetour(CalamityGetNPCDamageMethod, CalamityGetNPCDamage_Detour);
+            // GlobalProjectile
+            HookHelper.ModifyMethodWithDetour(CalamityProjectilePreAIMethod, CalamityProjectilePreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityProjectileCanDamageMethod, CalamityProjectileCanDamage_Detour);
 
             // Misc compatibility, fixes and balance
             HookHelper.ModifyMethodWithDetour(FMSVerticalSpeedMethod, FMSVerticalSpeed_Detour);
@@ -108,6 +122,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TerraChampAIMethod, TerraChampAI_Detour);
             HookHelper.ModifyMethodWithDetour(CheckTempleWallsMethod, CheckTempleWalls_Detour);
             HookHelper.ModifyMethodWithDetour(DukeFishronPreAIMethod, DukeFishronPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(TungstenIncreaseWeaponSizeMethod, TungstenIncreaseWeaponSize_Detour);
+            HookHelper.ModifyMethodWithDetour(TungstenNerfedProjMetod, TungstenNerfedProj_Detour);
+            HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -382,6 +399,39 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 Main.player[npc.target].ZoneBeach = false;
             }
             return result;
+        }
+        public static float TungstenIncreaseWeaponSize_Detour(Orig_TungstenIncreaseWeaponSize orig, FargoSoulsPlayer modPlayer)
+        {
+            float value = orig(modPlayer);
+            if (modPlayer.Player.HeldItem == null)
+                return value;
+            if (CalDLCSets.Items.TungstenExclude[modPlayer.Player.HeldItem.type])
+                return 1f;
+            if (modPlayer.Player.HeldItem.DamageType.CountsAsClass(DamageClass.Melee))
+                value -= (value - 1f) * 0.5f;
+            return value;
+        }
+        public static bool TungstenNerfedProj_Detour(Orig_TungstenNerfedProj orig, Projectile projectile)
+        {
+            bool value = orig(projectile);
+            if (!projectile.owner.IsWithinBounds(Main.maxPlayers))
+                return value;
+            Player player = Main.player[projectile.owner];
+            if (!player.Alive())
+                return value;
+            if (player.HeldItem != null && player.HeldItem.DamageType.CountsAsClass(DamageClass.Melee))
+            {
+                return true;
+            }
+                
+            return value;
+        }
+        public static bool TungstenNeverAffectsProj_Detour(Orig_TungstenNeverAffectsProj orig, Projectile projectile)
+        {
+            bool value = orig(projectile);
+            if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
+                return true;
+            return value;
         }
         #endregion
     }
