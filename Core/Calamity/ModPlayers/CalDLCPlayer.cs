@@ -315,31 +315,5 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             }
             return base.UseSpeedMultiplier(item);
         }
-        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-        public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
-        {
-            FargoSoulsPlayer modPlayer = Player.FargoSouls();
-            if (Player.HasEffect<TungstenEffect>() && modPlayer.Toggler != null && (modPlayer.ForceEffect<TungstenEnchant>() || item.shoot == ProjectileID.None))
-            {
-                TungstenTrueMeleeDamageNerf(Player, ref modifiers, item);
-            }
-        }
-        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
-        {
-            FargoSoulsPlayer modPlayer = Player.FargoSouls();
-            if (Player.HasEffect<TungstenEffect>() && proj.FargoSouls().TungstenScale != 1)
-            {
-                TungstenTrueMeleeDamageNerf(Player, ref modifiers);
-            }
-        }
-        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-        public static void TungstenTrueMeleeDamageNerf(Player player, ref NPC.HitModifiers modifiers, Item item = null)
-        {
-            if (item == null)
-                item = player.HeldItem;
-            if (item != null && item.DamageType == GetInstance<TrueMeleeDamageClass>() || item.DamageType == GetInstance<TrueMeleeNoSpeedDamageClass>())
-                modifiers.FinalDamage /= 1.15f;
-        }
     }
 }
