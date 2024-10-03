@@ -191,7 +191,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         {
             if (!DLCUtils.HostCheck)
                 return;
-            int n = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<DILF>());
+            int n = NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, type);
             if (n != Main.maxNPCs)
             {
                 Main.npc[n].homeless = true;
@@ -227,6 +227,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Main.LocalPlayer.ZoneSnow = true;
+
+            int n = NPC.FindFirstNPC(ModContent.NPCType<DILF>());
+            if (n != -1 && n != Main.maxNPCs)
+            {
+                Main.npc[n].life = 0;
+                Main.npc[n].active = false;
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
+            }
+
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.TargetClosest();
