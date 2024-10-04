@@ -36,6 +36,7 @@ using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using CalamityMod.UI.CalamitasEnchants;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasSouls.Content.Patreon.Volknet;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -61,27 +62,34 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             //Shadowspec items
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.5f;
-            if (item.type == ModContent.ItemType<IllustriousKnives>()) return 0.8f;
-            if (item.type == ModContent.ItemType<Azathoth>()) return 0.9f;
-            if (item.type == ModContent.ItemType<RedSun>()) return 1.5f;
+            // Melee
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 1.1f;
+            if (item.type == ModContent.ItemType<IllustriousKnives>()) return 1f;
+            if (item.type == ModContent.ItemType<NanoCore>() && item.DamageType.CountsAsClass(DamageClass.Melee)) return 2f;
+            if (item.type == ModContent.ItemType<Azathoth>()) return 1f;
+            if (item.type == ModContent.ItemType<RedSun>()) return 0.85f;
+            // Ranged
             if (item.type == ModContent.ItemType<SomaPrime>()) return 1.2f;
             if (item.type == ModContent.ItemType<Svantechnical>()) return 1.1f;
             if (item.type == ModContent.ItemType<Voidragon>()) return 1.1f;
-            if (item.type == ModContent.ItemType<StaffofBlushie>()) return 0.7f;
-            if (item.type == ModContent.ItemType<Eternity>()) return 0.4f;
-            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.5f;
+            // Magic
+            if (item.type == ModContent.ItemType<Apotheosis>()) return 0.75f;
+            if (item.type == ModContent.ItemType<StaffofBlushie>()) return 1f;
+            if (item.type == ModContent.ItemType<Eternity>()) return 0.6f;
+            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.7f;
             if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.6f;
-            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
-            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
+            if (item.type == ModContent.ItemType<Fabstaff>()) return 1f;
+            // Summoner
+            if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
+            if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
             if (item.type == ModContent.ItemType<TemporalUmbrella>()) return 0.35f;
             if (item.type == ModContent.ItemType<Endogenesis>()) return 0.35f;
-            if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
             if (item.type == ModContent.ItemType<Metastasis>()) return 0.5f;
-            if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
-            if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
+            if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
             if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
-            if (item.type == ModContent.ItemType<Fabstaff>()) return 0.6f;
+            // Rogue
+            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
+            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
 
             //Post-Mutant items
             if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;

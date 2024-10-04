@@ -42,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     public class QuiverofNihilityEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<QuiverofNihility>();
-        public override bool ExtraAttackEffect => true;
+        public override bool MinionEffect => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]

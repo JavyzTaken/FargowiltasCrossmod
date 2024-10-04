@@ -321,8 +321,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //mutant
             if (npc.type == ModContent.NPCType<MutantBoss>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 4.6f);
-                npc.damage = (int)(npc.damage * 1.4f);
+                npc.lifeMax = (int)(npc.lifeMax * 3f);
+                npc.damage = (int)(npc.damage * 1.5f);
             }
             if (ModCompatibility.WrathoftheGods.Loaded)
             {

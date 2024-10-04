@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.Buffs.Summon;
 using CalamityMod.CalPlayer;
 using CalamityMod.Cooldowns;
 using CalamityMod.DataStructures;
@@ -67,7 +68,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
-            
             //Main.NewText(BossRushEvent.BossRushStage);
         }
         public override void PreUpdateMovement()
@@ -141,6 +141,9 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 calamityPlayer.dAmulet = false;
                 calamityPlayer.SpongeShieldDurability = 0;
                 calamityPlayer.purity = false;
+
+                Player.ClearBuff(BuffType<DemonshadeSetDevilBuff>());
+                calamityPlayer.redDevil = false;
             }
 
             if (calamityPlayer.luxorsGift && Player.HeldItem != null && Player.HeldItem.type == ItemType<KamikazeSquirrelStaff>())
@@ -296,8 +299,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
                 Player.Calamity().purity = false;
-                if (Player.statLifeMax2 > 1000)
-                    Player.statLifeMax2 = 1000;
             }
         }
         public override void UpdateBadLifeRegen()
