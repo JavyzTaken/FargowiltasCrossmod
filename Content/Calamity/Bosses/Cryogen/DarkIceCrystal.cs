@@ -91,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (Projectile.localAI[0] < 100)
             {
                 Projectile.Center = owner.Center;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Normalize(targetvel), 0.2f);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, Vector2.Normalize(targetvel), 0.1f);
 
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 

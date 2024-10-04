@@ -162,6 +162,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             if (!ShouldDoDLC || attackChoice < 0)
             {
+                DLCAttackChoice = DLCAttack.None;
                 return true;
             }
 

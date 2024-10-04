@@ -61,7 +61,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
             DeerclopsAI.lastDeerclopsPosition = NPC.Center;
 
             Deerclops deerclops = NPC.GetGlobalNPC<Deerclops>();
-            if (deerclops.TeleportTimer > 780 && NPC.HasPlayerTarget)
+            if (deerclops.TeleportTimer > 780 && NPC.HasPlayerTarget && deerclops.EnteredPhase2)
                 DeerclopsAI.lastDeerclopsPosition = Main.player[NPC.target].Center;
             return true;
         }

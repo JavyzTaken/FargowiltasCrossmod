@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.Buffs.Summon;
 using CalamityMod.CalPlayer;
 using CalamityMod.Cooldowns;
 using CalamityMod.DataStructures;
@@ -25,6 +26,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
@@ -67,7 +69,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
-            
             //Main.NewText(BossRushEvent.BossRushStage);
         }
         public override void PreUpdateMovement()
@@ -130,7 +131,20 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 {
                     Player.AddCooldown(GlobalDodge.ID, 60, true);
                 }
+                else
+                {
+                    Player.Calamity().cooldowns[GlobalDodge.ID].timeLeft = 1;
+                }
+            }
+            if (soulsPlayer.MutantPresence)
+            {
+                calamityPlayer.rampartOfDeities = false;
+                calamityPlayer.dAmulet = false;
+                calamityPlayer.SpongeShieldDurability = 0;
+                calamityPlayer.purity = false;
 
+                Player.ClearBuff(BuffType<DemonshadeSetDevilBuff>());
+                calamityPlayer.redDevil = false;
             }
 
             if (calamityPlayer.luxorsGift && Player.HeldItem != null && Player.HeldItem.type == ItemType<KamikazeSquirrelStaff>())
@@ -172,12 +186,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             CalamityPlayer calPlayer = Player.Calamity();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
-                Player.statDefense /= 2f;
-                Player.endurance /= 2f;
+                Player.statDefense -= 20;
+                Player.endurance -= 0.05f;
                 Player.shinyStone = false;
                 Player.Calamity().purity = false;
-                if (Player.statLifeMax2 > 1000)
-                    Player.statLifeMax2 = 1000;
             }
             const int witherDamageCap = 500000;
             if (calPlayer.witheringDamageDone > witherDamageCap)
@@ -288,8 +300,20 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
                 Player.Calamity().purity = false;
-                if (Player.statLifeMax2 > 1000)
-                    Player.statLifeMax2 = 1000;
+            }
+        }
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            if (ModCompatibility.WrathoftheGods.Loaded && WorldSavingSystem.EternityMode)
+            {
+                if (Main.npc.Any(n => n.Alive() && 
+                n.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type || 
+                n.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
+                n.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type))
+                {
+                    Player.AddBuff(BuffType<MutantFangBuff>(), 180);
+                    Player.AddBuff(BuffType<CurseoftheMoonBuff>(), 600);
+                }
             }
         }
         public override void UpdateBadLifeRegen()
@@ -314,32 +338,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 return 1f / soulsAttackSpeed;
             }
             return base.UseSpeedMultiplier(item);
-        }
-        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-        public override void ModifyHitNPCWithItem(Item item, NPC target, ref NPC.HitModifiers modifiers)
-        {
-            FargoSoulsPlayer modPlayer = Player.FargoSouls();
-            if (Player.HasEffect<TungstenEffect>() && modPlayer.Toggler != null && (modPlayer.ForceEffect<TungstenEnchant>() || item.shoot == ProjectileID.None))
-            {
-                TungstenTrueMeleeDamageNerf(Player, ref modifiers, item);
-            }
-        }
-        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-        public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref NPC.HitModifiers modifiers)
-        {
-            FargoSoulsPlayer modPlayer = Player.FargoSouls();
-            if (Player.HasEffect<TungstenEffect>() && proj.FargoSouls().TungstenScale != 1)
-            {
-                TungstenTrueMeleeDamageNerf(Player, ref modifiers);
-            }
-        }
-        [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-        public static void TungstenTrueMeleeDamageNerf(Player player, ref NPC.HitModifiers modifiers, Item item = null)
-        {
-            if (item == null)
-                item = player.HeldItem;
-            if (item != null && item.DamageType == GetInstance<TrueMeleeDamageClass>() || item.DamageType == GetInstance<TrueMeleeNoSpeedDamageClass>())
-                modifiers.FinalDamage /= 1.15f;
         }
     }
 }

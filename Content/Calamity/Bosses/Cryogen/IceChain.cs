@@ -31,6 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             
 
             Projectile.light = 0.5f;
+            Projectile.penetrate = -1;
 
             Projectile.FargoSouls().DeletionImmuneRank = 2;
         }
