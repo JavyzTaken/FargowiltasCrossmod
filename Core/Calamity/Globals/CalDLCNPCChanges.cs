@@ -938,7 +938,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (DropsPhotosynthesisPotion.Contains(npc.type))
             {
-                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<PhotosynthesisPotion>(), 1, 2, 6));
+                TimsConcoctionDrop(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<PhotosynthesisPotion>(), 1, 2, 6));
             }
             if (DropsShadowPotion.Contains(npc.type))
             {
