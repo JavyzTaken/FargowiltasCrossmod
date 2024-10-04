@@ -75,10 +75,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             // Magic
             if (item.type == ModContent.ItemType<Apotheosis>()) return 0.75f;
             if (item.type == ModContent.ItemType<StaffofBlushie>()) return 1f;
-            if (item.type == ModContent.ItemType<Eternity>()) return 0.6f;
-            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.7f;
-            if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.6f;
-            if (item.type == ModContent.ItemType<Fabstaff>()) return 1f;
+            if (item.type == ModContent.ItemType<Eternity>()) return 0.7f;
+            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.8f;
+            if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.7f;
+            if (item.type == ModContent.ItemType<Fabstaff>()) return 1.2f;
             // Summoner
             if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
             if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
