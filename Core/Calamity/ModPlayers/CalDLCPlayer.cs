@@ -176,12 +176,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             CalamityPlayer calPlayer = Player.Calamity();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
-                Player.statDefense /= 2f;
-                Player.endurance /= 2f;
+                Player.statDefense -= 20;
+                Player.endurance -= 0.05f;
                 Player.shinyStone = false;
                 Player.Calamity().purity = false;
-                if (Player.statLifeMax2 > 1000)
-                    Player.statLifeMax2 = 1000;
             }
             const int witherDamageCap = 500000;
             if (calPlayer.witheringDamageDone > witherDamageCap)

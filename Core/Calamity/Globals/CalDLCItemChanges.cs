@@ -284,7 +284,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
-                tooltips.Insert(11, new TooltipLine(Mod, "CalColossusSoul", Language.GetTextValue(key + "CalamityColossus")));
+                tooltips.Insert(8, new TooltipLine(Mod, "CalColossusSoul", Language.GetTextValue(key + "CalamityColossus")));
             }
 
             if (item.type == ModContent.ItemType<BerserkerSoul>() && !item.social)

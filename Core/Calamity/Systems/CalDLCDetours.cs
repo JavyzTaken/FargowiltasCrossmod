@@ -273,51 +273,59 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public static bool NonFargoBossAlive() => Main.npc.Any(n => n.Alive() && n.boss && n.ModNPC != null && n.ModNPC.Mod != ModCompatibility.SoulsMod.Mod);
         internal static void FMSVerticalSpeed_Detour(Orig_FMSVerticalSpeed orig, FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
         {
+            orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
             if (NonFargoBossAlive())
             {
                 player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
                 if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
                 {
-                    ascentWhenFalling = 0.95f;
-                    ascentWhenRising = 0.16f;
-                    maxCanAscendMultiplier = 1.1f;
-                    maxAscentMultiplier = 3.2f;
-                    constantAscend = 0.145f;
+                    if (ascentWhenFalling > 0.95f)
+                        ascentWhenFalling = 0.95f;
+                    if (ascentWhenRising > 0.16f)
+                        ascentWhenRising = 0.16f;
+                    if (maxCanAscendMultiplier > 1.1f)
+                        maxCanAscendMultiplier = 1.1f;
+                    if (maxAscentMultiplier > 3.2f)
+                        maxAscentMultiplier = 3.2f;
+                    if (constantAscend > 0.145f)
+                        constantAscend = 0.145f;
                 }
                 else // post yharon, use Drew's Wings stats
                 {
-                    ascentWhenFalling = 1f;
-                    ascentWhenRising = 0.17f;
-                    maxCanAscendMultiplier = 1.2f;
-                    maxAscentMultiplier = 3.25f;
-                    constantAscend = 0.15f;
+                    if (ascentWhenFalling > 1f)
+                        ascentWhenFalling = 1f;
+                    if (ascentWhenRising > 0.17f)
+                        ascentWhenRising = 0.17f;
+                    if (maxCanAscendMultiplier > 1.2f)
+                        maxCanAscendMultiplier = 1.2f;
+                    if (maxAscentMultiplier > 3.25f)
+                        maxAscentMultiplier = 3.25f;
+                    if (constantAscend > 0.15f)
+                        constantAscend = 0.15f;
                 }
-            }
-            else
-            {
-                orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
             }
         }
         internal static void FMSHorizontalSpeed_Detour(Orig_FMSHorizontalSpeed orig, FlightMasteryWings self, Player player, ref float speed, ref float acceleration)
         {
+            orig(self, player, ref speed, ref acceleration);
             if (NonFargoBossAlive())
             {
                 if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
                 {
-                    speed = 10.5f;
-                    acceleration = 2.8f;
+                    if (speed > 10.5f)
+                        speed = 10.5f;
+                    if (acceleration > 2.8f)
+                        acceleration = 2.8f;
                 }
                 else // post yharon, use Drew's Wings stats
                 {
-                    speed = 11.5f;
-                    acceleration = 2.9f;
+                    if (speed > 11.5f)
+                        speed = 11.5f;
+                    if (acceleration > 2.9f)
+                        acceleration = 2.9f;
                 }
                    
                 //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
-            }
-            else
-            {
-                orig(self, player, ref speed, ref acceleration);
             }
         }
 
