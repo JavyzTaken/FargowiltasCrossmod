@@ -925,11 +925,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                                 Vector2 currentDirection = target.DirectionTo(NPC.Center);
 
-                                float rotation = currentDirection.ToRotation() + FargoSoulsUtil.RotationDifference(currentDirection, -Vector2.UnitY) * 0.1f;
+                                float rotation = currentDirection.ToRotation() + FargoSoulsUtil.RotationDifference(currentDirection, -Vector2.UnitY) * 0.2f;
                                 Vector2 desiredPos = target.Center + rotation.ToRotationVector2() * distance;
 
                                 if (NPC.Distance(abovePlayer) > 40)
-                                    Movement(desiredPos, 0.1f, 40, 10, 0.1f, 0);
+                                    Movement(desiredPos, 0.4f, 40, 40, 0.4f, 0);
                                 else
                                 {
                                     //NPC.velocity = Vector2.Lerp(NPC.velocity, abovePlayer - NPC.Center, 0.05f);
@@ -966,6 +966,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                             worm.velocity = Vector2.UnitX * side * MathHelper.Lerp(16, 2, progress) + Vector2.UnitY * MathHelper.Lerp(0, 4, progress);
                                             worm.GetGlobalNPC<DevourerEternityHM>().FromHM = true;
                                             worm.life = worm.lifeMax *= 7;
+                                            worm.damage = worm.defDamage = NPC.defDamage;
                                         }
                                     }
                                 }

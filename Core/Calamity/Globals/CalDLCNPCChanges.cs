@@ -75,6 +75,7 @@ using FargowiltasSouls.Content.Bosses.Champions.Spirit;
 using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Bosses.CursedCoffin;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
@@ -170,12 +171,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 switch (npc.type)
                 {
                     case NPCID.SkeletronHead:
-                        npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.7f);
+                        npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.8f);
                         break;
                     case NPCID.SkeletronHand:
                         if (CalDLCWorldSavingSystem.E_EternityRev)
                         {
-                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.3f);
+                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
                             npc.damage = 36;
                         }
                         break;
@@ -224,15 +225,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region Modded Bosses
+            // coffin
+            if (npc.type == ModContent.NPCType<CursedCoffin>() || npc.type == ModContent.NPCType<CursedSpirit>())
+            {
+                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                npc.damage = (int)(npc.damage * 1.15f);
+            }
+                
             // deviantt
             if (npc.type == ModContent.NPCType<DeviBoss>())
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             // brn
             if (npc.type == ModContent.NPCType<BanishedBaron>())
-                npc.lifeMax = (int)(npc.lifeMax * 1.25f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             // lifelight
             if (npc.type == ModContent.NPCType<LifeChallenger>())
-                npc.lifeMax = (int)(npc.lifeMax * 1.2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             //champions
             if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
             {
@@ -242,18 +250,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() ||
                 npc.type == ModContent.NPCType<ProvSpawnHealer>() || npc.type == ModContent.NPCType<ProvSpawnOffense>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.4f);
             }
             //profaned guardians and rock thing
             if (npc.type == ModContent.NPCType<ProfanedGuardianHealer>() || npc.type == ModContent.NPCType<ProfanedGuardianDefender>() ||
                 npc.type == ModContent.NPCType<ProfanedGuardianCommander>() || npc.type == ModContent.NPCType<ProfanedRocks>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.2f);
             }
             //dragonfolly and minion
             if (npc.type == ModContent.NPCType<Bumblefuck>() || npc.type == ModContent.NPCType<Bumblefuck2>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.2f);
             }
             //signus
             if (npc.type == ModContent.NPCType<Signus>())

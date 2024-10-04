@@ -330,6 +330,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         internal static bool BrimstoneMonsterCanHitPlayer_Detour(Orig_BrimstoneMonsterCanHitPlayer orig, BrimstoneMonster self, Player player)
         {
+            if (self.Type != ModContent.ProjectileType<BrimstoneMonster>())
+            {
+                return orig(self, player);
+            }
             float distSQ = self.Projectile.DistanceSQ(player.Center);
             float radiusSQ = MathF.Pow(170f * self.Projectile.scale, 2);
             if (distSQ > radiusSQ)

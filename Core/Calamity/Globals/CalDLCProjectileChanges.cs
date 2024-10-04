@@ -18,7 +18,9 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
@@ -26,6 +28,7 @@ using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Content.Projectiles.Souls;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -163,9 +166,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     defenseDamage = true;
                 if (CalDLCSets.Projectiles.DefenseDamage[projectile.type])
                     defenseDamage = true;
+                if ((EModeGlobalNPC.abomBoss.IsWithinBounds(Main.maxNPCs) && FargoSoulsUtil.BossIsAlive(ref EModeGlobalNPC.abomBoss, ModContent.NPCType<AbomBoss>())) ||
+                    (EModeGlobalNPC.mutantBoss.IsWithinBounds(Main.maxNPCs) && FargoSoulsUtil.BossIsAlive(ref EModeGlobalNPC.mutantBoss, ModContent.NPCType<MutantBoss>())))
+                    defenseDamage = true;
 
                 if (defenseDamage)
-                    ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
+                    projectile.Calamity().DealsDefenseDamage = true;
             }
             if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
             {
