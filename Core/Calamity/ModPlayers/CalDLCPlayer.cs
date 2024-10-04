@@ -134,7 +134,13 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 {
                     Player.Calamity().cooldowns[GlobalDodge.ID].timeLeft = 1;
                 }
-
+            }
+            if (soulsPlayer.MutantPresence)
+            {
+                calamityPlayer.rampartOfDeities = false;
+                calamityPlayer.dAmulet = false;
+                calamityPlayer.SpongeShieldDurability = 0;
+                calamityPlayer.purity = false;
             }
 
             if (calamityPlayer.luxorsGift && Player.HeldItem != null && Player.HeldItem.type == ItemType<KamikazeSquirrelStaff>())

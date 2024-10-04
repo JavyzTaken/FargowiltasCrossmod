@@ -452,7 +452,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public static void ModifyHurtInfo_Calamity_Detour(Orig_ModifyHurtInfo_Calamity orig, CalamityPlayer self, ref Player.HurtInfo info)
         {
             bool chalice = self.chaliceOfTheBloodGod;
-            if (self.Player.FargoSouls().GuardRaised)
+            if (self.Player.FargoSouls().GuardRaised || self.Player.FargoSouls().MutantPresence)
                 self.chaliceOfTheBloodGod = false;
             orig(self, ref info);
             self.chaliceOfTheBloodGod = chalice;

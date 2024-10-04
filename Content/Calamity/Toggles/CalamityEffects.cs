@@ -68,7 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     public class AmalgamEffect : ColossusEffect
     {
         public override int ToggleItemType => ModContent.ItemType<TheAmalgam>();
-        public override bool MutantsPresenceAffects => true;
+        public override bool MutantsPresenceAffects => false;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
