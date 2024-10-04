@@ -330,7 +330,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
                     npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                    npc.lifeMax = (int)(npc.lifeMax * 1.9f);
                 }
             }
             #endregion
