@@ -26,6 +26,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
+using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
@@ -299,6 +300,20 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
             {
                 Player.Calamity().purity = false;
+            }
+        }
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            if (ModCompatibility.WrathoftheGods.Loaded && WorldSavingSystem.EternityMode)
+            {
+                if (Main.npc.Any(n => n.Alive() && 
+                n.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type || 
+                n.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type || 
+                n.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type))
+                {
+                    Player.AddBuff(BuffType<MutantFangBuff>(), 180);
+                    Player.AddBuff(BuffType<CurseoftheMoonBuff>(), 600);
+                }
             }
         }
         public override void UpdateBadLifeRegen()
