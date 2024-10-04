@@ -946,7 +946,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (DropsSoaringPotion.Contains(npc.type))
             {
-                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<SoaringPotion>(), 1, 1, 6));
+                TimsConcoctionDrop(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<SoaringPotion>(), 1, 1, 6));
             }
             if (DropsSulphurskinPotion.Contains(npc.type))
             {
