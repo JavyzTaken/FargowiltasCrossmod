@@ -300,6 +300,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             NPC.LifeMaxNERB(1250000, 1495000, 650000);
             NPC.lifeMax = (int)MathF.Round(NPC.lifeMax * healthBoostFactor);
 
+            Main.NewText("a " + NPC.FullName + NPC.lifeMax);
+
             NPC.aiStyle = -1;
             NPC.Opacity = 0f;
             NPC.knockBackResist = 0f;

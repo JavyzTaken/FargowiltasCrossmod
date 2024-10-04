@@ -305,6 +305,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 || npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
             {
                 npc.lifeMax = (int)(npc.lifeMax * 1.7f);
+                if (CalDLCWorldSavingSystem.E_EternityRev)
+                    npc.lifeMax = (int)(npc.lifeMax * 1.5f);
             }
             if (npc.type == ModContent.NPCType<SupremeCalamitas>() || npc.type == ModContent.NPCType<BrimstoneHeart>() ||
                 npc.type == ModContent.NPCType<SoulSeekerSupreme>() || npc.type == ModContent.NPCType<SupremeCataclysm>() || npc.type == ModContent.NPCType<SupremeCatastrophe>())
