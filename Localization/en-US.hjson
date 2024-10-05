@@ -394,7 +394,11 @@ Mods: {
 
 			DesertProwlerEnchant: {
 				DisplayName: Desert Prowler Enchantment
-				Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
+				Tooltip: 
+	´				'''
+						Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
+						Charge jump can only be performed while grounded
+					'''
 			}
 
 			WulfrumEnchant: {
