@@ -923,14 +923,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 List<int> Tier2Souls =
                 [
                     ItemType<TerrariaSoul>(),
-                        ItemType<UniverseSoul>(),
-                        ItemType<DimensionSoul>(),
-                        ItemType<MasochistSoul>()
+                    ItemType<UniverseSoul>(),
+                    ItemType<DimensionSoul>(),
+                    ItemType<MasochistSoul>()
                 ];
-
-                if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
+                if (recipe.HasResult<ShadowspecBar>())
                 {
-                    recipe.AddIngredient<ShadowspecBar>(5);
+                    recipe.AddIngredient<EternalEnergy>(1);
+                }
+
+                if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<AshesofAnnihilation>()))
+                {
+                    recipe.AddIngredient<AshesofAnnihilation>(5);
+                    recipe.AddIngredient<ExoPrism>(5);
                     if (recipe.RemoveTile(TileType<CrucibleCosmosSheet>()))
                     {
                         recipe.AddTile<DraedonsForge>();
