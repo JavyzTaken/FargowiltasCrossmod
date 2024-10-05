@@ -376,7 +376,7 @@ Mods: {
 				Tooltip:
 					'''
 					Gain +5% critical strike chance and summon damage whenever you use a jump or double jump
-					This bonus lasts until your jumps are reset
+					This bonus lasts until your jumps are reset or a mount is used
 					'''
 				CritUp: +{0}% crit
 				CritReset: -{0}% crit
