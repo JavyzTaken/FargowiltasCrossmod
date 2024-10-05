@@ -96,6 +96,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 .AddIngredient<YharimsGift>()
                 .AddIngredient<DraedonsHeart>()
                 .AddIngredient<CalamityMod.Items.Accessories.Calamity>()
+                .AddIngredient<AbomEnergy>(5)
                 .AddTile<CrucibleCosmosSheet>()
                 .Register();
         }
