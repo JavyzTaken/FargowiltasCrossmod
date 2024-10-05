@@ -530,6 +530,7 @@ Mods: {
 				Tooltip:
 					'''
 					Grants urchin spikes that protrude from your body
+					You gain 4 defense while the spikes are attached to you
 					Attacking charges the spikes, which launch outward when you stop attacking
 					'''
 			}
