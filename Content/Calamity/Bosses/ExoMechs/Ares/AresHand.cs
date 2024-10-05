@@ -5,6 +5,7 @@ using CalamityMod.Sounds;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -686,7 +687,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (NPC.life <= 0)
             {
                 NPC.life = 1;
-                Main.npc[NPC.realLife].checkDead();
+                if (NPC.realLife.IsWithinBounds(Main.maxNPCs))
+                    Main.npc[NPC.realLife].checkDead();
                 NPC.realLife = -1;
             }
 
