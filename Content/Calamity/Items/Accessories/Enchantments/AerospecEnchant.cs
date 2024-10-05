@@ -101,7 +101,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 ResetAeroCrit(player);
                 
             
-            if (player.jump != 0 && mplayer.AllowJumpsUsedInc)
+            if (player.jump != 0 && mplayer.AllowJumpsUsedInc && mplayer.NumJumpsUsed < maxCritJumps)
             {
                 mplayer.NumJumpsUsed++;
                 mplayer.AllowJumpsUsedInc = false;
