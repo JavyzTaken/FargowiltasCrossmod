@@ -638,6 +638,7 @@ Mods: {
 			PureGel.DisplayName: Pure Gel
 			HiveMindPulse.DisplayName: Hive Mind Pulse
 			ScourgeSandstream.DisplayName: Scourge Sandstream
+			CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
 		}
 
 		Buffs: {

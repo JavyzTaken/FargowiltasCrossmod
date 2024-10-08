@@ -74,7 +74,7 @@ Mods: {
 					Tooltip:
 						'''
 						Включён: Режим Вечность берёт приоритет над изменениями поведений режима Месть и других сложностей Calamity.
-						
+
 						Выключен: Изменения поведений из сложностей Calamity берут приоритет над режимом Вечность.
 						'''
 				}
@@ -644,6 +644,7 @@ Mods: {
 			PureGel.DisplayName: Чистейший гель
 			HiveMindPulse.DisplayName: Разум улей пульс
 			ScourgeSandstream.DisplayName: Пещаный поток бича
+			// CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
 		}
 
 		Buffs: {
