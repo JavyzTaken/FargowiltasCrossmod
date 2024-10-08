@@ -16,6 +16,7 @@ using CalamityMod.Items.Materials;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.Astral;
@@ -1332,7 +1333,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             else if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
+                if (npc.Calamity().newAI[0] == 0)
+                    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
             }
             else if (npc.type == ModContent.NPCType<Bumblefuck>())
             {
