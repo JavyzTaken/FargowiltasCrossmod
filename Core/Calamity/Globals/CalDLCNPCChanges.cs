@@ -1057,7 +1057,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             #endregion
             //the thing
 
-
             //if (npc.type == ModContent.NPCType<TimberChampionHead>() && BossRushEvent.BossRushActive)
             //{
             //    for (int playerIndex = 0; playerIndex < 255; playerIndex++)
