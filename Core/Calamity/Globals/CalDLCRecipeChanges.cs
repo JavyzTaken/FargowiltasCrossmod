@@ -875,9 +875,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.DisableRecipe();
                 }
-                if (recipe.HasResult<BrandoftheBrimstoneWitch>() && ModLoader.HasMod("CalamityHunt"))
+                if (recipe.HasResult<BrandoftheBrimstoneWitch>() && ModCompatibility.CalamityHunt.Loaded)
                 {
-                    Mod hunt = ModLoader.GetMod("CalamityHunt");
+                    Mod hunt = ModCompatibility.CalamityHunt.Mod;
                     if (!recipe.HasIngredient(hunt, "SplendorJam"))
                     {
                         recipe.AddIngredient(hunt, "SplendorJam");
