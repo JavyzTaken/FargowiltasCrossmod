@@ -101,6 +101,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
+            FargoSoulsPlayer fargoPlayer = player.FargoSouls();
+            CalamityPlayer calPlayer = player.Calamity();
+
             if (item.type == ModContent.ItemType<EternitySoul>())
             {
                 ModContent.GetInstance<BrandoftheBrimstoneWitch>().UpdateAccessory(player, hideVisual);
@@ -114,7 +117,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 || item.type == ModContent.ItemType<StatisNinjaBelt>() || item.type == ModContent.ItemType<StatisVoidSash>() || item.type == ModContent.ItemType<ShieldoftheHighRuler>()
                 || item.type == ModContent.ItemType<DeepDiver>() && player.wet || player.Calamity().plaguebringerPatronSet)
             {
-                player.FargoSouls().HasDash = true;
+                fargoPlayer.HasDash = true;
             }
             if (item.type == ModContent.ItemType<AngelTreads>())
             {
@@ -143,13 +146,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<AsgardianAegisEffect>(item))
                 {
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
-                    player.FargoSouls().HasDash = true;
+                    fargoPlayer.HasDash = true;
                 }
 
-                if (player.AddEffect<RampartofDeitiesEffect>(item))
-                {
-                    ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
-                }
+                ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -201,6 +201,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
                 }
+            }
+
+            // toggles to Cal accs
+            if (calPlayer.rampartOfDeities)
+            {
+                player.AddEffect<RampartofDeitiesEffect>(item);
+                if (!player.HasEffect<RampartofDeitiesEffect>())
+                    calPlayer.rampartOfDeities = false;
+                player.AddEffect<DefenseStarEffect>(item);
+                if (!player.HasEffect<DefenseStarEffect>())
+                    player.starCloakItem = null;
+                player.AddEffect<FrozenTurtleEffect>(item);
+                if (!player.HasEffect<FrozenTurtleEffect>())
+                    player.ClearBuff(BuffID.IceBarrier);
+
+
             }
         }
         public override bool CanUseItem(Item item, Player player)
