@@ -38,6 +38,7 @@ using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -52,7 +53,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     {
         public override bool? UseItem(Item item, Player player)
         {
+            FargoSoulsPlayer fargoPlayer = player.FargoSouls();
             CalamityPlayer cplayer = player.Calamity();
+            if (item.type == ModContent.ItemType<DeerSinew>())
+            {
+                var sinew = ModContent.GetInstance<DeerSinewEffect>();
+                fargoPlayer.Toggler.Toggles[sinew].ToggleBool = false;
+            }
             if (item.type == ModContent.ItemType<DeathFruit>())
             {
                 if (cplayer.dFruit)
@@ -242,9 +249,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
                     tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                    
-                    
-                    
                 }
             }
             for (int i = 0; i < tooltips.Count; i++)
@@ -267,6 +271,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<Terminus>())
             {
                 tooltips.Add(new TooltipLine(Mod, "PostMutant", $"[c/FF0000:Calamity Crossmod Support:] Can only be used after defeating the Mutant"));
+            }
+            if (item.type == ModContent.ItemType<DeerSinew>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "ToggleDisabledByDefault", $"[c/FF0000:Calamity Crossmod Support:] Toggle disabled by default"));
             }
 
             const string BalanceLine = "Cross-mod Balance: ";
