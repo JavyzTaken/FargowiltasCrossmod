@@ -37,6 +37,11 @@ using FargowiltasSouls.Content.Items.Accessories.Forces;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using CalamityMod.CalPlayer;
+using FargowiltasSouls.Core.Toggler;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -71,6 +76,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TungstenNerfedProjMetod = typeof(TungstenEffect).GetMethod("TungstenNerfedProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo ModifyHurtInfo_CalamityMethod = typeof(CalamityPlayer).GetMethod("ModifyHurtInfo_Calamity", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -99,6 +105,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_TungstenNerfedProj(Projectile projectile);
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
         public delegate void Orig_ModifyHurtInfo_Calamity(CalamityPlayer self, ref Player.HurtInfo info);
+        public delegate void Orig_MinimalEffects(ToggleBackend self);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -129,6 +136,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TungstenNerfedProjMetod, TungstenNerfedProj_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
             HookHelper.ModifyMethodWithDetour(ModifyHurtInfo_CalamityMethod, ModifyHurtInfo_Calamity_Detour);
+            HookHelper.ModifyMethodWithDetour(MinimalEffects_Method, MinimalEffects_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -456,6 +464,33 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 self.chaliceOfTheBloodGod = false;
             orig(self, ref info);
             self.chaliceOfTheBloodGod = chalice;
+        }
+        public static void MinimalEffects_Detour(Orig_MinimalEffects orig, ToggleBackend self)
+        {
+            orig(self);
+            Player player = Main.LocalPlayer;
+            player.SetToggleValue<OccultSkullCrownEffect>(true);
+            player.SetToggleValue<PurityEffect>(true);
+            player.SetToggleValue<TheSpongeEffect>(true);
+            player.SetToggleValue<ChaliceOfTheBloodGodEffect>(true);
+            player.SetToggleValue<YharimsGiftEffect>(true);
+            player.SetToggleValue<DraedonsHeartEffect>(true);
+            player.SetToggleValue<NebulousCoreEffect>(false);
+            player.SetToggleValue<CalamityEffect>(true);
+
+            player.SetToggleValue<AerospecJumpEffect>(true);
+
+            player.SetToggleValue<NanotechEffect>(true);
+            player.SetToggleValue<EclipseMirrorEffect>(true);
+            player.SetToggleValue<AbyssalDivingSuitEffect>(true);
+            player.SetToggleValue<NucleogenesisEffect>(true);
+            player.SetToggleValue<ElementalQuiverEffect>(true);
+            player.SetToggleValue<ElementalGauntletEffect>(true);
+            player.SetToggleValue<EtherealTalismanEffect>(true);
+            player.SetToggleValue<AmalgamEffect>(true);
+            player.SetToggleValue<AsgardianAegisEffect>(true);
+            player.SetToggleValue<RampartofDeitiesEffect>(true);
+
         }
         #endregion
     }

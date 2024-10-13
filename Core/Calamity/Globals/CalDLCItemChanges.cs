@@ -57,8 +57,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             CalamityPlayer cplayer = player.Calamity();
             if (item.type == ModContent.ItemType<DeerSinew>())
             {
-                var sinew = ModContent.GetInstance<DeerSinewEffect>();
-                fargoPlayer.Toggler.Toggles[sinew].ToggleBool = false;
+                player.SetToggleValue<DeerSinewEffect>(false);
             }
             if (item.type == ModContent.ItemType<DeathFruit>())
             {
