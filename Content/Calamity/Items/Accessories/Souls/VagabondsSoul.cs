@@ -51,19 +51,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public abstract class VagabondEffect : AccessoryEffect
-    {
-        public override Header ToggleHeader => Header.GetHeader<VagabondsSoulHeader>();
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class NanotechEffect : VagabondEffect
+    public class NanotechEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<Nanotech>();
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EclipseMirrorEffect : VagabondEffect
+    public class EclipseMirrorEffect : UniverseEffect
     {
         public override int ToggleItemType => ModContent.ItemType<EclipseMirror>();
     }
