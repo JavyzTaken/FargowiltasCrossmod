@@ -732,10 +732,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient<MOAB>();
                     if (recipe.RemoveIngredient(ItemID.MasterNinjaGear))
                         recipe.AddIngredient<StatisVoidSash>();
-                    if (recipe.RemoveIngredient(ItemID.EoCShield))
-                        recipe.AddIngredient<ShieldoftheHighRuler>();
-                    recipe.AddIngredient<WulfrumAcrobaticsPack>()
-                        .AddIngredient<TundraLeash>()
+                    //if (recipe.RemoveIngredient(ItemID.EoCShield))
+                    //    recipe.AddIngredient<ShieldoftheHighRuler>();
+                    recipe.AddIngredient<TundraLeash>()
                         .AddIngredient<FollyFeed>()
                         .AddIngredient<TheCartofGods>();
                 }

@@ -96,6 +96,7 @@ Mods: {
 			AddedEffects: {
 				AngelTreads: Эффекты ангельских ботфортов
 				AeolusBoots: Эффекты ботинок Эола
+				// CalamitySupersonic: Effects of Statis' Void Sash
 				ThoriumSuperSonic: Эффекты воздушных бегунов, ботинок выживальщика и утяжелённых летунов
 				CalamityColossus: Эффекты слияния, асгардской эгиды и оплота божества
 				ThoriumColossus:
@@ -678,6 +679,7 @@ Mods: {
 			ElementalQuiverEffect: Элементальный колчан
 			QuiverofNihilityEffect: Колчан небытия
 			NucleogenesisEffect: Нуклеосинтез
+			// StatisVoidSashEffect: Statis' Void Sash
 			AbyssalDivingSuitEffect: Глубоководный водолазный костюм
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 			HeartoftheElementsEffect: Сердце элементов

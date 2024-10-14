@@ -91,6 +91,7 @@ Mods: {
 			AddedEffects: {
 				AngelTreads: Effects of Angel Treads
 				AeolusBoots: Effects of Aeolus Boots
+				CalamitySupersonic: Effects of Statis' Void Sash
 				ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
 				CalamityColossus: Effects of The Amalgam, Asgardian Aegis and Rampart of Deities
 				ThoriumColossus:
@@ -672,6 +673,7 @@ Mods: {
 			ElementalQuiverEffect: Elemental Quiver
 			QuiverofNihilityEffect: Quiver of Nihility
 			NucleogenesisEffect: Nucleogenesis
+			StatisVoidSashEffect: Statis' Void Sash
 			AbyssalDivingSuitEffect: Abyssal Diving Suit
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 			HeartoftheElementsEffect: Heart of the Elements
