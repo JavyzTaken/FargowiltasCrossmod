@@ -819,13 +819,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     if (recipe.RemoveIngredient(ItemID.PygmyNecklace) && recipe.RemoveIngredient(ItemID.PapyrusScarab))
                         recipe.AddIngredient<Nucleogenesis>();
-                    if (recipe.RemoveIngredient(ItemID.Smolstar) && recipe.RemoveIngredient(ItemID.PirateStaff))
+                    if (recipe.RemoveIngredient(ItemID.Smolstar) && recipe.RemoveIngredient(ItemID.MaceWhip))
                         recipe.AddIngredient<EtherealSubjugator>();
                     if (recipe.RemoveIngredient(ItemID.OpticStaff) && recipe.RemoveIngredient(ItemID.DeadlySphereStaff))
                         recipe.AddIngredient<CadaverousCarrion>();
                     if (recipe.RemoveIngredient(ItemID.StormTigerStaff) && recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
                         recipe.AddIngredient<CorvidHarbringerStaff>();
-                    if (recipe.RemoveIngredient(ItemID.TempestStaff) && recipe.RemoveIngredient(ItemID.RavenStaff))
+                    if (recipe.RemoveIngredient(ItemID.TempestStaff))
                         recipe.AddIngredient<SarosPossession>();
                     if (recipe.RemoveIngredient(ItemID.XenoStaff) && recipe.RemoveIngredient(ItemID.EmpressBlade))
                         recipe.AddIngredient<YharonsKindleStaff>()
