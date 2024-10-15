@@ -186,17 +186,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// </summary>
         public static ExoTwinsAIState MakeAIStateChoice()
         {
-            bool phase2 = false;
-            if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
-                phase2 = apollo.InPhase2;
+            ExoTwinsAIState previousState = SharedState.AIState;
+            ExoTwinsAIState choice;
 
-            if (Main.rand.NextBool() && phase2)
-                return Main.rand.NextFromList(ExoTwinsAIState.MachineGunLasers, ExoTwinsAIState.ExothermalOverload);
+            do
+            {
+                bool phase2 = false;
+                if (CalamityGlobalNPC.draedonExoMechTwinGreen != -1 && Main.npc[CalamityGlobalNPC.draedonExoMechTwinGreen].TryGetDLCBehavior(out ApolloEternity apollo))
+                    phase2 = apollo.InPhase2;
 
-            if (SharedState.TotalFinishedAttacks % 2 == 1)
-                return ExoTwinsAIState.PerformIndividualAttacks;
+                choice = Main.rand.NextFromList(ExoTwinsAIState.DashesAndLasers, ExoTwinsAIState.CloseShots);
+                if (SharedState.TotalFinishedAttacks % 2 == 1)
+                    choice = ExoTwinsAIState.PerformIndividualAttacks;
+                if (Main.rand.NextBool() && phase2)
+                    choice = Main.rand.NextFromList(ExoTwinsAIState.MachineGunLasers, ExoTwinsAIState.ExothermalOverload);
+            }
+            while (choice == previousState);
 
-            return Main.rand.NextFromList(ExoTwinsAIState.DashesAndLasers, ExoTwinsAIState.CloseShots);
+            return choice;
         }
 
         /// <summary>
