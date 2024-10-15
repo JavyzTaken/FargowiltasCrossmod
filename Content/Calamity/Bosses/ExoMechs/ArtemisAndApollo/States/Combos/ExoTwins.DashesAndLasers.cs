@@ -202,6 +202,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             Vector2 hoverDestination = Target.Center + new Vector2(npc.OnRightSideOf(Target).ToDirectionInt() * 600f, -300f) - npc.velocity * 3f;
             npc.SmoothFlyNearWithSlowdownRadius(hoverDestination, 0.038f, 0.74f, 74f);
+
+            // Get really close to the desired destination on the first few frames, to ensure that Artemis doesn't fire from offscreen.
+            float superFastRedirectInterpolant = LumUtils.InverseLerp(10f, 0f, AITimer);
+            npc.Center = Vector2.Lerp(npc.Center, hoverDestination, superFastRedirectInterpolant * 0.75f);
+
             npc.rotation = npc.AngleTo(Target.Center + Target.velocity * 10f) + lookOffsetAngle;
 
             artemisAttributes.Frame = artemisAttributes.Animation.CalculateFrame(wrappedTime / 50f % 1f, artemisAttributes.InPhase2);
