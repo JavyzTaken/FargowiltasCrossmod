@@ -40,9 +40,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public static int ExoEnergyBlast_BlastDelay => Utilities.SecondsToFrames(2.45f);
 
         /// <summary>
-        /// The rate at which bursts of electricity are shot from the orb during the ExoEnergyBlast attack.
+        /// The cycle time which dictates the rate at which Hades releases missiles from his body segments during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_ProjectileBurstReleaseRate => Utilities.SecondsToFrames(0.75f);
+        public static int ExoEnergyBlast_ProjectileBurstReleaseRate => Utilities.SecondsToFrames(10f);
 
         /// <summary>
         /// The speed at which Hades turns the laser during the ExoEnergyBlast attack.
@@ -172,7 +172,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             else
                 CloseSegment().Invoke(behaviorOverride);
 
-            if ((segment.whoAmI * 12 + AITimer) % 600 == 0 && beamIsOverheating)
+            if ((segment.whoAmI * 12 + AITimer) % ExoEnergyBlast_ProjectileBurstReleaseRate == 0 && beamIsOverheating)
             {
                 Vector2 mineSpawnPosition = behaviorOverride.TurretPosition;
                 if (Main.netMode != NetmodeID.MultiplayerClient && !mineSpawnPosition.WithinRange(Target.Center, 400f))
