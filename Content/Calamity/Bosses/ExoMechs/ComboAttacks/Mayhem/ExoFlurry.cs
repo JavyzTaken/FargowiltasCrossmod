@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// The amount by which Hades turns his head when firing his laser blast.
         /// </summary>
-        public static float HadesTurnSpeedCoefficient => 4.6f;
+        public static float HadesTurnSpeedCoefficient => 6.4f;
 
         /// <summary>
         /// The diameter of the explosion from Ares' nukes.
