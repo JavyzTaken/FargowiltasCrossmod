@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Assets.Particles;
+﻿using CalamityMod.NPCs.ExoMechs.Apollo;
+using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
@@ -69,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             float pointAtTargetSpeed = 4f;
             Vector2 outerHoverDestination = Target.Center + new Vector2(NPC.OnRightSideOf(Target).ToDirectionInt() * 1050f, -400f);
 
-            BodyBehaviorAction = new(AllSegments(), beamIsOverheating ? OpenSegment() : CloseSegment());
+            BodyBehaviorAction = new(AllSegments(), b => DoBehavior_ExoEnergyBlast_UpdateSegment(b, beamIsOverheating));
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant + (beamIsOverheating ? 2f : -1f) * StandardSegmentOpenRate);
 
             JawRotation = MathHelper.Lerp(JawRotation, Utilities.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer).Squared() * 1.3f, 0.07f);
@@ -160,6 +161,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 SelectNewState();
 
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
+        }
+
+        public void DoBehavior_ExoEnergyBlast_UpdateSegment(HadesBodyEternity behaviorOverride, bool beamIsOverheating)
+        {
+            NPC segment = behaviorOverride.NPC;
+
+            if (beamIsOverheating)
+                OpenSegment().Invoke(behaviorOverride);
+            else
+                CloseSegment().Invoke(behaviorOverride);
+
+            if ((segment.whoAmI * 12 + AITimer) % 600 == 0 && beamIsOverheating)
+            {
+                Vector2 mineSpawnPosition = behaviorOverride.TurretPosition;
+                if (Main.netMode != NetmodeID.MultiplayerClient && !mineSpawnPosition.WithinRange(Target.Center, 400f))
+                {
+                    float missileSpeed = Main.rand.NextFloat(0.7f, 0.8f);
+                    float missileOffsetAngle = Main.rand.NextGaussian(0.11f);
+                    Vector2 missileVelocity = (Target.Center - mineSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(missileOffsetAngle) * missileSpeed;
+                    Utilities.NewProjectileBetter(segment.GetSource_FromAI(), mineSpawnPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f);
+                }
+
+                SoundEngine.PlaySound(Apollo.MissileLaunchSound with { Volume = 0.16f, MaxInstances = 0 }, mineSpawnPosition);
+                segment.netUpdate = true;
+            }
+
+            OpenSegment().Invoke(behaviorOverride);
         }
     }
 }
