@@ -318,6 +318,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.dontTakeDamage = false;
             NPC.ShowNameOnHover = true;
             NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
+            NPC.BossBar = ModContent.GetInstance<ExoMechBossBar>();
             ActionsToDeferAfterCombo = null;
             BodyBehaviorAction = null;
             BodyRenderAction = null;

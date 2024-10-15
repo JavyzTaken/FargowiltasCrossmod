@@ -304,7 +304,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             NPC.netAlways = true;
             NPC.boss = true;
-            NPC.BossBar = Main.BigBossProgressBar.NeverValid;
+            NPC.BossBar = ModContent.GetInstance<ExoMechBossBar>();
 
             NPC.Calamity().VulnerableToSickness = false;
             NPC.Calamity().VulnerableToElectricity = true;
