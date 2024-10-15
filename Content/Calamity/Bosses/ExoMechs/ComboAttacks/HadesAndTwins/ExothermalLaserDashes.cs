@@ -140,7 +140,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 ScreenShakeSystem.StartShake(9.5f);
 
-                // TODO -- Play a laser shoot sound.
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2(), ModContent.ProjectileType<BlazingExoLaserbeam>(), BlazingLaserbeamDamage, 0f, -1, npc.whoAmI);
             }
