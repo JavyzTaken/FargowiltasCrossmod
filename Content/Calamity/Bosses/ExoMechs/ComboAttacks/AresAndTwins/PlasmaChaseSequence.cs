@@ -307,7 +307,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.dontTakeDamage = true;
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 2)
-                    SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f });
+                {
+                    if (SoundEngine.TryGetActiveSound(SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f }), out ActiveSound? sound) && sound is not null)
+                        sound.Volume *= 1.84f;
+                }
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 10)
                 {
