@@ -290,6 +290,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
             }
 
+            hades.SegmentReorientationStrength = 0.1f;
+
             int returnOnScreenTime = 420;
             int beamWindUpTime = 180;
             int beamShootDelay = 60;
@@ -305,27 +307,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity = idealDirection * MathHelper.Lerp(npc.velocity.Length(), 130f, 0.07f);
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
 
-                if (npc.WithinRange(Target.Center, 300f))
+                if (npc.WithinRange(Target.Center, 500f))
                 {
                     localAITimer += returnOnScreenTime - localAITimer + 1f;
-                    npc.velocity *= 0.1f;
+                    npc.velocity *= 0.05f;
                     npc.netUpdate = true;
                 }
             }
 
             else if (wrappedAttackTimer <= returnOnScreenTime + beamWindUpTime)
             {
-                if (npc.velocity.Length() >= 3f)
-                    npc.velocity *= 0.9485f;
-
                 float angularVelocity = HadesTurnSpeedCoefficient / npc.Distance(Target.Center);
                 npc.velocity = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), angularVelocity);
+                if (npc.velocity.Length() > 6f)
+                    npc.velocity *= 0.9f;
+
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
 
                 float chargeUpCompletion = Utilities.InverseLerp(0f, beamWindUpTime, wrappedAttackTimer - returnOnScreenTime);
 
                 jawExtendInterpolant = MathF.Sqrt(chargeUpCompletion);
                 hades.ReticleOpacity = MathF.Pow(Utilities.InverseLerp(0f, 0.25f, chargeUpCompletion), 0.6f);
+                hades.SegmentReorientationStrength = 0f;
 
                 int particleCount = (int)MathHelper.Lerp(1f, 3f, chargeUpCompletion);
                 Vector2 mouthPosition = npc.Center + npc.velocity.SafeNormalize(Vector2.Zero) * 40f;
@@ -337,14 +340,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     energy.Spawn();
                 }
 
-                if (wrappedAttackTimer % 10 == 9)
+                if (wrappedAttackTimer % 4 == 3)
                 {
                     float scale = MathHelper.Lerp(0.5f, 3f, chargeUpCompletion);
 
-                    StrongBloom bloom = new(mouthPosition, Vector2.Zero, Color.DeepSkyBlue, scale, 20);
+                    StrongBloom bloom = new(mouthPosition, Vector2.Zero, Color.DeepSkyBlue, scale, 13);
                     GeneralParticleHandler.SpawnParticle(bloom);
 
-                    bloom = new(mouthPosition, Vector2.Zero, Color.Wheat, scale * 0.45f, 20);
+                    bloom = new(mouthPosition, Vector2.Zero, Color.Wheat, scale * 0.45f, 13);
                     GeneralParticleHandler.SpawnParticle(bloom);
                 }
 
@@ -364,6 +367,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 jawExtendInterpolant = 1f;
                 hades.ReticleOpacity = Utilities.Saturate(hades.ReticleOpacity - 0.08f);
+                hades.SegmentReorientationStrength = 0f;
                 if (npc.velocity.Length() >= 3f)
                     npc.velocity *= 0.9485f;
             }
@@ -375,11 +379,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.velocity *= 0.9485f;
                 npc.velocity = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), 0.0056f);
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
+                hades.SegmentReorientationStrength = 0f;
             }
             else
             {
                 npc.velocity = (npc.velocity * 1.02f).ClampLength(0f, 32f);
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
+                hades.SegmentReorientationStrength = 0f;
             }
 
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment());
