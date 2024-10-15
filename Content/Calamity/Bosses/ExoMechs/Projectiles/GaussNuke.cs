@@ -123,7 +123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         // This IS a heavy chunk of metal, and as such it should do damage as it's flying forward, but otherwise it should just fly without causing harm.
         // It'd be rather silly for a nuke that's just sitting in place to do damage.
-        public override bool? CanDamage() => Projectile.velocity.Length() >= 15f;
+        public override bool? CanDamage() => Projectile.velocity.Length() >= 25f;
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) => Utilities.CircularHitboxCollision(Projectile.Center, 45f, targetHitbox);
 
