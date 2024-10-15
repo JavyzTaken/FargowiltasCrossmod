@@ -22,6 +22,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             // This is necessary to ensure that the map icon goes away.
             NPC.As<ThanatosHead>().SecondaryAIState = (int)ThanatosHead.SecondaryPhase.PassiveAndImmune;
 
+            SegmentReorientationStrength = 0.05f;
+
             NPC.damage = 0;
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
         }
