@@ -22,17 +22,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             BodyBehaviorAction = new(AllSegments(), CloseSegment());
 
-            if (NPC.velocity.Y <= 85f)
-                NPC.velocity.Y += 1.2f;
+            if (NPC.velocity.Y <= 120f)
+                NPC.velocity.Y += 4f;
 
             DoBehavior_SpawnAnimation_HandleGroundCollision();
 
             if (!SpawnAnimation_InGround)
                 AITimer = 0;
-            else if (MathF.Abs(NPC.velocity.Y) >= 36f)
-                NPC.velocity *= 0.965f;
+            else if (MathF.Abs(NPC.velocity.Y) >= 25f)
+                NPC.velocity *= 0.9f;
 
-            if (AITimer >= 75)
+            if (AITimer >= 60)
                 SelectNewState();
 
             NPC.dontTakeDamage = true;
