@@ -140,8 +140,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         {
             int wrappedTimer = AITimer % (MachineGunLasers_ApolloRedirectTime + MachineGunLasers_ApolloTelegraphTime + MachineGunLasers_ApolloDashTime + MachineGunLasers_ApolloDashSlowdownTime);
             float dashSpeed = 150f;
+            bool doneAttacking = AITimer >= MachineGunLasers_AttackDelay + MachineGunLasers_AttackDuration - 60;
 
-            if (wrappedTimer <= MachineGunLasers_ApolloRedirectTime)
+            if (wrappedTimer <= MachineGunLasers_ApolloRedirectTime || doneAttacking)
             {
                 float hoverFlySpeedInterpolant = Utilities.InverseLerpBump(0f, 0.6f, 0.8f, 1f, wrappedTimer / (float)MachineGunLasers_ApolloRedirectTime) * 0.09f;
                 Vector2 artemisPerpendicularOffset = Target.SafeDirectionTo(Main.npc[CalamityGlobalNPC.draedonExoMechTwinRed].Center).RotatedBy(MathHelper.PiOver2) * 1250f;
