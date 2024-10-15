@@ -31,6 +31,8 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using CalamityMod.Items.Weapons.Rogue;
+using FargowiltasSouls.Content.UI.Elements;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -89,24 +91,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
+            float DamageFormula(float x) => x / MathF.Sqrt(x * x + 1);
             float x = player.velocity.Length() / 8f;
-            float bonusMultiplier = x / MathF.Sqrt(x * x + 1); // This function approaches y = 1 as x approaches infinity.
-            float bonusDamage = bonusMultiplier * 0.15f;
+            float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
+            float bonusDamage = bonusMultiplier * 0.35f;
             if (player.ForceEffect<StatigelEffect>())
                 bonusDamage *= 2;
             player.GetDamage(DamageClass.Generic) += bonusDamage;
+
+            CooldownBarManager.Activate("StatigelDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/StatigelEnchant").Value, new Color(89, 170, 204), 
+                () => DamageFormula(Main.LocalPlayer.velocity.Length() / 8f), true, 60, () => player.HasEffect<StatigelEffect>());
+
             if (player.ForceEffect<StatigelEffect>())
             {
-                player.runAcceleration *= 0.85f;
+                player.runAcceleration *= 0.9f;
                 //player.maxRunSpeed *= 1.3f;
                 player.accRunSpeed *= 1.2f;
-                player.runSlowdown *= 0.25f;
+                player.runSlowdown *= 0.5f;
             }
             else
             {
-                player.runAcceleration *= 0.7f;
+                player.runAcceleration *= 0.8f;
                 player.accRunSpeed *= 1.12f;
-                player.runSlowdown *= 0.25f;
+                player.runSlowdown *= 0.5f;
             }
             
         }

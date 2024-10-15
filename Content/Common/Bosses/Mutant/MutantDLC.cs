@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             if (npc.localAI[3] >= 3 || npc.ai[0] == 10) //p2 or phase transition
             {
 
-                if (npc.life < npc.lifeMax / 2 && npc.ai[0] != 10) //play storia under half health
+                if (WorldSavingSystem.MasochistModeReal) //play storia
                 {
                     if (!PlayStoria)
                     {
@@ -162,6 +162,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             if (!ShouldDoDLC || attackChoice < 0)
             {
+                if (DLCAttackChoice != DLCAttack.None)
+                    npc.netUpdate = true;
+                DLCAttackChoice = DLCAttack.None;
                 return true;
             }
 
@@ -189,6 +192,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             else
             {
                 FirstFrame = false;
+                npc.netUpdate = true;
             }
             OldAttackChoice = attackChoice;
 
@@ -1175,6 +1179,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 if (Timer == 0)
                 {
+                    npc.netUpdate = true;
                     SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center);
                     Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Goldenrod, Vector2.One * 40f, Vector2.Zero, PrepareTime, true, Color.White);
                     p.Spawn();

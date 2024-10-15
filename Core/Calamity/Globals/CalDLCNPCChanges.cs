@@ -16,6 +16,7 @@ using CalamityMod.Items.Materials;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.Astral;
@@ -44,6 +45,7 @@ using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.PlaguebringerGoliath;
 using CalamityMod.NPCs.PlagueEnemies;
 using CalamityMod.NPCs.Polterghast;
+using CalamityMod.NPCs.PrimordialWyrm;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
 using CalamityMod.NPCs.Ravager;
@@ -75,6 +77,7 @@ using FargowiltasSouls.Content.Bosses.Champions.Spirit;
 using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Bosses.CursedCoffin;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
@@ -170,12 +173,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 switch (npc.type)
                 {
                     case NPCID.SkeletronHead:
-                        npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.7f);
+                        npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.8f);
                         break;
                     case NPCID.SkeletronHand:
                         if (CalDLCWorldSavingSystem.E_EternityRev)
                         {
-                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.3f);
+                            npc.lifeMax = (int)Math.Round(npc.lifeMax * 1.5f);
                             npc.damage = 36;
                         }
                         break;
@@ -224,15 +227,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region Modded Bosses
+            // coffin
+            if (npc.type == ModContent.NPCType<CursedCoffin>() || npc.type == ModContent.NPCType<CursedSpirit>())
+            {
+                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                npc.damage = (int)(npc.damage * 1.15f);
+            }
+                
             // deviantt
             if (npc.type == ModContent.NPCType<DeviBoss>())
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             // brn
             if (npc.type == ModContent.NPCType<BanishedBaron>())
-                npc.lifeMax = (int)(npc.lifeMax * 1.25f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             // lifelight
             if (npc.type == ModContent.NPCType<LifeChallenger>())
-                npc.lifeMax = (int)(npc.lifeMax * 1.2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             //champions
             if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
             {
@@ -242,59 +252,60 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() ||
                 npc.type == ModContent.NPCType<ProvSpawnHealer>() || npc.type == ModContent.NPCType<ProvSpawnOffense>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.25f);
             }
             //profaned guardians and rock thing
             if (npc.type == ModContent.NPCType<ProfanedGuardianHealer>() || npc.type == ModContent.NPCType<ProfanedGuardianDefender>() ||
                 npc.type == ModContent.NPCType<ProfanedGuardianCommander>() || npc.type == ModContent.NPCType<ProfanedRocks>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.2f);
             }
             //dragonfolly and minion
             if (npc.type == ModContent.NPCType<Bumblefuck>() || npc.type == ModContent.NPCType<Bumblefuck2>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.2f);
             }
             //signus
             if (npc.type == ModContent.NPCType<Signus>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2.2f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
             }
             //ceaseless void & dark energy
             if (npc.type == ModContent.NPCType<CeaselessVoid>() || npc.type == ModContent.NPCType<DarkEnergy>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2.1f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
             }
             //storm weaver
             //sw is weird yes i need to set all segments
             if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverTail>() || npc.type == ModContent.NPCType<StormWeaverBody>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2.4f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
             }
             //polterghast and polterclone
             if (npc.type == ModContent.NPCType<Polterghast>() || npc.type == ModContent.NPCType<PolterPhantom>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2.2f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
             }
             //overdose
             if (npc.type == ModContent.NPCType<OldDuke>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2.2f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
             }
             //dog
             if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2.2f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
             }
             //yhar
             if (npc.type == ModContent.NPCType<Yharon>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.55f);
             }
             //abom
             if (npc.type == ModContent.NPCType<AbomBoss>())
             {
                 npc.lifeMax = (int)(npc.lifeMax * 3.5f);
+                npc.damage = (int)(npc.damage * 1.25f);
             }
             //exos
             if (npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosHead>()
@@ -302,17 +313,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 || npc.type == ModContent.NPCType<AresLaserCannon>() || npc.type == ModContent.NPCType<AresPlasmaFlamethrower>() || npc.type == ModContent.NPCType<AresTeslaCannon>()
                 || npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.9f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.7f);
             }
             if (npc.type == ModContent.NPCType<SupremeCalamitas>() || npc.type == ModContent.NPCType<BrimstoneHeart>() ||
                 npc.type == ModContent.NPCType<SoulSeekerSupreme>() || npc.type == ModContent.NPCType<SupremeCataclysm>() || npc.type == ModContent.NPCType<SupremeCatastrophe>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.9f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.7f);
             }
             //mutant
             if (npc.type == ModContent.NPCType<MutantBoss>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 4.4f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.damage = (int)(npc.damage * 1.5f);
             }
             if (ModCompatibility.WrathoftheGods.Loaded)
             {
@@ -320,7 +332,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
                     npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
                 {
-                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                    npc.lifeMax = (int)(npc.lifeMax * 1.9f);
                 }
             }
             #endregion
@@ -930,7 +942,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (DropsPhotosynthesisPotion.Contains(npc.type))
             {
-                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<PhotosynthesisPotion>(), 1, 2, 6));
+                TimsConcoctionDrop(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<PhotosynthesisPotion>(), 1, 2, 6));
             }
             if (DropsShadowPotion.Contains(npc.type))
             {
@@ -938,7 +950,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (DropsSoaringPotion.Contains(npc.type))
             {
-                TimsConcoctionDrop(ItemDropRule.Common(ModContent.ItemType<SoaringPotion>(), 1, 1, 6));
+                TimsConcoctionDrop(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<SoaringPotion>(), 1, 1, 6));
             }
             if (DropsSulphurskinPotion.Contains(npc.type))
             {
@@ -1322,7 +1334,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             else if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
+                if (npc.Calamity().newAI[0] == 0)
+                    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
             }
             else if (npc.type == ModContent.NPCType<Bumblefuck>())
             {
@@ -1375,6 +1388,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                     Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
+            }
+            else if (npc.type == ModContent.NPCType<PrimordialWyrmHead>())
+            {
+                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
             }
             if (ModCompatibility.WrathoftheGods.Loaded)
             {

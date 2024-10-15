@@ -75,11 +75,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             //DLCUtils.DrawBackglow(line, Color.Aqua, target.Center + new Vector2(0, y), new Vector2(0, line.Height() / 2), new Vector2(0.01f * target.width / 5, 1));
             //DLCUtils.DrawBackglow(line, Color.Aqua, target.Center + new Vector2(0, y), new Vector2(0, line.Height() / 2), new Vector2(0.01f * target.width / 5, 1), MathHelper.Pi);
 
-            Asset<Texture2D> heat = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Projectiles/Heat");
-            Asset<Texture2D> cold = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Projectiles/Cold");
-            Asset<Texture2D> sick = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Projectiles/Sickness");
-            Asset<Texture2D> water = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Projectiles/Water");
-            Asset<Texture2D> elec = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Projectiles/Electricity");
+            Asset<Texture2D> heat = ModContent.Request<Texture2D>("CalamityMod/UI/DebuffSystem/HeatDebuffType");
+            Asset<Texture2D> cold = ModContent.Request<Texture2D>("CalamityMod/UI/DebuffSystem/ColdDebuffType");
+            Asset<Texture2D> sick = ModContent.Request<Texture2D>("CalamityMod/UI/DebuffSystem/SicknessDebuffType");
+            Asset<Texture2D> water = ModContent.Request<Texture2D>("CalamityMod/UI/DebuffSystem/WaterDebuffType");
+            Asset<Texture2D> elec = ModContent.Request<Texture2D>("CalamityMod/UI/DebuffSystem/ElectricityDebuffType");
             bool?[] weakness = { target.Calamity().VulnerableToHeat, target.Calamity().VulnerableToCold, target.Calamity().VulnerableToSickness, target.Calamity().VulnerableToWater, target.Calamity().VulnerableToElectricity };
             int amount = 0;
             for (int i = 0; i < weakness.Length; i++)

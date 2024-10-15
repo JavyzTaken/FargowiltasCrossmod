@@ -40,31 +40,31 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         public override void Load()
         {
-            On_Player.PickTile += ShootDaggersBreak;
-            On_Player.PlaceThing_Tiles_PlaceIt += ShootDaggersPlace;
-            On_Projectile.Damage += BigPlayer;
-            On_Player.Update_NPCCollision += BigPlayerNPCs;
-            On_LegacyPlayerRenderer.DrawPlayer += DrawBigPlayer;
-            On_Player.RefreshDoubleJumps += ResetAeroCrit;
+            On_Player.PickTile += PickTile_Detour;
+            On_Player.PlaceThing_Tiles_PlaceIt += PlaceThing_Tiles_PlaceIt_Detour;
+            //On_Projectile.Damage += BigPlayer;
+            //On_Player.Update_NPCCollision += BigPlayerNPCs;
+            //On_LegacyPlayerRenderer.DrawPlayer += DrawBigPlayer;
+            On_Player.RefreshDoubleJumps += RefreshDoubleJumps_Detour;
 
         }
 
-        private void ResetAeroCrit(On_Player.orig_RefreshDoubleJumps orig, Player self)
+        private void RefreshDoubleJumps_Detour(On_Player.orig_RefreshDoubleJumps orig, Player self)
         {
-            CalDLCAddonPlayer addonPlayer = self.CalamityAddon();
-            if (addonPlayer.NumJumpsUsed > 0)
-            {
-                int critPerJump = self.ForceEffect<AerospecJumpEffect>() ? 10 : 5;
-                int critLost = critPerJump * addonPlayer.NumJumpsUsed;
-                addonPlayer.NumJumpsUsed = 0;
-                CombatText.NewText(self.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchant.CritReset", critLost), true);
-            }
+            AerospecJumpEffect.ResetAeroCrit(self);
             orig(self);
         }
 
-       
+        private void PickTile_Detour(On_Player.orig_PickTile orig, Player self, int x, int y, int pickPower)
+        {
+            if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server)
+            {
+                MarniteLasersEffect.MarniteTileEffect(self, new Microsoft.Xna.Framework.Vector2(x, y).ToWorldCoordinates());
+            }
+            orig(self, x, y, pickPower);
+        }
 
-        private TileObject ShootDaggersPlace(On_Player.orig_PlaceThing_Tiles_PlaceIt orig, Player self, bool newObjectType, TileObject data, int tileToCreate)
+        private TileObject PlaceThing_Tiles_PlaceIt_Detour(On_Player.orig_PlaceThing_Tiles_PlaceIt orig, Player self, bool newObjectType, TileObject data, int tileToCreate)
         {
             TileObject returnvalue = orig(self, newObjectType, data, tileToCreate);
             if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server && Main.tile[Main.MouseWorld.ToTileCoordinates()].HasTile)
@@ -75,21 +75,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             return returnvalue;
         }
 
-        private void ShootDaggersBreak(On_Player.orig_PickTile orig, Player self, int x, int y, int pickPower)
-        {
-            if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server)
-            {
-                MarniteLasersEffect.MarniteTileEffect(self, new Microsoft.Xna.Framework.Vector2(x, y).ToWorldCoordinates());
-            }
-            orig(self, x, y, pickPower);
-        }
-
-        private void DrawBigPlayer(On_LegacyPlayerRenderer.orig_DrawPlayer orig, LegacyPlayerRenderer self, Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow, float scale)
-        {
-            if (drawPlayer.HasEffect<TitanHeartEffect>())
-                scale = 2;
-            orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
-        }
+        //private void DrawBigPlayer(On_LegacyPlayerRenderer.orig_DrawPlayer orig, LegacyPlayerRenderer self, Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow, float scale)
+        //{
+        //    if (drawPlayer.HasEffect<TitanHeartEffect>())
+        //        scale = 2;
+        //    orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
+        //}
 
         private void BigPlayerNPCs(On_Player.orig_Update_NPCCollision orig, Player self)
         {

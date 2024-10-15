@@ -95,18 +95,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //{
             //    mplayer.AeroCritBoost = 0;
             //}
-           
-            
-            
+
+
+            if (mplayer.NumJumpsUsed > 0 && player.mount != null && player.mount.Active)
+                ResetAeroCrit(player);
                 
             
-            if (player.jump != 0 && mplayer.AllowJumpsUsedInc)
+            if (player.jump != 0 && mplayer.AllowJumpsUsedInc && mplayer.NumJumpsUsed < maxCritJumps)
             {
                 mplayer.NumJumpsUsed++;
                 mplayer.AllowJumpsUsedInc = false;
                 CombatText.NewText(player.Hitbox, Color.Yellow, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchant.CritUp", critPerJump));
             }
             mplayer.AllowJumpsUsedInc = player.jump == 0;
+        }
+
+        public static void ResetAeroCrit(Player player)
+        {
+            CalDLCAddonPlayer addonPlayer = player.CalamityAddon();
+            if (addonPlayer.NumJumpsUsed > 0)
+            {
+                int critPerJump = player.ForceEffect<AerospecJumpEffect>() ? 10 : 5;
+                int critLost = critPerJump * addonPlayer.NumJumpsUsed;
+                addonPlayer.NumJumpsUsed = 0;
+                CombatText.NewText(player.Hitbox, Color.OrangeRed, Language.GetTextValue("Mods.FargowiltasCrossmod.Items.AerospecEnchant.CritReset", critLost), true);
+            }
         }
     }
    

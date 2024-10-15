@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CalamityMod;
 using CalamityMod.Buffs.StatBuffs;
 using CalamityMod.CalPlayer;
+using CalamityMod.CalPlayer.Dashes;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.PermanentBoosters;
@@ -38,6 +39,7 @@ using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -52,7 +54,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     {
         public override bool? UseItem(Item item, Player player)
         {
+            FargoSoulsPlayer fargoPlayer = player.FargoSouls();
             CalamityPlayer cplayer = player.Calamity();
+            if (item.type == ModContent.ItemType<DeerSinew>())
+            {
+                player.SetToggleValue<DeerSinewEffect>(false);
+            }
             if (item.type == ModContent.ItemType<DeathFruit>())
             {
                 if (cplayer.dFruit)
@@ -94,6 +101,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void UpdateAccessory(Item item, Player player, bool hideVisual)
         {
+            FargoSoulsPlayer fargoPlayer = player.FargoSouls();
+            CalamityPlayer calPlayer = player.Calamity();
+
             if (item.type == ModContent.ItemType<EternitySoul>())
             {
                 ModContent.GetInstance<BrandoftheBrimstoneWitch>().UpdateAccessory(player, hideVisual);
@@ -102,12 +112,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 ModContent.GetInstance<ExplorationForce>().UpdateAccessory(player, hideVisual);
             }
-            if (item.type == ModContent.ItemType<CounterScarf>() || item.type == ModContent.ItemType<EvasionScarf>() || item.type == ModContent.ItemType<OrnateShield>()
+            if (calPlayer.HasCustomDash || item.type == ModContent.ItemType<CounterScarf>() || item.type == ModContent.ItemType<EvasionScarf>() || item.type == ModContent.ItemType<OrnateShield>()
                 || item.type == ModContent.ItemType<AsgardianAegis>() || item.type == ModContent.ItemType<ElysianAegis>() || item.type == ModContent.ItemType<AsgardsValor>()
                 || item.type == ModContent.ItemType<StatisNinjaBelt>() || item.type == ModContent.ItemType<StatisVoidSash>() || item.type == ModContent.ItemType<ShieldoftheHighRuler>()
                 || item.type == ModContent.ItemType<DeepDiver>() && player.wet || player.Calamity().plaguebringerPatronSet)
             {
-                player.FargoSouls().HasDash = true;
+                fargoPlayer.HasDash = true;
             }
             if (item.type == ModContent.ItemType<AngelTreads>())
             {
@@ -127,6 +137,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 player.fireWalk = true;
                 player.buffImmune[BuffID.OnFire] = true;
             }
+            if (item.type == ModContent.ItemType<SupersonicSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            {
+                if (player.AddEffect<StatisVoidSashEffect>(item))
+                {
+                    ModContent.GetInstance<StatisVoidSash>().UpdateAccessory(player, hideVisual);
+                }
+            }
             if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
                 if (player.AddEffect<AmalgamEffect>(item))
@@ -136,13 +153,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<AsgardianAegisEffect>(item))
                 {
                     ModContent.GetInstance<AsgardianAegis>().UpdateAccessory(player, hideVisual);
-                    player.FargoSouls().HasDash = true;
+                    fargoPlayer.HasDash = true;
                 }
 
-                if (player.AddEffect<RampartofDeitiesEffect>(item))
-                {
-                    ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
-                }
+                ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
             }
             if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
             {
@@ -195,6 +209,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
                 }
             }
+
+            // toggles to Cal accs
+            if (calPlayer.rampartOfDeities)
+            {
+                player.AddEffect<RampartofDeitiesEffect>(item);
+                if (!player.HasEffect<RampartofDeitiesEffect>())
+                    calPlayer.rampartOfDeities = false;
+                player.AddEffect<DefenseStarEffect>(item);
+                if (!player.HasEffect<DefenseStarEffect>())
+                    player.starCloakItem = null;
+                player.AddEffect<FrozenTurtleEffect>(item);
+                if (!player.HasEffect<FrozenTurtleEffect>())
+                    player.ClearBuff(BuffID.IceBarrier);
+
+
+            }
         }
         public override bool CanUseItem(Item item, Player player)
         {
@@ -242,9 +272,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
                     tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                    
-                    
-                    
                 }
             }
             for (int i = 0; i < tooltips.Count; i++)
@@ -268,6 +295,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "PostMutant", $"[c/FF0000:Calamity Crossmod Support:] Can only be used after defeating the Mutant"));
             }
+            if (item.type == ModContent.ItemType<DeerSinew>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "ToggleDisabledByDefault", $"[c/FF0000:Calamity Crossmod Support:] Toggle disabled by default"));
+            }
 
             const string BalanceLine = "Cross-mod Balance: ";
             if (item.type == ModContent.ItemType<CelestialOnion>() && !Main.masterMode && WorldSavingSystem.EternityMode)
@@ -281,10 +312,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Insert(11, new TooltipLine(Mod, "CalAeolus", Language.GetTextValue(key + "AngelTreads")));
             }
+            if (item.type == ModContent.ItemType<SupersonicSoul>() && !item.social)
+            {
+                tooltips.Insert(12, new TooltipLine(Mod, "CalSupersonicSoul", Language.GetTextValue(key + "CalamitySupersonic")));
+            }
             //Colossus Soul
             if (item.type == ModContent.ItemType<ColossusSoul>() && !item.social)
             {
-                tooltips.Insert(11, new TooltipLine(Mod, "CalColossusSoul", Language.GetTextValue(key + "CalamityColossus")));
+                tooltips.Insert(8, new TooltipLine(Mod, "CalColossusSoul", Language.GetTextValue(key + "CalamityColossus")));
             }
 
             if (item.type == ModContent.ItemType<BerserkerSoul>() && !item.social)
