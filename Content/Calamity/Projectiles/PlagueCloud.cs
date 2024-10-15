@@ -2,8 +2,10 @@
 using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.DataStructures;
 using CalamityMod.Particles;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using rail;
@@ -97,7 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             else
             {
                 Player owner = Main.player[(int)Projectile.ai[0]];
-                if (owner == null || !owner.active || owner.dead)
+                if (owner == null || !owner.active || owner.dead || !owner.HasEffect<PlaguebringerEffect>())
                 {
                     Projectile.Kill();
                     return;

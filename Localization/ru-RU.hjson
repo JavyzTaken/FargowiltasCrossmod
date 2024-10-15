@@ -453,17 +453,18 @@ Mods: {
 
 			PlagueReaperEnchant: {
 				// DisplayName: Plague Reaper Enchantment
-				/* Tooltip:
-					'''
-					All attacks inflict plague for a short time
-					Being near plagued enemies grows a plague cloud around you
-					Once fully charged, it explodes into a massive lingering cloud
-					''' */
+				// Tooltip: All debuffs spread between enemies
 			}
 
 			PlaguebringerEnchant: {
 				// DisplayName: Plaguebringer Enchantment
-				// Tooltip: All damage over time debuffs spread between enemies
+				/* Tooltip:
+					'''
+					All attacks inflict plague for a short time
+					A plague cloud follows you, growing when nearby plagued enemies.
+					At maximum size, the cloud expands rapidly and stops following you,
+					lingering in place for a while.
+					''' */
 			}
 
 			ReaverEnchant: {
@@ -510,7 +511,11 @@ Mods: {
 
 			TitanHeartEnchant: {
 				// DisplayName: Titan Heart Enchantment
-				// Tooltip: ""
+				/* Tooltip:
+					'''
+					Increases damage by 15%
+					Makes you larger
+					''' */
 			}
 
 			StatigelEnchant: {
@@ -540,6 +545,43 @@ Mods: {
 					Иглы заряжаются, пока вы атакуете, и вылетают наружу, когда вы перестаёте
 					'''
 			}
+
+			FathomSwarmerEnchant: {
+				// DisplayName: Fathom Swarmer Enchantment
+				/* Tooltip:
+					'''
+					Summons an Anglerfish familiar that follows your mouse
+					The anglerfish's light slows down enemies and their projectiles
+					''' */
+			}
+
+			AstralEnchant: {
+				// DisplayName: Astral Enchantment
+				// Tooltip: You are followed by a trail of damaging astral stars
+			}
+
+			BrimflameEnchant: {
+				// DisplayName: Brimflame Enchantment
+				/* Tooltip:
+					'''
+					Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+					Becomes stronger the more defense is consumed
+					Your defense will regenerate over time
+					Can only be used when at maximum defense
+					''' */
+				// DefenseDown: -{0} defense
+				// DefenseUp: +{0} defense
+			}
+
+			MolluskEnchant: {
+				// DisplayName: Mollusk Enchantment
+				/* Tooltip:
+					'''
+					Press Special Dash key to quickly slam downwards
+					Hitting an enemy with the slam deals massive damage and gives you immunity frames
+					Only goes on cooldown on enemy hits
+					''' */
+			}
 		}
 
 		NPCs: {
@@ -562,6 +604,7 @@ Mods: {
 			MovingCorruptCloud.DisplayName: Движущееся искажённое облако
 			ShadeLightningCloud.DisplayName: Теневое молниеносное облако
 			ToothBall.DisplayName: Шар зубов
+			// Tooth.DisplayName: Tooth
 			HomingRocket.DisplayName: Самонаводящаяся ракета
 			HomingSickle.DisplayName: Самонаводящаяся коса
 			HallowedSlimeSpike.DisplayName: Шип освящённого слизня
@@ -640,6 +683,15 @@ Mods: {
 			PureGel.DisplayName: Чистейший гель
 			HiveMindPulse.DisplayName: Разум улей пульс
 			ScourgeSandstream.DisplayName: Пещаный поток бича
+			// BigBubble.DisplayName: Big Bubble
+			// Bubble.DisplayName: Bubble
+			// AquaticSuck.DisplayName: Aquatic Suck
+			// FlamableGas.DisplayName: Flamable Gas
+			// ToxicGas.DisplayName: Toxic Gas
+			// FathomAngler.DisplayName: Fathom Angler
+			// AstralTrailStar.DisplayName: Astral Trail Star
+			// BrimflameBurst.DisplayName: Brimflame Burst
+			// ClamSlam.DisplayName: Clam Slam
 		}
 
 		Buffs: {
@@ -695,12 +747,16 @@ Mods: {
 			// DaedalusEffect: Daedalus Flight Limit
 			// ReaverEffect: Reaver Stats
 			// HydrothermicEffect: Overheat
-			// PlaguebringerEffect: Debuff Spread
+			// PlaguebringerEffect: Plague Cloud
+			// PlagueReaperEffect: Debuff Spread
 			StatigelEffect: Ускорение и урон статигеля
 			SulphurEffect: Прыжок с пузырём
 			VictideEffect: Морские иглы
 			// TitanHeartEffect: Titan Size
 			// UmbraphileEffect: Bat Healing
+			// FathomSwarmerEffect: Angler Fish
+			// BrimflameEffect: Brimflame Burst
+			// MolluskEffect: Mollusk Slam
 		}
 
 		WizardEffect: {
@@ -712,7 +768,8 @@ Mods: {
 			// Daedalus: Grants wings if you don't have any, Can fly higher
 			SnowRuffian: Даёт немного полёта
 			// Reaver: More drastic stat changes
-			/* Plaguebringer:
+			// Plaguebringer: Plague cloud deals more damage and charges from longer away
+			/* PlagueReaper:
 				'''
 				Debuffs spread from farther 
 				Enemies spread debuffs for a longer amount of time
@@ -721,6 +778,11 @@ Mods: {
 			Sulphur: Прыжки создают 3 пузыря, которые наносят больше урона
 			Victide: Иглы игнорируют гравитацию и накладывают дебафф Кислотный яд
 			Statigel: Увеличена максимальная скорость, бонус к урону удвоен
+			// TitanHeart: More damage, larger size
+			// FathomSwarmer: Larger Light, Faster Fish
+			// Astral: Longer trail, more damage
+			// Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
+			// Mollusk: More damage, More immunity frames
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
