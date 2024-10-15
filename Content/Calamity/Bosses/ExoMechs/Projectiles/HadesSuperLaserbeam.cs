@@ -2,6 +2,7 @@
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Easings;
@@ -103,6 +104,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             float expandInterpolant = Utilities.InverseLerp(0f, ExpandTime, Time - ExpandDelay);
             float bigWidth = MathHelper.Lerp(220f, 380f, OverheatInterpolant);
+
+            // Comedy.
+            if (WorldSavingSystem.MasochistModeReal)
+                bigWidth += 350f;
+
             Projectile.width = (int)(MathHelper.Lerp(Time / 42f * 8f, bigWidth, expandInterpolant.Squared()) * Utilities.InverseLerp(0f, 10f, Projectile.timeLeft));
 
             CreateVisuals(expandInterpolant);
