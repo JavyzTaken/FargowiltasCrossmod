@@ -81,9 +81,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (!Projectile.WithinRange(target.Center, 270f))
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, Projectile.SafeDirectionTo(target.Center) / Projectile.MaxUpdates * 14f, homeInInterpolant * 0.1f);
 
-            if (Projectile.velocity.Length() < 30f)
+            if (Projectile.velocity.Length() < 24f)
             {
-                float acceleration = Utils.Remap(homeInInterpolant, 0f, 0.4f, 1.015f, 1f);
+                float acceleration = Utils.Remap(homeInInterpolant, 0f, 0.4f, 1.0128f, 1f);
                 Projectile.velocity *= acceleration;
             }
         }
