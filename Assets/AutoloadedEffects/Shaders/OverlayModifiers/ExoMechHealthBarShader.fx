@@ -37,7 +37,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     color = lerp(color, 1, saturate(noise) * 0.6);
     
     // Make the white notch at the edge of the bar white.
-    float notchInterpolant = smoothstep(0.985, 0.995, framedCoords.x);
+    float notchInterpolant = smoothstep(0.995 - 0.01 / horizontalSquish, 0.995, framedCoords.x / horizontalSquish);
     color.rgb += pow(notchInterpolant, 2);
     
     return color * sampleColor;

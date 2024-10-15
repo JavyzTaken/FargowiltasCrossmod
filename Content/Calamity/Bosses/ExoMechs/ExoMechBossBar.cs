@@ -95,7 +95,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             spriteBatch.Draw(barTexture, topLeft, bgFrame, bgColor, 0f, Vector2.Zero, 1f, 0, 0f);
 
             Main.spriteBatch.PrepareForShaders(null, true);
-            DrawBar(npc, barTexture, barTopLeft, barFrame, scale);
+            DrawBar(npc, barTexture, barTopLeft, barFrame, scale, life / lifeMax);
             Main.spriteBatch.ResetToDefaultUI();
 
             // Bar itself (shield).
@@ -127,7 +127,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             return false;
         }
 
-        private void DrawBar(NPC npc, Texture2D barTexture, Vector2 barTopLeft, Rectangle barFrame, float scale)
+        private void DrawBar(NPC npc, Texture2D barTexture, Vector2 barTopLeft, Rectangle barFrame, float scale, float lifeRatio)
         {
             Vector3[] palette = new Vector3[CalamityUtils.ExoPalette.Length];
             for (int i = 0; i < palette.Length; i++)
@@ -135,7 +135,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
 
             ManagedShader healthBarShader = ShaderManager.GetShader("FargowiltasCrossmod.ExoMechHealthBarShader");
             healthBarShader.TrySetParameter("imageSize", barTexture.Size());
-            healthBarShader.TrySetParameter("horizontalSquish", npc.life / (float)npc.lifeMax);
+            healthBarShader.TrySetParameter("horizontalSquish", lifeRatio);
             healthBarShader.TrySetParameter("sourceRectangle", new Vector4(barFrame.X, barFrame.Y, barFrame.Width, barFrame.Height));
             healthBarShader.TrySetParameter("gradient", palette);
             healthBarShader.TrySetParameter("gradientCount", palette.Length);
