@@ -223,7 +223,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             // Look at the player before firing.
             if (relativeTimer < chargeUpTime)
-                hand.RotateToLookAt(handNPC.AngleTo(aimDestination), 0.2f);
+                hand.RotateToLookAt(handNPC.AngleTo(aimDestination), 0.1875f);
 
             // Handle post-firing particles.
             else
