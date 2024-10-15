@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Assets.Models
             return LoadAsset<Model>(new MemoryStream(modelData), modelName);
         }
 
-        private static T LoadAsset<T>(Stream stream, string modelName)
+        private static T LoadAsset<T>(MemoryStream stream, string modelName)
         {
             stream.Seek(10, SeekOrigin.Begin);
             using ContentReader contentReader = (ContentReader)contentReaderConstructor.Invoke([Main.ShaderContentManager, stream, modelName, 0, 'w', null]);
