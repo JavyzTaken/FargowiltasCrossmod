@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// Ares' maximum possible rotational velocity as a result of the player's relative Y position during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static float KatanaCycloneDashes_MaxRotationalVelocity => MathHelper.ToRadians(0.78f);
+        public static float KatanaCycloneDashes_MaxRotationalVelocity => MathHelper.ToRadians(0.64f);
 
         /// <summary>
         /// The sound played when Ares performs a slash.
