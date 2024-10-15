@@ -65,7 +65,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             SegmentReorientationStrength = 0f;
 
-            bool beamIsOverheating = AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime - ExoEnergyBlast.OverheatStartingTime;
+            bool beamIsOverheating = AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + HadesSuperLaserbeam.Lifetime - HadesSuperLaserbeam.OverheatStartingTime;
             float pointAtTargetSpeed = 4f;
             Vector2 outerHoverDestination = Target.Center + new Vector2(NPC.OnRightSideOf(Target).ToDirectionInt() * 1050f, -400f);
 
@@ -138,11 +138,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 SoundEngine.PlaySound(DeathrayFireSound);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<ExoEnergyBlast>(), ExoEnergyBlastDamage, 0f, NPC.target);
+                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f, NPC.target);
             }
 
             // SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
-            if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay && AITimer < ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime)
+            if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay && AITimer < ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + HadesSuperLaserbeam.Lifetime)
             {
                 NPC.velocity = NPC.velocity.RotateTowards(NPC.AngleTo(Target.Center), ExoEnergyBlast_LaserTurnSpeed);
                 if (NPC.velocity.Length() >= 3f)
@@ -150,13 +150,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             // Accelerate after the blast.
-            if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime)
+            if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + HadesSuperLaserbeam.Lifetime)
             {
                 NPC.velocity = NPC.velocity.ClampLength(3.6f, 32f);
                 NPC.velocity *= 1.024f;
             }
 
-            if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + ExoEnergyBlast.Lifetime + ExoEnergyBlast_PostBeamAccelerationTime)
+            if (AITimer >= ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay + HadesSuperLaserbeam.Lifetime + ExoEnergyBlast_PostBeamAccelerationTime)
                 SelectNewState();
 
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;

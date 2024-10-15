@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExoEnergyBlast : ModProjectile, IPixelatedPrimitiveRenderer, IProjOwnedByBoss<ThanatosHead>, IExoMechProjectile
+    public class HadesSuperLaserbeam : ModProjectile, IPixelatedPrimitiveRenderer, IProjOwnedByBoss<ThanatosHead>, IExoMechProjectile
     {
         public PixelationPrimitiveLayer LayerToRenderTo => PixelationPrimitiveLayer.AfterProjectiles;
 

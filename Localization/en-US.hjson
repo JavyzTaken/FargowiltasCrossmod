@@ -721,13 +721,13 @@ Mods: {
 			CannonLaserbeam.DisplayName: Energized Thermal Deathray
 			DraedonLootCrate.DisplayName: Draedon Loot Crate
 			ExoelectricBlast.DisplayName: Exoelectric Blast
-			ExoEnergyBlast.DisplayName: Exo Energy Blast
 			ExoOverloadDeathray.DisplayName: Exo Overload Deathray
 			GaussNuke.DisplayName: Gauss Nuke
 			GaussNukeBoom.DisplayName: Thermonuclear Explosion
 			HadesExoEnergyOrb.DisplayName: Exoelectric Energy Orb
 			HadesLaserBurst.DisplayName: Laser Burst
 			HadesMine.DisplayName: Hades Mine
+			HadesSuperLaserbeam.DisplayName: Exo Energy Blast
 			HomingTeslaBurst.DisplayName: Tesla Burst
 			LargeTeslaSphere.DisplayName: Tesla Sphere
 			LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
