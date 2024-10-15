@@ -282,6 +282,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 index = SegmentOpenInterpolant >= 0.75f ? ThanatosBody2.vulnerableIconIndex : ThanatosBody2.normalIconIndex;
             if (IsTailSegment)
                 index = SegmentOpenInterpolant >= 0.75f ? ThanatosTail.vulnerableIconIndex : ThanatosTail.normalIconIndex;
+
+            if (NPC.realLife >= 0 && Main.npc[NPC.realLife].TryGetDLCBehavior(out HadesHeadEternity hades) && hades.DisableMapIcon)
+                index = -1;
         }
 
         /// <summary>

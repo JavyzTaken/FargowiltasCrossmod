@@ -64,6 +64,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// Whether Hades' map icons should be disabled.
+        /// </summary>
+        public bool DisableMapIcon
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Whether Hades should be inactive, leaving the battle to let other mechs attack on their own.
         /// </summary>
         public bool Inactive
@@ -302,6 +311,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             return false;
         }
 
+        public override void BossHeadSlot(ref int index)
+        {
+            if (DisableMapIcon)
+                index = -1;
+        }
+
         /// <summary>
         /// Resets various things pertaining to the fight state prior to behavior updates.
         /// </summary>
@@ -322,6 +337,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             ActionsToDeferAfterCombo = null;
             BodyBehaviorAction = null;
             BodyRenderAction = null;
+            DisableMapIcon = false;
             SegmentReorientationStrength = MathHelper.Lerp(SegmentReorientationStrength, 1f, 0.03f);
             NPC.As<ThanatosHead>().SecondaryAIState = (int)ThanatosHead.SecondaryPhase.Nothing;
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant - StandardSegmentOpenRate);
