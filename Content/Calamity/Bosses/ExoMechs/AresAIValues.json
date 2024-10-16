@@ -89,6 +89,11 @@
     "EternityDeathValue": 96.0,
     "MasochistValue": 96.0
   },
+  "DetachHands_DetachmentDelay": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
   "MissileDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,

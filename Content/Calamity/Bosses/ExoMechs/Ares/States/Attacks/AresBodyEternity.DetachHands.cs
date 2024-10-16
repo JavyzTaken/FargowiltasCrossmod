@@ -11,7 +11,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares waits when detaching hands before transitioning to a new AI state.
         /// </summary>
-        public static int DetachHands_DetachmentDelay => LumUtils.SecondsToFrames(0.75f);
+        public static int DetachHands_DetachmentDelay => Variables.GetAIInt("DetachHands_DetachmentDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// AI update loop method for the Detach Hands state.
