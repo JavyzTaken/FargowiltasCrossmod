@@ -123,7 +123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.3f);
 
             int animationTimer = (int)(AITimer + handNPC.whoAmI * attackCycleTime / (float)ArmCount - attackDelay) % attackCycleTime;
-            KatanaSlashesHandUpdate_HandleSlashMotion(hand, handNPC, hoverOffset, animationTimer, attackCycleTime);
+            KatanaSlashesHandUpdate_HandleSlashMotion(hand, handNPC, hoverOffset, attackDelay, animationTimer, attackCycleTime);
             KatanaSlashesHandUpdate_CreateParticles(hand, handNPC);
         }
 
@@ -133,9 +133,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <param name="hand">The hand's ModNPC instance.</param>
         /// <param name="handNPC">The hand's NPC instance.</param>
         /// <param name="hoverOffset">The hover offset of the hand.</param>
+        /// <param name="attackDelay">How long it takes for Ares to begin slashing.</param>
         /// <param name="animationTimer">The timer for the overall slash animation.</param>
         /// <param name="attackCycleTime">The attack cycle time for the slash.</param>
-        public void KatanaSlashesHandUpdate_HandleSlashMotion(AresHand hand, NPC handNPC, Vector2 hoverOffset, int animationTimer, int attackCycleTime)
+        public void KatanaSlashesHandUpdate_HandleSlashMotion(AresHand hand, NPC handNPC, Vector2 hoverOffset, int attackDelay, int animationTimer, int attackCycleTime)
         {
             float animationCompletion = animationTimer / (float)attackCycleTime;
             Vector2 hoverDestination = NPC.Center + hoverOffset * NPC.scale;
@@ -144,7 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             // followed via the SmoothFlyNear function below. This gives the motion a slightly jerky, mechanical feel to it, which is well in
             // line with Ares.
             float rotateForwardInterpolant = Utilities.InverseLerpBump(0.1f, AnticipationCurveEnd * 1.1f, 0.9f, 1f, animationCompletion).Squared();
-            if (AITimer >= KatanaSlashes_AttackDelay)
+            if (AITimer >= attackDelay)
             {
                 if (animationTimer == (int)(attackCycleTime * AnticipationCurveEnd) + 3)
                     KatanaSlashesHandUpdate_DoSlashEffects(handNPC);
