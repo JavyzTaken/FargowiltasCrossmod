@@ -149,6 +149,41 @@
     "EternityDeathValue": 1485.0,
     "MasochistValue": 1485.0
   },
+  "LargeTeslaOrbBlast_AttackTransitionDelay": {
+    "EternityRevValue": 120.0,
+    "EternityDeathValue": 120.0,
+    "MasochistValue": 120.0
+  },
+  "LargeTeslaOrbBlast_BurstReleaseRate": {
+    "EternityRevValue": 15.0,
+    "EternityDeathValue": 15.0,
+    "MasochistValue": 15.0
+  },
+  "LargeTeslaOrbBlast_ExplodeAnticipationTime": {
+    "EternityRevValue": 48.0,
+    "EternityDeathValue": 48.0,
+    "MasochistValue": 48.0
+  },
+  "LargeTeslaOrbBlast_HomingBurstReleaseDelay": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
+  "LargeTeslaOrbBlast_HomingBurstReleaseTime": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "LargeTeslaOrbBlast_OrbChargeUpTime": {
+    "EternityRevValue": 84.0,
+    "EternityDeathValue": 84.0,
+    "MasochistValue": 84.0
+  },
+  "LargeTeslaOrbBlast_RecoilSpeed": {
+    "EternityRevValue": 44.0,
+    "EternityDeathValue": 44.0,
+    "MasochistValue": 44.0
+  },
   "MissileDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,
@@ -160,6 +195,11 @@
     "MasochistValue": 35.0
   },
   "SmallLaserDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "TeslaBurstDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,
     "MasochistValue": 300.0

@@ -21,42 +21,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much damage tesla bursts shot by Ares do.
         /// </summary>
-        public static int TeslaBurstDamage => Main.expertMode ? 300 : 200;
+        public static int TeslaBurstDamage => Variables.GetAIInt("TeslaBurstDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long the tesla orb spends charging energy before firing during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_OrbChargeUpTime => LumUtils.SecondsToFrames(1.4f);
+        public static int LargeTeslaOrbBlast_OrbChargeUpTime => Variables.GetAIInt("LargeTeslaOrbBlast_OrbChargeUpTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long the tesla orb waits after charging energy before releasing homing bursts during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_HomingBurstReleaseDelay => LumUtils.SecondsToFrames(1f);
+        public static int LargeTeslaOrbBlast_HomingBurstReleaseDelay => Variables.GetAIInt("LargeTeslaOrbBlast_HomingBurstReleaseDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The rate at which homing bursts are shot from the tesla orb during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_BurstReleaseRate => LumUtils.SecondsToFrames(0.25f);
+        public static int LargeTeslaOrbBlast_BurstReleaseRate => Variables.GetAIInt("LargeTeslaOrbBlast_BurstReleaseRate", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much time is spent releasing homing tesla bursts during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_HomingBurstReleaseTime => LumUtils.SecondsToFrames(5f);
+        public static int LargeTeslaOrbBlast_HomingBurstReleaseTime => Variables.GetAIInt("LargeTeslaOrbBlast_HomingBurstReleaseTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long the tesla orb spends collapsing in anticipation of its explosion during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_ExplodeAnticipationTime => LumUtils.SecondsToFrames(0.8f);
+        public static int LargeTeslaOrbBlast_ExplodeAnticipationTime => Variables.GetAIInt("LargeTeslaOrbBlast_ExplodeAnticipationTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares waits before transitioning to the next state following the explosion during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static int LargeTeslaOrbBlast_AttackTransitionDelay => LumUtils.SecondsToFrames(2f);
+        public static int LargeTeslaOrbBlast_AttackTransitionDelay => Variables.GetAIInt("LargeTeslaOrbBlast_AttackTransitionDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much recoil is applied to Ares' cannons upong firing during the Large Tesla Orb Blast attack.
         /// </summary>
-        public static float LargeTeslaOrbBlast_RecoilSpeed => 44f;
+        public static float LargeTeslaOrbBlast_RecoilSpeed => Variables.GetAIFloat("LargeTeslaOrbBlast_RecoilSpeed", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The default offset of Ares' orb during the Large Tesla Orb Blast attack.
