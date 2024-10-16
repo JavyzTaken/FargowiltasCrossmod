@@ -41,37 +41,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// The rate at which Ares releases small lasers during the Aimed Laser Bursts attack.
         /// </summary>
-        public static int AimedLaserBursts_SmallLaserShootRate => LumUtils.SecondsToFrames(0.67f);
+        public static int AimedLaserBursts_SmallLaserShootRate => Variables.GetAIInt("AimedLaserBursts_SmallLaserShootRate", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The amount of small lasers Ares releases per burst during the Aimed Laser Bursts attack.
         /// </summary>
-        public static int AimedLaserBursts_SmallLaserCount => 5;
+        public static int AimedLaserBursts_SmallLaserCount => Variables.GetAIInt("AimedLaserBursts_SmallLaserCount", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much damage small lasers from Ares' core do.
         /// </summary>
-        public static int SmallLaserDamage => Main.expertMode ? 300 : 200;
+        public static int SmallLaserDamage => Variables.GetAIInt("SmallLaserDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much damage laserbeams from Ares' laser cannons do.
         /// </summary>
-        public static int CannonLaserbeamDamage => Main.expertMode ? 500 : 350;
+        public static int CannonLaserbeamDamage => Variables.GetAIInt("CannonLaserbeamDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The maximum speed at which Ares hovers during the Aimed Laser Bursts attack.
         /// </summary>
-        public static float AimedLaserBursts_MaxHoverSpeed => 11.5f;
+        public static float AimedLaserBursts_MaxHoverSpeed => Variables.GetAIFloat("AimedLaserBursts_MaxHoverSpeed", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The acceleration at which Ares hovers during the Aimed Laser Bursts attack.
         /// </summary>
-        public static float AimedLaserBursts_MaxHoverAcceleration => 0.24f;
+        public static float AimedLaserBursts_MaxHoverAcceleration => Variables.GetAIFloat("AimedLaserBursts_MaxHoverAcceleration", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The shoot speed of small lasers from Ares core during the Aimed Laser Bursts attack.
         /// </summary>
-        public static float AimedLaserBursts_SmallLaserShootSpeed => 7f;
+        public static float AimedLaserBursts_SmallLaserShootSpeed => Variables.GetAIFloat("AimedLaserBursts_SmallLaserShootSpeed", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// AI update loop method for the Aimed Laser Bursts attack.

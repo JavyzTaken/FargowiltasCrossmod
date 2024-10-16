@@ -1,4 +1,34 @@
 {
+  "AimedLaserBursts_MaxHoverAcceleration": {
+    "EternityRevValue": 0.24,
+    "EternityDeathValue": 0.24,
+    "MasochistValue": 0.24
+  },
+  "AimedLaserBursts_MaxHoverSpeed": {
+    "EternityRevValue": 11.5,
+    "EternityDeathValue": 11.5,
+    "MasochistValue": 11.5
+  },
+  "AimedLaserBursts_SmallLaserShootRate": {
+    "EternityRevValue": 40.0,
+    "EternityDeathValue": 40.0,
+    "MasochistValue": 40.0
+  },
+  "AimedLaserBursts_SmallLaserCount": {
+    "EternityRevValue": 5.0,
+    "EternityDeathValue": 5.0,
+    "MasochistValue": 5.0
+  },
+  "AimedLaserBursts_SmallLaserShootSpeed": {
+    "EternityRevValue": 7.0,
+    "EternityDeathValue": 7.0,
+    "MasochistValue": 7.0
+  },
+  "CannonLaserbeamDamage": {
+    "EternityRevValue": 500.0,
+    "EternityDeathValue": 500.0,
+    "MasochistValue": 500.0
+  },
   "DeathAnimation_DeathDelay": {
     "EternityRevValue": 42.0,
     "EternityDeathValue": 42.0,
@@ -43,5 +73,10 @@
     "EternityRevValue": 35.0,
     "EternityDeathValue": 35.0,
     "MasochistValue": 35.0
+  },
+  "SmallLaserDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
   }
 }
