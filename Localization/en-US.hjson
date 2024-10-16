@@ -91,6 +91,7 @@ Mods: {
 			AddedEffects: {
 				AngelTreads: Effects of Angel Treads
 				AeolusBoots: Effects of Aeolus Boots
+				CalamitySupersonic: Effects of Statis' Void Sash
 				ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
 				CalamityColossus: Effects of The Amalgam, Asgardian Aegis and Rampart of Deities
 				ThoriumColossus:
@@ -394,7 +395,11 @@ Mods: {
 
 			DesertProwlerEnchant: {
 				DisplayName: Desert Prowler Enchantment
-				Tooltip: Hold UP to charge a powerful charge jump that boosts your horizontal speed as well
+				Tooltip:
+					'''
+					Hold UP to charge a powerful charge jump that also boosts your horizontal speed
+					Charge jump can only be performed while grounded
+					'''
 			}
 
 			WulfrumEnchant: {
@@ -512,7 +517,7 @@ Mods: {
 					'''
 					Increases your maximum speed
 					Massively decreases your acceleration and deceleration
-					Gain up to +15% increased damage, depending on how fast you're moving
+					Gain up to +35% increased damage, depending on how fast you're moving
 					'''
 			}
 
@@ -530,6 +535,7 @@ Mods: {
 				Tooltip:
 					'''
 					Grants urchin spikes that protrude from your body
+					You gain 4 defense while the spikes are attached to you
 					Attacking charges the spikes, which launch outward when you stop attacking
 					'''
 			}
@@ -748,6 +754,7 @@ Mods: {
 			ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
 			HadesMissile.DisplayName: Fortified Missile
 			CodebreakerDataStream.DisplayName: Codebreaker Data Stream
+			CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
 		}
 
 		Buffs: {
@@ -781,6 +788,7 @@ Mods: {
 			ElementalQuiverEffect: Elemental Quiver
 			QuiverofNihilityEffect: Quiver of Nihility
 			NucleogenesisEffect: Nucleogenesis
+			StatisVoidSashEffect: Statis' Void Sash
 			AbyssalDivingSuitEffect: Abyssal Diving Suit
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 			HeartoftheElementsEffect: Heart of the Elements

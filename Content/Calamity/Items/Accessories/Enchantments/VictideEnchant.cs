@@ -105,12 +105,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, MathHelper.Lerp(0.6f, 3f, i/4f));
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, MathHelper.Lerp(0.6f, 3f, i / 4f));
                     Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, -MathHelper.Lerp(0.6f, 3f, i / 4f));
                 }
                 Projectile.NewProjectileDirect(player.GetSource_EffectItem<VictideEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<VictideSpike>(), damage, 1, player.whoAmI, MathHelper.Pi);
                 SoundEngine.PlaySound(SoundID.Item17 with { Pitch = -0.4f }, player.Center);
             }
+            if (Main.projectile.Any(p => p.TypeAlive<VictideSpike>() && p.owner == player.whoAmI && p.ai[2] < 2))
+                player.statDefense += 4;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         public override string NPCName => "Anahita and the Leviathan";
         public override void AddRecipes()
         {
-            Recipe.Create(Type).AddIngredient(ItemID.WhitePearl).AddIngredient<DepthCells>(5).AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(Type).AddIngredient(ItemID.WhitePearl).AddIngredient<PerennialBar>(5).AddTile(TileID.WorkBenches).Register();
         }
     }
 }

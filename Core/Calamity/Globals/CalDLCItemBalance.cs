@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             //Shadowspec items
             // Melee
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 1.1f;
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.75f;
             if (item.type == ModContent.ItemType<IllustriousKnives>()) return 1f;
             if (item.type == ModContent.ItemType<NanoCore>() && item.DamageType.CountsAsClass(DamageClass.Melee)) return 2f;
             if (item.type == ModContent.ItemType<Azathoth>()) return 1f;
