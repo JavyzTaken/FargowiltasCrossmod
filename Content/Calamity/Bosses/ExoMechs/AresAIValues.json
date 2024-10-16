@@ -184,7 +184,42 @@
     "EternityDeathValue": 44.0,
     "MasochistValue": 44.0
   },
+  "LingeringPlasmaDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
   "MissileDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "NukeAoEAndPlasmaBlasts_AttackTransitionDelay": {
+    "EternityRevValue": 72.0,
+    "EternityDeathValue": 72.0,
+    "MasochistValue": 72.0
+  },
+  "NukeAoEAndPlasmaBlasts_NukeChargeUpTime": {
+    "EternityRevValue": 152.0,
+    "EternityDeathValue": 152.0,
+    "MasochistValue": 152.0
+  },
+  "NukeAoEAndPlasmaBlasts_NukeExplosionDelay": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "NukeAoEAndPlasmaBlasts_NukeExplosionDiameter": {
+    "EternityRevValue": 5400.0,
+    "EternityDeathValue": 5400.0,
+    "MasochistValue": 5400.0
+  },
+  "NukeExplosionDamage": {
+    "EternityRevValue": 540.0,
+    "EternityDeathValue": 540.0,
+    "MasochistValue": 540.0
+  },
+  "NukeWeaponDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,
     "MasochistValue": 300.0

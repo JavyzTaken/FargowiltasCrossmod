@@ -19,37 +19,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares spends charging up before firing his nuke during the NukeAoEAndPlasmaBlasts attack.
         /// </summary>
-        public static int NukeAoEAndPlasmaBlasts_NukeChargeUpTime => Utilities.SecondsToFrames(2.54f);
+        public static int NukeAoEAndPlasmaBlasts_NukeChargeUpTime => Variables.GetAIInt("NukeAoEAndPlasmaBlasts_NukeChargeUpTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares' nuke waits before detonating during the NukeAoEAndPlasmaBlasts attack.
         /// </summary>
-        public static int NukeAoEAndPlasmaBlasts_NukeExplosionDelay => Utilities.SecondsToFrames(5f);
+        public static int NukeAoEAndPlasmaBlasts_NukeExplosionDelay => Variables.GetAIInt("NukeAoEAndPlasmaBlasts_NukeExplosionDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares waits before transitioning to the next state following the explosion during the NukeAoEAndPlasmaBlasts attack.
         /// </summary>
-        public static int NukeAoEAndPlasmaBlasts_AttackTransitionDelay => Utilities.SecondsToFrames(1.2f);
+        public static int NukeAoEAndPlasmaBlasts_AttackTransitionDelay => Variables.GetAIInt("NukeAoEAndPlasmaBlasts_AttackTransitionDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How big the nuke explosion should be during the NukeAoEAndPlasmaBlasts attack.
         /// </summary>
-        public static float NukeAoEAndPlasmaBlasts_NukeExplosionDiameter => 5400f;
+        public static float NukeAoEAndPlasmaBlasts_NukeExplosionDiameter => Variables.GetAIFloat("NukeAoEAndPlasmaBlasts_NukeExplosionDiameter", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much Ares' nuke (not its resulting explosion!) does.
         /// </summary>
-        public static int NukeWeaponDamage => Main.expertMode ? 400 : 275;
+        public static int NukeWeaponDamage => Variables.GetAIInt("NukeWeaponDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much Ares' nuke explosion does.
         /// </summary>
-        public static int NukeExplosionDamage => Main.expertMode ? 540 : 385;
+        public static int NukeExplosionDamage => Variables.GetAIInt("NukeExplosionDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much damage Ares' lingering plasma blasts do.
         /// </summary>
-        public static int LingeringPlasmaDamage => Main.expertMode ? 300 : 200;
+        public static int LingeringPlasmaDamage => Variables.GetAIInt("LingeringPlasmaDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// AI update loop method for the NukeAoEAndPlasmaBlasts attack.
