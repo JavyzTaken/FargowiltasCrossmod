@@ -25,27 +25,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How much damage missiles from Ares' core do.
         /// </summary>
-        public static int MissileDamage => Main.expertMode ? 300 : 200;
+        public static int MissileDamage => Variables.GetAIInt("MissileDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much damage laserbeams from Ares' core do.
         /// </summary>
-        public static int CoreLaserbeamDamage => Main.expertMode ? 515 : 350;
+        public static int CoreLaserbeamDamage => Variables.GetAIInt("CoreLaserbeamDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The rate at which Ares releases missiles during the Background Core Laserbeams attack.
         /// </summary>
-        public static int MissileReleaseRate => LumUtils.SecondsToFrames(0.133f);
+        public static int BackgroundCoreLaserBeams_MissileReleaseRate => Variables.GetAIInt("BackgroundCoreLaserBeams_MissileReleaseRate", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares waits before starting the looped blender sound during the Background Core Laserbeams attack.
         /// </summary>
-        public static int BackgroundCoreLaserBeams_LoopSoundDelay => Utilities.SecondsToFrames(3f);
+        public static int BackgroundCoreLaserBeams_LoopSoundDelay => Variables.GetAIInt("BackgroundCoreLaserBeams_LoopSoundDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares waits before releasing missiles during the Background Core Laserbeams attack.
         /// </summary>
-        public static int BackgroundCoreLaserBeams_MissileShootDelay => Utilities.SecondsToFrames(1.5f);
+        public static int BackgroundCoreLaserBeams_MissileShootDelay => Variables.GetAIInt("BackgroundCoreLaserBeams_MissileShootDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The sound played when a distant missile is fired by Ares.
@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 });
             }
 
-            if (!doneAttacking && AITimer >= BackgroundCoreLaserBeams_MissileShootDelay && AITimer % MissileReleaseRate == 0)
+            if (!doneAttacking && AITimer >= BackgroundCoreLaserBeams_MissileShootDelay && AITimer % BackgroundCoreLaserBeams_MissileReleaseRate == 0)
             {
                 Vector2 velocity = NPC.position - NPC.oldPosition;
                 Vector2 sparkSpawnPosition = NPC.Center - Vector2.UnitY.RotatedByRandom(1.1f) * NPC.scale * 70f;

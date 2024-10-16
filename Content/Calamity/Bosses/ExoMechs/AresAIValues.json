@@ -24,10 +24,30 @@
     "EternityDeathValue": 7.0,
     "MasochistValue": 7.0
   },
+  "BackgroundCoreLaserBeams_LoopSoundDelay": {
+    "EternityRevValue": 180.0,
+    "EternityDeathValue": 180.0,
+    "MasochistValue": 180.0
+  },
+  "BackgroundCoreLaserBeams_MissileReleaseRate": {
+    "EternityRevValue": 8.0,
+    "EternityDeathValue": 8.0,
+    "MasochistValue": 8.0
+  },
+  "BackgroundCoreLaserBeams_MissileShootDelay": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
   "CannonLaserbeamDamage": {
     "EternityRevValue": 500.0,
     "EternityDeathValue": 500.0,
     "MasochistValue": 500.0
+  },
+  "CoreLaserbeamDamage": {
+    "EternityRevValue": 540.0,
+    "EternityDeathValue": 540.0,
+    "MasochistValue": 540.0
   },
   "DeathAnimation_DeathDelay": {
     "EternityRevValue": 42.0,
@@ -68,6 +88,11 @@
     "EternityRevValue": 96.0,
     "EternityDeathValue": 96.0,
     "MasochistValue": 96.0
+  },
+  "MissileDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
   },
   "SpawnAnimation_EnterForegroundTime": {
     "EternityRevValue": 35.0,
