@@ -3,6 +3,7 @@ using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -96,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             else if (AITimer <= MissileLunges_RedirectMaxTime + MissileLunges_LungeDuration)
             {
                 if (AITimer == MissileLunges_RedirectMaxTime + 4)
-                    SoundEngine.PlaySound(DashChargeUpSound);
+                    SoundEngine.PlaySound(DashChargeUpSound).WithVolumeBoost(2.3f);
 
                 // Open Hades' jaws after he does the dash charge-up roar sound.
                 if (AITimer >= MissileLunges_RedirectMaxTime + 13)
