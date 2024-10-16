@@ -1,4 +1,19 @@
 {
+  "DeathAnimation_DashChargeUpTime": {
+    "EternityRevValue": 27.0,
+    "EternityDeathValue": 27.0,
+    "MasochistValue": 27.0
+  },
+  "DeathAnimation_HoverNearPlayerTime": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "DeathAnimation_ReorientTime": {
+    "EternityRevValue": 366.0,
+    "EternityDeathValue": 366.0,
+    "MasochistValue": 366.0
+  },
   "FocusedLaserBursts_ChargeRecoilTime": {
     "EternityRevValue": 76.0,
     "EternityDeathValue": 76.0,

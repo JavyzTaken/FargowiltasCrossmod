@@ -36,17 +36,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long the Exo Twins spend hovering near the player during their death animation.
         /// </summary>
-        public static int DeathAnimation_HoverNearPlayerTime => LumUtils.SecondsToFrames(0.75f);
+        public static int DeathAnimation_HoverNearPlayerTime => Variables.GetAIInt("DeathAnimation_HoverNearPlayerTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long the Exo Twins should spend reorienting above the player during their death animation.
         /// </summary>
-        public static int DeathAnimation_ReorientTime => LumUtils.SecondsToFrames(6.1f);
+        public static int DeathAnimation_ReorientTime => Variables.GetAIInt("DeathAnimation_ReorientTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long the Exo Twins should spend charging up in anticipation of the dash for their death animation.
         /// </summary>
-        public static int DeathAnimation_DashChargeUpTime => LumUtils.SecondsToFrames(0.45f);
+        public static int DeathAnimation_DashChargeUpTime => Variables.GetAIInt("DeathAnimation_DashChargeUpTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The set of beep delays that should be used in a sequential order.
