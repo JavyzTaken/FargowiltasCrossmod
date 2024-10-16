@@ -9,6 +9,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -88,6 +89,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// How long Hades spends releasing mines.
         /// </summary>
         public static int HadesAttackCycleTime => HadesRedirectTime + HadesMineReleaseTime;
+
+        /// <summary>
+        /// The sound the Exo Twins make when teleporting into existence.
+        /// </summary>
+        public static readonly SoundStyle HolographicTeleportSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/HolographicGlintTeleport");
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<Apollo>()];
 
@@ -172,17 +178,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             int dashTime = ExoTwinDashTime;
             int wrappedAITimer = AITimer % (lockOnTime + dashTime);
             float hoverOffsetAngle = ExoTwinSpinAngle;
-
-            // Apply visuals and animations.
-            if (npc.TryGetDLCBehavior(out CalDLCEmodeBehavior behavior) && behavior is IExoTwin twin)
-            {
-                twin.SpecificDrawAction = () =>
-                {
-                    RenderElectricGleam(npc.Center + npc.rotation.ToRotationVector2() * 68f - Main.screenPosition, (1f - npc.Opacity).Cubed(), npc.type == ModContent.NPCType<Artemis>());
-                };
-                twin.Frame = twin.Animation.CalculateFrame(AITimer / 40f % 1f, twin.InPhase2);
-                twin.SpecialShaderAction = Perform_ExoTwin_RenderWithHologramShader;
-            }
+            float thrusterBoost = 0f;
+            float motionBlur = 0f;
 
             // Make the Exo Twins SPIN!!
             if (npc.type == ModContent.NPCType<Artemis>())
@@ -198,6 +195,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             // Teleport to the hover destination on the first frame.
             if (wrappedAITimer == 1)
             {
+                if (npc.type == ModContent.NPCType<Apollo>())
+                {
+                    ScreenShakeSystem.StartShake(4f);
+                    SoundEngine.PlaySound(HolographicTeleportSound).WithVolumeBoost(2f);
+                }
+
                 npc.Center = hoverDestination;
                 npc.velocity = Vector2.Zero;
                 npc.netUpdate = true;
@@ -226,6 +229,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity = npc.velocity * 1.075f + npc.velocity.SafeNormalize(Vector2.Zero) * 6f;
                 npc.rotation = npc.velocity.ToRotation();
                 npc.damage = npc.defDamage;
+
+                thrusterBoost = 1.4f;
+                motionBlur = 1f;
+            }
+
+            // Apply visuals and animations.
+            if (npc.TryGetDLCBehavior(out CalDLCEmodeBehavior behavior) && behavior is IExoTwin twin)
+            {
+                if (twin.MotionBlurInterpolant <= 0f)
+                {
+                    twin.SpecificDrawAction = () =>
+                    {
+                        RenderElectricGleam(npc.Center + npc.rotation.ToRotationVector2() * 68f - Main.screenPosition, (1f - npc.Opacity).Cubed(), npc.type == ModContent.NPCType<Artemis>());
+                    };
+                }
+
+                twin.ThrusterBoost = MathHelper.Lerp(twin.ThrusterBoost, thrusterBoost, 0.3f);
+                twin.MotionBlurInterpolant = MathHelper.Lerp(twin.MotionBlurInterpolant, motionBlur, 0.35f);
+                twin.Frame = twin.Animation.CalculateFrame(AITimer / 40f % 1f, twin.InPhase2);
+                twin.SpecialShaderAction = Perform_ExoTwin_RenderWithHologramShader;
             }
 
             npc.Opacity = LumUtils.InverseLerp(0f, lockOnTime * 0.75f, wrappedAITimer);
