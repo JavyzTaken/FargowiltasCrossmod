@@ -219,6 +219,12 @@ namespace FargowiltasCrossmod.Core.Data
         {
             if (Main.netMode != NetmodeID.SinglePlayer)
                 return;
+#if !DEBUG
+            return;
+#endif
+
+            if (!Directory.Exists(DataPath))
+                Directory.CreateDirectory(DataPath);
 
             DataWatcher = new(DataPath, "*.json")
             {
