@@ -68,7 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 Projectile.localAI[2] = 1;
                 Projectile.ai[1] = 15;
             }
-            if (Projectile.ai[0] > 2)
+            if (Projectile.ai[0] > 1)
                 Projectile.Kill();
 
             Projectile.frameCounter++;
@@ -94,7 +94,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                     {
                         if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<SulphurCloud>())
                         {
-                            OnHitEffect(Main.projectile[i].damage);
+                            for (int a = 0; a < 2; a++)
+                                OnHitEffect(Main.projectile[i].damage);
                             break;
                         }
                     }

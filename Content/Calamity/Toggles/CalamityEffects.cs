@@ -82,4 +82,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
     {
         public override int ToggleItemType => ModContent.ItemType<RampartofDeities>();
     }
+
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public abstract class SupersonicEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => Header.GetHeader<SupersonicHeader>();
+
+    }
+    public class StatisVoidSashEffect : SupersonicEffect
+    {
+        public override int ToggleItemType => ModContent.ItemType<StatisVoidSash>();
+    }
 }

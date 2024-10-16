@@ -77,9 +77,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
             if (player.AddEffect<CalamityEffect>(Item))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
             
-            if (ModLoader.HasMod("CalamityHunt") && player.AddEffect<SplendorJamEffect>(Item))
+            if (ModCompatibility.CalamityHunt.Loaded && player.AddEffect<SplendorJamEffect>(Item))
             {
-                ModContent.TryFind<ModItem>("CalamityHunt/SplendorJam", out ModItem jam);
+                ModContent.TryFind(ModCompatibility.CalamityHunt.Name, "SplendorJam", out ModItem jam);
                 jam.UpdateAccessory(player, hideVisual);
                 jam.UpdateEquip(player);
             }
@@ -96,7 +96,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 .AddIngredient<YharimsGift>()
                 .AddIngredient<DraedonsHeart>()
                 .AddIngredient<CalamityMod.Items.Accessories.Calamity>()
-                .AddIngredient<ShadowspecBar>(10)
+                .AddIngredient<AbomEnergy>(5)
                 .AddTile<CrucibleCosmosSheet>()
                 .Register();
         }
@@ -165,15 +165,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
     {
         public override int ToggleItemType => ModContent.ItemType<CalamityMod.Items.Accessories.Calamity>();
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.CalamityHunt.Name)]
+    [ExtendsFromMod(ModCompatibility.CalamityHunt.Name)]
     public class SplendorJamEffect : BotBWEffect
     {
         public override int ToggleItemType
         {
             get
             {
-                ModContent.TryFind<ModItem>("CalamityHunt/SplendorJam", out ModItem jam);
+                ModContent.TryFind(ModCompatibility.CalamityHunt.Name, "SplendorJam", out ModItem jam);
                 if (jam != null)
                 {
                     return jam.Type;

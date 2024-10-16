@@ -12,6 +12,7 @@ using CalamityMod.Items.Materials;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.Astral;
@@ -40,6 +41,7 @@ using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.PlaguebringerGoliath;
 using CalamityMod.NPCs.PlagueEnemies;
 using CalamityMod.NPCs.Polterghast;
+using CalamityMod.NPCs.PrimordialWyrm;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
 using CalamityMod.NPCs.Ravager;
@@ -316,7 +318,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //mutant
             if (npc.type == ModContent.NPCType<MutantBoss>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 3f);
+                npc.lifeMax = (int)(npc.lifeMax * 2f);
                 npc.damage = (int)(npc.damage * 1.5f);
             }
             if (ModCompatibility.WrathoftheGods.Loaded)
@@ -1338,7 +1340,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             else if (npc.type == ModContent.NPCType<AstrumDeusHead>())
             {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
+                if (npc.Calamity().newAI[0] == 0)
+                    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
             }
             else if (npc.type == ModContent.NPCType<Bumblefuck>())
             {
@@ -1391,6 +1394,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                     Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
+            }
+            else if (npc.type == ModContent.NPCType<PrimordialWyrmHead>())
+            {
+                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
             }
             if (ModCompatibility.WrathoftheGods.Loaded)
             {

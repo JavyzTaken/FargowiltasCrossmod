@@ -732,10 +732,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         recipe.AddIngredient<MOAB>();
                     if (recipe.RemoveIngredient(ItemID.MasterNinjaGear))
                         recipe.AddIngredient<StatisVoidSash>();
-                    if (recipe.RemoveIngredient(ItemID.EoCShield))
-                        recipe.AddIngredient<ShieldoftheHighRuler>();
-                    recipe.AddIngredient<WulfrumAcrobaticsPack>()
-                        .AddIngredient<TundraLeash>()
+                    //if (recipe.RemoveIngredient(ItemID.EoCShield))
+                    //    recipe.AddIngredient<ShieldoftheHighRuler>();
+                    recipe.AddIngredient<TundraLeash>()
                         .AddIngredient<FollyFeed>()
                         .AddIngredient<TheCartofGods>();
                 }
@@ -820,13 +819,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     if (recipe.RemoveIngredient(ItemID.PygmyNecklace) && recipe.RemoveIngredient(ItemID.PapyrusScarab))
                         recipe.AddIngredient<Nucleogenesis>();
-                    if (recipe.RemoveIngredient(ItemID.Smolstar) && recipe.RemoveIngredient(ItemID.PirateStaff))
+                    if (recipe.RemoveIngredient(ItemID.Smolstar) && recipe.RemoveIngredient(ItemID.MaceWhip))
                         recipe.AddIngredient<EtherealSubjugator>();
                     if (recipe.RemoveIngredient(ItemID.OpticStaff) && recipe.RemoveIngredient(ItemID.DeadlySphereStaff))
                         recipe.AddIngredient<CadaverousCarrion>();
                     if (recipe.RemoveIngredient(ItemID.StormTigerStaff) && recipe.RemoveIngredient(ItemID.StaffoftheFrostHydra))
                         recipe.AddIngredient<CorvidHarbringerStaff>();
-                    if (recipe.RemoveIngredient(ItemID.TempestStaff) && recipe.RemoveIngredient(ItemID.RavenStaff))
+                    if (recipe.RemoveIngredient(ItemID.TempestStaff))
                         recipe.AddIngredient<SarosPossession>();
                     if (recipe.RemoveIngredient(ItemID.XenoStaff) && recipe.RemoveIngredient(ItemID.EmpressBlade))
                         recipe.AddIngredient<YharonsKindleStaff>()
@@ -875,9 +874,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.DisableRecipe();
                 }
-                if (recipe.HasResult<BrandoftheBrimstoneWitch>() && ModLoader.HasMod("CalamityHunt"))
+                if (recipe.HasResult<BrandoftheBrimstoneWitch>() && ModCompatibility.CalamityHunt.Loaded)
                 {
-                    Mod hunt = ModLoader.GetMod("CalamityHunt");
+                    Mod hunt = ModCompatibility.CalamityHunt.Mod;
                     if (!recipe.HasIngredient(hunt, "SplendorJam"))
                     {
                         recipe.AddIngredient(hunt, "SplendorJam");
@@ -923,14 +922,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 List<int> Tier2Souls =
                 [
                     ItemType<TerrariaSoul>(),
-                        ItemType<UniverseSoul>(),
-                        ItemType<DimensionSoul>(),
-                        ItemType<MasochistSoul>()
+                    ItemType<UniverseSoul>(),
+                    ItemType<DimensionSoul>(),
+                    ItemType<MasochistSoul>()
                 ];
-
-                if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<ShadowspecBar>()))
+                if (recipe.HasResult<ShadowspecBar>())
                 {
-                    recipe.AddIngredient<ShadowspecBar>(5);
+                    recipe.AddIngredient<EternalEnergy>(1);
+                }
+
+                if (Tier2Souls.Contains(recipe.createItem.type) && !recipe.HasIngredient(ItemType<AshesofAnnihilation>()))
+                {
+                    recipe.AddIngredient<AshesofAnnihilation>(5);
+                    recipe.AddIngredient<ExoPrism>(5);
                     if (recipe.RemoveTile(TileType<CrucibleCosmosSheet>()))
                     {
                         recipe.AddTile<DraedonsForge>();

@@ -125,6 +125,9 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 calamityPlayer.spiritOrigin = false;
             }
 
+            if (soulsPlayer.FlightMasterySoul)
+                calamityPlayer.infiniteFlight = true;
+
             if (soulsPlayer.noDodge)
             {
                 if (!Player.HasCooldown(GlobalDodge.ID))
