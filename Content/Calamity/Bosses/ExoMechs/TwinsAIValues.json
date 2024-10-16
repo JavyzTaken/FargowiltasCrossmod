@@ -133,5 +133,25 @@
     "EternityRevValue": 36.0,
     "EternityDeathValue": 36.0,
     "MasochistValue": 36.0
+  },
+  "SpawnAnimation_AttackTransitionDelay": {
+    "EternityRevValue": 150.0,
+    "EternityDeathValue": 150.0,
+    "MasochistValue": 150.0
+  },
+  "SpawnAnimation_FallFromSkySpeed": {
+    "EternityRevValue": 120.0,
+    "EternityDeathValue": 120.0,
+    "MasochistValue": 120.0
+  },
+  "SpawnAnimation_FallFromSkyTime": {
+    "EternityRevValue": 12.0,
+    "EternityDeathValue": 12.0,
+    "MasochistValue": 12.0
+  },
+  "SpawnAnimation_LookAtPlayerDelay": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
   }
 }

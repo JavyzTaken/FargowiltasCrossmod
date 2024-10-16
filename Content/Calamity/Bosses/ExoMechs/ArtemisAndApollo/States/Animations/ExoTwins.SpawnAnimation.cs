@@ -1,5 +1,4 @@
 ﻿using CalamityMod.NPCs.ExoMechs.Artemis;
-using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -11,22 +10,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Artemis and Apollo spend falling from the sky at rapid velocity during their spawn animation.
         /// </summary>
-        public static int SpawnAnimation_FallFromSkyTime => Utilities.SecondsToFrames(0.2f);
+        public static int SpawnAnimation_FallFromSkyTime => Variables.GetAIInt("SpawnAnimation_FallFromSkyTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Artemis and Apollo have to wait to look at the player after their spawn animation.
         /// </summary>
-        public static int SpawnAnimation_LookAtPlayerDelay => Utilities.SecondsToFrames(1f);
+        public static int SpawnAnimation_LookAtPlayerDelay => Variables.GetAIInt("SpawnAnimation_LookAtPlayerDelay", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Artemis and Apollo wait during their spawn animation before attacking.
         /// </summary>
-        public static int SpawnAnimation_AttackTransitionDelay => Utilities.SecondsToFrames(2.5f);
+        public static int SpawnAnimation_AttackTransitionDelay => Variables.GetAIInt("SpawnAnimation_AttackTransitionDelay", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed at which Artemis and Apollo appear from the sky during their spawn animation.
         /// </summary>
-        public static float SpawnAnimation_FallFromSkySpeed => 120f;
+        public static float SpawnAnimation_FallFromSkySpeed => Variables.GetAIFloat("SpawnAnimation_FallFromSkySpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// AI update loop method for the spawn animation of the Exo Twins.
