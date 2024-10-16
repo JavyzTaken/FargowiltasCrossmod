@@ -20,52 +20,52 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long the walled slashes attack goes on for until a new combo is selected.
         /// </summary>
-        public static int AttackDuration => Utilities.SecondsToFrames(9.5f);
+        public static int AttackDuration => Variables.GetAIInt("WalledSlashes_AttackDuration", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// Ares' slash cycle time, which dictates how fast each set of slashes are.
         /// </summary>
-        public static int AresSlashCycleTime => Utilities.SecondsToFrames(1.46f);
+        public static int AresSlashCycleTime => Variables.GetAIInt("WalledSlashes_AresSlashCycleTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Ares waits before slashing.
         /// </summary>
-        public static int AresSlashDelay => Utilities.SecondsToFrames(5.4f);
+        public static int AresSlashDelay => Variables.GetAIInt("WalledSlashes_AresSlashCycleTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The max speed at which Ares can fly when trying to reach the player.
         /// </summary>
-        public static float AresMaxFlySpeed => 56f;
+        public static float AresMaxFlySpeed => Variables.GetAIFloat("WalledSlashes_AresMaxFlySpeed", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How far vertically Ares attempts to hover relative to the target's position.
         /// </summary>
-        public static float AresVerticalHoverOffset => -300f;
+        public static float AresVerticalHoverOffset => Variables.GetAIFloat("WalledSlashes_AresVerticalHoverOffset", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// Ares' fly acceleration while he attempts to slash the player.
         /// </summary>
-        public static Vector2 AresAcceleration => new(0.3f, 0.14f);
+        public static Vector2 AresAcceleration => new Vector2(0.3f, 0.14f) * Variables.GetAIFloat("WalledSlashes_AresAccelerationFactor", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The rate at which Hades releases mines.
         /// </summary>
-        public static int HadesMineReleaseRate => Utilities.SecondsToFrames(0.4f);
+        public static int HadesMineReleaseRate => Variables.GetAIInt("WalledSlashes_HadesMineReleaseRate", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The radius at which Hades spins around his focal point.
         /// </summary>
-        public static float HadesSpinRadius => 1250f;
+        public static float HadesSpinRadius => Variables.GetAIFloat("WalledSlashes_HadesSpinRadius", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The speed at which Hades spins around his focal point.
         /// </summary>
-        public static float HadesSpinSpeed => 142f;
+        public static float HadesSpinSpeed => Variables.GetAIFloat("WalledSlashes_HadesSpinSpeed", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How slowly Hades rotates around his focal point.
         /// </summary>
-        public static float HadesSpinPeriod => 67f;
+        public static float HadesSpinPeriod => Variables.GetAIFloat("WalledSlashes_HadesSpinPeriod", ExoMechAIVariableType.Combo);
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<AresBody>()];
 
