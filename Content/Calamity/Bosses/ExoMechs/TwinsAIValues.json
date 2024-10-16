@@ -1,0 +1,32 @@
+{
+  "FocusedLaserBursts_ChargeRecoilTime": {
+    "EternityRevValue": 76.0,
+    "EternityDeathValue": 76.0,
+    "MasochistValue": 76.0
+  },
+  "FocusedLaserBursts_ChargeUpTime": {
+    "EternityRevValue": 89.0,
+    "EternityDeathValue": 89.0,
+    "MasochistValue": 89.0
+  },
+  "FocusedLaserBursts_CycleCount": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "FocusedLaserBursts_RapidShotRate": {
+    "EternityRevValue": 8.0,
+    "EternityDeathValue": 8.0,
+    "MasochistValue": 8.0
+  },
+  "FocusedLaserBursts_RapidShotShootSpeed": {
+    "EternityRevValue": 9.0,
+    "EternityDeathValue": 9.0,
+    "MasochistValue": 9.0
+  },
+  "FocusedLaserBursts_RapidShotsTime": {
+    "EternityRevValue": 138.0,
+    "EternityDeathValue": 138.0,
+    "MasochistValue": 138.0
+  }
+}

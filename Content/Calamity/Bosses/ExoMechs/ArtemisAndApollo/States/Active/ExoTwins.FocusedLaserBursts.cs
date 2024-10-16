@@ -16,32 +16,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Artemis speeds charging up energy during the FocusedLaserBursts attack.
         /// </summary>
-        public static int FocusedLaserBursts_ChargeUpTime => Utilities.SecondsToFrames(1.475f);
+        public static int FocusedLaserBursts_ChargeUpTime => Variables.GetAIInt("FocusedLaserBursts_ChargeUpTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Artemis spends recoiling after doing the initial spread burst during the FocusedLaserBursts attack.
         /// </summary>
-        public static int FocusedLaserBursts_ChargeRecoilTime => Utilities.SecondsToFrames(1.267f);
+        public static int FocusedLaserBursts_ChargeRecoilTime => Variables.GetAIInt("FocusedLaserBursts_ChargeRecoilTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Artemis spends firing rapid shots during the FocusedLaserBursts attack.
         /// </summary>
-        public static int FocusedLaserBursts_RapidShotsTime => Utilities.SecondsToFrames(2.3f);
-
+        public static int FocusedLaserBursts_RapidShotsTime => Variables.GetAIInt("FocusedLaserBursts_RapidShotsTime", ExoMechAIVariableType.Twins);
         /// <summary>
         /// The rate at which Artemis shoots lasers during the FocusedLaserBursts attack.
         /// </summary>
-        public static int FocusedLaserBursts_RapidShotRate => Utilities.SecondsToFrames(0.133f);
+        public static int FocusedLaserBursts_RapidShotRate => Variables.GetAIInt("FocusedLaserBursts_RapidShotRate", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The amount of cycles that happen during the FocusedLaserBursts attack before the mechs choose another one.
         /// </summary>
-        public static int FocusedLaserBursts_CycleCount => 2;
+        public static int FocusedLaserBursts_CycleCount => Variables.GetAIInt("FocusedLaserBursts_CycleCount", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed of rapid-fire lasers shot during the FocusedLaserBursts attack.
         /// </summary>
-        public static float FocusedLaserBursts_RapidShotShootSpeed => 9f;
+        public static float FocusedLaserBursts_RapidShotShootSpeed => Variables.GetAIFloat("FocusedLaserBursts_RapidShotShootSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// AI update loop method for the FocusedLaserBursts attack.
