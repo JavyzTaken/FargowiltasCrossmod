@@ -24,27 +24,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The amount of damage basic shots from the Exo Twins do.
         /// </summary>
-        public static int BasicShotDamage => Main.expertMode ? 300 : 200;
+        public static int BasicShotDamage => Variables.GetAIInt("BasicShotDamage", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends hovering during the DashesAndLasers attack.
         /// </summary>
-        public static int DashesAndLasers_ApolloHoverTime => Utilities.SecondsToFrames(0.667f);
+        public static int DashesAndLasers_ApolloHoverTime => Variables.GetAIInt("DashesAndLasers_ApolloHoverTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends reeling back during the DashesAndLasers attack.
         /// </summary>
-        public static int DashesAndLasers_ApolloReelBackTime => Utilities.SecondsToFrames(0.6f);
+        public static int DashesAndLasers_ApolloReelBackTime => Variables.GetAIInt("DashesAndLasers_ApolloReelBackTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends dashing during the DashesAndLasers attack.
         /// </summary>
-        public static int DashesAndLasers_ApolloDashTime => Utilities.SecondsToFrames(0.156f);
+        public static int DashesAndLasers_ApolloDashTime => Variables.GetAIInt("DashesAndLasers_ApolloDashTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends slowing down after dashing in the DashesAndLasers attack.
         /// </summary>
-        public static int DashesAndLasers_ApolloSlowDownTime => Utilities.SecondsToFrames(0.3f);
+        public static int DashesAndLasers_ApolloSlowDownTime => Variables.GetAIInt("DashesAndLasers_ApolloSlowDownTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long attack cycles go on for during the DashesAndLasers attack.
@@ -54,12 +54,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The rate at which Artemis shoots lasers during the DashesAndLasers attack.
         /// </summary>
-        public static int DashesAndLasers_ArtemisShootRate => Utilities.SecondsToFrames(0.075f);
+        public static int DashesAndLasers_ArtemisShootRate => Variables.GetAIInt("DashesAndLasers_ArtemisShootRate", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The amount of cycles Artemis and Apollo do before transitioning to the next attack during the DashesAndLasers attack.
         /// </summary>
-        public static int DashesAndLasers_TotalAttackCycles => 3;
+        public static int DashesAndLasers_TotalAttackCycles => Variables.GetAIInt("DashesAndLasers_TotalAttackCycles", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Artemis spends shoots lasers during the DashesAndLasers attack.
@@ -69,17 +69,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How much Artemis arcs around when firing lasers during the DashesAndLasers attack.
         /// </summary>
-        public static float DashesAndLasers_ArtemisShootArc => MathHelper.ToRadians(42f);
+        public static float DashesAndLasers_ArtemisShootArc => MathHelper.ToRadians(Variables.GetAIFloat("DashesAndLasers_ArtemisShootArcDegrees", ExoMechAIVariableType.Twins));
 
         /// <summary>
         /// The speed at which Apollo dashes during the DashesAndLasers attack.
         /// </summary>
-        public static float DashesAndLasers_ApolloDashSpeed => 150f;
+        public static float DashesAndLasers_ApolloDashSpeed => Variables.GetAIFloat("DashesAndLasers_ApolloDashSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed at which lasers are shot by Artemis during the DashesAndLasers attack.
         /// </summary>
-        public static float DashesAndLasers_ArtemisLaserShootSpeed => 13.25f;
+        public static float DashesAndLasers_ArtemisLaserShootSpeed => Variables.GetAIFloat("DashesAndLasers_ArtemisLaserShootSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// AI update loop method for the DashesAndLasers attack.
