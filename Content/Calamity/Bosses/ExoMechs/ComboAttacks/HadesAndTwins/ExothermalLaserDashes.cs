@@ -113,7 +113,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (npc.WithinRange(Target.Center, 50f))
                 npc.velocity *= 0.95f;
             else
-                npc.velocity = FargoSoulsUtil.SmartAccel(npc.Center, Target.Center, npc.velocity, 0.6f, 0.8f);
+                npc.velocity = FargoSoulsUtil.SmartAccel(npc.Center, Target.Center, npc.velocity, 0.3f, 0.8f);
         }
 
         /// <summary>
