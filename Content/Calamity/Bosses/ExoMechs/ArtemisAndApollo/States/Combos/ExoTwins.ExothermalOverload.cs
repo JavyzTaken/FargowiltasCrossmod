@@ -16,6 +16,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 {
+    // TODO -- Move to JSON.
     public static partial class ExoTwinsStates
     {
         /// <summary>
