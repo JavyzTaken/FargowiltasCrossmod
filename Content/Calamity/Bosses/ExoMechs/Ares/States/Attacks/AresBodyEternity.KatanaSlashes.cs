@@ -16,17 +16,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares waits before slashing during his Katana Slashes attack.
         /// </summary>
-        public static int KatanaSlashes_AttackDelay => Utilities.SecondsToFrames(0.5f);
+        public static int KatanaSlashes_AttackDelay => Variables.GetAIInt("KatanaSlashes_AttackDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long a single swipe cycle lasts during Ares' Katana Slashes attack.
         /// </summary>
-        public static int KatanaSlashes_AttackCycleTime => Utilities.SecondsToFrames(1.6f);
+        public static int KatanaSlashes_AttackCycleTime => Variables.GetAIInt("KatanaSlashes_AttackCycleTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How much damage katanas from Ares' core do.
         /// </summary>
-        public static int KatanaDamage => Main.expertMode ? 375 : 220;
+        public static int KatanaDamage => Variables.GetAIInt("KatanaDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The animation easing curve used when Ares' back arms are slashing.

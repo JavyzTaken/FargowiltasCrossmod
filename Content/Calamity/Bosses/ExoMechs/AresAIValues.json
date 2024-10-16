@@ -124,6 +124,21 @@
     "EternityDeathValue": 1932.0,
     "MasochistValue": 1932.0
   },
+  "KatanaDamage": {
+    "EternityRevValue": 375.0,
+    "EternityDeathValue": 375.0,
+    "MasochistValue": 375.0
+  },
+  "KatanaSlashes_AttackCycleTime": {
+    "EternityRevValue": 96.0,
+    "EternityDeathValue": 96.0,
+    "MasochistValue": 96.0
+  },
+  "KatanaSlashes_AttackDelay": {
+    "EternityRevValue": 30.0,
+    "EternityDeathValue": 30.0,
+    "MasochistValue": 30.0
+  },
   "KatanaCycloneDashes_StartingDashSpeed": {
     "EternityRevValue": 32.5,
     "EternityDeathValue": 32.5,
