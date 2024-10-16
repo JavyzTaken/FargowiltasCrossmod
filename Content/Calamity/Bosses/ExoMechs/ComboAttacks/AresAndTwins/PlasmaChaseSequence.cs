@@ -11,6 +11,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -307,10 +308,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.dontTakeDamage = true;
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 2)
-                {
-                    if (SoundEngine.TryGetActiveSound(SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f }), out ActiveSound? sound) && sound is not null)
-                        sound.Volume *= 1.84f;
-                }
+                    SoundEngine.PlaySound(PortalWarpSound with { Volume = 2f }).WithVolumeBoost(1.84f);
 
                 if (wrappedTimer == ExoTwinIdleHoverTime + ExoTwinReelBackTime + 10)
                 {

@@ -1,15 +1,14 @@
 ﻿using FargowiltasSouls.Core.Systems;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Utilities;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ReLogic.Content;
 
 namespace FargowiltasCrossmod.Core.Common
 {
@@ -106,6 +105,20 @@ namespace FargowiltasCrossmod.Core.Common
             }
         }
         public static void RandomFromListExcept<T>(this Queue<T> queue, IEnumerable<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude));
+
+        // Because apparently SoundStyle.Volume doesn't allow for going past a certain threshold...
+        /// <summary>
+        /// Modifies the volume of a played sound slot instance.
+        /// </summary>
+        /// <param name="soundSlot">The sound slot to affect.</param>
+        /// <param name="volumeFactor">The volume modifier factor.</param>
+        public static SlotId WithVolumeBoost(this SlotId soundSlot, float volumeFactor)
+        {
+            if (SoundEngine.TryGetActiveSound(soundSlot, out ActiveSound? sound) && sound is not null)
+                sound.Volume *= volumeFactor;
+
+            return soundSlot;
+        }
 
         #endregion
     }
