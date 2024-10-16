@@ -37,42 +37,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares spends sitting in place, releasing smoke, during his death animation.
         /// </summary>
-        public static int DeathAnimation_SmokeReleaseBuildupTime => LumUtils.SecondsToFrames(1.6f);
+        public static int DeathAnimation_SmokeReleaseBuildupTime => Variables.GetAIInt("DeathAnimation_SmokeReleaseBuildupTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How frequently Ares' core pulses during his death animation.
         /// </summary>
-        public static int DeathAnimation_PulseRate => LumUtils.SecondsToFrames(0.27f);
+        public static int DeathAnimation_PulseRate => Variables.GetAIInt("DeathAnimation_SmokeReleaseBuildupTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares spends performing pulses before exploding.
         /// </summary>
-        public static int DeathAnimation_PulseTime => LumUtils.SecondsToFrames(2.5f);
+        public static int DeathAnimation_PulseTime => Variables.GetAIInt("DeathAnimation_PulseTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to appear.
         /// </summary>
-        public static int DeathAnimation_SilhouetteAppearDelay => LumUtils.SecondsToFrames(0f);
+        public static int DeathAnimation_SilhouetteAppearDelay => Variables.GetAIInt("DeathAnimation_SilhouetteAppearDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to fade in.
         /// </summary>
-        public static int DeathAnimation_SilhouetteFadeInTime => LumUtils.SecondsToFrames(0.05f);
+        public static int DeathAnimation_SilhouetteFadeInTime => Variables.GetAIInt("DeathAnimation_SilhouetteFadeInTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to start dissolving.
         /// </summary>
-        public static int DeathAnimation_SilhouetteDissolveDelay => LumUtils.SecondsToFrames(0.125f);
+        public static int DeathAnimation_SilhouetteDissolveDelay => Variables.GetAIInt("DeathAnimation_SilhouetteDissolveDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long it takes for Ares' silhouette to go from being fully stable to dissolving.
         /// </summary>
-        public static int DeathAnimation_SilhouetteDissolveTime => LumUtils.SecondsToFrames(1.4f);
+        public static int DeathAnimation_SilhouetteDissolveTime => Variables.GetAIInt("DeathAnimation_SilhouetteDissolveTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long it takes for Ares to officially die after his silhouette dissolves.
         /// </summary>
-        public static int DeathAnimation_DeathDelay => LumUtils.SecondsToFrames(0.7f);
+        public static int DeathAnimation_DeathDelay => Variables.GetAIInt("DeathAnimation_DeathDelay", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How far along Ares is with his jittering during his death animation.

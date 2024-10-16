@@ -1,0 +1,42 @@
+{
+  "DeathAnimation_DeathDelay": {
+    "EternityRevValue": 42.0,
+    "EternityDeathValue": 42.0,
+    "MasochistValue": 42.0
+  },
+  "DeathAnimation_PulseRate": {
+    "EternityRevValue": 16.0,
+    "EternityDeathValue": 16.0,
+    "MasochistValue": 16.0
+  },
+  "DeathAnimation_PulseTime": {
+    "EternityRevValue": 150.0,
+    "EternityDeathValue": 150.0,
+    "MasochistValue": 150.0
+  },
+  "DeathAnimation_SilhouetteAppearDelay": {
+    "EternityRevValue": 0.0,
+    "EternityDeathValue": 0.0,
+    "MasochistValue": 0.0
+  },
+  "DeathAnimation_SilhouetteDissolveDelay": {
+    "EternityRevValue": 8.0,
+    "EternityDeathValue": 8.0,
+    "MasochistValue": 8.0
+  },
+  "DeathAnimation_SilhouetteDissolveTime": {
+    "EternityRevValue": 84.0,
+    "EternityDeathValue": 84.0,
+    "MasochistValue": 84.0
+  },
+  "DeathAnimation_SilhouetteFadeInTime": {
+    "EternityRevValue": 3.0,
+    "EternityDeathValue": 3.0,
+    "MasochistValue": 3.0
+  },
+  "DeathAnimation_SmokeReleaseBuildupTime": {
+    "EternityRevValue": 96.0,
+    "EternityDeathValue": 96.0,
+    "MasochistValue": 96.0
+  }
+}
