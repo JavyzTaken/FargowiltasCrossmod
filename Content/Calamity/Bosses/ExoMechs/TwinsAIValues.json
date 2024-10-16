@@ -14,6 +14,31 @@
     "EternityDeathValue": 366.0,
     "MasochistValue": 366.0
   },
+  "EnterSecondPhase_ApolloDamageProtectionFactor": {
+    "EternityRevValue": 0.2,
+    "EternityDeathValue": 0.2,
+    "MasochistValue": 0.2
+  },
+  "EnterSecondPhase_LensPopOffSpeed": {
+    "EternityRevValue": 30.0,
+    "EternityDeathValue": 30.0,
+    "MasochistValue": 30.0
+  },
+  "EnterSecondPhase_LowerForcefieldTime": {
+    "EternityRevValue": 40.0,
+    "EternityDeathValue": 40.0,
+    "MasochistValue": 40.0
+  },
+  "EnterSecondPhase_SecondPhaseAnimationTime": {
+    "EternityRevValue": 180.0,
+    "EternityDeathValue": 180.0,
+    "MasochistValue": 180.0
+  },
+  "EnterSecondPhase_SlowDownTime": {
+    "EternityRevValue": 36.0,
+    "EternityDeathValue": 36.0,
+    "MasochistValue": 36.0
+  },
   "FocusedLaserBursts_ChargeRecoilTime": {
     "EternityRevValue": 76.0,
     "EternityDeathValue": 76.0,

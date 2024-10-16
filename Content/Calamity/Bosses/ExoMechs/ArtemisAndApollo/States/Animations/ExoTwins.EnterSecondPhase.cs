@@ -27,12 +27,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long the Exo Twins spend slowing down in place before beginning their phase transition.
         /// </summary>
-        public static int EnterSecondPhase_SlowDownTime => Utilities.SecondsToFrames(0.6f);
+        public static int EnterSecondPhase_SlowDownTime => Variables.GetAIInt("EnterSecondPhase_SlowDownTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long the phase 2 transition animation lasts.
         /// </summary>
-        public static int EnterSecondPhase_SecondPhaseAnimationTime => Utilities.SecondsToFrames(3f);
+        public static int EnterSecondPhase_SecondPhaseAnimationTime => Variables.GetAIInt("EnterSecondPhase_SecondPhaseAnimationTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Artemis waits before she enters her second phase. This should be at least <see cref="EnterSecondPhase_SecondPhaseAnimationTime"/>, since she's meant to transition after Apollo does.
@@ -42,22 +42,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Apollo spends lowering the forcefield during the second phase transition.
         /// </summary>
-        public static int EnterSecondPhase_LowerForcefieldTime => Utilities.SecondsToFrames(0.67f);
+        public static int EnterSecondPhase_LowerForcefieldTime => Variables.GetAIInt("EnterSecondPhase_LowerForcefieldTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed at which the Exo Twins shoot their lens upon releasing it.
         /// </summary>
-        public static float EnterSecondPhase_LensPopOffSpeed => 30f;
-
-        /// <summary>
-        /// The offset at which the lens is spawned from the Exo Twins.
-        /// </summary>
-        public static float EnterSecondPhase_LensCenterOffset => 62f;
+        public static float EnterSecondPhase_LensPopOffSpeed => Variables.GetAIFloat("EnterSecondPhase_LensPopOffSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// What damage is multiplied by if Apollo is hit by a projectile while protecting Artemis.
         /// </summary>
-        public static float EnterSecondPhase_ApolloDamageProtectionFactor => 0.2f;
+        public static float EnterSecondPhase_ApolloDamageProtectionFactor => Variables.GetAIFloat("EnterSecondPhase_ApolloDamageProtectionFactor", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The sound the Exo Twins make when ejecting their lens.
@@ -78,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 SoundEngine.PlaySound(Phase2TransitionSound);
 
             Vector2 lensDirection = npc.rotation.ToRotationVector2();
-            Vector2 lensOffset = lensDirection * EnterSecondPhase_LensCenterOffset;
+            Vector2 lensOffset = lensDirection * 62f;
             Vector2 lensPosition = npc.Center + lensOffset;
             for (int i = 0; i < 45; i++)
             {
