@@ -75,14 +75,14 @@
     "MasochistValue": 56.0
   },
   "WalledSlashes_AresSlashDelay": {
-    "EternityRevValue": 88.0,
-    "EternityDeathValue": 88.0,
-    "MasochistValue": 88.0
-  },
-  "WalledSlashes_AresSlashCycleTime": {
     "EternityRevValue": 324.0,
     "EternityDeathValue": 324.0,
     "MasochistValue": 324.0
+  },
+  "WalledSlashes_AresSlashCycleTime": {
+    "EternityRevValue": 88.0,
+    "EternityDeathValue": 88.0,
+    "MasochistValue": 88.0
   },
   "WalledSlashes_AresVerticalHoverOffset": {
     "EternityRevValue": -300.0,

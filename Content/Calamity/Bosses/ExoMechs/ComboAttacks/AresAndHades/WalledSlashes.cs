@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares waits before slashing.
         /// </summary>
-        public static int AresSlashDelay => Variables.GetAIInt("WalledSlashes_AresSlashCycleTime", ExoMechAIVariableType.Combo);
+        public static int AresSlashDelay => Variables.GetAIInt("WalledSlashes_AresSlashDelay", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The max speed at which Ares can fly when trying to reach the player.
