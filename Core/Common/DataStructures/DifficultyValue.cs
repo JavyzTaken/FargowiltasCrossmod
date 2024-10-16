@@ -7,7 +7,7 @@ namespace NoxusBoss.Common.Tools.DataStructures
     // I would ordinarily make this all readonly, but that causes problems with JSON deserialization.
 
     /// <summary>
-    /// Represents a value that should vary based on the four main-line modes: Normal, Expert, Revengeance, and Death.
+    /// Represents a value that should vary based on the three main-line modes: E-Rev, E-Death, and Masomode.
     /// </summary>
     /// <typeparam name="TValue"></typeparam>
     public struct DifficultyValue<TValue> where TValue : struct
