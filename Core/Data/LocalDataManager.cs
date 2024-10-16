@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Core.Data
         public static readonly Color SuccessColor = new(54, 187, 107);
 
         /// <summary>
-        /// Determines whether a given data/path set should generate a new local file for the user, in accordance with the <see cref=""/>.
+        /// Determines whether a given data/path set should generate a new local file for the user, in accordance with the <see cref="DataPath"/>.
         /// </summary>
         /// <param name="path">The data's relative path.</param>
         /// <param name="data">The data to reference.</param>
