@@ -234,6 +234,56 @@
     "EternityDeathValue": 36.0,
     "MasochistValue": 36.0
   },
+  "MachineGunLasers_ApolloDashTime": {
+    "EternityRevValue": 22.0,
+    "EternityDeathValue": 22.0,
+    "MasochistValue": 22.0
+  },
+  "MachineGunLasers_ApolloRedirectTime": {
+    "EternityRevValue": 25.0,
+    "EternityDeathValue": 25.0,
+    "MasochistValue": 25.0
+  },
+  "MachineGunLasers_ApolloDashSlowdownTime": {
+    "EternityRevValue": 16.0,
+    "EternityDeathValue": 16.0,
+    "MasochistValue": 16.0
+  },
+  "MachineGunLasers_ApolloPlasmaReleaseRate": {
+    "EternityRevValue": 5.0,
+    "EternityDeathValue": 5.0,
+    "MasochistValue": 5.0
+  },
+  "MachineGunLasers_ApolloTelegraphTime": {
+    "EternityRevValue": 51.0,
+    "EternityDeathValue": 51.0,
+    "MasochistValue": 51.0
+  },
+  "MachineGunLasers_AttackDelay": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
+  "MachineGunLasers_AttackDuration": {
+    "EternityRevValue": 600.0,
+    "EternityDeathValue": 600.0,
+    "MasochistValue": 600.0
+  },
+  "MachineGunLasers_LaserShootRate": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "MachineGunLasers_LaserShootSpeed": {
+    "EternityRevValue": 18.0,
+    "EternityDeathValue": 18.0,
+    "MasochistValue": 18.0
+  },
+  "MachineGunLasers_LaserShootSpreadDegrees": {
+    "EternityRevValue": 4.1,
+    "EternityDeathValue": 4.1,
+    "MasochistValue": 4.1
+  },
   "SpawnAnimation_AttackTransitionDelay": {
     "EternityRevValue": 150.0,
     "EternityDeathValue": 150.0,
