@@ -8,6 +8,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -98,17 +99,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (!npc.TryGetDLCBehavior(out HadesHeadEternity hades))
                 return;
 
-            float angularVelocity = LumUtils.InverseLerp(200f, 500f, npc.Distance(Target.Center)) * MathHelper.ToRadians(2f);
+            float angularVelocity = MathHelper.ToRadians(0.67f);
             float idealRotation = npc.AngleTo(Target.Center) + MathF.Cos(MathHelper.TwoPi * AITimer / 90f) * 0.34f;
             float idealSpeed = Utils.Remap(npc.Distance(Target.Center), 200f, 450f, 12.25f, 21.75f);
             npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.0061f);
-            npc.velocity = npc.velocity.RotateTowards(idealRotation, angularVelocity);
-            npc.velocity = npc.velocity.SafeNormalize(Vector2.UnitY) * MathHelper.Lerp(npc.velocity.Length(), idealSpeed, 0.15f);
-            npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * idealSpeed, 0.0285f);
 
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f));
+            hades.SegmentReorientationStrength = 0.1f;
 
+            npc.damage = npc.defDamage;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
+
+            if (npc.WithinRange(Target.Center, 50f))
+                npc.velocity *= 0.95f;
+            else
+                npc.velocity = FargoSoulsUtil.SmartAccel(npc.Center, Target.Center, npc.velocity, 0.6f, 0.8f);
         }
 
         /// <summary>
