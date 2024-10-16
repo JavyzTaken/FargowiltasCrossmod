@@ -284,6 +284,16 @@
     "EternityDeathValue": 4.1,
     "MasochistValue": 4.1
   },
+  "SimpleLaserShots_ArtemisShootRate": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "SimpleLaserShots_ArtemisShootSpeed": {
+    "EternityRevValue": 16.0,
+    "EternityDeathValue": 16.0,
+    "MasochistValue": 16.0
+  },
   "SpawnAnimation_AttackTransitionDelay": {
     "EternityRevValue": 150.0,
     "EternityDeathValue": 150.0,

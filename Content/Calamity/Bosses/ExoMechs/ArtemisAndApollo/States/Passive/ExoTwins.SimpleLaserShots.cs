@@ -9,12 +9,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The rate at which Artemis shoots lasers forward during the SimpleLaserShots attack.
         /// </summary>
-        public static int SimpleLaserShots_ArtemisShootRate => Utilities.SecondsToFrames(0.75f);
+        public static int SimpleLaserShots_ArtemisShootRate => Variables.GetAIInt("SimpleLaserShots_ArtemisShootRate", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed at which lasers fired by Artemis during the SimpleLaserShots attack should be.
         /// </summary>
-        public static float SimpleLaserShots_ArtemisShootSpeed => 16f;
+        public static float SimpleLaserShots_ArtemisShootSpeed => Variables.GetAIFloat("SimpleLaserShots_ArtemisShootSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// AI update loop method for the SimpleLaserShots attack.
