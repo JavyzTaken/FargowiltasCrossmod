@@ -17,52 +17,52 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// How long Apollo spends hovering/reeling back before dashing during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_HoverTime => LumUtils.SecondsToFrames(1.5f);
+        public static int LoopDashBombardment_HoverTime => Variables.GetAIInt("LoopDashBombardment_HoverTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The amount of time before the dash's happening that Apollo uses to determine when he should play a telegraph beep sound during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_TelegraphSoundBuffer => LumUtils.SecondsToFrames(0.6f);
+        public static int LoopDashBombardment_TelegraphSoundBuffer => Variables.GetAIInt("LoopDashBombardment_TelegraphSoundBuffer", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends performing his initial straight dash during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_StraightDashTime => LumUtils.SecondsToFrames(0.333f);
+        public static int LoopDashBombardment_StraightDashTime => Variables.GetAIInt("LoopDashBombardment_StraightDashTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends spinning after dashing during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_SpinTime => LumUtils.SecondsToFrames(0.9f);
+        public static int LoopDashBombardment_SpinTime => Variables.GetAIInt("LoopDashBombardment_SpinTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How long Apollo spends dashing after spinning during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_FinalDashTime => LumUtils.SecondsToFrames(1.3f);
+        public static int LoopDashBombardment_FinalDashTime => Variables.GetAIInt("LoopDashBombardment_FinalDashTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// How many cycles that occur during the LoopDashBombardment attack before a new one is selected.
         /// </summary>
-        public static int LoopDashBombardment_CycleCount => 2;
+        public static int LoopDashBombardment_CycleCount => Variables.GetAIInt("LoopDashBombardment_CycleCount", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The rate at which Apollo releases missiles during the LoopDashBombardment attack.
         /// </summary>
-        public static int LoopDashBombardment_MissileReleaseRate => LumUtils.SecondsToFrames(0.1333f);
+        public static int LoopDashBombardment_MissileReleaseRate => Variables.GetAIInt("LoopDashBombardment_MissileReleaseRate", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed Apollo starts his straight dash at during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_InitialApolloDashSpeed => 60f;
+        public static float LoopDashBombardment_InitialApolloDashSpeed => Variables.GetAIFloat("LoopDashBombardment_InitialApolloDashSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The maximum speed that Apollo flies at while spinning during the LoopDashBombardment attack. When above this speed he will slow down.
         /// </summary>
-        public static float LoopDashBombardment_MaxApolloSpinSpeed => 30f;
+        public static float LoopDashBombardment_MaxApolloSpinSpeed => Variables.GetAIFloat("LoopDashBombardment_MaxApolloSpinSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The speed of missiles shot by Apollo during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_ApolloMissileShootSpeed => 16f;
+        public static float LoopDashBombardment_ApolloMissileShootSpeed => Variables.GetAIFloat("LoopDashBombardment_ApolloMissileShootSpeed", ExoMechAIVariableType.Twins);
 
         // This serves two purposes:
         // 1. Anti-telefrag prevention. Wouldn't want missiles to just immediately fly at the player.
@@ -70,17 +70,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         /// <summary>
         /// The closest distance Apollo can be to his targets before he ceases to fire rockets during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_ApolloMissileSpawnDistanceThreshold => 320f;
+        public static float LoopDashBombardment_ApolloMissileSpawnDistanceThreshold => Variables.GetAIFloat("LoopDashBombardment_ApolloMissileSpawnDistanceThreshold", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The acceleration of Apollo when performing his final straight dash during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_ApolloFinalDashAcceleration => 2.1f;
+        public static float LoopDashBombardment_ApolloFinalDashAcceleration => Variables.GetAIFloat("LoopDashBombardment_ApolloFinalDashAcceleration", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// The max speed of Apollo when performing his final straight dash during the LoopDashBombardment attack.
         /// </summary>
-        public static float LoopDashBombardment_MaxApolloFinalDashSpeed => 210f;
+        public static float LoopDashBombardment_MaxApolloFinalDashSpeed => Variables.GetAIFloat("LoopDashBombardment_MaxApolloFinalDashSpeed", ExoMechAIVariableType.Twins);
 
         /// <summary>
         /// AI update loop method for the LoopDashBombardment attack.
