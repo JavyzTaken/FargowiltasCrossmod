@@ -24,42 +24,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How long Ares spends redirecting to get near the target during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static int KatanaCycloneDashes_RedirectTime => LumUtils.SecondsToFrames(0.6f);
+        public static int KatanaCycloneDashes_RedirectTime => Variables.GetAIInt("KatanaCycloneDashes_RedirectTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares spends flying away from the target during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static int KatanaCycloneDashes_FlyAwayTime => LumUtils.SecondsToFrames(1.1f);
+        public static int KatanaCycloneDashes_FlyAwayTime => Variables.GetAIInt("KatanaCycloneDashes_FlyAwayTime", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How many slash dashes should be performed during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static int KatanaCycloneDashes_SlashCount => 9;
+        public static int KatanaCycloneDashes_SlashCount => Variables.GetAIInt("KatanaCycloneDashes_SlashCount", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// Ares' starting speed during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static float KatanaCycloneDashes_StartingDashSpeed => 35f;
+        public static float KatanaCycloneDashes_StartingDashSpeed => Variables.GetAIFloat("KatanaCycloneDashes_StartingDashSpeed", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// Ares' acceleration during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static float KatanaCycloneDashes_Acceleration => 1.024f;
+        public static float KatanaCycloneDashes_AccelerationFactor => Variables.GetAIFloat("KatanaCycloneDashes_AccelerationFactor", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How far Ares teleports away from the player when performing a dash during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static float KatanaCycloneDashes_TeleportOffset => 1450f;
+        public static float KatanaCycloneDashes_TeleportOffset => Variables.GetAIFloat("KatanaCycloneDashes_TeleportOffset", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How far away Ares must be from the player, at minimum, to teleport to the opposite side and start a new dash during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static float KatanaCycloneDashes_MinimumRestartDistance => 1932f;
+        public static float KatanaCycloneDashes_MinimumRestartDistance => Variables.GetAIFloat("KatanaCycloneDashes_MinimumRestartDistance", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// Ares' maximum possible rotational velocity as a result of the player's relative Y position during the Katana Cyclone Dashes attack.
         /// </summary>
-        public static float KatanaCycloneDashes_MaxRotationalVelocity => MathHelper.ToRadians(0.64f);
+        public static float KatanaCycloneDashes_MaxRotationalVelocity => MathHelper.ToRadians(Variables.GetAIFloat("KatanaCycloneDashes_MaxRotationalVelocityDegrees", ExoMechAIVariableType.Ares));
 
         /// <summary>
         /// The sound played when Ares performs a slash.
@@ -138,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 if (AITimer % 11f == 10f)
                     SoundEngine.PlaySound(SlashSound, NPC.Center);
 
-                NPC.velocity *= KatanaCycloneDashes_Acceleration;
+                NPC.velocity *= KatanaCycloneDashes_AccelerationFactor;
                 NPC.Opacity = LumUtils.InverseLerp(0f, 7f, AITimer - KatanaCycloneDashes_RedirectTime - KatanaCycloneDashes_FlyAwayTime);
 
                 float rotateToPlayerInterpolant = LumUtils.InverseLerp(12f, 22f, MathF.Abs(Target.velocity.Y));

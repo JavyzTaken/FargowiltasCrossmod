@@ -94,6 +94,46 @@
     "EternityDeathValue": 45.0,
     "MasochistValue": 45.0
   },
+  "KatanaCycloneDashes_FlyAwayTime": {
+    "EternityRevValue": 66.0,
+    "EternityDeathValue": 66.0,
+    "MasochistValue": 66.0
+  },
+  "KatanaCycloneDashes_RedirectTime": {
+    "EternityRevValue": 36.0,
+    "EternityDeathValue": 36.0,
+    "MasochistValue": 36.0
+  },
+  "KatanaCycloneDashes_SlashCount": {
+    "EternityRevValue": 9.0,
+    "EternityDeathValue": 9.0,
+    "MasochistValue": 9.0
+  },
+  "KatanaCycloneDashes_AccelerationFactor": {
+    "EternityRevValue": 1.024,
+    "EternityDeathValue": 1.024,
+    "MasochistValue": 1.024
+  },
+  "KatanaCycloneDashes_MaxRotationalVelocityDegrees": {
+    "EternityRevValue": 0.64,
+    "EternityDeathValue": 0.64,
+    "MasochistValue": 0.64
+  },
+  "KatanaCycloneDashes_MinimumRestartDistance": {
+    "EternityRevValue": 1932.0,
+    "EternityDeathValue": 1932.0,
+    "MasochistValue": 1932.0
+  },
+  "KatanaCycloneDashes_StartingDashSpeed": {
+    "EternityRevValue": 32.5,
+    "EternityDeathValue": 32.5,
+    "MasochistValue": 32.5
+  },
+  "KatanaCycloneDashes_TeleportOffset": {
+    "EternityRevValue": 1485.0,
+    "EternityDeathValue": 1485.0,
+    "MasochistValue": 1485.0
+  },
   "MissileDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,
