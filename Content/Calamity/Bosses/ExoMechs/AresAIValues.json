@@ -234,6 +234,11 @@
     "EternityDeathValue": 300.0,
     "MasochistValue": 300.0
   },
+  "SmallTeslaSphereDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
   "TeslaBurstDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,

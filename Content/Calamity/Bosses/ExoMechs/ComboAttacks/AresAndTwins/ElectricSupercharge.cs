@@ -33,58 +33,58 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares spends electrifying Artemis and Apollo.
         /// </summary>
-        public static int ElectrifyTime => LumUtils.SecondsToFrames(3.5f);
+        public static int ElectrifyTime => Variables.GetAIInt("ElectricSupercharge_ElectrifyTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Ares spends redirecting above the player.
         /// </summary>
-        public static int AresRedirectTime => LumUtils.SecondsToFrames(1.5f);
+        public static int AresRedirectTime => Variables.GetAIInt("ElectricSupercharge_AresRedirectTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The rate at which Ares' cannons shoot tesla spheres after electrifying Artemis and Apollo.
         /// </summary>
-        public static int TeslaSphereShootRate => LumUtils.SecondsToFrames(2.54f);
+        public static int TeslaSphereShootRate => Variables.GetAIInt("ElectricSupercharge_TeslaSphereShootRate", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long the Electric Supercharge attack should go on for.
         /// </summary>
-        public static int AttackDuration => LumUtils.SecondsToFrames(11f);
+        public static int AttackDuration => Variables.GetAIInt("ElectricSupercharge_AttackDuration", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The rate at which Artemis shoots projectiles.
         /// </summary>
-        public static int ArtemisShootRate => LumUtils.SecondsToFrames(0.4f);
+        public static int ArtemisShootRate => Variables.GetAIInt("ElectricSupercharge_ArtemisShootRate", ExoMechAIVariableType.Combo);
 
         // Don't reduce this too much. It plays a key role in minimizing the potential for circle strats.
         /// <summary>
         /// How many electric projectiles Apollo releases upon doing a burst dash.
         /// </summary>
-        public static int DashSpreadProjectileCount => 19;
+        public static int DashSpreadProjectileCount => Variables.GetAIInt("ElectricSupercharge_DashSpreadProjectileCount", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How much damage Ares' small tesla spheres do.
         /// </summary>
-        public static int SmallTeslaSphereDamage => Main.expertMode ? 300 : 200;
+        public static int SmallTeslaSphereDamage => Variables.GetAIInt("SmallTeslaSphereDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// The speed interpolant at which Artemis readjusts her rotation to aim towards the target.
         /// </summary>
-        public static float ArtemisTurnSpeedInterpolant => 0.133f;
+        public static float ArtemisTurnSpeedInterpolant => Variables.GetAIFloat("ElectricSupercharge_ArtemisTurnSpeedInterpolant", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The speed of projectiles Apollo releases upon doing a burst dash.
         /// </summary>
-        public static float DashSpreadProjectileSpeed => 2.1f;
+        public static float DashSpreadProjectileSpeed => Variables.GetAIFloat("ElectricSupercharge_DashSpreadProjectileSpeed", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The speed of tesla spheres shot by Ares.
         /// </summary>
-        public static float TeslaSphereShootSpeed => 9.5f;
+        public static float TeslaSphereShootSpeed => Variables.GetAIFloat("ElectricSupercharge_TeslaSphereShootSpeed", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// Apollo's maximum speed before he begins to decelerate.
         /// </summary>
-        public static float ApolloMaxSpeed => 28.5f;
+        public static float ApolloMaxSpeed => Variables.GetAIFloat("ElectricSupercharge_ApolloMaxSpeed", ExoMechAIVariableType.Combo);
 
         public override bool Perform(NPC npc)
         {

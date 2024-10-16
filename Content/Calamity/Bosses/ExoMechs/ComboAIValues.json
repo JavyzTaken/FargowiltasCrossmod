@@ -1,4 +1,54 @@
 {
+  "ElectricSupercharge_AresRedirectTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "ElectricSupercharge_ArtemisShootRate": {
+    "EternityRevValue": 24.0,
+    "EternityDeathValue": 24.0,
+    "MasochistValue": 24.0
+  },
+  "ElectricSupercharge_ArtemisTurnSpeedInterpolant": {
+    "EternityRevValue": 0.133,
+    "EternityDeathValue": 0.133,
+    "MasochistValue": 0.133
+  },
+  "ElectricSupercharge_ApolloMaxSpeed": {
+    "EternityRevValue": 28.5,
+    "EternityDeathValue": 28.5,
+    "MasochistValue": 28.5
+  },
+  "ElectricSupercharge_AttackDuration": {
+    "EternityRevValue": 660.0,
+    "EternityDeathValue": 660.0,
+    "MasochistValue": 660.0
+  },
+  "ElectricSupercharge_DashSpreadProjectileCount": {
+    "EternityRevValue": 19.0,
+    "EternityDeathValue": 19.0,
+    "MasochistValue": 19.0
+  },
+  "ElectricSupercharge_DashSpreadProjectileSpeed": {
+    "EternityRevValue": 2.1,
+    "EternityDeathValue": 2.1,
+    "MasochistValue": 2.1
+  },
+  "ElectricSupercharge_ElectrifyTime": {
+    "EternityRevValue": 210.0,
+    "EternityDeathValue": 210.0,
+    "MasochistValue": 210.0
+  },
+  "ElectricSupercharge_TeslaSphereShootRate": {
+    "EternityRevValue": 152.0,
+    "EternityDeathValue": 152.0,
+    "MasochistValue": 152.0
+  },
+  "ElectricSupercharge_TeslaSphereShootSpeed": {
+    "EternityRevValue": 9.5,
+    "EternityDeathValue": 9.5,
+    "MasochistValue": 9.5
+  },
   "LaserbeamDashes_HadesDashDelay": {
     "EternityRevValue": 90.0,
     "EternityDeathValue": 90.0,
