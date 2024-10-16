@@ -38,5 +38,10 @@
     "EternityRevValue": 96.0,
     "EternityDeathValue": 96.0,
     "MasochistValue": 96.0
+  },
+  "SpawnAnimation_EnterForegroundTime": {
+    "EternityRevValue": 35.0,
+    "EternityDeathValue": 35.0,
+    "MasochistValue": 35.0
   }
 }

@@ -9,19 +9,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
     public sealed partial class AresBodyEternity : CalDLCEmodeBehavior
     {
         /// <summary>
+        /// How long Ares spends entering the foreground during his spawn animation.
+        /// </summary>
+        public static int SpawnAnimation_EnterForegroundTime => Variables.GetAIInt("SpawnAnimation_EnterForegroundTime", ExoMechAIVariableType.Ares);
+
+        /// <summary>
         /// AI update loop method for the inactive state.
         /// </summary>
         public void DoBehavior_SpawnAnimation()
         {
-            ZPosition = Utilities.InverseLerp(35f, 0f, AITimer).Cubed() * 6f;
-            NPC.Center = Target.Center - Vector2.UnitY * (ZPosition * 20f + 200f);
+            ZPosition = LumUtils.InverseLerp(SpawnAnimation_EnterForegroundTime, 0f, AITimer).Cubed() * 8f;
+            NPC.Center = Target.Center - Vector2.UnitY * (ZPosition * 16f + 200f);
             NPC.velocity *= 0.6f;
             NPC.dontTakeDamage = true;
             NPC.damage = 0;
 
             BasicHandUpdateWrapper();
 
-            if (AITimer >= 35f)
+            if (AITimer >= SpawnAnimation_EnterForegroundTime)
                 SelectNewState();
         }
 
@@ -36,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public void BasicHandUpdate(AresHand hand, Vector2 hoverOffset, int armIndex)
         {
             NPC handNPC = hand.NPC;
-            handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.025f);
+            handNPC.Opacity = LumUtils.Saturate(handNPC.Opacity + 0.025f);
             if (CurrentState == AresAIState.SpawnAnimation)
                 handNPC.Center = NPC.Center + hoverOffset * NPC.scale;
 
