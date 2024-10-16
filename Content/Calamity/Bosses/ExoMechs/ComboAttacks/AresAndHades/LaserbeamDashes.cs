@@ -20,6 +20,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
     {
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<AresBody>()];
 
+        /// <summary>
+        /// How long Hades waits before dashing.
+        /// </summary>
+        public static int HadesDashDelay => Variables.GetAIInt("LaserbeamDashes_HadesDashDelay", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// How long Hades spends before dashing.
+        /// </summary>
+        public static int HadesDashTime => Variables.GetAIInt("LaserbeamDashes_HadesDashTime", ExoMechAIVariableType.Combo);
+
         public override bool Perform(NPC npc)
         {
             if (npc.type == ModContent.NPCType<AresBody>())
@@ -83,8 +93,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (!npc.TryGetDLCBehavior(out HadesHeadEternity hades))
                 return;
 
-            int dashDelay = 90;
-            int dashTime = 60;
+            int dashDelay = HadesDashDelay;
+            int dashTime = HadesDashTime;
             int wrappedTimer = AITimer % (dashDelay + dashTime);
             Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(npc.Center) * new Vector2(550f, 400f);
 

@@ -1,0 +1,12 @@
+{
+  "LaserbeamDashes_HadesDashDelay": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "LaserbeamDashes_HadesDashTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  }
+}
