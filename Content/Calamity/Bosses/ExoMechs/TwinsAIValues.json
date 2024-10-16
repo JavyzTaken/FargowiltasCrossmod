@@ -1,4 +1,54 @@
 {
+  "CloseShots_ApolloFireballShootSpeed": {
+    "EternityRevValue": 33.0,
+    "EternityDeathValue": 33.0,
+    "MasochistValue": 33.0
+  },
+  "CloseShots_ApolloShootRate": {
+    "EternityRevValue": 23.0,
+    "EternityDeathValue": 23.0,
+    "MasochistValue": 23.0
+  },
+  "CloseShots_ArtemisLaserShootSpeed": {
+    "EternityRevValue": 20.0,
+    "EternityDeathValue": 20.0,
+    "MasochistValue": 20.0
+  },
+  "CloseShots_ArtemisShootRate": {
+    "EternityRevValue": 14.0,
+    "EternityDeathValue": 14.0,
+    "MasochistValue": 14.0
+  },
+  "CloseShots_AttackCycleCount": {
+    "EternityRevValue": 3.0,
+    "EternityDeathValue": 3.0,
+    "MasochistValue": 3.0
+  },
+  "CloseShots_DashSlowdownTime": {
+    "EternityRevValue": 18.0,
+    "EternityDeathValue": 18.0,
+    "MasochistValue": 18.0
+  },
+  "CloseShots_DashSpeed": {
+    "EternityRevValue": 88.0,
+    "EternityDeathValue": 88.0,
+    "MasochistValue": 88.0
+  },
+  "CloseShots_MaxDashTime": {
+    "EternityRevValue": 30.0,
+    "EternityDeathValue": 30.0,
+    "MasochistValue": 30.0
+  },
+  "CloseShots_ShootAtPlayerTime": {
+    "EternityRevValue": 108.0,
+    "EternityDeathValue": 108.0,
+    "MasochistValue": 108.0
+  },
+  "CloseShots_RedirectTime": {
+    "EternityRevValue": 36.0,
+    "EternityDeathValue": 36.0,
+    "MasochistValue": 36.0
+  },
   "DeathAnimation_DashChargeUpTime": {
     "EternityRevValue": 27.0,
     "EternityDeathValue": 27.0,
