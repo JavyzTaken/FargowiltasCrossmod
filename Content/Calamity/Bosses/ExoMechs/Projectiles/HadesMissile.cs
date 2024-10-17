@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The maximum speed that this missile can reach.
         /// </summary>
-        public static float MaxSpeedup => 19.5f;
+        public static float MaxSpeedup => 17.5f;
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Thermal;
 
@@ -88,7 +88,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
-            float homeInAcceleration = LumUtils.InverseLerp(90f, 30f, Time) * 2f;
+            float homeInAcceleration = LumUtils.InverseLerp(90f, 30f, Time) * 1.4f;
             Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
             Vector2 aimDestination = target.Center + (Projectile.identity / 3f).ToRotationVector2() * (Projectile.identity / 7f % 1f * 200f);
 
