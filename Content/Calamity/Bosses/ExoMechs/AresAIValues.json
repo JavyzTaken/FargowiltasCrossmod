@@ -1,13 +1,13 @@
 {
   "AimedLaserBursts_MaxHoverAcceleration": {
-    "EternityRevValue": 0.24,
-    "EternityDeathValue": 0.24,
-    "MasochistValue": 0.24
+    "EternityRevValue": 0.22,
+    "EternityDeathValue": 0.22,
+    "MasochistValue": 0.22
   },
   "AimedLaserBursts_MaxHoverSpeed": {
-    "EternityRevValue": 11.5,
-    "EternityDeathValue": 11.5,
-    "MasochistValue": 11.5
+    "EternityRevValue": 9.25,
+    "EternityDeathValue": 9.25,
+    "MasochistValue": 9.25
   },
   "AimedLaserBursts_SmallLaserShootRate": {
     "EternityRevValue": 40.0,
