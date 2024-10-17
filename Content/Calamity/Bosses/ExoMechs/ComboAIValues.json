@@ -1,4 +1,9 @@
 {
+  "BlazingLaserbeamDamage": {
+    "EternityRevValue": 500.0,
+    "EternityDeathValue": 500.0,
+    "MasochistValue": 500.0
+  },
   "ElectricSupercharge_AresRedirectTime": {
     "EternityRevValue": 90.0,
     "EternityDeathValue": 90.0,
@@ -48,6 +53,26 @@
     "EternityRevValue": 9.5,
     "EternityDeathValue": 9.5,
     "MasochistValue": 9.5
+  },
+  "ExothermalLaserDashes_ExoTwinSpinAngularVelocityDegrees": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "ExothermalLaserDashes_ExoTwinSpinRadius": {
+    "EternityRevValue": 408.0,
+    "EternityDeathValue": 408.0,
+    "MasochistValue": 408.0
+  },
+  "ExothermalLaserDashes_ExoTwinSpinWindUpTime": {
+    "EternityRevValue": 75.0,
+    "EternityDeathValue": 75.0,
+    "MasochistValue": 75.0
+  },
+  "ExothermalLaserDashes_RedirectTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
   },
   "LaserbeamDashes_HadesDashDelay": {
     "EternityRevValue": 90.0,

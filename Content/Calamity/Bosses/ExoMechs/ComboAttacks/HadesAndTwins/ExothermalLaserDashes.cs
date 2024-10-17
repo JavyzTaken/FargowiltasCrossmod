@@ -49,27 +49,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long the Exo Twins spend redirecting before firing their laserbeams.
         /// </summary>
-        public static int RedirectTime => LumUtils.SecondsToFrames(1.5f);
+        public static int RedirectTime => Variables.GetAIInt("ExothermalLaserDashes_RedirectTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long it takes for the Exo Twins to spin at full angular velocity.
         /// </summary>
-        public static int ExoTwinSpinWindUpTime => LumUtils.SecondsToFrames(1.25f);
+        public static int ExoTwinSpinWindUpTime => Variables.GetAIInt("ExothermalLaserDashes_ExoTwinSpinWindUpTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How much damage blazing exo laserbeams from the Exo Twins do.
         /// </summary>
-        public static int BlazingLaserbeamDamage => Main.expertMode ? 500 : 350;
+        public static int BlazingLaserbeamDamage => Variables.GetAIInt("BlazingLaserbeamDamage", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How far the Exo Twins should be away from Hades' head when spinning.
         /// </summary>
-        public static float ExoTwinSpinRadius => 408f;
+        public static float ExoTwinSpinRadius => Variables.GetAIFloat("ExothermalLaserDashes_ExoTwinSpinRadius", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The angular velocity of the Exo Twins.
         /// </summary>
-        public static float ExoTwinSpinAngularVelocity => MathHelper.ToRadians(2f);
+        public static float ExoTwinSpinAngularVelocity => MathHelper.ToRadians(Variables.GetAIFloat("ExothermalLaserDashes_ExoTwinSpinAngularVelocityDegrees", ExoMechAIVariableType.Combo));
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<Apollo>()];
 
