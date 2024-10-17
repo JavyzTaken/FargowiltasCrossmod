@@ -59,6 +59,41 @@
     "EternityDeathValue": 300.0,
     "MasochistValue": 300.0
   },
+  "ExoEnergyBlast_BlastDelay": {
+    "EternityRevValue": 147.0,
+    "EternityDeathValue": 147.0,
+    "MasochistValue": 147.0
+  },
+  "ExoEnergyBlast_InitialRedirectTime": {
+    "EternityRevValue": 360.0,
+    "EternityDeathValue": 360.0,
+    "MasochistValue": 360.0
+  },
+  "ExoEnergyBlast_JawOpenTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "ExoEnergyBlast_LaserTurnSpeedDegrees": {
+    "EternityRevValue": 0.7,
+    "EternityDeathValue": 0.7,
+    "MasochistValue": 0.7
+  },
+  "ExoEnergyBlast_PostBeamAccelerationTime": {
+    "EternityRevValue": 72.0,
+    "EternityDeathValue": 72.0,
+    "MasochistValue": 72.0
+  },
+  "ExoEnergyBlast_ProjectileBurstReleaseRate": {
+    "EternityRevValue": 600.0,
+    "EternityDeathValue": 600.0,
+    "MasochistValue": 600.0
+  },
+  "ExoEnergyBlastDamage": {
+    "EternityRevValue": 540.0,
+    "EternityDeathValue": 540.0,
+    "MasochistValue": 540.0
+  },
   "StandardOpenSegmentDR": {
     "EternityRevValue": 0.27,
     "EternityDeathValue": 0.27,

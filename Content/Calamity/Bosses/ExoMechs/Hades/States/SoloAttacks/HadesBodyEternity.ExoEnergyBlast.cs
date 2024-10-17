@@ -17,37 +17,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage the Exo Energy Blast from Hades does.
         /// </summary>
-        public static int ExoEnergyBlastDamage => Main.expertMode ? 515 : 400;
+        public static int ExoEnergyBlastDamage => Variables.GetAIInt("ExoEnergyBlastDamage", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum time Hades spends opening his jaw the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_JawOpenTime => Utilities.SecondsToFrames(1.5f);
+        public static int ExoEnergyBlast_JawOpenTime => Variables.GetAIInt("ExoEnergyBlast_JawOpenTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum time Hades spends redirecting during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_InitialRedirectTime => Utilities.SecondsToFrames(6f);
+        public static int ExoEnergyBlast_InitialRedirectTime => Variables.GetAIInt("ExoEnergyBlast_InitialRedirectTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum time Hades spends accelerating after the ExoEnergyBlast attack's laserbeam.
         /// </summary>
-        public static int ExoEnergyBlast_PostBeamAccelerationTime => Utilities.SecondsToFrames(1.2f);
+        public static int ExoEnergyBlast_PostBeamAccelerationTime => Variables.GetAIInt("ExoEnergyBlast_PostBeamAccelerationTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The delay of the blast during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_BlastDelay => Utilities.SecondsToFrames(2.45f);
+        public static int ExoEnergyBlast_BlastDelay => Variables.GetAIInt("ExoEnergyBlast_BlastDelay", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The cycle time which dictates the rate at which Hades releases missiles from his body segments during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_ProjectileBurstReleaseRate => Utilities.SecondsToFrames(10f);
+        public static int ExoEnergyBlast_ProjectileBurstReleaseRate => Variables.GetAIInt("ExoEnergyBlast_ProjectileBurstReleaseRate", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The speed at which Hades turns the laser during the ExoEnergyBlast attack.
         /// </summary>
-        public static float ExoEnergyBlast_LaserTurnSpeed => MathHelper.ToRadians(0.7f);
+        public static float ExoEnergyBlast_LaserTurnSpeed => MathHelper.ToRadians(Variables.GetAIFloat("ExoEnergyBlast_LaserTurnSpeedDegrees", ExoMechAIVariableType.Hades));
 
         /// <summary>
         /// The sound Hades plays when charging up energy for his deathray.
