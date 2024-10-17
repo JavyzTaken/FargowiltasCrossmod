@@ -1,0 +1,17 @@
+{
+  "BodySegmentCount": {
+    "EternityRevValue": 50.0,
+    "EternityDeathValue": 50.0,
+    "MasochistValue": 50.0
+  },
+  "DefaultSegmentDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "StandardOpenSegmentDR": {
+    "EternityRevValue": 0.27,
+    "EternityDeathValue": 0.27,
+    "MasochistValue": 0.27
+  }
+}

@@ -192,7 +192,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage Hades' segments do.
         /// </summary>
-        public static int DefaultSegmentDamage => Main.expertMode ? 300 : 200;
+        public static int DefaultSegmentDamage => Variables.GetAIInt("DefaultSegmentDamage", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The target that Hades will attempt to attack.
@@ -202,7 +202,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of body segments Hades spawns with.
         /// </summary>
-        public const int BodySegmentCount = 50;
+        public static int BodySegmentCount => Variables.GetAIInt("BodySegmentCount", ExoMechAIVariableType.Hades);
+
+        /// <summary>
+        /// The amount of DR that body and tail segments should have when opened.
+        /// </summary>
+        public static float StandardOpenSegmentDR => Variables.GetAIFloat("StandardOpenSegmentDR", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The standard segment opening rate from <see cref="OpenSegment(float)"/>.
@@ -213,11 +218,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// The standard segment closing rate from <see cref="CloseSegment(float)"/>.
         /// </summary>
         public const float StandardSegmentCloseRate = 0.067f;
-
-        /// <summary>
-        /// The amount of DR that body and tail segments should have when opened.
-        /// </summary>
-        public const float StandardOpenSegmentDR = 0.27f;
 
         /// <summary>
         /// Represents an action that should be performed by segments on Hades' body.
