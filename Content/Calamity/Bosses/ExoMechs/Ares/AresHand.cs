@@ -376,7 +376,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public Vector2 DrawBackArmShoulderAndArm(NPC aresBody, SpriteBatch spriteBatch, Vector2 screenPosition)
         {
             Texture2D shoulderTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopShoulder").Value;
-            Texture2D shoulderTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopShoulderGlow").Value;
             Texture2D shoulderPaddingTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmShoulder").Value;
             Texture2D shoulderPaddingTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmShoulderGlow").Value;
             Vector2 shoulderDrawPosition = aresBody.Center + aresBody.scale * new Vector2(ArmSide * 164f, -54f).RotatedBy(aresBody.rotation) - screenPosition;
@@ -411,12 +410,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             spriteBatch.Draw(shoulderPaddingTextureGlowmask, shoulderPaddingDrawPosition, shoulderPadFrame, glowmaskColor, shoulderRotation, shoulderPadFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
 
             spriteBatch.Draw(shoulderTexture, shoulderDrawPosition, shoulderFrame, shoulderColor, shoulderRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection(), 0f);
-            spriteBatch.Draw(shoulderTextureGlowmask, shoulderDrawPosition, shoulderFrame, glowmaskColor, shoulderRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection(), 0f);
-
-            Vector2 armEnd = armStart + armRotation.ToRotationVector2() * aresBody.scale * ArmSide * 92f;
+            AresBodyEternity.DrawRGBGlowmask("AresArmTopShoulder", shoulderDrawPosition, glowmaskColor, shoulderRotation, NPC.scale, Vector2.One * 0.5f, ArmSide.ToSpriteDirection());
 
             ShoulderToHandDirection = (ArmEndpoint - screenPosition - elbowDrawPosition).ToRotation();
 
+            Vector2 armEnd = armStart + armRotation.ToRotationVector2() * aresBody.scale * ArmSide * 92f;
             return armEnd;
         }
 
