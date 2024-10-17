@@ -42,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How frequently Ares' core pulses during his death animation.
         /// </summary>
-        public static int DeathAnimation_PulseRate => Variables.GetAIInt("DeathAnimation_SmokeReleaseBuildupTime", ExoMechAIVariableType.Ares);
+        public static int DeathAnimation_PulseRate => Variables.GetAIInt("DeathAnimation_PulseRate", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares spends performing pulses before exploding.
