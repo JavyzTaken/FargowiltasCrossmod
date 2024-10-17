@@ -22,22 +22,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends redirecting towards the player at a slow pace during his death animation.
         /// </summary>
-        public static int DeathAnimation_HomeInTime => LumUtils.SecondsToFrames(0.75f);
+        public static int DeathAnimation_HomeInTime => Variables.GetAIInt("DeathAnimation_HomeInTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends becoming unstable and emitting smoke during his death animation.
         /// </summary>
-        public static int DeathAnimation_BecomeUnstableTime => LumUtils.SecondsToFrames(1.5f);
+        public static int DeathAnimation_BecomeUnstableTime => Variables.GetAIInt("DeathAnimation_BecomeUnstableTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends creating small explosions during his death animation.
         /// </summary>
-        public static int DeathAnimation_SmallExplosionsTime => LumUtils.SecondsToFrames(3f);
+        public static int DeathAnimation_SmallExplosionsTime => Variables.GetAIInt("DeathAnimation_SmallExplosionsTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends waiting for his big explosion during his death animation.
         /// </summary>
-        public static int DeathAnimation_BigExplosionDelay => LumUtils.SecondsToFrames(1.25f);
+        public static int DeathAnimation_BigExplosionDelay => Variables.GetAIInt("DeathAnimation_BigExplosionDelay", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// AI update loop method for the death animation.

@@ -4,6 +4,26 @@
     "EternityDeathValue": 50.0,
     "MasochistValue": 50.0
   },
+  "DeathAnimation_BecomeUnstableTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "DeathAnimation_BigExplosionDelay": {
+    "EternityRevValue": 75.0,
+    "EternityDeathValue": 75.0,
+    "MasochistValue": 75.0
+  },
+  "DeathAnimation_HomeInTime": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "DeathAnimation_SmallExplosionsTime": {
+    "EternityRevValue": 180.0,
+    "EternityDeathValue": 180.0,
+    "MasochistValue": 180.0
+  },
   "DefaultSegmentDamage": {
     "EternityRevValue": 300.0,
     "EternityDeathValue": 300.0,
