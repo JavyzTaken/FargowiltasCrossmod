@@ -54,6 +54,71 @@
     "EternityDeathValue": 9.5,
     "MasochistValue": 9.5
   },
+  "ExoFlurry_AresAcceleration": {
+    "EternityRevValue": 0.975,
+    "EternityDeathValue": 0.975,
+    "MasochistValue": 0.975
+  },
+  "ExoFlurry_AresNukeExplosionDiameter": {
+    "EternityRevValue": 2300.0,
+    "EternityDeathValue": 2300.0,
+    "MasochistValue": 2300.0
+  },
+  "ExoFlurry_ExoTwinsDashTime": {
+    "EternityRevValue": 32.0,
+    "EternityDeathValue": 32.0,
+    "MasochistValue": 32.0
+  },
+  "ExoFlurry_ExoTwinsSpinSlowdownTime": {
+    "EternityRevValue": 40.0,
+    "EternityDeathValue": 40.0,
+    "MasochistValue": 40.0
+  },
+  "ExoFlurry_ExoTwinsSpinTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
+  "ExoFlurry_ExoTwinsMaxDashSpeed": {
+    "EternityRevValue": 150.0,
+    "EternityDeathValue": 150.0,
+    "MasochistValue": 150.0
+  },
+  "ExoFlurry_ExoTwinsMaxSpinRadius": {
+    "EternityRevValue": 872.0,
+    "EternityDeathValue": 872.0,
+    "MasochistValue": 872.0
+  },
+  "ExoFlurry_ExoTwinsStandardSpinRadius": {
+    "EternityRevValue": 325.0,
+    "EternityDeathValue": 325.0,
+    "MasochistValue": 325.0
+  },
+  "ExoFlurry_ExoTwinsStartingDashSpeed": {
+    "EternityRevValue": 10.0,
+    "EternityDeathValue": 10.0,
+    "MasochistValue": 10.0
+  },
+  "ExoFlurry_HadesTurnSpeedCoefficient": {
+    "EternityRevValue": 6.4,
+    "EternityDeathValue": 6.4,
+    "MasochistValue": 6.4
+  },
+  "ExoFlurry_MinExoTwinYOrientation": {
+    "EternityRevValue": 0.33,
+    "EternityDeathValue": 0.33,
+    "MasochistValue": 0.33
+  },
+  "ExoFlurry_NukeChargeUpTime": {
+    "EternityRevValue": 180.0,
+    "EternityDeathValue": 180.0,
+    "MasochistValue": 180.0
+  },
+  "ExoFlurry_NukeShotDelay": {
+    "EternityRevValue": 510.0,
+    "EternityDeathValue": 510.0,
+    "MasochistValue": 510.0
+  },
   "ExothermalLaserDashes_ExoTwinSpinAngularVelocityDegrees": {
     "EternityRevValue": 2.0,
     "EternityDeathValue": 2.0,

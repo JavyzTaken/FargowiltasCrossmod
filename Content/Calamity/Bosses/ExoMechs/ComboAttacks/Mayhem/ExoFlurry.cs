@@ -32,32 +32,67 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares spends charging up before firing his nuke.
         /// </summary>
-        public static int NukeChargeUpTime => Utilities.SecondsToFrames(3f);
+        public static int NukeChargeUpTime => Variables.GetAIInt("ExoFlurry_NukeChargeUpTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Ares waits after firing his nuke before being able to begin attempting to fire a new one.
         /// </summary>
-        public static int NukeShotDelay => Utilities.SecondsToFrames(8.5f);
+        public static int NukeShotDelay => Variables.GetAIInt("ExoFlurry_NukeShotDelay", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// How long the Exo Twins spend dashing.
+        /// </summary>
+        public static int ExoTwinsDashTime => Variables.GetAIInt("ExoFlurry_ExoTwinsDashTime", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// How long the Exo Twins spend slowing down after a spin.
+        /// </summary>
+        public static int ExoTwinsSpinSlowdownTime => Variables.GetAIInt("ExoFlurry_ExoTwinsSpinSlowdownTime", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// How long the Exo Twins spend spinning.
+        /// </summary>
+        public static int ExoTwinsSpinTime => Variables.GetAIInt("ExoFlurry_ExoTwinsSpinTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The minimum Y offset factor on the unit circle the Exo Twins can have when spinning.
         /// </summary>
-        public static float MinExoTwinYOrientation => 0.33f;
+        public static float MinExoTwinYOrientation => Variables.GetAIFloat("ExoFlurry_MinExoTwinYOrientation", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The amount by which Hades turns his head when firing his laser blast.
         /// </summary>
-        public static float HadesTurnSpeedCoefficient => 6.4f;
+        public static float HadesTurnSpeedCoefficient => Variables.GetAIFloat("ExoFlurry_HadesTurnSpeedCoefficient", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The diameter of the explosion from Ares' nukes.
         /// </summary>
-        public static float NukeExplosionDiameter => 2300f;
+        public static float AresNukeExplosionDiameter => Variables.GetAIFloat("ExoFlurry_AresNukeExplosionDiameter", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// Ares' acceleration when flying towards the player.
         /// </summary>
-        public static float AresAcceleration => 0.975f;
+        public static float AresAcceleration => Variables.GetAIFloat("ExoFlurry_AresAcceleration", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The starting speed of the Exo Twins when dashing.
+        /// </summary>
+        public static float ExoTwinsStartingDashSpeed => Variables.GetAIFloat("ExoFlurry_ExoTwinsStartingDashSpeed", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The maximum speed of the Exo Twins when dashing.
+        /// </summary>
+        public static float ExoTwinsMaxDashSpeed => Variables.GetAIFloat("ExoFlurry_ExoTwinsMaxDashSpeed", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The standard spin radius of the Exo Twins.
+        /// </summary>
+        public static float ExoTwinsStandardSpinRadius => Variables.GetAIFloat("ExoFlurry_ExoTwinsStandardSpinRadius", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The maximum spin radius of the Exo Twins.
+        /// </summary>
+        public static float ExoTwinsMaxSpinRadius => Variables.GetAIFloat("ExoFlurry_ExoTwinsMaxSpinRadius", ExoMechAIVariableType.Combo);
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<AresBody>(), ModContent.NPCType<Apollo>()];
 
@@ -138,7 +173,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (wrappedTimer == 1)
                 SoundEngine.PlaySound(AresGaussNuke.TelSound with { Volume = 3f });
 
-            AresBodyEternity.HandleGaussNukeShots(hand, handNPC, wrappedTimer, NukeChargeUpTime, NukeExplosionDiameter);
+            AresBodyEternity.HandleGaussNukeShots(hand, handNPC, wrappedTimer, NukeChargeUpTime, AresNukeExplosionDiameter);
         }
 
         /// <summary>
@@ -147,16 +182,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <param name="npc">The Exo Twins' NPC instance.</param>
         public static void Perform_ExoTwins(NPC npc)
         {
-            int spinTime = 60;
-            int spinSlowdownAndRepositionTime = 40;
-            int dashTime = 32;
+            int spinTime = ExoTwinsSpinTime;
+            int spinSlowdownAndRepositionTime = ExoTwinsSpinSlowdownTime;
+            int dashTime = ExoTwinsDashTime;
             int spinCycleTime = spinTime + spinSlowdownAndRepositionTime + dashTime;
             int spinCycleTimer = AITimer % spinCycleTime;
             bool isApollo = npc.type == ExoMechNPCIDs.ApolloID;
-            float startingDashSpeed = 10f;
-            float maxDashSpeed = 150f;
-            float standardSpinRadius = 325f;
-            float maxSpinRadiusExtension = 872f;
             ExoTwinAnimation animation = ExoTwinAnimation.ChargingUp;
 
             // Initialize the random spin orientation of the twins at the very beginning of the attack.
@@ -175,8 +206,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             {
                 // Determine the radius of the spin for the two Exo Twins.
                 float radiusExtendInterpolant = Utilities.InverseLerp(0f, spinSlowdownAndRepositionTime, spinCycleTimer - spinTime);
-                float radiusExtension = MathF.Pow(radiusExtendInterpolant, 3.13f) * maxSpinRadiusExtension;
-                float currentRadius = standardSpinRadius + radiusExtension;
+                float radiusExtension = MathF.Pow(radiusExtendInterpolant, 3.13f) * ExoTwinsMaxSpinRadius;
+                float currentRadius = ExoTwinsStandardSpinRadius + radiusExtension;
 
                 float spinOffsetAngle = EasingCurves.Quintic.Evaluate(EasingType.Out, 0f, MathHelper.Pi * 3f, spinCompletion) + ExoTwinsStateManager.SharedState.Values[0];
                 Vector2 hoverOffset = spinOffsetAngle.ToRotationVector2() * currentRadius;
@@ -199,14 +230,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 ScreenShakeSystem.StartShakeAtPoint(npc.Center, 5.3f);
 
-                npc.velocity = npc.rotation.ToRotationVector2() * startingDashSpeed;
+                npc.velocity = npc.rotation.ToRotationVector2() * ExoTwinsStartingDashSpeed;
                 npc.rotation = npc.velocity.ToRotation();
                 npc.netUpdate = true;
             }
 
             IExoTwin? twinInfo = null;
             float motionBlurInterpolant = Utilities.InverseLerp(90f, 150f, npc.velocity.Length());
-            float thrusterBoost = Utilities.InverseLerp(maxDashSpeed * 0.85f, maxDashSpeed, npc.velocity.Length()) * 1.3f;
+            float thrusterBoost = Utilities.InverseLerp(ExoTwinsMaxDashSpeed * 0.85f, ExoTwinsMaxDashSpeed, npc.velocity.Length()) * 1.3f;
             if (npc.TryGetDLCBehavior(out ArtemisEternity artemisBehavior))
             {
                 artemisBehavior.MotionBlurInterpolant = motionBlurInterpolant;
@@ -242,7 +273,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     }
                 }
 
-                npc.velocity = (npc.velocity + npc.velocity.SafeNormalize(Vector2.UnitY) * 15f).ClampLength(0f, maxDashSpeed);
+                npc.velocity = (npc.velocity + npc.velocity.SafeNormalize(Vector2.UnitY) * 15f).ClampLength(0f, ExoTwinsMaxDashSpeed);
                 npc.damage = npc.defDamage;
                 npc.rotation = npc.velocity.ToRotation();
                 if (twinInfo is not null)
