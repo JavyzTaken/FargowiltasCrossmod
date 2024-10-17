@@ -593,6 +593,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             for (int i = 0; i < palette.Length; i++)
                 palette[i] = Main.hslToRgb(i / 6f, 1f, 0.79f);
 
+            // This unpleasant Ares shows up at your front door.
+            // TODO -- Generalize this.
+            if (Main.zenithWorld)
+                palette = [Color.Magenta, Color.Magenta, Color.SaddleBrown, Color.SaddleBrown, Color.SaddleBrown, Color.Lime, Color.Lime];
+
             return palette;
         }
 
