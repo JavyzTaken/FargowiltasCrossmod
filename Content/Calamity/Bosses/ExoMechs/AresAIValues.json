@@ -224,6 +224,11 @@
     "EternityDeathValue": 300.0,
     "MasochistValue": 300.0
   },
+  "PlasmaJetDamage": {
+    "EternityRevValue": 420.0,
+    "EternityDeathValue": 420.0,
+    "MasochistValue": 420.0
+  },
   "SpawnAnimation_EnterForegroundTime": {
     "EternityRevValue": 35.0,
     "EternityDeathValue": 35.0,

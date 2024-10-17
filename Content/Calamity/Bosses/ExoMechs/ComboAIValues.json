@@ -59,6 +59,41 @@
     "EternityDeathValue": 60.0,
     "MasochistValue": 60.0
   },
+  "PlasmaChaseSequence_AresChaseSpeedInterpolant": {
+    "EternityRevValue": 0.0284,
+    "EternityDeathValue": 0.0284,
+    "MasochistValue": 0.0284
+  },
+  "PlasmaChaseSequence_AttackDuration": {
+    "EternityRevValue": 570.0,
+    "EternityDeathValue": 570.0,
+    "MasochistValue": 570.0
+  },
+  "PlasmaChaseSequence_ExoTwinDashSpeed": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "PlasmaChaseSequence_ExoTwinIdleHoverTime": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "PlasmaChaseSequence_ExoTwinReelBackTime": {
+    "EternityRevValue": 43.0,
+    "EternityDeathValue": 43.0,
+    "MasochistValue": 43.0
+  },
+  "PlasmaChaseSequence_ExoTwinDashSpinTime": {
+    "EternityRevValue": 63.0,
+    "EternityDeathValue": 63.0,
+    "MasochistValue": 63.0
+  },
+  "PlasmaChaseSequence_PlasmaCannonChargeUpTime": {
+    "EternityRevValue": 157.0,
+    "EternityDeathValue": 157.0,
+    "MasochistValue": 157.0
+  },
   "WalledSlashes_AttackDuration": {
     "EternityRevValue": 540.0,
     "EternityDeathValue": 540.0,
