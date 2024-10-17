@@ -653,7 +653,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 palette[i] = Color.Lerp(standardColor, alternateColor, bodyOverride.LightColorPaletteShiftInterpolant).ToVector3();
             }
 
-            /*
+            /* TODO -- Based palette. Find some use for it sometime maybe?aaaaaaaaaa
             palette = new Vector3[]
             {
                 Color.Cyan.ToVector3(),
