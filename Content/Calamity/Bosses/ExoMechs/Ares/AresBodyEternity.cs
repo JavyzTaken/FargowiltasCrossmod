@@ -9,6 +9,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -56,6 +57,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             Default,
             Laugh
+        }
+
+        /// <summary>
+        /// The 0-1 interpolant for shifting Ares' lights.
+        /// </summary>
+        public float LightColorPaletteShiftInterpolant
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The standard palette that should be used for Ares' lights.
+        /// </summary>
+        public Color[] StandardLightColorPalette
+        {
+            get;
+            private set;
+        } = ChooseStandardLightPalette();
+
+        /// <summary>
+        /// The color palette that Ares' lights should shift towards in accordance with the <see cref="LightColorPaletteShiftInterpolant"/>.
+        /// </summary>
+        public Color[] AlternateLightColorPalette
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -485,12 +513,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.ShowNameOnHover = true;
             NPC.BossBar = ModContent.GetInstance<ExoMechBossBar>();
             NPC.As<AresBody>().SecondaryAIState = (int)AresBody.SecondaryPhase.Nothing;
+            LightColorPaletteShiftInterpolant = LumUtils.Saturate(LightColorPaletteShiftInterpolant - 0.012f);
             SilhouetteOpacity = 0f;
             SilhouetteDissolveInterpolant = 0f;
             OptionalDrawAction = null;
             UseStandardRotation = true;
 
             CalamityGlobalNPC.draedonExoMechPrime = NPC.whoAmI;
+        }
+
+        /// <summary>
+        /// Shifts Ares' RGB light colors towards a new color set with a given interpolant.
+        /// </summary>
+        /// <param name="biasInterpolant">How much colors should be biased.</param>
+        /// <param name="alternatePalette">The alternate color palette.</param>
+        public void ShiftLightColors(float biasInterpolant, params Color[] alternatePalette)
+        {
+            LightColorPaletteShiftInterpolant = biasInterpolant;
+            AlternateLightColorPalette = alternatePalette;
         }
 
         /// <summary>
@@ -515,6 +555,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             StateQueue.Clear();
             foreach (AresAIState state in shuffledStates)
                 StateQueue.Enqueue(state);
+            StateQueue.Clear();
+            StateQueue.Enqueue(AresAIState.KatanaCycloneDashes);
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, LumUtils.InverseLerp(0.4f, 0f, NPC.Opacity)) * NPC.Opacity;
@@ -545,6 +587,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Chooses Ares' standard light palette.
+        /// </summary>
+        public static Color[] ChooseStandardLightPalette()
+        {
+            Color[] palette = new Color[7];
+            for (int i = 0; i < palette.Length; i++)
+                palette[i] = Main.hslToRgb(i / 6f, 1f, 0.79f);
+
+            return palette;
+        }
+
+        /// <summary>
         /// Renders an RGB glowmask for a set of textures on Ares.
         /// </summary>
         /// <param name="glowmaskPath">The base glowmask texture path.</param>
@@ -556,17 +610,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <param name="direction">The direction of the glowmask</param>
         public static void DrawRGBGlowmask(string glowmaskPath, Vector2 drawPosition, Color color, float rotation, float baseScale, Vector2 originFactor, SpriteEffects direction)
         {
+            if (CalamityGlobalNPC.draedonExoMechPrime == -1)
+                return;
+
+            NPC aresBody = Main.npc[CalamityGlobalNPC.draedonExoMechPrime];
+            if (!aresBody.TryGetDLCBehavior(out AresBodyEternity bodyOverride))
+                return;
+
             Main.spriteBatch.PrepareForShaders();
 
             Texture2D glowmask = ModContent.Request<Texture2D>($"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/Glowmasks/{glowmaskPath}").Value;
             Texture2D bloom = ModContent.Request<Texture2D>($"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/Glowmasks/{glowmaskPath}Bloom").Value;
 
-            float luminosity = MathHelper.Lerp(0.74f, 0.85f, LumUtils.Cos01(Main.GlobalTimeWrappedHourly * 20f));
-            Vector3[] palette = new Vector3[7];
-            for (int i = 0; i < palette.Length; i++)
+            // Safety check to ensure that the alternative color palette, even if not used currently, is defined.
+            bodyOverride.AlternateLightColorPalette ??= new Color[bodyOverride.StandardLightColorPalette.Length];
+
+            // Determine Ares' color palette.
+            int paletteSize = bodyOverride.StandardLightColorPalette.Length;
+            Vector3[] palette = new Vector3[paletteSize];
+            for (int i = 0; i < paletteSize; i++)
             {
-                Color paletteColor = Main.hslToRgb(i / 6f, 1f, luminosity);
-                palette[i] = paletteColor.ToVector3();
+                if (i >= bodyOverride.StandardLightColorPalette.Length || i >= bodyOverride.AlternateLightColorPalette.Length)
+                    continue;
+
+                Color standardColor = bodyOverride.StandardLightColorPalette[i];
+                Color alternateColor = bodyOverride.AlternateLightColorPalette[i];
+                palette[i] = Color.Lerp(standardColor, alternateColor, bodyOverride.LightColorPaletteShiftInterpolant).ToVector3();
             }
 
             /*
@@ -583,7 +652,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             ManagedShader rgbShader = ShaderManager.GetShader("FargowiltasCrossmod.AresRGBLightShader");
             rgbShader.TrySetParameter("gradient", palette);
             rgbShader.TrySetParameter("gradientCount", palette.Length);
-            rgbShader.TrySetParameter("scrollSpeed", 5.1f);
+            rgbShader.TrySetParameter("scrollSpeed", 3f);
             rgbShader.Apply();
 
             Main.spriteBatch.Draw(glowmask, drawPosition, null, color, rotation, glowmask.Size() * originFactor, baseScale, direction, 0f);
