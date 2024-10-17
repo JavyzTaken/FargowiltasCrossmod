@@ -237,6 +237,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public Queue<AresAIState> StateQueue = [];
 
         /// <summary>
+        /// The attack Ares used last in the previous state queue.
+        /// </summary>
+        public AresAIState LastAttackFromPreviousStateQueue = AresAIState.SpawnAnimation;
+
+        /// <summary>
         /// Whether Ares and his hands need to be rendered to a render target for secondary draw operations, such as his silhouette.
         /// </summary>
         public bool NeedsToBeDrawnToRenderTarget => SilhouetteOpacity > 0f;
@@ -314,6 +319,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             for (int i = 0; i < StateQueue.Count; i++)
                 binaryWriter.Write((int)StateQueue.ElementAt(i));
 
+            binaryWriter.Write((int)LastAttackFromPreviousStateQueue);
+
             binaryWriter.WriteVector2(AimedLaserBursts_AimOffset);
         }
 
@@ -333,6 +340,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             int stateQueueCount = binaryReader.ReadInt32();
             for (int i = 0; i < stateQueueCount; i++)
                 StateQueue.Enqueue((AresAIState)binaryReader.ReadInt32());
+
+            LastAttackFromPreviousStateQueue = (AresAIState)binaryReader.ReadInt32();
 
             AimedLaserBursts_AimOffset = binaryReader.ReadVector2();
         }
@@ -545,6 +554,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                 states.Add(AresAIState.KatanaCycloneDashes);
 
+            states.Remove(LastAttackFromPreviousStateQueue);
+
             IOrderedEnumerable<AresAIState> shuffledStates;
             do
             {
@@ -555,6 +566,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             StateQueue.Clear();
             foreach (AresAIState state in shuffledStates)
                 StateQueue.Enqueue(state);
+            LastAttackFromPreviousStateQueue = StateQueue.Last();
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, LumUtils.InverseLerp(0.4f, 0f, NPC.Opacity)) * NPC.Opacity;
