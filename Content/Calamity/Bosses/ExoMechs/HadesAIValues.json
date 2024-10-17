@@ -134,6 +134,11 @@
     "EternityDeathValue": 240.0,
     "MasochistValue": 240.0
   },
+  "MissileTailSnaps_ReorientTime": {
+    "EternityRevValue": 75.0,
+    "EternityDeathValue": 75.0,
+    "MasochistValue": 75.0
+  },
   "StandardOpenSegmentDR": {
     "EternityRevValue": 0.27,
     "EternityDeathValue": 0.27,
