@@ -127,7 +127,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             }
         }
 
-        public void AimedLaserBurstsHandUpdate(AresHand hand, Vector2 hoverOffset, int armIndex, int chargeUpTime)
+        public void AimedLaserBurstsHandUpdate(AresHand hand, Vector2 hoverOffset, int armIndex, int chargeUpTime, float sweepTurnSpeedFactor = 1f)
         {
             NPC handNPC = hand.NPC;
             handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.3f, 0.8f);
@@ -238,7 +238,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 // This doesn't use hand.RotateToLookAt because that changes the spriteDirection of the cannon.
                 // For most cases this looks natural, but when a laser is being fired from the cannon it's super important that it never "jump" in terms of position.
                 // By locking the spriteDirection in place and just rotating normally, this issue is avoided.
-                float cannonTurnSpeed = LumUtils.InverseLerp(0f, 45f, relativeTimer - chargeUpTime) * 0.072f;
+                float cannonTurnSpeed = LumUtils.InverseLerp(0f, 45f, relativeTimer - chargeUpTime) * sweepTurnSpeedFactor * 0.072f;
                 float idealCannonRotation = handNPC.AngleTo(Target.Center);
                 if (handNPC.spriteDirection == -1)
                     idealCannonRotation += MathHelper.Pi;

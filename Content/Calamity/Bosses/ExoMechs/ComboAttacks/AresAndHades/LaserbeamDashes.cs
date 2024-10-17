@@ -62,10 +62,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             npc.Center = Vector2.Lerp(npc.Center, hoverDestination, 0.01f);
             ares.StandardFlyTowards(hoverDestination);
 
-            ares.InstructionsForHands[0] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(-430f, 50f), 0, cannonChargeUpTime));
-            ares.InstructionsForHands[1] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(-280f, 224f), 1, cannonChargeUpTime));
-            ares.InstructionsForHands[2] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(280f, 224f), 2, cannonChargeUpTime));
-            ares.InstructionsForHands[3] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(430f, 50f), 3, cannonChargeUpTime));
+            ares.InstructionsForHands[0] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(-430f, 50f), 0, cannonChargeUpTime, 0.7f));
+            ares.InstructionsForHands[1] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(-280f, 224f), 1, cannonChargeUpTime, 0.7f));
+            ares.InstructionsForHands[2] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(280f, 224f), 2, cannonChargeUpTime, 0.7f));
+            ares.InstructionsForHands[3] = new(h => ares.AimedLaserBurstsHandUpdate(h, new Vector2(430f, 50f), 3, cannonChargeUpTime, 0.7f));
 
             if (AITimer >= cannonChargeUpTime + CannonLaserbeam.Lifetime + 45)
             {
@@ -100,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             if (wrappedTimer <= dashDelay)
             {
-                Vector2 idealVelocity = npc.SafeDirectionTo(Target.Center) * 40f;
+                Vector2 idealVelocity = npc.SafeDirectionTo(Target.Center) * 30f;
                 idealVelocity = Vector2.Lerp(idealVelocity, npc.SafeDirectionTo(Target.Center) * 4f, Utilities.InverseLerp(210f, 120f, npc.Distance(hoverDestination)));
 
                 npc.Center = Vector2.Lerp(npc.Center, hoverDestination, 0.029f);
@@ -115,7 +115,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
             else if (npc.velocity.Length() <= 120f)
             {
-                npc.velocity += npc.velocity.SafeNormalize(Vector2.UnitY) * 4f;
+                npc.velocity += npc.velocity.SafeNormalize(Vector2.UnitY) * 3.2f;
                 npc.damage = npc.defDamage;
                 hades.BodyBehaviorAction = new(HadesHeadEternity.AllSegments(), HadesHeadEternity.OpenSegment());
 
