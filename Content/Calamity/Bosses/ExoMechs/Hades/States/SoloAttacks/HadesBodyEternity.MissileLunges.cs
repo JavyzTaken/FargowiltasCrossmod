@@ -20,22 +20,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage missiles from Hades do.
         /// </summary>
-        public static int MissileDamage => Main.expertMode ? 300 : 200;
+        public static int MissileDamage => Variables.GetAIInt("MissileDamage", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum amount of time Hades can spend redirecting during his Missile Lunges attack.
         /// </summary>
-        public static int MissileLunges_RedirectMaxTime => LumUtils.SecondsToFrames(4f);
+        public static int MissileLunges_RedirectMaxTime => Variables.GetAIInt("MissileLunges_RedirectMaxTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum amount of time Hades spends lunging during his Missile Lunges attack.
         /// </summary>
-        public static int MissileLunges_LungeDuration => LumUtils.SecondsToFrames(1.75f);
+        public static int MissileLunges_LungeDuration => Variables.GetAIInt("MissileLunges_LungeDuration", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How many lunges Hades should perform during his Missile Lunges attack.
         /// </summary>
-        public static int MissileLunges_LungeCount => 3;
+        public static int MissileLunges_LungeCount => Variables.GetAIInt("MissileLunges_LungeCount", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The horizontal direction in which Hades should lunge during his Missile Lunges attack.

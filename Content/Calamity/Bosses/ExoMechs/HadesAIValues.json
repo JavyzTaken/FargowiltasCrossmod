@@ -114,6 +114,26 @@
     "EternityDeathValue": 300.0,
     "MasochistValue": 300.0
   },
+  "MissileDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "MissileLunges_LungeCount": {
+    "EternityRevValue": 3.0,
+    "EternityDeathValue": 3.0,
+    "MasochistValue": 3.0
+  },
+  "MissileLunges_LungeDuration": {
+    "EternityRevValue": 105.0,
+    "EternityDeathValue": 105.0,
+    "MasochistValue": 105.0
+  },
+  "MissileLunges_RedirectMaxTime": {
+    "EternityRevValue": 240.0,
+    "EternityDeathValue": 240.0,
+    "MasochistValue": 240.0
+  },
   "StandardOpenSegmentDR": {
     "EternityRevValue": 0.27,
     "EternityDeathValue": 0.27,
