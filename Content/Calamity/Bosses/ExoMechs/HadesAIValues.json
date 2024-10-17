@@ -94,6 +94,26 @@
     "EternityDeathValue": 540.0,
     "MasochistValue": 540.0
   },
+  "MineBarrages_BarrageCount": {
+    "EternityRevValue": 1.0,
+    "EternityDeathValue": 1.0,
+    "MasochistValue": 1.0
+  },
+  "MineBarrages_MineReleaseTime": {
+    "EternityRevValue": 126.0,
+    "EternityDeathValue": 126.0,
+    "MasochistValue": 126.0
+  },
+  "MineBarrages_RedirectTime": {
+    "EternityRevValue": 120.0,
+    "EternityDeathValue": 120.0,
+    "MasochistValue": 120.0
+  },
+  "MineDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
   "StandardOpenSegmentDR": {
     "EternityRevValue": 0.27,
     "EternityDeathValue": 0.27,

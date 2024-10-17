@@ -15,22 +15,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The amount of damage mines from Hades do.
         /// </summary>
-        public static int MineDamage => Main.expertMode ? 300 : 200;
+        public static int MineDamage => Variables.GetAIInt("MineDamage", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How many mine barrages Hades should do during his MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_BarrageCount => 1;
+        public static int MineBarrages_BarrageCount => Variables.GetAIInt("MineBarrages_BarrageCount", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends redirecting before releasing mines during the MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_RedirectTime => Utilities.SecondsToFrames(2f);
+        public static int MineBarrages_RedirectTime => Variables.GetAIInt("MineBarrages_RedirectTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends releasing mines during the MineBarrages attack.
         /// </summary>
-        public static int MineBarrages_MineReleaseTime => Utilities.SecondsToFrames(2.1f);
+        public static int MineBarrages_MineReleaseTime => Variables.GetAIInt("MineBarrages_MineReleaseTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends releasing mines during the MineBarrages attack.
