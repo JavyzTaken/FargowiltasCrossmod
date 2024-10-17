@@ -44,47 +44,47 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends snaking around into position in anticipation of attacking during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static int PerpendicularBodyLaserBlasts_RedirectTime => Utilities.SecondsToFrames(2.3f);
+        public static int PerpendicularBodyLaserBlasts_RedirectTime => Variables.GetAIInt("PerpendicularBodyLaserBlasts_RedirectTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends telegraphing prior to firing lasers during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static int PerpendicularBodyLaserBlasts_BlastTelegraphTime => Utilities.SecondsToFrames(1.5f);
+        public static int PerpendicularBodyLaserBlasts_BlastTelegraphTime => Variables.GetAIInt("PerpendicularBodyLaserBlasts_BlastTelegraphTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The 'n' in 'every Nth segment should fire' for Hades' PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static int PerpendicularBodyLaserBlasts_SegmentUsageCycle => Main.expertMode ? 3 : 2;
+        public static int PerpendicularBodyLaserBlasts_SegmentUsageCycle => Variables.GetAIInt("PerpendicularBodyLaserBlasts_SegmentUsageCycle", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How many blasts Hades should perform before transitioning to the next attack during the PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static int PerpendicularBodyLaserBlasts_BlastCount => 2;
+        public static int PerpendicularBodyLaserBlasts_BlastCount => Variables.GetAIInt("PerpendicularBodyLaserBlasts_BlastCount", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How far Hades tries to go ahead of the player before firing during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static float PerpendicularBodyLaserBlasts_ForwardDestinationOffset => 1600f;
+        public static float PerpendicularBodyLaserBlasts_ForwardDestinationOffset => Variables.GetAIFloat("PerpendicularBodyLaserBlasts_ForwardDestinationOffset", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How far Hades tries to go to the side of the player before firing during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static float PerpendicularBodyLaserBlasts_SideDestinationOffset => 450f;
+        public static float PerpendicularBodyLaserBlasts_SideDestinationOffset => Variables.GetAIFloat("PerpendicularBodyLaserBlasts_SideDestinationOffset", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How far along, as a 0-1 completion ratio, Hades needs to be during his PerpendicularBodyLaserBlasts slow down animation before lasers are fired all at once.
         /// </summary>
-        public static float PerpendicularBodyLaserBlasts_BurstShootCompletionRatio => 0.79f;
+        public static float PerpendicularBodyLaserBlasts_BurstShootCompletionRatio => Variables.GetAIFloat("PerpendicularBodyLaserBlasts_BurstShootCompletionRatio", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How fast lasers shot by Hades should be during his PerpendicularBodyLaserBlasts attack.
         /// </summary>
-        public static float PerpendicularBodyLaserBlasts_LaserShootSpeed => 27f;
+        public static float PerpendicularBodyLaserBlasts_LaserShootSpeed => Variables.GetAIFloat("PerpendicularBodyLaserBlasts_LaserShootSpeed", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The amount of damage basic lasers from Hades do.
         /// </summary>
-        public static int BasicLaserDamage => Main.expertMode ? 300 : 200;
+        public static int BasicLaserDamage => Variables.GetAIInt("BasicLaserDamage", ExoMechAIVariableType.Hades);
 
         public static readonly SoundStyle LaserChargeUpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/LaserChargeUp");
 

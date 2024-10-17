@@ -1,4 +1,9 @@
 {
+  "BasicLaserDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
   "BodySegmentCount": {
     "EternityRevValue": 50.0,
     "EternityDeathValue": 50.0,
@@ -138,6 +143,46 @@
     "EternityRevValue": 75.0,
     "EternityDeathValue": 75.0,
     "MasochistValue": 75.0
+  },
+  "PerpendicularBodyLaserBlasts_BlastCount": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "PerpendicularBodyLaserBlasts_BlastTelegraphTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "PerpendicularBodyLaserBlasts_BurstShootCompletionRatio": {
+    "EternityRevValue": 0.79,
+    "EternityDeathValue": 0.79,
+    "MasochistValue": 0.79
+  },
+  "PerpendicularBodyLaserBlasts_ForwardDestinationOffset": {
+    "EternityRevValue": 1600.0,
+    "EternityDeathValue": 1600.0,
+    "MasochistValue": 1600.0
+  },
+  "PerpendicularBodyLaserBlasts_LaserShootSpeed": {
+    "EternityRevValue": 27.0,
+    "EternityDeathValue": 27.0,
+    "MasochistValue": 27.0
+  },
+  "PerpendicularBodyLaserBlasts_RedirectTime": {
+    "EternityRevValue": 138.0,
+    "EternityDeathValue": 138.0,
+    "MasochistValue": 138.0
+  },
+  "PerpendicularBodyLaserBlasts_SegmentUsageCycle": {
+    "EternityRevValue": 3.0,
+    "EternityDeathValue": 3.0,
+    "MasochistValue": 3.0
+  },
+  "PerpendicularBodyLaserBlasts_SideDestinationOffset": {
+    "EternityRevValue": 450.0,
+    "EternityDeathValue": 450.0,
+    "MasochistValue": 450.0
   },
   "StandardOpenSegmentDR": {
     "EternityRevValue": 0.27,
