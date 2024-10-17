@@ -46,7 +46,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void DoBehavior_SpawnAnimation_HandleGroundCollision()
         {
             bool inGround = Collision.SolidCollision(NPC.TopLeft, NPC.width, NPC.height);
-            if (!SpawnAnimation_InGround && inGround)
+            bool whyAreYouUsingAWorldArena = NPC.Center.Y >= Main.worldSurface * 16f;
+            bool shouldSlowDown = inGround || whyAreYouUsingAWorldArena;
+            if (!SpawnAnimation_InGround && shouldSlowDown)
             {
                 SpawnAnimation_InGround = true;
                 NPC.netUpdate = true;
