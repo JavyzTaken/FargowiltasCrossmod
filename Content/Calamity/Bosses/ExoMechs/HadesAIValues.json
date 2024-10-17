@@ -4,6 +4,36 @@
     "EternityDeathValue": 50.0,
     "MasochistValue": 50.0
   },
+  "ContinuousLaserBarrage_BarrageCount": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "ContinuousLaserBarrage_LaserShootSpeed": {
+    "EternityRevValue": 17.3,
+    "EternityDeathValue": 17.3,
+    "MasochistValue": 17.3
+  },
+  "ContinuousLaserBarrage_ShootProximityRequirement": {
+    "EternityRevValue": 3985.0,
+    "EternityDeathValue": 3985.0,
+    "MasochistValue": 3985.0
+  },
+  "ContinuousLaserBarrage_ShootTime": {
+    "EternityRevValue": 132.0,
+    "EternityDeathValue": 132.0,
+    "MasochistValue": 132.0
+  },
+  "ContinuousLaserBarrage_StandardFlySpeed": {
+    "EternityRevValue": 31.0,
+    "EternityDeathValue": 31.0,
+    "MasochistValue": 31.0
+  },
+  "ContinuousLaserBarrage_TelegraphTime": {
+    "EternityRevValue": 96.0,
+    "EternityDeathValue": 96.0,
+    "MasochistValue": 96.0
+  },
   "DeathAnimation_BecomeUnstableTime": {
     "EternityRevValue": 90.0,
     "EternityDeathValue": 90.0,

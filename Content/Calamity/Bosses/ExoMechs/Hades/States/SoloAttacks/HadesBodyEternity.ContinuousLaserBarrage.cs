@@ -27,32 +27,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How many barrages Hades should perform during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static int ContinuousLaserBarrage_BarrageCount => 2;
+        public static int ContinuousLaserBarrage_BarrageCount => Variables.GetAIInt("ContinuousLaserBarrage_BarrageCount", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends telegraphing and moving around during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static int ContinuousLaserBarrage_TelegraphTime => Utilities.SecondsToFrames(1.6f);
+        public static int ContinuousLaserBarrage_TelegraphTime => Variables.GetAIInt("ContinuousLaserBarrage_TelegraphTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends shooting lasers during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static int ContinuousLaserBarrage_ShootTime => Utilities.SecondsToFrames(2.2f);
+        public static int ContinuousLaserBarrage_ShootTime => Variables.GetAIInt("ContinuousLaserBarrage_ShootTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The standard fly speed at which Hades moves during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static float ContinuousLaserBarrage_StandardFlySpeed => 31f;
+        public static float ContinuousLaserBarrage_StandardFlySpeed => Variables.GetAIFloat("ContinuousLaserBarrage_StandardFlySpeed", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How fast lasers shot by Hades should be during his ContinuousLaserBarrage attack.
         /// </summary>
-        public static float ContinuousLaserBarrage_LaserShootSpeed => 17.3f;
+        public static float ContinuousLaserBarrage_LaserShootSpeed => Variables.GetAIFloat("ContinuousLaserBarrage_LaserShootSpeed", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How close one of Hades' segments has to be to a target in order to fire.
         /// </summary>
-        public static float ContinuousLaserBarrage_ShootProximityRequirement => 3985f;
+        public static float ContinuousLaserBarrage_ShootProximityRequirement => Variables.GetAIFloat("ContinuousLaserBarrage_ShootProximityRequirement", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// AI update loop method for the ContinuousLaserBarrage attack.
