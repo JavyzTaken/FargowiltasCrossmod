@@ -74,6 +74,41 @@
     "EternityDeathValue": 90.0,
     "MasochistValue": 90.0
   },
+  "HolographicRush_ExoTwinDashCount": {
+    "EternityRevValue": 8.0,
+    "EternityDeathValue": 8.0,
+    "MasochistValue": 8.0
+  },
+  "HolographicRush_ExoTwinDashTime": {
+    "EternityRevValue": 24.0,
+    "EternityDeathValue": 24.0,
+    "MasochistValue": 24.0
+  },
+  "HolographicRush_ExoTwinEndingRadius": {
+    "EternityRevValue": 780.0,
+    "EternityDeathValue": 780.0,
+    "MasochistValue": 780.0
+  },
+  "HolographicRush_ExoTwinLockOnTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
+  "HolographicRush_ExoTwinStartingRadius": {
+    "EternityRevValue": 303.0,
+    "EternityDeathValue": 303.0,
+    "MasochistValue": 303.0
+  },
+  "HolographicRush_HadesMineReleaseTime": {
+    "EternityRevValue": 120.0,
+    "EternityDeathValue": 120.0,
+    "MasochistValue": 120.0
+  },
+  "HolographicRush_HadesRedirectTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
   "LaserbeamDashes_HadesDashDelay": {
     "EternityRevValue": 90.0,
     "EternityDeathValue": 90.0,

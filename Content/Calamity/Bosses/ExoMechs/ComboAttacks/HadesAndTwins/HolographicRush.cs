@@ -53,37 +53,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long the Exo Twins spend redirecting and spinning around the target in a cycle.
         /// </summary>
-        public static int ExoTwinLockOnTime => LumUtils.SecondsToFrames(1f);
+        public static int ExoTwinLockOnTime => Variables.GetAIInt("HolographicRush_ExoTwinLockOnTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long the Exo Twins spend dashing in a cycle.
         /// </summary>
-        public static int ExoTwinDashTime => LumUtils.SecondsToFrames(0.4f);
+        public static int ExoTwinDashTime => Variables.GetAIInt("HolographicRush_ExoTwinDashTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The amount of dashes the Exo Twins should perform before transitioning to the next attack.
         /// </summary>
-        public static int ExoTwinDashCount => 8;
+        public static int ExoTwinDashCount => Variables.GetAIInt("HolographicRush_ExoTwinDashCount", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The starting radius of the Exo Twins.
         /// </summary>
-        public static float ExoTwinStartingRadius => 300f;
+        public static float ExoTwinStartingRadius => Variables.GetAIFloat("HolographicRush_ExoTwinStartingRadius", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The ending radius of the Exo Twins, by the time the reel back completes.
         /// </summary>
-        public static float ExoTwinEndingRadius => 780f;
+        public static float ExoTwinEndingRadius => Variables.GetAIFloat("HolographicRush_ExoTwinEndingRadius", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Hades spends redirecting before releasing mines.
         /// </summary>
-        public static int HadesRedirectTime => Utilities.SecondsToFrames(1f);
+        public static int HadesRedirectTime => Variables.GetAIInt("HolographicRush_HadesRedirectTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Hades spends releasing mines.
         /// </summary>
-        public static int HadesMineReleaseTime => Utilities.SecondsToFrames(2f);
+        public static int HadesMineReleaseTime => Variables.GetAIInt("HolographicRush_HadesMineReleaseTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Hades spends releasing mines.
