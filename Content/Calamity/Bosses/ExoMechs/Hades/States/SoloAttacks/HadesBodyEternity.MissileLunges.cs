@@ -216,9 +216,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void DoBehavior_MissileLunges_ReleaseMissile(HadesBodyEternity behaviorOverride)
         {
             NPC segment = behaviorOverride.NPC;
+            int missileReleaseCycle = 10;
             bool properTimeForMissileRelease = AITimer >= MissileLunges_RedirectMaxTime && AITimer <= MissileLunges_RedirectMaxTime + MissileLunges_LungeDuration;
             bool canReleaseMissiles = properTimeForMissileRelease && segment.Center.Y <= Target.Center.Y + 1100f && behaviorOverride.RelativeIndex % 2 == 0;
-            if (canReleaseMissiles && behaviorOverride.GenericCountdown <= 0 && AITimer % 24 == behaviorOverride.RelativeIndex % 24 && behaviorOverride.SegmentOpenInterpolant >= 0.8f)
+            if (canReleaseMissiles && behaviorOverride.GenericCountdown <= 0 && AITimer % missileReleaseCycle == behaviorOverride.RelativeIndex % missileReleaseCycle && behaviorOverride.SegmentOpenInterpolant >= 0.8f)
             {
                 SoundEngine.PlaySound(Apollo.MissileLaunchSound with { Volume = 0.4f, MaxInstances = 0 }, segment.Center);
                 ScreenShakeSystem.StartShakeAtPoint(behaviorOverride.TurretPosition, 4f);
@@ -226,7 +227,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     Vector2 missileVelocity = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2) * 90f;
-                    LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), behaviorOverride.TurretPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f);
+                    LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), behaviorOverride.TurretPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f, -1, 0.013f, 7f);
 
                     behaviorOverride.GenericCountdown = 120;
                     segment.netUpdate = true;
