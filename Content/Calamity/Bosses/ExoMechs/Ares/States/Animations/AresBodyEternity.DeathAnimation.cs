@@ -116,6 +116,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             // Make the sky go red as Ares' core becomes increasingly unstable.
             CustomExoMechsSky.RedSkyInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_PulseTime, AITimer - DeathAnimation_SmokeReleaseBuildupTime);
 
+            // Make Ares' glowmask lights malfunction.
+            float colorInterpolant = LumUtils.Cos01(MathHelper.TwoPi * AITimer / 24f);
+            Color[] malfunctionColors =
+            [
+                Color.Lerp(Color.Red, Color.Cyan, colorInterpolant),
+                Color.Lerp(Color.Black, Color.White, colorInterpolant),
+                Color.Lerp(Color.Wheat, Color.Yellow, colorInterpolant),
+            ];
+            ShiftLightColors(LumUtils.InverseLerp(0f, 16f, AITimer), malfunctionColors);
+
             // Make the screen rumble in accoradance with how much Ares is jittering.
             ScreenShakeSystem.SetUniversalRumble(DeathAnimation_JitterInterpolant * 8f);
 
