@@ -109,7 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.dontTakeDamage = true;
             NPC.damage = 0;
             NPC.velocity += Main.rand.NextVector2Circular(4.4f, 2.4f) * DeathAnimation_JitterInterpolant;
-            NPC.rotation = NPC.velocity.X * 0.02f;
+            NPC.rotation = NPC.velocity.X * 0.023f;
             if (Collision.SolidCollision(NPC.TopLeft, NPC.width, NPC.height + 540))
                 NPC.velocity.Y -= 0.5f;
 

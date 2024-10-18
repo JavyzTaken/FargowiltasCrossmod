@@ -85,9 +85,9 @@
     "MasochistValue": 3.0
   },
   "DeathAnimation_SmokeReleaseBuildupTime": {
-    "EternityRevValue": 96.0,
-    "EternityDeathValue": 96.0,
-    "MasochistValue": 96.0
+    "EternityRevValue": 119.0,
+    "EternityDeathValue": 119.0,
+    "MasochistValue": 119.0
   },
   "DetachHands_DetachmentDelay": {
     "EternityRevValue": 45.0,
