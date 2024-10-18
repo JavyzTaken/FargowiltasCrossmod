@@ -350,7 +350,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             InstructionsForHands ??= new HandInstructions[ArmCount];
             if (Main.netMode != NetmodeID.MultiplayerClient && !HasCreatedArms)
+            {
+                ResetStateQueue();
                 CreateArms();
+            }
 
             if (Inactive && CurrentState != AresAIState.Inactive && CurrentState != AresAIState.Leave)
             {
