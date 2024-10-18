@@ -184,15 +184,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Main.netMode == NetmodeID.MultiplayerClient)
                 return;
 
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < 20; i++)
             {
-                Vector2 burstVelocity = (MathHelper.TwoPi * i / 24f).ToRotationVector2() * 0.57f;
+                Vector2 burstVelocity = (MathHelper.TwoPi * i / 20f).ToRotationVector2() * 0.54f;
                 Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), Projectile.Center, burstVelocity, ModContent.ProjectileType<HomingTeslaBurst>(), AresBodyEternity.TeslaBurstDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
             }
 
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 9; i++)
             {
-                Vector2 burstVelocity = (MathHelper.TwoPi * i / 11f + MathHelper.Pi / 6f).ToRotationVector2() * 0.97f;
+                Vector2 burstVelocity = (MathHelper.TwoPi * i / 9f + MathHelper.Pi / 6f).ToRotationVector2() * 0.92f;
                 Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), Projectile.Center, burstVelocity, ModContent.ProjectileType<HomingTeslaBurst>(), AresBodyEternity.TeslaBurstDamage, 0f, -1, HomingTeslaBurst.HomeInTime);
             }
 
