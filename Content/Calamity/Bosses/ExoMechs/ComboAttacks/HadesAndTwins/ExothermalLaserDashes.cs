@@ -110,10 +110,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             npc.damage = npc.defDamage;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
 
-            if (npc.WithinRange(Target.Center, 50f))
+            if (AITimer % 180 >= 156)
+                npc.velocity = (npc.velocity * 1.02f).ClampLength(0f, 36f);
+            else if (npc.WithinRange(Target.Center, 50f))
                 npc.velocity *= 0.95f;
             else
-                npc.velocity = FargoSoulsUtil.SmartAccel(npc.Center, Target.Center, npc.velocity, 0.3f, 0.8f);
+                npc.velocity = Vector2.Lerp(npc.velocity, FargoSoulsUtil.SmartAccel(npc.Center, Target.Center, npc.velocity, 0.9f, 0.8f), 0.7f);
         }
 
         /// <summary>
