@@ -185,8 +185,8 @@
     "MasochistValue": 450.0
   },
   "StandardOpenSegmentDR": {
-    "EternityRevValue": 0.27,
-    "EternityDeathValue": 0.27,
-    "MasochistValue": 0.27
+    "EternityRevValue": 0.375,
+    "EternityDeathValue": 0.375,
+    "MasochistValue": 0.375
   }
 }
