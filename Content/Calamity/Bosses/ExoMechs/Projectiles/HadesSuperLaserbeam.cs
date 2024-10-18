@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long the laserbeam exists for.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(4.8f);
+        public static int Lifetime => Utilities.SecondsToFrames(10.8f);
 
         /// <summary>
         /// The maximum length of this laserbeam.
@@ -51,12 +51,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The starting <see cref="Projectile.timeLeft"/> where overheating begins for the beam.
         /// </summary>
-        public static int OverheatStartingTime => Utilities.SecondsToFrames(3.5f);
+        public static int OverheatStartingTime => Utilities.SecondsToFrames(8.5f);
 
         /// <summary>
         /// The starting <see cref="Projectile.timeLeft"/> where overheating ends for the beam.
         /// </summary>
-        public static int OverheatEndingTime => Utilities.SecondsToFrames(3f);
+        public static int OverheatEndingTime => Utilities.SecondsToFrames(8f);
 
         /// <summary>
         /// How long the beam waits before beginning to expand.
@@ -122,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <param name="expandInterpolant"></param>
         public void CreateVisuals(float expandInterpolant)
         {
-            OverheatInterpolant = Utilities.InverseLerp(134f, 90f, Projectile.timeLeft);
+            OverheatInterpolant = Utilities.InverseLerp(494f, 450f, Projectile.timeLeft);
 
             // Darken the sky to increase general contrast with everything.
             CustomExoMechsSky.CloudExposure = MathHelper.Lerp(CustomExoMechsSky.DefaultCloudExposure, 0.085f, expandInterpolant);
@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Main.rand.NextBool((1f - OverheatInterpolant) * Projectile.width / 300f))
                 CreateElectricSpark(Projectile.Center + Projectile.velocity * 20f);
 
-            ScreenShakeSystem.SetUniversalRumble(Projectile.width / 90f);
+            ScreenShakeSystem.SetUniversalRumble(Projectile.width / 90f + Time * 0.005f);
 
             if (Time % 14f == 13f)
                 CustomExoMechsSky.CreateLightning(Projectile.Center.ToScreenPosition());

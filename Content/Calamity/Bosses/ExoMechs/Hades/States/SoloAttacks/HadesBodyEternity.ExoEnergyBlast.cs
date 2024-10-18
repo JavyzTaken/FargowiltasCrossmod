@@ -67,6 +67,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public static readonly SoundStyle DeathrayFireSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/DeathrayFire");
 
         /// <summary>
+        /// The sound Hades plays when firing his strong deathray.
+        /// </summary>
+        public static readonly SoundStyle DeathrayFireStrongSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/SuperLaserFire");
+
+        /// <summary>
         /// AI update loop method for the ExoEnergyBlast attack.
         /// </summary>
         public void DoBehavior_ExoEnergyBlast()
@@ -148,7 +153,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             // Fire the Biden Blast.
             if (AITimer == ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay)
             {
-                SoundEngine.PlaySound(DeathrayFireSound).WithVolumeBoost(1.75f);
+                SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.72f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f);
             }
