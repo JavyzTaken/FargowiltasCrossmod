@@ -39,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// The delay of the blast during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_BlastDelay => Variables.GetAIInt("ExoEnergyBlast_BlastDelay", ExoMechAIVariableType.Hades) + 75;
+        public static int ExoEnergyBlast_BlastDelay => Variables.GetAIInt("ExoEnergyBlast_BlastDelay", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The cycle time which dictates the rate at which Hades releases missiles from his body segments during the ExoEnergyBlast attack.

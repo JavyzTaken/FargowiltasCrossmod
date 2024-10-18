@@ -65,9 +65,9 @@
     "MasochistValue": 300.0
   },
   "ExoEnergyBlast_BlastDelay": {
-    "EternityRevValue": 147.0,
-    "EternityDeathValue": 147.0,
-    "MasochistValue": 147.0
+    "EternityRevValue": 222.0,
+    "EternityDeathValue": 222.0,
+    "MasochistValue": 222.0
   },
   "ExoEnergyBlast_InitialRedirectTime": {
     "EternityRevValue": 360.0,
