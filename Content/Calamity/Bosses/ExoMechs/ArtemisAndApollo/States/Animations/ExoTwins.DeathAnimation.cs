@@ -72,6 +72,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         ];
 
         /// <summary>
+        /// The sound Artemis and Apollo make upon colliding with each other during their death animation.
+        /// </summary>
+        public static readonly SoundStyle CollisionSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/DeathAnimationCollision") with { Volume = 1.6f };
+
+        /// <summary>
         /// The beep sound Artemis and Apollo play as a warning.
         /// </summary>
         public static readonly SoundStyle WarningBeepSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/WarningBeep", 2) with { MaxInstances = 0 };
@@ -236,6 +241,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     impactDust.scale *= MathHelper.Lerp(1.45f, 0.4f, speedInterpolant);
                 }
 
+                SoundEngine.PlaySound(CollisionSound);
                 AITimer = 0;
                 DeathAnimation_SuccessfullyCollided = true;
                 npc.netUpdate = true;
