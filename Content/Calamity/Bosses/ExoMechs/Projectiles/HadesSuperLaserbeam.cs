@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long the laserbeam exists for.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(10.8f);
+        public static int Lifetime => Utilities.SecondsToFrames(7.4f);
 
         /// <summary>
         /// The maximum length of this laserbeam.
@@ -51,12 +51,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The starting <see cref="Projectile.timeLeft"/> where overheating begins for the beam.
         /// </summary>
-        public static int OverheatStartingTime => Utilities.SecondsToFrames(8.5f);
+        public static int OverheatStartingTime => Utilities.SecondsToFrames(6f);
 
         /// <summary>
         /// The starting <see cref="Projectile.timeLeft"/> where overheating ends for the beam.
         /// </summary>
-        public static int OverheatEndingTime => Utilities.SecondsToFrames(8f);
+        public static int OverheatEndingTime => Utilities.SecondsToFrames(5f);
 
         /// <summary>
         /// How long the beam waits before beginning to expand.
@@ -122,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <param name="expandInterpolant"></param>
         public void CreateVisuals(float expandInterpolant)
         {
-            OverheatInterpolant = Utilities.InverseLerp(494f, 450f, Projectile.timeLeft);
+            OverheatInterpolant = Utilities.InverseLerp(324f, 280f, Projectile.timeLeft);
 
             // Darken the sky to increase general contrast with everything.
             CustomExoMechsSky.CloudExposure = MathHelper.Lerp(CustomExoMechsSky.DefaultCloudExposure, 0.085f, expandInterpolant);
