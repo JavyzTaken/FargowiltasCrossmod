@@ -70,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             float pointAtTargetSpeed = 4f;
             Vector2 outerHoverDestination = Target.Center + new Vector2(NPC.OnRightSideOf(Target).ToDirectionInt() * 1050f, -400f);
 
-            BodyBehaviorAction = new(AllSegments(), b => DoBehavior_ExoEnergyBlast_UpdateSegment(b, beamIsOverheating));
+            BodyBehaviorAction = new(EveryNthSegment(2), b => DoBehavior_ExoEnergyBlast_UpdateSegment(b, beamIsOverheating));
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant + (beamIsOverheating ? 2f : -1f) * StandardSegmentOpenRate);
 
             JawRotation = MathHelper.Lerp(JawRotation, Utilities.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer).Squared() * 1.3f, 0.07f);
