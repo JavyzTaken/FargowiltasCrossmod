@@ -140,7 +140,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         {
             int wrappedTimer = AITimer % (MachineGunLasers_ApolloRedirectTime + MachineGunLasers_ApolloTelegraphTime + MachineGunLasers_ApolloDashTime + MachineGunLasers_ApolloDashSlowdownTime);
             float dashSpeed = 150f;
-            bool doneAttacking = AITimer >= MachineGunLasers_AttackDelay + MachineGunLasers_AttackDuration - 60;
+            bool doneAttacking = AITimer >= MachineGunLasers_AttackDelay + MachineGunLasers_AttackDuration - 84;
 
             if (wrappedTimer <= MachineGunLasers_ApolloRedirectTime || doneAttacking)
             {
