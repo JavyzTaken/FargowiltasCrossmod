@@ -98,22 +98,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             InstructionsForHands[2] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(280f, 224f), 2, AimedLaserBursts_CannonChargeUpTime));
             InstructionsForHands[3] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(430f, 50f), 3, AimedLaserBursts_CannonChargeUpTime));
 
-            if (AITimer >= AimedLaserBursts_CannonChargeUpTime && AITimer % AimedLaserBursts_SmallLaserShootRate == 0)
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    for (int i = 0; i < AimedLaserBursts_SmallLaserCount; i++)
-                    {
-                        Vector2 laserSpawnPosition = CorePosition;
-                        Vector2 laserDirection = (Target.Center - laserSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.TwoPi * i / AimedLaserBursts_SmallLaserCount);
-                        Vector2 laserVelocity = laserDirection * AimedLaserBursts_SmallLaserShootSpeed;
-                        laserSpawnPosition += laserDirection * 24f;
-
-                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), laserSpawnPosition, laserVelocity, ModContent.ProjectileType<AresCoreLaserSmall>(), SmallLaserDamage, 0f);
-                    }
-                }
-            }
-
             if (AITimer >= AimedLaserBursts_CannonChargeUpTime + CannonLaserbeam.Lifetime + 45)
             {
                 AITimer = 0;
