@@ -104,6 +104,11 @@
     "EternityDeathValue": 27.0,
     "MasochistValue": 27.0
   },
+  "DeathAnimation_ExplodeDelay": {
+    "EternityRevValue": 125.0,
+    "EternityDeathValue": 125.0,
+    "MasochistValue": 125.0
+  },
   "DeathAnimation_HoverNearPlayerTime": {
     "EternityRevValue": 45.0,
     "EternityDeathValue": 45.0,

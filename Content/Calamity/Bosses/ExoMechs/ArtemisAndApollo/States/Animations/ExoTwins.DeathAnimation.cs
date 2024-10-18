@@ -49,6 +49,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static int DeathAnimation_DashChargeUpTime => Variables.GetAIInt("DeathAnimation_DashChargeUpTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
+        /// How long the Exo Twins spend waiting before exploding after colliding.
+        /// </summary>
+        public static int DeathAnimation_ExplodeDelay => Variables.GetAIInt("DeathAnimation_ExplodeDelay", ExoMechAIVariableType.Twins);
+
+        /// <summary>
         /// The set of beep delays that should be used in a sequential order.
         /// </summary>
         public static readonly int[] BeepDelays =
@@ -269,7 +274,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 impactFrameShader.Activate();
             }
 
-            if (AITimer >= 75)
+            if (AITimer >= DeathAnimation_ExplodeDelay)
             {
                 if (npc.DeathSound.HasValue)
                     SoundEngine.PlaySound(npc.DeathSound.Value with { Volume = 2.4f });
