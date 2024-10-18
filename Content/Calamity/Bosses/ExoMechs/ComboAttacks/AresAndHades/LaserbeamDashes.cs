@@ -115,7 +115,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
             else if (npc.velocity.Length() <= 120f)
             {
-                npc.velocity += npc.velocity.SafeNormalize(Vector2.UnitY) * 3.2f;
+                npc.velocity += npc.velocity.SafeNormalize(Vector2.UnitY) * 2.15f;
                 npc.damage = npc.defDamage;
                 hades.BodyBehaviorAction = new(HadesHeadEternity.AllSegments(), HadesHeadEternity.OpenSegment());
 
