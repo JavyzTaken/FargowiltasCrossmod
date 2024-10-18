@@ -215,9 +215,9 @@
     "MasochistValue": 5400.0
   },
   "NukeExplosionDamage": {
-    "EternityRevValue": 540.0,
-    "EternityDeathValue": 540.0,
-    "MasochistValue": 540.0
+    "EternityRevValue": 675.0,
+    "EternityDeathValue": 675.0,
+    "MasochistValue": 675.0
   },
   "NukeWeaponDamage": {
     "EternityRevValue": 300.0,
