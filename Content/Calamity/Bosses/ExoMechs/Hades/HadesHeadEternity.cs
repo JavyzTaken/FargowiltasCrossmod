@@ -432,7 +432,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 CurrentState = Main.rand.NextFromList(HadesAIState.ContinuousLaserBarrage, HadesAIState.MineBarrages, HadesAIState.PerpendicularBodyLaserBlasts, HadesAIState.MissileLunges, HadesAIState.MissileTailSnaps);
 
-                if (Main.rand.NextBool() && ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+                bool useSpecialAttack = NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition;
+                if (Main.rand.NextBool() && useSpecialAttack)
                     CurrentState = HadesAIState.ExoEnergyBlast;
 
                 // Ensure that the continuous laser barrage attack does not occur after the missile lunges attack.

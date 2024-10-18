@@ -549,10 +549,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             // Generate the list of states the perform, and shuffle them randomly in such a manner that the first state in the list is never the previous state.
             List<AresAIState> states = [AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts];
-            if (ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+
+            bool useSpecialAttacks = NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition;
+            if (useSpecialAttacks)
+            {
                 states.Add(AresAIState.BackgroundCoreLaserBeams);
-            if (NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                 states.Add(AresAIState.KatanaCycloneDashes);
+            }
 
             states.Remove(LastAttackFromPreviousStateQueue);
 
