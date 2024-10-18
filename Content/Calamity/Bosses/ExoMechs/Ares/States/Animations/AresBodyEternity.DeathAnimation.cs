@@ -4,6 +4,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -93,6 +94,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public bool DeathAnimation_DoneDoingVisualEffects => AITimer <= DeathAnimation_SmokeReleaseBuildupTime + DeathAnimation_PulseTime - LumUtils.SecondsToFrames(1.5f);
 
         /// <summary>
+        /// The sound played as Ares' death animation progresses.
+        /// </summary>
+        public static readonly SoundStyle DeathBuildupSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/DeathBuildup");
+
+        /// <summary>
         /// The AI update loop method for Ares' death animation.
         /// </summary>
         public void DoBehavior_DeathAnimation()
@@ -121,6 +127,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             if (DeathAnimation_FlarePulseIntensity >= 0.4f && AITimer % DeathAnimation_PulseRate == (int)(DeathAnimation_PulseRate * 0.3f))
                 PushPlayersAndHandsAway();
+
+            if (AITimer == 1)
+                SoundEngine.PlaySound(DeathBuildupSound).WithVolumeBoost(1.7f);
 
             // Explode.
             if (AITimer == DeathAnimation_SmokeReleaseBuildupTime + DeathAnimation_PulseTime)
