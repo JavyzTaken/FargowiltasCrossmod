@@ -103,13 +103,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             LaserbeamLength = MathHelper.Clamp(LaserbeamLength + 189f, 0f, MaxLaserbeamLength);
 
             float expandInterpolant = Utilities.InverseLerp(0f, ExpandTime, Time - ExpandDelay);
-            float bigWidth = MathHelper.Lerp(220f, 380f, OverheatInterpolant);
+            float bigWidth = MathHelper.Lerp(338f, 500f, OverheatInterpolant);
 
             // Comedy.
             if (WorldSavingSystem.MasochistModeReal)
                 bigWidth += 350f;
 
-            Projectile.width = (int)(MathHelper.Lerp(Time / 42f * 8f, bigWidth, expandInterpolant.Squared()) * Utilities.InverseLerp(0f, 10f, Projectile.timeLeft));
+            Projectile.width = (int)(MathHelper.Lerp(Time / 40f * 9.5f, bigWidth, expandInterpolant.Squared()) * Utilities.InverseLerp(0f, 10f, Projectile.timeLeft));
 
             CreateVisuals(expandInterpolant);
 
@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Main.rand.NextBool((1f - OverheatInterpolant) * Projectile.width / 300f))
                 CreateElectricSpark(Projectile.Center + Projectile.velocity * 20f);
 
-            ScreenShakeSystem.SetUniversalRumble(Projectile.width / 90f + Time * 0.005f);
+            ScreenShakeSystem.SetUniversalRumble(Projectile.width / 67f + Time * 0.005f);
 
             if (Time % 14f == 13f)
                 CustomExoMechsSky.CreateLightning(Projectile.Center.ToScreenPosition());

@@ -5,6 +5,7 @@ using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using Luminance.Common.Easings;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -145,6 +146,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                         pixel.Spawn();
                     }
                 }
+
+                ScreenShakeSystem.StartShake(chargeUpInterpolant.Cubed() * 2f);
 
                 // Approach the ideal position.
                 NPC.velocity = NPC.velocity.SafeNormalize(Vector2.UnitY) * MathHelper.Lerp(NPC.velocity.Length(), pointAtTargetSpeed, 0.061f);
