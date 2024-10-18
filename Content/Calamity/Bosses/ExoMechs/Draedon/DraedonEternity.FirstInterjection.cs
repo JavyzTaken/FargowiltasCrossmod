@@ -6,6 +6,7 @@ using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 {
@@ -80,6 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             if (Main.LocalPlayer.statLife < Main.LocalPlayer.statLifeMax2)
                 Main.LocalPlayer.Heal(Main.LocalPlayer.statLifeMax2 - Main.LocalPlayer.statLife);
             Main.LocalPlayer.statMana = Main.LocalPlayer.statManaMax2;
+            Main.LocalPlayer.ClearBuff(BuffID.PotionSickness);
             Main.LocalPlayer.Calamity().rage = 0f;
             Main.LocalPlayer.Calamity().adrenaline = 0f;
 
