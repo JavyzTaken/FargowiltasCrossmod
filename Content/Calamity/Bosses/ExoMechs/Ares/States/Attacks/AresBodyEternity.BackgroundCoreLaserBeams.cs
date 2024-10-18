@@ -111,7 +111,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 }
             }
 
-            BasicHandUpdateWrapper();
+            InstructionsForHands[0] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(-430f, 50f), 0);
+                h.NPC.dontTakeDamage = true;
+            });
+            InstructionsForHands[1] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(-280f, 224f), 1);
+                h.NPC.dontTakeDamage = true;
+            });
+            InstructionsForHands[2] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(280f, 224f), 2);
+                h.NPC.dontTakeDamage = true;
+            });
+            InstructionsForHands[3] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(430f, 50f), 3);
+                h.NPC.dontTakeDamage = true;
+            });
 
             if (AITimer >= ExoOverloadDeathray.Lifetime)
                 ZPosition = MathHelper.Clamp(ZPosition - 0.5f, 0f, 10f);

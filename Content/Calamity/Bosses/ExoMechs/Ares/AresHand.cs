@@ -218,6 +218,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             EnergyDrawer.ParticleColor = HandType.EnergyTelegraphColor;
             NPC.damage = NPC.defDamage;
             NPC.Calamity().ShouldCloseHPBar = true;
+            NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage || !CanRender;
             body.InstructionsForHands[LocalIndex]?.Action?.Invoke(this);
 
             float oldAppearanceInterpolant = KatanaAppearanceInterpolant;
@@ -230,7 +231,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             EnergyDrawer.Update();
 
-            NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage || !CanRender;
             NPC.realLife = CalamityGlobalNPC.draedonExoMechPrime;
             NPC.scale = aresBody.scale;
         }
