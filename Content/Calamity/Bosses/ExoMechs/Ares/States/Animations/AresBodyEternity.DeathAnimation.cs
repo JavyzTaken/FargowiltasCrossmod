@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             {
                 ScreenShakeSystem.StartShake(27f);
                 if (NPC.DeathSound.HasValue)
-                    SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 2.4f });
+                    SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 2.4f }).WithVolumeBoost(1.5f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), CorePosition, Vector2.Zero, ModContent.ProjectileType<AresDeathAnimationExplosion>(), 0, 0f);
             }

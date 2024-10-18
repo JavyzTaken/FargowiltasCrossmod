@@ -6,6 +6,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -105,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void Die()
         {
             if (NPC.DeathSound.HasValue)
-                SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 3f });
+                SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 3f }).WithVolumeBoost(1.5f);
 
             NPC.life = 0;
             if (AresBody.CanDropLoot())
