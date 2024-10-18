@@ -601,16 +601,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// </summary>
         public static Color[] ChooseStandardLightPalette()
         {
-            Color[] palette = new Color[7];
-            for (int i = 0; i < palette.Length; i++)
-                palette[i] = Main.hslToRgb(i / 6f, 1f, 0.79f);
+            Color[] defaultPalette = new Color[7];
+            for (int i = 0; i < defaultPalette.Length; i++)
+                defaultPalette[i] = Main.hslToRgb(i / 6f, 1f, 0.78f);
 
-            // This unpleasant Ares shows up at your front door.
-            // TODO -- Generalize this.
-            if (Main.zenithWorld)
-                palette = [Color.Magenta, Color.Magenta, Color.SaddleBrown, Color.SaddleBrown, Color.SaddleBrown, Color.Lime, Color.Lime];
-
-            return palette;
+            return AresGlowmaskLightPresetRegistry.ChooseOverridingPreset() ?? defaultPalette;
         }
 
         /// <summary>
@@ -641,28 +636,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             bodyOverride.AlternateLightColorPalette ??= new Color[bodyOverride.StandardLightColorPalette.Length];
 
             // Determine Ares' color palette.
-            int paletteSize = bodyOverride.StandardLightColorPalette.Length;
+            int paletteSize = 8;
             Vector3[] palette = new Vector3[paletteSize];
             for (int i = 0; i < paletteSize; i++)
             {
-                if (i >= bodyOverride.StandardLightColorPalette.Length || i >= bodyOverride.AlternateLightColorPalette.Length)
-                    continue;
-
-                Color standardColor = bodyOverride.StandardLightColorPalette[i];
-                Color alternateColor = bodyOverride.AlternateLightColorPalette[i];
+                float colorInterpolant = i / (float)(paletteSize - 1f) * 0.999f;
+                Color standardColor = LumUtils.MulticolorLerp(colorInterpolant, bodyOverride.StandardLightColorPalette);
+                Color alternateColor = LumUtils.MulticolorLerp(colorInterpolant, bodyOverride.AlternateLightColorPalette);
                 palette[i] = Color.Lerp(standardColor, alternateColor, bodyOverride.LightColorPaletteShiftInterpolant).ToVector3();
             }
-
-            /* TODO -- Based palette. Find some use for it sometime maybe?aaaaaaaaaa
-            palette = new Vector3[]
-            {
-                Color.Cyan.ToVector3(),
-                new Color(5, 93, 241).ToVector3(),
-                Color.Violet.ToVector3(),
-                Color.Turquoise.ToVector3(),
-                Color.White.ToVector3(),
-            };
-            */
 
             ManagedShader rgbShader = ShaderManager.GetShader("FargowiltasCrossmod.AresRGBLightShader");
             rgbShader.TrySetParameter("gradient", palette);
