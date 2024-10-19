@@ -2,6 +2,7 @@
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity;
@@ -55,6 +56,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             float explosionInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_SmallExplosionsTime, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime);
             float explosionDelayInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BigExplosionDelay, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime - DeathAnimation_SmallExplosionsTime);
             float maxScreenRumble = (1f - explosionDelayInterpolant).Squared() * 6f;
+
+            if (AITimer == 1)
+                SoundEngine.PlaySound(AresBodyEternity.DeathBuildupSound).WithVolumeBoost(1.7f);
 
             // Home towards the player at first, keeping segments closed.
             if (AITimer <= DeathAnimation_HomeInTime)
