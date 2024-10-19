@@ -2,7 +2,6 @@
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
-using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity;
@@ -42,6 +41,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public static int DeathAnimation_BigExplosionDelay => Variables.GetAIInt("DeathAnimation_BigExplosionDelay", ExoMechAIVariableType.Hades);
 
         /// <summary>
+        /// The sound played as Hades' death animation progresses.
+        /// </summary>
+        public static readonly SoundStyle DeathBuildupSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/DeathBuildup");
+
+        /// <summary>
         /// AI update loop method for the death animation.
         /// </summary>
         public void DoBehavior_DeathAnimation()
@@ -58,7 +62,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             float maxScreenRumble = (1f - explosionDelayInterpolant).Squared() * 6f;
 
             if (AITimer == 1)
-                SoundEngine.PlaySound(AresBodyEternity.DeathBuildupSound).WithVolumeBoost(1.7f);
+                SoundEngine.PlaySound(DeathBuildupSound).WithVolumeBoost(2.65f);
 
             // Home towards the player at first, keeping segments closed.
             if (AITimer <= DeathAnimation_HomeInTime)
