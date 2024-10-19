@@ -156,7 +156,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             // Fire the Biden Blast.
             if (AITimer == ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay)
             {
-                SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.72f);
+                SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.4f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f);
             }
