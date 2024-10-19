@@ -103,11 +103,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     if (Main.rand.NextBool(3))
                         missileSpawnPosition.X = Target.Center.X + Main.rand.NextFloatDirection() * 50f + Target.velocity.X * Main.rand.NextFloat(8f, 32f);
 
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), missileSpawnPosition, Vector2.UnitY * 3f, ModContent.ProjectileType<AresMissile>(), MissileDamage, 0f, -1, Target.Bottom.Y);
+                    if (MathHelper.Distance(missileSpawnPosition.X, NPC.Center.X) >= 240f)
+                    {
+                        Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), missileSpawnPosition, Vector2.UnitY * 3f, ModContent.ProjectileType<AresMissile>(), MissileDamage, 0f, -1, Target.Bottom.Y);
 
-                    Vector2 backgroundMissileVelocity = NPC.SafeDirectionTo(sparkSpawnPosition).RotatedByRandom(0.2f) * Main.rand.NextFloat(16f, 27f);
-                    backgroundMissileVelocity.X *= 0.25f;
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), sparkSpawnPosition, backgroundMissileVelocity, ModContent.ProjectileType<AresMissileBackground>(), 0, 0f);
+                        Vector2 backgroundMissileVelocity = NPC.SafeDirectionTo(sparkSpawnPosition).RotatedByRandom(0.2f) * Main.rand.NextFloat(16f, 27f);
+                        backgroundMissileVelocity.X *= 0.25f;
+                        Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), sparkSpawnPosition, backgroundMissileVelocity, ModContent.ProjectileType<AresMissileBackground>(), 0, 0f);
+                    }
                 }
             }
 
