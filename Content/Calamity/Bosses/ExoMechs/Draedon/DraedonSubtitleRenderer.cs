@@ -110,6 +110,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
         internal static void RenderSubtitlesWithPostProcessing()
         {
+            if (CurrentSequence is null)
+                return;
+
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
