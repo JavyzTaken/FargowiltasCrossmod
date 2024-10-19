@@ -663,8 +663,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             float glowScaleFactor = 250f / glowmask.Width;
             for (int i = 0; i < 5; i++)
             {
-                float bloomScale = baseScale * (i * glowScaleFactor * 0.0193f + 1f);
-                Main.spriteBatch.Draw(bloom, drawPosition, null, color with { A = 0 } * 0.25f, rotation, bloom.Size() * originFactor, bloomScale, direction, 0f);
+                float bloomScale = baseScale * (i * glowScaleFactor * 0.0172f + 1f);
+                Main.spriteBatch.Draw(bloom, drawPosition, null, color with { A = 0 } * 0.22f, rotation, bloom.Size() * originFactor, bloomScale, direction, 0f);
             }
 
             Main.spriteBatch.ResetToDefault();
