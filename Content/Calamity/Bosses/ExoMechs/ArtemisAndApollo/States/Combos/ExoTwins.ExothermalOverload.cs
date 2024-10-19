@@ -212,7 +212,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 npc.GetDLCBehavior<ApolloEternity>().FlameEngulfInterpolant = Utilities.Saturate(npc.GetDLCBehavior<ApolloEternity>().FlameEngulfInterpolant + 0.2f);
 
-                npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * 75f, 0.2f);
+                npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * 67f, 0.2f);
                 if (wrappedAITimer == spinTime + dashDelay + 1)
                 {
                     npc.velocity += npc.SafeDirectionTo(Target.Center) * 41f;
@@ -224,7 +224,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     npc.rotation = npc.rotation.AngleLerp(npc.velocity.ToRotation(), 0.2f);
             }
 
-            // Accelerate and handle post-dash behavoirs.
+            // Accelerate and handle post-dash behaviors.
             else if (wrappedAITimer <= spinTime + dashDelay + dashRepositionTime + dashTime)
             {
                 npc.GetDLCBehavior<ApolloEternity>().FlameEngulfInterpolant = 1f;

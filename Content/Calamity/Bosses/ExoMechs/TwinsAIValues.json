@@ -175,9 +175,9 @@
     "MasochistValue": 138.0
   },
   "LoopDashBombardment_ApolloFinalDashAcceleration": {
-    "EternityRevValue": 2.1,
-    "EternityDeathValue": 2.1,
-    "MasochistValue": 2.1
+    "EternityRevValue": 1.95,
+    "EternityDeathValue": 1.95,
+    "MasochistValue": 1.95
   },
   "LoopDashBombardment_ApolloMissileShootSpeed": {
     "EternityRevValue": 16.0,
@@ -205,14 +205,14 @@
     "MasochistValue": 90.0
   },
   "LoopDashBombardment_InitialApolloDashSpeed": {
-    "EternityRevValue": 60.0,
-    "EternityDeathValue": 60.0,
-    "MasochistValue": 60.0
+    "EternityRevValue": 54.0,
+    "EternityDeathValue": 54.0,
+    "MasochistValue": 54.0
   },
   "LoopDashBombardment_MaxApolloFinalDashSpeed": {
-    "EternityRevValue": 210.0,
-    "EternityDeathValue": 210.0,
-    "MasochistValue": 210.0
+    "EternityRevValue": 176.0,
+    "EternityDeathValue": 176.0,
+    "MasochistValue": 176.0
   },
   "LoopDashBombardment_MaxApolloSpinSpeed": {
     "EternityRevValue": 30.0,
