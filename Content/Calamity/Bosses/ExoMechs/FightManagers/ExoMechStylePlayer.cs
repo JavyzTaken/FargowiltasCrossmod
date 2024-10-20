@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         /// <summary>
         /// The influence of player buff count on overall style.
         /// </summary>
-        public float BuffsWeight => Utilities.Saturate(1f - (BuffCount - 11f) / 9f);
+        public float BuffsWeight => Utilities.Saturate(1f - (BuffCount - 25f) / 11f);
 
         /// <summary>
         /// The influence of hit count on overall style.
