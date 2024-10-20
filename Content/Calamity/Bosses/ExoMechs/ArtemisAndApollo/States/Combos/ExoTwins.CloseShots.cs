@@ -144,7 +144,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 npc.velocity *= 0.825f;
                 npc.Center = Vector2.Lerp(npc.Center, Target.Center - Vector2.UnitX * isApollo.ToDirectionInt() * 150f, 0.02f);
 
-                if (!npc.WithinRange(Target.Center, 150f))
+                bool canShoot = wrappedTimer >= redirectTime + dashSlowdownTime + maxDashTime + 30;
+                if (!npc.WithinRange(Target.Center, 150f) && canShoot)
                 {
                     if (isApollo && AITimer % CloseShots_ApolloShootRate == CloseShots_ApolloShootRate - 1)
                     {

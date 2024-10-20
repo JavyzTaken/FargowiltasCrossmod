@@ -1,4 +1,9 @@
 {
+  "BlazingLaserbeamDamage": {
+    "EternityRevValue": 500.0,
+    "EternityDeathValue": 500.0,
+    "MasochistValue": 500.0
+  },
   "ElectricSupercharge_AresRedirectTime": {
     "EternityRevValue": 90.0,
     "EternityDeathValue": 90.0,
@@ -49,6 +54,126 @@
     "EternityDeathValue": 9.5,
     "MasochistValue": 9.5
   },
+  "ExoFlurry_AresAcceleration": {
+    "EternityRevValue": 0.975,
+    "EternityDeathValue": 0.975,
+    "MasochistValue": 0.975
+  },
+  "ExoFlurry_AresNukeExplosionDiameter": {
+    "EternityRevValue": 2300.0,
+    "EternityDeathValue": 2300.0,
+    "MasochistValue": 2300.0
+  },
+  "ExoFlurry_ExoTwinsDashTime": {
+    "EternityRevValue": 32.0,
+    "EternityDeathValue": 32.0,
+    "MasochistValue": 32.0
+  },
+  "ExoFlurry_ExoTwinsSpinSlowdownTime": {
+    "EternityRevValue": 40.0,
+    "EternityDeathValue": 40.0,
+    "MasochistValue": 40.0
+  },
+  "ExoFlurry_ExoTwinsSpinTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
+  "ExoFlurry_ExoTwinsMaxDashSpeed": {
+    "EternityRevValue": 150.0,
+    "EternityDeathValue": 150.0,
+    "MasochistValue": 150.0
+  },
+  "ExoFlurry_ExoTwinsMaxSpinRadius": {
+    "EternityRevValue": 872.0,
+    "EternityDeathValue": 872.0,
+    "MasochistValue": 872.0
+  },
+  "ExoFlurry_ExoTwinsStandardSpinRadius": {
+    "EternityRevValue": 325.0,
+    "EternityDeathValue": 325.0,
+    "MasochistValue": 325.0
+  },
+  "ExoFlurry_ExoTwinsStartingDashSpeed": {
+    "EternityRevValue": 10.0,
+    "EternityDeathValue": 10.0,
+    "MasochistValue": 10.0
+  },
+  "ExoFlurry_HadesTurnSpeedCoefficient": {
+    "EternityRevValue": 6.4,
+    "EternityDeathValue": 6.4,
+    "MasochistValue": 6.4
+  },
+  "ExoFlurry_MinExoTwinYOrientation": {
+    "EternityRevValue": 0.33,
+    "EternityDeathValue": 0.33,
+    "MasochistValue": 0.33
+  },
+  "ExoFlurry_NukeChargeUpTime": {
+    "EternityRevValue": 180.0,
+    "EternityDeathValue": 180.0,
+    "MasochistValue": 180.0
+  },
+  "ExoFlurry_NukeShotDelay": {
+    "EternityRevValue": 510.0,
+    "EternityDeathValue": 510.0,
+    "MasochistValue": 510.0
+  },
+  "ExothermalLaserDashes_ExoTwinSpinAngularVelocityDegrees": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "ExothermalLaserDashes_ExoTwinSpinRadius": {
+    "EternityRevValue": 408.0,
+    "EternityDeathValue": 408.0,
+    "MasochistValue": 408.0
+  },
+  "ExothermalLaserDashes_ExoTwinSpinWindUpTime": {
+    "EternityRevValue": 75.0,
+    "EternityDeathValue": 75.0,
+    "MasochistValue": 75.0
+  },
+  "ExothermalLaserDashes_RedirectTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "HolographicRush_ExoTwinDashCount": {
+    "EternityRevValue": 8.0,
+    "EternityDeathValue": 8.0,
+    "MasochistValue": 8.0
+  },
+  "HolographicRush_ExoTwinDashTime": {
+    "EternityRevValue": 24.0,
+    "EternityDeathValue": 24.0,
+    "MasochistValue": 24.0
+  },
+  "HolographicRush_ExoTwinEndingRadius": {
+    "EternityRevValue": 780.0,
+    "EternityDeathValue": 780.0,
+    "MasochistValue": 780.0
+  },
+  "HolographicRush_ExoTwinLockOnTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
+  "HolographicRush_ExoTwinStartingRadius": {
+    "EternityRevValue": 303.0,
+    "EternityDeathValue": 303.0,
+    "MasochistValue": 303.0
+  },
+  "HolographicRush_HadesMineReleaseTime": {
+    "EternityRevValue": 120.0,
+    "EternityDeathValue": 120.0,
+    "MasochistValue": 120.0
+  },
+  "HolographicRush_HadesRedirectTime": {
+    "EternityRevValue": 60.0,
+    "EternityDeathValue": 60.0,
+    "MasochistValue": 60.0
+  },
   "LaserbeamDashes_HadesDashDelay": {
     "EternityRevValue": 90.0,
     "EternityDeathValue": 90.0,
@@ -58,6 +183,41 @@
     "EternityRevValue": 60.0,
     "EternityDeathValue": 60.0,
     "MasochistValue": 60.0
+  },
+  "PlasmaChaseSequence_AresChaseSpeedInterpolant": {
+    "EternityRevValue": 0.0284,
+    "EternityDeathValue": 0.0284,
+    "MasochistValue": 0.0284
+  },
+  "PlasmaChaseSequence_AttackDuration": {
+    "EternityRevValue": 570.0,
+    "EternityDeathValue": 570.0,
+    "MasochistValue": 570.0
+  },
+  "PlasmaChaseSequence_ExoTwinDashSpeed": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "PlasmaChaseSequence_ExoTwinIdleHoverTime": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "PlasmaChaseSequence_ExoTwinReelBackTime": {
+    "EternityRevValue": 43.0,
+    "EternityDeathValue": 43.0,
+    "MasochistValue": 43.0
+  },
+  "PlasmaChaseSequence_ExoTwinDashSpinTime": {
+    "EternityRevValue": 63.0,
+    "EternityDeathValue": 63.0,
+    "MasochistValue": 63.0
+  },
+  "PlasmaChaseSequence_PlasmaCannonChargeUpTime": {
+    "EternityRevValue": 157.0,
+    "EternityDeathValue": 157.0,
+    "MasochistValue": 157.0
   },
   "WalledSlashes_AttackDuration": {
     "EternityRevValue": 540.0,

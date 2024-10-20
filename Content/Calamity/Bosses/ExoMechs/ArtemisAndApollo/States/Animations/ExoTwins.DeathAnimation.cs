@@ -49,6 +49,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
         public static int DeathAnimation_DashChargeUpTime => Variables.GetAIInt("DeathAnimation_DashChargeUpTime", ExoMechAIVariableType.Twins);
 
         /// <summary>
+        /// How long the Exo Twins spend waiting before exploding after colliding.
+        /// </summary>
+        public static int DeathAnimation_ExplodeDelay => Variables.GetAIInt("DeathAnimation_ExplodeDelay", ExoMechAIVariableType.Twins);
+
+        /// <summary>
         /// The set of beep delays that should be used in a sequential order.
         /// </summary>
         public static readonly int[] BeepDelays =
@@ -70,6 +75,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             LumUtils.SecondsToFrames(0.105f),
             LumUtils.SecondsToFrames(0.079f),
         ];
+
+        /// <summary>
+        /// The sound Artemis and Apollo make upon colliding with each other during their death animation.
+        /// </summary>
+        public static readonly SoundStyle CollisionSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/ExoTwins/DeathAnimationCollision") with { Volume = 1.6f };
 
         /// <summary>
         /// The beep sound Artemis and Apollo play as a warning.
@@ -236,6 +246,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                     impactDust.scale *= MathHelper.Lerp(1.45f, 0.4f, speedInterpolant);
                 }
 
+                SoundEngine.PlaySound(CollisionSound);
                 AITimer = 0;
                 DeathAnimation_SuccessfullyCollided = true;
                 npc.netUpdate = true;
@@ -263,7 +274,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 impactFrameShader.Activate();
             }
 
-            if (AITimer >= 75)
+            if (AITimer >= DeathAnimation_ExplodeDelay)
             {
                 if (npc.DeathSound.HasValue)
                     SoundEngine.PlaySound(npc.DeathSound.Value with { Volume = 2.4f });

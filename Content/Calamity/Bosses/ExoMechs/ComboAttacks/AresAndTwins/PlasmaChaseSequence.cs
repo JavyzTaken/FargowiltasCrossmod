@@ -30,42 +30,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long Ares spends charging up energy for his plasma cannons.
         /// </summary>
-        public static int PlasmaCannonChargeUpTime => LumUtils.SecondsToFrames(2.62f);
+        public static int PlasmaCannonChargeUpTime => Variables.GetAIInt("PlasmaChaseSequence_PlasmaCannonChargeUpTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How much damage plasma flame jets from Ares' plasma cannons do.
         /// </summary>
-        public static int PlasmaJetDamage => Main.expertMode ? 420 : 300;
+        public static int PlasmaJetDamage => Variables.GetAIInt("PlasmaJetDamage", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Exo Twins spend idly hovering during the dash sequence.
         /// </summary>
-        public static int ExoTwinIdleHoverTime => LumUtils.SecondsToFrames(0.75f);
+        public static int ExoTwinIdleHoverTime => Variables.GetAIInt("PlasmaChaseSequence_ExoTwinIdleHoverTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Exo Twins spend reeling back during the dash sequence.
         /// </summary>
-        public static int ExoTwinReelBackTime => LumUtils.SecondsToFrames(0.72f);
+        public static int ExoTwinReelBackTime => Variables.GetAIInt("PlasmaChaseSequence_ExoTwinReelBackTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long Exo Twins spend dashing during the dash sequence.
         /// </summary>
-        public static int ExoTwinDashSpinTime => LumUtils.SecondsToFrames(1.05f);
+        public static int ExoTwinDashSpinTime => Variables.GetAIInt("PlasmaChaseSequence_ExoTwinDashSpinTime", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// How long the attack goes on for after the charge up.
         /// </summary>
-        public static int AttackDuration => LumUtils.SecondsToFrames(9.5f);
+        public static int AttackDuration => Variables.GetAIInt("PlasmaChaseSequence_AttackDuration", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The speed at which Ares chases his target.
         /// </summary>
-        public static float AresChaseSpeedInterpolant => 0.0284f;
+        public static float AresChaseSpeedInterpolant => Variables.GetAIFloat("PlasmaChaseSequence_AresChaseSpeedInterpolant", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The speed at which the Exo Twins dash at their target.
         /// </summary>
-        public static float ExoTwinDashSpeed => 90f;
+        public static float ExoTwinDashSpeed => Variables.GetAIFloat("PlasmaChaseSequence_ExoTwinDashSpeed", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The sound the Exo Twins make when warping through their portals.

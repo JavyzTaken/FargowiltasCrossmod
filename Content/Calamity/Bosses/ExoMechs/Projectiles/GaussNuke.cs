@@ -116,7 +116,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             aoeShader.UseSaturation(lifetimeRatio);
             aoeShader.Apply();
 
-            float explosionDiameter = ExplosionDiameter * MathF.Pow(Utilities.InverseLerp(0f, 0.25f, lifetimeRatio), 1.6f);
+            float explosionDiameter = ExplosionDiameter * MathF.Pow(Utilities.InverseLerp(0f, 0.25f, lifetimeRatio), 1.6f) * 0.94f;
             Texture2D pixel = MiscTexturesRegistry.InvisiblePixel.Value;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Main.EntitySpriteDraw(pixel, drawPosition, null, Color.White, 0, pixel.Size() * 0.5f, Vector2.One * explosionDiameter / pixel.Size(), 0, 0);

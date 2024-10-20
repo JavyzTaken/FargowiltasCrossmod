@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Core.Data
 {
-    // Mostly copypasted from an equivalent system I developed for WoTG in the past. -Dominic
+    // Mostly copypasted from an equivalent system I developed for WoTG in the past. -Lucille
     public sealed class LocalDataManager : ModSystem
     {
         private static bool writingFile;

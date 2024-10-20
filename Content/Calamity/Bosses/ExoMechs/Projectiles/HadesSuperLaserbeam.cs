@@ -41,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long the laserbeam exists for.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(4.8f);
+        public static int Lifetime => Utilities.SecondsToFrames(7.4f);
 
         /// <summary>
         /// The maximum length of this laserbeam.
@@ -51,12 +51,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The starting <see cref="Projectile.timeLeft"/> where overheating begins for the beam.
         /// </summary>
-        public static int OverheatStartingTime => Utilities.SecondsToFrames(3.5f);
+        public static int OverheatStartingTime => Utilities.SecondsToFrames(6f);
 
         /// <summary>
         /// The starting <see cref="Projectile.timeLeft"/> where overheating ends for the beam.
         /// </summary>
-        public static int OverheatEndingTime => Utilities.SecondsToFrames(3f);
+        public static int OverheatEndingTime => Utilities.SecondsToFrames(5f);
 
         /// <summary>
         /// How long the beam waits before beginning to expand.
@@ -103,13 +103,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             LaserbeamLength = MathHelper.Clamp(LaserbeamLength + 189f, 0f, MaxLaserbeamLength);
 
             float expandInterpolant = Utilities.InverseLerp(0f, ExpandTime, Time - ExpandDelay);
-            float bigWidth = MathHelper.Lerp(220f, 380f, OverheatInterpolant);
+            float bigWidth = MathHelper.Lerp(338f, 500f, OverheatInterpolant);
 
             // Comedy.
             if (WorldSavingSystem.MasochistModeReal)
                 bigWidth += 350f;
 
-            Projectile.width = (int)(MathHelper.Lerp(Time / 42f * 8f, bigWidth, expandInterpolant.Squared()) * Utilities.InverseLerp(0f, 10f, Projectile.timeLeft));
+            Projectile.width = (int)(MathHelper.Lerp(Time / 40f * 9.5f, bigWidth, expandInterpolant.Squared()) * Utilities.InverseLerp(0f, 10f, Projectile.timeLeft));
 
             CreateVisuals(expandInterpolant);
 
@@ -122,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <param name="expandInterpolant"></param>
         public void CreateVisuals(float expandInterpolant)
         {
-            OverheatInterpolant = Utilities.InverseLerp(134f, 90f, Projectile.timeLeft);
+            OverheatInterpolant = Utilities.InverseLerp(324f, 280f, Projectile.timeLeft);
 
             // Darken the sky to increase general contrast with everything.
             CustomExoMechsSky.CloudExposure = MathHelper.Lerp(CustomExoMechsSky.DefaultCloudExposure, 0.085f, expandInterpolant);
@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Main.rand.NextBool((1f - OverheatInterpolant) * Projectile.width / 300f))
                 CreateElectricSpark(Projectile.Center + Projectile.velocity * 20f);
 
-            ScreenShakeSystem.SetUniversalRumble(Projectile.width / 90f);
+            ScreenShakeSystem.SetUniversalRumble(Projectile.width / 67f + Time * 0.005f);
 
             if (Time % 14f == 13f)
                 CustomExoMechsSky.CreateLightning(Projectile.Center.ToScreenPosition());
@@ -167,7 +167,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public float LaserWidthFunction(float completionRatio)
         {
-            float frontExpansionInterpolant = Utilities.InverseLerp(0.015f, 0.14f, completionRatio);
+            float frontExpansionInterpolant = Utilities.InverseLerp(0.022f, 0.14f, completionRatio);
             float maxSize = Projectile.width + completionRatio * Projectile.width * 1.2f;
             return EasingCurves.Quadratic.Evaluate(EasingType.Out, 2f, maxSize, frontExpansionInterpolant);
         }
@@ -186,7 +186,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Color electricColor = new(0.67f, 0.7f, 1f, 0f);
             Color overheatColor = new(1f, 0.3f, 0f, 0f);
 
-            float opacity = Utilities.InverseLerp(0.01f, 0.065f, completionRatio) * Utilities.InverseLerp(0.9f, 0.7f, completionRatio) * 0.32f;
+            float opacity = Utilities.InverseLerp(0.02f, 0.065f, completionRatio) * Utilities.InverseLerp(0.9f, 0.7f, completionRatio) * 0.32f;
             return Projectile.GetAlpha(Color.Lerp(electricColor, overheatColor, OverheatInterpolant)) * opacity;
         }
 
@@ -210,7 +210,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             shader.TrySetParameter("innerGlowIntensity", 0.45f);
 
             PrimitiveSettings bloomSettings = new(BloomWidthFunction, BloomColorFunction, Shader: shader);
-            PrimitiveRenderer.RenderTrail(laserPositions, bloomSettings, 60);
+            PrimitiveRenderer.RenderTrail(laserPositions, bloomSettings, 40);
 
             return false;
         }
@@ -227,7 +227,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             shader.SetTexture(ModContent.Request<Texture2D>("CalamityMod/ExtraTextures/GreyscaleGradients/TechyNoise"), 2, SamplerState.LinearWrap);
 
             PrimitiveSettings laserSettings = new(LaserWidthFunction, LaserColorFunction, Pixelate: true, Shader: shader);
-            PrimitiveRenderer.RenderTrail(laserPositions, laserSettings, 60);
+            PrimitiveRenderer.RenderTrail(laserPositions, laserSettings, 40);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

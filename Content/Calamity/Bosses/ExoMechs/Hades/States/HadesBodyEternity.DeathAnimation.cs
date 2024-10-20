@@ -6,6 +6,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -22,22 +23,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends redirecting towards the player at a slow pace during his death animation.
         /// </summary>
-        public static int DeathAnimation_HomeInTime => LumUtils.SecondsToFrames(0.75f);
+        public static int DeathAnimation_HomeInTime => Variables.GetAIInt("DeathAnimation_HomeInTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends becoming unstable and emitting smoke during his death animation.
         /// </summary>
-        public static int DeathAnimation_BecomeUnstableTime => LumUtils.SecondsToFrames(1.5f);
+        public static int DeathAnimation_BecomeUnstableTime => Variables.GetAIInt("DeathAnimation_BecomeUnstableTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends creating small explosions during his death animation.
         /// </summary>
-        public static int DeathAnimation_SmallExplosionsTime => LumUtils.SecondsToFrames(3f);
+        public static int DeathAnimation_SmallExplosionsTime => Variables.GetAIInt("DeathAnimation_SmallExplosionsTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// How long Hades spends waiting for his big explosion during his death animation.
         /// </summary>
-        public static int DeathAnimation_BigExplosionDelay => LumUtils.SecondsToFrames(1.25f);
+        public static int DeathAnimation_BigExplosionDelay => Variables.GetAIInt("DeathAnimation_BigExplosionDelay", ExoMechAIVariableType.Hades);
+
+        /// <summary>
+        /// The sound played as Hades' death animation progresses.
+        /// </summary>
+        public static readonly SoundStyle DeathBuildupSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/DeathBuildup");
 
         /// <summary>
         /// AI update loop method for the death animation.
@@ -50,10 +56,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             SegmentReorientationStrength = 0f;
 
+            // Stop any residual laserbeam sounds, since it goes on for a while.
+            if (SoundEngine.TryGetActiveSound(SuperDeathraySoundInstance, out ActiveSound? superDeathraySound))
+                superDeathraySound?.Stop();
+
             float instabilityInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BecomeUnstableTime, AITimer - DeathAnimation_HomeInTime);
             float explosionInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_SmallExplosionsTime, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime);
             float explosionDelayInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BigExplosionDelay, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime - DeathAnimation_SmallExplosionsTime);
             float maxScreenRumble = (1f - explosionDelayInterpolant).Squared() * 6f;
+
+            if (AITimer == 1)
+                SoundEngine.PlaySound(DeathBuildupSound).WithVolumeBoost(2.65f);
 
             // Home towards the player at first, keeping segments closed.
             if (AITimer <= DeathAnimation_HomeInTime)
@@ -105,7 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void Die()
         {
             if (NPC.DeathSound.HasValue)
-                SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 3f });
+                SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 3f }).WithVolumeBoost(1.5f);
 
             NPC.life = 0;
             if (AresBody.CanDropLoot())

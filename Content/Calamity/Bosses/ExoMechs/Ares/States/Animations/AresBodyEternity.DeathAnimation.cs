@@ -4,6 +4,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -42,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// How frequently Ares' core pulses during his death animation.
         /// </summary>
-        public static int DeathAnimation_PulseRate => Variables.GetAIInt("DeathAnimation_SmokeReleaseBuildupTime", ExoMechAIVariableType.Ares);
+        public static int DeathAnimation_PulseRate => Variables.GetAIInt("DeathAnimation_PulseRate", ExoMechAIVariableType.Ares);
 
         /// <summary>
         /// How long Ares spends performing pulses before exploding.
@@ -93,6 +94,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public bool DeathAnimation_DoneDoingVisualEffects => AITimer <= DeathAnimation_SmokeReleaseBuildupTime + DeathAnimation_PulseTime - LumUtils.SecondsToFrames(1.5f);
 
         /// <summary>
+        /// The sound played as Ares' death animation progresses.
+        /// </summary>
+        public static readonly SoundStyle DeathBuildupSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/DeathBuildup");
+
+        /// <summary>
         /// The AI update loop method for Ares' death animation.
         /// </summary>
         public void DoBehavior_DeathAnimation()
@@ -103,12 +109,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.dontTakeDamage = true;
             NPC.damage = 0;
             NPC.velocity += Main.rand.NextVector2Circular(4.4f, 2.4f) * DeathAnimation_JitterInterpolant;
-            NPC.rotation = NPC.velocity.X * 0.02f;
+            NPC.rotation = NPC.velocity.X * 0.023f;
             if (Collision.SolidCollision(NPC.TopLeft, NPC.width, NPC.height + 540))
                 NPC.velocity.Y -= 0.5f;
 
             // Make the sky go red as Ares' core becomes increasingly unstable.
             CustomExoMechsSky.RedSkyInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_PulseTime, AITimer - DeathAnimation_SmokeReleaseBuildupTime);
+
+            // Make Ares' glowmask lights malfunction.
+            float colorInterpolant = LumUtils.Cos01(MathHelper.TwoPi * AITimer / 24f);
+            Color[] malfunctionColors =
+            [
+                Color.Lerp(Color.Red, Color.Cyan, colorInterpolant),
+                Color.Lerp(Color.Black, Color.White, colorInterpolant),
+                Color.Lerp(Color.Wheat, Color.Yellow, colorInterpolant),
+            ];
+            ShiftLightColors(LumUtils.InverseLerp(0f, 16f, AITimer), malfunctionColors);
 
             // Make the screen rumble in accoradance with how much Ares is jittering.
             ScreenShakeSystem.SetUniversalRumble(DeathAnimation_JitterInterpolant * 8f);
@@ -122,12 +138,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (DeathAnimation_FlarePulseIntensity >= 0.4f && AITimer % DeathAnimation_PulseRate == (int)(DeathAnimation_PulseRate * 0.3f))
                 PushPlayersAndHandsAway();
 
+            if (AITimer == 1)
+                SoundEngine.PlaySound(DeathBuildupSound).WithVolumeBoost(1.7f);
+
             // Explode.
             if (AITimer == DeathAnimation_SmokeReleaseBuildupTime + DeathAnimation_PulseTime)
             {
                 ScreenShakeSystem.StartShake(27f);
                 if (NPC.DeathSound.HasValue)
-                    SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 2.4f });
+                    SoundEngine.PlaySound(NPC.DeathSound.Value with { Volume = 2.4f }).WithVolumeBoost(1.5f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), CorePosition, Vector2.Zero, ModContent.ProjectileType<AresDeathAnimationExplosion>(), 0, 0f);
             }

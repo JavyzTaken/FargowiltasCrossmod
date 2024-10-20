@@ -91,26 +91,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             else
                 NPC.SimpleFlyMovement(NPC.SafeDirectionTo(hoverDestination) * AimedLaserBursts_MaxHoverSpeed, AimedLaserBursts_MaxHoverAcceleration);
 
+            ShiftLightColors(LumUtils.InverseLerp(0f, 30f, AITimer), new(239, 62, 62), new(242, 112, 72));
+
             InstructionsForHands[0] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(-430f, 50f), 0, AimedLaserBursts_CannonChargeUpTime));
             InstructionsForHands[1] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(-280f, 224f), 1, AimedLaserBursts_CannonChargeUpTime));
             InstructionsForHands[2] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(280f, 224f), 2, AimedLaserBursts_CannonChargeUpTime));
             InstructionsForHands[3] = new(h => AimedLaserBurstsHandUpdate(h, new Vector2(430f, 50f), 3, AimedLaserBursts_CannonChargeUpTime));
-
-            if (AITimer >= AimedLaserBursts_CannonChargeUpTime && AITimer % AimedLaserBursts_SmallLaserShootRate == 0)
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    for (int i = 0; i < AimedLaserBursts_SmallLaserCount; i++)
-                    {
-                        Vector2 laserSpawnPosition = CorePosition;
-                        Vector2 laserDirection = (Target.Center - laserSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(MathHelper.TwoPi * i / AimedLaserBursts_SmallLaserCount);
-                        Vector2 laserVelocity = laserDirection * AimedLaserBursts_SmallLaserShootSpeed;
-                        laserSpawnPosition += laserDirection * 24f;
-
-                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), laserSpawnPosition, laserVelocity, ModContent.ProjectileType<AresCoreLaserSmall>(), SmallLaserDamage, 0f);
-                    }
-                }
-            }
 
             if (AITimer >= AimedLaserBursts_CannonChargeUpTime + CannonLaserbeam.Lifetime + 45)
             {
@@ -127,7 +113,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             }
         }
 
-        public void AimedLaserBurstsHandUpdate(AresHand hand, Vector2 hoverOffset, int armIndex, int chargeUpTime)
+        public void AimedLaserBurstsHandUpdate(AresHand hand, Vector2 hoverOffset, int armIndex, int chargeUpTime, float sweepTurnSpeedFactor = 1f)
         {
             NPC handNPC = hand.NPC;
             handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.3f, 0.8f);
@@ -238,7 +224,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 // This doesn't use hand.RotateToLookAt because that changes the spriteDirection of the cannon.
                 // For most cases this looks natural, but when a laser is being fired from the cannon it's super important that it never "jump" in terms of position.
                 // By locking the spriteDirection in place and just rotating normally, this issue is avoided.
-                float cannonTurnSpeed = LumUtils.InverseLerp(0f, 45f, relativeTimer - chargeUpTime) * 0.072f;
+                float cannonTurnSpeed = LumUtils.InverseLerp(0f, 45f, relativeTimer - chargeUpTime) * sweepTurnSpeedFactor * 0.072f;
                 float idealCannonRotation = handNPC.AngleTo(Target.Center);
                 if (handNPC.spriteDirection == -1)
                     idealCannonRotation += MathHelper.Pi;

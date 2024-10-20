@@ -218,6 +218,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             EnergyDrawer.ParticleColor = HandType.EnergyTelegraphColor;
             NPC.damage = NPC.defDamage;
             NPC.Calamity().ShouldCloseHPBar = true;
+            NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage || !CanRender;
             body.InstructionsForHands[LocalIndex]?.Action?.Invoke(this);
 
             float oldAppearanceInterpolant = KatanaAppearanceInterpolant;
@@ -230,7 +231,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             EnergyDrawer.Update();
 
-            NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage || !CanRender;
             NPC.realLife = CalamityGlobalNPC.draedonExoMechPrime;
             NPC.scale = aresBody.scale;
         }
@@ -360,7 +360,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             }
             else
             {
-                Vector2 connectorDrawPosition = DrawFrontArmShoulder(aresBody, spriteBatch, screenPosition);
+                Vector2 connectorDrawPosition = DrawFrontArmConnector(aresBody, spriteBatch, screenPosition);
                 Vector2 elbowDrawPosition = DrawFrontArmArm(aresBody, connectorDrawPosition, spriteBatch, screenPosition);
                 DrawFrontArmForearm(aresBody, elbowDrawPosition, spriteBatch, screenPosition);
             }
@@ -376,7 +376,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public Vector2 DrawBackArmShoulderAndArm(NPC aresBody, SpriteBatch spriteBatch, Vector2 screenPosition)
         {
             Texture2D shoulderTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopShoulder").Value;
-            Texture2D shoulderTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopShoulderGlow").Value;
             Texture2D shoulderPaddingTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmShoulder").Value;
             Texture2D shoulderPaddingTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmShoulderGlow").Value;
             Vector2 shoulderDrawPosition = aresBody.Center + aresBody.scale * new Vector2(ArmSide * 164f, -54f).RotatedBy(aresBody.rotation) - screenPosition;
@@ -411,12 +410,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             spriteBatch.Draw(shoulderPaddingTextureGlowmask, shoulderPaddingDrawPosition, shoulderPadFrame, glowmaskColor, shoulderRotation, shoulderPadFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
 
             spriteBatch.Draw(shoulderTexture, shoulderDrawPosition, shoulderFrame, shoulderColor, shoulderRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection(), 0f);
-            spriteBatch.Draw(shoulderTextureGlowmask, shoulderDrawPosition, shoulderFrame, glowmaskColor, shoulderRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection(), 0f);
-
-            Vector2 armEnd = armStart + armRotation.ToRotationVector2() * aresBody.scale * ArmSide * 92f;
+            AresBodyEternity.DrawRGBGlowmask("AresArmTopShoulder", shoulderDrawPosition, glowmaskColor, shoulderRotation, NPC.scale, Vector2.One * 0.5f, ArmSide.ToSpriteDirection());
 
             ShoulderToHandDirection = (ArmEndpoint - screenPosition - elbowDrawPosition).ToRotation();
 
+            Vector2 armEnd = armStart + armRotation.ToRotationVector2() * aresBody.scale * ArmSide * 92f;
             return armEnd;
         }
 
@@ -430,9 +428,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public void DrawBackArmForearm(NPC aresBody, Vector2 shoulderDrawPosition, SpriteBatch spriteBatch, Vector2 screenPosition)
         {
             Texture2D armSegmentTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopSegment").Value;
-            Texture2D armSegmentTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopSegmentGlow").Value;
             Texture2D forearmTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopPart2").Value;
-            Texture2D forearmTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresArmTopPart2Glow").Value;
             Rectangle shoulderFrame = armSegmentTexture.Frame(1, 9, 0, (int)(Main.GlobalTimeWrappedHourly * 12f) % 9);
             Rectangle forearmFrame = forearmTexture.Frame(1, 9, 0, (int)(Main.GlobalTimeWrappedHourly * 12f) % 9);
             Vector2 forearmOrigin = forearmFrame.Size();
@@ -458,23 +454,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (AttachedToArm)
                 DrawMagneticLine(aresBody, magnetismEnd - Vector2.UnitY.RotatedBy(forearmRotation) * aresBody.scale * 16f, ArmEndpoint, NPC.Opacity.Cubed());
 
+            SpriteEffects direction = ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally;
             AresBodyEternity.ApplyNormalMapShader(armSegmentTexture, shoulderFrame, true, true);
-            spriteBatch.Draw(armSegmentTexture, segmentDrawPosition, shoulderFrame, segmentColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(armSegmentTextureGlowmask, segmentDrawPosition, shoulderFrame, glowmaskColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(armSegmentTexture, segmentDrawPosition, shoulderFrame, segmentColor, segmentRotation, shoulderFrame.Size() * 0.5f, NPC.scale, direction, 0f);
+            spriteBatch.Draw(forearmTexture, forearmDrawPosition, forearmFrame, segmentColor, forearmRotation, forearmOrigin, NPC.scale, direction, 0f);
 
-            AresBodyEternity.ApplyNormalMapShader(forearmTexture, forearmFrame, true, false);
-            spriteBatch.Draw(forearmTexture, forearmDrawPosition, forearmFrame, segmentColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(forearmTextureGlowmask, forearmDrawPosition, forearmFrame, glowmaskColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            AresBodyEternity.DrawRGBGlowmask("AresArmTopSegment", segmentDrawPosition, glowmaskColor, segmentRotation, NPC.scale, Vector2.One * 0.5f, direction);
+            AresBodyEternity.DrawRGBGlowmask("AresArmTopPart2", forearmDrawPosition, glowmaskColor, forearmRotation, NPC.scale, forearmOrigin / forearmFrame.Size(), direction);
         }
 
         /// <summary>
-        /// Draws the shoulder and connector of this hand's front arm.
+        /// Draws the connector of this hand's front arm.
         /// </summary>
         /// <param name="aresBody">Ares' body NPC instance.</param>
         /// <param name="spriteBatch">The sprite batch.</param>
         /// <param name="screenPosition">The position of the screen. Used for draw offsets.</param>
         /// <returns>The position of the connector in screen space.</returns>
-        public Vector2 DrawFrontArmShoulder(NPC aresBody, SpriteBatch spriteBatch, Vector2 screenPosition)
+        public Vector2 DrawFrontArmConnector(NPC aresBody, SpriteBatch spriteBatch, Vector2 screenPosition)
         {
             Texture2D connectorTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmConnector").Value;
             Vector2 shoulderDrawPosition = aresBody.Center + aresBody.scale * new Vector2(ArmSide * 110f, -54f).RotatedBy(aresBody.rotation) - screenPosition;
@@ -500,7 +496,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             Vector2 armStart = connectorDrawPosition + aresBody.scale * new Vector2(ArmSide * 32f, -6f).RotatedBy(aresBody.rotation);
 
             Texture2D armTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmPart1").Value;
-            Texture2D armTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmPart1Glow").Value;
             Texture2D forearmTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmPart2").Value;
 
             bool elbowPointsUp = (ArmSide == 1) ^ (ArmEndpoint.Y > armStart.Y);
@@ -520,10 +515,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             Color armColor = aresBody.GetAlpha(Lighting.GetColor((elbowDrawPosition + screenPosition).ToTileCoordinates()));
             Color glowmaskColor = aresBody.GetAlpha(Color.White);
+            SpriteEffects direction = ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally;
 
             AresBodyEternity.ApplyNormalMapShader(armTexture, armFrame, true, false);
-            spriteBatch.Draw(armTexture, armStart, armFrame, armColor, armRotation, armOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(armTextureGlowmask, armStart, armFrame, glowmaskColor, armRotation, armOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(armTexture, armStart, armFrame, armColor, armRotation, armOrigin, NPC.scale, direction, 0f);
+            AresBodyEternity.DrawRGBGlowmask("AresBottomArmPart1", armStart, glowmaskColor, armRotation, NPC.scale, armOrigin / armFrame.Size(), direction);
 
             ShoulderToHandDirection = (ArmEndpoint - screenPosition - elbowDrawPosition).ToRotation();
 
@@ -542,7 +538,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             Vector2 armStart = elbowDrawPosition + aresBody.scale * new Vector2(ArmSide * 32f, -6f);
 
             Texture2D forearmTexture = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmPart2").Value;
-            Texture2D forearmTextureGlowmask = ModContent.Request<Texture2D>("CalamityMod/NPCs/ExoMechs/Ares/AresBottomArmPart2Glow").Value;
             Rectangle forearmFrame = forearmTexture.Frame(1, 9, 0, (int)(Main.GlobalTimeWrappedHourly * 12f) % 9);
             Vector2 forearmOrigin = forearmFrame.Size() * new Vector2(0.81f, 0.5f);
             float forearmRotation = (ArmEndpoint - screenPosition - armStart).ToRotation() + MathHelper.Pi;
@@ -556,12 +551,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (AttachedToArm)
                 DrawMagneticLine(aresBody, armStart + Main.screenPosition, ArmEndpoint, NPC.Opacity.Cubed());
 
+            SpriteEffects direction = ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally;
             Color forearmColor = aresBody.GetAlpha(Lighting.GetColor((armStart + screenPosition).ToTileCoordinates()));
             Color glowmaskColor = aresBody.GetAlpha(Color.Wheat);
 
             AresBodyEternity.ApplyNormalMapShader(forearmTexture, forearmFrame, true, false);
-            spriteBatch.Draw(forearmTexture, armStart, forearmFrame, forearmColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
-            spriteBatch.Draw(forearmTextureGlowmask, armStart, forearmFrame, glowmaskColor, forearmRotation, forearmOrigin, NPC.scale, ArmSide.ToSpriteDirection() ^ SpriteEffects.FlipHorizontally, 0f);
+            spriteBatch.Draw(forearmTexture, armStart, forearmFrame, forearmColor, forearmRotation, forearmOrigin, NPC.scale, direction, 0f);
+            AresBodyEternity.DrawRGBGlowmask("AresBottomArmPart2", armStart, glowmaskColor, forearmRotation, NPC.scale, forearmOrigin / forearmFrame.Size(), direction);
         }
 
         /// <summary>

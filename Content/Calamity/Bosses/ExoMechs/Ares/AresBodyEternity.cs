@@ -9,6 +9,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -56,6 +57,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             Default,
             Laugh
+        }
+
+        /// <summary>
+        /// The 0-1 interpolant for shifting Ares' lights.
+        /// </summary>
+        public float LightColorPaletteShiftInterpolant
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The standard palette that should be used for Ares' lights.
+        /// </summary>
+        public Color[] StandardLightColorPalette
+        {
+            get;
+            private set;
+        } = ChooseStandardLightPalette();
+
+        /// <summary>
+        /// The color palette that Ares' lights should shift towards in accordance with the <see cref="LightColorPaletteShiftInterpolant"/>.
+        /// </summary>
+        public Color[] AlternateLightColorPalette
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -199,14 +227,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
-        /// The sound responsible for Ares' idle hum.
+        /// The sound responsible for Ares' idle ambience.
         /// </summary>
-        public LoopedSoundInstance HumLoopedSound;
+        public LoopedSoundInstance IdleLoopedSound;
 
         /// <summary>
         /// The set of attacks that Ares will do in the future.
         /// </summary>
         public Queue<AresAIState> StateQueue = [];
+
+        /// <summary>
+        /// The attack Ares used last in the previous state queue.
+        /// </summary>
+        public AresAIState LastAttackFromPreviousStateQueue = AresAIState.SpawnAnimation;
 
         /// <summary>
         /// Whether Ares and his hands need to be rendered to a render target for secondary draw operations, such as his silhouette.
@@ -260,7 +293,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// The sound played idly by Ares.
         /// </summary>
-        public static readonly SoundStyle HumSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HumLoop");
+        public static readonly SoundStyle IdleSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/IdleLoop");
 
         /// <summary>
         /// Represents an action that should be performed by hands attached to Ares.
@@ -286,6 +319,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             for (int i = 0; i < StateQueue.Count; i++)
                 binaryWriter.Write((int)StateQueue.ElementAt(i));
 
+            binaryWriter.Write((int)LastAttackFromPreviousStateQueue);
+
             binaryWriter.WriteVector2(AimedLaserBursts_AimOffset);
         }
 
@@ -306,6 +341,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             for (int i = 0; i < stateQueueCount; i++)
                 StateQueue.Enqueue((AresAIState)binaryReader.ReadInt32());
 
+            LastAttackFromPreviousStateQueue = (AresAIState)binaryReader.ReadInt32();
+
             AimedLaserBursts_AimOffset = binaryReader.ReadVector2();
         }
 
@@ -313,7 +350,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             InstructionsForHands ??= new HandInstructions[ArmCount];
             if (Main.netMode != NetmodeID.MultiplayerClient && !HasCreatedArms)
+            {
+                ResetStateQueue();
                 CreateArms();
+            }
 
             if (Inactive && CurrentState != AresAIState.Inactive && CurrentState != AresAIState.Leave)
             {
@@ -333,11 +373,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             PerformPreUpdateResets();
             ExecuteCurrentState();
 
-            HumLoopedSound ??= LoopedSoundManager.CreateNew(HumSound, () => !NPC.active);
-            HumLoopedSound?.Update(NPC.Center, sound =>
+            IdleLoopedSound ??= LoopedSoundManager.CreateNew(IdleSound, () => !NPC.active);
+            IdleLoopedSound?.Update(NPC.Center, sound =>
             {
-                sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.4f;
-                sound.Volume = NPC.scale * 0.125f;
+                sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.15f;
+                sound.Volume = NPC.scale * 0.135f;
             });
 
             // Reset the state queue during combo attacks, to ensure that a fresh set is chosen if he's fought alone.
@@ -485,6 +525,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.ShowNameOnHover = true;
             NPC.BossBar = ModContent.GetInstance<ExoMechBossBar>();
             NPC.As<AresBody>().SecondaryAIState = (int)AresBody.SecondaryPhase.Nothing;
+            LightColorPaletteShiftInterpolant = LumUtils.Saturate(LightColorPaletteShiftInterpolant - 0.012f);
             SilhouetteOpacity = 0f;
             SilhouetteDissolveInterpolant = 0f;
             OptionalDrawAction = null;
@@ -494,16 +535,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// Shifts Ares' RGB light colors towards a new color set with a given interpolant.
+        /// </summary>
+        /// <param name="biasInterpolant">How much colors should be biased.</param>
+        /// <param name="alternatePalette">The alternate color palette.</param>
+        public void ShiftLightColors(float biasInterpolant, params Color[] alternatePalette)
+        {
+            LightColorPaletteShiftInterpolant = biasInterpolant;
+            AlternateLightColorPalette = alternatePalette;
+        }
+
+        /// <summary>
         /// Resets the <see cref="StateQueue"/>, effectively rerolling the set of attacks Ares will perform.
         /// </summary>
         public void ResetStateQueue()
         {
             // Generate the list of states the perform, and shuffle them randomly in such a manner that the first state in the list is never the previous state.
             List<AresAIState> states = [AresAIState.AimedLaserBursts, AresAIState.LargeTeslaOrbBlast, AresAIState.NukeAoEAndPlasmaBlasts];
-            if (ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
+
+            bool useSpecialAttacks = NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition;
+            if (useSpecialAttacks)
+            {
                 states.Add(AresAIState.BackgroundCoreLaserBeams);
-            if (NPC.life <= NPC.lifeMax * ExoMechFightDefinitions.FightAloneLifeRatio || ExoMechFightStateManager.CurrentPhase >= ExoMechFightDefinitions.BerserkSoloPhaseDefinition)
                 states.Add(AresAIState.KatanaCycloneDashes);
+            }
+
+            states.Remove(LastAttackFromPreviousStateQueue);
 
             IOrderedEnumerable<AresAIState> shuffledStates;
             do
@@ -515,6 +572,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             StateQueue.Clear();
             foreach (AresAIState state in shuffledStates)
                 StateQueue.Enqueue(state);
+            LastAttackFromPreviousStateQueue = StateQueue.Last();
         }
 
         public override Color? GetAlpha(Color drawColor) => Color.Lerp(drawColor, Main.ColorOfTheSkies, LumUtils.InverseLerp(0.4f, 0f, NPC.Opacity)) * NPC.Opacity;
@@ -544,6 +602,94 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.frame.Y = NPC.frame.Height * (CurrentFrame % 8);
         }
 
+        /// <summary>
+        /// Chooses Ares' standard light palette.
+        /// </summary>
+        public static Color[] ChooseStandardLightPalette()
+        {
+            Color[] defaultPalette = new Color[7];
+            for (int i = 0; i < defaultPalette.Length; i++)
+                defaultPalette[i] = Main.hslToRgb(i / 6f, 1f, 0.78f);
+
+            return AresGlowmaskLightPresetRegistry.ChooseOverridingPreset() ?? defaultPalette;
+        }
+
+        /// <summary>
+        /// Renders an RGB glowmask for a set of textures on Ares.
+        /// </summary>
+        /// <param name="glowmaskPath">The base glowmask texture path.</param>
+        /// <param name="drawPosition">The draw position of the glowmask.</param>
+        /// <param name="color">The color of the glowmask.</param>
+        /// <param name="rotation">The rotation of the glowmask.</param>
+        /// <param name="baseScale">The scale of the glowmask.</param>
+        /// <param name="originFactor">The origin pivot point of the glowmask.</param>
+        /// <param name="direction">The direction of the glowmask</param>
+        public static void DrawRGBGlowmask(string glowmaskPath, Vector2 drawPosition, Color color, float rotation, float baseScale, Vector2 originFactor, SpriteEffects direction)
+        {
+            if (CalamityGlobalNPC.draedonExoMechPrime == -1)
+                return;
+
+            NPC aresBody = Main.npc[CalamityGlobalNPC.draedonExoMechPrime];
+            if (!aresBody.TryGetDLCBehavior(out AresBodyEternity bodyOverride))
+                return;
+
+            Main.spriteBatch.PrepareForShaders();
+
+            Texture2D glowmask = ModContent.Request<Texture2D>($"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/Glowmasks/{glowmaskPath}").Value;
+            Texture2D bloom = ModContent.Request<Texture2D>($"FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/Glowmasks/{glowmaskPath}Bloom").Value;
+
+            // Safety check to ensure that the alternative color palette, even if not used currently, is defined.
+            bodyOverride.AlternateLightColorPalette ??= new Color[bodyOverride.StandardLightColorPalette.Length];
+
+            // Determine Ares' color palette.
+            int paletteSize = 8;
+            Vector3[] palette = new Vector3[paletteSize];
+            for (int i = 0; i < paletteSize; i++)
+            {
+                float colorInterpolant = i / (float)(paletteSize - 1f) * 0.999f;
+                Color standardColor = LumUtils.MulticolorLerp(colorInterpolant, bodyOverride.StandardLightColorPalette);
+                Color alternateColor = LumUtils.MulticolorLerp(colorInterpolant, bodyOverride.AlternateLightColorPalette);
+                palette[i] = Color.Lerp(standardColor, alternateColor, bodyOverride.LightColorPaletteShiftInterpolant).ToVector3();
+            }
+
+            ManagedShader rgbShader = ShaderManager.GetShader("FargowiltasCrossmod.AresRGBLightShader");
+            rgbShader.TrySetParameter("gradient", palette);
+            rgbShader.TrySetParameter("gradientCount", palette.Length);
+            rgbShader.TrySetParameter("scrollSpeed", 3f);
+            rgbShader.Apply();
+
+            Main.spriteBatch.Draw(glowmask, drawPosition, null, color, rotation, glowmask.Size() * originFactor, baseScale, direction, 0f);
+
+            float glowScaleFactor = 250f / glowmask.Width;
+            for (int i = 0; i < 5; i++)
+            {
+                float bloomScale = baseScale * (i * glowScaleFactor * 0.0172f + 1f);
+                Main.spriteBatch.Draw(bloom, drawPosition, null, color with { A = 0 } * 0.22f, rotation, bloom.Size() * originFactor, bloomScale, direction, 0f);
+            }
+
+            Main.spriteBatch.ResetToDefault();
+        }
+
+        public static void ApplyNormalMapShader(Texture2D texture, Rectangle frame, bool cutOffAtTop, bool invertCutoff)
+        {
+            var teslaSpheres = LumUtils.AllProjectilesByID(ModContent.ProjectileType<LargeTeslaSphere>());
+            Projectile teslaSphere = teslaSpheres.FirstOrDefault();
+            if (teslaSphere is null)
+                return;
+
+            Main.spriteBatch.PrepareForShaders();
+
+            float glowIntensity = LumUtils.Saturate(teslaSphere.width / 560f);
+            ManagedShader normalMapShader = ShaderManager.GetShader("FargowiltasCrossmod.NormalMapGlowShader");
+            normalMapShader.TrySetParameter("textureSize0", texture.Size());
+            normalMapShader.TrySetParameter("lightColor", new Vector4(0f, 0.8f, 1.8f, 0f) * glowIntensity);
+            normalMapShader.TrySetParameter("frame", new Vector4(frame.X, frame.Y, frame.Width, frame.Height));
+            normalMapShader.TrySetParameter("cutOffAtTop", cutOffAtTop);
+            normalMapShader.TrySetParameter("invertCutoff", invertCutoff);
+            normalMapShader.TrySetParameter("lightPosition", teslaSphere.Center - Main.screenPosition);
+            normalMapShader.Apply();
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
         {
             int handID = ModContent.NPCType<AresHand>();
@@ -569,31 +715,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             Main.spriteBatch.Draw(texture, drawPosition, NPC.frame, NPC.GetAlpha(lightColor), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
             Main.spriteBatch.Draw(glowmask, drawPosition, NPC.frame, NPC.GetAlpha(Color.White), NPC.rotation, NPC.frame.Size() * 0.5f, NPC.scale, NPC.spriteDirection.ToSpriteDirection(), 0f);
 
-            Main.spriteBatch.ResetToDefault();
+            DrawRGBGlowmask("Body", drawPosition, NPC.GetAlpha(Color.White), NPC.rotation, NPC.scale, Vector2.One * 0.5f, NPC.spriteDirection.ToSpriteDirection());
 
             OptionalDrawAction?.Invoke();
 
             return false;
-        }
-
-        public static void ApplyNormalMapShader(Texture2D texture, Rectangle frame, bool cutOffAtTop, bool invertCutoff)
-        {
-            var teslaSpheres = LumUtils.AllProjectilesByID(ModContent.ProjectileType<LargeTeslaSphere>());
-            Projectile teslaSphere = teslaSpheres.FirstOrDefault();
-            if (teslaSphere is null)
-                return;
-
-            Main.spriteBatch.PrepareForShaders();
-
-            float glowIntensity = LumUtils.Saturate(teslaSphere.width / 560f);
-            ManagedShader normalMapShader = ShaderManager.GetShader("FargowiltasCrossmod.NormalMapGlowShader");
-            normalMapShader.TrySetParameter("textureSize0", texture.Size());
-            normalMapShader.TrySetParameter("lightColor", new Vector4(0f, 0.8f, 1.8f, 0f) * glowIntensity);
-            normalMapShader.TrySetParameter("frame", new Vector4(frame.X, frame.Y, frame.Width, frame.Height));
-            normalMapShader.TrySetParameter("cutOffAtTop", cutOffAtTop);
-            normalMapShader.TrySetParameter("invertCutoff", invertCutoff);
-            normalMapShader.TrySetParameter("lightPosition", teslaSphere.Center - Main.screenPosition);
-            normalMapShader.Apply();
         }
 
         public override bool PreKill()

@@ -78,6 +78,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         {
             AnimationState = AresFrameAnimationState.Laugh;
 
+            float lightActivationInterpolant = LumUtils.InverseLerp(0f, KatanaCycloneDashes_RedirectTime * 0.8f, AITimer);
+            Color lightColorA = new(255, 120, 129);
+            Color lightColorB = new(255, 0, 4);
+            ShiftLightColors(lightActivationInterpolant, [lightColorA, lightColorA, lightColorB, lightColorA, lightColorA, lightColorB, lightColorA, lightColorB]);
+
             bool drawBlurSlash = false;
 
             if (AITimer <= KatanaCycloneDashes_RedirectTime)

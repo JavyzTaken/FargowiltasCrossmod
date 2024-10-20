@@ -307,15 +307,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             else
             {
                 Vector2 idealVelocity = npc.SafeDirectionTo(Target.Center) * 22f;
+                if (AITimer % 150 >= 124)
+                    idealVelocity *= 0.4f;
+
                 npc.velocity += idealVelocity.SafeNormalize(Vector2.Zero) * 0.8f;
                 npc.velocity = Vector2.Lerp(npc.velocity, idealVelocity, 0.012f);
 
                 if (npc.velocity.Length() >= ApolloMaxSpeed)
                     npc.velocity *= 0.985f;
             }
+
             npc.rotation = npc.velocity.ToRotation();
 
             npc.damage = npc.defDamage;
+
+            if (AITimer % 150 == 124)
+                SoundEngine.PlaySound(Artemis.ChargeTelegraphSound);
 
             bool dashWouldCauseTelefrag = npc.velocity.AngleBetween(npc.SafeDirectionTo(Target.Center)) <= 0.37f;
             if (AITimer % 150 == 149 && !npc.WithinRange(Target.Center, 360f) && !dashWouldCauseTelefrag)

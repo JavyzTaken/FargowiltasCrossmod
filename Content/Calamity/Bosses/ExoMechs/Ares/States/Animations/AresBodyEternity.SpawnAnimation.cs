@@ -24,6 +24,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.dontTakeDamage = true;
             NPC.damage = 0;
 
+            if (AITimer == 1)
+                StandardLightColorPalette = ChooseStandardLightPalette();
+
             BasicHandUpdateWrapper();
 
             if (AITimer >= SpawnAnimation_EnterForegroundTime)

@@ -1,13 +1,13 @@
 {
   "AimedLaserBursts_MaxHoverAcceleration": {
-    "EternityRevValue": 0.24,
-    "EternityDeathValue": 0.24,
-    "MasochistValue": 0.24
+    "EternityRevValue": 0.2,
+    "EternityDeathValue": 0.2,
+    "MasochistValue": 0.2
   },
   "AimedLaserBursts_MaxHoverSpeed": {
-    "EternityRevValue": 11.5,
-    "EternityDeathValue": 11.5,
-    "MasochistValue": 11.5
+    "EternityRevValue": 6.95,
+    "EternityDeathValue": 6.95,
+    "MasochistValue": 6.95
   },
   "AimedLaserBursts_SmallLaserShootRate": {
     "EternityRevValue": 40.0,
@@ -85,9 +85,9 @@
     "MasochistValue": 3.0
   },
   "DeathAnimation_SmokeReleaseBuildupTime": {
-    "EternityRevValue": 96.0,
-    "EternityDeathValue": 96.0,
-    "MasochistValue": 96.0
+    "EternityRevValue": 119.0,
+    "EternityDeathValue": 119.0,
+    "MasochistValue": 119.0
   },
   "DetachHands_DetachmentDelay": {
     "EternityRevValue": 45.0,
@@ -215,14 +215,19 @@
     "MasochistValue": 5400.0
   },
   "NukeExplosionDamage": {
-    "EternityRevValue": 540.0,
-    "EternityDeathValue": 540.0,
-    "MasochistValue": 540.0
+    "EternityRevValue": 675.0,
+    "EternityDeathValue": 675.0,
+    "MasochistValue": 675.0
   },
   "NukeWeaponDamage": {
-    "EternityRevValue": 300.0,
-    "EternityDeathValue": 300.0,
-    "MasochistValue": 300.0
+    "EternityRevValue": 0.0,
+    "EternityDeathValue": 0.0,
+    "MasochistValue": 0.0
+  },
+  "PlasmaJetDamage": {
+    "EternityRevValue": 420.0,
+    "EternityDeathValue": 420.0,
+    "MasochistValue": 420.0
   },
   "SpawnAnimation_EnterForegroundTime": {
     "EternityRevValue": 35.0,

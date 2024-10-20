@@ -22,7 +22,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <summary>
         /// How long Hades spends reorientation to get his segments into position during his Missile Tail Snaps attack.
         /// </summary>
-        public static int MissileTailSnaps_ReorientTime => LumUtils.SecondsToFrames(1.25f);
+        public static int MissileTailSnaps_ReorientTime => Variables.GetAIInt("MissileTailSnaps_ReorientTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// AI update loop method for the MissileTailSnaps attack.

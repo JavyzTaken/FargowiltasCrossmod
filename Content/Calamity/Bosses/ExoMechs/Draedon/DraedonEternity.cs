@@ -164,7 +164,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             // Emit music. If the battle is ongoing, Draedon emits the battle theme.
             // Otherwise, he emits his trademark ambience.
             // This takes priority over everything.
-            if (ExoMechFightStateManager.ActiveExoMechs.Count <= 0 && AIState != DraedonAIState.ExoMechSpawnAnimation)
+            if (ExoMechFightStateManager.FightState.TotalAliveMechs <= 0 && AIState != DraedonAIState.ExoMechSpawnAnimation)
                 CalamityGlobalNPC.draedonAmbience = NPC.whoAmI;
 
             // Pick someone else to pay attention to if the old target is gone.

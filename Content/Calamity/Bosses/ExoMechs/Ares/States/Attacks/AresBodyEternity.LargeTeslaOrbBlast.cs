@@ -147,24 +147,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
         public void LargeTeslaOrbBlastHandUpdate(AresHand hand, Projectile? teslaSphere, Vector2 hoverOffset, int armIndex)
         {
-            NPC teslaCannon = hand.NPC;
-            teslaCannon.Center = NPC.Center + hoverOffset * NPC.scale;
-            teslaCannon.Opacity = LumUtils.Saturate(teslaCannon.Opacity + 0.2f);
+            NPC handNPC = hand.NPC;
+            handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.3f, 0.8f);
+            handNPC.Opacity = LumUtils.Saturate(handNPC.Opacity + 0.2f);
             hand.UsesBackArm = armIndex == 0 || armIndex == ArmCount - 1;
             hand.ArmSide = (armIndex >= ArmCount / 2).ToDirectionInt();
             hand.HandType = AresHandType.TeslaCannon;
-            ref float angularVelocity = ref teslaCannon.localAI[0];
+            ref float angularVelocity = ref handNPC.localAI[0];
 
             if (teslaSphere is not null)
             {
-                teslaCannon.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.2f, 0.84f);
+                handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.2f, 0.84f);
 
                 hand.RotateToLookAt(teslaSphere.Center);
                 hand.EnergyDrawer.chargeProgress = LumUtils.InverseLerp(150f, 700f, teslaSphere.width) * 0.9999f;
                 hand.EnergyDrawer.SpawnAreaCompactness = LargeTeslaOrbBlast_ExplodeAnticipationInterpolant * 100f;
                 hand.GlowmaskDisabilityInterpolant = 0f;
 
-                teslaCannon.velocity += Main.rand.NextVector2Circular(3f, 3f) * hand.EnergyDrawer.chargeProgress;
+                handNPC.velocity += Main.rand.NextVector2Circular(3f, 3f) * hand.EnergyDrawer.chargeProgress;
 
                 // Create a bunch of arcs between the tesla cannon and the sphere.
                 float arcCreationChance = Utils.Remap(teslaSphere.width, 175f, 700f, 0.05f, 1f) * MathHelper.Lerp(1f, 0.3f, LargeTeslaOrbBlast_ExplodeAnticipationInterpolant);
@@ -172,34 +172,34 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     arcCreationChance *= 0.4f;
                 for (int i = 0; i < 2; i++)
                 {
-                    Vector2 arcSpawnPosition = teslaCannon.Center + new Vector2(teslaCannon.spriteDirection * 54f, 8f).RotatedBy(teslaCannon.rotation);
+                    Vector2 arcSpawnPosition = handNPC.Center + new Vector2(handNPC.spriteDirection * 54f, 8f).RotatedBy(handNPC.rotation);
                     if (Main.netMode != NetmodeID.MultiplayerClient && Main.rand.NextBool(arcCreationChance))
                     {
                         Vector2 arcLength = (teslaSphere.Center - arcSpawnPosition).RotatedByRandom(0.02f) * Main.rand.NextFloat(0.97f, 1.03f);
-                        LumUtils.NewProjectileBetter(teslaCannon.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
+                        LumUtils.NewProjectileBetter(handNPC.GetSource_FromAI(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, Main.rand.Next(6, 9));
                     }
                 }
 
                 // Prepare angular velocity for later.
                 // This will not affect the hand's orientation now, since this only affects things once the tesla sphere is eventually gone.
-                angularVelocity = teslaSphere.HorizontalDirectionTo(teslaCannon.Center) * -4f;
+                angularVelocity = teslaSphere.HorizontalDirectionTo(handNPC.Center) * -4f;
             }
             else
             {
-                teslaCannon.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.09f, 0.85f);
+                handNPC.SmoothFlyNear(NPC.Center + hoverOffset * NPC.scale, 0.09f, 0.85f);
 
                 hand.EnergyDrawer.chargeProgress = 0f;
                 hand.GlowmaskDisabilityInterpolant = 1f;
-                teslaCannon.spriteDirection = 1;
+                handNPC.spriteDirection = 1;
 
                 // Adhere to angular velocity.
                 // Recall that an initial impulse is in reserve from when the tesla sphere was still present, which will ensure that the hands spin wildly right after the explosion, before
                 // settling doing and dangling.
-                teslaCannon.rotation = LumUtils.WrapAngle360(teslaCannon.rotation + angularVelocity);
-                angularVelocity -= angularVelocity * 0.08f - MathF.Cos(teslaCannon.rotation) * 0.009f;
+                handNPC.rotation = LumUtils.WrapAngle360(handNPC.rotation + angularVelocity);
+                angularVelocity -= angularVelocity * 0.08f - MathF.Cos(handNPC.rotation) * 0.009f;
             }
 
-            hand.ArmEndpoint = teslaCannon.Center + teslaCannon.velocity;
+            hand.ArmEndpoint = handNPC.Center + handNPC.velocity;
 
             if (AITimer % 20 == 19 && hand.EnergyDrawer.chargeProgress >= 0.4f)
             {

@@ -103,15 +103,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                     if (Main.rand.NextBool(3))
                         missileSpawnPosition.X = Target.Center.X + Main.rand.NextFloatDirection() * 50f + Target.velocity.X * Main.rand.NextFloat(8f, 32f);
 
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), missileSpawnPosition, Vector2.UnitY * 3f, ModContent.ProjectileType<AresMissile>(), MissileDamage, 0f, -1, Target.Bottom.Y);
+                    if (MathHelper.Distance(missileSpawnPosition.X, NPC.Center.X) >= 240f)
+                    {
+                        Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), missileSpawnPosition, Vector2.UnitY * 3f, ModContent.ProjectileType<AresMissile>(), MissileDamage, 0f, -1, Target.Bottom.Y);
 
-                    Vector2 backgroundMissileVelocity = NPC.SafeDirectionTo(sparkSpawnPosition).RotatedByRandom(0.2f) * Main.rand.NextFloat(16f, 27f);
-                    backgroundMissileVelocity.X *= 0.25f;
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), sparkSpawnPosition, backgroundMissileVelocity, ModContent.ProjectileType<AresMissileBackground>(), 0, 0f);
+                        Vector2 backgroundMissileVelocity = NPC.SafeDirectionTo(sparkSpawnPosition).RotatedByRandom(0.2f) * Main.rand.NextFloat(16f, 27f);
+                        backgroundMissileVelocity.X *= 0.25f;
+                        Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), sparkSpawnPosition, backgroundMissileVelocity, ModContent.ProjectileType<AresMissileBackground>(), 0, 0f);
+                    }
                 }
             }
 
-            BasicHandUpdateWrapper();
+            InstructionsForHands[0] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(-430f, 50f), 0);
+                h.NPC.dontTakeDamage = true;
+            });
+            InstructionsForHands[1] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(-280f, 224f), 1);
+                h.NPC.dontTakeDamage = true;
+            });
+            InstructionsForHands[2] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(280f, 224f), 2);
+                h.NPC.dontTakeDamage = true;
+            });
+            InstructionsForHands[3] = new(h =>
+            {
+                BasicHandUpdate(h, new Vector2(430f, 50f), 3);
+                h.NPC.dontTakeDamage = true;
+            });
 
             if (AITimer >= ExoOverloadDeathray.Lifetime)
                 ZPosition = MathHelper.Clamp(ZPosition - 0.5f, 0f, 10f);

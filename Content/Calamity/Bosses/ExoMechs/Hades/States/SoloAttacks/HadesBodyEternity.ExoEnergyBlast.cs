@@ -2,8 +2,12 @@
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
+using Luminance.Common.Easings;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
+using ReLogic.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -15,49 +19,68 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
     public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
         /// <summary>
+        /// The sound instance of Hades' super deathray.
+        /// </summary>
+        public static SlotId SuperDeathraySoundInstance
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// The amount of damage the Exo Energy Blast from Hades does.
         /// </summary>
-        public static int ExoEnergyBlastDamage => Main.expertMode ? 515 : 400;
+        public static int ExoEnergyBlastDamage => Variables.GetAIInt("ExoEnergyBlastDamage", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum time Hades spends opening his jaw the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_JawOpenTime => Utilities.SecondsToFrames(1.5f);
+        public static int ExoEnergyBlast_JawOpenTime => Variables.GetAIInt("ExoEnergyBlast_JawOpenTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum time Hades spends redirecting during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_InitialRedirectTime => Utilities.SecondsToFrames(6f);
+        public static int ExoEnergyBlast_InitialRedirectTime => Variables.GetAIInt("ExoEnergyBlast_InitialRedirectTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The maximum time Hades spends accelerating after the ExoEnergyBlast attack's laserbeam.
         /// </summary>
-        public static int ExoEnergyBlast_PostBeamAccelerationTime => Utilities.SecondsToFrames(1.2f);
+        public static int ExoEnergyBlast_PostBeamAccelerationTime => Variables.GetAIInt("ExoEnergyBlast_PostBeamAccelerationTime", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The delay of the blast during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_BlastDelay => Utilities.SecondsToFrames(2.45f);
+        public static int ExoEnergyBlast_BlastDelay => Variables.GetAIInt("ExoEnergyBlast_BlastDelay", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The cycle time which dictates the rate at which Hades releases missiles from his body segments during the ExoEnergyBlast attack.
         /// </summary>
-        public static int ExoEnergyBlast_ProjectileBurstReleaseRate => Utilities.SecondsToFrames(10f);
+        public static int ExoEnergyBlast_ProjectileBurstReleaseRate => Variables.GetAIInt("ExoEnergyBlast_ProjectileBurstReleaseRate", ExoMechAIVariableType.Hades);
 
         /// <summary>
         /// The speed at which Hades turns the laser during the ExoEnergyBlast attack.
         /// </summary>
-        public static float ExoEnergyBlast_LaserTurnSpeed => MathHelper.ToRadians(0.7f);
+        public static float ExoEnergyBlast_LaserTurnSpeed => MathHelper.ToRadians(Variables.GetAIFloat("ExoEnergyBlast_LaserTurnSpeedDegrees", ExoMechAIVariableType.Hades));
 
         /// <summary>
-        /// The sound Hades plays when charging up energy for his deathray.
+        /// The sound Hades plays when charging up energy for his weaker deathray.
         /// </summary>
         public static readonly SoundStyle DeathrayChargeUpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/DeathrayChargeUp");
+
+        /// <summary>
+        /// The sound Hades plays when charging up energy for his stronger deathray.
+        /// </summary>
+        public static readonly SoundStyle DeathrayChargeUpStrongSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/SuperLaserBuildupSound");
 
         /// <summary>
         /// The sound Hades plays when firing his deathray.
         /// </summary>
         public static readonly SoundStyle DeathrayFireSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/DeathrayFire");
+
+        /// <summary>
+        /// The sound Hades plays when firing his strong deathray.
+        /// </summary>
+        public static readonly SoundStyle DeathrayFireStrongSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/SuperLaserFire");
 
         /// <summary>
         /// AI update loop method for the ExoEnergyBlast attack.
@@ -70,10 +93,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             float pointAtTargetSpeed = 4f;
             Vector2 outerHoverDestination = Target.Center + new Vector2(NPC.OnRightSideOf(Target).ToDirectionInt() * 1050f, -400f);
 
-            BodyBehaviorAction = new(AllSegments(), b => DoBehavior_ExoEnergyBlast_UpdateSegment(b, beamIsOverheating));
+            BodyBehaviorAction = new(EveryNthSegment(2), b => DoBehavior_ExoEnergyBlast_UpdateSegment(b, beamIsOverheating));
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant + (beamIsOverheating ? 2f : -1f) * StandardSegmentOpenRate);
 
-            JawRotation = MathHelper.Lerp(JawRotation, Utilities.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer).Squared() * 1.3f, 0.07f);
+            float jawOpenInterpolant = LumUtils.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer - ExoEnergyBlast_InitialRedirectTime);
+            JawRotation = EasingCurves.Elastic.Evaluate(EasingType.Out, 0f, 1.3f, jawOpenInterpolant);
 
             // Attempt to get into position for the light attack.
             if (AITimer < ExoEnergyBlast_InitialRedirectTime)
@@ -81,12 +105,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 float idealHoverSpeed = MathHelper.Lerp(43.5f, 72.5f, AITimer / (float)ExoEnergyBlast_InitialRedirectTime);
                 idealHoverSpeed *= LumUtils.InverseLerp(35f, 300f, NPC.Distance(outerHoverDestination));
 
+                if (MathHelper.Distance(NPC.Center.X, Target.Center.X) >= 200f)
+                    outerHoverDestination.X = NPC.Center.X;
+
                 Vector2 idealVelocity = NPC.SafeDirectionTo(outerHoverDestination) * MathHelper.Lerp(NPC.velocity.Length(), idealHoverSpeed, 0.135f);
                 NPC.velocity = NPC.velocity.RotateTowards(idealVelocity.ToRotation(), 0.045f);
                 NPC.velocity = NPC.velocity.MoveTowards(idealVelocity, AITimer / (float)ExoEnergyBlast_InitialRedirectTime * 8f);
 
                 // Stop hovering if close to the hover destination and prepare to move towards the target.
-                if (NPC.WithinRange(outerHoverDestination, 105f) && AITimer >= 30)
+                if (NPC.WithinRange(outerHoverDestination, 185f) && AITimer >= 30)
                 {
                     AITimer = ExoEnergyBlast_InitialRedirectTime;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.SafeDirectionTo(Target.Center) * NPC.velocity.Length(), 0.92f);
@@ -100,7 +127,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 if (AITimer == ExoEnergyBlast_InitialRedirectTime + 1)
                 {
-                    SoundEngine.PlaySound(DeathrayChargeUpSound);
+                    SoundEngine.PlaySound(DeathrayChargeUpStrongSound).WithVolumeBoost(1.5f);
 
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                         Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesExoEnergyOrb>(), 0, 0f, -1, ExoEnergyBlast_BlastDelay);
@@ -130,6 +157,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     }
                 }
 
+                ScreenShakeSystem.StartShake(chargeUpInterpolant.Cubed() * 2f);
+
                 // Approach the ideal position.
                 NPC.velocity = NPC.velocity.SafeNormalize(Vector2.UnitY) * MathHelper.Lerp(NPC.velocity.Length(), pointAtTargetSpeed, 0.061f);
             }
@@ -137,7 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             // Fire the Biden Blast.
             if (AITimer == ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay)
             {
-                SoundEngine.PlaySound(DeathrayFireSound);
+                SuperDeathraySoundInstance = SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.4f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f);
             }

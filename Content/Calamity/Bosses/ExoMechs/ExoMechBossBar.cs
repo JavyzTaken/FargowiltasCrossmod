@@ -46,6 +46,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
                     life += exoMech.life;
             }
 
+            float lifeRatio = LumUtils.Saturate(life / lifeMax);
+
             int headTextureIndex = NPCID.Sets.BossHeadTextures[npc.type];
             if (headTextureIndex == -1)
             {
@@ -64,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             Rectangle bgFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 3);
             Color bgColor = Color.White * 0.2f;
 
-            int scale = (int)(barSize.X * life / lifeMax);
+            int scale = (int)(barSize.X * lifeRatio);
             scale -= scale % 2;
             Rectangle barFrame = barTexture.Frame(verticalFrames: frameCount, frameY: 2);
             barFrame.X += topLeftOffset.X;
@@ -95,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             spriteBatch.Draw(barTexture, topLeft, bgFrame, bgColor, 0f, Vector2.Zero, 1f, 0, 0f);
 
             Main.spriteBatch.PrepareForShaders(null, true);
-            DrawBar(npc, barTexture, barTopLeft, barFrame, scale, life / lifeMax);
+            DrawBar(npc, barTexture, barTopLeft, barFrame, scale, lifeRatio);
             Main.spriteBatch.ResetToDefaultUI();
 
             // Bar itself (shield).

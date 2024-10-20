@@ -42,14 +42,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public bool SetActiveFalseInsteadOfKill => true;
 
         /// <summary>
-        /// How long this missile has existed, in frames.
+        /// The amount by which this missile's acceleration factor should be boosted.
         /// </summary>
-        public ref float Time => ref Projectile.ai[1];
+        public ref float AccelerationBoost => ref Projectile.ai[0];
 
         /// <summary>
-        /// The maximum speed that this missile can reach.
+        /// The amount by which this missile's max speed.
         /// </summary>
-        public static float MaxSpeedup => 19.5f;
+        public ref float MaxSpeedBoost => ref Projectile.ai[1];
+
+        /// <summary>
+        /// How long this missile has existed, in frames.
+        /// </summary>
+        public ref float Time => ref Projectile.ai[2];
+
+        /// <summary>
+        /// The base maximum speed that this missile can reach. Does not account for <see cref="MaxSpeedBoost"/>.
+        /// </summary>
+        public static float MaxSpeedup => 18.5f;
 
         public ExoMechDamageSource DamageType => ExoMechDamageSource.Thermal;
 
@@ -88,14 +98,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
-            float homeInAcceleration = LumUtils.InverseLerp(90f, 30f, Time) * 2f;
+            float homeInAcceleration = LumUtils.InverseLerp(90f, 30f, Time) * 1.4f;
             Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
             Vector2 aimDestination = target.Center + (Projectile.identity / 3f).ToRotationVector2() * (Projectile.identity / 7f % 1f * 200f);
 
-            if (Time <= 30f && Projectile.velocity.Length() > MaxSpeedup)
+            if (Time <= 30f && Projectile.velocity.Length() > MaxSpeedup + MaxSpeedBoost)
                 Projectile.velocity *= 0.93f;
             else
-                Projectile.velocity = (Projectile.velocity * 1.01f + Projectile.SafeDirectionTo(aimDestination) * homeInAcceleration).ClampLength(0f, MaxSpeedup);
+            {
+                float acceleration = AccelerationBoost + 1.01f;
+                Projectile.velocity = (Projectile.velocity * acceleration + Projectile.SafeDirectionTo(aimDestination) * homeInAcceleration).ClampLength(0f, MaxSpeedup + MaxSpeedBoost);
+            }
 
             Projectile.tileCollide = Time >= 60f;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
