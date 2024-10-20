@@ -7,6 +7,7 @@ using Luminance.Common.Easings;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
+using ReLogic.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -17,6 +18,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 {
     public sealed partial class HadesHeadEternity : CalDLCEmodeBehavior
     {
+        /// <summary>
+        /// The sound instance of Hades' super deathray.
+        /// </summary>
+        public static SlotId SuperDeathraySoundInstance
+        {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// The amount of damage the Exo Energy Blast from Hades does.
         /// </summary>
@@ -156,7 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             // Fire the Biden Blast.
             if (AITimer == ExoEnergyBlast_InitialRedirectTime + ExoEnergyBlast_BlastDelay)
             {
-                SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.4f);
+                SuperDeathraySoundInstance = SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.4f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                     Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f);
             }

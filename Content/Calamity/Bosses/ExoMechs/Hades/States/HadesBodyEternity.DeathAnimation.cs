@@ -56,6 +56,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             SegmentReorientationStrength = 0f;
 
+            // Stop any residual laserbeam sounds, since it goes on for a while.
+            if (SoundEngine.TryGetActiveSound(SuperDeathraySoundInstance, out ActiveSound? superDeathraySound))
+                superDeathraySound?.Stop();
+
             float instabilityInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BecomeUnstableTime, AITimer - DeathAnimation_HomeInTime);
             float explosionInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_SmallExplosionsTime, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime);
             float explosionDelayInterpolant = LumUtils.InverseLerp(0f, DeathAnimation_BigExplosionDelay, AITimer - DeathAnimation_HomeInTime - DeathAnimation_BecomeUnstableTime - DeathAnimation_SmallExplosionsTime);
