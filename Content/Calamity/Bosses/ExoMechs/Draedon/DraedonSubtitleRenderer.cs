@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
@@ -35,6 +37,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// The font used for the subtitles.
+        /// </summary>
+        public static DynamicSpriteFont SubtitleFont
+        {
+            get
+            {
+                /*
+                 * >Hey Dom uuh, could you make Dradong use standard font with Ru localization for now? Else I'm afraid all that will be displayed is asterisks once we translate his lines
+                 * 
+                 * >Didn't you say Cal's gonna make the font use a Cyrillic-friendly font instead for Draedon?
+                 * >This references Cal, so
+                 * 
+                 * >Yeah but
+                 * >That's gonna be added in SSO I'm afraid
+                 * 
+                 * 
+                 * 
+                 * 
+                 * 
+                 * 
+                 * TODO -- Yeah I dunno when that's releasing at this point. They make a decent point. Remove this whenever that happens. -Lucille
+                 */
+                if (GameCulture.FromCultureName(GameCulture.CultureName.Russian).IsActive)
+                    return FontAssets.MouseText.Value;
+
+                return CodebreakerUI.DialogFont;
+            }
         }
 
         public override void OnModLoad()
@@ -97,15 +129,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             TextOffsetInterpolant = MathF.Max(startInterpolant, endInterpolant);
 
             string text = currentSection.Text;
-            DynamicSpriteFont font = CodebreakerUI.DialogFont;
-            Vector2 textSize = font.MeasureString(text);
+            Vector2 textSize = SubtitleFont.MeasureString(text);
             Vector2 drawPosition = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 0.85f) + Vector2.UnitX * horizontalDrawOffset;
             Vector2 origin = textSize * 0.5f;
 
             for (int i = 0; i < 3; i++)
-                ChatManager.DrawColorCodedStringShadow(Main.spriteBatch, font, text, drawPosition, Color.Black, 0f, origin, Vector2.One * 1.5f, -1, i + 1f);
+                ChatManager.DrawColorCodedStringShadow(Main.spriteBatch, SubtitleFont, text, drawPosition, Color.Black, 0f, origin, Vector2.One * 1.5f, -1, i + 1f);
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, font, text, drawPosition, SubtitleColor, 0f, origin, Vector2.One * 1.5f);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, SubtitleFont, text, drawPosition, SubtitleColor, 0f, origin, Vector2.One * 1.5f);
         }
 
         internal static void RenderSubtitlesWithPostProcessing()
