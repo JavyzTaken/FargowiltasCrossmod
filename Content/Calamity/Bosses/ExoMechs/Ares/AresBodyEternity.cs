@@ -377,7 +377,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             IdleLoopedSound?.Update(NPC.Center, sound =>
             {
                 sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.15f;
-                sound.Volume = NPC.scale * 0.18f;
+                sound.Volume = NPC.scale * 0.135f;
             });
 
             // Reset the state queue during combo attacks, to ensure that a fresh set is chosen if he's fought alone.
