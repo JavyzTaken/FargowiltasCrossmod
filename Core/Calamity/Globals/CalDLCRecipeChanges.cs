@@ -874,14 +874,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.DisableRecipe();
                 }
-                if (recipe.HasResult<BrandoftheBrimstoneWitch>() && ModCompatibility.CalamityHunt.Loaded)
-                {
-                    Mod hunt = ModCompatibility.CalamityHunt.Mod;
-                    if (!recipe.HasIngredient(hunt, "SplendorJam"))
-                    {
-                        recipe.AddIngredient(hunt, "SplendorJam");
-                    }
-                }
                 #endregion
 
                 #region Balance and Progression Locks
