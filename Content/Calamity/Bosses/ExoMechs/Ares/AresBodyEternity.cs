@@ -227,9 +227,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
-        /// The sound responsible for Ares' idle hum.
+        /// The sound responsible for Ares' idle ambience.
         /// </summary>
-        public LoopedSoundInstance HumLoopedSound;
+        public LoopedSoundInstance IdleLoopedSound;
 
         /// <summary>
         /// The set of attacks that Ares will do in the future.
@@ -293,7 +293,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// The sound played idly by Ares.
         /// </summary>
-        public static readonly SoundStyle HumSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HumLoop");
+        public static readonly SoundStyle IdleSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/IdleLoop");
 
         /// <summary>
         /// Represents an action that should be performed by hands attached to Ares.
@@ -373,11 +373,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             PerformPreUpdateResets();
             ExecuteCurrentState();
 
-            HumLoopedSound ??= LoopedSoundManager.CreateNew(HumSound, () => !NPC.active);
-            HumLoopedSound?.Update(NPC.Center, sound =>
+            IdleLoopedSound ??= LoopedSoundManager.CreateNew(IdleSound, () => !NPC.active);
+            IdleLoopedSound?.Update(NPC.Center, sound =>
             {
-                sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.4f;
-                sound.Volume = NPC.scale * 0.125f;
+                sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.15f;
+                sound.Volume = NPC.scale * 0.18f;
             });
 
             // Reset the state queue during combo attacks, to ensure that a fresh set is chosen if he's fought alone.

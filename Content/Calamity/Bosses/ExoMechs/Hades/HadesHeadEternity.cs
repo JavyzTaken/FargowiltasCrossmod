@@ -12,6 +12,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
+using Luminance.Core.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -91,6 +92,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// The position of Hades' idle sound loop. This is deliberately client-specific.
+        /// </summary>
+        public Vector2 IdleLoopSoundPosition
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Hades' current, non-combo state.
         /// </summary>
         public HadesAIState CurrentState
@@ -143,6 +153,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             get;
             set;
         }
+
+        /// <summary>
+        /// The sound responsible for Hades' idle ambience.
+        /// </summary>
+        public LoopedSoundInstance IdleLoopedSound;
 
         /// <summary>
         /// The action Hades should perform either after his AI state execution is complete, or after combo attack puppeteering, assuming he's performing a combo attack.
@@ -239,6 +254,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         /// <param name="Action">The action that the body segments should perform.</param>
         public record BodySegmentInstructions(BodySegmentCondition Condition, BodySegmentAction Action);
 
+        /// <summary>
+        /// The sound played idly by Hades.
+        /// </summary>
+        public static readonly SoundStyle IdleSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/IdleLoop");
+
         public override int NPCOverrideID => ExoMechNPCIDs.HadesHeadID;
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
@@ -300,6 +320,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             }
 
             ExecuteCurrentState();
+            UpdateIdleLoopSound();
 
             if (CurrentState != HadesAIState.PerformComboAttack)
                 ActionsToDeferAfterCombo?.Invoke();
@@ -315,6 +336,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             if (DisableMapIcon)
                 index = -1;
+        }
+
+        /// <summary>
+        /// Updates Hades' idle loop sound.
+        /// </summary>
+        public void UpdateIdleLoopSound()
+        {
+            int segmentID = ModContent.NPCType<ThanatosBody1>();
+            float minDistance = 999999f;
+            Vector2 closestSegmentPosition = NPC.Center;
+            foreach (NPC segment in Main.ActiveNPCs)
+            {
+                if (segment.type != segmentID || segment.realLife != NPC.whoAmI)
+                    continue;
+
+                float distanceToPlayer = segment.Distance(Main.LocalPlayer.Center);
+                if (distanceToPlayer < minDistance)
+                {
+                    closestSegmentPosition = segment.Center;
+                    distanceToPlayer = minDistance;
+                }
+            }
+
+            closestSegmentPosition = Vector2.Lerp(closestSegmentPosition, Main.LocalPlayer.Center, 0.6f);
+            IdleLoopSoundPosition = Vector2.Lerp(IdleLoopSoundPosition, closestSegmentPosition, 0.32f);
+
+            IdleLoopedSound ??= LoopedSoundManager.CreateNew(IdleSound, () => !NPC.active);
+            IdleLoopedSound?.Update(IdleLoopSoundPosition, sound =>
+            {
+                sound.Pitch = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length()) * 0.1f;
+                sound.Volume = NPC.scale * 0.3f;
+            });
         }
 
         /// <summary>
