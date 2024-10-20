@@ -50,12 +50,6 @@ public static class ModCompatibility
         public static ModNPC NoxusBoss2 = Mod.Find<ModNPC>(Mod.Version >= new Version(1, 2, 0) ? "AvatarOfEmptiness" : "EntropicGod");
         public static ModNPC NamelessDeityBoss = Mod.Find<ModNPC>("NamelessDeityBoss");
     }
-    public static class CalamityHunt
-    {
-        public const string Name = "CalamityHunt";
-        public static bool Loaded => ModLoader.HasMod(Name);
-        public static Mod Mod => ModLoader.GetMod(Name);
-    }
     public static class BossChecklist
     {
         public static void AdjustValues()
