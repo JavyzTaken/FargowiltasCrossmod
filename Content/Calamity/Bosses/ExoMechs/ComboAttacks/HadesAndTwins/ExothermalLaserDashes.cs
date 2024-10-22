@@ -87,6 +87,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (npc.type == ExoMechNPCIDs.ArtemisID || npc.type == ExoMechNPCIDs.ApolloID)
                 Perform_ExoTwin(npc);
 
+            if (AITimer >= RedirectTime + BlazingExoLaserbeam.Lifetime - 1)
+                AITimer = 0;
+
             return AITimer >= RedirectTime + BlazingExoLaserbeam.Lifetime;
         }
 
@@ -110,8 +113,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             npc.damage = npc.defDamage;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
 
-            if (AITimer % 180 >= 156)
-                npc.velocity = (npc.velocity * 1.02f).ClampLength(0f, 36f);
+            int attackCycleTimer = AITimer % 210;
+
+            if (attackCycleTimer >= 155)
+            {
+                float animationInterpolant = LumUtils.InverseLerp(155f, 210f, AITimer);
+                float acceleration = MathHelper.SmoothStep(0.97f, 1.04f, LumUtils.Convert01To010(animationInterpolant));
+                npc.velocity = (npc.velocity * acceleration).ClampLength(0f, 36f);
+            }
             else if (npc.WithinRange(Target.Center, 50f))
                 npc.velocity *= 0.95f;
             else
