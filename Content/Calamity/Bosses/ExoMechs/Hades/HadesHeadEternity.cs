@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -382,10 +383,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             if (CurrentState != HadesAIState.PerformComboAttack)
                 NPC.damage = NPC.defDamage;
 
+            [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "vulnerable")]
+            extern static ref bool GetVulnerableField(ThanatosHead body);
+            ref bool vulernable = ref GetVulnerableField(NPC.As<ThanatosHead>());
+            vulernable = SegmentOpenInterpolant >= 0.75f;
+
             NPC.defense = NPC.defDefense;
             NPC.dontTakeDamage = false;
             NPC.ShowNameOnHover = true;
-            NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
             NPC.BossBar = ModContent.GetInstance<ExoMechBossBar>();
             ActionsToDeferAfterCombo = null;
             BodyBehaviorAction = null;

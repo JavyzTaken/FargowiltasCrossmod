@@ -9,6 +9,7 @@ using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -232,7 +233,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             if (RelativeIndex >= 1 && aheadSegment.TryGetDLCBehavior(out HadesBodyEternity aheadSegmentBehavior))
                 aheadSegmentBehavior.SpringOffset = MathHelper.Lerp(aheadSegmentBehavior.SpringOffset, SpringOffset, 0.99f);
 
-            NPC.HitSound = SegmentOpenInterpolant >= 0.75f ? ThanatosHead.ThanatosHitSoundOpen : ThanatosHead.ThanatosHitSoundClosed;
+            [UnsafeAccessor(UnsafeAccessorKind.Field, Name = "vulnerable")]
+            extern static ref bool GetVulnerableField(ThanatosBody1 body);
+            ref bool vulernable = ref GetVulnerableField(NPC.As<ThanatosBody1>());
+            vulernable = SegmentOpenInterpolant >= 0.75f;
 
             ListenToHeadInstructions();
             ModifyDRBasedOnOpenInterpolant();
