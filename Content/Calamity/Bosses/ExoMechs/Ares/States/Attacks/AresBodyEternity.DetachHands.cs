@@ -53,6 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity - 0.025f);
             handNPC.velocity.X *= 0.84f;
             handNPC.velocity.Y += 0.36f;
+            handNPC.damage = 0;
             if (handNPC.velocity.Y < 0f)
                 handNPC.velocity.Y *= 0.9f;
 
