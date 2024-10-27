@@ -37,6 +37,7 @@ using CalamityMod.UI.CalamitasEnchants;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 using FargowiltasSouls.Content.Patreon.Volknet;
+using FargowiltasSouls.Content.Items.Accessories.Forces;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -216,7 +217,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
             }
-            if (item.type == ModContent.ItemType<AdamantiteEnchant>())
+            if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
             }
