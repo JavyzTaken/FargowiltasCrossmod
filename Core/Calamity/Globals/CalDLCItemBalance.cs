@@ -52,22 +52,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 0.5f;
             if (item.type == ModContent.ItemType<Blender>())
                 return 1f;
-            if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
+            if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>())
+                return 2f;
+
+            if (item.type == ModContent.ItemType<UmbraRegalia>())
+                return 2f;
+            if (item.type == ModContent.ItemType<GeminiGlaives>())
                 return 2f;
             if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
                 return 1.5f;
             if (DLCSets.GetValue(DLCSets.Items.ChampionTierFargoWeapon, item.type))
-            {
                 return 0.8f;
-            }
 
-            //Shadowspec items
+            //Shadowspec items and such
             // Melee
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.75f;
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.6f;
             if (item.type == ModContent.ItemType<IllustriousKnives>()) return 1f;
             if (item.type == ModContent.ItemType<NanoCore>() && item.DamageType.CountsAsClass(DamageClass.Melee)) return 2f;
             if (item.type == ModContent.ItemType<Azathoth>()) return 1f;
             if (item.type == ModContent.ItemType<RedSun>()) return 0.85f;
+            if (item.type == ModContent.ItemType<GaelsGreatsword>()) return 0.75f;
             // Ranged
             if (item.type == ModContent.ItemType<SomaPrime>()) return 1.2f;
             if (item.type == ModContent.ItemType<Svantechnical>()) return 1.1f;
@@ -90,6 +94,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             // Rogue
             if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
             if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
+            if (item.type == ModContent.ItemType<TheAtomSplitter>()) return 0.25f;
+            if (item.type == ModContent.ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
             if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
