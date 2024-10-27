@@ -55,6 +55,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo CalamityOtherStatChangesMethod = typeof(CalamityGlobalNPC).GetMethod("OtherStatChanges", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityBossHeadSlotMethod = typeof(CalamityGlobalNPC).GetMethod("BossHeadSlot", LumUtils.UniversalBindingFlags);
         // NPCStats
         private static readonly MethodInfo CalamityGetNPCDamageMethod = typeof(NPCStats).GetMethod("GetNPCDamage", LumUtils.UniversalBindingFlags);
         // GlobalProjectile
@@ -84,6 +85,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_CalamityOtherStatChanges(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        public delegate void Orig_CalamityBossHeadSlot(CalamityGlobalNPC self, NPC npc, ref int index);
         // NPCStats
         public delegate void Orig_CalamityGetNPCDamage(NPC npc);
         // GlobalProjectile
@@ -115,6 +117,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityBossHeadSlotMethod, CalamityBossHeadSlot_Detour);
             // NPCStats
             HookHelper.ModifyMethodWithDetour(CalamityGetNPCDamageMethod, CalamityGetNPCDamage_Detour);
             // GlobalProjectile
@@ -144,7 +147,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
             bool wasBossRush = BossRushEvent.BossRushActive;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
 
             int defDamage = npc.defDamage; // do not fuck with defDamage please
 
@@ -186,7 +189,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasBossRush = BossRushEvent.BossRushActive;
             bool shouldDisableNPC = CalamityLists.DestroyerIDs.Contains(npc.type) || npc.type == NPCID.SkeletronPrime;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode && shouldDisableNPC;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev && shouldDisableNPC;
 
             if (shouldDisable)
             {
@@ -212,12 +215,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void CalamityPostDraw_Detour(Orig_CalamityPostDraw orig, CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             bool shouldDisableNPC = DisablePostDrawNPCS.Contains(npc.type);
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode && shouldDisableNPC;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev && shouldDisableNPC;
             if (shouldDisable)
             {
                 return;
             }
             orig(self, npc, spriteBatch, screenPos, drawColor);
+        }
+
+        internal static void CalamityBossHeadSlot_Detour(Orig_CalamityBossHeadSlot orig, CalamityGlobalNPC self, NPC npc, ref int index)
+        {
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
+            if (shouldDisable)
+                return;
+            orig(self, npc, ref index);
         }
         #endregion
 
@@ -237,7 +248,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
             int damage = projectile.damage;
             if (shouldDisable)
             {
@@ -259,7 +270,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
             bool wasBossRush = BossRushEvent.BossRushActive;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
             if (shouldDisable)
             {
                 CalamityWorld.revenge = false;
