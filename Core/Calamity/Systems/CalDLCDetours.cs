@@ -78,6 +78,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo ModifyHurtInfo_CalamityMethod = typeof(CalamityPlayer).GetMethod("ModifyHurtInfo_Calamity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -108,6 +109,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
         public delegate void Orig_ModifyHurtInfo_Calamity(CalamityPlayer self, ref Player.HurtInfo info);
         public delegate void Orig_MinimalEffects(ToggleBackend self);
+        public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -140,6 +142,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
             HookHelper.ModifyMethodWithDetour(ModifyHurtInfo_CalamityMethod, ModifyHurtInfo_Calamity_Detour);
             HookHelper.ModifyMethodWithDetour(MinimalEffects_Method, MinimalEffects_Detour);
+            HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -502,6 +505,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             player.SetToggleValue<AsgardianAegisEffect>(true);
             player.SetToggleValue<RampartofDeitiesEffect>(true);
 
+        }
+        public static bool FargoPlayerPreKill_Detour(Orig_FargoPlayerPreKill orig, FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        {
+            bool retval = orig(self, damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
+            if (!retval)
+            {
+                CalamityPlayer calPlayer = self.Player.Calamity();
+                calPlayer.chaliceBleedoutBuffer = 0D;
+                calPlayer.chaliceDamagePointPartialProgress = 0D;
+                calPlayer.chaliceHitOriginalDamage = 0;
+            }
+            return retval;
         }
         #endregion
     }
