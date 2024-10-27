@@ -140,6 +140,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
         public override void SetDefaults(NPC npc)
         {
+            CalamityGlobalNPC calNPC = npc.Calamity();
             #region Balance
 
             if (npc.type == NPCID.ServantofCthulhu)
@@ -227,22 +228,55 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region Modded Bosses
+            // trojan
+            List<int> squirrelParts =
+                [
+                    ModContent.NPCType<TrojanSquirrelArms>(),
+                    ModContent.NPCType<TrojanSquirrel>(),
+                    ModContent.NPCType<TrojanSquirrelHead>(),
+                    ModContent.NPCType<TrojanSquirrelLimb>(),
+                    ModContent.NPCType<TrojanSquirrelPart>(),
+                ];
+            if (squirrelParts.Contains(npc.type))
+            {
+                calNPC.VulnerableToHeat = true;
+            }
             // coffin
             if (npc.type == ModContent.NPCType<CursedCoffin>() || npc.type == ModContent.NPCType<CursedSpirit>())
             {
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
                 npc.damage = (int)(npc.damage * 1.15f);
+                calNPC.VulnerableToCold = true;
+                calNPC.VulnerableToSickness = false;
             }
                 
             // deviantt
             if (npc.type == ModContent.NPCType<DeviBoss>())
+            {
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                calNPC.VulnerableToSickness = true;
+            }
+                
             // brn
             if (npc.type == ModContent.NPCType<BanishedBaron>())
+            {
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                calNPC.VulnerableToElectricity = true;
+                calNPC.VulnerableToWater = false;
+                calNPC.VulnerableToCold = false;
+            }
+                
             // lifelight
             if (npc.type == ModContent.NPCType<LifeChallenger>())
+            {
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                calNPC.VulnerableToCold = false;
+                calNPC.VulnerableToElectricity = false;
+                calNPC.VulnerableToHeat = false;
+                calNPC.VulnerableToSickness = false;
+                calNPC.VulnerableToWater = false;
+            }
+                
             //champions
             if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
             {
@@ -306,6 +340,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 npc.lifeMax = (int)(npc.lifeMax * 3.5f);
                 npc.damage = (int)(npc.damage * 1.25f);
+
+                calNPC.VulnerableToCold = false;
+                calNPC.VulnerableToElectricity = false;
+                calNPC.VulnerableToHeat = false;
+                calNPC.VulnerableToSickness = false;
+                calNPC.VulnerableToWater = false;
             }
             //exos
             if (npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosHead>()
@@ -325,6 +365,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 npc.lifeMax = (int)(npc.lifeMax * 2f);
                 npc.damage = (int)(npc.damage * 1.5f);
+
+                calNPC.VulnerableToCold = false;
+                calNPC.VulnerableToElectricity = false;
+                calNPC.VulnerableToHeat = false;
+                calNPC.VulnerableToSickness = false;
+                calNPC.VulnerableToWater = false;
             }
             if (ModCompatibility.WrathoftheGods.Loaded)
             {
@@ -337,14 +383,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region BRBalance
-            List<int> squirrelParts =
-            [
-                ModContent.NPCType<TrojanSquirrelArms>(),
-                    ModContent.NPCType<TrojanSquirrel>(),
-                    ModContent.NPCType<TrojanSquirrelHead>(),
-                    ModContent.NPCType<TrojanSquirrelLimb>(),
-                    ModContent.NPCType<TrojanSquirrelPart>(),
-                ];
             List<int> KingSlime =
             [
                 NPCID.KingSlime,
