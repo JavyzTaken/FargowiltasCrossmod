@@ -1157,31 +1157,43 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void EditSpawnPool(IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
-            if (WorldSavingSystem.EternityMode)
+            if (!WorldSavingSystem.EternityMode)
+                return;
+            if (spawnInfo.Player.Calamity().ZoneSulphur)
             {
-                if (spawnInfo.Player.Calamity().ZoneSulphur)
+                pool[NPCID.PigronCorruption] = 0.0001f;
+                pool[NPCID.PigronCrimson] = 0.0001f;
+                pool[NPCID.PigronHallow] = 0.0001f;
+                pool[NPCID.IchorSticker] = 0;
+                for (int i = 0; i < DLCLists.SandstormEnemies.Count; i++)
                 {
-                    pool[NPCID.PigronCorruption] = 0.0001f;
-                    pool[NPCID.PigronCrimson] = 0.0001f;
-                    pool[NPCID.PigronHallow] = 0.0001f;
-                    pool[NPCID.IchorSticker] = 0;
-                    for (int i = 0; i < DLCLists.SandstormEnemies.Count; i++)
-                    {
-                        pool[DLCLists.SandstormEnemies[i]] = 0;
-                    }
-                    if (AcidRainEvent.AcidRainEventIsOngoing)
-                    {
-                        pool[NPCID.PigronCorruption] = 0f;
-                        pool[NPCID.PigronCrimson] = 0f;
-                        pool[NPCID.PigronHallow] = 0f;
-                    }
+                    pool[DLCLists.SandstormEnemies[i]] = 0;
                 }
-                if (!Main.hardMode && spawnInfo.Player.Calamity().ZoneSunkenSea)
+                if (AcidRainEvent.AcidRainEventIsOngoing)
                 {
-                    pool[NPCID.Mimic] = 0f;
-                    pool[NPCID.DuneSplicerHead] = 0f;
+                    pool[NPCID.PigronCorruption] = 0f;
+                    pool[NPCID.PigronCrimson] = 0f;
+                    pool[NPCID.PigronHallow] = 0f;
                 }
             }
+            if (!Main.hardMode && spawnInfo.Player.Calamity().ZoneSunkenSea)
+            {
+                pool[NPCID.Mimic] = 0f;
+                pool[NPCID.DuneSplicerHead] = 0f;
+            }
+        }
+        public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
+        {
+            if (!WorldSavingSystem.EternityMode)
+                return;
+            if (CalamityWorld.death && Main.bloodMoon)
+            {
+                // cal deathmode value is: spawnrate x0.25, maxspawn x10
+                // compensate, but not fully
+                spawnRate = (int)(spawnRate * 3f); // full compensation would be *= 4
+                maxSpawns = (int)Math.Ceiling(maxSpawns / 5f); // full compensation would be /= 10
+            }
+                
         }
         public override bool InstancePerEntity => true;
         private int numAI;
