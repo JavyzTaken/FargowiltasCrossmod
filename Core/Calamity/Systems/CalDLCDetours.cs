@@ -43,6 +43,8 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasSouls.Content.Items;
+using FargowiltasSouls.Content.UI.Elements;
+using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -81,6 +83,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -113,6 +116,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MinimalEffects(ToggleBackend self);
         public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
         public delegate bool Orig_CanToggleEternity();
+        public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -147,6 +151,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(MinimalEffects_Method, MinimalEffects_Detour);
             HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
             HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
+            HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -527,6 +532,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             orig();
             return false;
+        }
+
+        internal static void SoulTogglerOnActivate_Detour(Orig_SoulTogglerOnActivate orig, SoulTogglerButton self)
+        {
+            orig(self);
+            self.OncomingMutant.TextHoldShift = $"{Language.GetTextValue("Mods.FargowiltasCrossmod.UI.ToggledWithCal")}]\n[c/787878:{self.OncomingMutant.TextHoldShift}";
         }
         #endregion
     }

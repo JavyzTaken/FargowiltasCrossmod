@@ -48,6 +48,8 @@ Mods: {
 			Deactivation: Режим Вечная смерть выключен.
 		}
 
+		// UI.ToggledWithCal: Toggled with Calamity's difficulty selector
+
 		Configs: {
 			CalDLCConfig: {
 				DisplayName: Конфигурация Calamity
