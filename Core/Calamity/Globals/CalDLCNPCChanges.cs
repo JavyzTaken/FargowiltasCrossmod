@@ -280,7 +280,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //champions
             if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
             {
-                npc.lifeMax = (int)(npc.lifeMax * 0.9f);
+                if (npc.type == ModContent.NPCType<CosmosChampion>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 1.6f);
+                    npc.damage = (int)(npc.damage * 1.4f);
+                }
+                else
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 0.9f);
+                }
             }
             //Providence and guardian minions
             if (npc.type == ModContent.NPCType<Providence>() || npc.type == ModContent.NPCType<ProvSpawnDefense>() ||
@@ -302,33 +310,33 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //signus
             if (npc.type == ModContent.NPCType<Signus>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
             }
             //ceaseless void & dark energy
             if (npc.type == ModContent.NPCType<CeaselessVoid>() || npc.type == ModContent.NPCType<DarkEnergy>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
             }
             //storm weaver
             //sw is weird yes i need to set all segments
             if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverTail>() || npc.type == ModContent.NPCType<StormWeaverBody>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
             }
             //polterghast and polterclone
             if (npc.type == ModContent.NPCType<Polterghast>() || npc.type == ModContent.NPCType<PolterPhantom>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
             }
             //overdose
             if (npc.type == ModContent.NPCType<OldDuke>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
             }
             //dog
             if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.6f);
             }
             //yhar
             if (npc.type == ModContent.NPCType<Yharon>())

@@ -903,9 +903,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.AddIngredient<DivineGeode>(5);
                 }
-                if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient<DivineGeode>())
+                if (recipe.createItem.ModItem is BaseForce)
                 {
-                    recipe.AddIngredient<DivineGeode>(4);
+                    if (recipe.createItem.type == ItemType<CosmoForce>())
+                        if (!recipe.HasIngredient<CosmiliteBar>())
+                            recipe.AddIngredient<CosmiliteBar>(4);
+
+                    else if (!recipe.HasIngredient<DivineGeode>())
+                        recipe.AddIngredient<DivineGeode>(4);
                 }
                 if (recipe.HasResult<AbomsCurse>() && !recipe.HasIngredient<AuricBar>())
                 {
