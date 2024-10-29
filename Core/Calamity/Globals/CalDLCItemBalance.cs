@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<MechanicalLeashOfCthulhu>())
                 return 0.5f;
             if (item.type == ModContent.ItemType<Blender>())
-                return 0.8f;
+                return 1f;
             if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>())
                 return 2f;
 
