@@ -1,17 +1,175 @@
-New Update: v1.1.0.8
--Eternity Hive Mind: Dark Hearts now use old, less volatile AI
--Eternity Brimstone Elemental: 
---Shader aura now draws on top of literally everything so it can't possibly be missed (previously didn't draw in Hell if background was disabled, for example)
---Decreased speed of inferno fork-like fireball projectiles
---Fixed bug causing bonus defense to linger after exiting shell phase
---HP +40%
+New Update: v1.1.1
 
--Disabled Adamantite Enchantment on all Calamity projectiles until issues are resolved
--Reduced Tungsten Enchantment scale nerf and now applies to all Melee weapons rather than just True Melee
--Eternity-Death deerclops border is now centered on the player during flicker teleport
--Reworked several recipes, notably of Class Souls
+Ported to Fargo's Souls 1.7 and Mutant 3.3.5
 
--Fixed EoC not despawning during horizontal dash
--Assured EoC can't be invincible during horizontal dash
--Attempted to fix Boss Rush not working correctly
--Astral Injection no longer grants infinite at 30 stack
+Important changes:
+
+Calamity no longer messes with defDamage in Eternity Mode, fixing many enemies and bosses not correctly dealing damage with certain attacks
+Prevented Calamity from changing vanilla boss and projectile damage in Eternity Mode, fixing many bosses dealing insane/unintended damage especially on Master Mode
+Laudanum Eternity change: Halved positive effect of Obstructed, Ichor, Weak, Confused, Blackout and Darkness. Completely removed positive effect of Confused during the Brain of Cthulhu fight.
+Every Souls/DLC projectile no longer automatically deals defense damage, instead added defense damage to every Deathray, and several other Souls Mod boss projectiles throughout the mod
+
+Supersonic Soul:
+-Provides effects of Statis' Void Sash
+-Replaced Shield of the High Ruler in recipe with Shield of Cthulhu
+-Removed Wulfrum Acrobatics Pack from recipe
+
+Statigel Enchant:
+-Reduced slowdown and acceleration reduction
+-Increased damage bonus to 35% at max effect
+-Added effect bar display
+
+Sulphur Enchant: Bubble explodes into twice as much gas on first hit, instead of being hittable thrice
+Victide Enchant: +4 defense while spikes are attached to you
+Aerospec Enchant: Fixed crit gain text not being capped along with effect, mounting now resets crit
+Desert Prowler Enchant: Added "Charge jump can only be performed while grounded" to tooltip
+
+Eternity Desert Scourge:
+-Tweaked AI, can no longer do infinite slams
+-Fades music less
+
+Cursed Coffin: Increased HP and damage
+
+Eternity Crabulon:
+-Starts in phase 2
+-New telegraph for jumps
+-New passive mushroom spear attack while walking; walks slower
+-Reworked charge attack projectiles
+-Isn't targeted by minions during Fungal Clump phases
+
+Eternity Hive Mind:
+-Improved smoothness of boss movement and Dank Creeper movement
+
+Eternity Skeletron:
+-Increased HP
+
+Eternity Deerclops:
+-Fixed aura sometimes locking incorrectly
+-Fixed ice wall collision issues caused by Calamity combined with Eternity
+
+Eternity Permafrost:
+-Improved smoothness of boss movement
+-Reduced angle adjustment speed of predictive throw telegraph
+-Removed central arrow in Masochist Mode
+-Now removes any alive Permafrost NPCs while alive
+-Cryogen's Ice Chains can no longer be deleted by effects like Gutted Heart creepers
+
+Banished Baron and Lifelight: Increased HP
+
+Eternity Mech bosses:
+-0.925x hp
+-Fixed Calamity disabling Destroyer probe damage, making lasers not deal damage
+-Skeletron Prime: Removed current DLC attacks, will be redesigned later
+-Tweaked Retinazer eternity-death attack
+
+Eternity Aquatic Scourge:
+-Drops Hydrothermal Crates instead of Sulphurous
+
+Eternity Plantera:
+-Reduced seed firerate in phase 1 to compensate for clouds
+-Clouds fade and the cloud projectile timer is reset whenever the crystal redirect occurs
+-In Eternity Mode, drops 30 extra Living Shards on first kill per player
+
+Eternity Golem:
+-HP 0.35x -> 0.25x
+-Head HP 1x -> 0.9x
+-Changed timing of DLC attacks
+
+Eternity Duke Fishron:
+-Prevented Calamity from making Detonating Bubbles immortal
+-Prevented Calamity from removing minimap icon
+
+Eternity Moon Lord:
+-Head and hands 1x -> 0.75x hp
+-Core 0.5x -> 0.4x hp
+
+Post-Moon Lord bosses:
+-Providence HP 1.4x -> 1.25x
+-Moved Eridanus to be balanced post-Devourer of Gods; Force of Cosmos uses Cosmolite Bars instead of Divine Geodes
+-Eridanus HP 0.9x -> 1.6x, damage 1x -> 1.4x
+-Signus HP 2.2x -> 1.6x
+-Storm Weaver HP 2.4x -> 1.6x
+-Ceaseless Void HP 2.1x -> 1.6x
+-Polterghast HP -> 1.6x
+-Old Duke HP -> 1.6x
+-Devourer of Gods HP -> 1.6x
+-Yharon HP 2x -> 1.55x
+-Abominationn damage 1x -> 1.25x
+-SCal/Exos HP 1.9x -> 1.7x
+-Noxus/Nameless Deity HP 1.6x -> 2x
+-Noxus/Nameless Deity apply Mutant's Fang and Curse of the Moon with every projectile in Eternity Mode
+-Primordial Wyrm applies Calamitous Presence
+Calamitous Presence changes: DR reduction 1/2 -> -5%, Defense reduction 1/2 -> -20, No longer caps max Health
+
+-Shadowspec Bars now require Eternal Energy
+-Tier 2 Souls now require 5 Exo Prisms and Ashes of Annihalation directly
+-Replaced Shadowspec with Abom Energy in Brand of the Brimstone Witch recipe
+
+Mutant:
+-HP 4.4x -> 2x
+-Damage 1x -> 1.5x
+-Mutant's Presence disables Chalice of the Blood God damage conversion, Rampart/Deific Amulet extra invincibility frames, The Sponge shield, and Radiance regen/defense regardless of whether they're in a Souls accessory or not
+-Mutant's Presence now disables Demonshade set devil
+-Mutant's Presence no longer disables The Amalgam (dodge disabling is handled by No Dodge effect making Calamity dodge cooldown permanent)
+-Fixed Mutant's background not switching correctly if he enters desperation during a DLC attack
+-Only plays Storia in Masochist
+-Supreme Calamitas attack fades music less
+
+Weapon balance changes:
+-Red Sun x1.5 -> x0.75
+-Azathoth x0.9 -> x1
+-Illustrious Knives x0.8 -> x1
+-Iridescent Excalibur x0.5 -> x0.75
+-Apotheosis x1 -> x0.75
+Staff of Blushie x0.7 -> x1
+Eternity x0.4 - x0.7
+The Dance of Light x0.5 -> x0.8
+Fabstaff x0.6 -> x1.1
+Rainbow Party Cannon x0.6 -> x0.7
+
+Umbra Regalia 2x
+Gemini Glaives 1.5x -> 2x
+Dragon's Demise 1.5x -> 2x
+Diffractor Blaster 2x -> 1.5x
+Gael's Greatsword 0.75x
+Iridescent Excalibur 0.75x -> 0.6x
+Atom Splitter 0.75x
+Sacrifice 0.75x
+
+Debuff vulnerabilities:
+trojan: weak fire
+coffin: resist sickness, weak cold
+devi: weak sickness
+baron: weak electricity, resist to water and cold
+check permafrost; match cryogen + weak to sickness (old)
+lifelight: resist all
+abom/mutant: resist all
+
+Minor changes and fixes:
+Calamity is now a hard dependency
+Eternity icon UI directs you to Calamity difficulty UI
+Removed Tungsten Enchant damage nerf on True Melee weapons
+Reworked code for nerfing Tungsten Enchant; tweaked values; non-matching nerfs should be fixed now
+Flight Mastery Soul's Calamity boss numbers are now only changed if the change decreases the values
+Minimal Effects preset no longer disables most DLC effects
+Vagabond Soul toggles are now under Universe Soul header
+Consuming Deer Sinew disables its toggle
+Fixed Dodge cooldown constantly refreshing when dodges are disabled
+Flight Mastery Soul displays infinite flight on Calamity flight meter
+Adjusted Outlaw's Essence and Vagabond Soul to match new Souls Mod values for corresponding items
+Conjurist Soul: Fixed incorrect recipe removals
+Rampart of Deities toggles split into vanilla toggles and actually affects Rampart of Deities itself (Stars On Hit and Frozen Turtle Shell)
+Siren's Pearl recipe depth cells -> perennial bars
+(Hunt of the Old God) Removed Splendor Jam from Brand of the Brimstone Witch
+Fixed Astrum Deus split dropping Astrum Cores
+Quiver of Nihility now counts as a minion effect
+Chalice of the Blood God damage negation effect is now disabled while holding up a Souls Mod parry shield; fixing insane exploit
+Revives reset Chalice bleed
+Earth Force states Adamantite Enchant cal incompatibility
+Rewrote Eternity-Rev and Eternity-Death difficulty descriptions and some configs
+Animosity can no longer benefit from Adamantite Enchantment (was super buggy)
+Soaring Potions and Photosynthesis Potions only drop from Tim's Concoction in Hardmode
+Renamed Dragon Egg -> Fiery Dragon Egg
+Noisy Whistle now makes correct sound when used
+Tweaked sprites for Wulfrum Scanner debuff icons
+Accounted for future Wrath of the Gods internal rename
