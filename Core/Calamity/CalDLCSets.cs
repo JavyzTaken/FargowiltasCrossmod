@@ -31,6 +31,12 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using Fargowiltas;
 using CalamityMod.Items.Placeables.Furniture;
+using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
+using FargowiltasSouls.Content.Bosses.CursedCoffin;
+using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Bosses.BanishedBaron;
+using FargowiltasSouls.Content.Bosses.Lifelight;
+using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -65,6 +71,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             public static bool[] ProfanedCrystalProj;
             public static bool[] EternityBookProj;
             public static bool[] AngelAllianceProj;
+            public static bool[] DefenseDamage;
         }
         public override void PostSetupContent()
         {
@@ -135,7 +142,8 @@ namespace FargowiltasCrossmod.Core.Calamity
                 ItemType<FracturedArk>(),
                 ItemType<TrueArkoftheAncients>(),
                 ItemType<ArkoftheElements>(),
-                ItemType<ArkoftheCosmos>()
+                ItemType<ArkoftheCosmos>(),
+                ItemType<Animosity>()
             );
             Items.TungstenExclude = itemFactory.CreateBoolSet(false,
                 ItemType<OldLordClaymore>(),
@@ -263,6 +271,44 @@ namespace FargowiltasCrossmod.Core.Calamity
                 ProjectileType<AngelicAllianceArchangel>(),
                 ProjectileType<AngelOrb>(),
                 ProjectileType<AngelRay>()
+                );
+            Projectiles.DefenseDamage = projectileFactory.CreateBoolSet(false,
+                ProjectileID.DD2ExplosiveTrapT3Explosion, // trojan
+                ProjectileType<TrojanHook>(),
+                ProjectileType<FallingSandstone>(),
+                ProjectileType<DestroyerLaser>(), // BoC
+                ProjectileType<DeviAxe>(),
+                ProjectileType<DeviBigMimic>(),
+                ProjectileType<DeviHammer>(),
+                ProjectileType<DeviHammerHeld>(),
+                ProjectileType<DeviSparklingLove>(),
+                ProjectileType<DeviSparklingLoveSmall>(),
+                ProjectileType<CursedFlamethrower>(),
+                ProjectileType<GoldenShowerWOF>(),
+                ProjectileType<BaronNuke>(),
+                ProjectileType<BaronMine>(),
+                ProjectileType<BaronWhirlpool>(),
+                ProjectileType<PrimeGuardian>(),
+                ProjectileType<LifeRuneExplosion>(),
+                ProjectileType<LifeRuneHitbox>(),
+                ProjectileType<LifeRuneRetractHitbox>(),
+                ProjectileType<LifeRunespearExplosion>(),
+                ProjectileType<LifeRunespearHitbox>(),
+                ProjectileType<LifeScar>(),
+                ProjectileType<PlanteraSpikevine>(),
+                ProjectileType<PlanteraTentacle>(),
+                ProjectileType<GolemBoulder>(),
+                ProjectileType<GolemSpikeBallBig>(),
+                ProjectileType<GolemGeyser>(),
+                ProjectileType<GolemGeyser2>(),
+                ProjectileType<FishronFishron>(),
+                ProjectileType<BetsyFury>(),
+                ProjectileType<BetsyFury2>(),
+                ProjectileType<CelestialPillar>(),
+                ProjectileType<MoonLordSun>(),
+                ProjectileType<MoonLordSunBlast>(),
+                ProjectileType<MoonLordMoon>(),
+                ProjectileType<CosmosMeteor>()
                 );
 
             #endregion

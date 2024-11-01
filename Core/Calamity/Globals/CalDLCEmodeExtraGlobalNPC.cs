@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria;
+using FargowiltasSouls.Content.Items;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -53,7 +54,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public virtual bool SafePreAI(NPC npc) => base.PreAI(npc);
         public sealed override bool PreAI(NPC npc)
         {
-            if (!(CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements() && !WorldSavingSystem.SwarmActive))
+            if (!(CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements()))
             {
                 return true;
             }

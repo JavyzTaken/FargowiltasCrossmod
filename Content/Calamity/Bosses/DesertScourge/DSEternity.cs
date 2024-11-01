@@ -209,7 +209,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (phase == 0 && (!NPC.AnyNPCs(ModContent.NPCType<DesertNuisanceHead>()) || NPC.GetLifePercent() <= 0.75f))
             {
                 phase++;
-                attackCycle = [4, 0, 1, 3, attack, -1, -1, -1, -1];
+                attackCycle = [4, 0, 1, 3, -1, -1, -1, -1];
                 AttackIndex = attackCycle.Length - 5;
                 for (int i = 0; i < Main.npc.Length; i++)
                 {
@@ -224,14 +224,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (phase == 1 && NPC.GetLifePercent() <= 0.5f)
             {
                 phase++;
-                attackCycle = [5, 0, 2, 2, 3, 4, attack, -1, -1];
+                attackCycle = [5, 0, 2, 2, 3, 4, -1, -1];
                 AttackIndex = attackCycle.Length - 3;
                 NetSync(NPC);
             }
             if (phase == 2 && NPC.GetLifePercent() <= 0.2f)
             {
                 phase++;
-                attackCycle = [3, 2, 3, 5, 5, 3, 5, 2, attack];
+                attackCycle = [3, 2, 3, 5, 5, 3, 5, 2];
                 AttackIndex = attackCycle.Length - 1;
                 NetSync(NPC);
             }
@@ -499,6 +499,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                             attackStep = 0;
                             DoSlam = false;
                             CanDoSlam = false;
+                            //IncrementCycle(NPC);
                             return;
                         }
                     }
@@ -920,7 +921,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             if (fade)
             {
-                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0, 0.05f);
+                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0.6f, 0.05f);
             }
             else
             {

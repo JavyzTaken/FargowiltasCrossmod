@@ -79,19 +79,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<PlaguebringerEnchant>();
+
         public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
-            target.GetGlobalNPC<CalDLCAddonGlobalNPC>().PBGDebuffTag = 500;
-            if (player.ForceEffect<PlaguebringerEffect>())
-            {
-                target.GetGlobalNPC<CalDLCAddonGlobalNPC>().PBGDebuffTag = 1000;
-
-            }
-            target.GetGlobalNPC<CalDLCAddonGlobalNPC>().taggedByPlayer = player.whoAmI;
+            target.AddBuff(ModContent.BuffType<Plague>(), 60);
         }
+
         public override void PostUpdateEquips(Player player)
         {
-            
+            float maxCharge = 400;
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<PlagueCloud>()] <= 0)
+            {
+                Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<PlaguebringerEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<PlagueCloud>(), 100, 0, player.whoAmI, player.whoAmI, 1);
+                NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
+            }
+            for (int i = 0; i < Main.npc.Length; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (npc != null && npc.active && npc.Calamity().pFlames > 0 && npc.Distance(player.Center) < (player.ForceEffect<PlaguebringerEffect>() ? 450 : 250) && player.ownedProjectileCounts[ModContent.ProjectileType<PlagueCloud>()] < 2)
+                {
+                    player.CalamityAddon().PlagueCharge++;
+                }
+            }
+            //player.CalamityDLC().PlagueCharge++;
+            if (player.CalamityAddon().PlagueCharge >= maxCharge)
+            {
+                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/NPCKilled/NuclearTerrorDeath"), player.Center);
+                Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<PlaguebringerEffect>(), player.Center, new Vector2(0, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<PlagueCloud>(), player.ForceEffect<PlaguebringerEffect>() ? 800 : 400, 0, player.whoAmI);
+                NetMessage.SendData(MessageID.SyncProjectile, number: proj.whoAmI);
+                for (int i = 0; i < 50; i++)
+                {
+                    Particle part = new TimedSmokeParticle(player.Center, new Vector2(0, Main.rand.NextFloat(0, 40)).RotatedByRandom(MathHelper.TwoPi), Color.Green * 0, Color.LimeGreen, 2f, 0.5f, 100, Main.rand.NextFloat(-0.02f, 0.02f));
+                    GeneralParticleHandler.SpawnParticle(part);
+                }
+
+                player.CalamityAddon().PlagueCharge = 0;
+            }
         }
     }
 }

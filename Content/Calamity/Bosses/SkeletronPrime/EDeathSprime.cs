@@ -36,6 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
             }
             NPC.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.SkeletronPrime>().RunEmodeAI = true;
 
+            /*
             if (NPC.ai[0] == 1 && NPC.ai[1] == 1 && NPC.ai[2] % 120 == 0 && NPC.ai[2] > 0)
             {
                 for (int i = 0; i < 12; i++)
@@ -80,6 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                     }
                 }
             }
+            */
             return true;
         }
 

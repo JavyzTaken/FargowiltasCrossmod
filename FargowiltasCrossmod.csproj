@@ -6,17 +6,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Assets\AutoloadedEffects\Shaders\BrimstoneArenaShader.fx" />
-    <None Remove="Content\Calamity\Projectiles\WulfrumScanner.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Remove="Libraries\CalamityMod.dll" />
-    <Reference Remove="Libraries\Fargowiltas.dll" />
-    <Reference Remove="Libraries\FargowiltasSouls.dll" />
-    <Reference Remove="Libraries\Luminance.dll" />
-    <Reference Remove="Libraries\ThoriumMod.dll" />
-  </ItemGroup>
-  <ItemGroup>
 	<Reference Include="CalamityMod">
 		<HintPath>Libraries/CalamityMod.dll</HintPath>
 	</Reference>
@@ -24,7 +13,7 @@
 		<HintPath>Libraries/Fargowiltas.dll</HintPath>
 	</Reference>
 	<Reference Include="FargowiltasSouls">
-	  <HintPath>..\..\ModReader\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+	  <HintPath>Libraries/FargowiltasSouls.dll</HintPath>
 	</Reference>
 	<Reference Include="Luminance">
 	  <HintPath>Libraries\Luminance.dll</HintPath>

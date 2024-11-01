@@ -36,6 +36,8 @@ using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using CalamityMod.UI.CalamitasEnchants;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasSouls.Content.Patreon.Volknet;
+using FargowiltasSouls.Content.Items.Accessories.Forces;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -51,37 +53,50 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 0.5f;
             if (item.type == ModContent.ItemType<Blender>())
                 return 1f;
-            if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>() || item.type == ModContent.ItemType<RefractorBlaster2>())
+            if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>())
+                return 2f;
+
+            if (item.type == ModContent.ItemType<UmbraRegalia>())
+                return 2f;
+            if (item.type == ModContent.ItemType<GeminiGlaives>())
                 return 2f;
             if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
                 return 1.5f;
             if (DLCSets.GetValue(DLCSets.Items.ChampionTierFargoWeapon, item.type))
-            {
                 return 0.8f;
-            }
 
-            //Shadowspec items
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.5f;
-            if (item.type == ModContent.ItemType<IllustriousKnives>()) return 0.8f;
-            if (item.type == ModContent.ItemType<Azathoth>()) return 0.9f;
-            if (item.type == ModContent.ItemType<RedSun>()) return 1.5f;
+            //Shadowspec items and such
+            // Melee
+            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.6f;
+            if (item.type == ModContent.ItemType<IllustriousKnives>()) return 1f;
+            if (item.type == ModContent.ItemType<NanoCore>() && item.DamageType.CountsAsClass(DamageClass.Melee)) return 2f;
+            if (item.type == ModContent.ItemType<Azathoth>()) return 1f;
+            if (item.type == ModContent.ItemType<RedSun>()) return 0.85f;
+            if (item.type == ModContent.ItemType<GaelsGreatsword>()) return 0.75f;
+            // Ranged
             if (item.type == ModContent.ItemType<SomaPrime>()) return 1.2f;
             if (item.type == ModContent.ItemType<Svantechnical>()) return 1.1f;
             if (item.type == ModContent.ItemType<Voidragon>()) return 1.1f;
-            if (item.type == ModContent.ItemType<StaffofBlushie>()) return 0.7f;
-            if (item.type == ModContent.ItemType<Eternity>()) return 0.4f;
-            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.5f;
-            if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.6f;
-            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
-            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
+            // Magic
+            if (item.type == ModContent.ItemType<Apotheosis>()) return 0.75f;
+            if (item.type == ModContent.ItemType<StaffofBlushie>()) return 1f;
+            if (item.type == ModContent.ItemType<Eternity>()) return 0.7f;
+            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.8f;
+            if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.7f;
+            if (item.type == ModContent.ItemType<Fabstaff>()) return 1.2f;
+            // Summoner
+            if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
+            if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
             if (item.type == ModContent.ItemType<TemporalUmbrella>()) return 0.35f;
             if (item.type == ModContent.ItemType<Endogenesis>()) return 0.35f;
-            if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
             if (item.type == ModContent.ItemType<Metastasis>()) return 0.5f;
-            if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
-            if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
+            if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
             if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
-            if (item.type == ModContent.ItemType<Fabstaff>()) return 0.6f;
+            // Rogue
+            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
+            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
+            if (item.type == ModContent.ItemType<TheAtomSplitter>()) return 0.25f;
+            if (item.type == ModContent.ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
             if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
@@ -132,31 +147,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 damage *= 0.725f;
             }
-        }
-        public static float TrueMeleeTungstenScaleNerf(Player player)
-        {
-            FargoSoulsPlayer soulsPlayer = player.FargoSouls();
-            return player.HasEffect<TungstenEffect>() && soulsPlayer.ForceEffect<TungstenEnchant>() ? 1.6f : 1.6f;
-        }
-        public override void ModifyItemScale(Item item, Player player, ref float scale)
-        {
-            FargoSoulsPlayer soulsPlayer = player.FargoSouls();
-
-            #region Tungsten balance changes/fixes
-            if (player.HasEffect<TungstenEffect>() &&
-                    !item.IsAir && item.damage > 0 && (!item.noMelee || FargoGlobalItem.TungstenAlwaysAffects.Contains(item.type)) && item.pick == 0 && item.axe == 0 && item.hammer == 0)
-            {
-                if (DLCSets.GetValue(CalDLCSets.Items.TungstenExclude, item.type))
-                {
-                    float tungScale = 1f + (soulsPlayer.ForceEffect<TungstenEnchant>() ? 2f : 1f);
-                    scale /= tungScale;
-                }
-                else if (item != null && item.DamageType.CountsAsClass(DamageClass.Melee))
-                {
-                    scale /= TrueMeleeTungstenScaleNerf(player);
-                }
-            }
-            #endregion
         }
         #region Tooltips
         public enum EModeChange
@@ -227,7 +217,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
             }
-            if (item.type == ModContent.ItemType<AdamantiteEnchant>())
+            if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
             }

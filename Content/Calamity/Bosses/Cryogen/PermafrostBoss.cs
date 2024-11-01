@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
             NPC.Calamity().VulnerableToHeat = true;
             NPC.Calamity().VulnerableToCold = false;
-            NPC.Calamity().VulnerableToSickness = false;
+            NPC.Calamity().VulnerableToSickness = true;
             NPC.coldDamage = true;
 
         }
@@ -227,6 +227,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Main.LocalPlayer.ZoneSnow = true;
+
+            int n = NPC.FindFirstNPC(ModContent.NPCType<DILF>());
+            if (n != -1 && n != Main.maxNPCs)
+            {
+                Main.npc[n].life = 0;
+                Main.npc[n].active = false;
+                if (Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, n);
+            }
+
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.TargetClosest();
@@ -323,6 +333,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             #region Help Methods
             void Movement(Vector2 pos, float accel = 0.03f, float maxSpeed = 20, float lowspeed = 5, float decel = 0.03f, float slowdown = 30)
             {
+                accel *= 16;
+                decel *= 16;
+
+                float resistance = NPC.velocity.Length() * accel / (maxSpeed);
+                NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, pos, NPC.velocity, accel - resistance, decel + resistance);
+                /*
                 decel *= 2;
                 if (NPC.Distance(pos) > slowdown)
                 {
@@ -332,6 +348,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     NPC.velocity = Vector2.Lerp(NPC.velocity, (pos - NPC.Center).SafeNormalize(Vector2.Zero) * lowspeed, decel);
                 }
+                */
             }
             void Reset()
             {
@@ -732,9 +749,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
                 float progress = Timer / Attack1Time;
 
-                float distance = Timer <= Attack1Time ? 200f : 80f;
+                bool part1 = Timer <= Attack1Time;
+                float distance = part1 ? 400f : 200f;
+                float accel = part1 ? 0.1f : 0.025f;
+                float decel = part1 ? 0.1f : 0.025f;
                 Vector2 desiredPos = target.Center - (toTarget * distance);
-                Movement(desiredPos, accel: 0.1f, lowspeed: 5, decel: 0.1f, slowdown: 300);
+                Movement(desiredPos, accel: accel, lowspeed: 5, decel: decel, slowdown: 300);
 
                 if (Timer == 1 && DLCUtils.HostCheck)
                 {
@@ -751,8 +771,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                             float speed = Main.rand.NextFloat(15, 20) + (Timer / Attack1Time) * 4;
                             Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget.RotatedBy((offset * i) + Main.rand.NextFloat(-0.1f, 0.1f)) * speed, ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
                         }
-                        if (WorldSavingSystem.MasochistModeReal)
-                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget * Main.rand.NextFloat(18, 22), ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
+                        //if (WorldSavingSystem.MasochistModeReal)
+                            //Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + toTarget * 50, toTarget * Main.rand.NextFloat(18, 22), ModContent.ProjectileType<IceArrow>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
                     }
                 }
                 if (Timer >= Attack1Time && Timer <= Attack1Time + DelayTime)

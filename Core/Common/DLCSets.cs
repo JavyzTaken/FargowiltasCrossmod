@@ -72,7 +72,9 @@ namespace FargowiltasCrossmod.Core.Common
                 ItemType<Blender>(),
                 ItemType<RefractorBlaster2>(),
                 ItemType<NukeFishron>(),
-                ItemType<StaffOfUnleashedOcean>()
+                ItemType<StaffOfUnleashedOcean>(),
+                ItemType<TheDestroyer>(),
+                ItemType<UmbraRegalia>()
             );
             #endregion
 
@@ -134,10 +136,6 @@ namespace FargowiltasCrossmod.Core.Common
             NPCs.SandstormEnemy = npcFactory.CreateBoolSet(false);
             foreach (int i in DLCLists.SandstormEnemies)
                 NPCs.SandstormEnemy[i] = true;
-            #endregion
-
-            #region Projectiles
-            //SetFactory projectileFactory = new(ProjectileLoader.ProjectileCount);
             #endregion
         }
     }

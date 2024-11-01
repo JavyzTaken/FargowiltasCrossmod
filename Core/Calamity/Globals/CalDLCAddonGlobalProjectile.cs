@@ -21,11 +21,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalDLCAddonGlobalProjectile : GlobalProjectile
     {
-        //1 if a clone projectile, 2 if clone of a clone etc
-        public int statigelClone = 0;
-        public int statigelOriginNPC = -1;
-        public int statigelHitTimer = 30;
-        public bool statigelBoost = false;
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;

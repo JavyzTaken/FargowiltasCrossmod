@@ -18,7 +18,9 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
@@ -26,6 +28,7 @@ using FargowiltasSouls.Content.Projectiles.Deathrays;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Content.Projectiles.Souls;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -82,34 +85,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            if (projectile.TryGetGlobalProjectile(out FargoSoulsGlobalProjectile fargoProj))
-            {
-                if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
-                {
-                    //projectile.FargoSouls().TungstenScale = 1;
-                    float scale = fargoProj.TungstenScale;
-                    projectile.position = projectile.Center;
-                    projectile.width = (int)(projectile.width / scale);
-                    projectile.height = (int)(projectile.height / scale);
-                    projectile.Center = projectile.position;
-                    projectile.scale /= scale;
-                }
-                if (fargoProj.TungstenScale != 1)
-                {
-                    Player player = Main.player[projectile.owner];
-                    Item item = player.HeldItem;
-                    if (item != null && item.DamageType.CountsAsClass(DamageClass.Melee))
-                    {
-                        float scale = CalDLCItemBalance.TrueMeleeTungstenScaleNerf(player);
-                        projectile.position = projectile.Center;
-                        projectile.width = (int)(projectile.width / scale);
-                        projectile.height = (int)(projectile.height / scale);
-                        projectile.Center = projectile.position;
-                        projectile.scale /= scale;
-                    }
-                }
-                
-            }
             if (projectile.owner >= 0)
             {
                 //attempt to make adamantite ench work with held proj weapons. didnt work.
@@ -151,7 +126,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             Player player = Main.player[projectile.owner];
             FargoSoulsPlayer modPlayer = player.FargoSouls();
-
             if (projectile.type == ModContent.ProjectileType<RainLightning>() || projectile.type == ModContent.ProjectileType<CursedLightning>())
             {
                 if (Main.projectile.FirstOrDefault(p => p.TypeAlive(ModContent.ProjectileType<RicoshotCoin>()) && projectile.Colliding(projectile.Hitbox, p.Hitbox)) is Projectile coin && coin != null)
@@ -182,18 +156,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             
-            if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
-            {
-                //projectile.FargoSouls().TungstenScale = 1;
-            }
             #region Balance Changes
             //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
             if (projectile.ModProjectile != null)
             {
-                if (projectile.ModProjectile.Mod == ModCompatibility.SoulsMod.Mod && projectile.hostile)
-                {
-                    ModCompatibility.Calamity.Mod.Call("SetDefenseDamageProjectile", projectile, true);
-                }
+                bool defenseDamage = false;
+
+                if (projectile.ModProjectile is BaseDeathray)
+                    defenseDamage = true;
+                if (CalDLCSets.Projectiles.DefenseDamage[projectile.type])
+                    defenseDamage = true;
+                if ((EModeGlobalNPC.abomBoss.IsWithinBounds(Main.maxNPCs) && FargoSoulsUtil.BossIsAlive(ref EModeGlobalNPC.abomBoss, ModContent.NPCType<AbomBoss>())) ||
+                    (EModeGlobalNPC.mutantBoss.IsWithinBounds(Main.maxNPCs) && FargoSoulsUtil.BossIsAlive(ref EModeGlobalNPC.mutantBoss, ModContent.NPCType<MutantBoss>())))
+                    defenseDamage = true;
+
+                if (defenseDamage)
+                    projectile.Calamity().DealsDefenseDamage = true;
             }
             if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
             {

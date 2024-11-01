@@ -1,4 +1,5 @@
 ﻿using System;
+using CalamityMod;
 using FargowiltasCrossmod.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -31,6 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             Projectile.tileCollide = false;
             Projectile.extraUpdates = 4;
             Projectile.scale = 1;
+            Projectile.Calamity().DealsDefenseDamage = true;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {

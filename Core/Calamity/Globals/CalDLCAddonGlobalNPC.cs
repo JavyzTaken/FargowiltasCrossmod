@@ -104,34 +104,34 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             return -1;
         }
         //Hardmode enchant. not in release.
-        //public override bool PreAI(NPC npc)
-        //{
-        //    if (PBGDebuffTag > 0)
-        //    {
-        //        int distance = 300;
-        //        if (taggedByPlayer >= 0 && Main.player[taggedByPlayer] != null && Main.player[taggedByPlayer].active && !Main.player[taggedByPlayer].dead)
-        //        {
-        //            distance = 600;
-        //        }
-        //        foreach (NPC target in Main.ActiveNPCs)
-        //        {
+        public override bool PreAI(NPC npc)
+        {
+            if (PBGDebuffTag > 0 && FargowiltasCrossmod.EnchantLoadingEnabled)
+            {
+                int distance = 300;
+                if (taggedByPlayer >= 0 && Main.player[taggedByPlayer] != null && Main.player[taggedByPlayer].active && !Main.player[taggedByPlayer].dead)
+                {
+                    distance = 600;
+                }
+                foreach (NPC target in Main.ActiveNPCs)
+                {
 
-        //            if (target != npc && target.Distance(npc.Center) < distance)
-        //            {
+                    if (target != npc && target.Distance(npc.Center) < distance)
+                    {
 
-        //                for (int i = 0; i < BuffLoader.BuffCount; i++)
-        //                {
+                        for (int i = 0; i < BuffLoader.BuffCount; i++)
+                        {
 
-        //                    if (HasDoTBuff(npc, i) >= 0 && HasDoTBuff(target, i) == -1)
-        //                    {
-        //                        target.AddBuff(i, HasDoTBuff(npc, i));
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return base.PreAI(npc);
-        //}
+                            if (HasDoTBuff(npc, i) >= 0 && HasDoTBuff(target, i) == -1)
+                            {
+                                target.AddBuff(i, HasDoTBuff(npc, i));
+                            }
+                        }
+                    }
+                }
+            }
+            return base.PreAI(npc);
+        }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
             if (WulfrumScanned >= 0 && HasAnyDoTDebuff(npc))

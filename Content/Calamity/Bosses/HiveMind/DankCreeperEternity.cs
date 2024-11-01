@@ -117,7 +117,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             }
             NPC.position += owner.velocity;
             Vector2 desiredPos = owner.Center + owner.DirectionTo(target.Center).RotatedByRandom(MathF.PI * 0.4f) * 120;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(desiredPos) * 10, 0.1f);
+            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, 4f, 4f);
+            //NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(desiredPos) * 10, 0.1f);
             for (int i = 0; i < Main.maxNPCs; i++) // force from colliding other creepers
             {
                 NPC otherNPC = Main.npc[i];

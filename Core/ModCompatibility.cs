@@ -63,6 +63,7 @@ public static class ModCompatibility
                         SoulsMod.Mod.BossChecklistValues[entry.Key] += 1f;
                     }
                 }
+                SoulsMod.Mod.BossChecklistValues["CosmosChampion"] = 21.2f;
                 SoulsMod.Mod.BossChecklistValues["AbomBoss"] = 22.6f;
                 SoulsMod.Mod.BossChecklistValues["MutantBoss"] = 25.8f;
             }

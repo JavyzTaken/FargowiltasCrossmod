@@ -40,14 +40,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
         public int dashCounter = 0;
         public override bool PreAI()
         {
+            NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
             if (!NPC.HasValidTarget)
             {
                 return true;
             }
-            NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
             if (DashAttack && NPC.GetGlobalNPC<Retinazer>().DeathrayState == 0)
             {
-                NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = true;
+                NPC.GetGlobalNPC<Retinazer>().RunEmodeAI = false;
                 Player target = Main.player[NPC.target];
                 timer++;
                 if (timer < 60)
@@ -55,11 +55,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Twins
                     int side = 1;
                     if (target.Center.X > NPC.Center.X) side = -1;
                     NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center + new Vector2(400 * side, -100) - NPC.Center).SafeNormalize(Vector2.Zero) * 17, 0.03f);
-                    NPC.rotation = NPC.AngleTo(target.Center) - MathHelper.PiOver2;
+                    NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver2;
                 }
                 if (timer == 60)
                 {
-                    NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 22;
+                    NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 16;
+                    NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver2;
                     NPC.netUpdate = true;
                 }
                 if (timer > 60 && timer % 15 == 0)
