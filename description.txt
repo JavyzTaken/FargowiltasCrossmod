@@ -17,8 +17,9 @@ INCOMPATIBLE mods:
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
 Planned potential future features:
--Thorium Mod compatibility (some day)
+-Eternity Mode reworks for the remaining Calamity bosses
 -Calamity Enchantments, Forces and Souls
+-Thorium Mod compatibility (some day)
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
