@@ -198,31 +198,4 @@ check permafrost; match cryogen + weak to sickness (old)
 lifelight: resist all
 abom/mutant: resist all
 
-Minor changes and fixes:
-Calamity is now a hard dependency
-Eternity icon UI directs you to Calamity difficulty UI
-Removed Tungsten Enchant damage nerf on True Melee weapons
-Reworked code for nerfing Tungsten Enchant; tweaked values; non-matching nerfs should be fixed now
-Flight Mastery Soul's Calamity boss numbers are now only changed if the change decreases the values
-Minimal Effects preset no longer disables most DLC effects
-Vagabond Soul toggles are now under Universe Soul header
-Consuming Deer Sinew disables its toggle
-Fixed Dodge cooldown constantly refreshing when dodges are disabled
-Flight Mastery Soul displays infinite flight on Calamity flight meter
-Adjusted Outlaw's Essence and Vagabond Soul to match new Souls Mod values for corresponding items
-Conjurist Soul: Fixed incorrect recipe removals
-Rampart of Deities toggles split into vanilla toggles and actually affects Rampart of Deities itself (Stars On Hit and Frozen Turtle Shell)
-Siren's Pearl recipe depth cells -> perennial bars
-(Hunt of the Old God) Removed Splendor Jam from Brand of the Brimstone Witch
-Fixed Astrum Deus split dropping Astrum Cores
-Quiver of Nihility now counts as a minion effect
-Chalice of the Blood God damage negation effect is now disabled while holding up a Souls Mod parry shield; fixing insane exploit
-Revives reset Chalice bleed
-Earth Force states Adamantite Enchant cal incompatibility
-Rewrote Eternity-Rev and Eternity-Death difficulty descriptions and some configs
-Animosity can no longer benefit from Adamantite Enchantment (was super buggy)
-Soaring Potions and Photosynthesis Potions only drop from Tim's Concoction in Hardmode
-Renamed Dragon Egg -> Fiery Dragon Egg
-Noisy Whistle now makes correct sound when used
-Tweaked sprites for Wulfrum Scanner debuff icons
-Accounted for future Wrath of the Gods internal rename
+Plus many other minor changes and fixes!
