@@ -72,7 +72,9 @@ namespace FargowiltasCrossmod.Core.Common
                 ItemType<Blender>(),
                 ItemType<RefractorBlaster2>(),
                 ItemType<NukeFishron>(),
-                ItemType<StaffOfUnleashedOcean>()
+                ItemType<StaffOfUnleashedOcean>(),
+                ItemType<TheDestroyer>(),
+                ItemType<UmbraRegalia>()
             );
             #endregion
 

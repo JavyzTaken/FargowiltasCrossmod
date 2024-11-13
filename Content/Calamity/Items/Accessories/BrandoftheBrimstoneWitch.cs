@@ -76,13 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 
             if (player.AddEffect<CalamityEffect>(Item))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
-            
-            if (ModCompatibility.CalamityHunt.Loaded && player.AddEffect<SplendorJamEffect>(Item))
-            {
-                ModContent.TryFind(ModCompatibility.CalamityHunt.Name, "SplendorJam", out ModItem jam);
-                jam.UpdateAccessory(player, hideVisual);
-                jam.UpdateEquip(player);
-            }
+           
         }
         public override void AddRecipes()
         {
@@ -164,22 +158,5 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
     public class CalamityEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<CalamityMod.Items.Accessories.Calamity>();
-    }
-    [JITWhenModsEnabled(ModCompatibility.CalamityHunt.Name)]
-    [ExtendsFromMod(ModCompatibility.CalamityHunt.Name)]
-    public class SplendorJamEffect : BotBWEffect
-    {
-        public override int ToggleItemType
-        {
-            get
-            {
-                ModContent.TryFind(ModCompatibility.CalamityHunt.Name, "SplendorJam", out ModItem jam);
-                if (jam != null)
-                {
-                    return jam.Type;
-                }
-                return 0;
-            }
-        }
     }
 }

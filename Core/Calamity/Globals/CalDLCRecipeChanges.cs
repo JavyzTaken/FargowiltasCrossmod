@@ -874,14 +874,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.DisableRecipe();
                 }
-                if (recipe.HasResult<BrandoftheBrimstoneWitch>() && ModCompatibility.CalamityHunt.Loaded)
-                {
-                    Mod hunt = ModCompatibility.CalamityHunt.Mod;
-                    if (!recipe.HasIngredient(hunt, "SplendorJam"))
-                    {
-                        recipe.AddIngredient(hunt, "SplendorJam");
-                    }
-                }
                 #endregion
 
                 #region Balance and Progression Locks
@@ -911,9 +903,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.AddIngredient<DivineGeode>(5);
                 }
-                if (recipe.createItem.ModItem is BaseForce && !recipe.HasIngredient<DivineGeode>())
+                if (recipe.createItem.ModItem is BaseForce)
                 {
-                    recipe.AddIngredient<DivineGeode>(4);
+                    if (recipe.createItem.type == ItemType<CosmoForce>())
+                    {
+                        if (!recipe.HasIngredient<CosmiliteBar>())
+                            recipe.AddIngredient<CosmiliteBar>(4);
+                    }
+                    else if (!recipe.HasIngredient<DivineGeode>())
+                        recipe.AddIngredient<DivineGeode>(4);
                 }
                 if (recipe.HasResult<AbomsCurse>() && !recipe.HasIngredient<AuricBar>())
                 {

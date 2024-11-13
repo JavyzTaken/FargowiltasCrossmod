@@ -10,15 +10,16 @@ INCOMPATIBLE mods:
 -Calamity Overhaul
 -Basically anything else that changes Boss AI
 
--Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
+-Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty selector.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
 -Adds new accessories in Fargo's accessory style that make use of Calamity items, mechanics, and the Rogue class
 -Countless balance and progression changes to make the mods' content work well together
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
 Planned potential future features:
--Thorium Mod compatibility (some day)
+-Eternity Mode reworks for the remaining Calamity bosses
 -Calamity Enchantments, Forces and Souls
+-Thorium Mod compatibility (some day)
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
@@ -54,44 +55,6 @@ No, way too much effort to maintain. Also, things like Class Setups wiki pages a
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Newest Update: v1.1
--ADDED 8 NEW ENCHANTMENTS, one per pre-Hardmode Calamity armor
--Added Force of Exploration
--Reworked Eternity Hive Mind
-
--Brimstone Elemental:
---Added new burning shader aura
---Tweaked movement during mobile phases
---Increased visibility for several projectiles
---Brimstone barrages now accelerate after 2 seconds
---No longer inflicts Obstructed with aura
---Reworked cocoon phase
---Brimlings now damage the boss when dying
---Brimlings no longer spawn a clone on death and are immortal on Masochist Mode
---Added burning effect when outside aura
-
--Improved Permafrost's movement
-
--Ported to new Calamity update
--Adjusted some recipes
--Resprited Outlaws Essence and Vagabond Soul
--Loading a world with Infernum Mod enabled no longer disables Eternity priority automatically
--Fixed enemy spawn adjustments applying outside of Eternity Mode
--Large internal rewrites, restructuring, and some optimization
-
-Previous Update: v1.0.7
-Eternity-Death changes:
--Queen Bee: Uses new Calamity deathmode charges
--Brain of Cthulhu: Deleted old change, Now uses a modified version of new Calamity charge in Phase 2
--Deerclops: Reduced health, Added visual Calamity darkness border
--Wall of Flesh: Changed visuals, behavior (to match Calamity) and timing for sickle attack
-Decreased Wall of Flesh HP
-
-Fixed several instances of Calamity drawing extra textures for enemies/bosses, unintendedly interfering with the Eternity Mode versions:
--Wall of Flesh
--Destroyer
--Brain of Cthulhu creepers
-Fixed Slime God contact damage not applying correctly during special attacks
-Fixed Slime God slam telegraphs not rendering
-Vanilla bosses now correctly refund summoning items
-Hardmode crate recipes now correctly use Hardmode crates
+Newest Update: v1.1.1
+Ported to Fargo's Souls 1.7 and Fargo's Mutant 3.3.5
+Tons of changes and fixes

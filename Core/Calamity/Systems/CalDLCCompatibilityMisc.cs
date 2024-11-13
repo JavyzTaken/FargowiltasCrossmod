@@ -339,121 +339,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             BossDeathEffects.Remove(ModContent.NPCType<SupremeCalamitas>());
             BossDeathEffects.Remove(ModContent.NPCType<DevourerofGodsHead>());
             BossDeathEffects.Add(ModContent.NPCType<MutantBoss>(), npc => { BossRushDialogueSystem.StartDialogue(DownedBossSystem.downedBossRush ? BossRushDialoguePhase.EndRepeat : BossRushDialoguePhase.End); });
-            
+
             ////Adding bosses to boss rush
-            Mod cal = ModCompatibility.Calamity.Mod;
-            ////get the list of boss entries
-            //var Entries = cal.Call("GetBossRushEntries") as List<(int, int, Action<int>, int, bool, float, int[], int[])>;
-            ////insert trojan squirrel at the beginning
-            //Entries!.Insert(0, (ModContent.NPCType<TrojanSquirrel>(), 0, delegate
-            //{
-            //    FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TrojanSquirrel>());
-            //}, -1, false, 0f, new[] { ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelLimb>(), ModContent.NPCType<TrojanSquirrelPart>() }, Array.Empty<int>()));
-            ////insert deviantt before sg
-            //Entries.Insert(12, (ModContent.NPCType<DeviBoss>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<DeviBoss>());
-            //}, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            //Entries.Insert(16, (ModContent.NPCType<BanishedBaron>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<BanishedBaron>());
-            //}, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            ////insert lieflight after mechs
-            //Entries.Insert(23, (ModContent.NPCType<LifeChallenger>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChallenger>());
-            //}, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            ////insert champions after provi
-            //Entries.Insert(39, (ModContent.NPCType<CosmosChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<CosmosChampion>());
-            //}, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<WillChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<WillChampion>());
-            //}, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<ShadowChampion>(), -1, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<ShadowChampion>());
-            //}, -1, false, 0f, new[] { ModContent.NPCType<ShadowOrbNPC>(), }, Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<SpiritChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<SpiritChampion>());
-            //}, -1, false, 0f, new[] { ModContent.NPCType<SpiritChampionHand>() }, Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<LifeChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<LifeChampion>());
-            //}, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<NatureChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<NatureChampion>());
-            //}, -1, false, 0f, new[] { ModContent.NPCType<NatureChampionHead>() }, Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<EarthChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<EarthChampion>());
-            //}, -1, false, 0f, new[] { ModContent.NPCType<EarthChampionHand>() }, Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<TerraChampion>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<TerraChampion>());
-
-            //}, -1, false, 0f, new[] { ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>() }, Array.Empty<int>()));
-            //Entries.Insert(39, (ModContent.NPCType<TimberChampion>(), 0, delegate
-            //{
-            //    FargoSoulsUtil.SpawnBossNetcoded(Main.player[Main.myPlayer], ModContent.NPCType<TimberChampion>());
-
-            //}, -1, false, 0f, new[] { ModContent.NPCType<TimberChampionHead>() }, new[] { ModContent.NPCType<TimberChampionHead>() }));
-            ////add abom before draedon
-            //Entries.Insert(55, (ModContent.NPCType<AbomBoss>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<AbomBoss>());
-            //}, -1, false, 0f, new[] { ModContent.NPCType<AbomSaucer>() }, Array.Empty<int>()));
-            ////add mutant boss entry to the end
-            //Entries.Add((ModContent.NPCType<MutantBoss>(), 0, delegate
-            //{
-            //    NPC.SpawnOnPlayer(0, ModContent.NPCType<MutantBoss>());
-            //}, -1, false, 0f, new int[] { ModContent.NPCType<MutantIllusion>() }, Array.Empty<int>()));
-            //for (int i = 0; i < Entries.Count; i++)
-            //{
-            //    if (Entries[i].Item1 == ModContent.NPCType<Crabulon>())
-            //    {
-            //        Entries[i].Item7.Append(ModContent.NPCType<FungalClump>());
-            //    }
-            //    if (Entries[i].Item1 == ModContent.NPCType<PerforatorHive>())
-            //    {
-            //        Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorHead>());
-            //        Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorBody>());
-            //        Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorBody2>());
-            //        Entries[i].Item7.Append(ModContent.NPCType<LargePerforatorTail>());
-            //    }
-            //    if (Entries[i].Item1 == NPCID.BrainofCthulhu)
-            //    {
-            //        Entries[i].Item7.Append(ModContent.NPCType<BrainIllusion>());
-            //        Entries[i].Item7.Append(ModContent.NPCType<BrainIllusion2>());
-            //        Entries[i].Item7.Append(ModContent.NPCType<BrainIllusionAttack>());
-            //    }
-            //    if (Entries[i].Item1 == NPCID.QueenBee)
-            //    {
-            //        Entries[i].Item7.Append(ModContent.NPCType<RoyalSubject>());
-            //    }
-            //    if (Entries[i].Item1 == NPCID.Plantera)
-            //    {
-            //        Entries[i].Item7.Append(ModContent.NPCType<CrystalLeaf>());
-            //    }
-            //    //if (Entries[i].Item1 == NPCID.HallowBoss)
-            //    //{
-            //    //    Entries.RemoveAt(i);
-            //    //    Entries.Insert(i, (NPCID.HallowBoss, 0, delegate { NPC.SpawnOnPlayer(0, NPCID.HallowBoss); }, -1, false, 0f, Array.Empty<int>(), Array.Empty<int>()));
-            //    //}
-            //}
-            ////set boss rush entries to new list of entries
-            //cal.Call("SetBossRushEntries", Entries);
-            ////make scal not end the event on defeat so it continues to mutant
-            //DeathEffectsList.Remove(ModContent.NPCType<SupremeCalamitas>());
             #endregion bossrush
+            Mod cal = ModCompatibility.Calamity.Mod;
             cal.Call("RegisterModCooldowns", FargowiltasCrossmod.Instance);
             cal.Call("AddDifficultyToUI", new EternityRevDifficulty());
             cal.Call("AddDifficultyToUI", new EternityDeathDifficulty());
+
             #region CalDebuffListCompat
+            List<int> calamityDebuffs = CalamityLists.debuffList.Where(i => i >= BuffID.Count).ToList();
             CalamityLists.debuffList.Add(ModContent.BuffType<AnticoagulationBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<AntisocialBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<AtrophiedBuff>());
@@ -512,6 +407,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalamityLists.debuffList.Add(ModContent.BuffType<OriPoisonBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<PungentGazeBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<SolarFlareBuff>());
+            FieldInfo debuffIDs = typeof(FargowiltasSouls.FargowiltasSouls).GetField("DebuffIDs", LumUtils.UniversalBindingFlags);
+            List<int> newDebuffIDs = (List<int>)debuffIDs.GetValue(null);
+            newDebuffIDs.AddRange(calamityDebuffs);
+            debuffIDs.SetValue(null, newDebuffIDs);
             #endregion CalDebuffListCompat
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it

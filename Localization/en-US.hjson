@@ -10,10 +10,7 @@ Mods: {
 				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.  [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
 
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
-
-				-Deviantt provides a starter pack
-				-Improves base stats
-				-Debuffs wear off faster when not attacking
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
@@ -27,22 +24,21 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
-				[c/00FFFF: This is the main intended experience.] 
+				[c/00FFFF:This is the main intended experience.] 
 
 				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses. [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
 				Eternity-Death only: Expands AI for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
 
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
-
-				-Deviantt provides a starter pack
-				-Improves base stats
-				-Debuffs wear off faster when not attacking
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
 			Activation: Eternity-Death Mode has activated!
 			Deactivation: Eternity-Death Mode has deactivated.
 		}
+
+		UI.ToggledWithCal: Toggled with Calamity's difficulty selector
 
 		Configs: {
 			CalDLCConfig: {
@@ -299,7 +295,7 @@ Mods: {
 				DisplayName: Deepsea Protein Shake
 				Tooltip:
 					'''
-					Summons Reapear Shark
+					Summons Reaper Shark
 					Can only be used in the Abyss
 					'''
 			}
