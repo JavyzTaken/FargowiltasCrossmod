@@ -120,6 +120,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<BrimstoneHeart>(),
             ModContent.NPCType<SupremeCataclysm>(),
             ModContent.NPCType<SupremeCatastrophe>(),
+            ModContent.NPCType<Cataclysm>(),
+            ModContent.NPCType<Catastrophe>()
 
         ];
         public override void SetStaticDefaults()
