@@ -42,6 +42,10 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using CalamityMod.Systems;
+using CalamityMod.Enums;
+using Fargowiltas.Items.Vanity;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -77,6 +81,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo ModifyHurtInfo_CalamityMethod = typeof(CalamityPlayer).GetMethod("ModifyHurtInfo_Calamity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo BRDialogueTick_Method = typeof(BossRushDialogueSystem).GetMethod("Tick", LumUtils.UniversalBindingFlags);
+        //private static readonly MethodInfo BRSceneWeight_Method = typeof(BossRushScene).GetMethod("GetWeight", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -106,6 +112,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
         public delegate void Orig_ModifyHurtInfo_Calamity(CalamityPlayer self, ref Player.HurtInfo info);
         public delegate void Orig_MinimalEffects(ToggleBackend self);
+        public delegate void Orig_BRDialogueTick();
+        //public delegate void Orig_BRSceneWeight();
+
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -137,6 +146,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
             HookHelper.ModifyMethodWithDetour(ModifyHurtInfo_CalamityMethod, ModifyHurtInfo_Calamity_Detour);
             HookHelper.ModifyMethodWithDetour(MinimalEffects_Method, MinimalEffects_Detour);
+            HookHelper.ModifyMethodWithDetour(BRDialogueTick_Method, DialogueReplacement);
+            //HookHelper.ModifyMethodWithDetour(BRSceneWeight_Method, );
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -492,6 +503,92 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             player.SetToggleValue<RampartofDeitiesEffect>(true);
 
         }
+
+        public static void DialogueReplacement(Orig_BRDialogueTick orig)
+        {
+            
+            BossRushDialoguePhase phase = BossRushDialogueSystem.Phase;
+            FieldInfo tierInfo = typeof(BossRushEvent).GetField("CurrentTier");
+            if (tierInfo != null)
+            {
+                tierInfo.SetValue(tierInfo, 1);
+            }
+            else
+            {
+                //Main.NewText(BossRushEvent.BossRushStage);
+            }
+            //BossRushEvent.BossRushStage = 16;
+            //DownedBossSystem.startedBossRushAtLeastOnce = true;
+            //Main.NewText(BossRushEvent.Bosses[BossRushEvent.Bosses.Count - 1].EntityID);
+            //Main.NewText(ModContent.NPCType<MutantBoss>());
+            if (BossRushDialogueSystem.CurrentDialogueDelay > 0 && phase == BossRushDialoguePhase.Start)
+            {
+                BossRushDialogueSystem.CurrentDialogueDelay -= 5;
+                if (BossRushDialogueSystem.CurrentDialogueDelay < 0)
+                {
+                    BossRushDialogueSystem.CurrentDialogueDelay = 0;
+                }
+            }
+            if (!BossRushEvent.BossRushActive || BossRushDialogueSystem.Phase == BossRushDialoguePhase.Start || BossRushDialogueSystem.Phase == BossRushDialoguePhase.None)
+            {
+                
+                orig();
+                return;
+            }
+            int currSequenceLength = 0;
+            int currLine = BossRushDialogueSystem.currentSequenceIndex;
+            
+            if (phase == BossRushDialoguePhase.StartRepeat)
+            {
+                currSequenceLength = 1;
+            }
+            if (phase == BossRushDialoguePhase.TierOneComplete)
+            {
+                currSequenceLength = 3;
+            }
+            
+            if (BossRushDialogueSystem.CurrentDialogueDelay == 0)
+            {
+                if (phase == BossRushDialoguePhase.StartRepeat && currLine == 0)
+                {
+                    Main.NewText("Let's get started", Color.Teal);
+                    BossRushEvent.BossRushStage = 1;
+                }
+                if (phase == BossRushDialoguePhase.TierOneComplete)
+                {
+                    if (currLine == 0)
+                        Main.NewText("This is boring.", Color.Teal);
+                    //if (currLine == 1)
+                        
+                    if (currLine == 2)
+                        Main.NewText("Let's cut to the chase", Color.Teal);
+                }
+                BossRushDialogueSystem.CurrentDialogueDelay = 60;
+                BossRushDialogueSystem.currentSequenceIndex += 1;
+                
+            }
+            
+            else
+            {
+                --BossRushDialogueSystem.CurrentDialogueDelay;
+            }
+            if (phase == BossRushDialoguePhase.End || phase == BossRushDialoguePhase.EndRepeat)
+            {
+                BossRushDialogueSystem.CurrentDialogueDelay = 0;
+            }
+            if (phase == BossRushDialoguePhase.TierOneComplete && currLine < 6)
+            {
+                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0, 0.05f);
+            }
+            if ( phase == BossRushDialoguePhase.TierOneComplete && currLine > 6
+                )
+            {
+                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 1, 0.001f);
+            }
+            if (BossRushEvent.BossRushSpawnCountdown < 180 && currLine < currSequenceLength) 
+                BossRushEvent.BossRushSpawnCountdown = BossRushDialogueSystem.CurrentDialogueDelay + 180;
+        }
+        
         #endregion
     }
 }

@@ -185,6 +185,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PostUpdateMiscEffects()
         {
+            
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calPlayer = Player.Calamity();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)
