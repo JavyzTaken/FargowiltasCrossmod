@@ -282,6 +282,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             cal.Call("RegisterModCooldowns", FargowiltasCrossmod.Instance);
             cal.Call("AddDifficultyToUI", new EternityRevDifficulty());
             cal.Call("AddDifficultyToUI", new EternityDeathDifficulty());
+
             #region CalDebuffListCompat
             List<int> calamityDebuffs = CalamityLists.debuffList.Where(i => i >= BuffID.Count).ToList();
             CalamityLists.debuffList.Add(ModContent.BuffType<AnticoagulationBuff>());
