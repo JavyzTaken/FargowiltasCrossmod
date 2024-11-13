@@ -219,7 +219,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Split effect disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
             }
             if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
             {
