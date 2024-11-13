@@ -68,6 +68,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         // Misc compatibility, fixes and balance
         private static readonly MethodInfo FMSVerticalSpeedMethod = typeof(FlightMasteryWings).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FMSHorizontalSpeedMethod = typeof(FlightMasteryWings).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo LifeForceVerticalSpeedMethod = typeof(LifeForce).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo LifeForceHorizontalSpeedMethod = typeof(LifeForce).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo IsFargoSoulsItemMethod = typeof(Squirrel).GetMethod("IsFargoSoulsItem", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BrimstoneMonsterCanHitPlayerMethod = typeof(BrimstoneMonster).GetMethod("CanHitPlayer", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoSoulsOnSpawnProjMethod = typeof(FargoSoulsGlobalProjectile).GetMethod("OnSpawn", LumUtils.UniversalBindingFlags);
@@ -101,6 +103,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         // Misc compatibility, fixes and balance
         public delegate void Orig_FMSVerticalSpeed(FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
         public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
+        public delegate void Orig_LifeForceVerticalSpeed(LifeForce self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
+        public delegate void Orig_LifeForceHorizontalSpeed(LifeForce self, Player player, ref float speed, ref float acceleration);
         public delegate bool Orig_IsFargoSoulsItem(Item item);
         public delegate bool Orig_BrimstoneMonsterCanHitPlayer(BrimstoneMonster self, Player player);
         public delegate void Orig_FargoSoulsOnSpawnProj(FargoSoulsGlobalProjectile self, Projectile projectile, IEntitySource source);
@@ -136,6 +140,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             // Misc compatibility, fixes and balance
             HookHelper.ModifyMethodWithDetour(FMSVerticalSpeedMethod, FMSVerticalSpeed_Detour);
             HookHelper.ModifyMethodWithDetour(FMSHorizontalSpeedMethod, FMSHorizontalSpeed_Detour);
+            HookHelper.ModifyMethodWithDetour(LifeForceVerticalSpeedMethod, LifeForceVerticalSpeed_Detour);
+            HookHelper.ModifyMethodWithDetour(LifeForceHorizontalSpeedMethod, LifeForceHorizontalSpeed_Detour);
             HookHelper.ModifyMethodWithDetour(IsFargoSoulsItemMethod, IsFargoSoulsItem_Detour);
             HookHelper.ModifyMethodWithDetour(BrimstoneMonsterCanHitPlayerMethod, BrimstoneMonsterCanHitPlayer_Detour);
             HookHelper.ModifyMethodWithDetour(FargoSoulsOnSpawnProjMethod, FargoSoulsOnSpawnProj_Detour);
@@ -356,6 +362,71 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                         acceleration = 2.9f;
                 }
                    
+                //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
+            }
+        }
+
+        internal static void LifeForceVerticalSpeed_Detour(Orig_LifeForceVerticalSpeed orig, LifeForce self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+        {
+            orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
+            if (NonFargoBossAlive())
+            {
+                
+                player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
+                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
+                {
+                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(300);
+
+                    if (ascentWhenFalling > 0.95f)
+                        ascentWhenFalling = 0.95f;
+                    if (ascentWhenRising > 0.16f)
+                        ascentWhenRising = 0.16f;
+                    if (maxCanAscendMultiplier > 1.1f)
+                        maxCanAscendMultiplier = 1.1f;
+                    if (maxAscentMultiplier > 3.2f)
+                        maxAscentMultiplier = 3.2f;
+                    if (constantAscend > 0.145f)
+                        constantAscend = 0.145f;
+                }
+                else // post yharon, use Drew's Wings stats
+                {
+                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(400);
+
+                    if (ascentWhenFalling > 1f)
+                        ascentWhenFalling = 1f;
+                    if (ascentWhenRising > 0.17f)
+                        ascentWhenRising = 0.17f;
+                    if (maxCanAscendMultiplier > 1.2f)
+                        maxCanAscendMultiplier = 1.2f;
+                    if (maxAscentMultiplier > 3.25f)
+                        maxAscentMultiplier = 3.25f;
+                    if (constantAscend > 0.15f)
+                        constantAscend = 0.15f;
+                }
+            }
+            else
+                ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(1000);
+        }
+        internal static void LifeForceHorizontalSpeed_Detour(Orig_LifeForceHorizontalSpeed orig, LifeForce self, Player player, ref float speed, ref float acceleration)
+        {
+            orig(self, player, ref speed, ref acceleration);
+            if (NonFargoBossAlive())
+            {
+                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
+                {
+                    if (speed > 10.5f)
+                        speed = 10.5f;
+                    if (acceleration > 2.8f)
+                        acceleration = 2.8f;
+                }
+                else // post yharon, use Drew's Wings stats
+                {
+                    if (speed > 11.5f)
+                        speed = 11.5f;
+                    if (acceleration > 2.9f)
+                        acceleration = 2.9f;
+                }
+
                 //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
             }
         }

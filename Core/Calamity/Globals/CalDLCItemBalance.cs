@@ -233,6 +233,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
             }
+            if (item.type == ModContent.ItemType<LifeForce>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats and wing time decreased when fighting non-Souls Mod bosses"));
+            }
 
             if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
                 item.type == ItemID.OrichalcumSword || item.type == ItemID.MythrilSword ||
