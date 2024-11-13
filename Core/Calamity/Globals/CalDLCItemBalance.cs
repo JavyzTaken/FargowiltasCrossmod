@@ -159,15 +159,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         //Identical to Eternity nerfs from Souls Mod
         void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, int amount = 0, string mod = "FargowiltasSouls")
         {
-            string prefix = Language.GetTextValue($"Mods.{mod}.EModeBalance.{change}");
+            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
             string nerf = Language.GetTextValue($"Mods.{mod}.EModeBalance.{key}", amount == 0 ? null : amount);
-            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf}"));
+            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix}{nerf}"));
         }
 
-        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, string extra)
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, string extra, string mod = "FargowiltasSouls")
         {
-            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
-            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}");
+
+            string prefix = Language.GetTextValue($"Mods.{mod}.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.{mod}.EModeBalance.{key}");
             tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf} {extra}"));
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -182,7 +183,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (item.type == ModContent.ItemType<Laudanum>())
                 {
-                    ItemBalance(tooltips, EModeChange.Nerf, "Laudanum");
+                    ItemBalance(tooltips, EModeChange.Nerf, "Laudanum", mod: "FargowiltasCrossmod");
                 }
             }
 
