@@ -5,6 +5,7 @@ using Fargowiltas.NPCs;
 using System.Collections.Generic;
 using System.Linq;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
+using FargowiltasCrossmod.Content.Thorium.Items.Summons;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
@@ -12,6 +13,7 @@ using FargowiltasSouls;
 using Fargowiltas.Items.Summons.Deviantt;
 using Fargowiltas.Items.Tiles;
 using Fargowiltas;
+using FargowiltasCrossmod.Core.Thorium.Systems;
 using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Core.Common.Globals
@@ -60,16 +62,16 @@ namespace FargowiltasCrossmod.Core.Common.Globals
             ModShops.Add(shop);
         }
 
-        //public static void AddThoriumShop()
-        //{
-        //   NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Thorium");
-        //  shop.Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After Myna has been defeated", () => Systems.DownedEnemiesSystem.DLCDownedBools["Myna"]));
-        // shop.Add(new Item(ModContent.ItemType<GildedSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After the gilded enemies have been defeated", () => 
-        //Systems.DownedEnemiesSystem.DLCDownedBools["GildedLycan"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedBat"] && Systems.DownedEnemiesSystem.DLCDownedBools["GildedSlime"]));
+        [JITWhenModsEnabled(ModCompatibility.ThoriumMod.Name)]
+        public static void AddThoriumShop()
+        {
+            NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Thorium");
+            shop.Add(new Item(ModContent.ItemType<MynaSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After Myna has been defeated", () => ThoriumDLCWorldSavingSystem.downedMyna));
+            shop.Add(new Item(ModContent.ItemType<GildedSummon>()) { shopCustomPrice = Item.buyPrice(gold: 3) }, new Condition("After the gilded enemies have been defeated", () => ThoriumDLCWorldSavingSystem.downedGildedLycan && ThoriumDLCWorldSavingSystem.downedGildedBat && ThoriumDLCWorldSavingSystem.downedGildedSlime));
 
-        //ModShops.Add(shop);
-        //shop.Register();
-        //} 
+            shop.Register();
+            ModShops.Add(shop);
+        } 
         #region Hook Stuff
         public override void Load()
         {
@@ -116,6 +118,8 @@ namespace FargowiltasCrossmod.Core.Common.Globals
             //orig.Invoke(self); this does not work. ZERO reason why. make this a smoother solution later
             if (ModCompatibility.Calamity.Loaded)
                 AddCalamityShop();
+            if (ModCompatibility.ThoriumMod.Loaded) 
+                AddThoriumShop();
         }
 
         public static Dictionary<string, bool> FargoWorldDownedBools => typeof(FargoWorld).GetField("DownedBools", LumUtils.UniversalBindingFlags).GetValue(null) as Dictionary<string, bool>;

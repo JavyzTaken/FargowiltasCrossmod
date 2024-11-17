@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Items.Summons;
 using System.Reflection;
-using static FargowiltasCrossmod.Core.Systems.DownedEnemiesSystem;
+// using static FargowiltasCrossmod.Core.Systems.DownedEnemiesSystem;
 
 namespace FargowiltasCrossmod.Content.Common
 {
