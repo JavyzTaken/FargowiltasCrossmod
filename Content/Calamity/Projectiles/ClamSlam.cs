@@ -25,6 +25,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [ExtendsFromMod(Core.ModCompatibility.Calamity.Name)]
     public class ClamSlam : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Melee/ClamCrusherFlail";

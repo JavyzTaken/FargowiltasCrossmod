@@ -86,6 +86,12 @@ Mods: {
 						'''
 				}
 			}
+
+			ThoriumConfig: {
+				// DisplayName: Thorium Config
+				// HideDevThorium: Hide WIP Thorium content
+				// HideDevThoriumDescription: ""
+			}
 		}
 
 		Items: {
@@ -139,6 +145,336 @@ Mods: {
 					'''
 			}
 
+			AstroEnchant: {
+				// DisplayName: Astro Enchantment
+				// Tooltip: Periodically summons an orbital laser from the sky when attacking. Effect does not work underground.
+			}
+
+			DarksteelEnchant: {
+				// DisplayName: Darksteel Enchantment
+				/* Tooltip:
+					'''
+					Allows you to parry projectiles with a hotkey, including your own.
+					"Blood is fuel"
+					''' */
+			}
+
+			DragonEnchant: {
+				// DisplayName: Dragon Enchantment
+				// Tooltip: Summons a green dragon head to aid you
+			}
+
+			FungusEnchant: {
+				// DisplayName: Fungus Enchantment
+				// Tooltip: Attacking enemies can infect them with a weakening fungal virus that also spreads from spores released when killed.
+			}
+
+			GraniteEnchant: {
+				// DisplayName: Granite Enchantment
+				// Tooltip: Killing enemies creates an explosion. Kind lame, needs a new/ extra effect other than synergy.
+			}
+
+			LivingWoodEnchant: {
+				// DisplayName: Living Wood Enchantment
+				/* Tooltip:
+					'''
+					Press a key to grow roots from your player. These roots will restrict your movement and leave you vunerable until they finish growing.
+					When grown, they will attack nearby enemies.
+					''' */
+			}
+
+			LodeStoneEnchant: {
+				// DisplayName: Lode Stone Enchantment
+				// Tooltip: Summons lodestone platforms capable of carrying sentries.
+			}
+
+			SilkEnchant: {
+				// DisplayName: Silk Enchantment
+				// Tooltip: Upgrades other enchantments to their synergy effects.
+			}
+
+			SpiritTrapperEnchant: {
+				// DisplayName: Spirit Trapper Enchantment
+				// Tooltip: Summons an angry ghost that copys projectiles to aid you.
+			}
+
+			SteelEnchant: {
+				// DisplayName: Steel Enchantment
+				/* Tooltip:
+					'''
+					Allows you to parry projectiles with a hotkey, reflecting them and letting them deal damage to enemies
+					"Mankind is dead"
+					''' */
+			}
+
+			TemplarEnchant: {
+				// DisplayName: Templar Enchantment
+				// Tooltip: ""
+			}
+
+			ValadiumEnchant: {
+				// DisplayName: Valadium Enchantment
+				/* Tooltip:
+					'''
+					Spawns gravitationally-attracted valadium chunks that damage enemies proportional to their momentum.
+					"glaciers melting in the dead of night..."
+					''' */
+			}
+
+			WhiteKnightEnchant: {
+				// DisplayName: White Knight Enchantment
+				// Tooltip: Increases damage based on the number of npcs and players with less defence that you nearby.
+			}
+
+			YewWoodEnchant: {
+				// DisplayName: Yew Wood Enchantment
+				// Tooltip: Turns wooden arrows into random other arrows.
+			}
+
+			SlingersEssence: {
+				// DisplayName: Slingers Essence
+				// Tooltip: ""
+			}
+
+			GildedBinoculars: {
+				// DisplayName: Gilded Binoculars
+				// Tooltip: Projectiles glow
+			}
+
+			GildedLamp: {
+				// DisplayName: Gilded Lamp
+				// Tooltip: Gives permanent shining and immumity to gilded sight.
+			}
+
+			GildedMonicle: {
+				// DisplayName: Gilded Monicle
+				// Tooltip: Items and coins emit light
+			}
+
+			GildedNightVision: {
+				// DisplayName: Gilded Night Vision Goggles
+				/* Tooltip:
+					'''
+					The player, projectiles and items all emit light.
+					Immunity to gilded sight
+					''' */
+			}
+
+			MynaAccessory: {
+				// DisplayName: Myna Accessory
+				// Tooltip: Projectiles can dodge you slightly. (defunct)
+			}
+
+			OlympiansSoul: {
+				// DisplayName: Olympians Soul
+				// Tooltip: ""
+			}
+
+			TempleCore: {
+				// DisplayName: Temple Core
+				// Tooltip: Spawns orbs around the player that target and fire on nearby enemies. (defunct)
+			}
+
+			GildedSummon: {
+				// DisplayName: Gilded rock
+				// Tooltip: Summons the gilded enemies. Can only be used at night or underground.
+			}
+
+			MynaSummon: {
+				// DisplayName: Myna egg
+				// Tooltip: Summons a harmless critter
+			}
+
+			KluexStaff: {
+				// DisplayName: Staff of copyrighted content
+				// Tooltip: Spawns damaging orbs with left-click and healing orbs with right-click. Speed increases as it is used. (defunct)
+			}
+
+			DemonBloodEnchant: {
+				// DisplayName: Demon Blood Enchantment
+				/* Tooltip:
+					'''
+					Demon blood has a chance to appear whenever you kill an enemy, and increases your damage by 10% per splatter up to 50%.
+					Removing 10% of a bosses hp also creates blood.
+					[i:FargowiltasCrossmod/FleshEnchant] Hit enemies have a chance to drop chunks of suitable flesh, which can he picked up for healing.
+					"Do you know how far from normal, from human, this is?"
+					''' */
+			}
+
+			FleshEnchant: {
+				// DisplayName: Flesh Enchantment
+				/* Tooltip:
+					'''
+					Hit enemies have a chance to drop chunks of suitable flesh, which can he picked up for healing.
+					"Jus drein, jus daun"
+					''' */
+			}
+
+			ConduitEnchant: {
+				// DisplayName: Conduit Enchantment
+				// Tooltip: Summons a small flying saucer that shoots down nearby projectiles.
+			}
+
+			DepthDiverEnchant: {
+				// DisplayName: Depth Diver Enchantment
+				/* Tooltip:
+					'''
+					Gives you and you allies increased damage, speed, and underwater breathing.
+					"Help I am under the water"
+					''' */
+			}
+
+			FallenPaladinEnchant: {
+				// DisplayName: Fallen Paladin Enchantment
+				// Tooltip: Pressing the accesssory ability key will transfer most debuffs from your allies to you.
+			}
+
+			EbonEnchant: {
+				// DisplayName: Ebon Enchantment
+				// Tooltip: Increases damage by 5% per bonus healing and corrupts some radiant attacks. Effect of dark heart.
+			}
+
+			SacredEnchant: {
+				// DisplayName: Sacred Enchantment
+				/* Tooltip:
+					'''
+					Critial strikes create healing wisps that can be released in random directions using the accessory ability key. 
+					If enough of the wisps are stored, they will be converted into a directed torrent of healing energy when released.
+					''' */
+			}
+
+			WarlockEnchant: {
+				// DisplayName: Warlock Enchantment
+				/* Tooltip:
+					'''
+					Critial strikes create shadow wisps that are stored in an orb and can be released in random directions using the accessory ability key. 
+					If enough of the wisps are stored, they will be converted into a directed torrent of shadow when released.
+					''' */
+			}
+
+			NoviceClericEnchant: {
+				// DisplayName: Novice Cleric Enchant
+				// Tooltip: Holy crosses will generate over time. Using mana will cause a cross to be used instead.
+			}
+
+			DreadEnchant: {
+				// DisplayName: Dread Enchant
+				/* Tooltip:
+					'''
+					Summons a powerful green dragon minion that cycles through different attacks.
+					"And that's how I trained my dragon"
+					''' */
+			}
+
+			HelheimForce: {
+				// DisplayName: Force of Helheim
+				/* Tooltip:
+					'''
+					[i:FargowiltasCrossmod/DreadEnchant] Summons a cursed dragon to fight for you.
+					[i:FargowiltasCrossmod/DragonEnchant] Summons two green dragon heads.
+					[i:FargowiltasCrossmod/FleshEnchant] Hit enemies have a chance to drop chunks of suitable flesh.
+					[i:FargowiltasCrossmod/DemonBloodEnchant] Demon blood has a chance to appear whenever you kill an enemy or remove 10% of a boss's hp.
+					[i:FargowiltasCrossmod/SpiritTrapperEnchant] Summons an angry red ghost.
+					[i:FargowiltasCrossmod/WhiteKnightEnchant] Increases your defence and damage based on the number of npcs and weaker players nearby.
+					''' */
+			}
+
+			NagaSkinEnchant: {
+				// DisplayName: Naga Skin Enchantment
+				// Tooltip: Currently missing visuals
+			}
+
+			LifeBloomEnchant: {
+				// DisplayName: Life Bloom Enchant
+				// Tooltip: ""
+			}
+
+			IcyEnchant: {
+				// DisplayName: Icy Enchant
+				// Tooltip: Damaging snowflakes fall from your projectiles. Projectile damage is reduced by 20% to compensate.
+			}
+
+			TitanEnchant: {
+				// DisplayName: Titan Enchant
+				// Tooltip: Increases your armor peircing by 10% of your defence.
+			}
+
+			DurasteelEnchant: {
+				// DisplayName: Durasteel Enchant
+				/* Tooltip:
+					'''
+					Allows you to parry projectiles with a hotkey, including your own, sending them in the direction of your cursor, increasing their damage and granting them an explosion on collision.
+					"Hell is full"
+					''' */
+			}
+
+			BronzeEnchant: {
+				// DisplayName: Bronze Enchant
+				/* Tooltip:
+					'''
+					Attacking has a 20% chance to release a damaging burst of light.
+					"Ensure only the finest quality copper ingots be used in its creation."
+					''' */
+			}
+
+			SvartalfheimForce: {
+				// DisplayName: Force of Svartalfheim
+				/* Tooltip:
+					'''
+					[i:FargowiltasCrossmod/DurasteelEnchant] Allows you to parry projectiles, granting them increased damage and an explosion on collision.
+					[i:FargowiltasCrossmod/ConduitEnchant] Summons a small flying saucer that shoots down nearby projectiles.
+					[i:FargowiltasCrossmod/TitanEnchant] Increases armor penetration by 15% of your defence, but reduces your defence's effectiveness.
+					[i:FargowiltasCrossmod/GraniteEnchant] Killing an enemy creates an explosion that inflicts granite surge on enemies.
+					[i:FargowiltasCrossmod/BronzeEnchant] Every 5 seconds when attacking a powerful burst of light will be realesed that bounces between enemies and causes granite explosions on it.
+					''' */
+			}
+
+			BiotechEnchant: {
+				// DisplayName: Biotech Enchant
+				/* Tooltip:
+					'''
+					you generate several healing nanomachines over time that orbit you until they locate an injured ally.
+					"And that's how I lost my medical license"
+					''' */
+			}
+
+			WhisperingEnchant: {
+				// DisplayName: Whispering Enchant
+				// Tooltip: ""
+			}
+
+			MendersEssence: {
+				// DisplayName: Menders Essence
+				/* Tooltip:
+					'''
+					"This is only the begining.."
+					Increases radiant damage by 18%.
+					Increases radiant critical strike chance by 5%.
+					Increases bonus healing by 3.
+					''' */
+			}
+
+			ArchangelSoul: {
+				// DisplayName: Guardian Angel's Soul
+				/* Tooltip:
+					'''
+					"Turn your head and cough"
+					Increases radiant damage by 30% and crit chance by 15%
+					Increases radiant attack and casting speed by 15%
+					Increases healing speed by 15% and bonus healing by 6
+
+					Increases you maximum life by 50 an enpowers some radiant attacks with a dark aura.
+					Effects of Medical bag and grave goods.
+					Enemies are less likely to target you.
+					Effects of nirvana statuette.
+					''' */
+			}
+
+			TideHunterEnchant: {
+				// DisplayName: Tide Hunter Enchant
+				// Tooltip: Creates a large damaging wave as you dash
+			}
+
 			ABombInMyNation: {
 				DisplayName: Взрыв на мерзости
 				Tooltip: Призывает Разносчицу чумы Голиаф
@@ -157,6 +493,86 @@ Mods: {
 			BlightedEye: {
 				DisplayName: Гибельный глаз
 				Tooltip: Призывает Клон Каламитас
+			}
+
+			TideTurnerEnchant: {
+				// Tooltip: ""
+				// DisplayName: Tide Turner Enchantment
+			}
+
+			GeodeEnchant: {
+				// DisplayName: Geode Enchantment
+				// Tooltip: Veinmine and miner effect
+			}
+
+			BloomingEnchant: {
+				// DisplayName: Blooming Enchantment
+				// Tooltip: ""
+			}
+
+			Cook: {
+				// Tooltip: "'I am the danger'"
+				// DisplayName: Cook
+			}
+
+			WeaponMaster: {
+				// Tooltip: ""
+				// DisplayName: Weapon Master
+			}
+
+			Spiritualist: {
+				// Tooltip: ""
+				// DisplayName: Spiritualist
+			}
+
+			Druid: {
+				// Tooltip: ""
+				// DisplayName: Druid
+			}
+
+			Diverman: {
+				// Tooltip: Sam?
+				// DisplayName: Diverman
+			}
+
+			Tracker: {
+				// Tooltip: ""
+				// DisplayName: Tracker
+			}
+
+			Blacksmith: {
+				// Tooltip: ""
+				// DisplayName: Blacksmith
+			}
+
+			ConfusedZombie: {
+				// Tooltip: "'Guh?!'"
+				// DisplayName: Confused Zombie
+			}
+
+			DesertAcolyte: {
+				// Tooltip: ""
+				// DisplayName: Desert Acolyte
+			}
+
+			Cobbler: {
+				// Tooltip: ""
+				// DisplayName: Cobbler
+			}
+
+			ThoriumSoul: {
+				// DisplayName: Thorium Soul
+				// Tooltip: ""
+			}
+
+			JesterEnchant: {
+				// DisplayName: Jester Enchantment
+				// Tooltip: Copies the effect of a random other enchant for 5 seconds before switching.
+			}
+
+			ShadeMasterEnchant: {
+				// DisplayName: Shade Master Enchantment
+				// Tooltip: ""
 			}
 
 			BloodyWorm: {
@@ -371,6 +787,46 @@ Mods: {
 					Эффекты сердца элементов, оккультной короны-черепа, сияния, губки и кубка кровавого божества
 					Эффекты ядра туманности, дара Ярима, сердца Дрэйдона и бедствия
 					'''
+			}
+
+			AlfheimForce: {
+				// Tooltip: ""
+				// DisplayName: Force of Alfheim
+			}
+
+			AsgardForce: {
+				// DisplayName: Force of Asgard
+				// Tooltip: ""
+			}
+
+			JotunheimForce: {
+				// DisplayName: Force of Jotunheim
+				// Tooltip: ""
+			}
+
+			MidgardForce: {
+				// DisplayName: Force of Midgard
+				// Tooltip: ""
+			}
+
+			MuspelheimForce: {
+				// DisplayName: Force of Muspelheim
+				// Tooltip: ""
+			}
+
+			NiflheimForce: {
+				// DisplayName: Force of Niflheim
+				// Tooltip: ""
+			}
+
+			VanaheimForce: {
+				// DisplayName: Force of Vanaheim
+				// Tooltip: ""
+			}
+
+			LodestoneEnchant: {
+				// DisplayName: Lodestone Enchantment
+				// Tooltip: ""
 			}
 
 			AerospecEnchant: {
@@ -694,23 +1150,79 @@ Mods: {
 			// AstralTrailStar.DisplayName: Astral Trail Star
 			// BrimflameBurst.DisplayName: Brimflame Burst
 			// ClamSlam.DisplayName: Clam Slam
+			// DmgOrbHack.DisplayName: Dmg Orb Hack
+			// HealOrbHack.DisplayName: Heal Orb Hack
+			// BiotechNanomachine.DisplayName: Biotech Nanomachine
+			// ConduitSaucer.DisplayName: Conduit Saucer
+			// DemonBloodSpill.DisplayName: Demon Blood Spill
+			// DLCLightStrike.DisplayName: D L C Light Strike
+			// DLCShadowWisp.DisplayName: D L C Shadow Wisp
+			// DLCShadowWispPro.DisplayName: D L C Shadow Wisp Pro
+			// DragonHead.DisplayName: Dragon Head
+			// DragonMinionBody.DisplayName: Dragon Minion Body
+			// DragonMinionBody2.DisplayName: Dragon Minion Body2
+			// DragonMinionHead.DisplayName: Dragon Minion Head
+			// DragonMinionTail.DisplayName: Dragon Minion Tail
+			// DragonScale.DisplayName: Dragon Scale
+			// FungusSpore.DisplayName: Fungus Spore
+			// GFBZapTelegraph.DisplayName: G F B Zap Telegraph
+			// GraniteExplosion.DisplayName: Granite Explosion
+			// GTBCloud.DisplayName: G T B Cloud
+			// GTBSandStorm.DisplayName: G T B Sand Storm
+			// HealPulse.DisplayName: Heal Pulse
+			// JesterIndicatorProj.DisplayName: Jester Indicator Proj
+			// KluexBlast.DisplayName: Kluex Blast
+			// KluexOrb.DisplayName: Kluex Orb
+			// LifeBloomBallista.DisplayName: Life Bloom Ballista
+			// LifeBloomTree.DisplayName: Life Bloom Tree
+			// LifeBloomWard.DisplayName: Life Bloom Ward
+			// LivingWood_Roots.DisplayName: Living Wood_ Roots
+			// LodeStonePlatform.DisplayName: Lode Stone Platform
+			// MidExplosion.DisplayName: Mid Explosion
+			// SaucerDeathrayProj.DisplayName: Saucer Deathray Proj
+			// SteelParry.DisplayName: Steel Parry
+			// TideTurnerWave.DisplayName: Tide Turner Wave
+			// Valadium_Chunk.DisplayName: Valadium_ Chunk
+			// WhisperingBeam.DisplayName: Whispering Beam
+			// WhisperingLeech.DisplayName: Whispering Leech
+			// WhisperingVision.DisplayName: Whispering Vision
 		}
 
 		Buffs: {
-			CalamitousPresenceBuff: {
-				Description: Защита, сопротивление урону и восстановление здоровья снижены; эффект «Лунного укуса»; радиус грэйза уменьшен
-				DisplayName: Бедственное присутствие
+			GildedSightDB: {
+				// DisplayName: Gilded Sight
+				// Description: Mods.FargowiltasCrossmod.Buffs.GildedSightDB.Description
 			}
 
-			ArcticPaw.DisplayName: Арктическая лапа
-			Blizzard.DisplayName: Метель
-			CrystalShard.DisplayName: Осколок кристалла
-			DarkIceCrystal.DisplayName: Кристал Тёмного Льда
-			IceShot.DisplayName: Ледяной Выстрел
-			FrostShard.DisplayName: Морозный Осколок
-			FrostFlare.DisplayName: Морозная Сигнальная Ракета
-			IceArrow.DisplayName: Ледяная Стрела
-			IceStar.DisplayName: Ледяная Звезда
+			LivingWood_Root_B: {
+				// DisplayName: Living Wood Root
+				// Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_B.Description
+			}
+
+			LivingWood_Root_DB: {
+				// DisplayName: Living Wood Root CD
+				// Description: Mods.FargowiltasCrossmod.Buffs.LivingWood_Root_DB.Description
+			}
+
+			MynaDB: {
+				// DisplayName: Myna'ed
+				// Description: Your projectiles dodge enemies
+			}
+
+			SteelParry_CD: {
+				// DisplayName: Parry issue
+				// Description: Wait, isn't this meant to be free?
+			}
+
+			FallenPaladinBuff: {
+				// DisplayName: Fallen Paladin Buff
+				// Description: Mods.FargowiltasCrossmod.Buffs.FallenPaladinBuff.Description
+			}
+
+			CalamitousPresenceBuff: {
+				DisplayName: Бедственное присутствие
+				Description: Защита, сопротивление урону и восстановление здоровья снижены; эффект «Лунного укуса»; радиус грэйза уменьшен
+			}
 		}
 
 		Toggler: {
@@ -786,6 +1298,48 @@ Mods: {
 			// Astral: Longer trail, more damage
 			// Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
 			// Mollusk: More damage, More immunity frames
+			// HelheimHeader: "{$Mods.FargowiltasCrossmod.Items.HelheimForce.DisplayName}"
+			// SpiritTrapperEffect: Spirit Trapper Soul Essence
+			// DragonEffect: Dragon Heads
+			// DreadEffect: Dread Dragon
+			// FleshEffect: Flesh Chunks
+			// DemonBloodEffect: Blood Stains
+			// SilkEffect: Silk Synergies
+			// AlfheimHeader: "{$Mods.FargowiltasCrossmod.Items.AlfheimForce.DisplayName}"
+			// NoviceClericEffect: Holy Crosses
+			// SacredEffect: Healing Wisps
+			// EbonHeartEffect: Dark Heart
+			// EbonSynEffect: Enchantment Corruption
+			// WarlockEffect: Shadow Wisps
+			// FallenPaladinEffect: Debuff Transfer
+			// JotunheimHeader: "{$Mods.FargowiltasCrossmod.Items.JotunheimForce.DisplayName}"
+			// IcyEffect: TBD
+			// DepthDiverEffect: Depth Bubble
+			// TideHunterEffect: Tidal Wave
+			// SvartalfheimHeader: "{$Mods.FargowiltasCrossmod.Items.SvartalfheimForce.DisplayName}"
+			// BronzeEffect: Bronze Light
+			// GraniteEffect: Granite Explosions
+			// SteelEffect: Steel Parry
+			// DarksteelEffect: Darksteel Projectile Boost
+			// DurasteelEffect: Durasteel Explosions
+			// AstroEffect: Astro Lazer
+			// MidgardHeader: "{$Mods.FargowiltasCrossmod.Items.MidgardForce.DisplayName}"
+			// LodestoneEffect: Lodestone Platforms
+			// VanaheimHeader: "{$Mods.FargowiltasCrossmod.Items.VanaheimForce.DisplayName}"
+			// ShadeMasterEffect: Shade Mode
+			// MuspelheimHeader: "{$Mods.FargowiltasCrossmod.Items.MuspelheimForce.DisplayName}"
+			// LivingWoodEffect: Living Roots
+			// LifeBloomEffect: Living Tree
+			// FungusEffect: Fungal Infection
+			// YewWoodEffect: Convert Ammo
+			// NiflheimHeader: "{$Mods.FargowiltasCrossmod.Items.NiflheimForce.DisplayName}"
+			// AsgardHeader: "{$Mods.FargowiltasCrossmod.Items.AsgardForce.DisplayName}"
+			// GeodeEffect: Geode Veinmine
+		}
+
+		Keybinds: {
+			// "Living wood roots.DisplayName": Living wood roots
+			// "Steel parry.DisplayName": Steel parry
 		}
 
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform

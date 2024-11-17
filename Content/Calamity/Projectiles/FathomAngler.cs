@@ -18,6 +18,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [ExtendsFromMod(Core.ModCompatibility.Calamity.Name)]
     public class FathomAngler : ModProjectile
     {
         public override string Texture => "Terraria/Images/NPC_" + NPCID.AnglerFish;

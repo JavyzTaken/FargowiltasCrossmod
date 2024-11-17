@@ -18,6 +18,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [ExtendsFromMod(Core.ModCompatibility.Calamity.Name)]
     public class BrimflameBurst : ModProjectile
     {
         public override void SetDefaults()

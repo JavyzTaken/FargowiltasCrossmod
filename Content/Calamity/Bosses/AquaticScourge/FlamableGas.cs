@@ -17,6 +17,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
+    [ExtendsFromMod(Core.ModCompatibility.Calamity.Name)]
     public class FlamableGas : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Magic/RancorFog";

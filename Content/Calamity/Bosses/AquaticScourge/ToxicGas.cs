@@ -15,6 +15,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
+    [ExtendsFromMod(Core.ModCompatibility.Calamity.Name)]
     public class ToxicGas : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Boss/ToxicCloud";

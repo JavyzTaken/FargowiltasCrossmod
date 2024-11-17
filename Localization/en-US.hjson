@@ -331,7 +331,7 @@ Mods: {
 
 			SacredEnchant: {
 				DisplayName: Sacred Enchantment
-				Tooltip: 
+				Tooltip:
 					'''
 					Critial strikes create healing wisps that can be released in random directions using the accessory ability key. 
 					If enough of the wisps are stored, they will be converted into a directed torrent of healing energy when released.
@@ -1211,6 +1211,11 @@ Mods: {
 			FallenPaladinBuff: {
 				DisplayName: Fallen Paladin Buff
 				Description: Mods.FargowiltasCrossmod.Buffs.FallenPaladinBuff.Description
+			}
+
+			CalamitousPresenceBuff: {
+				DisplayName: Calamitous Presence Buff
+				Description: Mods.FargowiltasCrossmod.Buffs.CalamitousPresenceBuff.Description
 			}
 		}
 

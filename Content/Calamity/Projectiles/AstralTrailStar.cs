@@ -19,6 +19,7 @@ using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
+    [ExtendsFromMod(Core.ModCompatibility.Calamity.Name)]
     public class AstralTrailStar : ModProjectile
     {
         public override string Texture => "CalamityMod/Projectiles/Typeless/AstralStar";
