@@ -18,5 +18,8 @@
 	<Reference Include="Luminance">
 	  <HintPath>Libraries\Luminance.dll</HintPath>
 	</Reference>
+	  <Reference Include="ThoriumMod">
+		  <HintPath>Libraries\ThoriumMod.dll</HintPath>
+	  </Reference>
   </ItemGroup>
 </Project>

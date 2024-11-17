@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Core
     public class ThoriumConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;
-        private const string ModName = "FargoWiltasCrossmod";
+        private const string ModName = "FargowiltasCrossmod";
 
         [LabelKey($"$Mods.{ModName}.Configs.ThoriumConfig.HideDevThorium")]
         [TooltipKey($"$Mods.{ModName}.Configs.ThoriumConfig.HideDevThoriumDescription")]

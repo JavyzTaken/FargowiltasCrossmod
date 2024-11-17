@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<FargowiltasSouls.Content.Items.Accessories.Masomode.MasoGravEffect>(Item);
+            // player.AddEffect<FargowiltasSouls.Content.Items.Accessories.Masomode.MasoGravEffect>(Item);
             player.AddEffect<AstroEffect>(Item);
         }
 
