@@ -1,0 +1,802 @@
+Mods: {
+	FargowiltasCrossmod: {
+		EternityRevDifficulty: {
+			Name: Вечная месть
+			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/880808:режима Месть][c/00FFFF:.]"
+			ExpandedDescription:
+				'''
+				Включает [c/00FFFF:режим Вечность] и [c/880808:режим Месть], а также предметы режима Мастера.
+
+				Добавляет новое поведение [c/00FFFF:режима Вечность] для некоторых боссов Calamity.
+				[c/00FFFF:На данный момент поведение добавлено у боссов до Криогена и Серного элементаля.]
+
+				По умолчанию, изменения боссов [c/00FFFF:режима Вечность] стоят в приоритете. Это можно изменить в конфигурациях.
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
+				[i:1612][c/00ff00:Рекомендуется использовать «Отображение дебаффов» от мода Fargo's Mutant (в конфигурациях)]
+
+				'''
+			Activation: Режим Вечная месть включён!
+			Deactivation: Режим Вечная месть выключен.
+		}
+
+		EternityDeathDifficulty: {
+			Name: Вечная смерть
+			ShortDescription: "[c/00FFFF:Испытывающий способности режим от модов Fargo, включающий в себя изменения из] [c/800080:режима Смерть][c/00FFFF: и дополненные ИИ ванильных боссов.]"
+			ExpandedDescription:
+				'''
+				Включает [c/00FFFF:режим Вечность] и [c/800080:режим Смерть], а также предметы режима Мастера.
+				[c/00FFFF:Данный режим является основным режимом модификации.] 
+
+				Добавляет новое поведение [c/00FFFF:режима Вечность] для некоторых боссов Calamity.
+				[c/00FFFF:На данный момент поведение добавлено у боссов до Криогена и Серного элементаля.]
+
+				Только в режиме Вечная смерть: Расширенный ИИ некоторых ванильных боссов [c/00FFFF:режима Вечность],
+				включает в себя части ИИ Calamity или новые ИИ, вдохновлённые Calamity.
+
+				По умолчанию, изменения боссов [c/00FFFF:режима Вечность] стоят в приоритете. Это можно изменить в конфигурациях.
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
+				[i:1612][c/00ff00:Рекомендуется использовать «Отображение дебаффов» от мода Fargo's Mutant (в конфигурациях)]
+
+				'''
+			Activation: Режим Вечная смерть включён!
+			Deactivation: Режим Вечная смерть выключен.
+		}
+
+		UI.ToggledWithCal: Переключается с помощью переключателя сложностей Calamity
+
+		Configs: {
+			CalDLCConfig: {
+				DisplayName: Конфигурация Calamity
+
+				Headers: {
+					Modes: Режимы
+					Balance: Баланс
+				}
+
+				ConsumableSummons: {
+					Label: Предметы призыва расходуются в режиме Вечность
+					Tooltip:
+						'''
+						Меняет предметы призыва из базовой игры и Calamity, чтобы они расходовались, поверх изменений Calamity.
+						Это изменение существует лишь для соответствия с данными особенностями:
+						- Предметы призыва возвращаются, если босс ещё не был убит (фактически делая предметы призыва бесконечными)
+						- НИП Мутант
+						- Варианты предметов призыва из мода Fargo's Mutant
+						'''
+				}
+
+				EternityPriorityOverRev: {
+					Label: Приоритет режима Вечность над режимами сложности из Calamity
+					Tooltip:
+						'''
+						Включён: Режим Вечность берёт приоритет над изменениями поведений режима Месть и других сложностей Calamity.
+
+						Выключен: Изменения поведений из сложностей Calamity берут приоритет над режимом Вечность.
+						'''
+				}
+
+				InfernumDisablesEternity: {
+					Label: Режим Инфернум отключает режим Вечность
+					Tooltip:
+						'''
+						Уместен только если включён мод Infernum Mode.
+						Учтите, что INFERNUM НЕ ПОДДЕРЖИВАЕТСЯ. Ошибки будут появляться независимо от данной конфигурации.
+						Включён: Режим Инфернум полностью отключает режим Вечность.
+						Выключен: Режим Вечность будет включён, но ИИ боссов режима Инфернум будет брать приоритет, если не включён  «Приоритет Вечности над режимами Calamity».
+						'''
+				}
+			}
+		}
+
+		Items: {
+			AddedEffects: {
+				AngelTreads: Эффекты ангельских ботфортов
+				AeolusBoots: Эффекты ботинок Эола
+				// CalamitySupersonic: Effects of Statis' Void Sash
+				ThoriumSuperSonic: Эффекты воздушных бегунов, ботинок выживальщика и утяжелённых летунов
+				CalamityColossus: Эффекты слияния, асгардской эгиды и оплота божества
+				ThoriumColossus:
+					'''
+					Эффекты сладкой мести, обсидиановой чешуи, террариевого защитника,
+					филактерии, сердца из камня и колючего панцыря
+					'''
+				CalamityBerserker: Эффекты знака храбрости и элементальной рукавицы
+				ThoriumBerserker: Эффекты эмблемы рапиры
+				CalamityWizard: Эффекты эфирного талисмана
+				ThoriumWizard: Эффекты мутного катализатора
+				CalamitySniper: Эффекты элементального колчана и колчана небытия
+				Vagabond: Эффекты нанотехнологии и зеркала затмения
+				ThoriumSniper: Эффекты сотрясающей боеголовки
+				CalamityConjurist: Эффект нуклеосинтеза
+				ThoriumConjurist: Эффекты подвески Юмы и кристаллического скорпиона
+				CalamityTrawler: Эффекты глубоководного водолазного костюма
+				ThoriumUniverse:
+					'''
+					Увеличивает метательную скорость атаки на 15%
+					Эффекты «Руководства по умелому метанию: том III»,
+					русалочьей фляги и глазной повязки мертвеца
+					'''
+			}
+
+			OutlawsEssence: {
+				DisplayName: Эссенция бандита
+				Tooltip:
+					'''
+					Увеличивает разбойный урон на 18%
+					Увеличивает скорость разбойных снарядов на 5%
+					Увеличивает разбойный шанс критической атаки на 5%
+					'''
+			}
+
+			VagabondsSoul: {
+				DisplayName: Душа беглеца
+				Tooltip:
+					'''
+					Увеличивает разбойный урон на 30%
+					Увеличивает скорость разбойных снарядов на 15%
+					Увеличивает разбойный шанс критической атаки на 15%
+					Эффекты нанотехнологии и зеркала затмения
+					'''
+			}
+
+			ABombInMyNation: {
+				DisplayName: Взрыв на мерзости
+				Tooltip: Призывает Разносчицу чумы Голиаф
+			}
+
+			AstrumCor: {
+				DisplayName: Ядро Аструма
+				Tooltip: Призывает Аструм Деуса
+			}
+
+			BirbPheromones: {
+				DisplayName: Феромоны птичбки
+				Tooltip: Призывает Псевдодракона
+			}
+
+			BlightedEye: {
+				DisplayName: Гибельный глаз
+				Tooltip: Призывает Клон Каламитас
+			}
+
+			BloodyWorm: {
+				DisplayName: Кровяной червь
+				Tooltip: Призывает Старого Герцога
+			}
+
+			ChunkyStardust: {
+				DisplayName: Звёздная пыль с комочками
+				Tooltip: Призывает Аструм Ауреса
+			}
+
+			CryingKey: {
+				DisplayName: Кривоключ
+				Tooltip: Призывает Криогена
+			}
+
+			DefiledCore: {
+				DisplayName: Нечистое ядро
+				Tooltip: Призывает Провиденс
+			}
+
+			DefiledShard: {
+				DisplayName: Нечистый осколок
+				Tooltip: Призывает Осквернённых стражей
+			}
+
+			DragonEgg: {
+				DisplayName: Яйцо пламенного дракона
+				Tooltip: Призывает Ярона
+			}
+
+			PortableCodebreaker: {
+				DisplayName: Карманный дешифратор
+				Tooltip: Призывает Дрэйдона
+			}
+
+			EyeofExtinction: {
+				DisplayName: Глаз вымирания
+				Tooltip: Призывает Высшую Каламитас
+			}
+
+			FriedDoll: {
+				DisplayName: Жареная кукла
+				Tooltip: Призывает Серного элементаля
+			}
+
+			HiveTumor: {
+				DisplayName: Опухоль улья
+				Tooltip: Призывает Разум улья
+			}
+
+			LetterofKos: {
+				DisplayName: Письмо Кос
+				Tooltip: Призывает Сигнуса
+			}
+
+			MedallionoftheDesert: {
+				DisplayName: Медальон пустыни
+				Tooltip: Призывает Пустынного бича
+			}
+
+			MurkySludge: {
+				DisplayName: Мутная слякоть
+				Tooltip: Призывает Бога слизней
+			}
+
+			NoisyWhistle: {
+				DisplayName: Шумный свисток
+				Tooltip: Призывает Разрушителя
+			}
+
+			OphiocordycipitaceaeSprout: {
+				DisplayName: Кордицепсовидный росток
+				Tooltip: Призывает Крабулона
+			}
+
+			PolterplasmicBeacon: {
+				DisplayName: Полтерплазмический маяк
+				Tooltip: Призывает Полтергаста
+			}
+
+			RedStainedWormFood: {
+				DisplayName: Запятнанный кровью корм для червя
+				Tooltip: Призывает Улей Перфораторов
+			}
+
+			RiftofKos: {
+				DisplayName: Раскол Кос
+				Tooltip: Призывает Нескончаемую пустоту
+			}
+
+			SeeFood: {
+				DisplayName: Горепродукт
+				Tooltip: Призывает Акватического бича
+			}
+
+			SirensPearl: {
+				DisplayName: Жемчуг сирены
+				Tooltip: Призывает Анахиту
+			}
+
+			SomeKindofSpaceWorm: {
+				DisplayName: Какой-то космический червь
+				Tooltip: Призывает Пожирателя Богов
+			}
+
+			WormFoodofKos: {
+				DisplayName: Корм для червя Кос
+				Tooltip: Призывает Штормового ткача
+			}
+
+			AbandonedRemote: {
+				DisplayName: Затерянный пульт управления
+				Tooltip:
+					'''
+					Призывает бронированного копателя
+					Можно использовать только под землёй
+					'''
+			}
+
+			ClamPearl: {
+				DisplayName: Жемчуг моллюска
+				Tooltip:
+					'''
+					Призывает гигантского моллюска
+					Можно использовать только в затерянном море
+					'''
+			}
+
+			ColossalTentacle: {
+				DisplayName: Громадное щупальце
+				Tooltip:
+					'''
+					Призывает громадного кальмара
+					Можно использовать только в бездне
+					'''
+			}
+
+			DeepseaProteinShake: {
+				DisplayName: Глубоководный протеиновый коктейль
+				Tooltip:
+					'''
+					Призывает акулу-жнеца
+					Можно использовать только в бездне
+					'''
+			}
+
+			MaulerSkull: {
+				DisplayName: Череп мучителя
+				Tooltip:
+					'''
+					Призывает мучителя
+					Можно использовать только в сернистом море
+					'''
+			}
+
+			NuclearChunk: {
+				DisplayName: Ядерный комок
+				Tooltip:
+					'''
+					Призывает ядерный террор
+					Можно использовать только в сернистом море
+					'''
+			}
+
+			PlaguedWalkieTalkie: {
+				DisplayName: Чумная рация
+				Tooltip:
+					'''
+					Призывает разносчика чумы
+					Можно использовать только в джунглях
+					'''
+			}
+
+			QuakeIdol: {
+				DisplayName: Идол землетрясения
+				Tooltip:
+					'''
+					Призывает земляного элементаля
+					Можно использовать только под землёй
+					'''
+			}
+
+			StormIdol: {
+				DisplayName: Идол шторма
+				Tooltip: Призывает облачного элементаля
+			}
+
+			SulphurBearTrap: {
+				DisplayName: Сернистый капкан
+				Tooltip:
+					'''
+					Призывает болотистого скалозева
+					Можно использовать только в сернистом море
+					'''
+			}
+
+			WyrmTablet: {
+				DisplayName: Скрижаль змия
+				Tooltip:
+					'''
+					Призывает эйдолонского змия
+					Можно использовать только в бездне
+					'''
+			}
+
+			BrandoftheBrimstoneWitch: {
+				DisplayName: Клеймо серной ведьмы
+				Tooltip:
+					'''
+					Эффекты сердца элементов, оккультной короны-черепа, сияния, губки и кубка кровавого божества
+					Эффекты ядра туманности, дара Ярима, сердца Дрэйдона и бедствия
+					'''
+			}
+
+			AerospecEnchant: {
+				DisplayName: Зачарование аэрофаза
+				Tooltip:
+					'''
+					Даёт +5% шанса критического урона и урона призывателя после
+					прыжка и каждого использования двойного прыжка
+					Бонус пропадает при восстанавлении прыжков или использовании наездного питомца
+					'''
+				CritUp: +{0}% крит.
+				CritReset: -{0}% крит.
+			}
+
+			MarniteEnchant: {
+				DisplayName: Зачарование мранитового архитектора
+				Tooltip:
+					'''
+					Увеличивает скорость размещения блоков на 10% и дальность размещения блоков на 5
+					Пока вы ставите или копаете блоки, из них выходят лазеры, которые атакуют ближайших врагов
+					Эффекты [i:CalamityMod/MarniteRepulsionShield] мранитового репульсионного щита
+					'''
+			}
+
+			DesertProwlerEnchant: {
+				DisplayName: Зачарование пустынного мародёра
+				Tooltip:
+					'''
+					Удерживайте ВВЕРХ, чтобы зарядить мощный прыжок, который также увеличивает вашу горизонтальную скорость
+					Прыжок можно заряжать только на блоках
+					'''
+			}
+
+			WulfrumEnchant: {
+				DisplayName: Зачарование вульфрума
+				Tooltip:
+					'''
+					Призывает вульфрумового дрона, следующего за вашим курсором
+					Дрон сканирует врагов, с которыми сталкивается
+					Сканирование врагов показывает их слабости и устойчивости к дебаффам
+					Зелёный цвет означает слабость, красный - устойчивость
+					Просканированные враги также получают дополнительный постепенный урон от дебаффов с уроном
+					'''
+			}
+
+			ExplorationForce: {
+				DisplayName: Артефакт исследования
+				Tooltip:
+					'''
+					[i:FargowiltasCrossmod/MarniteEnchant] Увеличивает скорость размещения блоков на 25% и дальность размещения блоков на 5
+					[i:FargowiltasCrossmod/MarniteEnchant] Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
+					[i:FargowiltasCrossmod/WulfrumEnchant] Вульфрумовый дрон показывает слабости врагов к дебаффам и делает их менее устойчивым к любым дебаффам с уроном
+					[i:FargowiltasCrossmod/DesertProwlerEnchant] ВВЕРХ чтобы зарядить прыжок, который также увеличивает скорость передвижения
+					[i:FargowiltasCrossmod/AerospecEnchant] Прыжок и двойные прыжки увеличивают шанс критического удара и урон призывателя
+					[i:FargowiltasCrossmod/SulphurEnchant] Даёт дополнительный прыжок с пузырём; атакуйте пузырь, чтобы выпустить токсичные газы
+					[i:FargowiltasCrossmod/VictideEnchant] Даёт морские иглы, которые вылетают, если какое-то время атаковать и перестать
+					Эффекты [i:CalamityMod/MarniteRepulsionShield] мранитового репульсионного щита
+					'''
+			}
+
+			SnowRuffianEnchant: {
+				DisplayName: Зачарование снежного бандита
+				Tooltip:
+					'''
+					Позволяет парить в воздухе, даже если на вас нет крыльев
+					При медленном падении на крыльях, вы ускоряетесь
+					Нажмите ВВЕРХ в медленном падении, чтобы перенаправить движение вверх
+					Нажмите ВНИЗ в медленном падении, чтобы сильнее ускоряться
+					'''
+			}
+
+			DaedalusEnchant: {
+				// DisplayName: Daedalus Enchantment
+				/* Tooltip:
+					'''
+					Grants unlimited flight, but flight ends if you fly too high
+					Improves wing gliding
+					''' */
+			}
+
+			PlagueReaperEnchant: {
+				// DisplayName: Plague Reaper Enchantment
+				// Tooltip: All debuffs spread between enemies
+			}
+
+			PlaguebringerEnchant: {
+				// DisplayName: Plaguebringer Enchantment
+				/* Tooltip:
+					'''
+					All attacks inflict plague for a short time
+					A plague cloud follows you, growing when nearby plagued enemies.
+					At maximum size, the cloud expands rapidly and stops following you,
+					lingering in place for a while.
+					''' */
+			}
+
+			ReaverEnchant: {
+				// DisplayName: Reaver Enchantment
+				/* Tooltip:
+					'''
+					Several stats up!
+					These buffs decrease when you are hit
+					The buffs can become negative
+					The buffs regenerate over time
+					''' */
+			}
+
+			HydrothermicEnchant: {
+				// DisplayName: Hydrothermic Enchantment
+				/* Tooltip:
+					'''
+					After attacking for too long, your weapon overheats
+					While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					''' */
+			}
+
+			DevastationForce: {
+				// DisplayName: Devastation Force
+				/* Tooltip:
+					'''
+					[i:FargowiltasCrossmod/SnowRuffianEnchant] Improves wing gliding
+					[i:FargowiltasCrossmod/DaedalusEnchant] Flight is limited by a maximum height rather than flight time
+					[i:FargowiltasCrossmod/ReaverEnchant] Several stats increased, but these stats decrease when hit
+					[i:FargowiltasCrossmod/HydrothermicEnchant] After attacking for too long, your weapon overheats
+					[i:FargowiltasCrossmod/HydrothermicEnchant] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					[i:FargowiltasCrossmod/PlaguebringerEnchant] Debuffs spread between enemies
+					''' */
+			}
+
+			UmbraphileEnchant: {
+				// DisplayName: Umbraphile Enchantment
+				/* Tooltip:
+					'''
+					Using a healing potion release a swarm of bats instead of healing you
+					The bats lifesteal from enemies for you
+					''' */
+			}
+
+			TitanHeartEnchant: {
+				// DisplayName: Titan Heart Enchantment
+				/* Tooltip:
+					'''
+					Increases damage by 15%
+					Makes you larger
+					''' */
+			}
+
+			StatigelEnchant: {
+				DisplayName: Зачарование статигеля
+				Tooltip:
+					'''
+					Увеличивает максимальную скорость передвижения
+					Значительно уменьшает ускорение и замедление
+					Чем быстрее вы двигаетесь, тем больше урона наносите, до +35%
+					'''
+			}
+
+			SulphurEnchant: {
+				DisplayName: Зачарование сернистости
+				Tooltip:
+					'''
+					Дарует сернистый прыжок, который оставляет за собой сернистый пузырь
+					Если атаковать пузырь, то он начнёт выпускать газ, наносящий урон врагам
+					'''
+			}
+
+			VictideEnchant: {
+				DisplayName: Зачарование прилива
+				Tooltip:
+					'''
+					Дарует морские иглы, которые торчат из вашего тела
+					Защита увеличена на 4 пока иглы в вашем теле
+					Иглы заряжаются, пока вы атакуете, и вылетают наружу, когда вы перестаёте
+					'''
+			}
+
+			FathomSwarmerEnchant: {
+				// DisplayName: Fathom Swarmer Enchantment
+				/* Tooltip:
+					'''
+					Summons an Anglerfish familiar that follows your mouse
+					The anglerfish's light slows down enemies and their projectiles
+					''' */
+			}
+
+			AstralEnchant: {
+				// DisplayName: Astral Enchantment
+				// Tooltip: You are followed by a trail of damaging astral stars
+			}
+
+			BrimflameEnchant: {
+				// DisplayName: Brimflame Enchantment
+				/* Tooltip:
+					'''
+					Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+					Becomes stronger the more defense is consumed
+					Your defense will regenerate over time
+					Can only be used when at maximum defense
+					''' */
+				// DefenseDown: -{0} defense
+				// DefenseUp: +{0} defense
+			}
+
+			MolluskEnchant: {
+				// DisplayName: Mollusk Enchantment
+				/* Tooltip:
+					'''
+					Press Special Dash key to quickly slam downwards
+					Hitting an enemy with the slam deals massive damage and gives you immunity frames
+					Only goes on cooldown on enemy hits
+					''' */
+			}
+		}
+
+		NPCs: {
+			FungalClump.DisplayName: Грибной комок
+			LargePerforatorBody.DisplayName: Большой Перфоратор
+			LargePerforatorBody2.DisplayName: Большой Перфоратор
+			LargePerforatorHead.DisplayName: Большой Перфоратор
+			LargePerforatorTail.DisplayName: Большой Перфоратор
+			PermafrostBoss.DisplayName: Пермафрост
+		}
+
+		Projectiles: {
+			FungusBall.DisplayName: Грибной шар
+			MushroomSpear.DisplayName: Грибное копьё
+			ShroomGas.DisplayName: Грибной газ
+			SandChunk.DisplayName: Песчаный кусок
+			SuckedSandBlast.DisplayName: Песчаный выстрел
+			CursedLightning.DisplayName: Проклятая молния
+			CurvingCursedFlames.DisplayName: Изгибающееся проклятое пламя
+			MovingCorruptCloud.DisplayName: Движущееся искажённое облако
+			ShadeLightningCloud.DisplayName: Теневое молниеносное облако
+			ToothBall.DisplayName: Шар зубов
+			// Tooth.DisplayName: Tooth
+			HomingRocket.DisplayName: Самонаводящаяся ракета
+			HomingSickle.DisplayName: Самонаводящаяся коса
+			HallowedSlimeSpike.DisplayName: Шип освящённого слизня
+			BouncingFireball.DisplayName: Прыгающий шар огня
+			BigLight.DisplayName: Большой свет
+			DestructionBolt.DisplayName: Снаряд разрушения
+			StarofDestruction.DisplayName: Звезда разрушения
+
+			Boss: {
+				AcceleratingEbonianGlob.DisplayName: Эбонитовый сгусток
+				AcceleratingCrimulanGlob.DisplayName: Багротановый сгусток
+				SlimeHomingEbonianGlob.DisplayName: Эбонитовый сгусток
+				SlimeHomingCrimuleanGlob.DisplayName: Багротановый сгусток
+				MutantYharonVortex.DisplayName: Солнце
+			}
+
+			SlamTelegraph.DisplayName: Удар Телеграф
+			IceBomb.DisplayName: Ледяная бомба
+			IceCrystal.DisplayName: Ледяной кристал
+			IceChain.DisplayName: Ледяная цепь
+			IceTrident.DisplayName: Ледяной трезубец
+			CrimsonPaladinSpike.DisplayName: Багряный шип
+			PermafrostHeldWeapon.DisplayName: Пермафрост Оружие в Руках
+			MutantOldDuke.DisplayName: Старый Герцог
+			DLCMutantSpearSpin.DisplayName: Атлантида Мутанта
+			DLCMutantSpearDash.DisplayName: Атлантида Мутанта
+			MutantAresNuke.DisplayName: Гаусс-бомба Мутанта
+			MutantAresBomb.DisplayName: Гаусс-бомба Мутанта
+			DLCMutantFishronRitual.DisplayName: Гаусс-ритуал Мутанта
+			MutantSlimeGod.DisplayName: Бог слизней
+			DLCBloomLine.DisplayName: Линия Телеграфа
+			MutantSCal.DisplayName: Щит-череп Каламитас
+			MutantPBG.DisplayName: Разносчица Голиаф
+			MutantAureusSpawn.DisplayName: Порождение Ареуса
+			MutantHolyRay.DisplayName: Святой Луч
+			MutantDoGBody.DisplayName: Пожиратель богов
+			MutantDoGHead.DisplayName: Пожиратель богов
+			MutantDoGTail.DisplayName: Пожиратель богов
+			MutantPolter.DisplayName: Некроплазм
+			ArcticPaw.DisplayName: Арктическая лапа
+			Blizzard.DisplayName: Метель
+			DarkIceCrystal.DisplayName: Кристалл тёмного льда
+			FrostFlare.DisplayName: Морозная сигнальная ракета
+			FrostShard.DisplayName: Морозный осколок
+			IceArrow.DisplayName: Ледяная стрела
+			IceShot.DisplayName: Ледяной выстрел
+			IceStar.DisplayName: Ледяная звезда
+			CryogenRitual.DisplayName: Ритуал Криогена
+			PermafrostRitual.DisplayName: Ритуал Пермафроста
+			IceCloud.DisplayName: Обмораживающий снег
+			BrimstoneDebris.DisplayName: Серные обломки
+			BrimstonePulse.DisplayName: Серный пульс
+			BrimstoneClone.DisplayName: Серный клон
+			BrimBeam.DisplayName: Серолуч
+			BrimstoneChainExplosion.DisplayName: Серный цепной взрыв
+			BrimstoneTeleport.DisplayName: Серный телепорт
+			BrimstoneFireblast.DisplayName: Шар серного огня
+			// FeatherJumpFeather.DisplayName: Feather
+			// MarniteDagger.DisplayName: Marnite Dagger
+			MarniteLaser.DisplayName: Мранитовый лазер
+			// ProwlerTornado.DisplayName: Prowler Tornado
+			// WulfrumCollector.DisplayName: Wulfrum Collector
+			WulfrumScanner.DisplayName: Вульфрумовый сканер
+			CrystalPlatform.DisplayName: Кристальная платформа
+			// PlagueCloud.DisplayName: Plague Cloud
+			// Eruption.DisplayName: Eruption
+			// VampireBat.DisplayName: Vampire Bat
+			SulphurBubble.DisplayName: Сернистый пкзырь
+			VictideSpike.DisplayName: Приливной шип
+			GoldenShowerShot.DisplayName: Выстрел золотого дождя
+			HiveMindFiretrail.DisplayName: Проклятый огонь
+			BrainMassProjectile.DisplayName: Гнилое мозговое вещество
+			GravityVileClot.DisplayName: Мерзкий сгусток
+			VileClotDrop.DisplayName: Мерзкий сгусток
+			SulphurCloud.DisplayName: Сернистое облако
+			PureGel.DisplayName: Чистейший гель
+			HiveMindPulse.DisplayName: Разум улей пульс
+			ScourgeSandstream.DisplayName: Пещаный поток бича
+			// CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
+			// BigBubble.DisplayName: Big Bubble
+			// Bubble.DisplayName: Bubble
+			// AquaticSuck.DisplayName: Aquatic Suck
+			// FlamableGas.DisplayName: Flamable Gas
+			// ToxicGas.DisplayName: Toxic Gas
+			// FathomAngler.DisplayName: Fathom Angler
+			// AstralTrailStar.DisplayName: Astral Trail Star
+			// BrimflameBurst.DisplayName: Brimflame Burst
+			// ClamSlam.DisplayName: Clam Slam
+		}
+
+		Buffs: {
+			CalamitousPresenceBuff: {
+				Description: Защита, сопротивление урону и восстановление здоровья снижены; эффект «Лунного укуса»; радиус грэйза уменьшен
+				DisplayName: Бедственное присутствие
+			}
+
+			ArcticPaw.DisplayName: Арктическая лапа
+			Blizzard.DisplayName: Метель
+			CrystalShard.DisplayName: Осколок кристалла
+			DarkIceCrystal.DisplayName: Кристал Тёмного Льда
+			IceShot.DisplayName: Ледяной Выстрел
+			FrostShard.DisplayName: Морозный Осколок
+			FrostFlare.DisplayName: Морозная Сигнальная Ракета
+			IceArrow.DisplayName: Ледяная Стрела
+			IceStar.DisplayName: Ледяная Звезда
+		}
+
+		Toggler: {
+			CalamitySoulHeader: Душа бедствия
+			VagabondsSoulHeader: Душа беглеца
+			NanotechEffect: Нанотехнология
+			EclipseMirrorEffect: Зеркало затмения
+			AmalgamEffect: Слияние
+			AsgardianAegisEffect: Асгардская эгида
+			RampartofDeitiesEffect: Оплот божества
+			ElementalGauntletEffect: Элементальная рукавица
+			EtherealTalismanEffect: Эфирный талисман
+			CalamitySniperHeader: Душа снайпера: Calamity
+			ElementalQuiverEffect: Элементальный колчан
+			QuiverofNihilityEffect: Колчан небытия
+			NucleogenesisEffect: Нуклеосинтез
+			// StatisVoidSashEffect: Statis' Void Sash
+			AbyssalDivingSuitEffect: Глубоководный водолазный костюм
+			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
+			HeartoftheElementsEffect: Сердце элементов
+			OccultSkullCrownEffect: Оккультная корона-череп
+			PurityEffect: Чистота
+			TheSpongeEffect: Губка
+			ChaliceOfTheBloodGodEffect: Кубок кровавого божества
+			NebulousCoreEffect: Ядро туманности
+			YharimsGiftEffect: Дар Ярима
+			DraedonsHeartEffect: Сердце Дрэйдона
+			CalamityEffect: Бедствие
+			SplendorJamEffect: Splendor Jam
+			ExplorationHeader: Артефакт исследования
+			AerospecJumpEffect: Крит прыжки
+			MarniteRepulsionEffect: Мранитовая репульсия
+			MarniteLasersEffect: Мранитовые лазеры
+			DesertProwlerEffect: Заряжающийся прыжок
+			WulfrumEffect: Вульфрумовый дрон
+			SnowRuffianEffect: Улучшенное планирование
+			// DaedalusEffect: Daedalus Flight Limit
+			// ReaverEffect: Reaver Stats
+			// HydrothermicEffect: Overheat
+			// PlaguebringerEffect: Plague Cloud
+			// PlagueReaperEffect: Debuff Spread
+			StatigelEffect: Ускорение и урон статигеля
+			SulphurEffect: Прыжок с пузырём
+			VictideEffect: Морские иглы
+			// TitanHeartEffect: Titan Size
+			// UmbraphileEffect: Bat Healing
+			// FathomSwarmerEffect: Angler Fish
+			// BrimflameEffect: Brimflame Burst
+			// MolluskEffect: Mollusk Slam
+		}
+
+		WizardEffect: {
+			Aerospec: Бонус к шансу крит. удара и урону призываемых существ удвоен
+			Marnite: Усиленные лазеры, +15% к скорости размещения и +5 к дальности размещения блоков
+			DesertProwler: Более сильные прыжки
+			Wulfrum: Просканированные враги получают ещё больше доп. урона от дебаффов
+			// Hydrothermic: Longer overheat charge, more attack speed increase
+			// Daedalus: Grants wings if you don't have any, Can fly higher
+			SnowRuffian: Даёт немного полёта
+			// Reaver: More drastic stat changes
+			// Plaguebringer: Plague cloud deals more damage and charges from longer away
+			/* PlagueReaper:
+				'''
+				Debuffs spread from farther 
+				Enemies spread debuffs for a longer amount of time
+				''' */
+			// Umbraphile: Bats deal more damage and travel faster
+			Sulphur: Прыжки создают 3 пузыря, которые наносят больше урона
+			Victide: Иглы игнорируют гравитацию и накладывают дебафф Кислотный яд
+			Statigel: Увеличена максимальная скорость, бонус к урону удвоен
+			// TitanHeart: More damage, larger size
+			// FathomSwarmer: Larger Light, Faster Fish
+			// Astral: Longer trail, more damage
+			// Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
+			// Mollusk: More damage, More immunity frames
+		}
+
+		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
+
+		ExpandedTooltips: {
+			FountainAstral: Заставляет окружающий биом смениться на астральную инфекцию при активации
+			FountainCrags: Заставляет окружающий биом смениться на серную скалу при активации
+			FountainSulphur: Заставляет окружающий биом смениться на сернистое море при активации
+			FountainSunken: Заставляет окружающий биом смениться на затерянное море при активации
+		}
+
+		EModeBalance.Laudanum: Положительные эффекты дебаффов ослаблены вдвое
+	}
+}

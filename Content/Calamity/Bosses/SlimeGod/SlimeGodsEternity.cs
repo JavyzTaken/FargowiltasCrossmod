@@ -12,6 +12,7 @@ using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -26,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SlimeGodsEternity : EModeCalBehaviour
+    public class SlimeGodsEternity : CalDLCEmodeExtraGlobalNPC
     {
         public static readonly SoundStyle ExitSound = new SoundStyle("CalamityMod/Sounds/Custom/SlimeGodExit", (SoundType)0);
 
@@ -38,7 +39,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             ModContent.NPCType<EbonianPaladin>(),
             ModContent.NPCType<CrimulanPaladin>()
         );
-
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(Empowered);
@@ -258,6 +258,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     break;
                 case 2.1f:
                     {
+                        npc.damage = npc.defDamage;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
                             return CorruptionSlamAttack(npc);
@@ -287,6 +288,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     return false;
                 case 5: //for some reason, ebonian teleport anim is 6 while crimulean is 5
                     {
+                        npc.damage = npc.defDamage;
                         int type;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
@@ -310,6 +312,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     break;
                 case 6:
                     {
+                        npc.damage = npc.defDamage;
                         int type;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
@@ -333,6 +336,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     break;
                 case 22:
                     {
+                        npc.damage = npc.defDamage;
                         if (npc.type == ModContent.NPCType<EbonianPaladin>())
                         {
                             return CorruptionSpecial(npc);
@@ -484,7 +488,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             if (Timer == 0)
             {
                 SoundEngine.PlaySound(ExitSound with { Pitch = -0.3f }, npc.Center);
-                FargowiltasSouls.Common.Graphics.Particles.Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Magenta, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
+                Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Magenta, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
                 p.Spawn();
                 bounces = 0;
             }
@@ -580,12 +584,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             Player player = Main.player[npc.target];
             const int TotalSlams = 3;
 
+            //npc.damage = npc.defDamage;
             npc.noGravity = slams < TotalSlams;
 
             if (Timer == 0)
             {
                 SoundEngine.PlaySound(ExitSound with { Pitch = -0.3f }, npc.Center);
-                FargowiltasSouls.Common.Graphics.Particles.Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Crimson, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
+                Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Crimson, Vector2.One, Vector2.One * 60, 40, true, Color.Transparent);
                 p.Spawn();
                 slams = 0;
             }
@@ -754,7 +759,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class SlimeGodMinionEternity : EModeCalBehaviour
+    public class SlimeGodMinionEternity : CalDLCEmodeExtraGlobalNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(SlimeGodCoreEternity.SlimesToKill.ToArray());
         public bool LobotomizeAndSuck = false;

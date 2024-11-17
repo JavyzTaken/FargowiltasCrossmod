@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class MediumPerforator : EModeCalBehaviour
+    public class MediumPerforator : CalDLCEmodeExtraGlobalNPC
     {
         public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
             ModContent.NPCType<PerforatorHeadMedium>(),
@@ -38,7 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (!WorldSavingSystem.EternityMode) return;
 
             if (DLCUtils.HostCheck)
-                Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.7f, 0.7f)), ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.7f, 0.7f)), ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

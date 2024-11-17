@@ -16,6 +16,25 @@ namespace FargowiltasCrossmod.Core.Common
     public static partial class DLCUtils
     {
         public static bool HostCheck => Main.netMode != NetmodeID.MultiplayerClient;
+
+        public static int ClosestNPCExcludingOne(Vector2 position, float range, int exclude, bool lineOfSight)
+        {
+            int target = -1;
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC n = Main.npc[i];
+                if (n == null || !n.active || n.friendly || n.lifeMax <= 5 || i == exclude) continue;
+                if (lineOfSight && !Collision.CanHitLine(n.Center, 1, 1, position, 1, 1))
+                {
+                    continue;
+                }
+                if (target == -1 || (n.Distance(position) < Main.npc[target].Distance(position)))
+                {
+                    target = i;
+                }
+            }
+            return target;
+        }
         //copy psated from fargo but changed so it can be from any mod
         public static void DropSummon(NPC npc, string mod, string itemName, bool downed, ref bool droppedSummonFlag, bool prerequisite = true)
         {
@@ -40,7 +59,7 @@ namespace FargowiltasCrossmod.Core.Common
         /// <param name="spriteEffects">The sprite effects to use when drawing the backglow</param>
         /// <param name="iterations">Number of times backglow drawing is iterated through</param>
         /// <param name="offsetMult">How much the offset is multiplied by (bigger number = backglow stretches farther from center)</param>
-        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, float rotation = 0, float scale = 1, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1)
+        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, float rotation = 0, float scale = 1, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1, Rectangle? sourceRectangle = null)
         {
             for (int j = 0; j < iterations; j++)
             {
@@ -48,7 +67,7 @@ namespace FargowiltasCrossmod.Core.Common
                 Color glowColor = color with { A = 0 } * 0.7f;
 
 
-                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, null, glowColor, rotation, origin, scale, spriteEffects);
+                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, sourceRectangle, glowColor, rotation, origin, scale, spriteEffects);
             }
         }
         /// <summary>
@@ -63,7 +82,7 @@ namespace FargowiltasCrossmod.Core.Common
         /// <param name="spriteEffects">The sprite effects to use when drawing the backglow</param>
         /// <param name="iterations">Number of times backglow drawing is iterated through</param>
         /// <param name="offsetMult">How much the offset is multiplied by (bigger number = backglow stretches farther from center)</param>
-        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, Vector2 scale, float rotation = 0, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1)
+        public static void DrawBackglow(Asset<Texture2D> texture, Color color, Vector2 position, Vector2 origin, Vector2 scale, float rotation = 0, SpriteEffects spriteEffects = SpriteEffects.None, int iterations = 12, float offsetMult = 1, Rectangle? sourceRectangle = null)
         {
             for (int j = 0; j < iterations; j++)
             {
@@ -71,7 +90,7 @@ namespace FargowiltasCrossmod.Core.Common
                 Color glowColor = color with { A = 0 } * 0.7f;
 
 
-                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, null, glowColor, rotation, origin, scale, spriteEffects);
+                Main.EntitySpriteDraw(texture.Value, position + afterimageOffset - Main.screenPosition, sourceRectangle, glowColor, rotation, origin, scale, spriteEffects);
             }
         }
 
@@ -79,14 +98,14 @@ namespace FargowiltasCrossmod.Core.Common
         /// <summary>
         /// Enqueues all entries of the list to the queue, in a random order.
         /// </summary>
-        public static void RandomFromList<T>(this Queue<T> queue, List<T> list)
+        public static void RandomFromList<T>(this Queue<T> queue, IEnumerable<T> list)
         {
-            foreach (T a in list.OrderBy(a => Main.rand.Next()).ToList())
+            foreach (T a in list.OrderBy(a => Main.rand.Next()))
             {
                 queue.Enqueue(a);
             }
         }
-        public static void RandomFromListExcept<T>(this Queue<T> queue, List<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude).ToList());
+        public static void RandomFromListExcept<T>(this Queue<T> queue, IEnumerable<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude));
 
         #endregion
     }

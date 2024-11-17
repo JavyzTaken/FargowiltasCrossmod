@@ -1,3 +1,4 @@
+global using LumUtils = Luminance.Common.Utilities.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,6 +7,7 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Skies;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
+using FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind;
 using FargowiltasCrossmod.Content.Common.Bosses.Mutant;
 using FargowiltasCrossmod.Content.Common.Sky;
 using FargowiltasCrossmod.Core;
@@ -31,6 +33,7 @@ namespace FargowiltasCrossmod;
 public class FargowiltasCrossmod : Mod
 {
     internal static FargowiltasCrossmod Instance;
+    public static bool EnchantLoadingEnabled = false;
     public override void Load()
     {
         Instance = this;
@@ -103,6 +106,7 @@ public class FargowiltasCrossmod : Mod
         {
             PostSetupContent_Calamity();
             SkyManager.Instance["FargowiltasCrossmod:Permafrost"] = new PermafrostSky();
+            SkyManager.Instance["FargowiltasCrossmod:HiveMind"] = new HiveMindSky();
         }
 
         if (MutantDLC.ShouldDoDLC)

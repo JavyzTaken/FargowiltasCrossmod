@@ -1,7 +1,6 @@
 ﻿using CalamityMod.Systems;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core.Calamity.Systems;
-using FargowiltasCrossmod.Core.Common.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -18,10 +17,10 @@ namespace FargowiltasCrossmod.Core.Calamity
     {
         public override bool Enabled
         {
-            get => DLCWorldSavingSystem.EternityRev;
+            get => CalDLCWorldSavingSystem.EternityRev;
             set
             {
-                DLCWorldSavingSystem.EternityRev = value;
+                CalDLCWorldSavingSystem.EternityRev = value;
                 if (value)
                 {
                     CalamityWorld.revenge = true;
@@ -29,7 +28,7 @@ namespace FargowiltasCrossmod.Core.Calamity
                 }
                 bool emode = value;
                 if (ModCompatibility.InfernumMode.Loaded)
-                    if (ModCompatibility.InfernumMode.InfernumDifficulty && DLCCalamityConfig.Instance.InfernumDisablesEternity)
+                    if (ModCompatibility.InfernumMode.InfernumDifficulty && CalDLCConfig.Instance.InfernumDisablesEternity)
                         emode = false;
 
                 FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = emode;

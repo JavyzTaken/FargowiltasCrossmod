@@ -5,7 +5,6 @@ using Fargowiltas.NPCs;
 using System.Collections.Generic;
 using System.Linq;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
-using FargowiltasCrossmod.Core.Common.Systems;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using MonoMod.RuntimeDetour;
 using System.Reflection;
@@ -17,14 +16,14 @@ using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Core.Common.Globals
 {
-    
+
     public class DevianttGlobalNPC : GlobalNPC
     {
         public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => entity.type == ModContent.NPCType<Deviantt>();
         public override bool InstancePerEntity => true;
 
         internal static int currentShop;
-        internal static readonly List<NPCShop> ModShops = new();
+        internal static readonly List<NPCShop> ModShops = [];
 
         public static void CycleShop()
         {
@@ -39,14 +38,14 @@ namespace FargowiltasCrossmod.Core.Common.Globals
                 return;
             NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Calamity");
 
-            Condition killedClam = new Condition("After killing a Giant Clam", () => CalamityAIOverride.DownedClam);
-            Condition killedPlaguebringerMini = new Condition("After killing a Plaguebringer", () => DLCWorldSavingSystem.downedMiniPlaguebringer);
-            Condition killedReaperShark = new Condition("After killing a Reaper Shark", () => DLCWorldSavingSystem.downedReaperShark);
-            Condition killedColossalSquid = new Condition("After killing a Colossal Squid", () => DLCWorldSavingSystem.downedColossalSquid);
-            Condition killedEidolonWyrm = new Condition("After killing an Eidolon Wyrm", () => DLCWorldSavingSystem.downedEidolonWyrm);
-            Condition killedCloudElemental = new Condition("After killing a Cloud Elemental", () => DLCWorldSavingSystem.downedCloudElemental);
-            Condition killedEarthElemental = new Condition("After killing an Earth Elemental", () => DLCWorldSavingSystem.downedEarthElemental);
-            Condition killedArmoredDigger = new Condition("After killing an Armored Digger", () => DLCWorldSavingSystem.downedArmoredDigger);
+            Condition killedClam = new Condition("After killing a Giant Clam", () => CalDLCCompatibilityMisc.DownedClam);
+            Condition killedPlaguebringerMini = new Condition("After killing a Plaguebringer", () => CalDLCWorldSavingSystem.downedMiniPlaguebringer);
+            Condition killedReaperShark = new Condition("After killing a Reaper Shark", () => CalDLCWorldSavingSystem.downedReaperShark);
+            Condition killedColossalSquid = new Condition("After killing a Colossal Squid", () => CalDLCWorldSavingSystem.downedColossalSquid);
+            Condition killedEidolonWyrm = new Condition("After killing an Eidolon Wyrm", () => CalDLCWorldSavingSystem.downedEidolonWyrm);
+            Condition killedCloudElemental = new Condition("After killing a Cloud Elemental", () => CalDLCWorldSavingSystem.downedCloudElemental);
+            Condition killedEarthElemental = new Condition("After killing an Earth Elemental", () => CalDLCWorldSavingSystem.downedEarthElemental);
+            Condition killedArmoredDigger = new Condition("After killing an Armored Digger", () => CalDLCWorldSavingSystem.downedArmoredDigger);
 
             shop.Add(new Item(ModContent.ItemType<ClamPearl>()) { shopCustomPrice = Item.buyPrice(gold: 5) }, killedClam);
             shop.Add(new Item(ModContent.ItemType<AbandonedRemote>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedArmoredDigger);
@@ -88,8 +87,8 @@ namespace FargowiltasCrossmod.Core.Common.Globals
         public delegate void Orig_DevianttOnChatButtonClicked(Deviantt self, bool firstButton, ref string shopName);
         public delegate void Orig_DevianttAddShops(Deviantt self);
 
-        private static readonly MethodInfo DevianttOnChatButtonClickedMethod = typeof(Deviantt).GetMethod("OnChatButtonClicked", FargoSoulsUtil.UniversalBindingFlags);
-        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", FargoSoulsUtil.UniversalBindingFlags);
+        private static readonly MethodInfo DevianttOnChatButtonClickedMethod = typeof(Deviantt).GetMethod("OnChatButtonClicked", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo DevianttAddShopsMethod = typeof(Deviantt).GetMethod("AddShops", LumUtils.UniversalBindingFlags);
 
         Hook DeviChatButtonHook;
         Hook DeviShopHook;
@@ -119,7 +118,7 @@ namespace FargowiltasCrossmod.Core.Common.Globals
                 AddCalamityShop();
         }
 
-        public static Dictionary<string, bool> FargoWorldDownedBools => typeof(FargoWorld).GetField("DownedBools", FargoSoulsUtil.UniversalBindingFlags).GetValue(null) as Dictionary<string, bool>;
+        public static Dictionary<string, bool> FargoWorldDownedBools => typeof(FargoWorld).GetField("DownedBools", LumUtils.UniversalBindingFlags).GetValue(null) as Dictionary<string, bool>;
 
         public static void AddVanillaShop()
         {

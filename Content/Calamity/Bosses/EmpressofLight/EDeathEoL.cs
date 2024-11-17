@@ -15,35 +15,35 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathEoL : EternityDeathBehaviour
+    public class EDeathEoL : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(NPCID.HallowBoss);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.HallowBoss;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(wallAttack);
             binaryWriter.Write7BitEncodedInt(timer);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             wallAttack = binaryReader.ReadBoolean();
             timer = binaryReader.Read7BitEncodedInt();
         }
         public bool wallAttack = false;
         public int timer = 0;
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
-            Player target = Main.player[npc.target];
-            if (wallAttack && npc.ai[2] % 10 != 0)
+            if (!NPC.HasValidTarget) return true;
+            Player target = Main.player[NPC.target];
+            if (wallAttack && NPC.ai[2] % 10 != 0)
             {
-                npc.velocity = (target.Center + new Vector2(0, -300) - npc.Center).SafeNormalize(Vector2.Zero) * 3;
-                npc.localAI[0]++;
-                Lighting.AddLight(npc.Center, TorchID.White);
+                NPC.velocity = (target.Center + new Vector2(0, -300) - NPC.Center).SafeNormalize(Vector2.Zero) * 3;
+                NPC.localAI[0]++;
+                Lighting.AddLight(NPC.Center, TorchID.White);
 
                 timer++;
-                if (npc.localAI[0] >= 45)
+                if (NPC.localAI[0] >= 45)
                 {
-                    npc.localAI[0] = 0;
+                    NPC.localAI[0] = 0;
 
                 }
                 if (timer == 1)
@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                     if (DLCUtils.HostCheck)
                         for (int i = -10; i < 11; i++)
                         {
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), target.Center + new Vector2(i * 150, -800).RotatedBy(angle), Vector2.Zero, ProjectileID.FairyQueenLance, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0, ai0: MathHelper.PiOver2 + angle, ai1: 0.1f * i);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center + new Vector2(i * 150, -800).RotatedBy(angle), Vector2.Zero, ProjectileID.FairyQueenLance, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: MathHelper.PiOver2 + angle, ai1: 0.1f * i);
                         }
                 }
                 if (timer >= 550)
@@ -68,11 +68,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                 return false;
 
             }
-            if (npc.ai[3] == 1 && npc.ai[2] % 10 == 0)
+            if (NPC.ai[3] == 1 && NPC.ai[2] % 10 == 0)
             {
                 wallAttack = true;
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

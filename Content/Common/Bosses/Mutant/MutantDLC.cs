@@ -17,6 +17,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -44,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             if (npc.localAI[3] >= 3 || npc.ai[0] == 10) //p2 or phase transition
             {
 
-                if (npc.life < npc.lifeMax / 2 && npc.ai[0] != 10) //play storia under half health
+                if (WorldSavingSystem.MasochistModeReal) //play storia
                 {
                     if (!PlayStoria)
                     {
@@ -85,7 +86,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             {
                 if (fade)
                 {
-                    Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0.8f, 0.05f);
+                    Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0.9f, 0.05f);
                 }
                 else
                 {
@@ -161,6 +162,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             if (!ShouldDoDLC || attackChoice < 0)
             {
+                if (DLCAttackChoice != DLCAttack.None)
+                    npc.netUpdate = true;
+                DLCAttackChoice = DLCAttack.None;
                 return true;
             }
 
@@ -188,6 +192,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             else
             {
                 FirstFrame = false;
+                npc.netUpdate = true;
             }
             OldAttackChoice = attackChoice;
 
@@ -233,6 +238,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.netUpdate = true;
                     }
                     break;
+                    /*
                 case 21: //straight dash spam p2
                     if (Calamity)
                     {
@@ -240,6 +246,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.netUpdate = true;
                     }
                     break;
+                    */
                 case 24: //spawn destroyers
                 case 19: //pillar toss
                     if (FirstFrame)
@@ -554,7 +561,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             void SwitchVariant()
             {
-                List<Variant> variantList = new List<Variant>() { Variant.Vanilla };
+                List<Variant> variantList = [Variant.Vanilla];
                 if (Calamity)
                 {
                     variantList.Add(Variant.Calamity);
@@ -586,7 +593,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         for (int j = -1; j <= 1; j += 2) //to both sides of player
                         {
                             Vector2 offset = npc.ai[2] == 0 ? Vector2.UnitX * -450f * j : Vector2.UnitY * 475f * j;
-                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<MutantOldDuke>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, offset.X, offset.Y);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<MutantOldDuke>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, offset.X, offset.Y);
                         }
                     }
                 }
@@ -604,7 +611,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     if (DLCUtils.HostCheck)
                     {
                         Vector2 vel = pos.DirectionTo(player.Center);
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), pos, vel, ModContent.ProjectileType<MutantPBG>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), pos, vel, ModContent.ProjectileType<MutantPBG>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer);
                     }
                 }
             }
@@ -622,8 +629,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     int max = WorldSavingSystem.MasochistModeReal ? 9 : 6;
                     float speed = WorldSavingSystem.MasochistModeReal ? 10 : 9;
                     int sign = Counter % 2 == 0 ? 1 : -1;
-                    SpawnSphereRing(max, speed, (int)(0.8 * FargoSoulsUtil.ScaledProjectileDamage(npc.damage)), 1f * sign);
-                    SpawnSphereRing(max, speed, (int)(0.8 * FargoSoulsUtil.ScaledProjectileDamage(npc.damage)), -0.5f * sign);
+                    SpawnSphereRing(max, speed, (int)(0.8 * FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage)), 1f * sign);
+                    SpawnSphereRing(max, speed, (int)(0.8 * FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage)), -0.5f * sign);
                     npc.netUpdate = true;
 
                     void SpawnSphereRing(int max, float speed, int damage, float rotationModifier, float offset = 0)
@@ -661,7 +668,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
                         void FireCryogenThingy(Vector2 velocity)
                         {
-                            int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, velocity, ModContent.ProjectileType<IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, 0f, 0f, 0f);
+                            int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, velocity, ModContent.ProjectileType<IceBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, 0f, 0f, 0f);
                             if (p.WithinBounds(Main.maxProjectiles))
                             {
                                 Main.projectile[p].extraUpdates += 2;
@@ -710,7 +717,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
 
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearSpin>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, npc.whoAmI, DriftTime);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearSpin>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, npc.whoAmI, DriftTime);
                 }
                 if (npc.Distance(player.Center + LockVector1) < 400)
                 {
@@ -738,7 +745,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 {
                     if (DLCUtils.HostCheck)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearDash>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, npc.whoAmI);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearDash>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, npc.whoAmI);
                     }
                 }
                 if (Timer < WindupTime)
@@ -754,8 +761,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     {
                         if (WorldSavingSystem.MasochistModeReal)
                         {
-                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer);
-                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, -Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, -Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer);
                         }
                     }
                 }
@@ -811,8 +818,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         distance.Y = distance.Y / time - 0.5f * gravity * time;
                         int ritual = ModContent.ProjectileType<DLCMutantFishronRitual>();
                         if (!Main.projectile.Any(p => p != null && p.active && p.type == ritual))
-                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ritual, FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, npc.whoAmI);
-                        int nuke = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, distance, ModContent.ProjectileType<MutantAresNuke>(), WorldSavingSystem.MasochistModeReal ? FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f) : 0, 0f, Main.myPlayer, gravity);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ritual, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 4f / 3f), 0f, Main.myPlayer, npc.whoAmI);
+                        int nuke = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, distance, ModContent.ProjectileType<MutantAresNuke>(), WorldSavingSystem.MasochistModeReal ? FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 4f / 3f) : 0, 0f, Main.myPlayer, gravity);
                         if (nuke.WithinBounds(Main.maxNPCs))
                         {
                             Main.npc[nuke].timeLeft = nukeTime;
@@ -881,7 +888,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 */
                 if (!Main.dedServ && Main.LocalPlayer.active)
-                    Main.LocalPlayer.FargoSouls().Screenshake = 2;
+                    if (ScreenShakeSystem.OverallShakeIntensity < 7)
+                        FargoSoulsUtil.ScreenshakeRumble(6);
 
                 if (DLCUtils.HostCheck)
                 {
@@ -897,7 +905,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             directionOut.Normalize();
                             spawnPos = safeZone + directionOut * Main.rand.NextFloat(safeRange, 1200);
                         }
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), spawnPos, Vector2.Zero, ModContent.ProjectileType<MutantAresBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), spawnPos, Vector2.Zero, ModContent.ProjectileType<MutantAresBomb>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 4f / 3f), 0f, Main.myPlayer);
                     }
                 }
 
@@ -958,12 +966,12 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             int crimson = i % 2 == 0 ? 1 : -1; //every other slime is crimulean, every other is ebonian
                             crimson = (int)(crimson * side);
 
-                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, speedX * Vector2.UnitX + speedY * Vector2.UnitY, ModContent.ProjectileType<MutantSlimeGod>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 1f), 1f, Main.myPlayer, crimson);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, speedX * Vector2.UnitX + speedY * Vector2.UnitY, ModContent.ProjectileType<MutantSlimeGod>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 1f), 1f, Main.myPlayer, crimson);
                         }
 
                         float speed = 8;
                         Vector2 aureusVel = Vector2.Normalize(Vector2.UnitX * -Math.Sign(player.Center.X - npc.Center.X) + Vector2.UnitY) * speed;
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, aureusVel, ModContent.ProjectileType<MutantAureusSpawn>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 1f), 1f, Main.myPlayer, player.whoAmI);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, aureusVel, ModContent.ProjectileType<MutantAureusSpawn>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 1f), 1f, Main.myPlayer, player.whoAmI);
                     }
                     side = -side; //switch side
                     npc.netUpdate = true;
@@ -1008,7 +1016,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         {
                             Vector2 offset = rot.RotatedBy(i * MathHelper.TwoPi / moons);
                             Vector2 targetPos = pos + (offset * 1450f);
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), targetPos, targetPos.DirectionTo(player.Center), brimstoneMonster, FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, 0f, 2f, 0f);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), targetPos, targetPos.DirectionTo(player.Center), brimstoneMonster, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 4f / 3f), 0f, Main.myPlayer, 0f, 2f, 0f);
                         }
 
                     }
@@ -1044,7 +1052,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                                 Vector2 aimPos = player.Center + predict + aimRot.ToRotationVector2() * aimDistance;
                                 Vector2 aim = spawnPos.DirectionTo(aimPos);
                                 Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, aim, ModContent.ProjectileType<DLCBloomLine>(), 0, 0, Main.myPlayer, 1, npc.whoAmI, TelegraphTime + 10);
-                                Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, aim, ModContent.ProjectileType<MutantSCal>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 4f / 3f), 0f, Main.myPlayer, TelegraphTime);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, aim, ModContent.ProjectileType<MutantSCal>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 4f / 3f), 0f, Main.myPlayer, TelegraphTime);
                             }
                         }
                     }
@@ -1079,7 +1087,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 if (Timer == StartupTimeOtherwiseItKindaTelefragsYouSometimes)
                 {
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearSpin>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, npc.whoAmI, WindupTime - StartupTimeOtherwiseItKindaTelefragsYouSometimes);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearSpin>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, npc.whoAmI, WindupTime - StartupTimeOtherwiseItKindaTelefragsYouSometimes);
                 }
 
                 Vector2 targetPos = player.Center;
@@ -1121,14 +1129,14 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     npc.velocity = speed * npc.DirectionTo(player.Center).RotatedBy(MathHelper.PiOver2 * 0.7f);
                     if (DLCUtils.HostCheck)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearDash>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, npc.whoAmI);
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer);
-                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, -Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Zero, ModContent.ProjectileType<DLCMutantSpearDash>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, npc.whoAmI);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer);
+                        Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, -Vector2.Normalize(npc.velocity), ModContent.ProjectileType<MutantDeathray2>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer);
                     }
                 }
                 if (Timer > WindupTime && Timer % 6 == 0 && DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, -Vector2.Normalize(npc.velocity).RotatedByRandom(MathHelper.PiOver4), ModContent.ProjectileType<FrostMist>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, ai1: 55);
+                    Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, -Vector2.Normalize(npc.velocity).RotatedByRandom(MathHelper.PiOver4), ModContent.ProjectileType<FrostMist>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, ai1: 55);
                 }
                 if (Timer >= WindupTime + 15)
                 {
@@ -1171,6 +1179,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 }
                 if (Timer == 0)
                 {
+                    npc.netUpdate = true;
                     SoundEngine.PlaySound(SoundID.ForceRoar, npc.Center);
                     Particle p = new ExpandingBloomParticle(npc.Center, Vector2.Zero, Color.Goldenrod, Vector2.One * 40f, Vector2.Zero, PrepareTime, true, Color.White);
                     p.Spawn();
@@ -1223,7 +1232,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         {
                             float spearSpeed = 18f;
                             Vector2 spearVel = Vector2.UnitY * Math.Sign(player.Center.Y - npc.Center.Y) * spearSpeed;
-                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, spearVel, ModContent.ProjectileType<HolySpear>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, 1f, 0f, 0f);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, spearVel, ModContent.ProjectileType<HolySpear>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, 1f, 0f, 0f);
                         }
                     }
                 }
@@ -1250,8 +1259,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         }
                         beamDirection *= Math.Sign(npc.ai[3]);
                         velocity2 = Utils.RotatedBy(velocity2, (0.0 - (double)beamDirection) * 6.2831854820251465 / 6.0, default(Vector2));
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y, velocity2.X, velocity2.Y, ModContent.ProjectileType<MutantHolyRay>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 3f / 2), 0f, Main.myPlayer, beamDirection * ((float)Math.PI * 2f) / rotation, npc.whoAmI, 0f);
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y, 0f - velocity2.X, 0f - velocity2.Y, ModContent.ProjectileType<MutantHolyRay>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage, 3f / 2), 0f, Main.myPlayer, (0f - beamDirection) * ((float)Math.PI * 2f) / rotation, npc.whoAmI, 0f);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y, velocity2.X, velocity2.Y, ModContent.ProjectileType<MutantHolyRay>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 3f / 2), 0f, Main.myPlayer, beamDirection * ((float)Math.PI * 2f) / rotation, npc.whoAmI, 0f);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center.X, npc.Center.Y, 0f - velocity2.X, 0f - velocity2.Y, ModContent.ProjectileType<MutantHolyRay>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage, 3f / 2), 0f, Main.myPlayer, (0f - beamDirection) * ((float)Math.PI * 2f) / rotation, npc.whoAmI, 0f);
                     }
                     npc.netUpdate = true;
                 }
@@ -1340,7 +1349,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     int type = ModContent.ProjectileType<MutantYharonVortex>();
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, type, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, bhTime, npc.whoAmI, 0f);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, type, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, bhTime, npc.whoAmI, 0f);
                     }
 
                 }
@@ -1350,7 +1359,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     int totalProjectiles = WorldSavingSystem.MasochistModeReal ? 36 : 30;
                     if (Timer % flareDustSpawnDivisor == 0)
                     {
-                        DoFlareDustBulletHell(0, flareDustSpawnDivisor, FargoSoulsUtil.ScaledProjectileDamage(npc.damage), totalProjectiles, 0f, 0f, phase2: true);
+                        DoFlareDustBulletHell(0, flareDustSpawnDivisor, FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), totalProjectiles, 0f, 0f, phase2: true);
                     }
 
                 }
@@ -1426,16 +1435,16 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             float ai1 = 0.8f + 0.4f * npc.ai[2] / 5f;
                             if (WorldSavingSystem.MasochistModeReal)
                                 ai1 += 0.4f;
-                            int current = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, ModContent.ProjectileType<MutantDoGHead>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, npc.target, ai1);
+                            int current = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, ModContent.ProjectileType<MutantDoGHead>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, npc.target, ai1);
                             //timeleft: remaining duration of this case + duration of next case + extra delay after + successive death
                             Main.projectile[current].timeLeft = 30 * (1 - (int)npc.ai[2]) + 60 * (int)npc.localAI[1] + 30 + (int)npc.ai[2] * 6;
 
                             int max = 60;
 
                             for (int i = 0; i < max; i++)
-                                current = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, ModContent.ProjectileType<MutantDoGBody>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, Main.projectile[current].identity);
+                                current = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, ModContent.ProjectileType<MutantDoGBody>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, Main.projectile[current].identity);
                             int previous = current;
-                            current = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, ModContent.ProjectileType<MutantDoGTail>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, Main.projectile[current].identity);
+                            current = Projectile.NewProjectile(npc.GetSource_FromThis(), npc.Center, vel, ModContent.ProjectileType<MutantDoGTail>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, Main.projectile[current].identity);
                             Main.projectile[previous].localAI[1] = Main.projectile[current].identity;
                             Main.projectile[previous].netUpdate = true;
                         }
@@ -1479,7 +1488,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                             Vector2 spawnDir = npc.ai[3].ToRotationVector2().RotatedBy(MathHelper.TwoPi * (float)i / Polters);
                             Vector2 spawnPos = player.Center + (spawnDir * MutantPolter.StartDistance);
                             Vector2 targetPos = player.Center;
-                            Projectile.NewProjectile(npc.GetSource_FromThis(), spawnPos, Vector2.Zero, ModContent.ProjectileType<MutantPolter>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0f, Main.myPlayer, targetPos.X, targetPos.Y, Counter);
+                            Projectile.NewProjectile(npc.GetSource_FromThis(), spawnPos, Vector2.Zero, ModContent.ProjectileType<MutantPolter>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0f, Main.myPlayer, targetPos.X, targetPos.Y, Counter);
                         }
                     }
                     Counter = -Counter;

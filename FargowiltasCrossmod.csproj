@@ -1,32 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\tModLoader.targets" />
   <PropertyGroup>
     <AssemblyName>FargowiltasCrossmod</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Content\Calamity\Items\Accessories\Enchantments\LunicCorpsEnchantment.png" />
-    <None Remove="Content\Thorium\Buffs\GildedSightDB.cs~RF1504f37.TMP" />
-    <None Remove="Content\Thorium\DragonMinionBody.png" />
-    <None Remove="Content\Thorium\DragonMinionBody2.png" />
-    <None Remove="Content\Thorium\DragonMinionHead.png" />
-    <None Remove="Content\Thorium\DragonMinionTail.png" />
-    <None Remove="Content\Thorium\FungusSpore.png" />
-    <None Remove="Content\Thorium\KluexBlast.png" />
-    <None Remove="Content\Thorium\KluexOrb.png" />
-    <None Remove="Content\Thorium\LivingWood_GrowRoots.png" />
-    <None Remove="Content\Thorium\LivingWood_Roots.png" />
-    <None Remove="Content\Thorium\LodeStonePlatform.png" />
-    <None Remove="Content\Thorium\Steel_Parry.png" />
-    <None Remove="Content\Thorium\Valadium_Chunk.png" />
-    <None Remove="localization\en-US.hjson" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
-  </ItemGroup>
   <ItemGroup>
 	<Reference Include="CalamityMod">
 		<HintPath>Libraries/CalamityMod.dll</HintPath>
@@ -35,33 +13,10 @@
 		<HintPath>Libraries/Fargowiltas.dll</HintPath>
 	</Reference>
 	<Reference Include="FargowiltasSouls">
-	  <HintPath>..\..\ModReader\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
+	  <HintPath>Libraries/FargowiltasSouls.dll</HintPath>
 	</Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Remove="Content\Thorium\temp\**" />
-    <Compile Remove="Content\Thorium\temp\**" />
-    <EmbeddedResource Remove="Content\Thorium\temp\**" />
-    <None Remove="Content\Thorium\temp\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Remove="Libraries\CalamityMod.dll" />
-    <Reference Remove="Libraries\Fargowiltas.dll" />
-    <Reference Remove="Libraries\FargowiltasSouls.dll" />
-    <Reference Remove="Libraries\ThoriumMod.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="CalamityMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\CalamityMod\CalamityMod.dll</HintPath>
-    </Reference>
-    <Reference Include="Fargowiltas">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\Fargowiltas\Fargowiltas.dll</HintPath>
-    </Reference>
-    <Reference Include="FargowiltasSouls">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\FargowiltasSouls\FargowiltasSouls.dll</HintPath>
-    </Reference>
-    <Reference Include="ThoriumMod">
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\TML-Patcher\Extracted\ThoriumMod\ThoriumMod.dll</HintPath>
-    </Reference>
+	<Reference Include="Luminance">
+	  <HintPath>Libraries\Luminance.dll</HintPath>
+	</Reference>
   </ItemGroup>
 </Project>

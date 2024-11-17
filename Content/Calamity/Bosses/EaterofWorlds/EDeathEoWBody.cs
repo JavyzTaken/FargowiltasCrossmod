@@ -13,26 +13,26 @@ using Terraria.ModLoader.IO;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathEoWBody : EternityDeathBehaviour
+    public class EDeathEoWHead : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail);
-        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        public override int NPCOverrideID => NPCID.EaterofWorldsHead;
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write7BitEncodedInt(timer);
             binaryWriter.Write7BitEncodedInt(time);
         }
-        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             timer = binaryReader.Read7BitEncodedInt();
             time = binaryReader.Read7BitEncodedInt();
         }
         int timer = 800;
         int time = 0;
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget) return true;
-            Player target = Main.player[npc.target];
-            if (time == 0) time = Main.rand.Next(1000, 2000);
+            if (!NPC.HasValidTarget) return true;
+            Player target = Main.player[NPC.target];
+            if (time == 0) time = Main.rand.Next(3000, 4000);
             if (NPC.CountNPCS(NPCID.EaterofWorldsBody) + NPC.CountNPCS(NPCID.EaterofWorldsHead) + NPC.CountNPCS(NPCID.EaterofWorldsTail) <= 60)
             {
                 timer++;
@@ -41,10 +41,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EaterofWorlds
 
                     timer = 0;
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.CursedFlameHostile, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 0);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 10, ProjectileID.CursedFlameHostile, FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                 }
             }
-            return base.SafePreAI(npc);
+            return true;
         }
+    }
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class EDeathEoWBody : EDeathEoWHead
+    {
+        public override int NPCOverrideID => NPCID.EaterofWorldsBody;
+    }
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class EDeathEoWTail : EDeathEoWHead
+    {
+        public override int NPCOverrideID => NPCID.EaterofWorldsTail;
     }
 }

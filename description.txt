@@ -2,18 +2,24 @@ Makes the Eternity Mode in Fargo's Souls Mod compatible with other mods.
 Officially maintained by Fargo's Mods developers.
 
 Currently supports:
-Calamity Mod
+-Calamity Mod
+-Wrath of the Gods
 
--Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty toggler.
+INCOMPATIBLE mods:
+-Infernum Mod
+-Calamity Overhaul
+-Basically anything else that changes Boss AI
+
+-Adds the Eternity-Revengeance and Eternity-Death difficulties, that seamlessly merges Eternity and Revengeance/Death mode together! Available in Calamity's difficulty selector.
 -Expands and adds new Eternity AI of Vanilla and Calamity bosses in the new difficulties
 -Adds new accessories in Fargo's accessory style that make use of Calamity items, mechanics, and the Rogue class
--Countless balance and progression changes to make the mods' content work well together, can be toggled with config
+-Countless balance and progression changes to make the mods' content work well together
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
-Planned future features:
--Thorium Mod compatibility
--Calamity and Thorium Enchantments, Forces and Souls
--Custom Champions for added Forces
+Planned potential future features:
+-Eternity Mode reworks for the remaining Calamity bosses
+-Calamity Enchantments, Forces and Souls
+-Thorium Mod compatibility (some day)
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
@@ -28,7 +34,7 @@ Why does this mod not have the old enchantments/souls?
 This mod is essentially a remake of the DLC, built from the ground up, with vastly raised quality standards. The old enchantments don't make that cut, both for being too uninteresting (they're literally just set bonus/accessory effects) and for balance reasons.
 
 Will you readd enchantments / souls for Calamity / (other mod)?
-Modded enchantments will be reintroduced in a reworked state to fit current quality standards. This will take a while since it's a lot to do, there's many effects to make. Making new content takes time.
+Currently, this mod features 8 new and improved Enchantments, one for each Pre-Hardmode armor. The rest are being worked on.
 
 How does this mod work with Infernum?
 Infernum and Eternity Mode are inherently conflicting, since they both focus on full-scale reworks for bosses. Both already have fully developed and boss AI pushed to limits, meaning it's not feasible to try to mesh them together. That means you have to choose between them, in terms of boss AI.
@@ -49,49 +55,6 @@ No, way too much effort to maintain. Also, things like Class Setups wiki pages a
 
 Fargo Discord: https://discord.gg/Rgen4Vv
 
-Latest Update: v1.0.5.40
-Updated to Souls Mod version 1.6.4
-Implemented toggles in the new system and resorted them under headers
-Renamed and resprited Exo Battery to Portable Codebreaker
-Eternity Desert Scourge - Adjusted conditions for slam attack
-Tweaked some recipes
-
-Previous Update: v1.0.5.3
-Changes to Eternity-Death vanilla bosses:
-King Slime: Increased delay between crystal shots
-Eye of Cthulhu: Changed trigger for Calamity horizontal dash (to go along with rework)
-Queen Bee:
-+50% health
-Wall of Flesh:
--Improved visibility of homing sickle and changed sound effect
--Sickle starts at a much slower speed and accelerates while traveling (it's now reactable)
-Lunatic Cultist: Clones stop firing projectiles for 10 seconds after pillar toss attack
-
-Changes to Eternity Calamity bosses:
-Desert Scourge:
--Max health +25%
--Now uses Eternity Destroyer's anti-pierce system instead
-Hive Mind:
--Max health 12500 -> 11000
--Tweaked spin attack
--New shade cloud dash in minion phase
--Lightning cloud happens earlier
-Perforators:
--Core +60% health 
-
-Added Calamity miniboss/rare enemy summons to Deviantt and Abominationn shops (Deviantt got her own Calamity shop because of shop size)
-Added a ton of new QoL recipes
-Removed Plantation Staff from Conjurist Soul recipe
-Fargo's Souls and DLC bosses now work with Calamity's Boss Health Boost config
-New config to make Infernum entirely disable Eternity Mode
-
-Nerfed base movement speed decrease from Eternity + Calamity difficulties
-Disabled Calamity recipe for Bloody Tear -> Blood Orbs, because of Abominationn selling Bloody Tears
-Fixed Brand of the Brimstone Witch coin value 
-Tungsten Enchantment:
--Fixed some edge case issues
--Decreased nerf on non-force effect true melee 
-Slimy Shield doesn't inflict Oiled (SDF still does)
-Calamity's Withering Enchantment accumulated damage capped at 500.000
-Fixed Cryogen issues in Boss Rush
-Nerfed Orichalcum Sword and Halberd to compensate for Calamity changes
+Newest Update: v1.1.1
+Ported to Fargo's Souls 1.7 and Fargo's Mutant 3.3.5
+Tons of changes and fixes

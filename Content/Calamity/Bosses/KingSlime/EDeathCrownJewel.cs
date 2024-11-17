@@ -14,31 +14,31 @@ using Terraria.ModLoader;
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class EDeathCrownJewel : EternityDeathBehaviour
+    public class EDeathCrownJewel : CalDLCEDeathBehavior
     {
-        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<KingSlimeJewel>());
+        public override int NPCOverrideID => ModContent.NPCType<KingSlimeJewelRuby>();
         public int Timer = 0;
 
-        public override bool SafePreAI(NPC npc)
+        public override bool PreAI()
         {
-            if (!npc.HasValidTarget)
+            if (!NPC.HasValidTarget)
             {
                 return true;
             }
-            npc.ai[0] = 0; //don't fire normal shots
+            NPC.ai[0] = 0; //don't fire normal shots
             if (++Timer >= 180)
             {
-                Player target = Main.player[npc.target];
-                Vector2 totarget = (target.Center - npc.Center).SafeNormalize(Vector2.Zero);
+                Player target = Main.player[NPC.target];
+                Vector2 totarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                 Timer = 0;
-                SoundEngine.PlaySound(SoundID.Item8, npc.Center);
+                SoundEngine.PlaySound(SoundID.Item8, NPC.Center);
                 if (DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(20)) * 10, ModContent.ProjectileType<JewelProjectile>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(50), 0);
-                    Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, totarget.RotatedBy(MathHelper.ToRadians(-20)) * 10, ModContent.ProjectileType<JewelProjectile>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(50), 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(MathHelper.ToRadians(20)) * 10, ModContent.ProjectileType<JewelProjectile>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(50), 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, totarget.RotatedBy(MathHelper.ToRadians(-20)) * 10, ModContent.ProjectileType<JewelProjectile>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(50), 0);
                 }
             }
-            return base.SafePreAI(npc);
+            return true;
         }
     }
 }

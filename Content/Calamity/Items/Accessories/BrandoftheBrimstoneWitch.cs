@@ -57,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
                 ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<PurityEffect>(Item))
-                ModContent.GetInstance<Purity>().UpdateAccessory(player, hideVisual);
+                ModContent.GetInstance<Radiance>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<TheSpongeEffect>(Item))
                 ModContent.GetInstance<TheSponge>().UpdateAccessory(player, hideVisual);
@@ -76,20 +76,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 
             if (player.AddEffect<CalamityEffect>(Item))
                 ModContent.GetInstance<CalamityMod.Items.Accessories.Calamity>().UpdateAccessory(player, hideVisual);
+           
         }
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient<HeartoftheElements>()
                 .AddIngredient<OccultSkullCrown>()
-                .AddIngredient<Purity>()
+                .AddIngredient<Radiance>()
                 .AddIngredient<TheSponge>()
                 .AddIngredient<ChaliceOfTheBloodGod>()
                 .AddIngredient<NebulousCore>()
                 .AddIngredient<YharimsGift>()
                 .AddIngredient<DraedonsHeart>()
                 .AddIngredient<CalamityMod.Items.Accessories.Calamity>()
-                .AddIngredient<ShadowspecBar>(10)
+                .AddIngredient<AbomEnergy>(5)
                 .AddTile<CrucibleCosmosSheet>()
                 .Register();
         }
@@ -105,59 +106,57 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
     public class HeartoftheElementsEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<HeartoftheElements>();
+
+        public override bool MinionEffect => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class OccultSkullCrownEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<OccultSkullCrown>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PurityEffect : BotBWEffect
     {
-        public override int ToggleItemType => ModContent.ItemType<Purity>();
+        public override int ToggleItemType => ModContent.ItemType<Radiance>();
+        public override bool MutantsPresenceAffects => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class TheSpongeEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<TheSponge>();
+        public override bool MutantsPresenceAffects => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ChaliceOfTheBloodGodEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<ChaliceOfTheBloodGod>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class NebulousCoreEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<NebulousCore>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class YharimsGiftEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<YharimsGift>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DraedonsHeartEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<DraedonsHeart>();
-        public override bool IgnoresMutantPresence => true;
     }
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalamityEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<CalamityMod.Items.Accessories.Calamity>();
-        public override bool IgnoresMutantPresence => true;
     }
 }

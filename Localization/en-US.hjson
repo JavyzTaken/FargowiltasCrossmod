@@ -5,13 +5,12 @@ Mods: {
 			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
 			ExpandedDescription:
 				'''
-				Toggles [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
-				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
-				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+				Enables [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
 
-				-Deviantt provides a starter pack
-				-Improves base stats
-				-Debuffs wear off faster when not attacking
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.  [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+
+				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
@@ -21,17 +20,17 @@ Mods: {
 
 		EternityDeathDifficulty: {
 			Name: Eternity-Death
-			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes.]"
+			ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes and extra Vanilla boss AI.]"
 			ExpandedDescription:
 				'''
 				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
-				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.
-				Expanded AI for some vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
-				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+				[c/00FFFF:This is the main intended experience.] 
 
-				-Deviantt provides a starter pack
-				-Improves base stats
-				-Debuffs wear off faster when not attacking
+				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses. [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+				Eternity-Death only: Expands AI for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+
+				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
@@ -39,24 +38,15 @@ Mods: {
 			Deactivation: Eternity-Death Mode has deactivated.
 		}
 
+		UI.ToggledWithCal: Toggled with Calamity's difficulty selector
+
 		Configs: {
-			DLCCalamityConfig: {
+			CalDLCConfig: {
 				DisplayName: Calamity Config
 
 				Headers: {
 					Modes: Modes
 					Balance: Balance
-				}
-
-				BalanceRework: {
-					Label: Calamity/Souls Balance Rework
-					Tooltip:
-						'''
-						Changes recipes to add balanced progression between Calamity and Souls mod, mainly in post-Moon Lord. 
-						Changes equipment and bosses in Calamity/Souls to make for a more well-rounded and balanced experience. 
-						Makes Souls content interact with Calamity mechanics, for example Defense Damage.
-						Recommended to keep enabled.
-						'''
 				}
 
 				ConsumableSummons: {
@@ -75,9 +65,8 @@ Mods: {
 					Label: Eternity Priority over Calamity Modes
 					Tooltip:
 						'''
-						Enables Eternity Mode boss behaviour to take priority over Revengeance Mode boss behaviour and other Calamity difficulties.
-						Some Calamity bosses have Eternity Mode changes when this is enabled.
-						Disabling this makes Calamity difficulties take priority over Eternity.
+						Enabled: Eternity Mode behaviour takes priority over Calamity boss changes. Some Calamity bosses have new Eternity Mode behavior.
+						Disabled: Calamity boss changes take priority over Eternity. 
 						'''
 				}
 
@@ -86,8 +75,9 @@ Mods: {
 					Tooltip:
 						'''
 						Only relevant with the Infernum Mode mod enabled.
-						Makes the Infernum Mode difficulty fully disable Eternity Mode. 
-						With this disabled, Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
+						Keep in mind, INFERNUM IS NOT COMPATIBLE. Regardless of this config, expect issues to occur.
+						Enabled: Infernum Mode difficulty fully disables Eternity Mode.
+						Disabled: Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
 				}
 			}
@@ -103,6 +93,7 @@ Mods: {
 			AddedEffects: {
 				AngelTreads: Effects of Angel Treads
 				AeolusBoots: Effects of Aeolus Boots
+				CalamitySupersonic: Effects of Statis' Void Sash
 				ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
 				CalamityColossus: Effects of The Amalgam, Asgardian Aegis and Rampart of Deities
 				ThoriumColossus:
@@ -110,16 +101,12 @@ Mods: {
 					Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
 					Phylactery, Heart of Stone, and Spiny Shell
 					'''
-				CalamityBerserker: Effects of Reaper Tooth Necklace, Badge of Bravery, and Elemental Gauntlet
+				CalamityBerserker: Effects of Badge of Bravery and Elemental Gauntlet
 				ThoriumBerserker: Effects of Rapier Badge
 				CalamityWizard: Effects of Ethereal Talisman
 				ThoriumWizard: Effects of Murky Catalyst
-				CalamitySniper: Effects of Elemental Quiver, Quiver of Nihility, and Dynamo Stem Cells
-				Vagabond:
-					'''
-					Effects of Nanotech and Eclipse Mirror
-					Effects of Dragon Scales and Venerated Locket
-					'''
+				CalamitySniper: Effects of Elemental Quiver and Quiver of Nihility
+				Vagabond: Effects of Nanotech and Eclipse Mirror
 				ThoriumSniper: Effects of Concussive Warhead
 				CalamityConjurist: Effects of Nucleogenesis
 				ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
@@ -150,7 +137,6 @@ Mods: {
 					15% increased rogue projectile velocity
 					15% increased rogue critical chance
 					Effects of Nanotech and Eclipse Mirror
-					Effects of Dragon Scales and Venerated Locket
 					'''
 			}
 
@@ -610,7 +596,7 @@ Mods: {
 			}
 
 			DragonEgg: {
-				DisplayName: Dragon Egg
+				DisplayName: Fiery Dragon Egg
 				Tooltip: Summons Yharon
 			}
 
@@ -793,7 +779,7 @@ Mods: {
 				DisplayName: Brand of the Brimstone Witch
 				Tooltip:
 					'''
-					Effects of Heart of the Elements, Occult Skull Crown, Purity, The Sponge, Chalice of the Blood God
+					Effects of Heart of the Elements, Occult Skull Crown, Radiance, The Sponge, Chalice of the Blood God
 					Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
 					'''
 			}
@@ -837,6 +823,216 @@ Mods: {
 				DisplayName: Lodestone Enchantment
 				Tooltip: ""
 			}
+
+			AerospecEnchant: {
+				DisplayName: Aerospec Enchantment
+				Tooltip:
+					'''
+					Gain +5% critical strike chance and summon damage whenever you use a jump or double jump
+					This bonus lasts until your jumps are reset or a mount is used
+					'''
+				CritUp: +{0}% crit
+				CritReset: -{0}% crit
+			}
+
+			MarniteEnchant: {
+				DisplayName: Marnite Enchantment
+				Tooltip:
+					'''
+					10% increased placement speed and +5 tile placement range
+					Lasers strike nearby enemies when building and mining
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
+					'''
+			}
+
+			DesertProwlerEnchant: {
+				DisplayName: Desert Prowler Enchantment
+				Tooltip:
+					'''
+					Hold UP to charge a powerful charge jump that also boosts your horizontal speed
+					Charge jump can only be performed while grounded
+					'''
+			}
+
+			WulfrumEnchant: {
+				DisplayName: Wulfrum Enchantment
+				Tooltip:
+					'''
+					Summons a wulfrum drone that follows your cursor
+					The drone scans enemies it collides with
+					Scanning enemies tells you their debuff weaknesses and resistances
+					Green means weakness, red means resistance
+					Scanned enemies also take extra damage over time when afflicted with any debuff
+					'''
+			}
+
+			ExplorationForce: {
+				DisplayName: Force of Exploration
+				Tooltip:
+					'''
+					[i:FargowiltasCrossmod/MarniteEnchant] 25% Increased placement speed and +10 placement range
+					[i:FargowiltasCrossmod/MarniteEnchant] Lasers strike nearby enemies when building and mining
+					[i:FargowiltasCrossmod/WulfrumEnchant] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
+					[i:FargowiltasCrossmod/DesertProwlerEnchant] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
+					[i:FargowiltasCrossmod/AerospecEnchant] Jumping and using double jumps increase critical strike chance and summon damage
+					[i:FargowiltasCrossmod/SulphurEnchant] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
+					[i:FargowiltasCrossmod/VictideEnchant] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
+					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
+					'''
+			}
+
+			SnowRuffianEnchant: {
+				DisplayName: Snow Ruffian Enchantment
+				Tooltip:
+					'''
+					Grants the ability to glide if you do not have wings already
+					While slow falling with wings, you accelerate
+					Press UP while slow falling to direct your momentum upward
+					Press DOWN while slow falling to accelerate faster
+					'''
+			}
+
+			DaedalusEnchant: {
+				DisplayName: Daedalus Enchantment
+				Tooltip:
+					'''
+					Grants unlimited flight, but flight ends if you fly too high
+					Improves wing gliding
+					'''
+			}
+
+			PlagueReaperEnchant: {
+				DisplayName: Plague Reaper Enchantment
+				Tooltip: All debuffs spread between enemies
+			}
+
+			PlaguebringerEnchant: {
+				DisplayName: Plaguebringer Enchantment
+				Tooltip:
+					'''
+					All attacks inflict plague for a short time
+					A plague cloud follows you, growing when nearby plagued enemies.
+					At maximum size, the cloud expands rapidly and stops following you,
+					lingering in place for a while.
+					'''
+			}
+
+			ReaverEnchant: {
+				DisplayName: Reaver Enchantment
+				Tooltip:
+					'''
+					Several stats up!
+					These buffs decrease when you are hit
+					The buffs can become negative
+					The buffs regenerate over time
+					'''
+			}
+
+			HydrothermicEnchant: {
+				DisplayName: Hydrothermic Enchantment
+				Tooltip:
+					'''
+					After attacking for too long, your weapon overheats
+					While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					'''
+			}
+
+			DevastationForce: {
+				DisplayName: Devastation Force
+				Tooltip:
+					'''
+					[i:FargowiltasCrossmod/SnowRuffianEnchant] Improves wing gliding
+					[i:FargowiltasCrossmod/DaedalusEnchant] Flight is limited by a maximum height rather than flight time
+					[i:FargowiltasCrossmod/ReaverEnchant] Several stats increased, but these stats decrease when hit
+					[i:FargowiltasCrossmod/HydrothermicEnchant] After attacking for too long, your weapon overheats
+					[i:FargowiltasCrossmod/HydrothermicEnchant] While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+					[i:FargowiltasCrossmod/PlaguebringerEnchant] Debuffs spread between enemies
+					'''
+			}
+
+			UmbraphileEnchant: {
+				DisplayName: Umbraphile Enchantment
+				Tooltip:
+					'''
+					Using a healing potion release a swarm of bats instead of healing you
+					The bats lifesteal from enemies for you
+					'''
+			}
+
+			TitanHeartEnchant: {
+				DisplayName: Titan Heart Enchantment
+				Tooltip:
+					'''
+					Increases damage by 15%
+					Makes you larger
+					'''
+			}
+
+			StatigelEnchant: {
+				DisplayName: Statigel Enchantment
+				Tooltip:
+					'''
+					Increases your maximum speed
+					Massively decreases your acceleration and deceleration
+					Gain up to +35% increased damage, depending on how fast you're moving
+					'''
+			}
+
+			SulphurEnchant: {
+				DisplayName: Sulphur Enchantment
+				Tooltip:
+					'''
+					Grants a sulphur jump that spawns a sulphur bubble on use
+					The bubble releases damaging gas when hit by you
+					'''
+			}
+
+			VictideEnchant: {
+				DisplayName: Victide Enchantment
+				Tooltip:
+					'''
+					Grants urchin spikes that protrude from your body
+					You gain 4 defense while the spikes are attached to you
+					Attacking charges the spikes, which launch outward when you stop attacking
+					'''
+			}
+
+			FathomSwarmerEnchant: {
+				DisplayName: Fathom Swarmer Enchantment
+				Tooltip:
+					'''
+					Summons an Anglerfish familiar that follows your mouse
+					The anglerfish's light slows down enemies and their projectiles
+					'''
+			}
+
+			AstralEnchant: {
+				DisplayName: Astral Enchantment
+				Tooltip: You are followed by a trail of damaging astral stars
+			}
+
+			BrimflameEnchant: {
+				DisplayName: Brimflame Enchantment
+				Tooltip:
+					'''
+					Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+					Becomes stronger the more defense is consumed
+					Your defense will regenerate over time
+					Can only be used when at maximum defense
+					'''
+				DefenseDown: -{0} defense
+				DefenseUp: +{0} defense
+			}
+
+			MolluskEnchant: {
+				DisplayName: Mollusk Enchantment
+				Tooltip:
+					'''
+					Press Special Dash key to quickly slam downwards
+					Hitting an enemy with the slam deals massive damage and gives you immunity frames
+					Only goes on cooldown on enemy hits
+					'''
+			}
 		}
 
 		NPCs: {
@@ -859,6 +1055,7 @@ Mods: {
 			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
 			ShadeLightningCloud.DisplayName: Shade Lightning Cloud
 			ToothBall.DisplayName: Tooth Ball
+			Tooth.DisplayName: Tooth
 			HomingRocket.DisplayName: Homing Rocket
 			HomingSickle.DisplayName: Homing Sickle
 			HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
@@ -910,6 +1107,43 @@ Mods: {
 			PermafrostRitual.DisplayName: Permafrost Ritual
 			IceCloud.DisplayName: Chilling Snow
 			BrimstoneDebris.DisplayName: Brimstone Debris
+			BrimstonePulse.DisplayName: Brimstone Pulse
+			BrimstoneClone.DisplayName: Brimstone Clone
+			BrimBeam.DisplayName: Brim Beam
+			BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
+			BrimstoneTeleport.DisplayName: Brimstone Teleport
+			BrimstoneFireblast.DisplayName: Brimstone Fireblast
+			FeatherJumpFeather.DisplayName: Feather
+			MarniteDagger.DisplayName: Marnite Dagger
+			MarniteLaser.DisplayName: Marnite Laser
+			ProwlerTornado.DisplayName: Prowler Tornado
+			WulfrumCollector.DisplayName: Wulfrum Collector
+			WulfrumScanner.DisplayName: Wulfrum Scanner
+			CrystalPlatform.DisplayName: Crystal Platform
+			PlagueCloud.DisplayName: Plague Cloud
+			Eruption.DisplayName: Eruption
+			VampireBat.DisplayName: Vampire Bat
+			SulphurBubble.DisplayName: Sulphur Bubble
+			VictideSpike.DisplayName: Victide Spike
+			GoldenShowerShot.DisplayName: Golden Shower Shot
+			HiveMindFiretrail.DisplayName: Cursed Fire
+			BrainMassProjectile.DisplayName: Rotten Brainmass
+			GravityVileClot.DisplayName: Vile Clot
+			VileClotDrop.DisplayName: Vile Clot
+			SulphurCloud.DisplayName: Sulphur Cloud
+			PureGel.DisplayName: Pure Gel
+			HiveMindPulse.DisplayName: Hive Mind Pulse
+			ScourgeSandstream.DisplayName: Scourge Sandstream
+			CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
+			BigBubble.DisplayName: Big Bubble
+			Bubble.DisplayName: Bubble
+			AquaticSuck.DisplayName: Aquatic Suck
+			FlamableGas.DisplayName: Flamable Gas
+			ToxicGas.DisplayName: Toxic Gas
+			FathomAngler.DisplayName: Fathom Angler
+			AstralTrailStar.DisplayName: Astral Trail Star
+			BrimflameBurst.DisplayName: Brimflame Burst
+			ClamSlam.DisplayName: Clam Slam
 			DmgOrbHack.DisplayName: Dmg Orb Hack
 			HealOrbHack.DisplayName: Heal Orb Hack
 			BiotechNanomachine.DisplayName: Biotech Nanomachine
@@ -981,11 +1215,10 @@ Mods: {
 		}
 
 		Toggler: {
+			CalamitySoulHeader: Soul of Calamity
 			VagabondsSoulHeader: Vagabond's Soul
 			NanotechEffect: Nanotech
 			EclipseMirrorEffect: Eclipse Mirror
-			DragonScalesEffect: Dragon Scales
-			VeneratedLocketEffect: Venerated Locket
 			AmalgamEffect: The Amalgam
 			AsgardianAegisEffect: Asgardian Aegis
 			RampartofDeitiesEffect: Rampart of Deities
@@ -994,19 +1227,66 @@ Mods: {
 			CalamitySniperHeader: Calamity Sniper's Soul
 			ElementalQuiverEffect: Elemental Quiver
 			QuiverofNihilityEffect: Quiver of Nihility
-			DynamoStemCellsEffect: Dynamo Stem Cells
 			NucleogenesisEffect: Nucleogenesis
+			StatisVoidSashEffect: Statis' Void Sash
 			AbyssalDivingSuitEffect: Abyssal Diving Suit
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 			HeartoftheElementsEffect: Heart of the Elements
 			OccultSkullCrownEffect: Occult Skull Crown
-			PurityEffect: Purity
+			PurityEffect: Radiance
 			TheSpongeEffect: The Sponge
 			ChaliceOfTheBloodGodEffect: Chalice of the Blood God
 			NebulousCoreEffect: Nebulous Core
 			YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
 			DraedonsHeartEffect: Draedons Heart
 			CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
+			SplendorJamEffect: Splendor Jam
+			ExplorationHeader: Force of Exploration
+			AerospecJumpEffect: Jump Crit
+			MarniteRepulsionEffect: Marnite Repulsion
+			MarniteLasersEffect: Marnite Lasers
+			DesertProwlerEffect: Charge Jump
+			WulfrumEffect: Wulfrum Drone
+			SnowRuffianEffect: Better Gliding
+			DaedalusEffect: Daedalus Flight Limit
+			ReaverEffect: Reaver Stats
+			HydrothermicEffect: Overheat
+			PlaguebringerEffect: Plague Cloud
+			PlagueReaperEffect: Debuff Spread
+			StatigelEffect: Statigel Acceleration and Damage
+			SulphurEffect: Bubble Jump
+			VictideEffect: Urchin Spikes
+			TitanHeartEffect: Titan Size
+			UmbraphileEffect: Bat Healing
+			FathomSwarmerEffect: Angler Fish
+			BrimflameEffect: Brimflame Burst
+			MolluskEffect: Mollusk Slam
+		}
+
+		WizardEffect: {
+			Aerospec: Crit and damage bonus doubled
+			Marnite: Stronger daggers, +15% placement speed and +5 placement range
+			DesertProwler: Stronger jumps
+			Wulfrum: Scanned Enemies take even more extra damage from debuffs
+			Hydrothermic: Longer overheat charge, more attack speed increase
+			Daedalus: Grants wings if you don't have any, Can fly higher
+			SnowRuffian: Grants some flight time
+			Reaver: More drastic stat changes
+			Plaguebringer: Plague cloud deals more damage and charges from longer away
+			PlagueReaper:
+				'''
+				Debuffs spread from farther 
+				Enemies spread debuffs for a longer amount of time
+				'''
+			Umbraphile: Bats deal more damage and travel faster
+			Sulphur: Jumps create 3 bubbles with increased damage
+			Victide: Spikes are no longer affected by gravity and inflict venom
+			Statigel: Higher maximum speed, damage bonus doubled
+			TitanHeart: More damage, larger size
+			FathomSwarmer: Larger Light, Faster Fish
+			Astral: Longer trail, more damage
+			Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
+			Mollusk: More damage, More immunity frames
 			HelheimHeader: "{$Mods.FargowiltasCrossmod.Items.HelheimForce.DisplayName}"
 			SpiritTrapperEffect: Spirit Trapper Soul Essence
 			DragonEffect: Dragon Heads
@@ -1050,5 +1330,16 @@ Mods: {
 			"Living wood roots.DisplayName": Living wood roots
 			"Steel parry.DisplayName": Steel parry
 		}
+
+		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
+
+		ExpandedTooltips: {
+			FountainAstral: Forces surrounding biome state to Astral Infection upon activation
+			FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
+			FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
+			FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
+		}
+
+		EModeBalance.Laudanum: Halved strength of most positive debuff effects
 	}
 }

@@ -1,7 +1,10 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Effects;
@@ -14,12 +17,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PermafrostBackgroundScene : ModSceneEffect
     {
+        public static bool AnyP2Permafrost => Main.npc.Any(p => p.TypeAlive<PermafrostBoss>() && p.As<PermafrostBoss>().Phase >= 2);
         public override SceneEffectPriority Priority => SceneEffectPriority.BossMedium;
 
         public override bool IsSceneEffectActive(Player player)
         {
             PermafrostSky.UpdateDrawEligibility();
-            bool result = NPC.AnyNPCs(ModContent.NPCType<PermafrostBoss>()) || PermafrostSky.ShouldDrawRegularly;
+            bool result = AnyP2Permafrost || PermafrostSky.ShouldDrawRegularly;
             PermafrostSky.UpdateDrawEligibility();
             return result;
         }
@@ -57,7 +61,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
         public static void UpdateDrawEligibility()
         {
-            bool useEffect = (NPC.AnyNPCs(ModContent.NPCType<PermafrostBoss>()) || ShouldDrawRegularly) && !Main.gameMenu;
+            bool useEffect = (PermafrostBackgroundScene.AnyP2Permafrost || ShouldDrawRegularly) && !Main.gameMenu;
 
             if (SkyManager.Instance["FargowiltasCrossmod:Permafrost"] != null && useEffect != SkyManager.Instance["FargowiltasCrossmod:Permafrost"].IsActive())
             {
