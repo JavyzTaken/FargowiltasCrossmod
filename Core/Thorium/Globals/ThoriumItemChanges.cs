@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using ThoriumMod.Items;
+using ThoriumMod.Items.BossForgottenOne;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.HealerItems;
 
@@ -28,7 +29,7 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDisable", Language.GetTextValue($"{BalanceDownLine}Disabled")));
             }
-            if (item.ModItem is BardItem bardItem)
+            if (item.ModItem is BardItem bardItem && item.damage > 0)
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Only 4 empowerments can be active at once")));
             }
@@ -39,6 +40,10 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             if (item.type == ModContent.ItemType<ShinobiSigil>() && !item.social)
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Critical strike effect can only be activated every 5 seconds")));
+            }
+            if (item.type == ModContent.ItemType<AbyssalShell>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Shell only lasts for 10 seconds and has a 60 second cooldown")));
             }
         }
     }

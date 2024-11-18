@@ -2,9 +2,12 @@ using Terraria.ModLoader;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using CalamityMod.World;
 using Terraria;
 using FargowiltasCrossmod.Core;
 using Mono.CompilerServices.SymbolWriter;
+using ThoriumMod.Buffs;
+using ThoriumMod.Items;
 using ThoriumMod.NPCs;
 using ThoriumMod.Projectiles;
 
@@ -22,6 +25,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             FargowiltasSouls.Content.Items.Accessories.Enchantments.TungstenEffect.TungstenAlwaysAffectProjType.AddRange(ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.Keys);
             Items.Accessories.Enchantments.JesterEnchant.PostSetup(Mod);
             EternityMode.Boss.GrandThunderBird.LoadDetour();
+            
+            Main.buffNoTimeDisplay[ModContent.BuffType<AbyssalShellBuff>()] = false;
 
             FargowiltasSouls.Content.Projectiles.SpearRework.ReworkedSpears.AddRange(new List<int> {
                 ModContent.ProjectileType<CoralPolearmPro>(),
@@ -59,7 +64,8 @@ namespace FargowiltasCrossmod.Content.Thorium
             // Projectiles.DLCHealing.HealerHitNPCMethod = thoriumProjectileFixClass.GetMethod("HealerOnHitNPC", BindingFlags.Instance | BindingFlags.NonPublic);
             MonoModHooks.Modify(thoriumProjectileFixClass.GetMethod("HealerOnHitNPC", BindingFlags.Instance | BindingFlags.NonPublic), Projectiles.DLCHealing.LifeStealNerf_ILEdit);
             MonoModHooks.Modify(thoriumPlayerClass.GetMethod("OnHitNPCWithProj", BindingFlags.Instance | BindingFlags.Public), ThoriumILEdits.ShinobiSigilCooldown_ILEdit);
-
+            MonoModHooks.Modify(thoriumPlayerClass.GetMethod("ProcessTriggers", BindingFlags.Instance | BindingFlags.Public), ThoriumILEdits.AbyssalShellNerf_ILEdit);
+            
 
             if (FargowiltasCrossmod.CaughtTownies != null)
                 RegisterThoriumCaughtNPCs();
@@ -90,6 +96,7 @@ namespace FargowiltasCrossmod.Content.Thorium
         {
             double Damage(DamageClass damageClass) => Math.Round(Main.LocalPlayer.GetTotalDamage(damageClass).Additive * Main.LocalPlayer.GetTotalDamage(damageClass).Multiplicative * 100 - 100);
             int Crit(DamageClass damageClass) => (int)Main.LocalPlayer.GetTotalCritChance(damageClass);
+            // var thoriumPlayer = Main.LocalPlayer.Thorium();
 
             void Add<T>(Func<string> func) where T : ModItem => ModCompatibility.MutantMod.Mod.Call("AddStat", ModContent.ItemType<T>(), func);
 
@@ -98,6 +105,8 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             Add<ThoriumMod.Items.BardItems.WoodenWhistle>(() => $"Synphonic Damage: {Damage(ModContent.GetInstance<ThoriumMod.BardDamage>())}%");
             Add<ThoriumMod.Items.BardItems.WoodenWhistle>(() => $"Synphonic Critical: {Crit(ModContent.GetInstance<ThoriumMod.BardDamage>())}%");
+            Add<ThoriumMod.Items.BardItems.Metronome>(() =>
+                $"Empowerment time: {Math.Round((300 + Main.LocalPlayer.Thorium().bardBuffDuration + (Main.LocalPlayer.HeldItem.ModItem is BardItem b ? b.DurationBonus : 0)) * Main.LocalPlayer.Thorium().bardBuffDurationX / 60f)} seconds");
 
             Add<ThoriumMod.Items.ThrownItems.StoneThrowingSpear>(() => $"Throwing Damage: {Damage(DamageClass.Throwing)}%");
             Add<ThoriumMod.Items.ThrownItems.StoneThrowingSpear>(() => $"Throwing Critical: {Crit(DamageClass.Throwing)}%");

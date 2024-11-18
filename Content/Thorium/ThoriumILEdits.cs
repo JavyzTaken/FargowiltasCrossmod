@@ -4,6 +4,8 @@ using FargowiltasCrossmod.Content.Thorium.Buffs;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
+using Terraria.ModLoader;
+using ThoriumMod.Buffs;
 
 namespace FargowiltasCrossmod.Content.Thorium;
 
@@ -30,5 +32,22 @@ public class ThoriumILEdits
         c.GotoNext(instr => instr.MatchLdfld(accThiefsWalletField));
         c.Index -= 1;
         c.MarkLabel(label);
+    }
+
+    public static void AbyssalShellNerf_ILEdit(ILContext il)
+    {
+        ILCursor c = new(il);
+
+        c.GotoNext(instr => instr.MatchCall(typeof(ModContent).GetMethod("BuffType", new Type[] { })
+            .MakeGenericMethod(typeof(AbyssalWeight))));
+        c.GotoNext(instr => instr.MatchLdcI4(1200));
+        c.Remove();
+        c.Emit(OpCodes.Ldc_I4, 3600);
+        
+        c.GotoNext(instr => instr.MatchCall(typeof(ModContent).GetMethod("BuffType", new Type[] { })
+            .MakeGenericMethod(typeof(AbyssalShellBuff))));
+        c.GotoNext(instr => instr.MatchLdcI4(90000000));
+        c.Remove();
+        c.Emit(OpCodes.Ldc_I4, 600);
     }
 }
