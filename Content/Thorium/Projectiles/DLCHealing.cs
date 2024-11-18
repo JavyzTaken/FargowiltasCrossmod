@@ -46,6 +46,17 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             c.EmitDelegate<Action<Player, Player, int>>((healer, target, heals) => DLCOnHealEffects(healer, target, heals));
         }
 
+        internal static void LifeStealNerf_ILEdit(ILContext il)
+        {
+            FieldInfo healBonusField = typeof(ThoriumMod.ThoriumPlayer).GetField("healBonus", BindingFlags.Instance | BindingFlags.Public);
+            var c = new ILCursor(il);
+
+            c.GotoNext(i => i.MatchLdfld(healBonusField));
+            c.Index++;
+            c.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4_4);
+            c.Emit(Mono.Cecil.Cil.OpCodes.Div);
+        }
+
         public static void DLCOnHealEffects(Player healer, Player target, int heals)
         {
             Main.NewText("test");
