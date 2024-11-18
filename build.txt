@@ -1,5 +1,5 @@
-displayName = Fargo's Souls DLC (Calamity)
-author = Javyz, Shipmans Agla, Zavarski, Fargowilta
+displayName = Fargo's Souls DLC (Calamity & Thorium)
+author = Javyz, Shipmans Agla, Zavarski, Fargowilta, Ghoose
 version = 1.1.1
 modReferences = Fargowiltas@3.3.5, FargowiltasSouls@1.7, Luminance
 weakReferences = ThoriumMod, CalamityMod@2.0.4.1
