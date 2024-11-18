@@ -1217,6 +1217,11 @@ Mods: {
 				DisplayName: Calamitous Presence Buff
 				Description: Mods.FargowiltasCrossmod.Buffs.CalamitousPresenceBuff.Description
 			}
+
+			ShinobiSigilCD: {
+				DisplayName: Shinobi Sigil Cooldown
+				Description: Cannot use the Shinobi sigil effect.
+			}
 		}
 
 		Toggler: {

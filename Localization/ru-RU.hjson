@@ -1223,6 +1223,11 @@ Mods: {
 				DisplayName: Бедственное присутствие
 				Description: Защита, сопротивление урону и восстановление здоровья снижены; эффект «Лунного укуса»; радиус грэйза уменьшен
 			}
+
+			ShinobiSigilCD: {
+				// DisplayName: Shinobi Sigil Cooldown
+				// Description: Cannot use the Shinobi sigil effect.
+			}
 		}
 
 		Toggler: {
