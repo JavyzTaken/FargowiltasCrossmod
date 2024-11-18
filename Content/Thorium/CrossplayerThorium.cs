@@ -192,7 +192,7 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void PostUpdate()
         {
-            Balance.ThoriumPotionNerfs.MurderBuffs(Player);
+            Core.Thorium.Globals.ThoriumPotionNerfs.MurderBuffs(Player);
         }
 
         public override void FrameEffects()

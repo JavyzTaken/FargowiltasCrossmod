@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Projectiles.Thrower;
 
-namespace FargowiltasCrossmod.Content.Thorium.Balance
+namespace FargowiltasCrossmod.Core.Thorium.Globals
 {
     public class ThoriumProjectileChanges : GlobalProjectile
     {

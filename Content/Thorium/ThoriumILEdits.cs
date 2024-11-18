@@ -5,7 +5,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using Terraria;
 
-namespace FargowiltasCrossmod.Content.Thorium.Balance;
+namespace FargowiltasCrossmod.Content.Thorium;
 
 public class ThoriumILEdits
 {

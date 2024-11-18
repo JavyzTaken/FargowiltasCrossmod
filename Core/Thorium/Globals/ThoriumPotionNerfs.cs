@@ -4,12 +4,12 @@ using ThoriumMod.Items.Consumable;
 using ThoriumMod.Buffs;
 using System.Collections.Generic;
 
-namespace FargowiltasCrossmod.Content.Thorium.Balance
+namespace FargowiltasCrossmod.Core.Thorium.Globals
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumPotionNerfs : GlobalItem
     {
-        private static readonly Dictionary<int, int> NerfedPotions = new()
+        public static readonly Dictionary<int, int> NerfedPotions = new()
         {
             { ModContent.ItemType<BatRepellent>(), ModContent.BuffType<BatRepellentBuff>() },
             { ModContent.ItemType<FishRepellent>(), ModContent.BuffType<FishRepellentBuff>() },
@@ -41,12 +41,6 @@ namespace FargowiltasCrossmod.Content.Thorium.Balance
         public override bool CanUseItem(Item item, Player player)
         {
             return !FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode;
-        }
-
-        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
-        {
-            if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
-                tooltips.Add(new TooltipLine(Mod, "ThoriumBalance", $"[c/FF0000:Thorium Crossmod Support:] Disabled"));
         }
     }
 }
