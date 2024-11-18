@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using ThoriumMod.Items;
+using ThoriumMod.Items.BasicAccessories;
 using ThoriumMod.Items.BossForgottenOne;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.HealerItems;
@@ -18,7 +19,19 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
         {
             return true;
         }
-        
+
+        public override void SetDefaults(Item entity)
+        {
+            ThoriumItem thoriumItem = entity.ModItem as ThoriumItem;
+
+            if (entity.type == ModContent.ItemType<SilverSpearTip>())
+                thoriumItem.accDamage = "25% base damage";
+            if (entity.type == ModContent.ItemType<MoltenSpearTip>())
+                thoriumItem.accDamage = "50% base damage";
+            if (entity.type == ModContent.ItemType<CrystalSpearTip>())
+                thoriumItem.accDamage = "50% base damage";
+        }
+
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             const string BalanceLine = "Cross-mod Balance: ";
@@ -44,6 +57,18 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             if (item.type == ModContent.ItemType<AbyssalShell>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Shell only lasts for 10 seconds and has a 60 second cooldown")));
+            }
+            if (item.type == ModContent.ItemType<SilverSpearTip>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Decreased damage to 25% of spear damage")));
+            }
+            if (item.type == ModContent.ItemType<MoltenSpearTip>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Decreased damage to 50% of spear damage")));
+            }
+            if (item.type == ModContent.ItemType<CrystalSpearTip>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Decreased damage to 50% of spear damage")));
             }
         }
     }
