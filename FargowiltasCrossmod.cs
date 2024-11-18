@@ -38,6 +38,7 @@ public class FargowiltasCrossmod : Mod
     {
         Instance = this;
         LoadDetours();
+        ThoriumDetours.LoadDetours();
 
         ModCompatibility.BossChecklist.AdjustValues();
     }
@@ -45,6 +46,7 @@ public class FargowiltasCrossmod : Mod
     {
         Instance = null;
         LumberHooks.OnChatButtonClicked?.Undo();
+        ThoriumDetours.UnlaodDetours();
     }
 
     private struct LumberHooks

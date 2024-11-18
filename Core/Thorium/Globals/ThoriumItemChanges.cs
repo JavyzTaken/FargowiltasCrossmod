@@ -9,6 +9,7 @@ using ThoriumMod.Items.BasicAccessories;
 using ThoriumMod.Items.BossForgottenOne;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.HealerItems;
+using ThoriumMod.Items.MeleeItems;
 
 namespace FargowiltasCrossmod.Core.Thorium.Globals
 {
@@ -69,6 +70,14 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             if (item.type == ModContent.ItemType<CrystalSpearTip>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Decreased damage to 50% of spear damage")));
+            }
+            if (item.ModItem is SwordSheathBase sheathBase)
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Halved sheath damage")));
+                if (item.type == ModContent.ItemType<GardenersSheath>())
+                {
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Teleport effect has a 30 second cooldown")));
+                }
             }
         }
     }
