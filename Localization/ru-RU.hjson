@@ -1228,6 +1228,11 @@ Mods: {
 				// DisplayName: Shinobi Sigil Cooldown
 				// Description: Cannot use the Shinobi sigil effect.
 			}
+
+			WhiteDwarfCooldown: {
+				// DisplayName: White Dwarf Cooldown
+				// Description: Mods.FargowiltasCrossmod.Buffs.WhiteDwarfCooldown.Description
+			}
 		}
 
 		Toggler: {

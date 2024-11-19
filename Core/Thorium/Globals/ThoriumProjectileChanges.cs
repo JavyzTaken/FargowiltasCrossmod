@@ -1,3 +1,4 @@
+using System;
 using FargowiltasCrossmod.Content.Thorium.Buffs;
 using Terraria;
 using Terraria.DataStructures;
@@ -41,6 +42,22 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
                 projectile.damage = (int)(projectile.damage * 2f / 3f);
             if (projectile.type == ModContent.ProjectileType<SpearExtraCrystal>())
                 projectile.damage /= 2;
+
+            if (projectile.type == ModContent.ProjectileType<WhiteFlare>())
+            {
+                if (Main.player[projectile.owner].HasBuff<WhiteDwarfCooldown>())
+                {
+                    projectile.damage = 0;
+                    projectile.hide = true;
+                    projectile.timeLeft = 0;
+                    projectile.netUpdate = true;
+                }
+                else
+                {
+                    projectile.damage = Math.Min(5000, projectile.damage);
+                    Main.player[projectile.owner].AddBuff(ModContent.BuffType<WhiteDwarfCooldown>(), 300);
+                }
+            }
         }
     }
 }

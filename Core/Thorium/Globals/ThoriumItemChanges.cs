@@ -10,6 +10,7 @@ using ThoriumMod.Items.BossForgottenOne;
 using ThoriumMod.Items.Donate;
 using ThoriumMod.Items.HealerItems;
 using ThoriumMod.Items.MeleeItems;
+using ThoriumMod.Items.ThrownItems;
 
 namespace FargowiltasCrossmod.Core.Thorium.Globals
 {
@@ -82,6 +83,13 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
                 {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Teleport effect has a 30 second cooldown")));
                 }
+            }
+
+            if (item.type == ModContent.ItemType<WhiteDwarfMask>() ||
+                item.type == ModContent.ItemType<WhiteDwarfGreaves>() ||
+                item.type == ModContent.ItemType<WhiteDwarfGuard>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Ivory flares max damage 5000 and 5s cooldown")));
             }
         }
     }
