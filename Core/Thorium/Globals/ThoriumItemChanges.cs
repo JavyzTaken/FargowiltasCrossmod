@@ -23,6 +23,8 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
 
         public override void SetDefaults(Item entity)
         {
+            if (!FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode) return;
+            
             ThoriumItem thoriumItem = entity.ModItem as ThoriumItem;
 
             if (entity.type == ModContent.ItemType<SilverSpearTip>())
@@ -35,6 +37,8 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
+            if (!FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode) return;
+            
             const string BalanceLine = "Cross-mod Balance: ";
             const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
             const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";

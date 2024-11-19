@@ -192,7 +192,10 @@ namespace FargowiltasCrossmod.Content.Thorium
 
         public override void PostUpdate()
         {
-            Core.Thorium.Globals.ThoriumPotionNerfs.MurderBuffs(Player);
+            if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
+            {
+                Core.Thorium.Globals.ThoriumPotionNerfs.MurderBuffs(Player);
+            }
         }
 
         public override void FrameEffects()
