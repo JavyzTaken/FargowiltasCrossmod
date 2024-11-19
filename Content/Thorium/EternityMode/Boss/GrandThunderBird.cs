@@ -89,12 +89,15 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
         {
             npc.width = npc.height = 60;
             npc.lifeMax = (int)MathF.Round(npc.lifeMax * 1.2f / 100f) * 100; // I like the numbers to be pretty
+            npc.damage = 40;
+            npc.defense = 4;
         }
 
         private void CycleMode(NPC npc)
         {
             npc.rotation = 0f;
             npc.color = Color.White;
+            npc.damage = 40;
 
             switch (currentMode)
             {
@@ -254,7 +257,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                         int zap = Projectile.NewProjectile(source, target.Center.X + offset, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 10f, zapType, 10, 0f, Main.myPlayer, 0f, 0f, 0f);
                         Main.projectile[zap].tileCollide = false;
                     }
-                    Projectile.NewProjectile(source, target.Center.X, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 8f, zapType, 12, 0f, Main.myPlayer, 0f, 0f, 0f);
+                    Projectile.NewProjectile(source, target.Center.X, target.Center.Y - 800f + Main.rand.Next(-30, 30), 0f, 8f, zapType, 10, 0f, Main.myPlayer, 0f, 0f, 0f);
                     float speedX = -0.05f * Utils.ToDirectionInt(npc.velocity.X > 0f);
                     Projectile.NewProjectile(source, npc.Center.X, npc.Center.Y - 34f, speedX, 0f, ModContent.ProjectileType<ThunderBirdScreech>(), 0, 0f, Main.myPlayer, npc.rotation, 0f, 0f);
 
@@ -438,7 +441,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                         if (MathF.Sign(random.X) != MathF.Sign(Main.LocalPlayer.Center.X - npc.Center.X)) random.X *= -1f;
                         Vector2 spawnPos = Main.LocalPlayer.Center + Main.LocalPlayer.velocity * 15f + random;
 
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 25, 3f, Main.myPlayer, 0, 180f);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 12, 3f, Main.myPlayer, 0, 180f);
                     }
                 }
 
@@ -457,7 +460,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                         if (MathF.Sign(random.Y) != MathF.Sign(Main.LocalPlayer.Center.Y - npc.Center.Y + 160)) random.Y *= -1f;
                         Vector2 spawnPos = Main.LocalPlayer.Center + Main.LocalPlayer.velocity * 15f + random;
 
-                        Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 25, 3f, Main.myPlayer, 0, 180f);
+                        Projectile.NewProjectile(npc.GetSource_FromAI(), spawnPos, Vector2.Zero, ModContent.ProjectileType<KluexOrb>(), 12, 3f, Main.myPlayer, 0, 180f);
                     }
                 }
             }
@@ -488,7 +491,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                         npc.rotation = 0f;
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            npc.localAI[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + npc.velocity * 45f - Vector2.UnitY * 64f, Vector2.Zero, ModContent.ProjectileType<GTBSandStorm>(), 20, 4f);
+                            npc.localAI[0] = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center + npc.velocity * 45f - Vector2.UnitY * 64f, Vector2.Zero, ModContent.ProjectileType<GTBSandStorm>(), 12, 4f);
                         }
                     }
                     break;
@@ -543,6 +546,7 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
                     npc.rotation = 0f;
                     npc.ai[0] = 2;
                     npc.velocity = Vector2.Zero;
+                    npc.damage = 0;
                     break;
             };
         }
