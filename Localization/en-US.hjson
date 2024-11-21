@@ -38,7 +38,12 @@ Mods: {
 			Deactivation: Eternity-Death Mode has deactivated.
 		}
 
-		UI.ToggledWithCal: Toggled with Calamity's difficulty selector
+		UI: {
+			ToggledWithCal: Toggled with Calamity's difficulty selector
+			HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
+			AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
+			ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+		}
 
 		Configs: {
 			CalDLCConfig: {
@@ -542,6 +547,7 @@ Mods: {
 			}
 
 			Lore.LoreDraedon.DisplayName: Draedon
+
 			FathomSwarmerEnchant: {
 				DisplayName: Fathom Swarmer Enchantment
 				Tooltip:
@@ -903,12 +909,6 @@ Mods: {
 			FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
 			FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
 			FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
-		}
-
-		UI: {
-			HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
-			AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
-			ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
 		}
 
 		EModeBalance.Laudanum: Halved strength of most positive debuff effects

@@ -42,7 +42,12 @@ Mods: {
 			Deactivation: Режим Вечная смерть выключен.
 		}
 
-		UI.ToggledWithCal: Переключается с помощью переключателя сложностей Calamity
+		UI: {
+			ToggledWithCal: Переключается с помощью переключателя сложностей Calamity
+			// HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
+			// AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
+			// ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+		}
 
 		Configs: {
 			CalDLCConfig: {
@@ -548,6 +553,7 @@ Mods: {
 			}
 
 			// Lore.LoreDraedon.DisplayName: Draedon
+
 			FathomSwarmerEnchant: {
 				// DisplayName: Fathom Swarmer Enchantment
 				/* Tooltip:
@@ -909,12 +915,6 @@ Mods: {
 			FountainCrags: Заставляет окружающий биом смениться на серную скалу при активации
 			FountainSulphur: Заставляет окружающий биом смениться на сернистое море при активации
 			FountainSunken: Заставляет окружающий биом смениться на затерянное море при активации
-		}
-
-		UI: {
-			// HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
-			// AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
-			// ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
 		}
 
 		EModeBalance.Laudanum: Положительные эффекты дебаффов ослаблены вдвое
