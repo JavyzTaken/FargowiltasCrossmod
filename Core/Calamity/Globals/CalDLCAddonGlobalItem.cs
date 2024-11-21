@@ -28,6 +28,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             int minBats = bats - 2;
             int maxBats = bats + 2;
             int batDamage = 50;
+            
             if (player.ForceEffect<UmbraphileEffect>()) batDamage *= 3;
             if (item.healLife > 0 && player.HasEffect<UmbraphileEffect>())
             {
@@ -41,6 +42,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (player.HasEffect<UmbraphileEffect>())
             {
+                
                 healValue = 0;
             }
         }

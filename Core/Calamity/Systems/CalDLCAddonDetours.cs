@@ -82,40 +82,40 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         //    orig(self, camera, drawPlayer, position, rotation, rotationOrigin, shadow, scale);
         //}
 
-        //private void BigPlayerNPCs(On_Player.orig_Update_NPCCollision orig, Player self)
-        //{
-        //    Player player = self;
-        //    Vector2 size = player.Size;
-        //    Vector2 position = player.position;
-        //    if (player.HasEffect<TitanHeartEffect>())
-        //    {
-        //        player.width += 20;
-        //        player.height += 30;
-        //        player.position.X -= 10;
-        //        player.position.Y -= 15;
-        //    }
-        //    orig(self);
-        //    player.width = (int)size.X;
-        //    player.height = (int)size.Y;
-        //    player.position = position;
-        //}
+        private void BigPlayerNPCs(On_Player.orig_Update_NPCCollision orig, Player self)
+        {
+            Player player = self;
+            Vector2 size = player.Size;
+            Vector2 position = player.position;
+            if (player.HasEffect<TitanHeartEffect>())
+            {
+                player.width += 20;
+                player.height += 30;
+                player.position.X -= 10;
+                player.position.Y -= 15;
+            }
+            orig(self);
+            player.width = (int)size.X;
+            player.height = (int)size.Y;
+            player.position = position;
+        }
 
-        //private void BigPlayer(On_Projectile.orig_Damage orig, Projectile self)
-        //{
-        //    Player player = Main.LocalPlayer;
-        //    Vector2 size = player.Size;
-        //    Vector2 position = player.position;
-        //    if (player.HasEffect<TitanHeartEffect>())
-        //    {
-        //        player.width += 20;
-        //        player.height += 30;
-        //        player.position.X -= 10;
-        //        player.position.Y -= 15;
-        //    }
-        //    orig(self);
-        //    player.width = (int)size.X;
-        //    player.height = (int)size.Y;
-        //    player.position = position;
-        //}
+        private void BigPlayer(On_Projectile.orig_Damage orig, Projectile self)
+        {
+            Player player = Main.LocalPlayer;
+            Vector2 size = player.Size;
+            Vector2 position = player.position;
+            if (player.HasEffect<TitanHeartEffect>())
+            {
+                player.width += 20;
+                player.height += 30;
+                player.position.X -= 10;
+                player.position.Y -= 15;
+            }
+            orig(self);
+            player.width = (int)size.X;
+            player.height = (int)size.Y;
+            player.position = position;
+        }
     }
 }

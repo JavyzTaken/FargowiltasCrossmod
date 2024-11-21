@@ -19,6 +19,8 @@ using Luminance.Common.Utilities;
 using CalamityMod.Projectiles.Ranged;
 using CalamityMod;
 using CalamityMod.Events;
+using Terraria.GameInput;
+using System.Reflection;
 
 namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
@@ -41,6 +43,33 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;
         public bool RuffianModifiedRotation = false;
+        public float BrimflameDefenseTimer = 0;
+        public float BrimflameShootingTimer = 0;
+        public int MaxDefense = 0;
+        public int ClamSlamTime = 0;
+        public float ClamSlamHorizontalSpeed = 0;
+        public int ClamSlamCooldown = 0;
+        public int ClamSlamIframes = 0;
+        public override void ResetEffects()
+        {
+            if (BrimflameDefenseTimer > 0)
+            {
+                BrimflameDefenseTimer--;
+            }
+            if (BrimflameShootingTimer > 0)
+            {
+                BrimflameShootingTimer--;
+            }
+            if (ClamSlamCooldown > 0)
+            {
+                ClamSlamCooldown--;
+            }
+            if (ClamSlamIframes > 0)
+            {
+                ClamSlamIframes--;
+            }
+            base.ResetEffects();
+        }
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
@@ -59,6 +88,33 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 Player.fullRotation = 0;
                 RuffianModifiedRotation = false;
             }
+        }
+        public override void ProcessTriggers(TriggersSet triggersSet)
+        {
+            FieldInfo installKey = typeof(FargowiltasSouls.FargowiltasSouls).GetField("DebuffInstallKey", BindingFlags.NonPublic | BindingFlags.Static);
+            FieldInfo sDashKey = typeof(FargowiltasSouls.FargowiltasSouls).GetField("SpecialDashKey", BindingFlags.NonPublic | BindingFlags.Static);
+            if (installKey != null && installKey.GetValue(installKey) != null) {
+                ModKeybind value = (ModKeybind)installKey.GetValue(installKey);
+                if (value.JustPressed)
+                {
+                    if (Player.HasEffect<BrimflameEffect>())
+                    {
+                        BrimflameEffect.BrimflameTrigger(Player);
+                    }
+                }   
+            }
+            if (sDashKey != null && sDashKey.GetValue(sDashKey) != null)
+            {
+                ModKeybind value = (ModKeybind)sDashKey.GetValue(sDashKey);
+                if (value.JustPressed)
+                {
+                    if (Player.HasEffect<MolluskEffect>())
+                    {
+                        MolluskEffect.MolluskTrigger(Player);
+                    }
+                }
+            }
+            base.ProcessTriggers(triggersSet);
         }
         public override void PreUpdate()
         {

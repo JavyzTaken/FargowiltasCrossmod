@@ -289,7 +289,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
 
                 tooltips.RemoveAll(t => t.Text != item.Name);
-                tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", $"[c/FF0000:Calamity Crossmod Support:] Disabled. Use Calamity's difficulty UI instead!"));
+                tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", $"[c/FF0000:Calamity Crossmod Support:] Activate Eternity with Calamity's difficulty selector instead!"));
             }
             if (item.type == ModContent.ItemType<Terminus>())
             {

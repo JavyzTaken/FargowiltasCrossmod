@@ -10,10 +10,7 @@ Mods: {
 				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.  [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
 
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
-
-				-Deviantt provides a starter pack
-				-Improves base stats
-				-Debuffs wear off faster when not attacking
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
@@ -27,22 +24,21 @@ Mods: {
 			ExpandedDescription:
 				'''
 				Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
-				[c/00FFFF: This is the main intended experience.] 
+				[c/00FFFF:This is the main intended experience.] 
 
 				Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses. [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
 				Eternity-Death only: Expands AI for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
 
 				By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
-
-				-Deviantt provides a starter pack
-				-Improves base stats
-				-Debuffs wear off faster when not attacking
+				{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
 				[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
 
 				'''
 			Activation: Eternity-Death Mode has activated!
 			Deactivation: Eternity-Death Mode has deactivated.
 		}
+
+		UI.ToggledWithCal: Toggled with Calamity's difficulty selector
 
 		Configs: {
 			CalDLCConfig: {
@@ -299,7 +295,7 @@ Mods: {
 				DisplayName: Deepsea Protein Shake
 				Tooltip:
 					'''
-					Summons Reapear Shark
+					Summons Reaper Shark
 					Can only be used in the Abyss
 					'''
 			}
@@ -451,17 +447,18 @@ Mods: {
 
 			PlagueReaperEnchant: {
 				DisplayName: Plague Reaper Enchantment
-				Tooltip:
-					'''
-					All attacks inflict plague for a short time
-					Being near plagued enemies grows a plague cloud around you
-					Once fully charged, it explodes into a massive lingering cloud
-					'''
+				Tooltip: All debuffs spread between enemies
 			}
 
 			PlaguebringerEnchant: {
 				DisplayName: Plaguebringer Enchantment
-				Tooltip: All damage over time debuffs spread between enemies
+				Tooltip:
+					'''
+					All attacks inflict plague for a short time
+					A plague cloud follows you, growing when nearby plagued enemies.
+					At maximum size, the cloud expands rapidly and stops following you,
+					lingering in place for a while.
+					'''
 			}
 
 			ReaverEnchant: {
@@ -508,7 +505,11 @@ Mods: {
 
 			TitanHeartEnchant: {
 				DisplayName: Titan Heart Enchantment
-				Tooltip: ""
+				Tooltip:
+					'''
+					Increases damage by 15%
+					Makes you larger
+					'''
 			}
 
 			StatigelEnchant: {
@@ -541,6 +542,42 @@ Mods: {
 			}
 
 			Lore.LoreDraedon.DisplayName: Draedon
+			FathomSwarmerEnchant: {
+				DisplayName: Fathom Swarmer Enchantment
+				Tooltip:
+					'''
+					Summons an Anglerfish familiar that follows your mouse
+					The anglerfish's light slows down enemies and their projectiles
+					'''
+			}
+
+			AstralEnchant: {
+				DisplayName: Astral Enchantment
+				Tooltip: You are followed by a trail of damaging astral stars
+			}
+
+			BrimflameEnchant: {
+				DisplayName: Brimflame Enchantment
+				Tooltip:
+					'''
+					Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+					Becomes stronger the more defense is consumed
+					Your defense will regenerate over time
+					Can only be used when at maximum defense
+					'''
+				DefenseDown: -{0} defense
+				DefenseUp: +{0} defense
+			}
+
+			MolluskEnchant: {
+				DisplayName: Mollusk Enchantment
+				Tooltip:
+					'''
+					Press Special Dash key to quickly slam downwards
+					Hitting an enemy with the slam deals massive damage and gives you immunity frames
+					Only goes on cooldown on enemy hits
+					'''
+			}
 		}
 
 		NPCs: {
@@ -641,6 +678,7 @@ Mods: {
 			MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
 			ShadeLightningCloud.DisplayName: Shade Lightning Cloud
 			ToothBall.DisplayName: Tooth Ball
+			Tooth.DisplayName: Tooth
 			HomingRocket.DisplayName: Homing Rocket
 			HomingSickle.DisplayName: Homing Sickle
 			HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
@@ -755,6 +793,15 @@ Mods: {
 			HadesMissile.DisplayName: Fortified Missile
 			CodebreakerDataStream.DisplayName: Codebreaker Data Stream
 			CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
+			BigBubble.DisplayName: Big Bubble
+			Bubble.DisplayName: Bubble
+			AquaticSuck.DisplayName: Aquatic Suck
+			FlamableGas.DisplayName: Flamable Gas
+			ToxicGas.DisplayName: Toxic Gas
+			FathomAngler.DisplayName: Fathom Angler
+			AstralTrailStar.DisplayName: Astral Trail Star
+			BrimflameBurst.DisplayName: Brimflame Burst
+			ClamSlam.DisplayName: Clam Slam
 		}
 
 		Buffs: {
@@ -811,12 +858,16 @@ Mods: {
 			DaedalusEffect: Daedalus Flight Limit
 			ReaverEffect: Reaver Stats
 			HydrothermicEffect: Overheat
-			PlaguebringerEffect: Debuff Spread
+			PlaguebringerEffect: Plague Cloud
+			PlagueReaperEffect: Debuff Spread
 			StatigelEffect: Statigel Acceleration and Damage
 			SulphurEffect: Bubble Jump
 			VictideEffect: Urchin Spikes
 			TitanHeartEffect: Titan Size
 			UmbraphileEffect: Bat Healing
+			FathomSwarmerEffect: Angler Fish
+			BrimflameEffect: Brimflame Burst
+			MolluskEffect: Mollusk Slam
 		}
 
 		WizardEffect: {
@@ -828,7 +879,8 @@ Mods: {
 			Daedalus: Grants wings if you don't have any, Can fly higher
 			SnowRuffian: Grants some flight time
 			Reaver: More drastic stat changes
-			Plaguebringer:
+			Plaguebringer: Plague cloud deals more damage and charges from longer away
+			PlagueReaper:
 				'''
 				Debuffs spread from farther 
 				Enemies spread debuffs for a longer amount of time
@@ -837,6 +889,11 @@ Mods: {
 			Sulphur: Jumps create 3 bubbles with increased damage
 			Victide: Spikes are no longer affected by gravity and inflict venom
 			Statigel: Higher maximum speed, damage bonus doubled
+			TitanHeart: More damage, larger size
+			FathomSwarmer: Larger Light, Faster Fish
+			Astral: Longer trail, more damage
+			Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
+			Mollusk: More damage, More immunity frames
 		}
 
 		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform

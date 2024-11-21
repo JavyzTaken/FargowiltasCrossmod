@@ -86,7 +86,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         
         public override void PostUpdateEquips(Player player)
         {
-            
+            player.GetDamage(DamageClass.Generic) += 0.15f;
         }
     }
 }

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 {
@@ -42,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 
             Projectile.scale = MathHelper.Lerp(0, Projectile.ai[1], 1 - (1 - x) * (1 - x));
             Projectile.Opacity = MathHelper.Lerp(1, 0, 1 - (float)Math.Cos((x * Math.PI) / 2));
+
             base.AI();
         }
     }

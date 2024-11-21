@@ -18,8 +18,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Essences
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(ModContent.GetInstance<RogueDamageClass>()) += 0.18f;
-            player.Calamity().rogueVelocity += 0.05f;
-            player.GetCritChance(ModContent.GetInstance<RogueDamageClass>()) += 0.05f;
+            player.Calamity().rogueVelocity += 0.1f;
+            player.GetCritChance(ModContent.GetInstance<RogueDamageClass>()) += 8f;
 
         }
         public override void AddRecipes()

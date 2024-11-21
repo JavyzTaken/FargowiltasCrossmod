@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
             NPC.Calamity().VulnerableToHeat = true;
             NPC.Calamity().VulnerableToCold = false;
-            NPC.Calamity().VulnerableToSickness = false;
+            NPC.Calamity().VulnerableToSickness = true;
             NPC.coldDamage = true;
 
         }

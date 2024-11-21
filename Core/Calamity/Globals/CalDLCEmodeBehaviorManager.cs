@@ -64,8 +64,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
                     DLCBehaviour.OnFirstTick();
                 }
-                if (!WorldSavingSystem.SwarmActive)
-                    return DLCBehaviour.PreAI();
+                return DLCBehaviour.PreAI();
             }
 
             return true;

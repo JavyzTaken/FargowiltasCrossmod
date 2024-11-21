@@ -1,17 +1,12 @@
-New Update: v1.1.0.8
--Eternity Hive Mind: Dark Hearts now use old, less volatile AI
--Eternity Brimstone Elemental: 
---Shader aura now draws on top of literally everything so it can't possibly be missed (previously didn't draw in Hell if background was disabled, for example)
---Decreased speed of inferno fork-like fireball projectiles
---Fixed bug causing bonus defense to linger after exiting shell phase
---HP +40%
+New Update: v1.1.1.01
 
--Disabled Adamantite Enchantment on all Calamity projectiles until issues are resolved
--Reduced Tungsten Enchantment scale nerf and now applies to all Melee weapons rather than just True Melee
--Eternity-Death deerclops border is now centered on the player during flicker teleport
--Reworked several recipes, notably of Class Souls
+Life Force wing stats and flight time are throttled against Calamity bosses
 
--Fixed EoC not despawning during horizontal dash
--Assured EoC can't be invincible during horizontal dash
--Attempted to fix Boss Rush not working correctly
--Astral Injection no longer grants infinite at 30 stack
+Clarified Cross-mod balance tooltip for Adamantite/Earth Force
+Cataclysm/Catastrophe are now immune to Clipped Wings
+Calamity debuffs now count for Ashwood/Obsidian Enchantment and other Fargo universal debuff effects such as immunities
+
+Fixed Force recipes not containing Divine Geodes
+Fixed Laudanum eternity change tooltip not displaying correctly
+Fixed typo in Reaper Shark summon description
+Fixed Rock Golems spawning close to Sunken Sea

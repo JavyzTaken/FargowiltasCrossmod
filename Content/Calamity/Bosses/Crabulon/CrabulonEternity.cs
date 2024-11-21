@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using CalamityMod.Events;
 using CalamityMod.NPCs.Crabulon;
 using CalamityMod.Projectiles.Ranged;
@@ -148,6 +149,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 ai_Timer = 0;
                 NPC.defense = 40;
                 NPC.HitSound = SoundID.NPCHit4;
+                NPC.chaseable = false;
                 NetSync(NPC);
             }
             //fungal clump phase 2
@@ -162,7 +164,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 ai_Timer = 0;
                 NPC.defense = 40;
                 NPC.HitSound = SoundID.NPCHit4;
+                NPC.chaseable = false;
                 NetSync(NPC);
+
             }
             
             //fungal clump phase
@@ -177,6 +181,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 ai_Timer = 0;
                 NPC.defense = 40;
                 NPC.HitSound = SoundID.NPCHit4;
+                NPC.chaseable = false;
                 NetSync(NPC);
             }
             //exit fungal clump phases
@@ -187,6 +192,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 ai_Timer = 0;
                 NPC.defense = 8;
                 NPC.HitSound = SoundID.NPCHit45;
+                NPC.chaseable = true;
                 NetSync(NPC);
             }
             //Attack phase 2

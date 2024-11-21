@@ -42,6 +42,9 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
+using FargowiltasSouls.Content.Items;
+using FargowiltasSouls.Content.UI.Elements;
+using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -55,6 +58,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo CalamityOtherStatChangesMethod = typeof(CalamityGlobalNPC).GetMethod("OtherStatChanges", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityBossHeadSlotMethod = typeof(CalamityGlobalNPC).GetMethod("BossHeadSlot", LumUtils.UniversalBindingFlags);
         // NPCStats
         private static readonly MethodInfo CalamityGetNPCDamageMethod = typeof(NPCStats).GetMethod("GetNPCDamage", LumUtils.UniversalBindingFlags);
         // GlobalProjectile
@@ -64,10 +68,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         // Misc compatibility, fixes and balance
         private static readonly MethodInfo FMSVerticalSpeedMethod = typeof(FlightMasteryWings).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FMSHorizontalSpeedMethod = typeof(FlightMasteryWings).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo LifeForceVerticalSpeedMethod = typeof(LifeForce).GetMethod("VerticalWingSpeeds", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo LifeForceHorizontalSpeedMethod = typeof(LifeForce).GetMethod("HorizontalWingSpeeds", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo IsFargoSoulsItemMethod = typeof(Squirrel).GetMethod("IsFargoSoulsItem", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BrimstoneMonsterCanHitPlayerMethod = typeof(BrimstoneMonster).GetMethod("CanHitPlayer", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoSoulsOnSpawnProjMethod = typeof(FargoSoulsGlobalProjectile).GetMethod("OnSpawn", LumUtils.UniversalBindingFlags);
-        private static readonly MethodInfo TryUnlimBuffMethod = typeof(FargoGlobalItem).GetMethod("TryUnlimBuff", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo TryUnlimBuffMethod = typeof(Fargowiltas.Items.FargoGlobalItem).GetMethod("TryUnlimBuff", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo NatureChampAIMethod = typeof(NatureChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TerraChampAIMethod = typeof(TerraChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
@@ -77,6 +83,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo ModifyHurtInfo_CalamityMethod = typeof(CalamityPlayer).GetMethod("ModifyHurtInfo_Calamity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -84,6 +93,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_CalamityOtherStatChanges(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
+        public delegate void Orig_CalamityBossHeadSlot(CalamityGlobalNPC self, NPC npc, ref int index);
         // NPCStats
         public delegate void Orig_CalamityGetNPCDamage(NPC npc);
         // GlobalProjectile
@@ -93,6 +103,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         // Misc compatibility, fixes and balance
         public delegate void Orig_FMSVerticalSpeed(FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
         public delegate void Orig_FMSHorizontalSpeed(FlightMasteryWings self, Player player, ref float speed, ref float acceleration);
+        public delegate void Orig_LifeForceVerticalSpeed(LifeForce self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend);
+        public delegate void Orig_LifeForceHorizontalSpeed(LifeForce self, Player player, ref float speed, ref float acceleration);
         public delegate bool Orig_IsFargoSoulsItem(Item item);
         public delegate bool Orig_BrimstoneMonsterCanHitPlayer(BrimstoneMonster self, Player player);
         public delegate void Orig_FargoSoulsOnSpawnProj(FargoSoulsGlobalProjectile self, Projectile projectile, IEntitySource source);
@@ -106,6 +118,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
         public delegate void Orig_ModifyHurtInfo_Calamity(CalamityPlayer self, ref Player.HurtInfo info);
         public delegate void Orig_MinimalEffects(ToggleBackend self);
+        public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+        public delegate bool Orig_CanToggleEternity();
+        public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -115,6 +130,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityBossHeadSlotMethod, CalamityBossHeadSlot_Detour);
             // NPCStats
             HookHelper.ModifyMethodWithDetour(CalamityGetNPCDamageMethod, CalamityGetNPCDamage_Detour);
             // GlobalProjectile
@@ -124,6 +140,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             // Misc compatibility, fixes and balance
             HookHelper.ModifyMethodWithDetour(FMSVerticalSpeedMethod, FMSVerticalSpeed_Detour);
             HookHelper.ModifyMethodWithDetour(FMSHorizontalSpeedMethod, FMSHorizontalSpeed_Detour);
+            HookHelper.ModifyMethodWithDetour(LifeForceVerticalSpeedMethod, LifeForceVerticalSpeed_Detour);
+            HookHelper.ModifyMethodWithDetour(LifeForceHorizontalSpeedMethod, LifeForceHorizontalSpeed_Detour);
             HookHelper.ModifyMethodWithDetour(IsFargoSoulsItemMethod, IsFargoSoulsItem_Detour);
             HookHelper.ModifyMethodWithDetour(BrimstoneMonsterCanHitPlayerMethod, BrimstoneMonsterCanHitPlayer_Detour);
             HookHelper.ModifyMethodWithDetour(FargoSoulsOnSpawnProjMethod, FargoSoulsOnSpawnProj_Detour);
@@ -137,6 +155,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
             HookHelper.ModifyMethodWithDetour(ModifyHurtInfo_CalamityMethod, ModifyHurtInfo_Calamity_Detour);
             HookHelper.ModifyMethodWithDetour(MinimalEffects_Method, MinimalEffects_Detour);
+            HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
+            HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
+            HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -144,7 +165,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
             bool wasBossRush = BossRushEvent.BossRushActive;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
 
             int defDamage = npc.defDamage; // do not fuck with defDamage please
 
@@ -186,7 +207,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasBossRush = BossRushEvent.BossRushActive;
             bool shouldDisableNPC = CalamityLists.DestroyerIDs.Contains(npc.type) || npc.type == NPCID.SkeletronPrime;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode && shouldDisableNPC;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev && shouldDisableNPC;
 
             if (shouldDisable)
             {
@@ -212,12 +233,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void CalamityPostDraw_Detour(Orig_CalamityPostDraw orig, CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             bool shouldDisableNPC = DisablePostDrawNPCS.Contains(npc.type);
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode && shouldDisableNPC;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev && shouldDisableNPC;
             if (shouldDisable)
             {
                 return;
             }
             orig(self, npc, spriteBatch, screenPos, drawColor);
+        }
+
+        internal static void CalamityBossHeadSlot_Detour(Orig_CalamityBossHeadSlot orig, CalamityGlobalNPC self, NPC npc, ref int index)
+        {
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
+            if (shouldDisable)
+                return;
+            orig(self, npc, ref index);
         }
         #endregion
 
@@ -237,7 +266,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
             int damage = projectile.damage;
             if (shouldDisable)
             {
@@ -259,7 +288,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             bool wasRevenge = CalamityWorld.revenge;
             bool wasDeath = CalamityWorld.death;
             bool wasBossRush = BossRushEvent.BossRushActive;
-            bool shouldDisable = CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
             if (shouldDisable)
             {
                 CalamityWorld.revenge = false;
@@ -333,6 +362,71 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                         acceleration = 2.9f;
                 }
                    
+                //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
+            }
+        }
+
+        internal static void LifeForceVerticalSpeed_Detour(Orig_LifeForceVerticalSpeed orig, LifeForce self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+        {
+            orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
+            if (NonFargoBossAlive())
+            {
+                
+                player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
+                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
+                {
+                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(300);
+
+                    if (ascentWhenFalling > 0.95f)
+                        ascentWhenFalling = 0.95f;
+                    if (ascentWhenRising > 0.16f)
+                        ascentWhenRising = 0.16f;
+                    if (maxCanAscendMultiplier > 1.1f)
+                        maxCanAscendMultiplier = 1.1f;
+                    if (maxAscentMultiplier > 3.2f)
+                        maxAscentMultiplier = 3.2f;
+                    if (constantAscend > 0.145f)
+                        constantAscend = 0.145f;
+                }
+                else // post yharon, use Drew's Wings stats
+                {
+                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(400);
+
+                    if (ascentWhenFalling > 1f)
+                        ascentWhenFalling = 1f;
+                    if (ascentWhenRising > 0.17f)
+                        ascentWhenRising = 0.17f;
+                    if (maxCanAscendMultiplier > 1.2f)
+                        maxCanAscendMultiplier = 1.2f;
+                    if (maxAscentMultiplier > 3.25f)
+                        maxAscentMultiplier = 3.25f;
+                    if (constantAscend > 0.15f)
+                        constantAscend = 0.15f;
+                }
+            }
+            else
+                ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(1000);
+        }
+        internal static void LifeForceHorizontalSpeed_Detour(Orig_LifeForceHorizontalSpeed orig, LifeForce self, Player player, ref float speed, ref float acceleration)
+        {
+            orig(self, player, ref speed, ref acceleration);
+            if (NonFargoBossAlive())
+            {
+                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
+                {
+                    if (speed > 10.5f)
+                        speed = 10.5f;
+                    if (acceleration > 2.8f)
+                        acceleration = 2.8f;
+                }
+                else // post yharon, use Drew's Wings stats
+                {
+                    if (speed > 11.5f)
+                        speed = 11.5f;
+                    if (acceleration > 2.9f)
+                        acceleration = 2.9f;
+                }
+
                 //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
             }
         }
@@ -424,7 +518,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             }
             return result;
         }
-        public static float TungstenIncreaseWeaponSize_Detour(Orig_TungstenIncreaseWeaponSize orig, FargoSoulsPlayer modPlayer)
+        internal static float TungstenIncreaseWeaponSize_Detour(Orig_TungstenIncreaseWeaponSize orig, FargoSoulsPlayer modPlayer)
         {
             float value = orig(modPlayer);
             if (modPlayer.Player.HeldItem == null)
@@ -435,7 +529,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 value -= (value - 1f) * 0.5f;
             return value;
         }
-        public static bool TungstenNerfedProj_Detour(Orig_TungstenNerfedProj orig, Projectile projectile)
+        internal static bool TungstenNerfedProj_Detour(Orig_TungstenNerfedProj orig, Projectile projectile)
         {
             bool value = orig(projectile); 
             if (!projectile.owner.IsWithinBounds(Main.maxPlayers))
@@ -450,14 +544,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 
             return value;
         }
-        public static bool TungstenNeverAffectsProj_Detour(Orig_TungstenNeverAffectsProj orig, Projectile projectile)
+        internal static bool TungstenNeverAffectsProj_Detour(Orig_TungstenNeverAffectsProj orig, Projectile projectile)
         {
             bool value = orig(projectile);
             if (CalDLCSets.Projectiles.TungstenExclude[projectile.type])
                 return true;
             return value;
         }
-        public static void ModifyHurtInfo_Calamity_Detour(Orig_ModifyHurtInfo_Calamity orig, CalamityPlayer self, ref Player.HurtInfo info)
+        internal static void ModifyHurtInfo_Calamity_Detour(Orig_ModifyHurtInfo_Calamity orig, CalamityPlayer self, ref Player.HurtInfo info)
         {
             bool chalice = self.chaliceOfTheBloodGod;
             if (self.Player.FargoSouls().GuardRaised || self.Player.FargoSouls().MutantPresence)
@@ -465,7 +559,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             orig(self, ref info);
             self.chaliceOfTheBloodGod = chalice;
         }
-        public static void MinimalEffects_Detour(Orig_MinimalEffects orig, ToggleBackend self)
+        internal static void MinimalEffects_Detour(Orig_MinimalEffects orig, ToggleBackend self)
         {
             orig(self);
             Player player = Main.LocalPlayer;
@@ -491,6 +585,30 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             player.SetToggleValue<AsgardianAegisEffect>(true);
             player.SetToggleValue<RampartofDeitiesEffect>(true);
 
+        }
+        internal static bool FargoPlayerPreKill_Detour(Orig_FargoPlayerPreKill orig, FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        {
+            bool retval = orig(self, damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
+            if (!retval)
+            {
+                CalamityPlayer calPlayer = self.Player.Calamity();
+                calPlayer.chaliceBleedoutBuffer = 0D;
+                calPlayer.chaliceDamagePointPartialProgress = 0D;
+                calPlayer.chaliceHitOriginalDamage = 0;
+            }
+            return retval;
+        }
+
+        internal static bool CanToggleEternity_Detour(Orig_CanToggleEternity orig)
+        {
+            orig();
+            return false;
+        }
+
+        internal static void SoulTogglerOnActivate_Detour(Orig_SoulTogglerOnActivate orig, SoulTogglerButton self)
+        {
+            orig(self);
+            self.OncomingMutant.TextHoldShift = $"{Language.GetTextValue("Mods.FargowiltasCrossmod.UI.ToggledWithCal")}]\n[c/787878:{self.OncomingMutant.TextHoldShift}";
         }
         #endregion
     }

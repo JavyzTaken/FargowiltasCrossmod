@@ -921,7 +921,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         {
             if (fade)
             {
-                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0, 0.05f);
+                Main.musicFade[Main.curMusic] = MathHelper.Lerp(Main.musicFade[Main.curMusic], 0.6f, 0.05f);
             }
             else
             {
