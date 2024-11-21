@@ -7,6 +7,7 @@ using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -77,6 +78,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
+        public override void SendExtraAI(BinaryWriter writer) => writer.Write(WidthFactor);
+
+        public override void ReceiveExtraAI(BinaryReader reader) => WidthFactor = reader.ReadSingle();
+
         public void GenerateArcPoints()
         {
             ArcPoints = new Vector2[25];
@@ -97,6 +102,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void AI()
         {
+            if (WidthFactor <= 0f)
+                WidthFactor = 1f;
+
             if (ArcPoints is null)
                 GenerateArcPoints();
             else
@@ -147,8 +155,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
                 ArcColor = Color.Lerp(new Color(1f, 0.3f, 0.38f), new Color(1f, 0.77f, 0.64f), colorInterpolant);
             else
                 ArcColor = Color.Lerp(new Color(0.3f, 0.86f, 1f), new Color(0.75f, 0.83f, 1f), colorInterpolant);
-
-            WidthFactor = 1f;
 
             PrimitiveRenderer.RenderTrail(ArcPoints, settings, 39);
         }

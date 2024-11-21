@@ -218,5 +218,50 @@
     "EternityRevValue": 157.0,
     "EternityDeathValue": 157.0,
     "MasochistValue": 157.0
+  },
+  "AresAcceleration_Electrify": {
+    "EternityRevValue": 0.4,
+    "EternityDeathValue": 0.4,
+    "MasochistValue": 0.4
+  },
+  "SuperchargedTurbodashes_AresCannonShootRate": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "SuperchargedTurbodashes_AresMaxFlySpeed_Electrify": {
+    "EternityRevValue": 23.5,
+    "EternityDeathValue": 23.5,
+    "MasochistValue": 23.5
+  },
+  "SuperchargedTurbodashes_ElectrifyTime": {
+    "EternityRevValue": 240.0,
+    "EternityDeathValue": 240.0,
+    "MasochistValue": 240.0
+  },
+  "SuperchargedTurbodashes_HadesDashCount": {
+    "EternityRevValue": 6.0,
+    "EternityDeathValue": 6.0,
+    "MasochistValue": 6.0
+  },
+  "SuperchargedTurbodashes_HadesDashCycleTime": {
+    "EternityRevValue": 72.0,
+    "EternityDeathValue": 72.0,
+    "MasochistValue": 72.0
+  },
+  "SuperchargedTurbodashes_HadesMaxDashSpeed": {
+    "EternityRevValue": 125.0,
+    "EternityDeathValue": 125.0,
+    "MasochistValue": 125.0
+  },
+  "SuperchargedTurbodashes_HadesMineReleaseCycleTime": {
+    "EternityRevValue": 99.0,
+    "EternityDeathValue": 99.0,
+    "MasochistValue": 99.0
+  },
+  "SuperchargedTurbodashes_HadesTeleportOffset": {
+    "EternityRevValue": 1700.0,
+    "EternityDeathValue": 1700.0,
+    "MasochistValue": 1700.0
   }
 }

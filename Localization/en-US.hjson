@@ -808,6 +808,7 @@ Mods: {
 			AstralTrailStar.DisplayName: Astral Trail Star
 			BrimflameBurst.DisplayName: Brimflame Burst
 			ClamSlam.DisplayName: Clam Slam
+			SmallCannonLaser.DisplayName: Laser
 		}
 
 		Buffs: {

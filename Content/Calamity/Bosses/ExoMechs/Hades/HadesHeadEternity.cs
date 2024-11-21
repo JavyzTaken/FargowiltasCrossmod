@@ -388,6 +388,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             ref bool vulernable = ref GetVulnerableField(NPC.As<ThanatosHead>());
             vulernable = SegmentOpenInterpolant >= 0.75f;
 
+            NPC.hide = true;
             NPC.defense = NPC.defDefense;
             NPC.dontTakeDamage = false;
             NPC.ShowNameOnHover = true;

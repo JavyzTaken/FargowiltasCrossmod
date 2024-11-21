@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Assets.Particles
                 Opacity *= 0.84f;
 
             Velocity *= 0.89f;
-            Rotation += Velocity.X * 0.091f;
+            Rotation += Velocity.X * 0.041f;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
