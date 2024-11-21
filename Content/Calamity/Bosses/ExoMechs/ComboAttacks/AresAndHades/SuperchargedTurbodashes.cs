@@ -71,6 +71,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static float AresAcceleration_Electrify => Variables.GetAIFloat("AresAcceleration_Electrify", ExoMechAIVariableType.Combo);
 
+        /// <summary>
+        /// The sound Ares plays when electrifying Hades.
+        /// </summary>
+        public static readonly SoundStyle HadesElectrifySound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HadesElectrify");
+
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<AresBody>()];
 
         public override bool Perform(NPC npc)
@@ -101,6 +106,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), 1));
             ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), 2));
             ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(400f, 40f), 3));
+
+            if (AITimer == ElectrifyTime - LumUtils.SecondsToFrames(3.36f))
+                SoundEngine.PlaySound(HadesElectrifySound).WithVolumeBoost(2.85f);
 
             if (AITimer == ElectrifyTime - LumUtils.SecondsToFrames(2.54f))
                 SoundEngine.PlaySound(AresLaserCannon.TelSound).WithVolumeBoost(1.8f);
