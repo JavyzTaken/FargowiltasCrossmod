@@ -73,7 +73,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
                 Main.spriteBatch.PrepareForShaders();
 
                 PostProcessingAction?.Invoke();
-                Main.spriteBatch.Draw(HadesTarget, Vector2.Zero, Color.White);
+                Main.spriteBatch.Draw(HadesTarget, Main.screenLastPosition - Main.screenPosition, Color.White);
 
                 Main.spriteBatch.ResetToDefault();
             }

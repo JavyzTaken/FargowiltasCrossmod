@@ -347,7 +347,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     shader.TrySetParameter("blurWeights", blurWeights);
                     shader.TrySetParameter("blurDirection", (MathHelper.TwoPi * i / 4f).ToRotationVector2());
                     shader.Apply();
-                    Main.spriteBatch.Draw(HadesPostProcessingSystem.HadesTarget, Vector2.Zero, new Color(255, 34, 1, 0) * electrifyInterpolant);
+                    Main.spriteBatch.Draw(HadesPostProcessingSystem.HadesTarget, Main.screenLastPosition - Main.screenPosition, new Color(255, 34, 1, 0) * electrifyInterpolant);
                 }
 
                 ManagedShader electricShader = ShaderManager.GetShader("FargowiltasCrossmod.HadesSuperchargeShader");
