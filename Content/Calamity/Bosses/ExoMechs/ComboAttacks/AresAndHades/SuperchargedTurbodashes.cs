@@ -211,7 +211,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 if (AITimer % AresCannonShootRate == AresCannonShootRate - 1 && AITimer >= ElectrifyTime + 90)
                 {
-                    SoundEngine.PlaySound(CommonCalamitySounds.ExoLaserShootSound, handNPC.Center);
+                    SoundEngine.PlaySound(CommonCalamitySounds.ExoLaserShootSound, handNPC.Center).WithVolumeBoost(1.5f);
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
                         handNPC.velocity -= handNPC.rotation.ToRotationVector2() * 30f;
@@ -240,7 +240,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
 
             bool shootMines = false;
-            float electrifyInterpolant = LumUtils.InverseLerp(0f, ElectrifyTime, AITimer);
+            float electrifyInterpolant =
+                LumUtils.InverseLerp(0f, ElectrifyTime, AITimer) *
+                LumUtils.InverseLerp(ElectrifyTime + HadesDashCycleTime * HadesDashCount - 5f, ElectrifyTime + HadesDashCycleTime * HadesDashCount - 30f, AITimer);
 
             // Stay near the player while being electrified.
             if (electrifyInterpolant < 1f)
@@ -337,6 +339,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 for (int i = 0; i < blurWeights.Length; i++)
                     blurWeights[i] = Utilities.GaussianDistribution(i / (float)(blurWeights.Length - 1f) * 1.5f, 0.6f);
 
+                float flash = LumUtils.InverseLerpBump(0.6f, 0.7f, 0.7f, 0.8f, electrifyInterpolant);
                 for (int i = 0; i < 4; i++)
                 {
                     ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.MotionBlurShader");
@@ -349,7 +352,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 ManagedShader electricShader = ShaderManager.GetShader("FargowiltasCrossmod.HadesSuperchargeShader");
                 electricShader.TrySetParameter("electricityColor", new Color(255, 14, 20).ToVector4() * electrifyInterpolant * 2f);
-                electricShader.TrySetParameter("electrifyInterpolant", electrifyInterpolant);
+                electricShader.TrySetParameter("electrifyInterpolant", electrifyInterpolant + flash);
                 electricShader.Apply();
             };
 
