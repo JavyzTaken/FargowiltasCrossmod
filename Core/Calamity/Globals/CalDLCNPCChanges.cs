@@ -65,6 +65,7 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
+using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.Champions.Life;
 using FargowiltasSouls.Content.Bosses.Champions.Shadow;
@@ -244,14 +245,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 calNPC.VulnerableToCold = true;
                 calNPC.VulnerableToSickness = false;
             }
-                
+
             // deviantt
             if (npc.type == ModContent.NPCType<DeviBoss>())
             {
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
                 calNPC.VulnerableToSickness = true;
             }
-                
+
             // brn
             if (npc.type == ModContent.NPCType<BanishedBaron>())
             {
@@ -260,7 +261,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 calNPC.VulnerableToWater = false;
                 calNPC.VulnerableToCold = false;
             }
-                
+
             // lifelight
             if (npc.type == ModContent.NPCType<LifeChallenger>())
             {
@@ -271,7 +272,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 calNPC.VulnerableToSickness = false;
                 calNPC.VulnerableToWater = false;
             }
-                
+
             //champions
             if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
             {
@@ -1210,7 +1211,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 spawnRate = (int)(spawnRate * 3f); // full compensation would be *= 4
                 maxSpawns = (int)Math.Ceiling(maxSpawns / 5f); // full compensation would be /= 10
             }
-                
+
         }
         public override bool InstancePerEntity => true;
         private int numAI;

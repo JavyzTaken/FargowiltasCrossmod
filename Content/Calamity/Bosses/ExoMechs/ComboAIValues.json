@@ -218,55 +218,5 @@
     "EternityRevValue": 157.0,
     "EternityDeathValue": 157.0,
     "MasochistValue": 157.0
-  },
-  "WalledSlashes_AttackDuration": {
-    "EternityRevValue": 540.0,
-    "EternityDeathValue": 540.0,
-    "MasochistValue": 540.0
-  },
-  "WalledSlashes_AresAccelerationFactor": {
-    "EternityRevValue": 1.0,
-    "EternityDeathValue": 1.0,
-    "MasochistValue": 1.0
-  },
-  "WalledSlashes_AresMaxFlySpeed": {
-    "EternityRevValue": 56.0,
-    "EternityDeathValue": 56.0,
-    "MasochistValue": 56.0
-  },
-  "WalledSlashes_AresSlashDelay": {
-    "EternityRevValue": 164.0,
-    "EternityDeathValue": 164.0,
-    "MasochistValue": 164.0
-  },
-  "WalledSlashes_AresSlashCycleTime": {
-    "EternityRevValue": 88.0,
-    "EternityDeathValue": 88.0,
-    "MasochistValue": 88.0
-  },
-  "WalledSlashes_AresVerticalHoverOffset": {
-    "EternityRevValue": -300.0,
-    "EternityDeathValue": -300.0,
-    "MasochistValue": -300.0
-  },
-  "WalledSlashes_HadesMineReleaseRate": {
-    "EternityRevValue": 24.0,
-    "EternityDeathValue": 24.0,
-    "MasochistValue": 24.0
-  },
-  "WalledSlashes_HadesSpinPeriod": {
-    "EternityRevValue": 67.0,
-    "EternityDeathValue": 67.0,
-    "MasochistValue": 67.0
-  },
-  "WalledSlashes_HadesSpinRadius": {
-    "EternityRevValue": 1250.0,
-    "EternityDeathValue": 1250.0,
-    "MasochistValue": 1250.0
-  },
-  "WalledSlashes_HadesSpinSpeed": {
-    "EternityRevValue": 142.0,
-    "EternityDeathValue": 142.0,
-    "MasochistValue": 142.0
   }
 }
