@@ -107,10 +107,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), 2));
             ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(400f, 40f), 3));
 
-            if (AITimer == ElectrifyTime - LumUtils.SecondsToFrames(3.36f))
-                SoundEngine.PlaySound(HadesElectrifySound).WithVolumeBoost(2.85f);
+            int electrifyTimeStart = ElectrifyTime - LumUtils.SecondsToFrames(3.36f);
+            if (electrifyTimeStart < 1)
+                electrifyTimeStart = 1;
 
-            if (AITimer == ElectrifyTime - LumUtils.SecondsToFrames(2.54f))
+            int cannonChargeUpStart = ElectrifyTime - LumUtils.SecondsToFrames(2.54f);
+            if (cannonChargeUpStart < 1)
+                cannonChargeUpStart = 1;
+
+            if (AITimer == electrifyTimeStart)
+                SoundEngine.PlaySound(HadesElectrifySound).WithVolumeBoost(2.85f);
+            if (AITimer == cannonChargeUpStart)
                 SoundEngine.PlaySound(AresLaserCannon.TelSound).WithVolumeBoost(1.8f);
 
             // Laugh while charging Hades up.
