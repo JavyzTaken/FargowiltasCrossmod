@@ -106,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// How long Draedon typically waits between spoken dialogue.
         /// </summary>
-        public static readonly int StandardSpeakTime = LumUtils.SecondsToFrames(3f);
+        public static readonly int StandardSpeakTime = LumUtils.SecondsToFrames(2.15f);
 
         /// <summary>
         /// Draedon's starting monologue. This is spoken the first time the player interacts with him.
