@@ -131,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         public override void OnKill(int timeLeft)
         {
             ScreenShakeSystem.StartShakeAtPoint(Projectile.Center, 15f, intensityTaperStartDistance: 3000f, intensityTaperEndDistance: 6000f);
-            SoundEngine.PlaySound(ExplodeSound, Projectile.Center).WithVolumeBoost(2.75f);
+            SoundEngine.PlaySound(ExplodeSound, Vector2.Lerp(Projectile.Center, Main.LocalPlayer.Center, 0.9f)).WithVolumeBoost(2.75f);
 
             // NOTE -- There used to be gores spawned here as well, but that effect was removed on account of the fact that realistically the outer shell of the
             // nuke would be obliterated instantly upon its detonation.
