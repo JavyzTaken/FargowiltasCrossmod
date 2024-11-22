@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class PulseBlast : ModProjectile, IProjOwnedByBoss<AresBody>
+    public class PulseBlast : ModProjectile, IProjOwnedByBoss<AresBody>, IPixelatedPrimitiveRenderer
     {
         private readonly float[] lengthRatios = new float[10];
 
@@ -98,7 +98,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             BlastLength = MathHelper.Clamp(BlastLength + 250f, 0f, MaxBlastLength);
             Projectile.scale = LumUtils.InverseLerpBump(0f, 6f, Lifetime - 10f, Lifetime - 1f, Time);
 
-            ScreenShakeSystem.StartShake(LumUtils.InverseLerp(0f, 10f, Time) * 4.75f, MathHelper.TwoPi, null, 0.91f);
+            ScreenShakeSystem.StartShake(LumUtils.InverseLerp(0f, 10f, Time) * 3f, MathHelper.TwoPi, null, 0.91f);
 
             if (Projectile.IsFinalExtraUpdate())
                 Time++;
@@ -214,26 +214,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             }
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            // Draw bloom.
-            List<Vector2> bloomPositions = Projectile.GetLaserControlPoints(12, BlastLength * MathHelper.Lerp(lengthRatios.Average(), lengthRatios.Min(), 0.67f) * 1.125f);
-            ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.PrimitiveBloomShader");
-            shader.TrySetParameter("innerGlowIntensity", 0.45f);
-            PrimitiveSettings bloomSettings = new(BloomWidthFunction, BloomColorFunction, Shader: shader);
-            PrimitiveRenderer.RenderTrail(bloomPositions, bloomSettings, 50);
-
-            // Draw the beam.
-            ManagedShader blastShader = ShaderManager.GetShader("FargowiltasCrossmod.PulseBlastShader");
-            blastShader.TrySetParameter("lengthRatios", lengthRatios.ToArray());
-            blastShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
-
-            List<Vector2> laserPositions = Projectile.GetLaserControlPoints(12, BlastLength);
-            PrimitiveSettings laserSettings = new(LaserWidthFunction, LaserColorFunction, Shader: blastShader);
-            PrimitiveRenderer.RenderTrail(laserPositions, laserSettings, 70);
-            return false;
-        }
-
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             Vector2 perpendicular = Projectile.velocity.RotatedBy(MathHelper.PiOver2);
@@ -253,5 +233,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
         }
 
         public override bool ShouldUpdatePosition() => false;
+
+        public void RenderPixelatedPrimitives(SpriteBatch spriteBatch)
+        {
+            // Draw bloom.
+            List<Vector2> bloomPositions = Projectile.GetLaserControlPoints(12, BlastLength * MathHelper.Lerp(lengthRatios.Average(), lengthRatios.Min(), 0.67f) * 1.125f);
+            ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.PrimitiveBloomShader");
+            shader.TrySetParameter("innerGlowIntensity", 0.45f);
+            PrimitiveSettings bloomSettings = new(BloomWidthFunction, BloomColorFunction, Shader: shader, Pixelate: true);
+            PrimitiveRenderer.RenderTrail(bloomPositions, bloomSettings, 50);
+
+            // Draw the beam.
+            ManagedShader blastShader = ShaderManager.GetShader("FargowiltasCrossmod.PulseBlastShader");
+            blastShader.TrySetParameter("lengthRatios", lengthRatios.ToArray());
+            blastShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
+
+            List<Vector2> laserPositions = Projectile.GetLaserControlPoints(12, BlastLength);
+            PrimitiveSettings laserSettings = new(LaserWidthFunction, LaserColorFunction, Shader: blastShader, Pixelate: true);
+            PrimitiveRenderer.RenderTrail(laserPositions, laserSettings, 70);
+        }
     }
 }
