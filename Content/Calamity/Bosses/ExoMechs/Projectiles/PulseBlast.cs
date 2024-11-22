@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
         private readonly float[] lengthRatios = new float[10];
 
         /// <summary>
-        /// Whether this railgun has hit a forcefield.
+        /// Whether this blast has hit a player.
         /// </summary>
         public bool HasHitPlayer
         {
@@ -237,20 +237,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
         public void RenderPixelatedPrimitives(SpriteBatch spriteBatch)
         {
             // Draw bloom.
-            List<Vector2> bloomPositions = Projectile.GetLaserControlPoints(12, BlastLength * MathHelper.Lerp(lengthRatios.Average(), lengthRatios.Min(), 0.67f) * 1.125f);
+            Vector2 perpendicular = Projectile.velocity.RotatedBy(MathHelper.PiOver2) * LumUtils.InverseLerp(10f, 0f, Time);
+            List<Vector2> beamPositions = Projectile.GetLaserControlPoints(24, BlastLength * MathHelper.Lerp(lengthRatios.Average(), lengthRatios.Min(), 0.67f) * 1.125f);
+            for (int i = 0; i < beamPositions.Count; i++)
+                beamPositions[i] += perpendicular * MathF.Sin(MathHelper.TwoPi * i / beamPositions.Count * 4f) * 24f;
+
             ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.PrimitiveBloomShader");
             shader.TrySetParameter("innerGlowIntensity", 0.45f);
             PrimitiveSettings bloomSettings = new(BloomWidthFunction, BloomColorFunction, Shader: shader, Pixelate: true);
-            PrimitiveRenderer.RenderTrail(bloomPositions, bloomSettings, 50);
+            PrimitiveRenderer.RenderTrail(beamPositions, bloomSettings, 50);
 
             // Draw the beam.
             ManagedShader blastShader = ShaderManager.GetShader("FargowiltasCrossmod.PulseBlastShader");
             blastShader.TrySetParameter("lengthRatios", lengthRatios.ToArray());
             blastShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
 
-            List<Vector2> laserPositions = Projectile.GetLaserControlPoints(12, BlastLength);
             PrimitiveSettings laserSettings = new(LaserWidthFunction, LaserColorFunction, Shader: blastShader, Pixelate: true);
-            PrimitiveRenderer.RenderTrail(laserPositions, laserSettings, 70);
+            PrimitiveRenderer.RenderTrail(beamPositions, laserSettings, 70);
         }
     }
 }

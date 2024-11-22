@@ -191,7 +191,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             }
 
             // Wait a bit before doing damage.
-            bool doContactDamage = AITimer >= 60;
+            bool doContactDamage = AITimer >= AresShootDelay;
             npc.damage = 0;
             if (doContactDamage)
                 npc.damage = npc.defDamage;
