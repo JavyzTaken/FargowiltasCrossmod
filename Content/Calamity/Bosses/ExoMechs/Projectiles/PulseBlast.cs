@@ -131,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
         /// </summary>
         public void EmitEndParticles()
         {
-            float bloomScale = MathHelper.Lerp(0.85f, 1.3f, LumUtils.Cos01(MathHelper.TwoPi * Time / 6f)) * LaserWidthFunction(0f) * 0.2f;
+            float bloomScale = MathHelper.Lerp(0.85f, 1.3f, LumUtils.Cos01(MathHelper.TwoPi * Time / 6f)) * LaserWidthFunction(0f) * 0.1f;
             Vector2 perpendicular = Projectile.velocity.RotatedBy(MathHelper.PiOver2);
             Vector2 left = Projectile.Center - perpendicular * Projectile.width * Projectile.scale * 0.5f;
             Vector2 right = Projectile.Center + perpendicular * Projectile.width * Projectile.scale * 0.5f;
@@ -169,7 +169,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             {
                 if (!player.dead)
                 {
-                    DLCUtils.LineEllipseIntersectionCheck(start, direction, player.Center, player.Size * 0.5f, player.fullRotation, out Vector2 a, out Vector2 b);
+                    DLCUtils.LineEllipseIntersectionCheck(start, direction, player.Center, player.Size, player.fullRotation, out Vector2 a, out Vector2 b);
 
                     float aDistanceFromStart = start.Distance(a);
                     float bDistanceFromStart = start.Distance(b);
