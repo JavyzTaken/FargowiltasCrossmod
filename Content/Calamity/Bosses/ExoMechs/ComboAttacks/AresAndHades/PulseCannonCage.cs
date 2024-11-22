@@ -29,12 +29,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <summary>
         /// How long a single pulse cannon shoot cycle lasts.
         /// </summary>
-        public static int AresShootCycleTime => 112;
+        public static int AresShootCycleTime => 97;
 
         /// <summary>
         /// The amount of delay between each cannon's firing.
         /// </summary>
-        public static int AresShootDelayPerCannon => 15;
+        public static int AresShootDelayPerCannon => 12;
 
         /// <summary>
         /// How many shoot cycles should be performed by Ares before the attack ends.
