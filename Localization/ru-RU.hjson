@@ -599,11 +599,11 @@ Mods: {
 			LargePerforatorHead.DisplayName: Большой Перфоратор
 			LargePerforatorTail.DisplayName: Большой Перфоратор
 			PermafrostBoss.DisplayName: Пермафрост
-			// EnergyKatanaDisplayName.DisplayName: Ares Hand
 
 			AresHand: {
 				// DisplayName: Ares Hand
 				// EnergyKatanaDisplayName: XF-09 Ares Energy Katana
+				// PulseCannonDisplayName: XF-09 Ares Pulse Cannon
 			}
 
 			Draedon: {

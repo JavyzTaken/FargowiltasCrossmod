@@ -50,9 +50,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             null, "CalamityMod/AresGaussNuke1", "CalamityMod/AresGaussNuke2", "CalamityMod/AresGaussNuke3");
 
         /// <summary>
+        /// The representation of Ares' pulse cannon.
+        /// </summary>
+        public static readonly AresHandType PulseCannon = New("Mods.FargowiltasCrossmod.NPCs.AresHand.EnergyKatanaDisplayName", "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresPulseCannon",
+            "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresPulseCannonGlow", 4, 12, Color.Purple,
+            null);
+
+        /// <summary>
         /// The representation of Ares' energy katana.
         /// </summary>
-        public static readonly AresHandType EnergyKatana = New("Mods.FargowiltasCrossmod.NPCs.AresHand.EnergyKatanaDisplayName", "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresEnergyKatana", "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresEnergyKatanaGlow", 1, 1, Color.Red,
+        public static readonly AresHandType EnergyKatana = New("Mods.FargowiltasCrossmod.NPCs.AresHand.EnergyKatanaDisplayName", "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresEnergyKatana",
+            "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresEnergyKatanaGlow", 1, 1, Color.Red,
             AresHand.DrawEnergyKatana);
 
         private static AresHandType New(string nameLocalizationKey, string texturePath, string glowmaskPath, int totalHorizontalFrames, int totalVerticalFrames, Color energyTelegraphColor, Action<NPC, Vector2>? extraDrawAction, params string[] customGoreNames)
