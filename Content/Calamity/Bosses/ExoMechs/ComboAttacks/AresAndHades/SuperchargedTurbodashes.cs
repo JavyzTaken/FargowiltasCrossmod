@@ -257,7 +257,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             bool shootMines = false;
             float electrifyInterpolant =
                 LumUtils.InverseLerp(0f, ElectrifyTime, AITimer) *
-                LumUtils.InverseLerp(ElectrifyTime + HadesDashCycleTime * HadesDashCount - 5f, ElectrifyTime + HadesDashCycleTime * HadesDashCount - 30f, AITimer);
+                LumUtils.InverseLerp(ElectrifyTime + HadesDashCycleTime * HadesDashCount - 10f, ElectrifyTime + HadesDashCycleTime * HadesDashCount - 30f, AITimer);
 
             // Stay near the player while being electrified.
             if (electrifyInterpolant < 1f)
@@ -370,6 +370,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 electricShader.TrySetParameter("electrifyInterpolant", electrifyInterpolant + flash);
                 electricShader.Apply();
             };
+            if (electrifyInterpolant <= 0f)
+                HadesPostProcessingSystem.PostProcessingAction = null;
 
             // Rotate forward.
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
