@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The lifetime ratio of this orb.
         /// </summary>
-        public float LifetimeRatio => Utilities.Saturate(Time / Lifetime);
+        public float LifetimeRatio => LumUtils.Saturate(Time / Lifetime);
 
         /// <summary>
         /// How long this orb should exist for, in frames.
@@ -69,10 +69,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             NPC hades = Main.npc[CalamityGlobalNPC.draedonExoMechWorm];
             Projectile.rotation = hades.velocity.ToRotation();
-            Projectile.scale = Utilities.InverseLerpBump(0f, 0.4f, 0.7f, 0.92f, LifetimeRatio);
+            Projectile.scale = LumUtils.InverseLerpBump(0f, 0.4f, 0.7f, 0.92f, LifetimeRatio);
 
             float reachInterpolant = LumUtils.InverseLerp(0.92f, 0.75f, LifetimeRatio);
-            Projectile.Center = hades.Center + Projectile.rotation.ToRotationVector2() * Projectile.width * MathHelper.Lerp(0.25f, 0.7f, reachInterpolant);
+            Projectile.Center = hades.Center + Projectile.rotation.ToRotationVector2() * Projectile.width * MathHelper.Lerp(0.1f, 0.7f, reachInterpolant);
 
             CreateElectricParticles();
 
@@ -136,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Main.rand.NextBool(5))
                 arcLength *= 1.6f;
 
-            Utilities.NewProjectileBetter(Projectile.GetSource_FromThis(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, arcLifetime, 0f);
+            LumUtils.NewProjectileBetter(Projectile.GetSource_FromThis(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, arcLifetime, 0f);
         }
 
         public override bool PreDraw(ref Color lightColor)

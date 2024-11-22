@@ -94,10 +94,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             Vector2 outerHoverDestination = Target.Center + new Vector2(NPC.OnRightSideOf(Target).ToDirectionInt() * 1050f, -400f);
 
             BodyBehaviorAction = new(EveryNthSegment(2), b => DoBehavior_ExoEnergyBlast_UpdateSegment(b, beamIsOverheating));
-            SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant + (beamIsOverheating ? 2f : -1f) * StandardSegmentOpenRate);
+            SegmentOpenInterpolant = LumUtils.Saturate(SegmentOpenInterpolant + (beamIsOverheating ? 2f : -1f) * StandardSegmentOpenRate);
 
             float jawOpenInterpolant = LumUtils.InverseLerp(0f, ExoEnergyBlast_JawOpenTime, AITimer - ExoEnergyBlast_InitialRedirectTime);
+            float jawCloseInterpolant = LumUtils.InverseLerpBump(-45f, -20f, 0f, 4f, AITimer - ExoEnergyBlast_InitialRedirectTime - ExoEnergyBlast_BlastDelay);
+            float jawJitter = LumUtils.InverseLerp(0f, 8f, AITimer - ExoEnergyBlast_InitialRedirectTime - ExoEnergyBlast_BlastDelay) * 0.12f;
+
             JawRotation = EasingCurves.Elastic.Evaluate(EasingType.Out, 0f, 1.3f, jawOpenInterpolant);
+            JawRotation = JawRotation.AngleLerp(-0.2f, jawCloseInterpolant);
+            JawRotation += Main.rand.NextFloatDirection() * jawJitter;
 
             // Attempt to get into position for the light attack.
             if (AITimer < ExoEnergyBlast_InitialRedirectTime)
@@ -130,7 +135,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     SoundEngine.PlaySound(DeathrayChargeUpStrongSound).WithVolumeBoost(1.5f);
 
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesExoEnergyOrb>(), 0, 0f, -1, ExoEnergyBlast_BlastDelay);
+                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesExoEnergyOrb>(), 0, 0f, -1, ExoEnergyBlast_BlastDelay);
                 }
 
                 float chargeUpInterpolant = LumUtils.InverseLerp(0f, ExoEnergyBlast_BlastDelay, AITimer - ExoEnergyBlast_InitialRedirectTime);
@@ -168,7 +173,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             {
                 SuperDeathraySoundInstance = SoundEngine.PlaySound(DeathrayFireStrongSound).WithVolumeBoost(1.4f);
                 if (Main.netMode != NetmodeID.MultiplayerClient)
-                    Utilities.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f);
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<HadesSuperLaserbeam>(), ExoEnergyBlastDamage, 0f);
             }
 
             // SPEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEN
@@ -203,16 +208,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             if ((segment.whoAmI * 12 + AITimer) % ExoEnergyBlast_ProjectileBurstReleaseRate == 0 && beamIsOverheating)
             {
-                Vector2 mineSpawnPosition = behaviorOverride.TurretPosition;
-                if (Main.netMode != NetmodeID.MultiplayerClient && !mineSpawnPosition.WithinRange(Target.Center, 400f))
+                bool createMine = Main.rand.NextBool(5);
+                Vector2 projectileSpawnPosition = behaviorOverride.TurretPosition;
+
+                if (createMine)
+                {
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Vector2 mineVelocity = projectileSpawnPosition.SafeDirectionTo(Target.Center) * Main.rand.NextFloat(42f);
+                        LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), projectileSpawnPosition, mineVelocity, ModContent.ProjectileType<HadesMine>(), MineDamage, 0f, -1, LumUtils.SecondsToFrames(1.5f));
+                    }
+                }
+                else if (Main.netMode != NetmodeID.MultiplayerClient && !projectileSpawnPosition.WithinRange(Target.Center, 400f))
                 {
                     float missileSpeed = Main.rand.NextFloat(0.7f, 0.8f);
                     float missileOffsetAngle = Main.rand.NextGaussian(0.11f);
-                    Vector2 missileVelocity = (Target.Center - mineSpawnPosition).SafeNormalize(Vector2.UnitY).RotatedBy(missileOffsetAngle) * missileSpeed;
-                    Utilities.NewProjectileBetter(segment.GetSource_FromAI(), mineSpawnPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f);
+                    Vector2 missileVelocity = projectileSpawnPosition.SafeDirectionTo(Target.Center).RotatedBy(missileOffsetAngle) * missileSpeed;
+                    LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), projectileSpawnPosition, missileVelocity, ModContent.ProjectileType<HadesMissile>(), MissileDamage, 0f);
                 }
 
-                SoundEngine.PlaySound(Apollo.MissileLaunchSound with { Volume = 0.16f, MaxInstances = 0 }, mineSpawnPosition);
+                SoundEngine.PlaySound(Apollo.MissileLaunchSound with { Volume = 0.16f, MaxInstances = 0 }, projectileSpawnPosition);
                 segment.netUpdate = true;
             }
 
