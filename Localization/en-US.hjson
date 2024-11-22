@@ -809,6 +809,7 @@ Mods: {
 			BrimflameBurst.DisplayName: Brimflame Burst
 			ClamSlam.DisplayName: Clam Slam
 			SmallCannonLaser.DisplayName: Laser
+			PulseBlast.DisplayName: Pulse Blast
 		}
 
 		Buffs: {
