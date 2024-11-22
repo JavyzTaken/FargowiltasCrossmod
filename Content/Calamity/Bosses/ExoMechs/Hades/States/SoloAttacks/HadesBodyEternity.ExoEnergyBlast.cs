@@ -208,7 +208,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
 
             if ((segment.whoAmI * 12 + AITimer) % ExoEnergyBlast_ProjectileBurstReleaseRate == 0 && beamIsOverheating)
             {
-                bool createMine = Main.rand.NextBool(5);
+                bool createMine = Main.rand.NextBool(3);
                 Vector2 projectileSpawnPosition = behaviorOverride.TurretPosition;
 
                 if (createMine)
@@ -216,7 +216,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
                         Vector2 mineVelocity = projectileSpawnPosition.SafeDirectionTo(Target.Center) * Main.rand.NextFloat(42f);
-                        LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), projectileSpawnPosition, mineVelocity, ModContent.ProjectileType<HadesMine>(), MineDamage, 0f, -1, LumUtils.SecondsToFrames(1.5f));
+                        LumUtils.NewProjectileBetter(segment.GetSource_FromAI(), projectileSpawnPosition, mineVelocity, ModContent.ProjectileType<HadesMine>(), MineDamage, 0f, -1, LumUtils.SecondsToFrames(4f));
                     }
                 }
                 else if (Main.netMode != NetmodeID.MultiplayerClient && !projectileSpawnPosition.WithinRange(Target.Center, 400f))
