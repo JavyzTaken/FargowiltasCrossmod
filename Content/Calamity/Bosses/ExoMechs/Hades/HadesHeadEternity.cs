@@ -9,6 +9,7 @@ using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
@@ -402,6 +403,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant - StandardSegmentOpenRate);
             JawRotation = JawRotation.AngleLerp(0f, 0.01f).AngleTowards(0f, 0.02f);
             ReticleOpacity = MathHelper.Lerp(ReticleOpacity, 0f, 0.1f);
+
+            HadesPostProcessingSystem.PostProcessingAction = null;
 
             CalamityGlobalNPC.draedonExoMechWorm = NPC.whoAmI;
         }
