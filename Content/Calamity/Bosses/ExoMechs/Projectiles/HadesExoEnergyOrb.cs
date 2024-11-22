@@ -10,6 +10,7 @@ using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -55,6 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.hostile = true;
+            Projectile.hide = true;
             Projectile.timeLeft = 240000;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -68,11 +70,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             }
 
             NPC hades = Main.npc[CalamityGlobalNPC.draedonExoMechWorm];
+            float reachInterpolant = LumUtils.InverseLerp(0.92f, 0.75f, LifetimeRatio);
             Projectile.rotation = hades.velocity.ToRotation();
             Projectile.scale = LumUtils.InverseLerpBump(0f, 0.4f, 0.7f, 0.92f, LifetimeRatio);
-
-            float reachInterpolant = LumUtils.InverseLerp(0.92f, 0.75f, LifetimeRatio);
-            Projectile.Center = hades.Center + Projectile.rotation.ToRotationVector2() * Projectile.width * MathHelper.Lerp(0.1f, 0.7f, reachInterpolant);
+            Projectile.Center = hades.Center + Projectile.rotation.ToRotationVector2() * Projectile.width * MathHelper.Lerp(0.06f, 0.7f, reachInterpolant);
 
             CreateElectricParticles();
 
@@ -138,6 +139,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             LumUtils.NewProjectileBetter(Projectile.GetSource_FromThis(), arcSpawnPosition, arcLength, ModContent.ProjectileType<SmallTeslaArc>(), 0, 0f, -1, arcLifetime, 0f);
         }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) =>
+            behindNPCs.Add(index);
 
         public override bool PreDraw(ref Color lightColor)
         {
