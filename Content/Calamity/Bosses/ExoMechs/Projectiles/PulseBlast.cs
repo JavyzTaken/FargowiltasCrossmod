@@ -191,7 +191,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             {
                 Player hitTarget = Main.player[hitTargetIndex];
                 hitTarget.mount?.Dismount(hitTarget);
-                hitTarget.velocity += Projectile.velocity * 5f;
+                hitTarget.velocity += Projectile.velocity * 2.9f;
             }
 
             return end;
