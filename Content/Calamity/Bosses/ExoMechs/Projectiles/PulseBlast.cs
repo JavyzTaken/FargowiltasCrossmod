@@ -164,6 +164,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
         {
             Vector2 direction = (end - start).SafeNormalize(Vector2.Zero);
 
+            int hitTargetIndex = -1;
             float minDistance = 9999f;
             foreach (Player player in Main.ActivePlayers)
             {
@@ -180,14 +181,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
                     {
                         end = candidate;
                         minDistance = candidateDistance;
-                    }
-
-                    if (!float.IsNaN(candidateDistance) && !float.IsInfinity(candidateDistance) && player.velocity.Length() < PulseCannonCage.MaxBlastPushSpeed)
-                    {
-                        player.mount?.Dismount(player);
-                        player.velocity += Projectile.velocity * 5f;
+                        hitTargetIndex = player.whoAmI;
                     }
                 }
+            }
+
+            // Knock back the player that got hit.
+            if (hitTargetIndex != -1 && Main.player[hitTargetIndex].velocity.Length() < PulseCannonCage.MaxBlastPushSpeed)
+            {
+                Player hitTarget = Main.player[hitTargetIndex];
+                hitTarget.mount?.Dismount(hitTarget);
+                hitTarget.velocity += Projectile.velocity * 5f;
             }
 
             return end;
