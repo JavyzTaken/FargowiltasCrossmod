@@ -105,7 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
                 NPC.netUpdate = true;
             }
 
-            if (AimedLaserBursts_SweepCounter >= 2f)
+            if (AimedLaserBursts_SweepCounter >= 1f)
             {
                 AimedLaserBursts_SweepCounter = 0f;
                 AimedLaserBursts_AimOffset = Vector2.Zero;
