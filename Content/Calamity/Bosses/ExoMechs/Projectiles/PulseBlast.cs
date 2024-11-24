@@ -187,11 +187,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             }
 
             // Knock back the player that got hit.
-            if (hitTargetIndex != -1 && Main.player[hitTargetIndex].velocity.Length() < PulseCannonCage.MaxBlastPushSpeed)
+            if (hitTargetIndex != -1)
             {
                 Player hitTarget = Main.player[hitTargetIndex];
-                hitTarget.mount?.Dismount(hitTarget);
-                hitTarget.velocity += Projectile.velocity * 2.9f;
+
+                if (hitTarget.velocity.Length() < PulseCannonCage.MaxBlastPushSpeed)
+                {
+                    hitTarget.mount?.Dismount(hitTarget);
+                    hitTarget.velocity += Projectile.velocity * 2.9f;
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust pulseEnergy = Dust.NewDustPerfect(hitTarget.Center + Main.rand.NextVector2Circular(40f, 40f), 267);
+                    pulseEnergy.color = Color.Violet;
+                    pulseEnergy.velocity = Main.rand.NextVector2Circular(20f, 20f) + hitTarget.velocity;
+                    pulseEnergy.noGravity = true;
+                }
             }
 
             return end;
