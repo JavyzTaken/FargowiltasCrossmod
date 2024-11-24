@@ -8,11 +8,9 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
-using FargowiltasSouls;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -99,29 +97,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (!npc.TryGetDLCBehavior(out HadesHeadEternity hades))
                 return;
 
-            float angularVelocity = MathHelper.ToRadians(0.67f);
-            float idealRotation = npc.AngleTo(Target.Center) + MathF.Cos(MathHelper.TwoPi * AITimer / 90f) * 0.34f;
-            float idealSpeed = Utils.Remap(npc.Distance(Target.Center), 200f, 450f, 12.25f, 21.75f);
-            npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.0061f);
-
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f));
             hades.SegmentReorientationStrength = 0.1f;
 
             npc.damage = npc.defDamage;
-            npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-
-            int attackCycleTimer = AITimer % 210;
-
-            if (attackCycleTimer >= 155)
-            {
-                float animationInterpolant = LumUtils.InverseLerp(155f, 210f, AITimer);
-                float acceleration = MathHelper.SmoothStep(0.97f, 1.04f, LumUtils.Convert01To010(animationInterpolant));
-                npc.velocity = (npc.velocity * acceleration).ClampLength(0f, 36f);
-            }
-            else if (npc.WithinRange(Target.Center, 50f))
-                npc.velocity *= 0.95f;
+            if (AITimer % 90 >= 65)
+                npc.velocity = (npc.velocity * 1.045f).ClampLength(0f, 35f);
             else
-                npc.velocity = Vector2.Lerp(npc.velocity, FargoSoulsUtil.SmartAccel(npc.Center, Target.Center, npc.velocity, 0.9f, 0.8f), 0.7f);
+            {
+                npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * 10f, 0.04f);
+                npc.velocity += npc.SafeDirectionTo(Target.Center) * 0.7f;
+                npc.damage = 0;
+            }
+
+            npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
         /// <summary>
