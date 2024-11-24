@@ -110,7 +110,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
             }
 
-            if (AITimer == 1)
+            if (AITimer == AresBodyEternity.DetachHands_DetachmentDelay)
                 SoundEngine.PlaySound(AresLaserCannon.TelSound);
 
             npc.rotation = npc.velocity.X * 0.0062f;
@@ -133,10 +133,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             ScreenShakeSystem.SetUniversalRumble(LumUtils.InverseLerpBump(0f, 0.8f, 0.9f, 1f, AITimer / (float)ElectrifyTime).Squared() * 3f);
 
-            ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, new Vector2(-430f, 50f), leftHandAimDestination, 0));
-            ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), leftHandAimDestination, 1));
-            ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), rightHandAimDestination, 2));
-            ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(430f, 50f), rightHandAimDestination, 3));
+            if (AITimer <= AresBodyEternity.DetachHands_DetachmentDelay)
+            {
+                for (int i = 0; i < ares.InstructionsForHands.Length; i++)
+                {
+                    int copyForDelegate = i;
+                    ares.InstructionsForHands[i] = new(h => ares.DetachHandsUpdate(h, copyForDelegate));
+                }
+            }
+            else
+            {
+                ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, new Vector2(-430f, 50f), leftHandAimDestination, 0));
+                ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), leftHandAimDestination, 1));
+                ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), rightHandAimDestination, 2));
+                ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(430f, 50f), rightHandAimDestination, 3));
+            }
             ares.AnimationState = AresBodyEternity.AresFrameAnimationState.Default;
         }
 

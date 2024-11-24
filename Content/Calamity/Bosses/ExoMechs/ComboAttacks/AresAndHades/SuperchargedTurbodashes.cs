@@ -102,10 +102,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             // Bias light colors to red.
             ares.ShiftLightColors(LumUtils.InverseLerp(0f, 30f, AITimer), new(239, 62, 62), new(242, 112, 72));
 
-            ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, new Vector2(-400f, 40f), 0));
-            ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), 1));
-            ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), 2));
-            ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(400f, 40f), 3));
+            if (AITimer <= AresBodyEternity.DetachHands_DetachmentDelay)
+            {
+                for (int i = 0; i < ares.InstructionsForHands.Length; i++)
+                {
+                    int copyForDelegate = i;
+                    ares.InstructionsForHands[i] = new(h => ares.DetachHandsUpdate(h, copyForDelegate));
+                }
+            }
+            else
+            {
+                ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, new Vector2(-400f, 40f), 0));
+                ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), 1));
+                ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), 2));
+                ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(400f, 40f), 3));
+            }
 
             int electrifyTimeStart = ElectrifyTime - LumUtils.SecondsToFrames(3.36f);
             if (electrifyTimeStart < 1)

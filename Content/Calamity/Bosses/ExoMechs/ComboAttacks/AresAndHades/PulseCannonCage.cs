@@ -103,10 +103,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return false;
             }
 
-            ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, new Vector2(-400f, 40f), 0));
-            ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), 1));
-            ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), 2));
-            ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(400f, 40f), 3));
+            if (AITimer <= AresBodyEternity.DetachHands_DetachmentDelay)
+            {
+                for (int i = 0; i < ares.InstructionsForHands.Length; i++)
+                {
+                    int copyForDelegate = i;
+                    ares.InstructionsForHands[i] = new(h => ares.DetachHandsUpdate(h, copyForDelegate));
+                }
+            }
+            else
+            {
+                ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, new Vector2(-400f, 40f), 0));
+                ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, new Vector2(-280f, 224f), 1));
+                ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, new Vector2(280f, 224f), 2));
+                ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, new Vector2(400f, 40f), 3));
+            }
 
             npc.SmoothFlyNear(Target.Center - Vector2.UnitY.RotatedBy(MathHelper.TwoPi * AITimer / 1600f) * 350f, 0.063f, 0.945f);
             npc.rotation = npc.velocity.X * 0.007f;

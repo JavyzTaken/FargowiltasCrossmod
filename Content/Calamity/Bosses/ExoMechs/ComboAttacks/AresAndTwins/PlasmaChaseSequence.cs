@@ -139,10 +139,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             Vector2 rightHandOffset = Vector2.SmoothStep(new Vector2(250f, 220f), new Vector2(140f, 274f), handRepositionInterpolant);
             Vector2 farRightHandOffset = Vector2.SmoothStep(new Vector2(448f, 90f), new Vector2(400f, 50f), handRepositionInterpolant);
 
-            ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, farLeftHandOffset, 0));
-            ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, leftHandOffset, 1));
-            ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, rightHandOffset, 2));
-            ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, farRightHandOffset, 3));
+            if (AITimer <= AresBodyEternity.DetachHands_DetachmentDelay)
+            {
+                for (int i = 0; i < ares.InstructionsForHands.Length; i++)
+                {
+                    int copyForDelegate = i;
+                    ares.InstructionsForHands[i] = new(h => ares.DetachHandsUpdate(h, copyForDelegate));
+                }
+            }
+            else
+            {
+                ares.InstructionsForHands[0] = new(h => AresHandUpdate(npc, h, farLeftHandOffset, 0));
+                ares.InstructionsForHands[1] = new(h => AresHandUpdate(npc, h, leftHandOffset, 1));
+                ares.InstructionsForHands[2] = new(h => AresHandUpdate(npc, h, rightHandOffset, 2));
+                ares.InstructionsForHands[3] = new(h => AresHandUpdate(npc, h, farRightHandOffset, 3));
+            }
         }
 
         /// <summary>
