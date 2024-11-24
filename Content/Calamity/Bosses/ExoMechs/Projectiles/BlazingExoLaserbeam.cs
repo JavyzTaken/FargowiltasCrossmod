@@ -168,8 +168,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             float bloomScaleFactor = MathF.Cos(Main.GlobalTimeWrappedHourly * 48f) * 0.1f + 1f;
             Vector2 drawPosition = Projectile.Center - Main.screenPosition;
             Texture2D bloom = MiscTexturesRegistry.BloomCircleSmall.Value;
+            Texture2D flare = MiscTexturesRegistry.ShineFlareTexture.Value;
             Main.spriteBatch.Draw(bloom, drawPosition, null, new(255, 255, 255, 0), 0f, bloom.Size() * 0.5f, bloomScaleFactor * 0.6f, 0, 0f);
             Main.spriteBatch.Draw(bloom, drawPosition, null, LaserColorFunction(0.5f) with { A = 0 }, 0f, bloom.Size() * 0.5f, bloomScaleFactor * 1.5f, 0, 0f);
+            Main.spriteBatch.Draw(flare, drawPosition, null, Color.Wheat with { A = 0 }, 0f, flare.Size() * 0.5f, bloomScaleFactor * 1.1f, 0, 0f);
 
             List<Vector2> laserPositions = Projectile.GetLaserControlPoints(12, LaserbeamLength);
 
