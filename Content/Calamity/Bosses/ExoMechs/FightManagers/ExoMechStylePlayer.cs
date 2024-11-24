@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
         }
 
         /// <summary>
-        /// Whether the boss would be considered melted if it were to stop now.
+        /// Whether the boss would be considered melted if the fight were to stop now.
         /// </summary>
         public bool PlayerIsMeltingBoss => PhaseDurations.Sum() < Utilities.MinutesToFrames(1.75f);
 
