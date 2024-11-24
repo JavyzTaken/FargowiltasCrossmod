@@ -87,9 +87,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (npc.type == ExoMechNPCIDs.ArtemisID || npc.type == ExoMechNPCIDs.ApolloID)
                 Perform_ExoTwin(npc);
 
-            if (AITimer >= RedirectTime + BlazingExoLaserbeam.Lifetime - 1)
-                AITimer = 0;
-
             return AITimer >= RedirectTime + BlazingExoLaserbeam.Lifetime;
         }
 
