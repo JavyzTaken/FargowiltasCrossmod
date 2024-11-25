@@ -101,7 +101,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             hades.SegmentReorientationStrength = 0.1f;
 
             npc.damage = 0;
-            if (AITimer % 120 >= 95)
+            if (AITimer % 120 >= 95 && npc.velocity.AngleBetween(npc.SafeDirectionTo(Target.Center)) <= MathHelper.Pi * 0.41667f)
             {
                 npc.velocity = (npc.velocity * 1.065f + npc.velocity.SafeNormalize(Vector2.UnitY) * 4f).ClampLength(0f, 50f);
                 npc.damage = npc.defDamage;
