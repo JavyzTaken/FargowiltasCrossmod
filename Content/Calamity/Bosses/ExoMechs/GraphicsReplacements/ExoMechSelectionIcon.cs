@@ -117,7 +117,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
                 Main.blockMouse = Main.LocalPlayer.mouseInterface = true;
 
                 if (Main.mouseLeft && Main.mouseLeftRelease)
+                {
+                    SoundEngine.PlaySound(CalamityMod.NPCs.ExoMechs.Draedon.SelectionSound);
                     ExoMechSelectionUIReplacer.SummonExoMech(TypeToSummon);
+                }
             }
 
             Scale = MathHelper.Clamp(Scale + (currentlyHoveringOverIcon ? 0.0375f : -0.05f), 1f, 1.2f);
