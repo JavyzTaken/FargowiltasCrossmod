@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// The representation of Ares' pulse cannon.
         /// </summary>
-        public static readonly AresHandType PulseCannon = New("Mods.FargowiltasCrossmod.NPCs.AresHand.EnergyKatanaDisplayName", "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresPulseCannon",
+        public static readonly AresHandType PulseCannon = New("Mods.FargowiltasCrossmod.NPCs.AresHand.PulseCannonDisplayName", "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresPulseCannon",
             "FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Ares/AresPulseCannonGlow", 4, 12, Color.Purple,
             null);
 
