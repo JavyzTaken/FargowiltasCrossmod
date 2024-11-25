@@ -50,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
             // Search for the number 81, since the box is drawn with an RGBA value of (23, 25, 81, 255).
             if (!cursor.TryGotoNext(i => i.MatchLdcI4(81)))
             {
-                Mod.Logger.Error("Could not apply the IL edit for the tooltip box for the Exo Mech lore item! The blue value of 81 could not be located.");
+                Mod.Logger.Error("Could not apply the IL edit for the tooltip box for the Draedon lore item! The blue value of 81 could not be located.");
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
             MethodInfo? colorFloatMultiply = typeof(Color).GetMethod("op_Multiply", [typeof(Color), typeof(float)]);
             if (colorFloatMultiply is null || !cursor.TryGotoNext(MoveType.After, i => i.MatchCall(colorFloatMultiply)))
             {
-                Mod.Logger.Error("Could not apply the IL edit for the tooltip box for the Exo Mech lore item! The Color object creation could not be located.");
+                Mod.Logger.Error("Could not apply the IL edit for the tooltip box for the Draedon lore item! The Color object creation could not be located.");
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
             cursor.Goto(0);
             if (!cursor.TryGotoNext(MoveType.After, i => i.MatchCall<Vector2>("get_Zero")))
             {
-                Mod.Logger.Error("Could not apply the IL edit for the tooltip box for the Exo Mech lore item! The Vector2.Zero load could not be located.");
+                Mod.Logger.Error("Could not apply the IL edit for the tooltip box for the Draedon lore item! The Vector2.Zero load could not be located.");
                 return;
             }
             cursor.EmitDelegate((Vector2 originalBaseDimensions) =>
@@ -92,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
         }
 
         /// <summary>
-        /// Draws the Exo Mech lore item's tooltip.
+        /// Draws the Draedon lore item's tooltip.
         /// </summary>
         /// <param name="item">The lore item</param>
         /// <param name="baseDrawPosition">The base draw position of the tooltip</param>
