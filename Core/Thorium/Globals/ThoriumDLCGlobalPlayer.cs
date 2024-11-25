@@ -9,7 +9,7 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumPlayerBalance : ModPlayer
     {
-        private const int MAX_EMPOWERMENTS = 4;
+        private int MaxEmpowerments => Main.hardMode ? FargowiltasSouls.Core.Systems.WorldSavingSystem.DownedAbom ? 12 : 8 : 4;
         public override void PostUpdate()
         {
             if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             var value = field.GetValue(thoriumPlayer);
             if (value is not EmpowermentData data) return;
 
-            if (data.ActiveEmpowerments.Count <= MAX_EMPOWERMENTS) return;
+            if (data.ActiveEmpowerments.Count <= MaxEmpowerments) return;
 
             data.Timers[data.ActiveEmpowerments[0]].timer = 0;
             // data.ActiveEmpowerments.RemoveAt(0);

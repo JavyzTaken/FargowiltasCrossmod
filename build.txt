@@ -1,4 +1,4 @@
-displayName = Fargo's Souls DLC (Calamity & Thorium)
+displayName = Fargo's Souls DLC (Thorium BETA)
 author = Javyz, Shipmans Agla, Zavarski, Fargowilta, Ghoose
 version = 1.1.1
 modReferences = Fargowiltas@3.3.5, FargowiltasSouls@1.7, Luminance
