@@ -10,6 +10,7 @@ using ThoriumMod.Projectiles;
 
 namespace FargowiltasCrossmod.Content.Thorium;
 
+[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 public static class ThoriumILEdits
 {
     internal static void ApplyILEdits()

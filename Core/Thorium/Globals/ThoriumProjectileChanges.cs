@@ -10,6 +10,7 @@ using ThoriumMod.Projectiles.Thrower;
 
 namespace FargowiltasCrossmod.Core.Thorium.Globals
 {
+    [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
     public class ThoriumProjectileChanges : GlobalProjectile
     {
         public override bool AppliesToEntity(Projectile entity, bool lateInstantiation)

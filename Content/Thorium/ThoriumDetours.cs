@@ -6,9 +6,11 @@ using Terraria.ID;
 using ThoriumMod.Buffs;
 using ThoriumMod.Core.Sheaths;
 using FargowiltasSouls.Core.Systems;
+using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Thorium;
 
+[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 public class ThoriumDetours
 {
     public static void LoadDetours()

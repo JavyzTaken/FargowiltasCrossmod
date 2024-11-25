@@ -11,6 +11,7 @@ using ThoriumMod.Items.TransformItems;
 
 namespace FargowiltasCrossmod.Core.Thorium.Systems;
 
+[ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 public class ThoriumContainerRecipeSystem : ModSystem
 {
     public override void AddRecipes()
