@@ -4,12 +4,12 @@ using Terraria;
 using Terraria.ModLoader;
 using ThoriumMod.Empowerments;
 
-namespace FargowiltasCrossmod.Core.Thorium.Globals
+namespace FargowiltasCrossmod.Core.Thorium.Modplayers
 {
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ThoriumPlayerBalance : ModPlayer
     {
-        private int MaxEmpowerments => Main.hardMode ? FargowiltasSouls.Core.Systems.WorldSavingSystem.DownedAbom ? 12 : 8 : 4;
+        private int MaxEmpowerments => Main.hardMode ? (FargowiltasSouls.Core.Systems.WorldSavingSystem.DownedAbom ? 12 : 8) : 4;
         public override void PostUpdate()
         {
             if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)

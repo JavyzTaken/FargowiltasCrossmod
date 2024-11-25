@@ -12,7 +12,7 @@ using ThoriumMod.NPCs.Depths;
 
 namespace FargowiltasCrossmod.Core.Thorium.Globals;
 
-public class ThoriumDLCNPCDrops : GlobalNPC
+public class ThoriumNPCDrops : GlobalNPC
 {
     public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
     {

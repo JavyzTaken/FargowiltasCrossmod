@@ -8,7 +8,7 @@ using ThoriumMod.NPCs;
 namespace FargowiltasCrossmod.Core.Thorium.Globals;
 
 [ExtendsFromMod(ModCompatibility.ThoriumMod.Name)]
-public class ThoriumDLCNPCChanges : GlobalNPC
+public class ThoriumDeviChecks : GlobalNPC
 {
     public override bool PreKill(NPC npc)
     {
