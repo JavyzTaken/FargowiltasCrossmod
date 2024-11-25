@@ -34,7 +34,7 @@ using ThoriumMod.Items.TransformItems;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Souls;
 using FargowiltasCrossmod.Content.Thorium.Items.Accessories.Enchantments;
 
-namespace FargowiltasCrossmod.Content.Thorium.Items
+namespace FargowiltasCrossmod.Core.Thorium.Systems
 {
     //for putting mod stuff into souls recipes or vice versa
     [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
@@ -174,6 +174,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Items
                 {
                     if (recipe.RemoveIngredient(ItemID.TerrasparkBoots))
                         recipe.AddIngredient(ModContent.ItemType<AeolusBoots>());
+                }
+
+                if (recipe.HasResult<ThoriumMod.Items.BossThePrimordials.DoomSayersCoin>())
+                {
+                    recipe.AddIngredient<AbomEnergy>(10);
                 }
             }
         }
