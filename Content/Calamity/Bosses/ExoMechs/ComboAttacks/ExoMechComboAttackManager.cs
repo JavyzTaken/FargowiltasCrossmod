@@ -202,6 +202,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         private static void PuppeteerActiveExoMechs()
         {
+            // Check if any players are present.
+            // If none are, that means that the Exo Mechs should despawn (which they'll do naturally on their own), not perform combo attacks.
+            bool everyoneIsDead = true;
+            foreach (Player player in Main.ActivePlayers)
+            {
+                if (!player.dead)
+                {
+                    everyoneIsDead = false;
+                    break;
+                }
+            }
+
+            if (everyoneIsDead)
+                return;
+
             bool hadesIsPresent = false;
             bool shouldSyncTimer = false;
             foreach (NPC npc in Main.ActiveNPCs)
