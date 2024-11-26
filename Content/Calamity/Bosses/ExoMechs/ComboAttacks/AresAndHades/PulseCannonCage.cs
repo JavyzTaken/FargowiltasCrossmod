@@ -212,7 +212,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.damage = npc.defDamage;
 
             // Spin in place.
-            Vector2 flyDestination = HadesSpinOrigin + (MathHelper.TwoPi * AITimer / 56f).ToRotationVector2() * HadesSpinRadius;
+            Vector2 flyDestination = HadesSpinOrigin + (MathHelper.TwoPi * AITimer / 67f).ToRotationVector2() * HadesSpinRadius;
             npc.SmoothFlyNear(flyDestination, 0.6f, 0.4f);
             npc.Center = npc.Center.MoveTowards(flyDestination, 5f);
             npc.rotation = (npc.position - npc.oldPosition).ToRotation() + MathHelper.PiOver2;
