@@ -1,8 +1,8 @@
 ﻿using CalamityMod;
 using CalamityMod.Particles;
-using CalamityMod.Sounds;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -87,6 +87,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public static int BasicLaserDamage => Variables.GetAIInt("BasicLaserDamage", ExoMechAIVariableType.Hades);
 
         public static readonly SoundStyle LaserChargeUpSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/LaserChargeUp");
+
+        /// <summary>
+        /// The sound Hades plays when firing his perpendicular laserbeams.
+        /// </summary>
+        public static readonly SoundStyle SideLaserBurstSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Hades/SideLaserBurst");
 
         /// <summary>
         /// AI update loop method for the PerpendicularBodyLaserBlasts attack.
@@ -192,9 +197,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         public void DoBehavior_PerpendicularBodyLaserBlasts_UpdateSegments()
         {
             int localAITimer = AITimer - PerpendicularBodyLaserBlasts_RedirectTime;
+            bool timeToFire = localAITimer == (int)(PerpendicularBodyLaserBlasts_BlastTelegraphTime * PerpendicularBodyLaserBlasts_BurstShootCompletionRatio);
+
+            if (timeToFire)
+                SoundEngine.PlaySound(SideLaserBurstSound).WithVolumeBoost(2f);
+
             BodyBehaviorAction = new(EveryNthSegment(PerpendicularBodyLaserBlasts_SegmentUsageCycle), new(behaviorOverride =>
             {
-                bool timeToFire = localAITimer == (int)(PerpendicularBodyLaserBlasts_BlastTelegraphTime * PerpendicularBodyLaserBlasts_BurstShootCompletionRatio);
                 if (timeToFire && PerpendicularBodyLaserBlasts_SegmentCanFire(behaviorOverride.NPC, NPC))
                     PerpendicularBodyLaserBlasts_FireLaser(behaviorOverride);
 
@@ -229,9 +238,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         {
             NPC segment = bodyAI.NPC;
             Vector2 laserSpawnPosition = bodyAI.TurretPosition;
-
-            SoundEngine.PlaySound(CommonCalamitySounds.ExoLaserShootSound with { MaxInstances = 0, Volume = 0.15f }, laserSpawnPosition);
-
             Vector2 perpendicularDirection = segment.rotation.ToRotationVector2();
             PerpendicularBodyLaserBlasts_CreateLaserBurstParticles(laserSpawnPosition, -perpendicularDirection);
             PerpendicularBodyLaserBlasts_CreateLaserBurstParticles(laserSpawnPosition, perpendicularDirection);
