@@ -113,6 +113,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 if (MathHelper.Distance(NPC.Center.X, Target.Center.X) >= 200f)
                     outerHoverDestination.X = NPC.Center.X;
 
+                // Ensure that Hades is near the target at first.
+                float redirectInterpolant = MathF.Sqrt(LumUtils.InverseLerp(30f, 0f, AITimer)) * LumUtils.InverseLerp(300f, 450f, NPC.Distance(Target.Center));
+                NPC.Center = Vector2.Lerp(NPC.Center, Target.Center, redirectInterpolant * 0.05f);
+
                 Vector2 idealVelocity = NPC.SafeDirectionTo(outerHoverDestination) * MathHelper.Lerp(NPC.velocity.Length(), idealHoverSpeed, 0.135f);
                 NPC.velocity = NPC.velocity.RotateTowards(idealVelocity.ToRotation(), 0.045f);
                 NPC.velocity = NPC.velocity.MoveTowards(idealVelocity, AITimer / (float)ExoEnergyBlast_InitialRedirectTime * 8f);
