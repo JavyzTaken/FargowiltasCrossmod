@@ -1,5 +1,4 @@
-﻿using CalamityMod.Items.Weapons.DraedonsArsenal;
-using CalamityMod.NPCs;
+﻿using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
@@ -79,6 +78,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// The sound played when Ares charges up a pulse cannon.
         /// </summary>
         public static readonly SoundStyle CannonChargeUpSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/PulseCannonCharge") with { Volume = 1.2f, MaxInstances = 0 };
+
+        /// <summary>
+        /// The sound played when Ares fires from one of his pulse cannons.
+        /// </summary>
+        public static readonly SoundStyle CannonFireSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/PulseCannonFire") with { MaxInstances = 0 };
 
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<AresBody>()];
 
@@ -173,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             // Shoot the pulse blast.
             if (shootCycleTimer == shootCycleDuration - PulseBlast.Lifetime - 1)
             {
-                SoundEngine.PlaySound(PulseRifle.FireSound, handNPC.Center);
+                SoundEngine.PlaySound(CannonFireSound, handNPC.Center);
 
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
