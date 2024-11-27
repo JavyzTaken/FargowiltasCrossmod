@@ -6,6 +6,7 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Common;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using System;
@@ -177,7 +178,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             // Shoot the pulse blast.
             if (shootCycleTimer == shootCycleDuration - PulseBlast.Lifetime - 1)
             {
-                SoundEngine.PlaySound(CannonFireSound, handNPC.Center);
+                SoundEngine.PlaySound(CannonFireSound, handNPC.Center).WithVolumeBoost(1.5f);
 
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
