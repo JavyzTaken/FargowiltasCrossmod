@@ -127,7 +127,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 cannonChargeUpStart = 1;
 
             if (AITimer == electrifyTimeStart)
-                SoundEngine.PlaySound(HadesElectrifySound).WithVolumeBoost(2.15f);
+                SoundEngine.PlaySound(HadesElectrifySound).WithVolumeBoost(1.5f);
             if (AITimer == cannonChargeUpStart)
                 SoundEngine.PlaySound(AresLaserCannon.TelSound).WithVolumeBoost(1.8f);
 
