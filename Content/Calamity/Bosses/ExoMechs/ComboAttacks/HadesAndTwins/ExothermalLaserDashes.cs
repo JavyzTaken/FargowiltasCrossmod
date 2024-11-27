@@ -100,6 +100,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f));
             hades.SegmentReorientationStrength = 0.1f;
 
+            // Get to the player in the first few frames.
+            float approachPlayerInterpolant = LumUtils.InverseLerp(0f, 15f, AITimer) * LumUtils.InverseLerp(400f, 600f, npc.Distance(Target.Center));
+            npc.Center = Vector2.Lerp(npc.Center, Target.Center, approachPlayerInterpolant * 0.075f);
+
             npc.damage = 0;
             if (AITimer % 120 >= 95 && npc.velocity.AngleBetween(npc.SafeDirectionTo(Target.Center)) <= MathHelper.Pi * 0.41667f)
             {
