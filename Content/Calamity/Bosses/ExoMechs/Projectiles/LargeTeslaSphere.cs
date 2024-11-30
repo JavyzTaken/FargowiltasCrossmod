@@ -89,8 +89,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             if (Time % 13 == 12 && Projectile.velocity.Length() <= 11f)
                 CreateConvergingCircleParticle();
 
-            Projectile.scale = MathHelper.Lerp(1f, 1.06f, Utilities.Cos01(MathHelper.TwoPi * Time / 6.3f));
-
             LoopSoundInstance ??= LoopedSoundManager.CreateNew(LoopSound, () => !Projectile.active);
             LoopSoundInstance?.Update(Projectile.Center, sound =>
             {
@@ -220,9 +218,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             shader.SetTexture(NoiseTexturesRegistry.ElectricNoise.Value, 2, SamplerState.LinearWrap);
             shader.TrySetParameter("textureSize0", Projectile.Size);
             shader.TrySetParameter("posterizationPrecision", 14f);
-            shader.TrySetParameter("sphereSpinScrollOffset", SphereSpinScrollOffset);
-            shader.TrySetParameter("ridgeNoiseInterpolationStart", 0.23f);
-            shader.TrySetParameter("ridgeNoiseInterpolationEnd", 0.09f);
+            shader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
+            shader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 2, SamplerState.LinearWrap);
             shader.Apply();
 
             Texture2D pixel = MiscTexturesRegistry.Pixel.Value;
