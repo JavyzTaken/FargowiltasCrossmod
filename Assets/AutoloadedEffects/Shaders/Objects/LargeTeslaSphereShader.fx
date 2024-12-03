@@ -5,24 +5,6 @@ sampler distanceNoiseTexture : register(s2);
 float globalTime;
 float2 textureSize0;
 
-float2 GetFakeSphereCoords(float2 coords)
-{
-    float2 coordsNormalizedToCenter = (coords - 0.5) * 2;
-    float distanceFromCenterSqr = dot(coordsNormalizedToCenter, coordsNormalizedToCenter) * 2;
-    
-    // Calculate coordinates relative to the sphere.
-    // This pinch factor effectively ensures that the UVs are relative to a circle, rather than a rectangle.
-    // This helps SIGNIFICANTLY for making the texturing look realistic, as it will appear to be traveling on a
-    // sphere rather than on a sheet that happens to overlay a circle.
-    float spherePinchFactor = (1 - sqrt(abs(1 - distanceFromCenterSqr))) / distanceFromCenterSqr + 0.001;
-    
-    // Exaggerate the pinch slightly.
-    spherePinchFactor = pow(spherePinchFactor, 1.5);
-    
-    float2 sphereCoords = frac((coords - 0.5) * spherePinchFactor + 0.5);
-    return sphereCoords;
-}
-
 float CalculateOuterGlowIntensity(float2 coords, float distanceFromCenter)
 {
     // Rewrite the outer glow intensity to be more explicitly defined in terms of the edge.
