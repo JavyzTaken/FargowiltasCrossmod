@@ -91,6 +91,11 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Ivory flares max damage 5000 and 5s cooldown")));
             }
+
+            if (item.type == ModContent.ItemType<BalanceBloom>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Nerfed Damage by 33%")));
+            }
         }
     }
 }
