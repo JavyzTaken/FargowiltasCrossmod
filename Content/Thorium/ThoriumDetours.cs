@@ -1,5 +1,10 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.CompilerServices;
 using MonoMod.RuntimeDetour;
 using Terraria;
 using Terraria.ID;
@@ -15,6 +20,8 @@ public class ThoriumDetours
 {
     public static void LoadDetours()
     {
+        Assembly ThoriumAssembly = ModLoader.GetMod("ThoriumMod").GetType().Assembly;
+        
         SheathData_DamageMultiplier_get_Hooks.Add(new Hook(
             typeof(GardenersSheathData).GetProperty("DamageMultiplier").GetGetMethod(),
             (GardenersSheathData_DamageMultiplier_orig orig, GardenersSheathData self) => WorldSavingSystem.EternityMode ? 6f : orig(self)));
@@ -70,5 +77,4 @@ public class ThoriumDetours
     
     private static Hook GardenersSheathData_OnHit_Hook;
     private delegate void GardenersSheathData_OnHit_orig(GardenersSheathData self, Player player, NPC target, NPC.HitInfo hit, int damageDone, int hitCount);
-    
 }

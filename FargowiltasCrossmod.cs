@@ -38,8 +38,6 @@ public class FargowiltasCrossmod : Mod
     {
         Instance = this;
         LoadDetours();
-        if (Core.ModCompatibility.ThoriumMod.Loaded)
-            ThoriumDetours.LoadDetours();
 
         ModCompatibility.BossChecklist.AdjustValues();
     }

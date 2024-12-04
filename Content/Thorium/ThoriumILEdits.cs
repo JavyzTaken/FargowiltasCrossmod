@@ -20,10 +20,13 @@ public static class ThoriumILEdits
         Type thoriumProjectileFixClass = ThoriumAssembly.GetType("ThoriumMod.Projectiles.ThoriumProjectileFix", true);
         Type thoriumPlayerClass = ThoriumAssembly.GetType("ThoriumMod.ThoriumPlayer", true);
         Type thoriumGlobalItemClass = ThoriumAssembly.GetType("ThoriumMod.Items.ThoriumGlobalItem", true);
+        Type thoriumProjExtensions = ThoriumAssembly.GetType("ThoriumMod.Utilities.ProjectileHelper", true);
         
-        MonoModHooks.Modify(thoriumProjectileFixClass.GetMethod("HealerOnHitNPC", BindingFlags.Instance | BindingFlags.NonPublic), Projectiles.DLCHealing.LifeStealNerf_ILEdit);
-        MonoModHooks.Modify(thoriumPlayerClass.GetMethod("OnHitNPCWithProj", BindingFlags.Instance | BindingFlags.Public), ThoriumILEdits.ShinobiSigilCooldown_ILEdit);
-        MonoModHooks.Modify(thoriumPlayerClass.GetMethod("ProcessTriggers", BindingFlags.Instance | BindingFlags.Public), ThoriumILEdits.AbyssalShellNerf_ILEdit);
+        MonoModHooks.Modify(thoriumProjectileFixClass.GetMethod("HealerOnHitNPC", BindingFlags.Instance | BindingFlags.NonPublic), LifeStealNerf_ILEdit);
+        MonoModHooks.Modify(thoriumPlayerClass.GetMethod("OnHitNPCWithProj", BindingFlags.Instance | BindingFlags.Public), ShinobiSigilCooldown_ILEdit);
+        MonoModHooks.Modify(thoriumPlayerClass.GetMethod("ProcessTriggers", BindingFlags.Instance | BindingFlags.Public), AbyssalShellNerf_ILEdit);
+        MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), TotalHealAmount_ILEdit);
+        MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), DLCOnHealEffects_ILEdit);
         // MonoModHooks.Modify(thoriumGlobalItemClass.GetMethod("Shoot", BindingFlags.Instance | BindingFlags.Public), ThoriumILEdits.SpearTipNerf_ILEdit);
     }
     
@@ -85,5 +88,58 @@ public static class ThoriumILEdits
         c.Emit(OpCodes.Pop);
         c.Emit(OpCodes.Ldc_I4, 600);
         c.MarkLabel(label2);
+    }
+
+    public static void TotalHealAmount_ILEdit(ILContext il)
+    {
+            var c = new ILCursor(il);
+
+            // c.GotoNext(i => i.MatchStloc3());
+            c.GotoNext(i => i.Match(OpCodes.Ble_S));
+            c.GotoNext();
+            c.GotoNext(i => i.Match(OpCodes.Ble_S));
+            c.GotoNext();
+            
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg_1);
+            c.Emit(OpCodes.Ldloc_3);
+            c.EmitDelegate<Func<Projectile, Player, int, int>>((Projectile proj, Player target, int HealAmount) =>
+            {
+                // Main.NewText(HealAmount);
+                if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
+                    return int.Max(1, HealAmount - (int)Math.Floor((float)target.statDefense / 10f));
+                return HealAmount;
+            });
+            c.Emit(OpCodes.Stloc_3);
+    }
+    
+    internal static void LifeStealNerf_ILEdit(ILContext il)
+    {
+        FieldInfo healBonusField = typeof(ThoriumMod.ThoriumPlayer).GetField("healBonus", BindingFlags.Instance | BindingFlags.Public);
+        var c = new ILCursor(il);
+        var label1 = c.DefineLabel();
+        
+        c.GotoNext(i => i.MatchLdfld(healBonusField));
+        c.GotoNext();
+        // // check if emode, jump to after edit if false
+        c.EmitDelegate<Func<bool>>(() => FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode);
+        c.Emit(OpCodes.Brfalse, label1);
+        // // divide bonus healing by 4 
+        c.Emit(OpCodes.Ldc_I4_4);
+        c.Emit(OpCodes.Div);
+        c.MarkLabel(label1);
+    }
+    
+    internal static void DLCOnHealEffects_ILEdit(ILContext il)
+    {
+        FieldInfo forgottenCrossField = typeof(ThoriumMod.ThoriumPlayer).GetField("accForgottenCrossNecklace", BindingFlags.Instance | BindingFlags.Public);
+        var c = new ILCursor(il);
+
+        c.GotoNext(i => i.MatchLdfld(forgottenCrossField));
+        c.Index -= 1;
+        c.Emit(OpCodes.Ldloc_0);
+        c.Emit(OpCodes.Ldarg_1);
+        c.Emit(OpCodes.Ldloc_3);
+        c.EmitDelegate<Action<Player, Player, int>>((healer, target, heals) => Projectiles.DLCHealing.DLCOnHealEffects(healer, target, heals));
     }
 }

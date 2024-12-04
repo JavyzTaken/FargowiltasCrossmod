@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Terraria.ModLoader;
 using Terraria;
 using System.Reflection;
+using System.Reflection.Emit;
 using MonoMod.Cil;
 
 namespace FargowiltasCrossmod.Content.Thorium.Projectiles
@@ -14,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
     public static class DLCHealing
     {
         public delegate void CustomHealing(Player player, Player target, ref int heals, ref int selfHeals);
-        internal static Type CustomHealingType;
+        public static Type CustomHealingType;
 
         internal static MethodInfo HealMethod;
         public static void DLCHeal(this Projectile projectile,
@@ -32,34 +33,11 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             HealMethod.Invoke(null, new object[] { projectile, healAmount, radius, onHealEffects, bonusHealing, customHealing, canHealPlayer, specificPlayer, ignoreHealer, ignoreSetTarget, statistics });
         }
 
-        internal static void DLCOnHealEffects_ILEdit(ILContext il)
-        {
-            FieldInfo forgottenCrossField = typeof(ThoriumMod.ThoriumPlayer).GetField("accForgottenCrossNecklace", BindingFlags.Instance | BindingFlags.Public);
 
-            var c = new ILCursor(il);
-
-            c.GotoNext(i => i.MatchLdfld(forgottenCrossField));
-            c.Index -= 1;
-            c.Emit(Mono.Cecil.Cil.OpCodes.Ldloc_0);
-            c.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_1);
-            c.Emit(Mono.Cecil.Cil.OpCodes.Ldloc_3);
-            c.EmitDelegate<Action<Player, Player, int>>((healer, target, heals) => DLCOnHealEffects(healer, target, heals));
-        }
-
-        internal static void LifeStealNerf_ILEdit(ILContext il)
-        {
-            FieldInfo healBonusField = typeof(ThoriumMod.ThoriumPlayer).GetField("healBonus", BindingFlags.Instance | BindingFlags.Public);
-            var c = new ILCursor(il);
-
-            c.GotoNext(i => i.MatchLdfld(healBonusField));
-            c.Index++;
-            c.Emit(Mono.Cecil.Cil.OpCodes.Ldc_I4_4);
-            c.Emit(Mono.Cecil.Cil.OpCodes.Div);
-        }
 
         public static void DLCOnHealEffects(Player healer, Player target, int heals)
         {
-            Main.NewText("test");
+            // Main.NewText("OnHeal");
         }
     }
 }

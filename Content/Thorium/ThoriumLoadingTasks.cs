@@ -58,10 +58,10 @@ namespace FargowiltasCrossmod.Content.Thorium
 
             Projectiles.DLCHealing.HealMethod = thoriumProjExtensions?.GetMethod("ThoriumHeal", BindingFlags.Static | BindingFlags.NonPublic);
             Projectiles.DLCHealing.CustomHealingType = thoriumProjExtensions.GetNestedType("CustomHealing", BindingFlags.NonPublic);
-            MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
+            // MonoModHooks.Modify(thoriumProjExtensions.GetMethod("ThoriumHealTarget", BindingFlags.Static | BindingFlags.NonPublic), Projectiles.DLCHealing.DLCOnHealEffects_ILEdit);
             
             ThoriumILEdits.ApplyILEdits();
-            // ThoriumDetours.LoadDetours();
+            ThoriumDetours.LoadDetours();
 
             if (FargowiltasCrossmod.CaughtTownies != null)
                 RegisterThoriumCaughtNPCs();
