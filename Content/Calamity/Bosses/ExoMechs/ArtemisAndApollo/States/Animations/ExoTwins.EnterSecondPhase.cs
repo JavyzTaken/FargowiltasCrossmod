@@ -1,5 +1,7 @@
 ﻿using CalamityMod.NPCs;
 using CalamityMod.NPCs.ExoMechs.Apollo;
+using CalamityMod.NPCs.ExoMechs.Ares;
+using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
@@ -238,6 +240,59 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 PrimitivePixelationSystem.RenderToPrimsNextFrame(() => ProjectLensShield(apollo, true), PixelationPrimitiveLayer.AfterNPCs);
             };
+
+            // Reflect projectiles that intersect with the forcefield.
+            if (EnterSecondPhase_ProtectiveForcefieldOpacity >= 0.75f)
+            {
+                Vector2 perpendicular = (apollo.rotation + MathHelper.PiOver2).ToRotationVector2();
+                Vector2 forcefieldStart = apollo.Center + apollo.rotation.ToRotationVector2() * 220f;
+                foreach (Projectile projectile in Main.ActiveProjectiles)
+                {
+                    bool canBeReflected = projectile.CanBeReflected() || (projectile.aiStyle == 0 && projectile.penetrate != -1 && !projectile.reflected);
+                    if (projectile.hostile || !canBeReflected)
+                        continue;
+
+                    bool movingTowardsForcefield = Vector2.Dot(projectile.velocity, apollo.rotation.ToRotationVector2()) < 0f;
+                    bool collidingWithForcefield =
+                        projectile.Colliding(projectile.Hitbox, Utils.CenteredRectangle(forcefieldStart - perpendicular * 110f, Vector2.One * 110f)) ||
+                        projectile.Colliding(projectile.Hitbox, Utils.CenteredRectangle(forcefieldStart + perpendicular * 110f, Vector2.One * 110f)) ||
+                        projectile.Colliding(projectile.Hitbox, Utils.CenteredRectangle(forcefieldStart, Vector2.One * 140f));
+
+                    if (collidingWithForcefield && movingTowardsForcefield)
+                    {
+                        Vector2 impactPoint = apollo.Center + apollo.SafeDirectionTo(projectile.Center) * 256f;
+                        ScreenShakeSystem.StartShakeAtPoint(impactPoint, 2f);
+
+                        SoundEngine.PlaySound(AresTeslaCannon.TeslaOrbShootSound, impactPoint);
+
+                        for (int i = 0; i < 14; i++)
+                        {
+                            int pixelLifetime = Main.rand.Next(11, 32);
+                            float pixelSize = Main.rand.NextFloat(0.85f, 1.7f);
+                            BloomPixelParticle pixel = new(impactPoint, perpendicular * Main.rand.NextFloatDirection() * 32f + Main.rand.NextVector2Circular(9f, 9f), Color.Wheat, Color.Lime * 0.65f, pixelLifetime, Vector2.One * pixelSize);
+                            pixel.Spawn();
+                        }
+
+                        float bloomScaleFactor = Main.rand.NextFloat(0.6f, 0.95f) + Main.rand.NextGaussian() * 0.4f;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            StrongBloom bloom = new(impactPoint, Vector2.Zero, Color.Wheat, bloomScaleFactor * 0.56f, 9);
+                            GeneralParticleHandler.SpawnParticle(bloom);
+
+                            StrongBloom glow = new(impactPoint, Vector2.Zero, Color.Lime * 0.6f, bloomScaleFactor * 0.95f, 12);
+                            GeneralParticleHandler.SpawnParticle(glow);
+
+                            StrongBloom outerGlow = new(impactPoint, Vector2.Zero, Color.Turquoise * 0.35f, bloomScaleFactor * 1.5f, 14);
+                            GeneralParticleHandler.SpawnParticle(outerGlow);
+                        }
+
+                        projectile.velocity *= -0.7f;
+                        projectile.velocity += Main.rand.NextVector2Circular(2f, 2f);
+                        projectile.damage = 0;
+                        projectile.netUpdate = true;
+                    }
+                }
+            }
 
             if (Main.rand.NextBool(EnterSecondPhase_ProtectiveForcefieldOpacity * 0.8f))
                 CreateForcefieldHologramDust(apollo);
