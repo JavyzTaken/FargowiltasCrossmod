@@ -70,7 +70,7 @@ public class ThoriumDetours
             (PlayerHelper_HealLife_orig orig, Player player, int healAmount, Player healer = null,
                 bool healOverMax = true, bool statistics = true) =>
             {
-                if (WorldSavingSystem.EternityMode && healer != null && player.whoAmI == healer.whoAmI)
+                if (WorldSavingSystem.EternityMode && (healer == null || player.whoAmI == healer.whoAmI))
                 {
                     return orig(player, (int)MathF.Ceiling(healAmount / 4f),  healer, healOverMax, statistics);
                 }

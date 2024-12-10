@@ -106,6 +106,11 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Nerfed lifesteal to only trigger every 0.5 seconds")));
             }
+
+            if (item.type == ModContent.ItemType<Renew>() || item.type == ModContent.ItemType<Recuperate>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Self healing is only 25% as effective")));
+            }
         }
     }
 }
