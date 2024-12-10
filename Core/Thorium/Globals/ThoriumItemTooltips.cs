@@ -99,7 +99,12 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
 
             if (item.ModItem is ThoriumItem thoriumItem && thoriumItem.healType == HealType.Ally)
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}All ally healing is reduced by 10% of the target's defence")));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}All ally healing is reduced by 10% of the target's defence, 20% in hardmode")));
+            }
+
+            if (item.type == ModContent.ItemType<ScytheofUndoing>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Nerfed lifesteal to only trigger every 0.5 seconds")));
             }
         }
     }
