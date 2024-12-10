@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace FargowiltasCrossmod.Content.Thorium.PlayerLayers
 {
+    [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
     public class ShadeMasterBodyLayer : PlayerDrawLayer
     {
         public override Position GetDefaultPosition()

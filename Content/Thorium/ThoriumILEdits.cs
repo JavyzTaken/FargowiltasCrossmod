@@ -92,25 +92,24 @@ public static class ThoriumILEdits
 
     public static void TotalHealAmount_ILEdit(ILContext il)
     {
-            var c = new ILCursor(il);
+        var c = new ILCursor(il);
 
-            // c.GotoNext(i => i.MatchStloc3());
-            c.GotoNext(i => i.Match(OpCodes.Ble_S));
-            c.GotoNext();
-            c.GotoNext(i => i.Match(OpCodes.Ble_S));
-            c.GotoNext();
-            
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldarg_1);
-            c.Emit(OpCodes.Ldloc_3);
-            c.EmitDelegate<Func<Projectile, Player, int, int>>((Projectile proj, Player target, int HealAmount) =>
-            {
-                // Main.NewText(HealAmount);
-                if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
-                    return int.Max(1, HealAmount - (int)Math.Floor((float)target.statDefense / 10f));
-                return HealAmount;
-            });
-            c.Emit(OpCodes.Stloc_3);
+        // c.GotoNext(i => i.MatchStloc3());
+        c.GotoNext(i => i.Match(OpCodes.Ble_S));
+        c.GotoNext();
+        c.GotoNext(i => i.Match(OpCodes.Ble_S));
+        c.GotoNext();
+        
+        c.Emit(OpCodes.Ldarg_0);
+        c.Emit(OpCodes.Ldarg_1);
+        c.Emit(OpCodes.Ldloc_3);
+        c.EmitDelegate<Func<Projectile, Player, int, int>>((Projectile proj, Player target, int HealAmount) =>
+        {
+            if (FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode)
+                return int.Max(1, HealAmount - (int)Math.Floor((float)target.statDefense / (Main.hardMode ? 5f : 10f)));
+            return HealAmount;
+        });
+        c.Emit(OpCodes.Stloc_3);
     }
     
     internal static void LifeStealNerf_ILEdit(ILContext il)

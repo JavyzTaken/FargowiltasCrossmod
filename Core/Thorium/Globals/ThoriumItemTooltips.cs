@@ -96,6 +96,11 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}Nerfed Damage by 33%")));
             }
+
+            if (item.ModItem is ThoriumItem thoriumItem && thoriumItem.healType == HealType.Ally)
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", Language.GetTextValue($"{BalanceDownLine}All ally healing is reduced by 10% of the target's defence")));
+            }
         }
     }
 }

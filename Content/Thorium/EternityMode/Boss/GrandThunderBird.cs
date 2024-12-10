@@ -99,6 +99,12 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
             npc.color = Color.White;
             npc.damage = 40;
 
+            npc.TargetClosest();
+            if (!npc.HasValidTarget || Main.player[npc.target].dead)
+            {
+                npc.EncourageDespawn(60);
+            }
+
             switch (currentMode)
             {
                 case AIMode.Follow:
@@ -189,19 +195,20 @@ namespace FargowiltasCrossmod.Content.Thorium.EternityMode.Boss
         {
             if (!npc.HasValidTarget)
             {
-                npc.TargetClosest(true);
-
+                npc.TargetClosest();
                 if (!npc.HasValidTarget)
                 {
-                    npc.EncourageDespawn(1);
+                    npc.velocity.Y -= 0.05f;
+                    npc.EncourageDespawn(10);
+                    return false;
                 }
             }
 
-            Player target = Main.player[npc.target];
-            if (target.dead)
-            {
-                npc.EncourageDespawn(1);
-            }
+            // Player target = Main.player[npc.target];
+            // if (target.dead)
+            // {
+            //     npc.EncourageDespawn(1);
+            // }
 
             switch (currentMode)
             {

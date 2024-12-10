@@ -20,6 +20,9 @@ namespace FargowiltasCrossmod.Content.Thorium.Projectiles
             base.OnSpawn(projectile, source);
             if (!ThoriumMod.Items.HealerItems.ScytheItem.ProToScytheCharge.ContainsKey(projectile.type)) return;
 
+            projectile.knockBack *= 0.5f;
+            projectile.damage = (int)(projectile.damage * 0.8f);
+
             FargoSoulsGlobalProjectile gProj = projectile.GetGlobalProjectile<FargoSoulsGlobalProjectile>();
             if (gProj.TungstenScale == 2)
             {
