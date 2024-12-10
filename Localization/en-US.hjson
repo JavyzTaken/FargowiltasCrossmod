@@ -1227,6 +1227,11 @@ Mods: {
 				DisplayName: White Dwarf Cooldown
 				Description: Mods.FargowiltasCrossmod.Buffs.WhiteDwarfCooldown.Description
 			}
+
+			ScytheOfUndoingLifestealCD: {
+				DisplayName: Scythe Of Undoing Lifesteal C D
+				Description: Mods.FargowiltasCrossmod.Buffs.ScytheOfUndoingLifestealCD.Description
+			}
 		}
 
 		Toggler: {

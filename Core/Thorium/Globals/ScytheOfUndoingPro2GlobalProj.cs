@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using ThoriumMod;
 using ThoriumMod.Buffs.Healer;
 using ThoriumMod.Projectiles;
+using ThoriumMod.Projectiles.Scythe;
 using ThoriumMod.Utilities;
 
 namespace FargowiltasCrossmod.Core.Thorium.Globals;
@@ -12,7 +13,12 @@ namespace FargowiltasCrossmod.Core.Thorium.Globals;
 [ExtendsFromMod(Core.ModCompatibility.ThoriumMod.Name)]
 public class ScytheOfUndoingPro2GlobalProj : GlobalProjectile
 {
-    public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
+	public override bool AppliesToEntity(Projectile entity, bool lateInstantiation)
+	{
+		return entity.type == ModContent.ProjectileType<ScytheofUndoingPro2>();
+	}
+
+	public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
     {
 		Player player = Main.player[projectile.owner];
 		if (!target.friendly && target.lifeMax > 5 && target.chaseable && (!target.dontTakeDamage) && !target.immortal)
