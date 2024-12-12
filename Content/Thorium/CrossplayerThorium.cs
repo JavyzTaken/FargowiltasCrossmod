@@ -12,7 +12,9 @@ using FargowiltasCrossmod.Content.Thorium.NPCs;
 using FargowiltasCrossmod.Content.Thorium.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
+using ThoriumMod.Items;
 
 namespace FargowiltasCrossmod.Content.Thorium
 {
@@ -187,6 +189,15 @@ namespace FargowiltasCrossmod.Content.Thorium
             if (!Player.HasEffect<NoviceClericEffect>())
             {
                 NoviceClericCrosses = 0;
+            }
+
+            AdamantiteEffect adamEffect = ModContent.GetInstance<AdamantiteEffect>();
+            if (Player.HasEffect<AdamantiteEffect>() && Player.HeldItem != null && Player.HeldItem.ModItem != null &&
+                Player.HeldItem.ModItem is ThoriumItem)
+            {
+                AccessoryEffectPlayer effectsPlayer = Player.AccessoryEffects();
+                effectsPlayer.ActiveEffects[adamEffect.Index] = false;
+                effectsPlayer.EffectItems[adamEffect.Index] = null;
             }
         }
 
