@@ -328,6 +328,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                 NPC.chaseable = false;
                 NPC.damage = 0;
                 NPC.defense = 200;
+                NPC.life = NPC.lifeMax;
 
                 //Aura();
                 void Aura()

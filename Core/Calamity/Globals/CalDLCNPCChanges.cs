@@ -120,6 +120,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<BrimstoneHeart>(),
             ModContent.NPCType<SupremeCataclysm>(),
             ModContent.NPCType<SupremeCatastrophe>(),
+            ModContent.NPCType<Cataclysm>(),
+            ModContent.NPCType<Catastrophe>()
 
         ];
         public override void SetStaticDefaults()
@@ -1188,6 +1190,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 pool[NPCID.Mimic] = 0f;
                 pool[NPCID.DuneSplicerHead] = 0f;
+                pool[NPCID.RockGolem] = 0f;
             }
         }
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)

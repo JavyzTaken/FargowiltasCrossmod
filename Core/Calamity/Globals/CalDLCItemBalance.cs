@@ -159,15 +159,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         //Identical to Eternity nerfs from Souls Mod
         void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, int amount = 0, string mod = "FargowiltasSouls")
         {
-            string prefix = Language.GetTextValue($"Mods.{mod}.EModeBalance.{change}");
+            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
             string nerf = Language.GetTextValue($"Mods.{mod}.EModeBalance.{key}", amount == 0 ? null : amount);
-            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf}"));
+            tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix}{nerf}"));
         }
 
-        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, string extra)
+        void ItemBalance(List<TooltipLine> tooltips, EModeChange change, string key, string extra, string mod = "FargowiltasSouls")
         {
-            string prefix = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{change}");
-            string nerf = Language.GetTextValue($"Mods.FargowiltasSouls.EModeBalance.{key}");
+
+            string prefix = Language.GetTextValue($"Mods.{mod}.EModeBalance.{change}");
+            string nerf = Language.GetTextValue($"Mods.{mod}.EModeBalance.{key}");
             tooltips.Add(new TooltipLine(Mod, $"{change}{key}", $"{prefix} {nerf} {extra}"));
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -182,7 +183,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (item.type == ModContent.ItemType<Laudanum>())
                 {
-                    ItemBalance(tooltips, EModeChange.Nerf, "Laudanum");
+                    ItemBalance(tooltips, EModeChange.Nerf, "Laudanum", mod: "FargowiltasCrossmod");
                 }
             }
 
@@ -219,7 +220,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Split effect disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
             }
             if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
             {
@@ -232,6 +233,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.ModItem != null && item.ModItem is FlightMasteryWings)
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
+            }
+            if (item.type == ModContent.ItemType<LifeForce>())
+            {
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats and wing time decreased when fighting non-Souls Mod bosses"));
             }
 
             if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
