@@ -209,10 +209,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("ProfanedCrystal")));
             }
-            if (item.type == ModContent.ItemType<TungstenEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("TungstenEnch")));
-            }
+            //if (item.type == ModContent.ItemType<TungstenEnchant>())
+            //{
+            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("TungstenEnch")));
+            //}
             if (item.type == ModContent.ItemType<MythrilEnchant>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MythrilEnch")));
