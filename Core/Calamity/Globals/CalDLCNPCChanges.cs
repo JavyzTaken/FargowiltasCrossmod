@@ -432,49 +432,49 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     npc.damage = 200;
                 }
                 if (npc.type == NPCID.MoonLordCore)
-                    npc.lifeMax = (int)(2000000 / 1.6f);
+                    npc.lifeMax = (int)(1500000 / 1.6f);
                 if (npc.type == NPCID.MoonLordHand || npc.type == NPCID.MoonLordHead)
-                    npc.lifeMax = (int)(1000000 / 1.6f);
+                    npc.lifeMax = (int)(800000 / 1.6f);
                 if (npc.type == ModContent.NPCType<ProfanedGuardianHealer>() || npc.type == ModContent.NPCType<ProfanedGuardianDefender>())
-                    npc.lifeMax = (int)(3000000 / 1.6f);
+                    npc.lifeMax = (int)(1000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<ProfanedGuardianCommander>())
-                    npc.lifeMax = (int)(4000000 / 1.6f);
+                    npc.lifeMax = (int)(2000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Bumblefuck>())
-                    npc.lifeMax = (int)(6000000 / 1.6f);
+                    npc.lifeMax = (int)(3000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Providence>())
-                    npc.lifeMax = (int)(11000000 / 1.6f);
+                    npc.lifeMax = (int)(9000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Signus>())
-                    npc.lifeMax = (int)(8000000 / 1.6f);
+                    npc.lifeMax = (int)(2500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<CeaselessVoid>())
                     npc.lifeMax = (int)(4000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<DarkEnergy>())
-                    npc.lifeMax = (int)(500000 / 1.6f);
+                    npc.lifeMax = (int)(100000 / 1.6f);
                 if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverBody>() || npc.type == ModContent.NPCType<StormWeaverTail>())
-                    npc.lifeMax = (int)(80000000 / 1.6f);
+                    npc.lifeMax = (int)(40000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Polterghast>())
-                    npc.lifeMax = (int)(8500000 / 1.6f);
+                    npc.lifeMax = (int)(6500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<PolterPhantom>())
-                    npc.lifeMax = (int)(5000000 / 1.6f);
+                    npc.lifeMax = (int)(3000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<OldDuke>())
-                    npc.lifeMax = (int)(5000000 / 1.6f);
+                    npc.lifeMax = (int)(3500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
-                    npc.lifeMax = (int)(25000000 / 1.6f);
+                    npc.lifeMax = (int)(30000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<CosmosChampion>())
-                    npc.lifeMax = (int)(10000000 / 1.6f);
+                    npc.lifeMax = (int)(9000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Yharon>())
-                    npc.lifeMax = (int)(13000000 / 1.6f);
+                    npc.lifeMax = (int)(11000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<AbomBoss>())
-                    npc.lifeMax = (int)(17000000 / 1.6f);
+                    npc.lifeMax = (int)(13000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<AresBody>() || npc.type == ModContent.NPCType<AresGaussNuke>() || npc.type == ModContent.NPCType<AresLaserCannon>() || npc.type == ModContent.NPCType<AresPlasmaFlamethrower>() || npc.type == ModContent.NPCType<AresTeslaCannon>())
-                    npc.lifeMax = (int)(20000000 / 1.6f);
+                    npc.lifeMax = (int)(10000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<ThanatosHead>() || npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosTail>())
                     npc.lifeMax = (int)(25000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
-                    npc.lifeMax = (int)(9500000 / 1.6f);
+                    npc.lifeMax = (int)(7500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<SupremeCalamitas>())
                     npc.lifeMax = (int)(8000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<BrimstoneHeart>())
-                    npc.lifeMax = (int)(400000 / 1.6f);
+                    npc.lifeMax = (int)(300000 / 1.6f);
                 if (npc.type == ModContent.NPCType<SupremeCataclysm>() || npc.type == ModContent.NPCType<SupremeCatastrophe>())
                     npc.lifeMax = (int)(1000000 / 1.6f);
 

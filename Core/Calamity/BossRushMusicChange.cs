@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Core.Calamity
                 {
                     tier = 3;
                 }
-                if (BossRushEvent.BossRushStage > 9)
+                if (BossRushEvent.BossRushStage > 6)
                 {
                     tier = 4;
                 }

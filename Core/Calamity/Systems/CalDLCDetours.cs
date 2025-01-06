@@ -682,8 +682,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (BossRushEvent.BossRushSpawnCountdown < 180 && currLine < currSequenceLength) 
                 BossRushEvent.BossRushSpawnCountdown = BossRushDialogueSystem.CurrentDialogueDelay + 180;
         }
-        
-        }
         internal static bool FargoPlayerPreKill_Detour(Orig_FargoPlayerPreKill orig, FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
             bool retval = orig(self, damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);

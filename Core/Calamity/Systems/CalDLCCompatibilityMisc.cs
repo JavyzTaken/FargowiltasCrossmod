@@ -215,7 +215,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     int provi = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
                     Main.npc[provi].timeLeft *= 20;
                     CalamityUtils.BossAwakenMessage(provi);
-                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<ProvSpawnDefense>(), ModContent.NPCType<ProvSpawnHealer>(), ModContent.NPCType<ProvSpawnOffense>()]),
+                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<ProvSpawnDefense>(), ModContent.NPCType<ProvSpawnHealer>(), ModContent.NPCType<ProvSpawnOffense>(),
+                    ModContent.NPCType<ProfanedGuardianCommander>(), ModContent.NPCType<ProfanedGuardianDefender>(), ModContent.NPCType<ProfanedGuardianHealer>()]),
                 
 
                 new Boss(ModContent.NPCType<Polterghast>(), permittedNPCs: [ModContent.NPCType<PhantomFuckYou>(), ModContent.NPCType<PolterghastHook>(), ModContent.NPCType<PolterPhantom>()]),
@@ -227,13 +228,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 new Boss(ModContent.NPCType<DevourerofGodsHead>(), spawnContext: type => {
                     SoundEngine.PlaySound(DevourerofGodsHead.SpawnSound, Main.player[ClosestPlayerToWorldCenter].Center);
                     NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
-                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<DevourerofGodsBody>(), ModContent.NPCType<DevourerofGodsTail>(), ModContent.NPCType<CosmicGuardianBody>(), ModContent.NPCType<CosmicGuardianHead>(), ModContent.NPCType<CosmicGuardianTail>()]),
+                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<DevourerofGodsBody>(), ModContent.NPCType<DevourerofGodsTail>(), ModContent.NPCType<CosmicGuardianBody>(), ModContent.NPCType<CosmicGuardianHead>(), ModContent.NPCType<CosmicGuardianTail>(), 
+                ModContent.NPCType<Signus>(), ModContent.NPCType<CeaselessVoid>(), ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>()]),
                 new Boss(ModContent.NPCType<CosmosChampion>(), spawnContext: type => {
                     int erd = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
                     Main.npc[erd].timeLeft *= 20;
                     CalamityUtils.BossAwakenMessage(erd);
                 }),
-                new Boss(ModContent.NPCType<Yharon>()),
+                new Boss(ModContent.NPCType<Yharon>(), permittedNPCs: ModContent.NPCType<Bumblefuck>()),
                 new Boss(ModContent.NPCType<AbomBoss>()),
                 new Boss(ModContent.NPCType<Draedon>(), spawnContext: type =>
                 {
@@ -254,87 +256,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 new Boss(ModContent.NPCType<MutantBoss>(), permittedNPCs: [ModContent.NPCType<MutantIllusion>()])
                 ];
             
-            //for (int i = Bosses.Count - 1; i >= 0; i--)
-            //{
-            //    if (Bosses[i].EntityID == NPCID.KingSlime)
-            //    {
-            //        Bosses[i] = new Boss(NPCID.KingSlime, permittedNPCs: [NPCID.BlueSlime, NPCID.SlimeSpiked, NPCID.Pinky, NPCID.SpikedIceSlime, NPCID.SpikedJungleSlime, ModContent.NPCType<KingSlimeJewelRuby>(), ModContent.NPCType<KingSlimeJewelEmerald>(), ModContent.NPCType<KingSlimeJewelSapphire>()]);
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<TimberChampion>(), permittedNPCs: [ModContent.NPCType<TimberChampionHead>(), ModContent.NPCType<LesserSquirrel>()]));
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<TrojanSquirrel>(), spawnContext: type =>
-            //        {
-            //            NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
-            //            DownedBossSystem.startedBossRushAtLeastOnce = true;
-            //        }, permittedNPCs: [ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrelHead>()]));   
-            //    }
-            //    if (Bosses[i].EntityID == NPCID.QueenBee)
-            //    {
-            //        Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<RoyalSubject>());
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<NatureChampion>(), permittedNPCs: [ModContent.NPCType<NatureChampionHead>()]));
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<SpiritChampion>(), permittedNPCs: [ModContent.NPCType<SpiritChampionHand>()]));
-
-            //    }
-            //    if (Bosses[i].EntityID == ModContent.NPCType<SlimeGodCore>())
-            //    {
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<DeviBoss>()));
-            //    }
-            //    if (Bosses[i].EntityID == NPCID.QueenSlimeBoss)
-            //    {
-            //        Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<GelatinSubject>());
-            //        Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<GelatinSlime>());
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<EarthChampion>(), permittedNPCs: [ModContent.NPCType<EarthChampionHand>()]));
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<TerraChampion>(), permittedNPCs: [ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>()]));
-                
-            //    }
-            //    if (Bosses[i].EntityID == ModContent.NPCType<Cryogen>())
-            //    {
-            //        Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<PermafrostBoss>());
-            //    }
-            //    if (Bosses[i].EntityID == NPCID.Spazmatism)
-            //    {
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<WillChampion>()));
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<BanishedBaron>()));
-            //    }
-            //    if (Bosses[i].EntityID == NPCID.Plantera)
-            //    {
-            //        Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<CrystalLeaf>());
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<LifeChampion>(), TimeChangeContext.Day, type => {
-            //            SoundEngine.PlaySound(SoundID.ScaryScream, Main.player[ClosestPlayerToWorldCenter].Center);
-            //            int lief = NPC.NewNPC(new EntitySource_WorldEvent(), (int)Main.player[ClosestPlayerToWorldCenter].Center.X, (int)Main.player[ClosestPlayerToWorldCenter].Center.Y - 300, type, 1);
-            //            Main.npc[lief].timeLeft *= 20;
-            //            CalamityUtils.BossAwakenMessage(lief);
-            //        }, usesSpecialSound: true));
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<LifeChallenger>(), TimeChangeContext.Day, type => {
-            //            SoundEngine.PlaySound(SoundID.ScaryScream, Main.player[ClosestPlayerToWorldCenter].Center);
-            //            int lief = NPC.NewNPC(new EntitySource_WorldEvent(), (int)Main.player[ClosestPlayerToWorldCenter].Center.X, (int)Main.player[ClosestPlayerToWorldCenter].Center.Y - 300, type, 1);
-            //            Main.npc[lief].timeLeft *= 20;
-            //            CalamityUtils.BossAwakenMessage(lief);
-            //        }, usesSpecialSound: true));
-            //    }
-            //    if (Bosses[i].EntityID == NPCID.DukeFishron)
-            //    {
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<ShadowChampion>(), TimeChangeContext.Night, permittedNPCs: [ModContent.NPCType<ShadowOrbNPC>()]));
-            //    }
-            //    if (Bosses[i].EntityID == ModContent.NPCType<StormWeaverHead>())
-            //    {
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<CosmosChampion>(), spawnContext: type =>
-            //        {
-            //            int erd = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
-            //            Main.npc[erd].timeLeft *= 20;
-            //            CalamityUtils.BossAwakenMessage(erd);
-            //        }));
-            //    }
-            //    if (Bosses[i].EntityID == ModContent.NPCType<Draedon>())
-            //    {
-            //        Bosses.Insert(i, new Boss(ModContent.NPCType<AbomBoss>()));
-            //    }
-            //    if (Bosses[i].EntityID == ModContent.NPCType<SupremeCalamitas>())
-            //    {
-            //        Bosses.Add(new Boss(ModContent.NPCType<MutantBoss>(), permittedNPCs: [ModContent.NPCType<MutantIllusion>()]));
-            //    }
-
-            //}
-            //BossIDsAfterDeath.Add(ModContent.NPCType<TimberChampion>(), [ModContent.NPCType<TimberChampionHead>()]);
-            //BossIDsAfterDeath.Add(ModContent.NPCType<Cryogen>(), [ModContent.NPCType<PermafrostBoss>()]);
             
             BossDeathEffects.Remove(ModContent.NPCType<SupremeCalamitas>());
             BossDeathEffects.Remove(ModContent.NPCType<DevourerofGodsHead>());
