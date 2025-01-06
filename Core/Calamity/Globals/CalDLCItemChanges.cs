@@ -35,6 +35,7 @@ using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
+using FargowiltasSouls.Content.Items.Misc;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
@@ -283,27 +284,27 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<Rock>())
             {
-                tooltips.Add(new TooltipLine(Mod, "sqrl", $"[c/AAAAAA:Sold by Squirrel]"));
+                tooltips.Add(new TooltipLine(Mod, "sqrl", $"[i:{ModContent.ItemType<TopHatSquirrelCaught>()}] [c/AAAAAA:" + Language.GetTextValue($"Mods.Fargowiltas.ExpandedTooltips.SoldBySquirrel") + $"]"));
             }
             if (item.type == ModContent.ItemType<Masochist>())
             {
 
                 tooltips.RemoveAll(t => t.Text != item.Name);
-                tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", $"[c/FF0000:Calamity Crossmod Support:] Activate Eternity with Calamity's difficulty selector instead!"));
+                tooltips.Add(new TooltipLine(Mod, "MasochistDisabled", ExpandedTooltipLoc("MasoModeDisabled")));
             }
             if (item.type == ModContent.ItemType<Terminus>())
             {
-                tooltips.Add(new TooltipLine(Mod, "PostMutant", $"[c/FF0000:Calamity Crossmod Support:] Can only be used after defeating the Mutant"));
+                tooltips.Add(new TooltipLine(Mod, "PostMutant", ExpandedTooltipLoc("UsablePostMutant")));
             }
             if (item.type == ModContent.ItemType<DeerSinew>())
             {
-                tooltips.Add(new TooltipLine(Mod, "ToggleDisabledByDefault", $"[c/FF0000:Calamity Crossmod Support:] Toggle disabled by default"));
+                tooltips.Add(new TooltipLine(Mod, "ToggleDisabledByDefault", ExpandedTooltipLoc("DisabledByDefault")));
             }
 
-            const string BalanceLine = "Cross-mod Balance: ";
+            string BalanceLine = Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.CrossBalanceGeneric");
             if (item.type == ModContent.ItemType<CelestialOnion>() && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
-                tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]Is now an upgrade to [i:{ModContent.ItemType<MutantsPact>()}]Mutant's Pact, that allows any accessory in the extra slot."));
+                tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]" + Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.OnionPackUpgrade")));
             }
 
 
