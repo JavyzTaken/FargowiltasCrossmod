@@ -109,7 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             teslaSphere.Center = Vector2.Lerp(teslaSphere.Center, sphereHoverDestination, 0.06f);
             teslaSphere.velocity += (sphereHoverDestination - teslaSphere.Center) * 0.0051f;
 
-            // Update hte tesla sphere's size as the animation goes on.
+            // Update the tesla sphere's size as the animation goes on.
             float chargeUpInterpolant = LumUtils.InverseLerp(0f, LargeTeslaOrbBlast_OrbChargeUpTime, AITimer);
             Vector2 teslaSphereSize = Vector2.Lerp(Vector2.One * 2f, Vector2.One * 750f, chargeUpInterpolant.Cubed());
             teslaSphereSize *= MathHelper.SmoothStep(1f, MathF.Cos(AITimer) * 0.07f + 0.4f, LargeTeslaOrbBlast_ExplodeAnticipationInterpolant);

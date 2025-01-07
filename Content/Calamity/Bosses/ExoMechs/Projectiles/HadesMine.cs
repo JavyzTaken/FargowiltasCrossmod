@@ -144,6 +144,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            Projectile.velocity = Vector2.Zero;
+
             Projectile.Resize((int)(ExplosionDiameter * 0.8f), (int)(ExplosionDiameter * 0.8f));
             Projectile.Damage();
 
