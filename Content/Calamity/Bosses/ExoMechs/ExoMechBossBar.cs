@@ -97,7 +97,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             spriteBatch.Draw(barTexture, topLeft, bgFrame, bgColor, 0f, Vector2.Zero, 1f, 0, 0f);
 
             Main.spriteBatch.PrepareForShaders(null, true);
-            DrawBar(npc, barTexture, barTopLeft, barFrame, scale, lifeRatio);
+            DrawBar(barTexture, barTopLeft, barFrame, scale, lifeRatio);
             Main.spriteBatch.ResetToDefaultUI();
 
             // Bar itself (shield).
@@ -129,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             return false;
         }
 
-        private static void DrawBar(NPC npc, Texture2D barTexture, Vector2 barTopLeft, Rectangle barFrame, float scale, float lifeRatio)
+        private static void DrawBar(Texture2D barTexture, Vector2 barTopLeft, Rectangle barFrame, float scale, float lifeRatio)
         {
             Vector3[] palette = new Vector3[CalamityUtils.ExoPalette.Length];
             for (int i = 0; i < palette.Length; i++)
