@@ -64,18 +64,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
         /// <param name="time">How much time has passed since the start of the dialogue chain's playback.</param>
         public DraedonDialogue? GetActiveDialogue(ref int time)
         {
-            int startingTime = time;
-            int totalDuration = 0;
             var evaluatedNode = Chain.First;
             if (time < 0)
                 return evaluatedNode.Value();
-
-            var checkNode = Chain.First;
-            while (checkNode is not null)
-            {
-                totalDuration += evaluatedNode.Value().Duration;
-                checkNode = checkNode.Next;
-            }
 
             while (time > evaluatedNode.Value().Duration)
             {
