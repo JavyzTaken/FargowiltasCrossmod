@@ -129,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
             return false;
         }
 
-        private void DrawBar(NPC npc, Texture2D barTexture, Vector2 barTopLeft, Rectangle barFrame, float scale, float lifeRatio)
+        private static void DrawBar(NPC npc, Texture2D barTexture, Vector2 barTopLeft, Rectangle barFrame, float scale, float lifeRatio)
         {
             Vector3[] palette = new Vector3[CalamityUtils.ExoPalette.Length];
             for (int i = 0; i < palette.Length; i++)
