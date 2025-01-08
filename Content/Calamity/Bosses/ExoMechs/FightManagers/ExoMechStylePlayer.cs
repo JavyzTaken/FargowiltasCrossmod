@@ -142,6 +142,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers
                 return;
             }
 
+            // Stop evaluating the fight if it's over or has yet to start.
+            if (ExoMechFightStateManager.ActiveExoMechs.Count <= 0)
+                return;
+
             int currentPhase = ExoMechFightStateManager.CurrentPhase.PhaseOrdering;
             if (currentPhase >= 1)
                 PhaseDurations[currentPhase]++;

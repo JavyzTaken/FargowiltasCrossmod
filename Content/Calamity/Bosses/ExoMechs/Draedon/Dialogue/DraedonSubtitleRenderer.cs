@@ -7,16 +7,15 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.UI.Chat;
-using static FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.DraedonSubtitleManager;
+using static FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue.DraedonSubtitleManager;
 
-namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
+namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
 {
     [Autoload(Side = ModSide.Client)]
     public class DraedonSubtitleRenderer : ModSystem
@@ -104,23 +103,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             if (CurrentSequence is null)
                 return;
 
-            SubtitleSection currentSection = CurrentSequence.Sections.OrderBy(s => s.Start).LastOrDefault(s => SequenceTimer >= s.Start);
-
-            // This shouldn't happen, but just in case there is no valid section, don't try to draw anything.
-            if (currentSection is null)
-                return;
-
-            int currentSectionIndex = Array.IndexOf(CurrentSequence.Sections, currentSection);
-            int startTime = currentSection.Start;
-            int endTime = CurrentSequence.Duration;
-            if (currentSectionIndex < CurrentSequence.Sections.Length - 1)
-                endTime = CurrentSequence.Sections[currentSectionIndex + 1].Start;
-
             EasingCurves.Curve offsetAnimationCurve = EasingCurves.Quartic;
 
-            int animationTime = 30;
+            int animationTime = Math.Min(CurrentSequence.Duration / 4, 33);
+            int endTime = CurrentSequence.Duration;
             float maxHorizontalOffset = Main.ScreenSize.X * 1.15f;
-            float startInterpolant = LumUtils.InverseLerp(startTime + animationTime, startTime, SequenceTimer);
+            float startInterpolant = LumUtils.InverseLerp(animationTime, 0f, SequenceTimer);
             float endInterpolant = LumUtils.InverseLerp(endTime - animationTime, endTime, SequenceTimer);
             float horizontalDrawOffsetStart = offsetAnimationCurve.Evaluate(EasingType.InOut, startInterpolant) * -maxHorizontalOffset;
             float horizontalDrawOffsetEnd = offsetAnimationCurve.Evaluate(EasingType.InOut, endInterpolant) * maxHorizontalOffset;
@@ -128,7 +116,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
 
             TextOffsetInterpolant = MathF.Max(startInterpolant, endInterpolant);
 
-            string text = currentSection.Text;
+            string text = Language.GetTextValue(CurrentSequence.LocalizationKey);
             Vector2 textSize = SubtitleFont.MeasureString(text);
             Vector2 drawPosition = Main.ScreenSize.ToVector2() * new Vector2(0.5f, 0.85f) + Vector2.UnitX * horizontalDrawOffset;
             Vector2 origin = textSize * 0.5f;
@@ -136,7 +124,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             for (int i = 0; i < 3; i++)
                 ChatManager.DrawColorCodedStringShadow(Main.spriteBatch, SubtitleFont, text, drawPosition, Color.Black, 0f, origin, Vector2.One * 1.5f, -1, i + 1f);
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, SubtitleFont, text, drawPosition, SubtitleColor, 0f, origin, Vector2.One * 1.5f);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, SubtitleFont, text, drawPosition, CurrentSequence.Text.TextColor, 0f, origin, Vector2.One * 1.5f);
         }
 
         internal static void RenderSubtitlesWithPostProcessing()

@@ -1,5 +1,6 @@
 ﻿using CalamityMod;
 using CalamityMod.World;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Microsoft.Xna.Framework;
 
@@ -18,16 +19,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         public void DoBehavior_StartingMonologue()
         {
             int speakTimer = (int)AITimer - 90;
-            var monologue = StartingMonologueToUse;
-            for (int i = 0; i < monologue.Count; i++)
-            {
-                if (speakTimer == monologue[i].SpeakDelay)
-                    monologue[i].SayInChat();
-            }
+            StartingMonologueToUse.Process(speakTimer);
 
-            bool monologueIsFinished = speakTimer >= monologue.OverallDuration;
             bool playerHasSelectedExoMech = CalamityWorld.DraedonMechToSummon != ExoMech.None;
-            if (monologueIsFinished)
+            if (StartingMonologueToUse.Finished(speakTimer))
             {
                 if (!playerHasSelectedExoMech)
                     PlayerToFollow.Calamity().AbleToSelectExoMech = true;

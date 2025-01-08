@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -17,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// The monologue that Draedon uses upon the Exo Mechs battle concluding the first time you defeat them.
         /// </summary>
-        public static readonly DraedonDialogueChain PostBattleInterjection = new DraedonDialogueChain("Mods.FargowiltasCrossmod.NPCs.Draedon.").
+        public static readonly DraedonDialogueChain PostBattleInterjection = new DraedonDialogueChain().
             Add("EndOfBattle_FirstDefeat1").
             Add("EndOfBattle_FirstDefeat2").
             Add("EndOfBattle_FirstDefeat3").
@@ -28,11 +29,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// The monologue that Draedon uses upon the Exo Mechs battle concluding the first time you defeat them.
         /// </summary>
-        public static readonly DraedonDialogueChain PostBattleAnalysisInterjection = new DraedonDialogueChain("Mods.FargowiltasCrossmod.NPCs.Draedon.").
+        public static readonly DraedonDialogueChain PostBattleAnalysisInterjection = new DraedonDialogueChain().
             Add("EndOfBattle_SuccessiveDefeat1").
             Add("EndOfBattle_SuccessiveDefeat2").
-            Add(EndOfBattle_SuccessiveDefeat3Selection).
-            Add(EndOfBattle_SuccessiveDefeat4Selection).
+            Add(() => DraedonDialogueManager.Dialogue[EndOfBattle_SuccessiveDefeat3Selection()]).
+            Add(() => DraedonDialogueManager.Dialogue[EndOfBattle_SuccessiveDefeat4Selection()]).
             Add("EndOfBattle_SuccessiveDefeat5");
 
         /// <summary>
@@ -61,21 +62,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         public void DoBehavior_PostBattleInterjection()
         {
             int speakTimer = (int)AITimer - 90;
-            var monologue = DownedBossSystem.downedExoMechs ? PostBattleAnalysisInterjection : PostBattleInterjection;
-            for (int i = 0; i < monologue.Count; i++)
-            {
-                if (speakTimer == monologue[i].SpeakDelay)
-                    monologue[i].SayInChat();
-            }
+            DraedonDialogueChain dialogue = DownedBossSystem.downedExoMechs ? PostBattleAnalysisInterjection : PostBattleInterjection;
+            dialogue.Process(speakTimer, out DraedonDialogue? currentLine, out int relativeTime);
 
             Vector2 hoverDestination = PlayerToFollow.Center + new Vector2((PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign() * -450f, -5f);
             NPC.SmoothFlyNear(hoverDestination, 0.05f, 0.94f);
             NPC.dontTakeDamage = WasKilled;
 
-            bool monologueIsFinished = speakTimer >= monologue.OverallDuration;
-
-            // Reset the variables to their controls by healing the player.
-            if (Main.netMode != NetmodeID.MultiplayerClient && speakTimer == monologue[3].SpeakDelay - 60)
+            // Give the player their loot crate.
+            bool lootCrateLine = currentLine == DraedonDialogueManager.Dialogue["EndOfBattle_FirstDefeat5"] || currentLine == DraedonDialogueManager.Dialogue["EndOfBattle_SuccessiveDefeat5"];
+            if (Main.netMode != NetmodeID.MultiplayerClient && relativeTime == 1 && lootCrateLine)
             {
                 foreach (Player player in Main.ActivePlayers)
                 {
@@ -84,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 }
             }
 
-            if (monologueIsFinished)
+            if (dialogue.Finished(speakTimer))
             {
                 HologramOverlayInterpolant = Utilities.Saturate(HologramOverlayInterpolant + 0.02f);
                 MaxSkyOpacity = 1f - HologramOverlayInterpolant;

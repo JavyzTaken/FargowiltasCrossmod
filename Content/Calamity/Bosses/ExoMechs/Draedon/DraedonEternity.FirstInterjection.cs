@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Utilities;
@@ -15,13 +16,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// The monologue that Draedon uses upon an Exo Mech being defeated.
         /// </summary>
-        public static readonly DraedonDialogueChain FirstInterjection = new DraedonDialogueChain("Mods.FargowiltasCrossmod.NPCs.Draedon.").
+        public static readonly DraedonDialogueChain FirstInterjection = new DraedonDialogueChain().
             Add("Interjection1").
-            Add(SelectDamageInterjectionText).
+            Add(() => DraedonDialogueManager.Dialogue[SelectDamageInterjectionText()]).
             Add("Interjection3").
             Add("Interjection4").
             Add("Interjection5").
-            Add("Interjection6", CalamityMod.NPCs.ExoMechs.Draedon.TextColorEdgy);
+            Add("Interjection6");
 
         /// <summary>
         /// How much damage needs to be incurred by a given <see cref="ExoMechDamageSource"/> in order for the damage to be considered major.
@@ -38,32 +39,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// </summary>
         public void DoBehavior_FirstInterjection()
         {
-            int speakTimer = (int)AITimer - 90;
-            var monologue = FirstInterjection;
-            for (int i = 0; i < monologue.Count; i++)
-            {
-                if (speakTimer == monologue[i].SpeakDelay)
-                    monologue[i].SayInChat();
-            }
+            int speakTimer = (int)AITimer - 150;
+            var dialogue = FirstInterjection;
+            dialogue.Process(speakTimer, out DraedonDialogue? currentLine, out int relativeTimer);
 
             HologramOverlayInterpolant = 0f;
 
             Vector2 hoverDestination = PlayerToFollow.Center + new Vector2((PlayerToFollow.Center.X - NPC.Center.X).NonZeroSign() * -450f, -85f);
             NPC.SmoothFlyNear(hoverDestination, 0.05f, 0.94f);
 
-            bool monologueIsFinished = speakTimer >= monologue.OverallDuration;
-
             // Reset the variables to their controls by healing the player.
-            if (speakTimer == monologue[4].SpeakDelay - 60)
+            if (currentLine == DraedonDialogueManager.Dialogue["Interjection4"] && relativeTimer == currentLine.Duration - 60)
                 ResetPlayerFightVariables();
 
-            if (speakTimer == monologue.OverallDuration - 60)
+            if (currentLine == DraedonDialogueManager.Dialogue["Interjection6"] && relativeTimer == currentLine.Duration - 60 && !DraedonDialogueManager.UseSubtitles)
             {
                 ScreenShakeSystem.StartShake(6f);
                 SoundEngine.PlaySound(CalamityMod.NPCs.ExoMechs.Draedon.LaughSound);
             }
 
-            if (monologueIsFinished)
+            if (dialogue.Finished(speakTimer))
             {
                 AIState = DraedonAIState.MoveAroundDuringBattle;
                 AITimer = 0f;

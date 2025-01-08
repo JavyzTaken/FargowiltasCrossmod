@@ -1,4 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Calamity.Globals;
+﻿using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Common.Easings;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
@@ -33,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// The monologue that Draedon uses upon the Exo Mechs battle concluding after being harmed.
         /// </summary>
-        public static readonly DraedonDialogueChain PostBattleDeathInterjection = new DraedonDialogueChain("Mods.FargowiltasCrossmod.NPCs.Draedon.").
+        public static readonly DraedonDialogueChain PostBattleDeathInterjection = new DraedonDialogueChain().
             Add("EndOfBattle_FirstDefeatReconBodyKill1").
             Add("EndOfBattle_FirstDefeatReconBodyKill2").
             Add("EndOfBattle_FirstDefeatReconBodyKill3");
@@ -50,15 +51,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             NPC.SmoothFlyNear(hoverDestination, 0.05f, 0.94f);
 
             int speakTimer = (int)AITimer - 150;
-            var monologue = PostBattleDeathInterjection;
-            for (int i = 0; i < monologue.Count; i++)
-            {
-                if (speakTimer == monologue[i].SpeakDelay)
-                    monologue[i].SayInChat();
-            }
+            PostBattleDeathInterjection.Process(speakTimer);
 
-            bool monologueIsFinished = speakTimer >= monologue.OverallDuration;
-            if (monologueIsFinished)
+            if (PostBattleDeathInterjection.Finished(speakTimer))
             {
                 AIState = DraedonAIState.PostBattleInterjection;
                 AITimer = PostBattleInterjectionTimer;

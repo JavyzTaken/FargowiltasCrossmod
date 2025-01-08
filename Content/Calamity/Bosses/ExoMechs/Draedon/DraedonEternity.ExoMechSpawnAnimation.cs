@@ -4,6 +4,7 @@ using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
 using CalamityMod.World;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -40,7 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// How long Draedon waits before summoning the first Exo Mech.
         /// </summary>
-        public static int ExoMechSummonDelay => Utilities.SecondsToFrames(2.5f);
+        public static int ExoMechSummonDelay => Utilities.SecondsToFrames(DraedonDialogueManager.UseSubtitles && !CalamityWorld.TalkedToDraedon ? 8.5f : 2.5f);
 
         /// <summary>
         /// How long the cargo plane spends flying overhead.
@@ -53,14 +54,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         public static readonly SoundStyle SirenSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/GeneralExoMechs/ExoMechSiren");
 
         /// <summary>
+        /// The monologue that Draedon uses upon the player choosing an Exo Mech, assuming he hasn't spoken to the player before.
+        /// </summary>
+        public static readonly DraedonDialogueChain ChoiceResponse = new DraedonDialogueChain().
+            Add("ExoMechChoiceResponse1").
+            Add("ExoMechChoiceResponse2");
+
+        /// <summary>
+        /// The monologue that Draedon uses upon the player choosing an Exo Mech, assuming he has spoken to the player before.
+        /// </summary>
+        public static readonly DraedonDialogueChain ChoiceResponseBrief = new DraedonDialogueChain().
+            Add("ExoMechChoiceResponse2");
+
+        /// <summary>
         /// The AI method that makes Draedon handle the Exo Mech spawning.
         /// </summary>
         public void DoBehavior_ExoMechSpawnAnimation()
         {
-            if (AITimer == 1f)
-                CalamityUtils.DisplayLocalizedText("Mods.FargowiltasCrossmod.NPCs.Draedon.ExoMechChoiceResponse1", CalamityMod.NPCs.ExoMechs.Draedon.TextColor);
-            if (AITimer == SirenDelay)
-                CalamityUtils.DisplayLocalizedText("Mods.FargowiltasCrossmod.NPCs.Draedon.ExoMechChoiceResponse2", CalamityMod.NPCs.ExoMechs.Draedon.TextColorEdgy);
+            DraedonDialogueChain dialogue = CalamityWorld.TalkedToDraedon ? ChoiceResponseBrief : ChoiceResponse;
+            dialogue.Process((int)AITimer - 1);
 
             PerformStandardFraming();
 
@@ -81,6 +93,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
             SirenSoundInstance.Update(Main.LocalPlayer.Center, sound =>
             {
                 sound.Volume = Utilities.InverseLerp(0f, SirenFadeInTime, AITimer) * Utilities.InverseLerp(30f, 0f, AITimer - ExoMechPlaneFlyTime - ExoMechSummonDelay);
+                if (DraedonDialogueManager.UseSubtitles)
+                    sound.Volume *= 0.5f;
             });
 
             MaxSkyOpacity = Utilities.Saturate(MaxSkyOpacity + 0.05f);

@@ -1,5 +1,7 @@
-﻿using CalamityMod.NPCs;
+﻿using CalamityMod;
+using CalamityMod.NPCs;
 using CalamityMod.Sounds;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -111,18 +113,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         /// <summary>
         /// Draedon's starting monologue. This is spoken the first time the player interacts with him.
         /// </summary>
-        public static readonly DraedonDialogueChain StartingMonologue = new DraedonDialogueChain("Mods.FargowiltasCrossmod.NPCs.Draedon.").
+        public static readonly DraedonDialogueChain StartingMonologue = new DraedonDialogueChain().
             Add("IntroductionMonologue1").
             Add("IntroductionMonologue2").
             Add("IntroductionMonologue3").
             Add("IntroductionMonologue4").
-            Add("IntroductionMonologue5", CalamityMod.NPCs.ExoMechs.Draedon.TextColorEdgy, 1);
+            Add("IntroductionMonologue5");
 
         /// <summary>
         /// Draedon's starting monologue. This is spoken in successive battles.
         /// </summary>
-        public static readonly DraedonDialogueChain StartingMonologueBrief = new DraedonDialogueChain("Mods.FargowiltasCrossmod.NPCs.Draedon.").
-            Add("IntroductionMonologueBrief", CalamityMod.NPCs.ExoMechs.Draedon.TextColorEdgy, 1);
+        public static readonly DraedonDialogueChain StartingMonologueBrief = new DraedonDialogueChain().
+            Add("IntroductionMonologueBrief");
 
         public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>();
 
@@ -349,8 +351,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
         {
             SoundEngine.PlaySound(CommonCalamitySounds.ExoHitSound, NPC.Center);
 
+            DraedonDialogueChain dialogue = DownedBossSystem.downedExoMechs ? PostBattleAnalysisInterjection : PostBattleInterjection;
+
             WasKilled = true;
             PostBattleInterjectionTimer = (int)AITimer;
+
+            // Skip to the next line.
+            dialogue.Process(PostBattleInterjectionTimer, out DraedonDialogue? currentDialogue, out int relativeTime);
+            if (currentDialogue is not null)
+                PostBattleInterjectionTimer += currentDialogue.Duration - relativeTime - 1;
+            DraedonSubtitleManager.Stop();
+
             ChangeAIState(DraedonAIState.ReconBodyKilledInterruption);
 
             NPC.netUpdate = true;
