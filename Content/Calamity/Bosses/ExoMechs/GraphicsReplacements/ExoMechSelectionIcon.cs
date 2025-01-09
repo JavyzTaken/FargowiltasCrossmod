@@ -1,8 +1,10 @@
 ﻿using CalamityMod;
 using FargowiltasCrossmod.Core;
 using Luminance.Assets;
+using Luminance.Common.Easings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -129,10 +131,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
         /// <summary>
         /// Renders this icon.
         /// </summary>
-        public void Render()
+        public void Render(float timeOffset)
         {
+            float animationInterpolant = LumUtils.Saturate(ExoMechSelectionUIReplacer.GeneralScaleInterpolant + timeOffset);
+            if (MathHelper.Distance(animationInterpolant, 0.03f) <= 0.001f)
+                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/Codebreaker/DialogOptionHover") with { MaxInstances = 0 });
+
+            float scale = Scale * MathF.Pow(EasingCurves.Elastic.Evaluate(EasingType.Out, animationInterpolant), 1.4f);
             Texture2D iconTexture = Texture.Value;
-            Main.spriteBatch.Draw(iconTexture, DrawPosition, null, Color.White, 0f, iconTexture.Size() * 0.5f, Scale * Main.UIScale, 0, 0f);
+            Main.spriteBatch.Draw(iconTexture, DrawPosition, null, Color.White, 0f, iconTexture.Size() * 0.5f, scale * Main.UIScale, 0, 0f);
 
             if (WasMouseHoveringOverIcon)
             {

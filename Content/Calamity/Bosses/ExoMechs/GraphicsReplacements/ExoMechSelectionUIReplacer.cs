@@ -7,6 +7,7 @@ using Luminance.Assets;
 using Luminance.Core.Hooking;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
@@ -20,6 +21,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
     public class ExoMechSelectionUIReplacer : ModSystem
     {
         private static readonly MethodInfo selectionUIDrawMethod = typeof(ExoMechSelectionUI).GetMethod("Draw", LumUtils.UniversalBindingFlags);
+
+        /// <summary>
+        /// The general scale of icons.
+        /// </summary>
+        public static float GeneralScaleInterpolant
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The exo mech icon used for summoning Hades.
@@ -86,13 +96,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
             }
 
             HadesIcon.Update();
-            HadesIcon.Render();
+            HadesIcon.Render(0f);
 
             AresIcon.Update();
-            AresIcon.Render();
+            AresIcon.Render(-0.15f);
 
             ArtemisAndApolloIcon.Update();
-            ArtemisAndApolloIcon.Render();
+            ArtemisAndApolloIcon.Render(-0.3f);
+        }
+
+        public override void UpdateUI(GameTime gameTime)
+        {
+            bool iconsActive = CalDLCWorldSavingSystem.E_EternityRev && Main.LocalPlayer.Calamity().AbleToSelectExoMech;
+            GeneralScaleInterpolant = MathF.Max(0f, GeneralScaleInterpolant + iconsActive.ToDirectionInt() * 0.03f);
+            if (!iconsActive && GeneralScaleInterpolant > 1f)
+                GeneralScaleInterpolant = 1f;
         }
 
         /// <summary>
