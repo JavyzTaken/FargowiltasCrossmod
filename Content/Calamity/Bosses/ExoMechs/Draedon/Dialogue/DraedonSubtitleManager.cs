@@ -28,7 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
 
         public override void UpdateUI(GameTime gameTime)
         {
-            if (!NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>()))
+            if (!DraedonDialogueManager.UseSubtitles || !NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.ExoMechs.Draedon>()))
             {
                 Stop();
                 return;

@@ -65,12 +65,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
         public DraedonDialogue? GetActiveDialogue(ref int time)
         {
             var evaluatedNode = Chain.First;
+            int intermediateWait = DraedonDialogueManager.UseSubtitles ? PauseBetweenDialogue : 0;
             if (time < 0)
                 return evaluatedNode.Value();
 
             while (time > evaluatedNode.Value().Duration)
             {
-                time -= evaluatedNode.Value().Duration;
+                time -= evaluatedNode.Value().Duration + intermediateWait;
                 evaluatedNode = evaluatedNode.Next;
                 if (evaluatedNode is null)
                     break;
