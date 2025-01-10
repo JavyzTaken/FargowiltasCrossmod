@@ -173,7 +173,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            const string BalanceLine = "Cross-mod Balance: ";
+            string BalanceLine = Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.CrossBalanceGeneric");
 
             if (WorldSavingSystem.EternityMode)
             {
@@ -188,62 +188,65 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
 
             float balance = BalanceChange(item);
-            const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
-            const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
+            string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
+            string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
+
+            static string BalanceTooltips(string key) => Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.{key}");
+
             if (balance > 1)
             {
-                tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
+                tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.DamageUpGeneric").Format(Math.Round((balance - 1) * 100))));
             }
             else if (balance < 1)
             {
-                tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
+                tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.DamageDownGeneric").Format(Math.Round((1 - balance) * 100))));
             }
             if (item.type == ItemID.MagicDagger)
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MagicDagger")));
             }
             if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("ProfanedCrystal")));
             }
-            if (item.type == ModContent.ItemType<TungstenEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on melee weapons"));
-            }
+            //if (item.type == ModContent.ItemType<TungstenEnchant>())
+            //{
+            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("TungstenEnch")));
+            //}
             if (item.type == ModContent.ItemType<MythrilEnchant>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MythrilEnch")));
             }
             if (item.type == ModContent.ItemType<OrichalcumEnchant>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("OrichalcumEnch")));
             }
             if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Split effect disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("AdamantiteEnch")));
             }
             if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("Daawnlight")));
             }
             if (item.type == ModContent.ItemType<SlimyShield>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("SlimyShield")));
             }
             if (item.ModItem != null && item.ModItem is FlightMasteryWings)
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("FlightMastery")));
             }
             if (item.type == ModContent.ItemType<LifeForce>())
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats and wing time decreased when fighting non-Souls Mod bosses"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("LifeForce")));
             }
 
             if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
                 item.type == ItemID.OrichalcumSword || item.type == ItemID.MythrilSword ||
                 item.type == ItemID.OrichalcumHalberd)
             {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Stat buffs decreased"));
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("HardmodeSwords")));
             }
 
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
@@ -251,7 +254,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (calItem.AppliedEnchantment.Value.ID == 1000)
                 {
-                    tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
+                    tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}" + BalanceTooltips("CalEnch")));
                 }
             }
             /*

@@ -97,7 +97,7 @@ Mods: {
 			AddedEffects: {
 				AngelTreads: Эффекты ангельских ботфортов
 				AeolusBoots: Эффекты ботинок Эола
-				// CalamitySupersonic: Effects of Statis' Void Sash
+				CalamitySupersonic: Эффекты пустотного кушака Статиса
 				ThoriumSuperSonic: Эффекты воздушных бегунов, ботинок выживальщика и утяжелённых летунов
 				CalamityColossus: Эффекты слияния, асгардской эгиды и оплота божества
 				ThoriumColossus:
@@ -848,7 +848,7 @@ Mods: {
 			ElementalQuiverEffect: Элементальный колчан
 			QuiverofNihilityEffect: Колчан небытия
 			NucleogenesisEffect: Нуклеосинтез
-			// StatisVoidSashEffect: Statis' Void Sash
+			StatisVoidSashEffect: Пустотный кушак Статиса
 			AbyssalDivingSuitEffect: Глубоководный водолазный костюм
 			BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
 			HeartoftheElementsEffect: Сердце элементов
@@ -916,8 +916,42 @@ Mods: {
 			FountainCrags: Заставляет окружающий биом смениться на серную скалу при активации
 			FountainSulphur: Заставляет окружающий биом смениться на сернистое море при активации
 			FountainSunken: Заставляет окружающий биом смениться на затерянное море при активации
+			MasoModeDisabled: "[c/FF0000:Поддерджка кросс-моддинга Calamity:] Активируйте режим Вечность с помощью меню выбора сложности Calamity!"
+			UsablePostMutant: "[c/FF0000:Поддерджка кросс-моддинга Calamity:] Может быть использован только после победы над Мутантом"
+			DisabledByDefault: "[c/FF0000:Поддерджка кросс-моддинга Calamity:] Эффект выключен по умолчанию"
 		}
 
-		EModeBalance.Laudanum: Положительные эффекты дебаффов ослаблены вдвое
+		EModeBalance: {
+			CrossBalanceGeneric: "Баланс кросс-моддинга: "
+			DamageUpGeneric: Урон увеличен на {0}%.
+			DamageDownGeneric: Урон уменьшен на {0}%.
+			MagicDagger: Урон уменьшен на 50% в пре-хардмоде.
+			ProfanedCrystal: Значительно уменьшает урон с любым призванным существом.
+			TungstenEnch: Менее эффективно на оружиях ближнего боя.
+			MythrilEnch: Менее эффективно на оружиях разбойника.
+			OrichalcumEnch: Эффективность уменьшена.
+			AdamantiteEnch:
+				'''
+				Эффект разделения выключен для всех снарядов Calamity, т.к. многие из них некорректно работают с данным эффектом.
+				Будет исправлено в будущем.
+				'''
+			Daawnlight: Эффект выключен, пока активно зачарование олова.
+			SlimyShield: Не накладывает «В масле» на врагов.
+			FlightMastery: Полёт ослаблен при битвах с боссами не из мода «Fargo's Souls».
+			LifeForce: Полёт ослаблен и время полёта уменьшено при битвах с боссами не из мода «Fargo's Souls».
+			OnionPackUpgrade: Теперь является улучшением [i:FargowiltasSouls/MutantsPact]Договора Мутанта, позволяющим поместить в новый слот любой аксессуар.
+			Laudanum: Положительные эффекты дебаффов ослаблены вдвое.
+			HardmodeSwords: Улучшения характеристик ослаблены.
+			// truth be told I have absolutely no idea what this enchantment is so the key name is just that
+			CalEnch: Накапливаемый урон не может быть выше 500000.
+		}
+
+		RecipeGroups: {
+			GildedDagger: позолоченный кинжал
+			EvilBar: слиток зла
+			VictideHelmet: шлем прилива
+			AerospecHelmet: шлем аэрофаза
+			StatigelHelmet: шлем статигеля
+		}
 	}
 }

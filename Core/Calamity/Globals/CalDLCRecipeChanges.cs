@@ -943,15 +943,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void AddRecipeGroups()
         {
+            static string RecipeGroups(string key) => Language.GetTextValue($"Mods.FargowiltasCrossmod.RecipeGroups.{key}");
             #region RecipeGroups
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyGildedDagger", 
-                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Gilded Dagger"}",
+                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("GildedDagger")}",
                ItemType<GildedDagger>(),
                ItemType<GleamingDagger>()
                ));
 
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyEvilBar", 
-                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Evil Bar"}",
+                new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("EvilBar")}",
                 ItemID.DemoniteBar,
                 ItemID.CrimtaneBar
                 ));
@@ -979,7 +980,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<CalamityMod.Items.Armor.Bloodflare.BloodflareHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyBloodflareHelms", BloodflareHelmsGroup);
             //victide head group
-            RecipeGroup VictideHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Victide Headpiece"}",
+            RecipeGroup VictideHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("VictideHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMelee>(),
                 ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRanged>(),
                 ItemType<CalamityMod.Items.Armor.Victide.VictideHeadMagic>(),
@@ -987,7 +988,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<CalamityMod.Items.Armor.Victide.VictideHeadRogue>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyVictideHelms", VictideHelmsGroup);
             //aerospec head group
-            RecipeGroup AerospecHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Aerospec Headpiece"}",
+            RecipeGroup AerospecHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("AerospecHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHelm>(),
                 ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHood>(),
                 ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHat>(),
@@ -995,7 +996,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<CalamityMod.Items.Armor.Aerospec.AerospecHeadgear>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyAerospecHelms", AerospecHelmsGroup);
             //statigel head group
-            RecipeGroup StatigelHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Statigel Headpiece"}",
+            RecipeGroup StatigelHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("StatigelHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMelee>(),
                 ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadMagic>(),
                 ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadRanged>(),
