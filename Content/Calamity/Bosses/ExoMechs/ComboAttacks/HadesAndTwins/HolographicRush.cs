@@ -229,6 +229,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity = npc.velocity * 1.075f + npc.velocity.SafeNormalize(Vector2.Zero) * 6f;
                 npc.rotation = npc.velocity.ToRotation();
                 npc.damage = npc.defDamage;
+                npc.dontTakeDamage = true;
 
                 thrusterBoost = 1.4f;
                 motionBlur = 1f;
@@ -249,6 +250,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 twin.MotionBlurInterpolant = MathHelper.Lerp(twin.MotionBlurInterpolant, motionBlur, 0.35f);
                 twin.Frame = twin.Animation.CalculateFrame(AITimer / 40f % 1f, twin.InPhase2);
                 twin.SpecialShaderAction = Perform_ExoTwin_RenderWithHologramShader;
+
+                if (npc.dontTakeDamage)
+                {
+                    float FlameEngulfWidthFunction(float completionRatio)
+                    {
+                        float baseWidth = MathHelper.Lerp(114f, 50f, completionRatio);
+                        float tipSmoothenFactor = MathF.Sqrt(1f - Utilities.InverseLerp(0.3f, 0.015f, completionRatio).Cubed());
+                        return npc.scale * baseWidth * tipSmoothenFactor;
+                    }
+
+                    Color FlameEngulfColorFunction(float completionRatio)
+                    {
+                        Color flameTipColor = new(255, 255, 208);
+                        Color limeFlameColor = new(173, 255, 36);
+                        Color greenFlameColor = new(52, 156, 17);
+                        Color trailColor = Utilities.MulticolorLerp(MathF.Pow(completionRatio, 0.75f) * 0.7f, flameTipColor, limeFlameColor, greenFlameColor);
+                        return npc.GetAlpha(trailColor) * (1 - completionRatio);
+                    }
+
+                    twin.SpecificDrawAction = () =>
+                    {
+                        Vector2[] flamePositions = new Vector2[8];
+                        for (int i = 0; i < flamePositions.Length; i++)
+                            flamePositions[i] = npc.Center - npc.oldRot[i].ToRotationVector2() * (i * 90f - 100f);
+
+                        ManagedShader flameShader = ShaderManager.GetShader("FargowiltasCrossmod.FlameEngulfShader");
+                        flameShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
+                        flameShader.SetTexture(MiscTexturesRegistry.TurbulentNoise.Value, 2, SamplerState.LinearWrap);
+
+                        PrimitiveSettings flameSettings = new(FlameEngulfWidthFunction, FlameEngulfColorFunction, Shader: flameShader);
+                        PrimitiveRenderer.RenderTrail(flamePositions, flameSettings, 60);
+                    };
+                }
             }
 
             npc.Opacity = LumUtils.InverseLerp(0f, lockOnTime * 0.75f, wrappedAITimer);
