@@ -122,17 +122,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             {
                 DesertProwlerEffect.ProwlerEffect(Player);
             }
-            //testing adamantite ench interactions. disregard!
-            //int c = 0;
-            //for (int i = 0; i < Main.maxProjectiles; i++)
-            //{
-            //    if (Main.projectile[i].type == ModContent.ProjectileType<PhotovisceratorHoldout>() && Main.projectile[i].active)
-            //    {
-            //        c++;
-                    
-            //    }
-            //}
-            //Main.NewText(c);
         }
         public override void MeleeEffects(Item item, Rectangle hitbox)
         {

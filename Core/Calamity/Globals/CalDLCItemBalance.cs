@@ -178,88 +178,47 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (WorldSavingSystem.EternityMode)
             {
                 if (item.type == ModContent.ItemType<NormalityRelocator>())
-                {
                     ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
-                }
                 if (item.type == ModContent.ItemType<Laudanum>())
-                {
                     ItemBalance(tooltips, EModeChange.Nerf, "Laudanum", mod: "FargowiltasCrossmod");
-                }
             }
 
             float balance = BalanceChange(item);
             const string BalanceUpLine = $"[c/00A36C:{BalanceLine}]";
             const string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
             if (balance > 1)
-            {
                 tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}Damage increased by {Math.Round((balance - 1) * 100)}%."));
-            }
             else if (balance < 1)
-            {
                 tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}Damage decreased by {Math.Round((1 - balance) * 100)}%."));
-            }
-            if (item.type == ItemID.MagicDagger)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
-            }
-            if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
-            }
-            if (item.type == ModContent.ItemType<TungstenEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on melee weapons"));
-            }
-            if (item.type == ModContent.ItemType<MythrilEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
-            }
-            if (item.type == ModContent.ItemType<OrichalcumEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
-            }
-            if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Split effect disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
-            }
-            if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
-            }
-            if (item.type == ModContent.ItemType<SlimyShield>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
-            }
-            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
-            }
-            if (item.type == ModContent.ItemType<LifeForce>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats and wing time decreased when fighting non-Souls Mod bosses"));
-            }
 
-            if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
-                item.type == ItemID.OrichalcumSword || item.type == ItemID.MythrilSword ||
-                item.type == ItemID.OrichalcumHalberd)
-            {
+            if (item.type == ItemID.MagicDagger)
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Damage decreased by 50% in Pre-Hardmode."));
+            if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Massively reduced damage with any minions active"));
+            if (item.type == ModContent.ItemType<TungstenEnchant>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on melee weapons"));
+            if (item.type == ModContent.ItemType<MythrilEnchant>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Less effective on rogue weapons"));
+            if (item.type == ModContent.ItemType<OrichalcumEnchant>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Reduced effectiveness"));
+            //if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
+            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Split effect disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs\nWill be fixed in the future"));
+            if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Effect disabled while Tin Enchantment effect is active"));
+            if (item.type == ModContent.ItemType<SlimyShield>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not inflict Oiled"));
+            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats decreased when fighting non-Souls Mod bosses"));
+            if (item.type == ModContent.ItemType<LifeForce>())
+                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Flight stats and wing time decreased when fighting non-Souls Mod bosses"));
+
+            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Stat buffs decreased"));
-            }
 
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
-            {
                 if (calItem.AppliedEnchantment.Value.ID == 1000)
-                {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}Accumulated damage capped at 500.000"));
-                }
-            }
-            /*
-            if (item.type == ItemID.WarmthPotion)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not grant buff immunities"));
-            }
-            */
         }
         #endregion
     }
