@@ -308,7 +308,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     shootMines = true;
                 }
 
-                npc.damage = npc.defDamage;
+                bool doDamage = AITimer >= ElectrifyTime + 45;
+                npc.damage = doDamage ? npc.defDamage : 0;
             }
 
             hades.SegmentReorientationStrength = 0f;
