@@ -1,5 +1,6 @@
 ﻿using CalamityMod.NPCs;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -46,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
 
         private static void RenderHadesToTarget()
         {
-            if (CalamityGlobalNPC.draedonExoMechWorm == -1)
+            if (CalamityGlobalNPC.draedonExoMechWorm == -1 || !CalDLCWorldSavingSystem.E_EternityRev)
                 return;
 
             GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
@@ -68,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
         private static void DrawHadesTarget(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
             orig(self, behindTiles);
-            if (CalamityGlobalNPC.draedonExoMechWorm != -1 && !behindTiles)
+            if (CalamityGlobalNPC.draedonExoMechWorm != -1 && !behindTiles && CalDLCWorldSavingSystem.E_EternityRev)
             {
                 Main.spriteBatch.PrepareForShaders();
 
