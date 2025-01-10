@@ -149,7 +149,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.Resize((int)(ExplosionDiameter * 0.8f), (int)(ExplosionDiameter * 0.8f));
             Projectile.Damage();
 
-            ScreenShakeSystem.StartShakeAtPoint(Projectile.Center, 2.5f);
+            ScreenShakeSystem.StartShakeAtPoint(Projectile.Center, 2.5f, MathHelper.TwoPi, null, 0.2f, 1185f, 500f);
             SoundEngine.PlaySound(ExplodeSound, Projectile.Center);
 
             // Create the generic burst explosion.
