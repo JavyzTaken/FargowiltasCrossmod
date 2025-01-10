@@ -101,6 +101,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (AITimer == Math.Max(1, PlasmaCannonChargeUpTime - LumUtils.SecondsToFrames(2.6f)))
                 SoundEngine.PlaySound(AresPlasmaFlamethrower.TelSound);
 
+            float colorShiftInterpolant = LumUtils.InverseLerpBump(0f, 30f, PlasmaCannonChargeUpTime + AttackDuration - 30f, PlasmaCannonChargeUpTime + AttackDuration, AITimer);
+            ares.ShiftLightColors(colorShiftInterpolant, new(239, 62, 62), new(242, 112, 72));
+
             if (AITimer <= PlasmaCannonChargeUpTime)
             {
                 Vector2 hoverOffset = new(npc.HorizontalDirectionTo(Target.Center) * -350f, -300f);
@@ -176,6 +179,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             hand.GlowmaskDisabilityInterpolant = 0f;
             hand.Frame = AITimer / 4 % 12;
             handNPC.spriteDirection = -hand.ArmSide;
+            handNPC.damage = 400;
             handNPC.Opacity = LumUtils.Saturate(handNPC.Opacity + 0.3f);
 
             hand.EnergyDrawer.chargeProgress = LumUtils.InverseLerp(0f, PlasmaCannonChargeUpTime * 0.85f, AITimer);

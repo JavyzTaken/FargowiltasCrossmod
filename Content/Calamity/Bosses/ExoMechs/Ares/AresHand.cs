@@ -189,7 +189,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public override void SetDefaults()
         {
             NPC.npcSlots = 5f;
-            NPC.damage = 100;
+            NPC.damage = 350;
             NPC.width = 172;
             NPC.height = 108;
             NPC.defense = 100;
@@ -244,7 +244,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             KatanaAfterimageOpacity = Utilities.Saturate(KatanaAfterimageOpacity * 0.84f - 0.07f);
             EnergyDrawer.ParticleSpawnRate = int.MaxValue;
             EnergyDrawer.ParticleColor = HandType.EnergyTelegraphColor;
-            NPC.damage = NPC.defDamage;
+            NPC.damage = 0;
             NPC.Calamity().ShouldCloseHPBar = true;
             NPC.dontTakeDamage = NPC.Opacity < 0.95f || body.NPC.dontTakeDamage || !CanRender;
             body.InstructionsForHands[LocalIndex]?.Action?.Invoke(this);
@@ -750,7 +750,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         public bool MeleeHitCounts(Rectangle potentialVictimHitbox)
         {
             if (HandType != AresHandType.EnergyKatana)
-                return false;
+                return NPC.Hitbox.Intersects(potentialVictimHitbox);
 
             float _ = 0f;
             Vector2 forward = NPC.rotation.ToRotationVector2() * NPC.scale;
