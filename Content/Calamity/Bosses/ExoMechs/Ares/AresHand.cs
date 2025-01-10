@@ -262,19 +262,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.realLife = CalamityGlobalNPC.draedonExoMechPrime;
             NPC.scale = aresBody.scale;
 
-            ProcessSwapSounds(previousHandType);
+            ProcessSwapSounds(previousHandType, aresBody);
         }
 
         /// <summary>
         /// Processes swap sounds, playing them if there's a mismatch between the previous and current hand type.
         /// </summary>
         /// <param name="previousHandType">The hand type on the previous frame.</param>
-        public void ProcessSwapSounds(AresHandType previousHandType)
+        public void ProcessSwapSounds(AresHandType previousHandType, NPC aresBody)
         {
             if (HandType == previousHandType)
                 return;
 
             SoundStyle? soundToPlay = HandType.SwapSound;
+            Vector2 soundPlayPosition = Vector2.Lerp(aresBody.Center, Main.LocalPlayer.Center, 0.85f);
             if (soundToPlay is not null)
                 SoundEngine.PlaySound(soundToPlay.Value with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew }, NPC.Center).WithVolumeBoost(1.72f);
         }
