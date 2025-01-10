@@ -246,10 +246,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
                 if (calItem.AppliedEnchantment.Value.ID == 1000)
-                {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}" + BalanceTooltips("CalEnch")));
-                }
-            }
             /*
             if (item.type == ItemID.WarmthPotion)
             {
