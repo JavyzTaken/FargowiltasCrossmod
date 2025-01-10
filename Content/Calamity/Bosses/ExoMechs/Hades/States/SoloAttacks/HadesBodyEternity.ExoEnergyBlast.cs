@@ -210,8 +210,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             else
             {
                 CloseSegment().Invoke(behaviorOverride);
-                behaviorOverride.NPC.defense = behaviorOverride.NPC.defDefense + 100;
+                segment.defense = behaviorOverride.NPC.defDefense + 100;
             }
+
+            segment.damage = segment.defDamage;
 
             if ((segment.whoAmI * 12 + AITimer) % ExoEnergyBlast_ProjectileBurstReleaseRate == 0 && beamIsOverheating)
             {
