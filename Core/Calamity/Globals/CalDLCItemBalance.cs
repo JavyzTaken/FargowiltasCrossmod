@@ -178,13 +178,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (WorldSavingSystem.EternityMode)
             {
                 if (item.type == ModContent.ItemType<NormalityRelocator>())
-                {
                     ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
-                }
                 if (item.type == ModContent.ItemType<Laudanum>())
-                {
                     ItemBalance(tooltips, EModeChange.Nerf, "Laudanum", mod: "FargowiltasCrossmod");
-                }
             }
 
             float balance = BalanceChange(item);
@@ -221,10 +217,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("OrichalcumEnch")));
             }
-            if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("AdamantiteEnch")));
-            }
+            //if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
+            //{
+            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("AdamantiteEnch")));
+            //}
             if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("Daawnlight")));
@@ -242,16 +238,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("LifeForce")));
             }
 
-            if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
-                item.type == ItemID.OrichalcumSword || item.type == ItemID.MythrilSword ||
-                item.type == ItemID.OrichalcumHalberd)
+            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword  or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("HardmodeSwords")));
             }
 
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
-            {
                 if (calItem.AppliedEnchantment.Value.ID == 1000)
                 {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}" + BalanceTooltips("CalEnch")));
