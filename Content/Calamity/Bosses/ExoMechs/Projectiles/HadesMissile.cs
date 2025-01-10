@@ -182,8 +182,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             // Draw a bit of a backglow.
             Texture2D glow = MiscTexturesRegistry.BloomCircleSmall.Value;
-            Main.spriteBatch.Draw(glow, drawPosition, null, Projectile.GetAlpha(Color.Red with { A = 0 }) * 0.4f, 0f, glow.Size() * 0.5f, Projectile.scale * 0.35f, 0, 0f);
-            Main.spriteBatch.Draw(glow, drawPosition, null, Projectile.GetAlpha(Color.Crimson with { A = 0 }) * 0.2f, 0f, glow.Size() * 0.5f, Projectile.scale * 0.5f, 0, 0f);
+            Main.spriteBatch.Draw(glow, drawPosition, null, Projectile.GetAlpha(Color.Red with { A = 0 }) * 0.5f, 0f, glow.Size() * 0.5f, Projectile.scale * 0.35f, 0, 0f);
+            Main.spriteBatch.Draw(glow, drawPosition, null, Projectile.GetAlpha(Color.Crimson with { A = 0 }) * 0.27f, 0f, glow.Size() * 0.5f, Projectile.scale * 0.5f, 0, 0f);
 
             Main.spriteBatch.Draw(texture, drawPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, 0, 0f);
             Main.spriteBatch.Draw(glowmask, drawPosition, frame, Projectile.GetAlpha(Color.White), Projectile.rotation, origin, Projectile.scale, 0, 0f);
