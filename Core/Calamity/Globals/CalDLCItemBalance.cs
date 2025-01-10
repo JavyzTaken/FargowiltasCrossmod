@@ -238,9 +238,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("LifeForce")));
             }
 
-            if (item.type == ItemID.CobaltSword || item.type == ItemID.PalladiumSword ||
-                item.type == ItemID.OrichalcumSword || item.type == ItemID.MythrilSword ||
-                item.type == ItemID.OrichalcumHalberd)
+            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword  or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("HardmodeSwords")));
             }
