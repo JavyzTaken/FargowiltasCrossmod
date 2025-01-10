@@ -97,7 +97,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (!npc.TryGetDLCBehavior(out HadesHeadEternity hades))
                 return;
 
-            hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f));
+            hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), segment =>
+            {
+                HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f).Invoke(segment);
+                segment.NPC.damage = segment.NPC.defDamage;
+            });
             hades.SegmentReorientationStrength = 0.07f;
 
             // Get to the player in the first few frames.
