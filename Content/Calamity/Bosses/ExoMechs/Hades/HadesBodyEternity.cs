@@ -212,6 +212,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.Calamity().newAI[1] = aheadSegment.Calamity().newAI[1];
             NPC.hide = true;
             NPC.defDamage = HadesHeadEternity.DefaultSegmentDamage;
+            NPC.defense = NPC.defDefense;
             NPC.damage = 0;
             NPC.Opacity = aheadSegment.Opacity;
             NPC.life = aheadSegment.lifeMax;
