@@ -5,6 +5,7 @@ using CalamityMod.Sounds;
 using FargowiltasCrossmod.Assets.Particles.Metaballs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
@@ -151,6 +152,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// </summary>
         public Action? OptionalDrawAction;
 
+        /// <summary>
+        /// The sound played when one of Ares' hands get swapped to a gauss nuke.
+        /// </summary>
+        public static readonly SoundStyle GaussNukeSwapSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HandSwap_GaussNuke", 2);
+
+        /// <summary>
+        /// The sound played when one of Ares' hands get swapped to a laser cannon.
+        /// </summary>
+        public static readonly SoundStyle LaserCannonSwapSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HandSwap_LaserCannon", 2);
+
+        /// <summary>
+        /// The sound played when one of Ares' hands get swapped to a plasma cannon.
+        /// </summary>
+        public static readonly SoundStyle PlasmaCannonSwapSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HandSwap_PlasmaCannon", 2);
+
+        /// <summary>
+        /// The sound played when one of Ares' hands get swapped to a pulse cannon.
+        /// </summary>
+        public static readonly SoundStyle PulseCannonSwapSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HandSwap_PulseCannon", 2);
+
+        /// <summary>
+        /// The sound played when one of Ares' hands get swapped to a tesla cannon.
+        /// </summary>
+        public static readonly SoundStyle TeslaCannonSwapSound = new("FargowiltasCrossmod/Assets/Sounds/ExoMechs/Ares/HandSwap_TeslaCannon", 2);
+
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
         public override void SetStaticDefaults()
@@ -209,6 +235,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             NPC.noTileCollide = true;
 
+            AresHandType previousHandType = HandType;
+
             CanRender = true;
             AttachedToArm = true;
             KatanaInUse = false;
@@ -233,6 +261,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 
             NPC.realLife = CalamityGlobalNPC.draedonExoMechPrime;
             NPC.scale = aresBody.scale;
+
+            ProcessSwapSounds(previousHandType);
+        }
+
+        /// <summary>
+        /// Processes swap sounds, playing them if there's a mismatch between the previous and current hand type.
+        /// </summary>
+        /// <param name="previousHandType">The hand type on the previous frame.</param>
+        public void ProcessSwapSounds(AresHandType previousHandType)
+        {
+            if (HandType == previousHandType)
+                return;
+
+            SoundStyle? soundToPlay = HandType.SwapSound;
+            if (soundToPlay is not null)
+                SoundEngine.PlaySound(soundToPlay.Value with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew }, NPC.Center).WithVolumeBoost(1.72f);
         }
 
         /// <summary>
