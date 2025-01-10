@@ -149,7 +149,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     riseOffset = 250f;
                 if (Target.velocity.Y < 0f)
                     riseOffset -= Target.velocity.Y * 24f;
-                float horizontalOffset = Target.velocity.X * 1.5f;
+                float horizontalOffset = Target.velocity.X * 7.2f;
 
                 npc.SmoothFlyNear(Target.Center + new Vector2(horizontalOffset, -riseOffset), 0.1f, 0.9f);
             }
