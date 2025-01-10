@@ -98,7 +98,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
 
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment(HadesHeadEternity.StandardSegmentOpenRate, 0f));
-            hades.SegmentReorientationStrength = 0.1f;
+            hades.SegmentReorientationStrength = 0.07f;
 
             // Get to the player in the first few frames.
             float approachPlayerInterpolant = LumUtils.InverseLerp(0f, 15f, AITimer) * LumUtils.InverseLerp(400f, 600f, npc.Distance(Target.Center));
@@ -118,7 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity += npc.SafeDirectionTo(Target.Center) * 0.7f;
             }
 
-            npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
+            npc.rotation = (npc.position - npc.oldPosition).ToRotation() + MathHelper.PiOver2;
         }
 
         /// <summary>

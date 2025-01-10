@@ -217,7 +217,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             npc.SmoothFlyNear(flyDestination, 0.6f, 0.4f);
             npc.Center = npc.Center.MoveTowards(flyDestination, 5f);
             npc.rotation = (npc.position - npc.oldPosition).ToRotation() + MathHelper.PiOver2;
-            hades.SegmentReorientationStrength = 0.2f;
+            hades.SegmentReorientationStrength = 0.151f;
 
             // Keep some segments open, so that the player can actually do damage to Hades.
             hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(2), new(segment =>
