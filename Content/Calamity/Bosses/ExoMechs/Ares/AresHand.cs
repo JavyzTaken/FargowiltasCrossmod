@@ -193,7 +193,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC.width = 172;
             NPC.height = 108;
             NPC.defense = 100;
-            NPC.DR_NERD(0.35f);
+            NPC.DR_NERD(0.45f);
             NPC.LifeMaxNERB(1250000, 1495000, 650000);
             NPC.lifeMax += (int)(NPC.lifeMax * CalamityConfig.Instance.BossHealthBoost * 0.01);
             NPC.aiStyle = -1;
