@@ -211,7 +211,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             else if (wrappedAITimer <= spinTime + dashDelay + dashRepositionTime)
             {
                 npc.GetDLCBehavior<ApolloEternity>().FlameEngulfInterpolant = Utilities.Saturate(npc.GetDLCBehavior<ApolloEternity>().FlameEngulfInterpolant + 0.2f);
-
+                npc.dontTakeDamage = true;
                 npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * 67f, 0.2f);
                 if (wrappedAITimer == spinTime + dashDelay + 1)
                 {
