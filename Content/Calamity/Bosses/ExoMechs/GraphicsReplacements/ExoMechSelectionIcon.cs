@@ -134,7 +134,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
         public void Render(float timeOffset)
         {
             float animationInterpolant = LumUtils.Saturate(ExoMechSelectionUIReplacer.GeneralScaleInterpolant + timeOffset);
-            if (MathHelper.Distance(animationInterpolant, 0.03f) <= 0.001f)
+            if (MathHelper.Distance(animationInterpolant, ExoMechSelectionUIReplacer.ScaleIncrement) <= 0.001f)
                 SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/Codebreaker/DialogOptionHover") with { MaxInstances = 0 });
 
             float scale = Scale * MathF.Pow(EasingCurves.Elastic.Evaluate(EasingType.Out, animationInterpolant), 1.4f);

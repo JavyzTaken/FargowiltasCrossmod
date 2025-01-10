@@ -58,6 +58,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
             set;
         }
 
+        /// <summary>
+        /// How much the <see cref="GeneralScaleInterpolant"/> increments each frame.
+        /// </summary>
+        public static float ScaleIncrement => 0.03f;
+
         public delegate void Orig_ExoMechSelectionUIDraw();
 
         public override void SetStaticDefaults()
@@ -108,7 +113,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.GraphicsReplaceme
         public override void UpdateUI(GameTime gameTime)
         {
             bool iconsActive = CalDLCWorldSavingSystem.E_EternityRev && Main.LocalPlayer.Calamity().AbleToSelectExoMech;
-            GeneralScaleInterpolant = MathF.Max(0f, GeneralScaleInterpolant + iconsActive.ToDirectionInt() * 0.03f);
+            GeneralScaleInterpolant = MathF.Max(0f, GeneralScaleInterpolant + iconsActive.ToDirectionInt() * ScaleIncrement);
             if (!iconsActive && GeneralScaleInterpolant > 1f)
                 GeneralScaleInterpolant = 1f;
         }
