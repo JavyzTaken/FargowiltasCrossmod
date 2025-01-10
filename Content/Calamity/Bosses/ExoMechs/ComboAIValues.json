@@ -54,15 +54,15 @@
     "EternityDeathValue": 9.5,
     "MasochistValue": 9.5
   },
-  "ExoFlurry_AresAcceleration": {
-    "EternityRevValue": 0.975,
-    "EternityDeathValue": 0.975,
-    "MasochistValue": 0.975
+  "ExoFlurry_AresFlyDownAcceleration": {
+    "EternityRevValue": 25.0,
+    "EternityDeathValue": 25.0,
+    "MasochistValue": 25.0
   },
-  "ExoFlurry_AresNukeExplosionDiameter": {
-    "EternityRevValue": 2300.0,
-    "EternityDeathValue": 2300.0,
-    "MasochistValue": 2300.0
+  "ExoFlurry_AresMaxFlyDownSpeed": {
+    "EternityRevValue": 256.0,
+    "EternityDeathValue": 256.0,
+    "MasochistValue": 256.0
   },
   "ExoFlurry_ExoTwinsDashTime": {
     "EternityRevValue": 32.0,

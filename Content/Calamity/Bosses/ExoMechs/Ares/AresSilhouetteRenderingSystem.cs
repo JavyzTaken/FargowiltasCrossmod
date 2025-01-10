@@ -29,15 +29,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (!ares.TryGetDLCBehavior(out AresBodyEternity aresBehavior))
                 return;
 
-            if (aresBehavior.SilhouetteOpacity <= 0f)
-                return;
+            // TODO -- Move this elsewhere.
+            if (aresBehavior.MotionBlurInterpolant > 0f)
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Matrix.Identity);
 
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Matrix.Identity);
-            DrawAresSilhouette(ares.Center, aresBehavior.SilhouetteOpacity, aresBehavior.SilhouetteDissolveInterpolant);
-            Main.spriteBatch.ResetToDefault();
+                float[] blurWeights = new float[12];
+                for (int i = 0; i < blurWeights.Length; i++)
+                    blurWeights[i] = Utilities.GaussianDistribution(i / (float)(blurWeights.Length - 1f) * 1.5f, 0.6f) * 0.81f;
+                ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.MotionBlurShader");
+                shader.TrySetParameter("blurInterpolant", aresBehavior.MotionBlurInterpolant);
+                shader.TrySetParameter("blurWeights", blurWeights);
+                shader.TrySetParameter("blurDirection", Vector2.UnitY * 7.2f);
+                shader.Apply();
 
-            aresBehavior.RenderAfterSilhouette();
-            Main.spriteBatch.End();
+                Texture2D aresTarget = AresRenderTargetSystem.AresTarget;
+                Vector2 drawPosition = Main.screenLastPosition - Main.screenPosition;
+                Main.spriteBatch.Draw(aresTarget, drawPosition, Color.White);
+
+                Main.spriteBatch.End();
+            }
+            if (aresBehavior.SilhouetteOpacity > 0f)
+            {
+                Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Matrix.Identity);
+                DrawAresSilhouette(ares.Center, aresBehavior.SilhouetteOpacity, aresBehavior.SilhouetteDissolveInterpolant);
+                Main.spriteBatch.ResetToDefault();
+
+                aresBehavior.RenderAfterSilhouette();
+                Main.spriteBatch.End();
+            }
         }
 
         /// <summary>

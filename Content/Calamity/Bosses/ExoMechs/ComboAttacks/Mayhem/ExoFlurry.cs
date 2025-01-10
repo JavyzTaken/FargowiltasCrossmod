@@ -3,24 +3,22 @@ using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
-using CalamityMod.Particles;
 using CalamityMod.Sounds;
-using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades;
-using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
+using Luminance.Assets;
 using Luminance.Common.Easings;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
@@ -65,14 +63,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public static float HadesTurnSpeedCoefficient => Variables.GetAIFloat("ExoFlurry_HadesTurnSpeedCoefficient", ExoMechAIVariableType.Combo);
 
         /// <summary>
-        /// The diameter of the explosion from Ares' nukes.
+        /// The amount by which Ares accelerates downwards.
         /// </summary>
-        public static float AresNukeExplosionDiameter => Variables.GetAIFloat("ExoFlurry_AresNukeExplosionDiameter", ExoMechAIVariableType.Combo);
+        public static float AresFlyDownAcceleration => Variables.GetAIFloat("ExoFlurry_AresFlyDownAcceleration", ExoMechAIVariableType.Combo);
 
         /// <summary>
-        /// Ares' acceleration when flying towards the player.
+        /// The terminal velocity of Ares' downward acceleration.
         /// </summary>
-        public static float AresAcceleration => Variables.GetAIFloat("ExoFlurry_AresAcceleration", ExoMechAIVariableType.Combo);
+        public static float AresMaxFlyDownSpeed => Variables.GetAIFloat("ExoFlurry_AresMaxFlyDownSpeed", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The starting speed of the Exo Twins when dashing.
@@ -128,52 +126,138 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (!npc.TryGetDLCBehavior(out AresBodyEternity ares))
                 return;
 
-            Vector2 hoverDestination = Target.Center - Vector2.UnitY * 350f;
-            Vector2 flyDirection = npc.SafeDirectionTo(hoverDestination);
-            if (!npc.WithinRange(hoverDestination, 300f))
-                npc.velocity += flyDirection * AresAcceleration;
-            if (npc.velocity.AngleBetween(flyDirection) >= 1.4f)
-                npc.velocity *= 0.9f;
+            // The attack cycle of the slash is the same as that of Artemis and Apollo, to ensure that they don't drift and cause unavoidable hits.
+            int attackCycleTime = ExoTwinsSpinTime + ExoTwinsSpinSlowdownTime + ExoTwinsDashTime;
+            bool armsAreDetaching = AITimer <= AresBodyEternity.DetachHands_DetachmentDelay;
+            float animationCompletion = (AITimer - AresBodyEternity.DetachHands_DetachmentDelay) / (float)attackCycleTime % 1f;
+            float riseUpwardInterpolant = LumUtils.InverseLerp(0f, 0.55f, animationCompletion);
+            float flyDownwardInterpolant = LumUtils.InverseLerp(0.55f, 1f, animationCompletion);
+            float lightActivationInterpolant = LumUtils.InverseLerp(0.5f, 0.65f, riseUpwardInterpolant) * LumUtils.InverseLerp(1f, 0.6f, flyDownwardInterpolant);
 
-            ares.InstructionsForHands[0] = new(h => Perform_Ares_GaussNuke(npc, h, new Vector2(-400f, 40f), 0));
-            ares.InstructionsForHands[1] = new(h => ares.BasicHandUpdate(h, new Vector2(-280f, 224f), 1));
-            ares.InstructionsForHands[2] = new(h => ares.BasicHandUpdate(h, new Vector2(280f, 224f), 2));
-            ares.InstructionsForHands[3] = new(h => Perform_Ares_GaussNuke(npc, h, new Vector2(400f, 40f), 3));
+            npc.damage = 0;
+
+            Color lightColorA = new(255, 120, 129);
+            Color lightColorB = new(255, 0, 4);
+            ares.ShiftLightColors(lightActivationInterpolant, [lightColorA, lightColorA, lightColorB, lightColorA, lightColorA, lightColorB, lightColorA, lightColorB]);
+
+            if (armsAreDetaching || riseUpwardInterpolant < 0.7f)
+            {
+                ares.MotionBlurInterpolant = 0f;
+
+                float riseOffset = MathHelper.SmoothStep(250f, 480f, riseUpwardInterpolant.Squared());
+                if (armsAreDetaching)
+                    riseOffset = 250f;
+                if (Target.velocity.Y < 0f)
+                    riseOffset -= Target.velocity.Y * 24f;
+                float horizontalOffset = Target.velocity.X * 1.5f;
+
+                npc.SmoothFlyNear(Target.Center + new Vector2(horizontalOffset, -riseOffset), 0.1f, 0.9f);
+            }
+            else if (riseUpwardInterpolant < 1f)
+                npc.velocity.Y *= 0.9f;
+            else
+            {
+                if (flyDownwardInterpolant <= 0.03f)
+                {
+                    SoundEngine.PlaySound(AresBodyEternity.SlashSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew });
+                    ScreenShakeSystem.StartShakeAtPoint(npc.Center, 32f, MathHelper.TwoPi, null, 1.3f);
+                }
+
+                npc.damage = AresBodyEternity.KatanaDamage;
+                npc.velocity.X *= 0.55f;
+                npc.velocity.Y = MathHelper.Clamp(npc.velocity.Y + AresFlyDownAcceleration, -25f, AresMaxFlyDownSpeed);
+
+                // Teleport above the player once the downward fly has concluded.
+                if (flyDownwardInterpolant >= 0.9f)
+                {
+                    Vector2 oldPosition = npc.Center;
+                    npc.Center = Target.Center - Vector2.UnitY * 1900f;
+                    Vector2 teleportOffset = npc.Center - oldPosition;
+
+                    int handID = ModContent.NPCType<AresHand>();
+                    foreach (NPC hand in Main.ActiveNPCs)
+                    {
+                        if (hand.type == handID)
+                        {
+                            hand.Center += teleportOffset;
+                            hand.velocity = Vector2.Zero;
+                            hand.netUpdate = true;
+                        }
+                    }
+
+                    npc.velocity *= 0.05f;
+                    npc.netUpdate = true;
+                }
+            }
+
+            if (armsAreDetaching)
+            {
+                for (int i = 0; i < ares.InstructionsForHands.Length; i++)
+                {
+                    int copyForDelegate = i;
+                    ares.InstructionsForHands[i] = new(h => ares.DetachHandsUpdate(h, copyForDelegate));
+                }
+            }
+            else
+            {
+                ares.MotionBlurInterpolant = LumUtils.InverseLerp(0f, 0.1f, flyDownwardInterpolant);
+                ares.InstructionsForHands[0] = new(h => Perform_Ares_HandUpdate(npc, h, riseUpwardInterpolant, flyDownwardInterpolant, new Vector2(-400f, 40f), 0));
+                ares.InstructionsForHands[1] = new(h => Perform_Ares_HandUpdate(npc, h, riseUpwardInterpolant, flyDownwardInterpolant, new Vector2(-280f, 224f), 1));
+                ares.InstructionsForHands[2] = new(h => Perform_Ares_HandUpdate(npc, h, riseUpwardInterpolant, flyDownwardInterpolant, new Vector2(280f, 224f), 2));
+                ares.InstructionsForHands[3] = new(h => Perform_Ares_HandUpdate(npc, h, riseUpwardInterpolant, flyDownwardInterpolant, new Vector2(400f, 40f), 3));
+            }
+
+            ares.UseStandardRotation = false;
+            npc.rotation = npc.velocity.X * 0.0049f;
         }
 
         /// <summary>
-        /// Handles the updating of Ares' gauss nuke(s) in the ExoFlurry attack.
+        /// Handles the updating of Ares' hands in the ExoFlurry attack.
         /// </summary>
         /// <param name="ares">Ares' NPC instance.</param>
         /// <param name="hand">The hand's ModNPC instance.</param>
         /// <param name="hoverOffset">The hover offset of the hand relative to Ares.</param>
         /// <param name="armIndex">The index of the arm.</param>
-        public static void Perform_Ares_GaussNuke(NPC ares, AresHand hand, Vector2 hoverOffset, int armIndex)
+        public static void Perform_Ares_HandUpdate(NPC ares, AresHand hand, float riseUpwardInterpolant, float flyDownwardInterpolant, Vector2 hoverOffset, int armIndex)
         {
-            int wrappedTimer = (AITimer + armIndex * NukeShotDelay / 3) % (NukeChargeUpTime + NukeShotDelay);
             NPC handNPC = hand.NPC;
-            handNPC.SmoothFlyNear(ares.Center + hoverOffset * ares.scale, 0.3f, 0.8f);
-            handNPC.Opacity = Utilities.Saturate(handNPC.Opacity + 0.2f);
             hand.UsesBackArm = armIndex == 0 || armIndex == AresBodyEternity.ArmCount - 1;
             hand.ArmSide = (armIndex >= AresBodyEternity.ArmCount / 2).ToDirectionInt();
-            hand.HandType = AresHandType.GaussNuke;
+            hand.HandType = AresHandType.EnergyKatana;
+            hand.Frame = 0;
             hand.ArmEndpoint = handNPC.Center + handNPC.velocity;
-            hand.EnergyDrawer.chargeProgress = Utilities.InverseLerp(0f, NukeChargeUpTime, wrappedTimer);
-            if (hand.EnergyDrawer.chargeProgress >= 1f)
-                hand.EnergyDrawer.chargeProgress = 0f;
+            hand.EnergyDrawer.chargeProgress = 0f;
             hand.GlowmaskDisabilityInterpolant = 0f;
-            hand.RotateToLookAt(Target.Center);
+            hand.KatanaInUse = riseUpwardInterpolant >= 0.4f;
+            hand.AttachedToArm = flyDownwardInterpolant < 0.8f;
+            if (hand.KatanaAppearanceInterpolant >= 0.1f)
+                hand.KatanaAppearanceInterpolant = MathHelper.Lerp(hand.KatanaAppearanceInterpolant, hand.KatanaInUse.ToInt(), 0.15f);
 
-            if (wrappedTimer % 20 == 19 && hand.EnergyDrawer.chargeProgress >= 0.4f)
+            hoverOffset.X *= MathHelper.Lerp(1f, 0.19f, riseUpwardInterpolant.Cubed()) + LumUtils.Convert01To010(riseUpwardInterpolant.Cubed()).Squared() * 0.8f;
+            hoverOffset.Y -= LumUtils.InverseLerpBump(0f, 0.75f, 0.91f, 1f, riseUpwardInterpolant).Cubed() * 410f;
+            hoverOffset.Y += LumUtils.InverseLerp(0f, 0.05f, flyDownwardInterpolant) * 200f + flyDownwardInterpolant * 300f;
+
+            float fastMovementInterpolant = LumUtils.InverseLerp(0f, 60f, AITimer - AresBodyEternity.DetachHands_DetachmentDelay);
+            float movementSharpness = MathHelper.Lerp(0.2f, 0.9f, fastMovementInterpolant);
+            float movementSmoothness = MathHelper.Lerp(0.85f, 0.32f, fastMovementInterpolant);
+
+            Vector2 hoverDestination = ares.Center + hoverOffset.RotatedBy(ares.rotation) * ares.scale;
+            handNPC.SmoothFlyNear(hoverDestination, movementSharpness, movementSmoothness);
+            if (!handNPC.WithinRange(hoverDestination, 400f))
             {
-                int pulseCounter = (int)MathF.Round(hand.EnergyDrawer.chargeProgress * 5f);
-                hand.EnergyDrawer.AddPulse(pulseCounter);
+                handNPC.Center = hoverDestination;
+                handNPC.velocity = Vector2.Zero;
+                handNPC.netUpdate = true;
             }
 
-            if (wrappedTimer == 1)
-                SoundEngine.PlaySound(AresGaussNuke.TelSound with { Volume = 3f });
+            handNPC.Opacity = LumUtils.Saturate(handNPC.Opacity + 0.2f);
+            handNPC.spriteDirection = 1;
+            handNPC.rotation = handNPC.AngleFrom(ares.Center).AngleLerp(hand.ShoulderToHandDirection, 0.8f).AngleLerp(MathHelper.PiOver2, MathF.Pow(riseUpwardInterpolant, 2.5f));
+            handNPC.damage = flyDownwardInterpolant >= 0.01f ? AresBodyEternity.KatanaDamage : 0;
 
-            AresBodyEternity.HandleGaussNukeShots(hand, handNPC, wrappedTimer, NukeChargeUpTime, AresNukeExplosionDiameter);
+            // Disable incoming damage to nullify ram dash cheese.
+            if (handNPC.damage >= 1)
+                handNPC.dontTakeDamage = true;
         }
 
         /// <summary>
@@ -276,8 +360,41 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 npc.velocity = (npc.velocity + npc.velocity.SafeNormalize(Vector2.UnitY) * 15f).ClampLength(0f, ExoTwinsMaxDashSpeed);
                 npc.damage = npc.defDamage;
                 npc.rotation = npc.velocity.ToRotation();
+
+                // Disable incoming damage to nullify ram dash cheese.
+                npc.dontTakeDamage = true;
+
                 if (twinInfo is not null)
                 {
+                    float FlameEngulfWidthFunction(float completionRatio)
+                    {
+                        float baseWidth = MathHelper.Lerp(114f, 50f, completionRatio);
+                        float tipSmoothenFactor = MathF.Sqrt(1f - Utilities.InverseLerp(0.3f, 0.015f, completionRatio).Cubed());
+                        return npc.scale * baseWidth * tipSmoothenFactor;
+                    }
+
+                    Color FlameEngulfColorFunction(float completionRatio)
+                    {
+                        Color flameTipColor = new(255, 255, 208);
+                        Color limeFlameColor = new(173, 255, 36);
+                        Color greenFlameColor = new(52, 156, 17);
+                        Color trailColor = Utilities.MulticolorLerp(MathF.Pow(completionRatio, 0.75f) * 0.7f, flameTipColor, limeFlameColor, greenFlameColor);
+                        return npc.GetAlpha(trailColor) * (1 - completionRatio);
+                    }
+
+                    twinInfo.SpecificDrawAction = () =>
+                    {
+                        Vector2[] flamePositions = new Vector2[8];
+                        for (int i = 0; i < flamePositions.Length; i++)
+                            flamePositions[i] = npc.Center - npc.oldRot[i].ToRotationVector2() * (i * 90f - 100f);
+
+                        ManagedShader flameShader = ShaderManager.GetShader("FargowiltasCrossmod.FlameEngulfShader");
+                        flameShader.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
+                        flameShader.SetTexture(MiscTexturesRegistry.TurbulentNoise.Value, 2, SamplerState.LinearWrap);
+
+                        PrimitiveSettings flameSettings = new(FlameEngulfWidthFunction, FlameEngulfColorFunction, Shader: flameShader);
+                        PrimitiveRenderer.RenderTrail(flamePositions, flameSettings, 60);
+                    };
                     twinInfo.MotionBlurInterpolant = 1f;
                     twinInfo.ThrusterBoost = 1.35f;
                 }
@@ -308,13 +425,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// <param name="npc">Hades' NPC instance.</param>
         public static void Perform_Hades(NPC npc)
         {
-            ref float localAITimer = ref npc.ai[0];
-            if (AITimer == 1)
-            {
-                localAITimer = 0f;
-                npc.netUpdate = true;
-            }
-
             if (!npc.TryGetDLCBehavior(out HadesHeadEternity hades))
             {
                 npc.active = false;
@@ -323,107 +433,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
             hades.SegmentReorientationStrength = 0.1f;
 
-            int returnOnScreenTime = 420;
-            int beamWindUpTime = 180;
-            int beamShootDelay = 60;
-            int beamFireTime = ExoelectricBlast.Lifetime;
-            int postBeamFireLeaveTime = 240;
-            int attackCycleTime = returnOnScreenTime + beamWindUpTime + beamFireTime + postBeamFireLeaveTime;
-            int wrappedAttackTimer = (int)localAITimer % attackCycleTime;
-            float jawExtendInterpolant = 0f;
-
-            if (wrappedAttackTimer <= returnOnScreenTime)
+            int wrappedTimer = AITimer % HadesHeadEternity.MineBarrages_AttackCycleTime;
+            if (wrappedTimer < HadesHeadEternity.MineBarrages_RedirectTime)
             {
-                Vector2 idealDirection = npc.SafeDirectionTo(Target.Center);
-                npc.velocity = idealDirection * MathHelper.Lerp(npc.velocity.Length(), 130f, 0.07f);
-                npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-
-                if (npc.WithinRange(Target.Center, 500f))
+                if (!npc.WithinRange(Target.Center, 600f))
                 {
-                    localAITimer += returnOnScreenTime - localAITimer + 1f;
-                    npc.velocity *= 0.05f;
-                    npc.netUpdate = true;
-                }
-            }
-
-            else if (wrappedAttackTimer <= returnOnScreenTime + beamWindUpTime)
-            {
-                float angularVelocity = HadesTurnSpeedCoefficient / npc.Distance(Target.Center);
-                npc.velocity = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), angularVelocity);
-                if (npc.velocity.Length() > 6f)
-                    npc.velocity *= 0.9f;
-
-                npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-
-                float chargeUpCompletion = Utilities.InverseLerp(0f, beamWindUpTime, wrappedAttackTimer - returnOnScreenTime);
-
-                jawExtendInterpolant = MathF.Sqrt(chargeUpCompletion);
-                hades.ReticleOpacity = MathF.Pow(Utilities.InverseLerp(0f, 0.25f, chargeUpCompletion), 0.6f);
-                hades.SegmentReorientationStrength = 0f;
-
-                int particleCount = (int)MathHelper.Lerp(1f, 3f, chargeUpCompletion);
-                Vector2 mouthPosition = npc.Center + npc.velocity.SafeNormalize(Vector2.Zero) * 40f;
-                for (int i = 0; i < particleCount; i++)
-                {
-                    float particleScale = (chargeUpCompletion + 1.1f) * Main.rand.NextFloat(0.6f, 1f);
-                    Vector2 energySpawnPosition = mouthPosition + Main.rand.NextVector2Unit() * Main.rand.NextFloat(200f, 250f);
-                    BloomPixelParticle energy = new(energySpawnPosition, (mouthPosition - energySpawnPosition).RotatedBy(MathHelper.PiOver4) * 0.05f, Color.Wheat, Color.DeepSkyBlue * 0.4f, 30, Vector2.One * particleScale, mouthPosition);
-                    energy.Spawn();
+                    float newSpeed = MathHelper.Lerp(npc.velocity.Length(), 26f, 0.09f);
+                    Vector2 newDirection = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), 0.03f).SafeNormalize(Vector2.UnitY);
+                    npc.velocity = newDirection * newSpeed;
                 }
 
-                if (wrappedAttackTimer % 4 == 3)
-                {
-                    float scale = MathHelper.Lerp(0.5f, 3f, chargeUpCompletion);
-
-                    StrongBloom bloom = new(mouthPosition, Vector2.Zero, Color.DeepSkyBlue, scale, 13);
-                    GeneralParticleHandler.SpawnParticle(bloom);
-
-                    bloom = new(mouthPosition, Vector2.Zero, Color.Wheat, scale * 0.45f, 13);
-                    GeneralParticleHandler.SpawnParticle(bloom);
-                }
-
-                if (wrappedAttackTimer == returnOnScreenTime + 2)
-                    SoundEngine.PlaySound(HadesHeadEternity.DeathrayChargeUpSound);
-
-                if (wrappedAttackTimer == returnOnScreenTime + beamWindUpTime)
-                {
-                    SoundEngine.PlaySound(HadesHeadEternity.DeathrayFireSound);
-
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
-                        Utilities.NewProjectileBetter(npc.GetSource_FromAI(), mouthPosition, npc.velocity.SafeNormalize(Vector2.Zero), ModContent.ProjectileType<ExoelectricBlast>(), HadesHeadEternity.ExoEnergyBlastDamage, 0f);
-                }
-            }
-
-            else if (wrappedAttackTimer <= returnOnScreenTime + beamWindUpTime + beamShootDelay)
-            {
-                jawExtendInterpolant = 1f;
-                hades.ReticleOpacity = Utilities.Saturate(hades.ReticleOpacity - 0.08f);
-                hades.SegmentReorientationStrength = 0f;
-                if (npc.velocity.Length() >= 3f)
-                    npc.velocity *= 0.9485f;
-            }
-
-            else if (wrappedAttackTimer <= returnOnScreenTime + beamWindUpTime + beamShootDelay + beamFireTime)
-            {
-                jawExtendInterpolant = 1f;
-                if (npc.velocity.Length() >= 3f)
-                    npc.velocity *= 0.9485f;
-                npc.velocity = npc.velocity.RotateTowards(npc.AngleTo(Target.Center), 0.0056f);
-                npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-                hades.SegmentReorientationStrength = 0f;
+                hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(4), HadesHeadEternity.OpenSegment());
             }
             else
             {
-                npc.velocity = (npc.velocity * 1.02f).ClampLength(0f, 32f);
-                npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
-                hades.SegmentReorientationStrength = 0f;
+                if (!npc.WithinRange(Target.Center, 400f))
+                    npc.velocity = Vector2.Lerp(npc.velocity, npc.SafeDirectionTo(Target.Center) * 25f, 0.03f);
+                else
+                    npc.velocity *= 1.07f;
+
+                hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(4), hades.DoBehavior_MineBarrages_FireMine);
             }
 
-            hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), HadesHeadEternity.OpenSegment());
-            hades.JawRotation = MathHelper.Lerp(hades.JawRotation, jawExtendInterpolant * 0.93f, 0.15f);
-            npc.damage = 0;
+            // GENIUS tech: Make Hades try to interpolate ahead of the player, cutting them off and eliminating horizontal fly strats.
+            npc.Center = Vector2.Lerp(npc.Center, Target.Center + Target.velocity * 50f, 0.00485f);
 
-            localAITimer++;
+            npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
+            hades.SegmentReorientationStrength = 0.1f;
         }
     }
 }

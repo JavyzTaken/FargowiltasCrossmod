@@ -710,7 +710,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             float _ = 0f;
             Vector2 forward = NPC.rotation.ToRotationVector2() * NPC.scale;
             Vector2 start = NPC.Center + forward * 24f;
-            Vector2 end = start + forward * 254f;
+            Vector2 end = start + forward * 554f;
             return Collision.CheckAABBvLineCollision(potentialVictimHitbox.TopLeft(), potentialVictimHitbox.Size(), start, end, NPC.scale * 96f, ref _);
         }
 

@@ -69,6 +69,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         }
 
         /// <summary>
+        /// The interpolant of motion blur for Ares.
+        /// </summary>
+        public float MotionBlurInterpolant
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The standard palette that should be used for Ares' lights.
         /// </summary>
         public Color[] StandardLightColorPalette
@@ -244,7 +253,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// <summary>
         /// Whether Ares and his hands need to be rendered to a render target for secondary draw operations, such as his silhouette.
         /// </summary>
-        public bool NeedsToBeDrawnToRenderTarget => SilhouetteOpacity > 0f;
+        public bool NeedsToBeDrawnToRenderTarget => SilhouetteOpacity > 0f || MotionBlurInterpolant > 0f;
 
         /// <summary>
         /// The set of instructions that should be performed by each of Ares' arms.
@@ -519,6 +528,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
         /// </remarks>
         public void PerformPreUpdateResets()
         {
+            MotionBlurInterpolant = LumUtils.Saturate(MotionBlurInterpolant - 0.05f);
             NPC.damage = NPC.defDamage;
             NPC.defense = NPC.defDefense;
             NPC.dontTakeDamage = false;
