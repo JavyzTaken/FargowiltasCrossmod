@@ -16,6 +16,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             // Unpleasant Gradient.
             RegisterNew(1f, () => Main.zenithWorld, [Color.Magenta, Color.Magenta, Color.SaddleBrown, Color.SaddleBrown, Color.SaddleBrown, Color.Lime, Color.Lime]);
 
+            // Audacity logo colors.
+            RegisterNew(2f, () =>
+            {
+                bool connor = Main.LocalPlayer.name.Equals("Connor", StringComparison.OrdinalIgnoreCase);
+                bool dronnor = Main.LocalPlayer.name.Equals("Dronnor", StringComparison.OrdinalIgnoreCase);
+                return connor || dronnor;
+            }, [new Color(0, 67, 235), new Color(250, 195, 24), new Color(255, 24, 2)]);
+
             // Baby blue/light pink. You know the drill.
             RegisterNew(2f, () =>
             {
