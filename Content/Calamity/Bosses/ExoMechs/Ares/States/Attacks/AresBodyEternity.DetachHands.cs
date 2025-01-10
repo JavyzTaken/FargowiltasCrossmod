@@ -52,10 +52,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             NPC handNPC = hand.NPC;
             handNPC.Opacity = Utilities.Saturate(handNPC.Opacity - 0.025f);
             handNPC.velocity.X *= 0.84f;
-            handNPC.velocity.Y += 0.36f;
+            handNPC.velocity.Y += 0.5f;
             handNPC.damage = 0;
             if (handNPC.velocity.Y < 0f)
-                handNPC.velocity.Y *= 0.9f;
+                handNPC.velocity.Y *= 0.85f;
 
             hand.AttachedToArm = false;
             hand.UsesBackArm = armIndex == 0 || armIndex == ArmCount - 1;
