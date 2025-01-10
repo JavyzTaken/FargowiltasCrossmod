@@ -60,9 +60,9 @@
     "MasochistValue": 180.0
   },
   "DefaultSegmentDamage": {
-    "EternityRevValue": 300.0,
-    "EternityDeathValue": 300.0,
-    "MasochistValue": 300.0
+    "EternityRevValue": 375.0,
+    "EternityDeathValue": 375.0,
+    "MasochistValue": 375.0
   },
   "ExoEnergyBlast_BlastDelay": {
     "EternityRevValue": 222.0,
