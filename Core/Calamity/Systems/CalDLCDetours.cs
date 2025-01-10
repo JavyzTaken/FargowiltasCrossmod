@@ -525,13 +525,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 return value;
             if (CalDLCSets.Items.TungstenExclude[modPlayer.Player.HeldItem.type])
                 return 1f;
-            if (modPlayer.Player.HeldItem.DamageType.CountsAsClass(DamageClass.Melee))
-                value -= (value - 1f) * 0.5f;
+            //if (modPlayer.Player.HeldItem.DamageType.CountsAsClass(DamageClass.Melee))
+            //    value -= (value - 1f) * 0.5f;
             return value;
         }
         internal static bool TungstenNerfedProj_Detour(Orig_TungstenNerfedProj orig, Projectile projectile)
         {
             bool value = orig(projectile); 
+            /*
             if (!projectile.owner.IsWithinBounds(Main.maxPlayers))
                 return value;
             Player player = Main.player[projectile.owner];
@@ -541,7 +542,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 return true;
             }
-                
+            */
             return value;
         }
         internal static bool TungstenNeverAffectsProj_Detour(Orig_TungstenNeverAffectsProj orig, Projectile projectile)
