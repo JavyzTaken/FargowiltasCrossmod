@@ -197,6 +197,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
                     hitTarget.velocity += Projectile.velocity * 2.9f;
                 }
 
+                // Destroy the player's hooks.
+                foreach (Projectile hook in Main.ActiveProjectiles)
+                {
+                    if (hook.aiStyle == 7 && hook.owner == hitTargetIndex)
+                        hook.Kill();
+                }
+
                 for (int i = 0; i < 4; i++)
                 {
                     Dust pulseEnergy = Dust.NewDustPerfect(hitTarget.Center + Main.rand.NextVector2Circular(40f, 40f), 267);
