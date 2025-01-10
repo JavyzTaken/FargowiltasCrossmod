@@ -1,4 +1,5 @@
 ﻿using CalamityMod.NPCs;
+using CalamityMod.NPCs.ExoMechs.Thanatos;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using Luminance.Common.Utilities;
@@ -69,7 +70,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers
         private static void DrawHadesTarget(On_Main.orig_DrawNPCs orig, Main self, bool behindTiles)
         {
             orig(self, behindTiles);
-            if (CalamityGlobalNPC.draedonExoMechWorm != -1 && !behindTiles && CalDLCWorldSavingSystem.E_EternityRev)
+
+            bool hadesExists = NPC.AnyNPCs(ModContent.NPCType<ThanatosHead>());
+            if (hadesExists && !behindTiles && CalDLCWorldSavingSystem.E_EternityRev)
             {
                 Main.spriteBatch.PrepareForShaders();
 

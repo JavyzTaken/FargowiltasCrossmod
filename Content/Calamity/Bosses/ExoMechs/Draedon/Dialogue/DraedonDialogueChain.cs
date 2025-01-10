@@ -6,7 +6,7 @@ using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
 {
-    public class DraedonDialogueChain(int pauseBetweenDialogue = 150)
+    public class DraedonDialogueChain(int pauseBetweenDialogue = 30)
     {
         /// <summary>
         /// The tree of all dialogue this chain has.
