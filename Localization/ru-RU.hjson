@@ -90,6 +90,11 @@ Mods: {
 						Выключен: Режим Вечность будет включён, но ИИ боссов режима Инфернум будет брать приоритет, если не включён  «Приоритет Вечности над режимами Calamity».
 						'''
 				}
+
+				VoiceActingEnabled: {
+					// Label: Voice Acting Enabled
+					// Tooltip: Whether voice acting is enabled in the mod
+				}
 			}
 		}
 

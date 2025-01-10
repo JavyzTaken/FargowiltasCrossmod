@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FargowiltasCrossmod.Core.Calamity;
+using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria.ModLoader;
 
@@ -11,11 +12,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
         /// </summary>
         public static readonly Dictionary<string, DraedonDialogue> Dialogue = [];
 
-        // TODO -- Make configurable.
         /// <summary>
         /// Whether subtitles should be used over chat-based text.
         /// </summary>
-        public static bool UseSubtitles => true;
+        public static bool UseSubtitles => CalDLCConfig.Instance.VoiceActingEnabled;
 
         public override void PostSetupContent()
         {

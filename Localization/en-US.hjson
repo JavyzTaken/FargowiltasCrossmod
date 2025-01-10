@@ -85,6 +85,11 @@ Mods: {
 						Disabled: Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
 				}
+
+				VoiceActingEnabled: {
+					Label: Voice Acting Enabled
+					Tooltip: Whether voice acting is enabled in the mod
+				}
 			}
 		}
 
