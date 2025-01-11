@@ -156,7 +156,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             else
                 ArcColor = Color.Lerp(new Color(0.3f, 0.86f, 1f), new Color(0.75f, 0.83f, 1f), colorInterpolant);
 
-            PrimitiveRenderer.RenderTrail(ArcPoints, settings, 39);
+            PrimitiveRenderer.RenderTrail(ArcPoints, settings, 22);
         }
 
         public override bool ShouldUpdatePosition() => false;
