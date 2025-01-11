@@ -78,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
                 CurrentSequence = subtitle;
                 subtitleLoop?.Stop();
                 subtitleLoop = LoopedSoundManager.CreateNew(new SoundStyle(subtitle.Subtitle.SoundPath) with { Volume = 2f }, () => CurrentSequence is null);
-                subtitleLoop.Update(Main.screenPosition + Main.ScreenSize.ToVector2() * 0.5f, s => s.Volume = 1.8f);
+                subtitleLoop.Update(Main.screenPosition + Main.ScreenSize.ToVector2() * 0.5f, s => s.Volume = 2.3f);
             }
         }
     }
