@@ -3,6 +3,7 @@ using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
@@ -66,7 +67,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
                 }
             }
         }
-
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+            => Projectile.Distance(FargoSoulsUtil.ClosestPointInHitbox(targetHitbox, Projectile.Center)) < projHitbox.Width / 2;
         public override bool? CanDamage() => Projectile.Opacity >= 0.5f && Time >= 95f;
 
         public override bool PreDraw(ref Color lightColor)

@@ -85,6 +85,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             Vector2 flyDestination = Target.Center + new Vector2(reelBackInterpolant * NPC.HorizontalDirectionTo(Target.Center) * -300f, -275f);
             StandardFlyTowards(flyDestination);
 
+            // Move less during the startup, to avoid cheap hits and give people time to read what's happening
+            if (AITimer < LargeTeslaOrbBlast_OrbChargeUpTime / 2)
+                NPC.velocity *= 0.9f;
+
             bool readyToShootBursts = AITimer >= LargeTeslaOrbBlast_OrbChargeUpTime + LargeTeslaOrbBlast_HomingBurstReleaseDelay;
             bool doneShootingBursts = AITimer >= LargeTeslaOrbBlast_OrbChargeUpTime + LargeTeslaOrbBlast_HomingBurstReleaseDelay + LargeTeslaOrbBlast_HomingBurstReleaseTime;
             bool shootingBursts = readyToShootBursts && !doneShootingBursts;
