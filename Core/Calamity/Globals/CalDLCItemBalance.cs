@@ -38,6 +38,7 @@ using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 using FargowiltasSouls.Content.Patreon.Volknet;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
+using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -45,64 +46,66 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalDLCItemBalance : GlobalItem
     {
-
         public static float BalanceChange(Item item)
         {
 
-            if (item.type == ModContent.ItemType<MechanicalLeashOfCthulhu>())
+            if (item.type == ItemType<MechanicalLeashOfCthulhu>())
                 return 0.5f;
-            if (item.type == ModContent.ItemType<Blender>())
+            if (item.type == ItemType<Blender>())
                 return 1f;
-            if (item.type == ModContent.ItemType<NukeFishron>() || item.type == ModContent.ItemType<GolemTome2>() || item.type == ModContent.ItemType<DestroyerGun2>())
+            if (item.type == ItemType<NukeFishron>() || item.type == ItemType<GolemTome2>() || item.type == ItemType<DestroyerGun2>())
                 return 2f;
 
-            if (item.type == ModContent.ItemType<UmbraRegalia>())
+            if (item.type == ItemType<UmbraRegalia>())
                 return 2f;
-            if (item.type == ModContent.ItemType<GeminiGlaives>())
+            if (item.type == ItemType<GeminiGlaives>())
                 return 2f;
             if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
                 return 1.5f;
             if (DLCSets.GetValue(DLCSets.Items.ChampionTierFargoWeapon, item.type))
                 return 0.8f;
 
+            if (item.type == ItemType<Ataraxia>())
+                return 0.55f;
+
             //Shadowspec items and such
             // Melee
-            if (item.type == ModContent.ItemType<IridescentExcalibur>()) return 0.6f;
-            if (item.type == ModContent.ItemType<IllustriousKnives>()) return 1f;
-            if (item.type == ModContent.ItemType<NanoCore>() && item.DamageType.CountsAsClass(DamageClass.Melee)) return 2f;
-            if (item.type == ModContent.ItemType<Azathoth>()) return 1f;
-            if (item.type == ModContent.ItemType<RedSun>()) return 0.85f;
-            if (item.type == ModContent.ItemType<GaelsGreatsword>()) return 0.75f;
+            if (item.type == ItemType<IridescentExcalibur>()) return 0.6f;
+            if (item.type == ItemType<IllustriousKnives>()) return 1f;
+            if (item.type == ItemType<NanoCore>() && item.DamageType.CountsAsClass(DamageClass.Melee)) return 2f;
+            if (item.type == ItemType<Azathoth>()) return 1f;
+            if (item.type == ItemType<RedSun>()) return 0.85f;
+            if (item.type == ItemType<GaelsGreatsword>()) return 0.75f;
             // Ranged
-            if (item.type == ModContent.ItemType<SomaPrime>()) return 1.2f;
-            if (item.type == ModContent.ItemType<Svantechnical>()) return 1.1f;
-            if (item.type == ModContent.ItemType<Voidragon>()) return 1.1f;
+            if (item.type == ItemType<SomaPrime>()) return 1.2f;
+            if (item.type == ItemType<Svantechnical>()) return 1.1f;
+            if (item.type == ItemType<Voidragon>()) return 1.1f;
             // Magic
-            if (item.type == ModContent.ItemType<Apotheosis>()) return 0.75f;
-            if (item.type == ModContent.ItemType<StaffofBlushie>()) return 1f;
-            if (item.type == ModContent.ItemType<Eternity>()) return 0.7f;
-            if (item.type == ModContent.ItemType<TheDanceofLight>()) return 0.8f;
-            if (item.type == ModContent.ItemType<RainbowPartyCannon>()) return 0.7f;
-            if (item.type == ModContent.ItemType<Fabstaff>()) return 1.2f;
+            if (item.type == ItemType<Apotheosis>()) return 0.75f;
+            if (item.type == ItemType<StaffofBlushie>()) return 1f;
+            if (item.type == ItemType<Eternity>()) return 0.7f;
+            if (item.type == ItemType<TheDanceofLight>()) return 0.8f;
+            if (item.type == ItemType<RainbowPartyCannon>()) return 0.7f;
+            if (item.type == ItemType<Fabstaff>()) return 1.2f;
             // Summoner
-            if (item.type == ModContent.ItemType<AngelicAlliance>()) return 0.2f;
-            if (item.type == ModContent.ItemType<FlamsteedRing>()) return 0.45f;
-            if (item.type == ModContent.ItemType<TemporalUmbrella>()) return 0.35f;
-            if (item.type == ModContent.ItemType<Endogenesis>()) return 0.35f;
-            if (item.type == ModContent.ItemType<Metastasis>()) return 0.5f;
-            if (item.type == ModContent.ItemType<UniverseSplitter>()) return 0.5f;
-            if (item.type == ModContent.ItemType<ProfanedSoulCrystal>()) return 0.4f;
+            if (item.type == ItemType<AngelicAlliance>()) return 0.2f;
+            if (item.type == ItemType<FlamsteedRing>()) return 0.45f;
+            if (item.type == ItemType<TemporalUmbrella>()) return 0.35f;
+            if (item.type == ItemType<Endogenesis>()) return 0.35f;
+            if (item.type == ItemType<Metastasis>()) return 0.5f;
+            if (item.type == ItemType<UniverseSplitter>()) return 0.5f;
+            if (item.type == ItemType<ProfanedSoulCrystal>()) return 0.4f;
             // Rogue
-            if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
-            if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
-            if (item.type == ModContent.ItemType<TheAtomSplitter>()) return 0.25f;
-            if (item.type == ModContent.ItemType<Sacrifice>()) return 0.75f;
+            if (item.type == ItemType<NanoblackReaper>()) return 0.4f;
+            if (item.type == ItemType<ScarletDevil>()) return 0.4f;
+            if (item.type == ItemType<TheAtomSplitter>()) return 0.25f;
+            if (item.type == ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
-            if (item.type == ModContent.ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
-            if (item.type == ModContent.ItemType<GuardianTome>()) return 0.2f;
-            if (item.type == ModContent.ItemType<SlimeRain>()) return 0.08f;
-            if (item.type == ModContent.ItemType<TheBiggestSting>()) return 0.3f;
+            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
+            if (item.type == ItemType<GuardianTome>()) return 0.2f;
+            if (item.type == ItemType<SlimeRain>()) return 0.08f;
+            if (item.type == ItemType<TheBiggestSting>()) return 0.3f;
 
             return 1;
 
@@ -177,9 +180,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (WorldSavingSystem.EternityMode)
             {
-                if (item.type == ModContent.ItemType<NormalityRelocator>())
+                if (item.type == ItemType<NormalityRelocator>())
                     ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
-                if (item.type == ModContent.ItemType<Laudanum>())
+                if (item.type == ItemType<Laudanum>())
                     ItemBalance(tooltips, EModeChange.Nerf, "Laudanum", mod: "FargowiltasCrossmod");
             }
 
@@ -201,31 +204,31 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MagicDagger")));
             }
-            if (item.type == ModContent.ItemType<ProfanedSoulCrystal>())
+            if (item.type == ItemType<ProfanedSoulCrystal>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("ProfanedCrystal")));
             }
-            //if (item.type == ModContent.ItemType<TungstenEnchant>())
+            //if (item.type == ItemType<TungstenEnchant>())
             //{
             //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("TungstenEnch")));
             //}
-            if (item.type == ModContent.ItemType<MythrilEnchant>())
+            if (item.type == ItemType<MythrilEnchant>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MythrilEnch")));
             }
-            if (item.type == ModContent.ItemType<OrichalcumEnchant>())
+            if (item.type == ItemType<OrichalcumEnchant>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("OrichalcumEnch")));
             }
-            //if (item.type == ModContent.ItemType<AdamantiteEnchant>() || item.type == ModContent.ItemType<EarthForce>())
+            //if (item.type == ItemType<AdamantiteEnchant>() || item.type == ItemType<EarthForce>())
             //{
             //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("AdamantiteEnch")));
             //}
-            if (item.type == ModContent.ItemType<DaawnlightSpiritOrigin>())
+            if (item.type == ItemType<DaawnlightSpiritOrigin>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("Daawnlight")));
             }
-            if (item.type == ModContent.ItemType<SlimyShield>())
+            if (item.type == ItemType<SlimyShield>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("SlimyShield")));
             }
@@ -233,7 +236,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("FlightMastery")));
             }
-            if (item.type == ModContent.ItemType<LifeForce>())
+            if (item.type == ItemType<LifeForce>())
             {
                 tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("LifeForce")));
             }
