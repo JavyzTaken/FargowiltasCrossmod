@@ -371,38 +371,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
             if (NonFargoBossAlive())
             {
-                
-                player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
-                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
-                {
-                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(300);
-
-                    if (ascentWhenFalling > 0.95f)
-                        ascentWhenFalling = 0.95f;
-                    if (ascentWhenRising > 0.16f)
-                        ascentWhenRising = 0.16f;
-                    if (maxCanAscendMultiplier > 1.1f)
-                        maxCanAscendMultiplier = 1.1f;
-                    if (maxAscentMultiplier > 3.2f)
-                        maxAscentMultiplier = 3.2f;
-                    if (constantAscend > 0.145f)
-                        constantAscend = 0.145f;
-                }
-                else // post yharon, use Drew's Wings stats
-                {
-                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(400);
-
-                    if (ascentWhenFalling > 1f)
-                        ascentWhenFalling = 1f;
-                    if (ascentWhenRising > 0.17f)
-                        ascentWhenRising = 0.17f;
-                    if (maxCanAscendMultiplier > 1.2f)
-                        maxCanAscendMultiplier = 1.2f;
-                    if (maxAscentMultiplier > 3.25f)
-                        maxAscentMultiplier = 3.25f;
-                    if (constantAscend > 0.15f)
-                        constantAscend = 0.15f;
-                }
+                ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(240, 9.5f, 2.7f);
+                if (ascentWhenFalling > 0.85f)
+                    ascentWhenFalling = 0.85f;
+                if (ascentWhenRising > 0.15f)
+                    ascentWhenRising = 0.15f;
+                if (maxCanAscendMultiplier > 1f)
+                    maxCanAscendMultiplier = 1f;
+                if (maxAscentMultiplier > 3f)
+                    maxAscentMultiplier = 3f;
+                if (constantAscend > 0.135f)
+                    constantAscend = 0.135f;
             }
             else
                 ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(1000);
@@ -412,21 +391,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             orig(self, player, ref speed, ref acceleration);
             if (NonFargoBossAlive())
             {
-                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
-                {
-                    if (speed > 10.5f)
-                        speed = 10.5f;
-                    if (acceleration > 2.8f)
-                        acceleration = 2.8f;
-                }
-                else // post yharon, use Drew's Wings stats
-                {
-                    if (speed > 11.5f)
-                        speed = 11.5f;
-                    if (acceleration > 2.9f)
-                        acceleration = 2.9f;
-                }
-
+                
                 //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
             }
         }
