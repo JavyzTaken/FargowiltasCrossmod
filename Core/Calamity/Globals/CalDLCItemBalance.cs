@@ -95,7 +95,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             // Rogue
             if (item.type == ModContent.ItemType<NanoblackReaper>()) return 0.4f;
             if (item.type == ModContent.ItemType<ScarletDevil>()) return 0.4f;
-            if (item.type == ModContent.ItemType<TheAtomSplitter>()) return 0.25f;
+            if (item.type == ModContent.ItemType<TheAtomSplitter>()) return 0.75f;
             if (item.type == ModContent.ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
