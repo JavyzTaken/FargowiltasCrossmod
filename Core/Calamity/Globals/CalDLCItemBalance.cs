@@ -191,74 +191,45 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
 
             static string BalanceTooltips(string key) => Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.{key}");
+            //void Buff(string key) => tooltips.Add(new TooltipLine(Mod, "BalanceUp", $"{BalanceUpLine}" + BalanceTooltips(key)));
+            void NerfTooltip(string key) => tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips(key)));
 
             if (balance > 1)
-            {
                 tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.DamageUpGeneric").Format(Math.Round((balance - 1) * 100))));
-            }
             else if (balance < 1)
-            {
                 tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.DamageDownGeneric").Format(Math.Round((1 - balance) * 100))));
-            }
-            if (item.type == ItemID.MagicDagger)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MagicDagger")));
-            }
-            if (item.type == ItemType<ProfanedSoulCrystal>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("ProfanedCrystal")));
-            }
-            //if (item.type == ItemType<TungstenEnchant>())
-            //{
-            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("TungstenEnch")));
-            //}
-            if (item.type == ItemType<MythrilEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MythrilEnch")));
-            }
-            if (item.type == ItemType<OrichalcumEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("OrichalcumEnch")));
-            }
-            //if (item.type == ItemType<AdamantiteEnchant>() || item.type == ItemType<EarthForce>())
-            //{
-            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("AdamantiteEnch")));
-            //}
-            if (item.type == ItemType<DaawnlightSpiritOrigin>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("Daawnlight")));
-            }
-            if (item.type == ItemType<SlimyShield>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("SlimyShield")));
-            }
-            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("FlightMastery")));
-            }
-            if (item.type == ItemType<LifeForce>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("LifeForce")));
-            }
 
-            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword  or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("HardmodeSwords")));
-            }
+            if (item.type == ItemID.MagicDagger)
+                NerfTooltip("MagicDagger");
+
+            if (item.type == ItemType<ProfanedSoulCrystal>())
+                NerfTooltip("ProfanedCrystal");
+
+            if (item.type == ItemType<MythrilEnchant>())
+                NerfTooltip("MythrilEnch");
+
+            if (item.type == ItemType<OrichalcumEnchant>())
+                NerfTooltip("OrichalcumEnch");
+
+            if (item.type == ItemType<DaawnlightSpiritOrigin>())
+                NerfTooltip("Daawnlight");
+
+            if (item.type == ItemType<SlimyShield>())
+                NerfTooltip("SlimyShield");
+
+            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
+                NerfTooltip("FlightMastery");
+
+            if (item.type == ItemType<LifeForce>())
+                NerfTooltip("LifeForce");
+
+            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
+                NerfTooltip("HardmodeSwords");
 
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
                 if (calItem.AppliedEnchantment.Value.ID == 1000)
-                {
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}" + BalanceTooltips("CalEnch")));
-                }
-            }
-            /*
-            if (item.type == ItemID.WarmthPotion)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not grant buff immunities"));
-            }
-            */
         }
         #endregion
     }
