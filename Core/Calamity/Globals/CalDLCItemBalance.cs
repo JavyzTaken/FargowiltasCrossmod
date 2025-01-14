@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 0.8f;
 
             if (item.type == ItemType<Ataraxia>())
-                return 0.55f;
+                return 0.65f;
 
             //Shadowspec items and such
             // Melee
