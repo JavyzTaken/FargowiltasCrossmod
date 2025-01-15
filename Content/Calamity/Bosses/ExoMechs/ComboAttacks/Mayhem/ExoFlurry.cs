@@ -164,7 +164,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 if (flyDownwardInterpolant <= 0.03f)
                 {
                     SoundEngine.PlaySound(AresBodyEternity.SlashSound with { MaxInstances = 1, SoundLimitBehavior = SoundLimitBehavior.IgnoreNew });
-                    ScreenShakeSystem.StartShakeAtPoint(npc.Center, 32f, MathHelper.TwoPi, null, 1.3f);
+                    ScreenShakeSystem.StartShakeAtPoint(npc.Center, 20f, MathHelper.TwoPi, null, 1.15f);
                 }
 
                 npc.damage = AresBodyEternity.KatanaDamage;
