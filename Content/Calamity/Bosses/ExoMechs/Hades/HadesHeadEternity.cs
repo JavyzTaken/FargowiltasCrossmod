@@ -400,7 +400,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             DisableMapIcon = false;
             SegmentReorientationStrength = MathHelper.Lerp(SegmentReorientationStrength, 1f, 0.03f);
             NPC.As<ThanatosHead>().SecondaryAIState = (int)ThanatosHead.SecondaryPhase.Nothing;
-            SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant - StandardSegmentOpenRate);
+            SegmentOpenInterpolant = Utilities.Saturate(SegmentOpenInterpolant + StandardSegmentOpenRate);
             JawRotation = JawRotation.AngleLerp(0f, 0.01f).AngleTowards(0f, 0.02f);
             ReticleOpacity = MathHelper.Lerp(ReticleOpacity, 0f, 0.1f);
 
