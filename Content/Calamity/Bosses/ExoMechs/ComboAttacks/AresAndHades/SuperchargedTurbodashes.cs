@@ -272,6 +272,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 // Handle the dash cycle, teleporting behind the player and dashing, in a cycle.
                 int cycleTimer = (AITimer - ElectrifyTime) % HadesDashCycleTime;
+                bool hasDashed = AITimer >= ElectrifyTime + HadesDashCycleTime - 1;
                 if (cycleTimer == HadesDashCycleTime - 1)
                 {
                     Vector2 teleportOffsetDirection = -Target.velocity.SafeNormalize(Vector2.UnitX * Target.direction);
@@ -279,12 +280,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.velocity = npc.SafeDirectionTo(Target.Center) * 10f;
                     npc.netUpdate = true;
 
-                    foreach (NPC segment in Main.ActiveNPCs)
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        if (segment.realLife == npc.whoAmI)
+                        LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), npc.Center, npc.velocity, ModContent.ProjectileType<HadesLineTelegraph>(), 0, 0f, -1, 32f);
+                        foreach (NPC segment in Main.ActiveNPCs)
                         {
-                            segment.Center = npc.Center;
-                            segment.netUpdate = true;
+                            if (segment.realLife == npc.whoAmI)
+                            {
+                                segment.Center = npc.Center;
+                                segment.netUpdate = true;
+                            }
                         }
                     }
                     SoundEngine.PlaySound(HadesHeadEternity.DashChargeUpSound with { MaxInstances = 0 }).WithVolumeBoost(2f);
@@ -294,6 +299,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     npc.velocity = (npc.velocity * 1.04f + npc.velocity.SafeNormalize(Vector2.UnitY)).ClampLength(0f, HadesMaxDashSpeed);
                     shootMines = true;
                 }
+
+                if (hasDashed)
+                    hades.ReticleOpacity = MathF.Sqrt(LumUtils.Convert01To010(LumUtils.InverseLerp(0f, 30f, HadesDashCycleTime)) + 0.001f);
 
                 bool doDamage = AITimer >= ElectrifyTime + 45;
                 npc.damage = doDamage ? npc.defDamage : 0;

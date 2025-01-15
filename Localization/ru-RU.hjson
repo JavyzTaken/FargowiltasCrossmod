@@ -820,6 +820,7 @@ Mods: {
 			// ClamSlam.DisplayName: Clam Slam
 			// SmallCannonLaser.DisplayName: Laser
 			// PulseBlast.DisplayName: Pulse Blast
+			// HadesLineTelegraph.DisplayName: Hades Line Telegraph
 		}
 
 		Buffs: {
