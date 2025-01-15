@@ -1,12 +1,16 @@
-New Update: v1.1.1.01
+New Update: v1.1.1.02
 
-Life Force wing stats and flight time are throttled against Calamity bosses
+Hive Mind now heals all damage during Phase 1
+Removed Tungsten Enchant DLC nerf (after base Souls tungsten reshift)
+Removed Adamantite Enchantment being disabled on Calamity content
+Decreased Life Force wing stats to Elysian Wings level
+Calamitous Presence:
+-No longer disables Purity
+-Now also removes 10% of your defense
+Astrum Core can now only be converted into Starcore post-Deus
+Astral Fountain only sets biome in Hardmode
 
-Clarified Cross-mod balance tooltip for Adamantite/Earth Force
-Cataclysm/Catastrophe are now immune to Clipped Wings
-Calamity debuffs now count for Ashwood/Obsidian Enchantment and other Fargo universal debuff effects such as immunities
-
-Fixed Force recipes not containing Divine Geodes
-Fixed Laudanum eternity change tooltip not displaying correctly
-Fixed typo in Reaper Shark summon description
-Fixed Rock Golems spawning close to Sunken Sea
+Eternity:
+Ataraxia: 0.65x damage
+Adrenaline gives half as much damage bonus
+Eternity Desert Scourge and Aquatic Scourge updated to use new Eternity Destroyer pierce resist formula

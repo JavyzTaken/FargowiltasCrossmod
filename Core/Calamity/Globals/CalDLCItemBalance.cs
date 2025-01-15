@@ -1,43 +1,26 @@
-﻿using CalamityMod.Items.SummonItems.Invasion;
-using CalamityMod.Items.SummonItems;
-using CalamityMod.Items;
-using FargowiltasSouls.Content.Items.Accessories.Souls;
-using FargowiltasSouls.Content.Items.Ammos;
-using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
-using FargowiltasSouls.Content.Patreon.DemonKing;
-using FargowiltasSouls.Content.Patreon.Duck;
-using FargowiltasSouls.Content.Patreon.GreatestKraken;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+﻿using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
-using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
-using Terraria.ID;
-using Terraria;
-using FargowiltasSouls.Content.Items.Armor;
-using CalamityMod;
-using FargowiltasSouls.Core.ModPlayers;
-using FargowiltasSouls.Core.Systems;
-using FargowiltasSouls.Core.Toggler;
-using FargowiltasSouls;
-using FargowiltasSouls.Content.Items;
-using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using Terraria.Localization;
 using FargowiltasCrossmod.Core.Common;
-using FargowiltasSouls.Content.Items.Accessories.Masomode;
-using CalamityMod.UI.CalamitasEnchants;
-using FargowiltasSouls.Core.AccessoryEffectSystem;
-using FargowiltasCrossmod.Core.Calamity.ModPlayers;
-using FargowiltasSouls.Content.Patreon.Volknet;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
+using FargowiltasSouls.Content.Items.Accessories.Souls;
+using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
+using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.Patreon.Volknet;
+using FargowiltasSouls.Core.Systems;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
@@ -66,7 +49,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return 0.8f;
 
             if (item.type == ItemType<Ataraxia>())
-                return 0.55f;
+                return 0.65f;
 
             //Shadowspec items and such
             // Melee
@@ -191,71 +174,45 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             string BalanceDownLine = $"[c/FF0000:{BalanceLine}]";
 
             static string BalanceTooltips(string key) => Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.{key}");
+            //void Buff(string key) => tooltips.Add(new TooltipLine(Mod, "BalanceUp", $"{BalanceUpLine}" + BalanceTooltips(key)));
+            void NerfTooltip(string key) => tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips(key)));
 
             if (balance > 1)
-            {
                 tooltips.Add(new TooltipLine(Mod, "DamageUp", $"{BalanceUpLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.DamageUpGeneric").Format(Math.Round((balance - 1) * 100))));
-            }
             else if (balance < 1)
-            {
                 tooltips.Add(new TooltipLine(Mod, "DamageDown", $"{BalanceDownLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.DamageDownGeneric").Format(Math.Round((1 - balance) * 100))));
-            }
-            if (item.type == ItemID.MagicDagger)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MagicDagger")));
-            }
-            if (item.type == ItemType<ProfanedSoulCrystal>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("ProfanedCrystal")));
-            }
-            //if (item.type == ItemType<TungstenEnchant>())
-            //{
-            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("TungstenEnch")));
-            //}
-            if (item.type == ItemType<MythrilEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("MythrilEnch")));
-            }
-            if (item.type == ItemType<OrichalcumEnchant>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("OrichalcumEnch")));
-            }
-            //if (item.type == ItemType<AdamantiteEnchant>() || item.type == ItemType<EarthForce>())
-            //{
-            //    tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("AdamantiteEnch")));
-            //}
-            if (item.type == ItemType<DaawnlightSpiritOrigin>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("Daawnlight")));
-            }
-            if (item.type == ItemType<SlimyShield>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("SlimyShield")));
-            }
-            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("FlightMastery")));
-            }
-            if (item.type == ItemType<LifeForce>())
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("LifeForce")));
-            }
 
-            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword  or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}" + BalanceTooltips("HardmodeSwords")));
-            }
+            if (item.type == ItemID.MagicDagger)
+                NerfTooltip("MagicDagger");
+
+            if (item.type == ItemType<ProfanedSoulCrystal>())
+                NerfTooltip("ProfanedCrystal");
+
+            if (item.type == ItemType<MythrilEnchant>())
+                NerfTooltip("MythrilEnch");
+
+            if (item.type == ItemType<OrichalcumEnchant>())
+                NerfTooltip("OrichalcumEnch");
+
+            if (item.type == ItemType<DaawnlightSpiritOrigin>())
+                NerfTooltip("Daawnlight");
+
+            if (item.type == ItemType<SlimyShield>())
+                NerfTooltip("SlimyShield");
+
+            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
+                NerfTooltip("FlightMastery");
+
+            if (item.type == ItemType<LifeForce>())
+                NerfTooltip("LifeForce");
+
+            if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
+                NerfTooltip("HardmodeSwords");
 
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)
                 if (calItem.AppliedEnchantment.Value.ID == 1000)
                     tooltips.Add(new TooltipLine(Mod, "BalanceDown_HealEnchant", $"{BalanceDownLine}" + BalanceTooltips("CalEnch")));
-            /*
-            if (item.type == ItemID.WarmthPotion)
-            {
-                tooltips.Add(new TooltipLine(Mod, "BalanceDown", $"{BalanceDownLine}Does not grant buff immunities"));
-            }
-            */
         }
         #endregion
     }

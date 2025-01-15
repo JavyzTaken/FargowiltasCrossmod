@@ -1,4 +1,5 @@
-﻿using CalamityMod.Items.SummonItems;
+﻿using CalamityMod;
+using CalamityMod.Items.SummonItems;
 using CalamityMod.NPCs.AstrumDeus;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
@@ -18,8 +19,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
         public override string NPCName => "Astrum Deus";
         public override void AddRecipes()
         {
-            Recipe.Create(Type).AddIngredient<Starcore>().AddTile(TileID.WorkBenches).Register();
-            Recipe.Create(ModContent.ItemType<Starcore>()).AddIngredient(Type).AddTile(TileID.WorkBenches).Register();
+            Recipe.Create(Type).AddIngredient<Starcore>().AddTile(TileID.WorkBenches).DisableDecraft().Register();
+            Recipe.Create(ModContent.ItemType<Starcore>()).AddIngredient(Type).AddTile(TileID.WorkBenches).AddCondition(CalamityConditions.DownedAstrumDeus).DisableDecraft().Register();
         }
         public override bool? UseItem(Player player)
         {

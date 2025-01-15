@@ -23,6 +23,7 @@ using Terraria.Audio;
 using CalamityMod.Projectiles.Boss;
 using Terraria.ID;
 using CalamityMod.NPCs.AcidRain;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -47,10 +48,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
     {
         public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
         public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeBody>();
-        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
-            if (!FargoSoulsUtil.IsSummonDamage(projectile) && projectile.damage > 5)
-                projectile.damage = (int)Math.Min(projectile.damage - 1, projectile.damage * 0.75);
+            DestroyerSegment.PierceResistance(projectile, ref modifiers);
         }
         public override void UpdateLifeRegen(ref int damage)
         {
