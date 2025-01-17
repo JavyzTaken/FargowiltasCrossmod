@@ -805,6 +805,7 @@ Mods: {
 			OrichalcumEnch: Reduced effectiveness.
 			AdamantiteEnch:
 				'''
+				CHECK PLEASE！
 				Split effect disabled with all Calamity projectiles, due to a massive amount of unintended interactions/bugs.
 				Will be fixed in the future.
 				'''
