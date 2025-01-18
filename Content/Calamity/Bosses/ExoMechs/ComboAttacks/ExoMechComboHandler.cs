@@ -29,7 +29,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             get;
         }
 
-        protected sealed override void Register() => ExoMechComboAttackManager.RegisteredComboAttacks.Add(new(Perform, ExpectedManagingExoMechs));
+        /// <summary>
+        /// Whether this combo attack can be chosen as the starting attack after a phase transition or not.
+        /// </summary>
+        public virtual bool ValidStartingAttack => true;
+
+        protected sealed override void Register() => ExoMechComboAttackManager.RegisteredComboAttacks.Add(new(Perform, ValidStartingAttack, ExpectedManagingExoMechs));
 
         public sealed override void SetupContent() => SetStaticDefaults();
 

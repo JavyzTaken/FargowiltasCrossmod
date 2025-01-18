@@ -23,6 +23,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ExoelectricPortalDashes : ExoMechComboHandler
     {
+        public override bool ValidStartingAttack => false;
+
         public override int[] ExpectedManagingExoMechs => [ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<Apollo>()];
 
         /// <summary>
