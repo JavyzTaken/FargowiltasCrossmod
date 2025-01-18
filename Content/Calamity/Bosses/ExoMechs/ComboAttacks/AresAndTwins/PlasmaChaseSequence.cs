@@ -102,7 +102,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 SoundEngine.PlaySound(AresPlasmaFlamethrower.TelSound);
 
             float colorShiftInterpolant = LumUtils.InverseLerpBump(0f, 30f, PlasmaCannonChargeUpTime + AttackDuration - 30f, PlasmaCannonChargeUpTime + AttackDuration, AITimer);
-            ares.ShiftLightColors(colorShiftInterpolant, new(239, 62, 62), new(242, 112, 72));
+            ares.ShiftLightColors(colorShiftInterpolant, new(123, 255, 4), new(167, 255, 79), new Color(29, 105, 0));
 
             if (AITimer <= PlasmaCannonChargeUpTime)
             {
