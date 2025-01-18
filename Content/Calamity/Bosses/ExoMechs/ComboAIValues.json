@@ -119,25 +119,35 @@
     "EternityDeathValue": 510.0,
     "MasochistValue": 510.0
   },
-  "ExothermalLaserDashes_ExoTwinSpinAngularVelocityDegrees": {
-    "EternityRevValue": 2.0,
-    "EternityDeathValue": 2.0,
-    "MasochistValue": 2.0
+  "ExothermalLaserDashes_DashCount": {
+    "EternityRevValue": 7.0,
+    "EternityDeathValue": 7.0,
+    "MasochistValue": 7.0
   },
-  "ExothermalLaserDashes_ExoTwinSpinRadius": {
-    "EternityRevValue": 545.0,
-    "EternityDeathValue": 545.0,
-    "MasochistValue": 545.0
+  "ExothermalLaserDashes_LaserBurstStartingSpeed": {
+    "EternityRevValue": 2.3,
+    "EternityDeathValue": 2.3,
+    "MasochistValue": 2.3
   },
-  "ExothermalLaserDashes_ExoTwinSpinWindUpTime": {
-    "EternityRevValue": 75.0,
-    "EternityDeathValue": 75.0,
-    "MasochistValue": 75.0
+  "ExothermalLaserDashes_LasersPerBurst": {
+    "EternityRevValue": 4.0,
+    "EternityDeathValue": 4.0,
+    "MasochistValue": 4.0
   },
-  "ExothermalLaserDashes_RedirectTime": {
-    "EternityRevValue": 90.0,
-    "EternityDeathValue": 90.0,
-    "MasochistValue": 90.0
+  "ExothermalLaserDashes_PortalEmergeExoTwinOffsetAngle": {
+    "EternityRevValue": 0.23,
+    "EternityDeathValue": 0.23,
+    "MasochistValue": 0.23
+  },
+  "ExothermalLaserDashes_PortalEmergeStartingDashSpeed": {
+    "EternityRevValue": 40.0,
+    "EternityDeathValue": 40.0,
+    "MasochistValue": 40.0
+  },
+  "ExothermalLaserDashes_PortalEnterWaitDelay": {
+    "EternityRevValue": 24.0,
+    "EternityDeathValue": 24.0,
+    "MasochistValue": 24.0
   },
   "HolographicRush_ExoTwinDashCount": {
     "EternityRevValue": 8.0,

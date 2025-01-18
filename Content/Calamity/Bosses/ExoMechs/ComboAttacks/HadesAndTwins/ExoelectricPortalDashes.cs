@@ -30,9 +30,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// </summary>
         public static bool DashOngoing => AITimer >= ExoTwinHyperfuturisticPortal.Lifetime / 2 + PortalEnterWaitDelay + 10;
 
-        public static int PortalEnterWaitDelay => 23;
+        /// <summary>
+        /// The amount of portal dashes to perform.
+        /// </summary>
+        public static int DashCount => Variables.GetAIInt("ExothermalLaserDashes_DashCount", ExoMechAIVariableType.Combo);
 
-        public static int DashCount => 8;
+        /// <summary>
+        /// The amount of lasers to release from the portal when a dash happens.
+        /// </summary>
+        public static int LasersPerBurst => Variables.GetAIInt("ExothermalLaserDashes_LasersPerBurst", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// How long Apollo waits between entering one portal and emerging from another one.
+        /// </summary>
+        public static int PortalEnterWaitDelay => Variables.GetAIInt("ExothermalLaserDashes_PortalEnterWaitDelay", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The initial firing speed of laser bursts created from a portal when a dash happens.
+        /// </summary>
+        public static float LaserBurstStartingSpeed => Variables.GetAIFloat("ExothermalLaserDashes_LaserBurstStartingSpeed", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The initial dash speed of Artemis, Apollo, and Hades when a dash happens.
+        /// </summary>
+        public static float PortalEmergeStartingDashSpeed => Variables.GetAIFloat("ExothermalLaserDashes_PortalEmergeStartingDashSpeed", ExoMechAIVariableType.Combo);
+
+        /// <summary>
+        /// The dash offset angle of Artemis and Apollo when a dash happens.
+        /// </summary>
+        public static float PortalEmergeExoTwinOffsetAngle => Variables.GetAIFloat("ExothermalLaserDashes_PortalEmergeExoTwinOffsetAngle", ExoMechAIVariableType.Combo);
 
         /// <summary>
         /// The sound Hades make when warping through the Exo Twins' big portal.
@@ -217,14 +243,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                         {
                             float offsetAngle = 0f;
                             if (n.type == ExoMechNPCIDs.ArtemisID)
-                                offsetAngle = -0.21f;
+                                offsetAngle = -PortalEmergeExoTwinOffsetAngle;
                             if (n.type == ExoMechNPCIDs.ApolloID)
-                                offsetAngle = 0.21f;
+                                offsetAngle = PortalEmergeExoTwinOffsetAngle;
 
                             n.Center = portal.Center;
                             if (isExoTwin)
                                 n.ai[2] = 0f;
-                            n.velocity = portal.velocity.RotatedBy(offsetAngle) * 32f;
+                            n.velocity = portal.velocity.RotatedBy(offsetAngle) * PortalEmergeStartingDashSpeed;
                             if (n.realLife == npc.whoAmI && n.TryGetDLCBehavior(out HadesBodyEternity body))
                             {
                                 n.Center -= portal.velocity * body.RelativeIndex;
@@ -241,9 +267,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                         Vector2 plasmaVelocity = portal.velocity.RotatedBy(MathHelper.Lerp(-0.81f, 0.81f, i / 7f)) * 30f + Main.rand.NextVector2Circular(5f, 5f);
                         LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, plasmaVelocity, ModContent.ProjectileType<ApolloPlasmaFireball>(), ExoTwinsStates.BasicShotDamage, 0f, -1, Target.Center.X, Target.Center.Y, 1f);
                     }
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < LasersPerBurst; i++)
                     {
-                        Vector2 laserVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-0.27f, 0.27f, i / 3f)) * 2.5f;
+                        Vector2 laserVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-0.27f, 0.27f, i / (float)(LasersPerBurst - 1f))) * LaserBurstStartingSpeed;
                         LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, laserVelocity, ModContent.ProjectileType<ArtemisLaserImproved>(), ExoTwinsStates.BasicShotDamage, 0f);
                     }
                     for (int i = 0; i < 24; i++)
@@ -380,7 +406,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (DashOngoing)
             {
                 twinInstance.Animation = ExoTwinAnimation.Attacking;
-                npc.velocity = (npc.velocity * 1.06f).ClampLength(0f, 150f);
+                npc.velocity = (npc.velocity * 1.1f).ClampLength(0f, 150f);
                 npc.rotation = npc.velocity.ToRotation();
             }
             else if (stayNearHades)
