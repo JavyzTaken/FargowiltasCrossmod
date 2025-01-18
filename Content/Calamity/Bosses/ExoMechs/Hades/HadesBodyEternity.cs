@@ -72,6 +72,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
         }
 
         /// <summary>
+        /// Whether the map icon for this segment should be disabled or not.
+        /// </summary>
+        public bool DisableMapIcon
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// How much this segment's plating should be offset.
         /// </summary>
         public float PlatingOffset
@@ -217,8 +226,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             NPC.Opacity = aheadSegment.Opacity;
             NPC.life = aheadSegment.lifeMax;
             NPC.dontTakeDamage = aheadSegment.dontTakeDamage;
+            NPC.ShowNameOnHover = true;
             NPC.velocity *= 0.84f;
             ShouldReorientDirection = true;
+            DisableMapIcon = false;
 
             PlatingOffset += PlatingOffsetVelocity;
             PlatingOffsetVelocity = MathHelper.Lerp(PlatingOffsetVelocity, -PlatingOffset, 0.15f);
@@ -290,6 +301,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 index = SegmentOpenInterpolant >= 0.75f ? ThanatosTail.vulnerableIconIndex : ThanatosTail.normalIconIndex;
 
             if (NPC.realLife >= 0 && Main.npc[NPC.realLife].TryGetDLCBehavior(out HadesHeadEternity hades) && hades.DisableMapIcon)
+                index = -1;
+            if (DisableMapIcon)
                 index = -1;
         }
 

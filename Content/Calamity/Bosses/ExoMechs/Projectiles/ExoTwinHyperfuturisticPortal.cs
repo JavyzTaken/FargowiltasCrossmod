@@ -1,4 +1,4 @@
-﻿using CalamityMod.NPCs.ExoMechs.Ares;
+﻿using CalamityMod.NPCs.ExoMechs.Apollo;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using Luminance.Assets;
@@ -17,8 +17,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExoTwinHyperfuturisticPortal : ModProjectile, IProjOwnedByBoss<AresBody>, IExoMechProjectile
+    public class ExoTwinHyperfuturisticPortal : ModProjectile, IProjOwnedByBoss<Apollo>, IExoMechProjectile
     {
+        /// <summary>
+        /// Whether this portal is for Hades.
+        /// </summary>
+        public bool ForHades => Projectile.ai[2] == 1f;
+
+        /// <summary>
+        /// A unique identifier for this portal.
+        /// </summary>
+        public ref float Identifier => ref Projectile.ai[0];
+
         /// <summary>
         /// How long this portal has existed, in frames.
         /// </summary>
@@ -27,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long this portal should exist for, in frames.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(0.45f);
+        public static int Lifetime => Utilities.SecondsToFrames(0.63f);
 
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 
@@ -44,22 +54,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             Projectile.ignoreWater = true;
             Projectile.hostile = true;
             Projectile.hide = true;
-            Projectile.timeLeft = Lifetime;
+            Projectile.timeLeft = 9999999;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()
         {
             Time++;
-            Projectile.Opacity = Utilities.InverseLerp(1f, 0.82f, Time / Lifetime);
+            Projectile.Opacity = Utilities.InverseLerp(1f, 0.94f, Time / Lifetime);
             Projectile.rotation = Projectile.velocity.ToRotation();
 
+            float timeLeft = Lifetime - Time;
             float fadeIn = LumUtils.InverseLerp(0f, 9f, Time);
-            float fadeOut = MathF.Pow(LumUtils.InverseLerp(0f, 15f, Projectile.timeLeft), 1.6f);
+            float fadeOut = MathF.Pow(LumUtils.InverseLerp(0f, 11f, timeLeft), 1.6f);
             Projectile.scale = fadeIn * fadeOut;
 
             if (Time == 10f)
                 ScreenShakeSystem.StartShakeAtPoint(Projectile.Center, 18f, shakeStrengthDissipationIncrement: 1.4f);
+            if (Time >= Lifetime)
+                Projectile.Kill();
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -73,13 +86,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
 
             Main.spriteBatch.PrepareForShaders();
             Vector2 size = Projectile.Size;
+            if (ForHades)
+                size *= 1.67f;
+
+            Vector3[] palette = new Vector3[7];
+            for (int i = 0; i < palette.Length; i++)
+                palette[i] = Main.hslToRgb(i / (float)palette.Length * 0.76f, 1f, 0.81f).ToVector3();
+
             ManagedShader portalShader = ShaderManager.GetShader("FargowiltasCrossmod.HyperfuturisticPortalShader");
             portalShader.TrySetParameter("useTextureForDistanceField", false);
             portalShader.TrySetParameter("textureSize0", size);
             portalShader.TrySetParameter("scale", Projectile.scale);
-            portalShader.TrySetParameter("biasToMainSwirlColorPower", 2.4f);
-            portalShader.TrySetParameter("mainSwirlColor", new Vector3(0.65f, 1.56f, 0.95f));
-            portalShader.TrySetParameter("secondarySwirlColor", new Vector3(0f, 2.1f, 4.2f));
+            portalShader.TrySetParameter("biasToMainSwirlColorPower", 0.3f);
+            portalShader.TrySetParameter("gradient", palette);
+            portalShader.TrySetParameter("gradientCount", palette.Length);
             portalShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
             portalShader.Apply();
 

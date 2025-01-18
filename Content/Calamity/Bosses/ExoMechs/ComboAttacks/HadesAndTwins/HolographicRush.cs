@@ -117,6 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 return;
 
             hades.SegmentReorientationStrength = 0.1f;
+            npc.Center = Vector2.Lerp(npc.Center, Target.Center, 0.015f);
 
             int wrappedTimer = AITimer % HadesAttackCycleTime;
             if (wrappedTimer < HadesRedirectTime)
@@ -138,7 +139,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 hades.BodyBehaviorAction = new(HadesHeadEternity.EveryNthSegment(3), DoBehavior_FireMine);
             }
 
-            npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
+            npc.rotation = (npc.position - npc.oldPosition).ToRotation() + MathHelper.PiOver2;
         }
 
         public static void DoBehavior_FireMine(HadesBodyEternity behaviorOverride)
