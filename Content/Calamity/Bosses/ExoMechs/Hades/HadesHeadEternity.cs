@@ -591,6 +591,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 return;
 
             int smokeCount = (int)MathHelper.Lerp(2f, 40f, bigInterpolant);
+            Vector2 perpendicular = npc.rotation.ToRotationVector2();
             for (int i = 0; i < smokeCount; i++)
             {
                 if (!Main.rand.NextBool(quantityInterpolant))
@@ -609,10 +610,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                     smokeLifetime += (int)(bigInterpolant * 30f);
                 }
 
-                Vector2 perpendicular = npc.rotation.ToRotationVector2();
                 Vector2 smokeVelocity = perpendicular.RotatedByRandom(0.2f) * Main.rand.NextFromList(-1f, 1f) * smokeSpeed;
                 SmokeParticle smoke = new(behaviorOverride.TurretPosition, smokeVelocity, smokeColor, smokeLifetime, 0.6f, 0.18f);
                 smoke.Spawn();
+            }
+
+            NPC hades = Main.npc[npc.realLife];
+            int jetLifetime = (int)Utils.Remap(npc.velocity.Length(), 5f, 25f, 15f, 6f);
+            for (int i = 0; i < 2; i++)
+            {
+                if (Main.rand.NextBool(quantityInterpolant) && hades.velocity.Length() < 35f)
+                {
+                    Vector2 jetDirection = perpendicular * Main.rand.NextFromList(-1f, 1f);
+                    Vector2 smokeVelocity = jetDirection.RotatedByRandom(0.03f) * Main.rand.NextFloat(10f) - hades.velocity * 0.24f;
+                    SmokeJetParticle jet = new(behaviorOverride.TurretPosition, smokeVelocity, () => behaviorOverride.TurretPosition, jetDirection.ToRotation(), Color.OrangeRed, jetLifetime, Main.rand.NextFloat(0.28f, 0.5f));
+                    jet.Spawn();
+                }
             }
         }
 
