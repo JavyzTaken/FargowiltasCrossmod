@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
 
             else if (wrappedAITimer <= FocusedLaserBursts_ChargeUpTime + FocusedLaserBursts_ChargeRecoilTime)
             {
-                npc.rotation = npc.AngleTo(Target.Center);
+                npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.32f);
                 npc.velocity *= 0.887f;
             }
             else
@@ -79,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             {
                 Vector2 hoverDestination = Target.Center + new Vector2((Target.Center.X - npc.Center.X).NonZeroSign() * -600f, -50f);
                 npc.SmoothFlyNear(hoverDestination, 0.089f, 0.86f);
-                npc.rotation = npc.AngleTo(Target.Center);
+                npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.4f);
 
                 ScreenShakeSystem.SetUniversalRumble((wrappedAITimer / (float)FocusedLaserBursts_ChargeUpTime).Cubed() * 0.5f);
 
