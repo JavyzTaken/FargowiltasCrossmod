@@ -815,6 +815,7 @@ Mods: {
 			SmallCannonLaser.DisplayName: Laser
 			PulseBlast.DisplayName: Pulse Blast
 			HadesLineTelegraph.DisplayName: Hades Line Telegraph
+			ApolloMissile2.DisplayName: Apollo Missile
 		}
 
 		Buffs: {

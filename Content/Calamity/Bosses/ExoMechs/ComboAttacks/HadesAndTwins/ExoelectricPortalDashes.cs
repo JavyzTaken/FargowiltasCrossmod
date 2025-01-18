@@ -9,7 +9,6 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Common;
-using Luminance.Common.DataStructures;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -247,6 +246,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                         Vector2 laserVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-0.27f, 0.27f, i / 3f)) * 2.5f;
                         LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, laserVelocity, ModContent.ProjectileType<ArtemisLaserImproved>(), ExoTwinsStates.BasicShotDamage, 0f);
                     }
+                    for (int i = 0; i < 24; i++)
+                    {
+                        Vector2 missileVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-2.49f, 2.49f, i / 23f) + MathHelper.Pi) * 4f + Main.rand.NextVector2Circular(0.4f, 0.4f);
+                        LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, missileVelocity, ModContent.ProjectileType<ApolloMissile2>(), ExoTwinsStates.BasicShotDamage, 0f);
+                    }
                 }
             }
 
@@ -256,7 +260,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
             if (AITimer >= ExoTwinHyperfuturisticPortal.Lifetime / 2 + PortalEnterWaitDelay + 10 && !npc.WithinRange(Target.Center, 2800f))
             {
                 npc.ai[2]++;
-                IProjOwnedByBoss<Apollo>.KillAll();
+                int portalID = ModContent.ProjectileType<ExoTwinHyperfuturisticPortal>();
+                int fireballID = ModContent.ProjectileType<ApolloPlasmaFireball>();
+                foreach (Projectile projectile in Main.ActiveProjectiles)
+                {
+                    if (projectile.type == portalID || projectile.type == fireballID)
+                        projectile.Kill();
+                }
+
                 AITimer = 0;
                 wentThroughPortal = 0f;
                 npc.netUpdate = true;
