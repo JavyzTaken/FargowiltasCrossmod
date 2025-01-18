@@ -300,9 +300,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     shootMines = true;
                 }
 
-                if (hasDashed)
-                    hades.ReticleOpacity = MathF.Sqrt(LumUtils.Convert01To010(LumUtils.InverseLerp(0f, 30f, HadesDashCycleTime)) + 0.001f);
-
                 bool doDamage = AITimer >= ElectrifyTime + 45;
                 npc.damage = doDamage ? npc.defDamage : 0;
             }
