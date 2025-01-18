@@ -68,29 +68,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         public override bool Perform(NPC npc)
         {
             if (npc.type == ExoMechNPCIDs.ArtemisID || npc.type == ExoMechNPCIDs.ApolloID)
-                Perform_ExoTwin(npc);
-            if (npc.type == ExoMechNPCIDs.HadesHeadID)
             {
-                Perform_Hades(npc);
-                if (npc.ai[2] >= DashCount)
-                {
-                    npc.ai[2] = 0f;
-                    return true;
-                }
+                Perform_ExoTwin(npc);
+                return false;
             }
 
-            return false;
+            return Perform_Hades(npc);
         }
 
         /// <summary>
         /// Performs Hades' part in the ExoelectricPortalDashes attack.
         /// </summary>
         /// <param name="npc">Hades' NPC instance.</param>
-        public static void Perform_Hades(NPC npc)
+        public static bool Perform_Hades(NPC npc)
         {
             if (!npc.TryGetDLCBehavior(out HadesHeadEternity hades))
-                return;
+                return true;
 
+            bool endAttack = false;
             hades.SegmentReorientationStrength = 0.09f;
             npc.velocity *= 1.025f;
             npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
@@ -149,7 +144,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 Perform_Hades_EnterPortal(npc);
             else
             {
-                Perform_Hades_PerformPortalDashes(npc, ref wentThroughPortal);
+                endAttack = Perform_Hades_PerformPortalDashes(npc, ref wentThroughPortal);
                 hades.SegmentReorientationStrength = 1000f;
             }
 
@@ -177,6 +172,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 }
             });
             hades.DisableMapIconLocally = SegmentHasEnteredPortal(portal, npc);
+
+            return endAttack;
         }
 
         /// <summary>
@@ -212,7 +209,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
         /// Handles Hades' portal dashing behavior.
         /// </summary>
         /// <param name="npc">Hades' NPC instance.</param>
-        public static void Perform_Hades_PerformPortalDashes(NPC npc, ref float wentThroughPortal)
+        public static bool Perform_Hades_PerformPortalDashes(NPC npc, ref float wentThroughPortal)
         {
             wentThroughPortal = 1f;
 
@@ -232,6 +229,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 ScreenShakeSystem.StartShake(25f, MathHelper.TwoPi, null, 0.8f);
                 SoundEngine.PlaySound(HadesHeadEternity.SideLaserBurstSound with { MaxInstances = 0 }).WithVolumeBoost(2f);
                 SoundEngine.PlaySound(PlasmaChaseSequence.PortalWarpSound with { MaxInstances = 0 });
+
+                bool doneAttacking = npc.ai[2] >= DashCount;
 
                 Projectile? portal = TryToFindHadesPortal();
                 if (Main.netMode != NetmodeID.MultiplayerClient && portal is not null)
@@ -262,22 +261,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                         }
                     }
 
-                    for (int i = 0; i < 8; i++)
+                    if (!doneAttacking)
                     {
-                        Vector2 plasmaVelocity = portal.velocity.RotatedBy(MathHelper.Lerp(-0.81f, 0.81f, i / 7f)) * 30f + Main.rand.NextVector2Circular(5f, 5f);
-                        LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, plasmaVelocity, ModContent.ProjectileType<ApolloPlasmaFireball>(), ExoTwinsStates.BasicShotDamage, 0f, -1, Target.Center.X, Target.Center.Y, 1f);
+                        for (int i = 0; i < 8; i++)
+                        {
+                            Vector2 plasmaVelocity = portal.velocity.RotatedBy(MathHelper.Lerp(-0.81f, 0.81f, i / 7f)) * 30f + Main.rand.NextVector2Circular(5f, 5f);
+                            LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, plasmaVelocity, ModContent.ProjectileType<ApolloPlasmaFireball>(), ExoTwinsStates.BasicShotDamage, 0f, -1, Target.Center.X, Target.Center.Y, 1f);
+                        }
+                        for (int i = 0; i < LasersPerBurst; i++)
+                        {
+                            Vector2 laserVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-0.27f, 0.27f, i / (float)(LasersPerBurst - 1f))) * LaserBurstStartingSpeed;
+                            LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, laserVelocity, ModContent.ProjectileType<ArtemisLaserImproved>(), ExoTwinsStates.BasicShotDamage, 0f);
+                        }
+                        for (int i = 0; i < 24; i++)
+                        {
+                            Vector2 missileVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-2.49f, 2.49f, i / 23f) + MathHelper.Pi) * 4f + Main.rand.NextVector2Circular(0.4f, 0.4f);
+                            LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, missileVelocity, ModContent.ProjectileType<ApolloMissile2>(), ExoTwinsStates.BasicShotDamage, 0f);
+                        }
                     }
-                    for (int i = 0; i < LasersPerBurst; i++)
-                    {
-                        Vector2 laserVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-0.27f, 0.27f, i / (float)(LasersPerBurst - 1f))) * LaserBurstStartingSpeed;
-                        LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, laserVelocity, ModContent.ProjectileType<ArtemisLaserImproved>(), ExoTwinsStates.BasicShotDamage, 0f);
-                    }
-                    for (int i = 0; i < 24; i++)
-                    {
-                        Vector2 missileVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-2.49f, 2.49f, i / 23f) + MathHelper.Pi) * 4f + Main.rand.NextVector2Circular(0.4f, 0.4f);
-                        LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, missileVelocity, ModContent.ProjectileType<ApolloMissile2>(), ExoTwinsStates.BasicShotDamage, 0f);
-                    }
+                    else
+                        npc.velocity *= 5.6f;
                 }
+
+                if (doneAttacking)
+                {
+                    npc.ai[1] = 0f;
+                    npc.ai[2] = 0f;
+                }
+
+                return doneAttacking;
             }
 
             if (DashOngoing)
@@ -298,6 +310,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 wentThroughPortal = 0f;
                 npc.netUpdate = true;
             }
+
+            return false;
         }
 
         /// <summary>
