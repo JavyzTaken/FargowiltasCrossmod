@@ -125,9 +125,9 @@
     "MasochistValue": 7.0
   },
   "ExothermalLaserDashes_LaserBurstStartingSpeed": {
-    "EternityRevValue": 2.3,
-    "EternityDeathValue": 2.3,
-    "MasochistValue": 2.3
+    "EternityRevValue": 0.6,
+    "EternityDeathValue": 0.6,
+    "MasochistValue": 0.6
   },
   "ExothermalLaserDashes_LasersPerBurst": {
     "EternityRevValue": 4.0,
@@ -145,9 +145,9 @@
     "MasochistValue": 40.0
   },
   "ExothermalLaserDashes_PortalEnterWaitDelay": {
-    "EternityRevValue": 24.0,
-    "EternityDeathValue": 24.0,
-    "MasochistValue": 24.0
+    "EternityRevValue": 37.0,
+    "EternityDeathValue": 37.0,
+    "MasochistValue": 37.0
   },
   "HolographicRush_ExoTwinDashCount": {
     "EternityRevValue": 8.0,
