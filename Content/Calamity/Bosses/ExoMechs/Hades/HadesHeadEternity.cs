@@ -619,7 +619,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             int jetLifetime = (int)Utils.Remap(npc.velocity.Length(), 5f, 25f, 15f, 6f);
             for (int i = 0; i < 2; i++)
             {
-                if (Main.rand.NextBool(quantityInterpolant) && hades.velocity.Length() < 35f)
+                if (Main.rand.NextBool(quantityInterpolant * 0.33f) && hades.velocity.Length() < 35f)
                 {
                     Vector2 jetDirection = perpendicular * Main.rand.NextFromList(-1f, 1f);
                     Vector2 smokeVelocity = jetDirection.RotatedByRandom(0.03f) * Main.rand.NextFloat(10f) - hades.velocity * 0.24f;
