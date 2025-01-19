@@ -37,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// How long this portal should exist for, in frames.
         /// </summary>
-        public static int Lifetime => Utilities.SecondsToFrames(0.63f);
+        public static int Lifetime => Utilities.SecondsToFrames(0.74f);
 
         public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
 

@@ -270,11 +270,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                             Vector2 plasmaVelocity = portal.velocity.RotatedBy(MathHelper.Lerp(-0.81f, 0.81f, i / 7f)) * 30f + Main.rand.NextVector2Circular(5f, 5f);
                             LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, plasmaVelocity, ModContent.ProjectileType<ApolloPlasmaFireball>(), ExoTwinsStates.BasicShotDamage, 0f, -1, Target.Center.X, Target.Center.Y, 1f);
                         }
-                        for (int i = 0; i < LasersPerBurst; i++)
-                        {
-                            Vector2 laserVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-0.27f, 0.27f, i / (float)(LasersPerBurst - 1f))) * LaserBurstStartingSpeed;
-                            LumUtils.NewProjectileBetter(npc.GetSource_FromAI(), portal.Center, laserVelocity, ModContent.ProjectileType<ArtemisLaserImproved>(), ExoTwinsStates.BasicShotDamage, 0f);
-                        }
                         for (int i = 0; i < 24; i++)
                         {
                             Vector2 missileVelocity = portal.SafeDirectionTo(Target.Center).RotatedBy(MathHelper.Lerp(-2.49f, 2.49f, i / 23f) + MathHelper.Pi) * 4f + Main.rand.NextVector2Circular(0.4f, 0.4f);

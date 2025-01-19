@@ -124,16 +124,6 @@
     "EternityDeathValue": 7.0,
     "MasochistValue": 7.0
   },
-  "ExothermalLaserDashes_LaserBurstStartingSpeed": {
-    "EternityRevValue": 0.6,
-    "EternityDeathValue": 0.6,
-    "MasochistValue": 0.6
-  },
-  "ExothermalLaserDashes_LasersPerBurst": {
-    "EternityRevValue": 4.0,
-    "EternityDeathValue": 4.0,
-    "MasochistValue": 4.0
-  },
   "ExothermalLaserDashes_PortalEmergeExoTwinOffsetAngle": {
     "EternityRevValue": 0.23,
     "EternityDeathValue": 0.23,
