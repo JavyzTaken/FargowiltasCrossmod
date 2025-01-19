@@ -109,6 +109,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
         }
 
         internal static string SoundPath(string relativePath) =>
-            $"FargowiltasCrossmod/Assets/Sounds/ExoMechs/VoiceActing/Drae_{relativePath}";
+            $"Assets/Sounds/ExoMechs/VoiceActing/Drae_{relativePath}.wav";
     }
 }
