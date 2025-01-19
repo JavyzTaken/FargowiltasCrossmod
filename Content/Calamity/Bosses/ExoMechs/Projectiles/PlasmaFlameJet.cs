@@ -1,6 +1,6 @@
 ﻿using CalamityMod.DataStructures;
 using CalamityMod.NPCs.ExoMechs.Ares;
-using CalamityMod.Particles;
+using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.SpecificManagers;
@@ -91,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The base color of this fire jet, before the shader is applied.
         /// </summary>
-        public static Color BaseJetColor => new(97, 206, 74);
+        public static Color BaseJetColor => new(147, 206, 74);
 
         /// <summary>
         /// The color of this fire jet's back bloom.
@@ -101,12 +101,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
         /// <summary>
         /// The first fire particle color. Is intended to be interpolated with <see cref="FireParticleColorB"/>.
         /// </summary>
-        public static Color FireParticleColorA => new(0, 255, 0);
+        public static Color FireParticleColorA => new(120, 255, 0);
 
         /// <summary>
         /// The second fire particle color. Is intended to be interpolated with <see cref="FireParticleColorA"/>.
         /// </summary>
-        public static Color FireParticleColorB => new(255, 255, 193);
+        public static Color FireParticleColorB => new(255, 233, 72);
 
         /// <summary>
         /// The glow color applied to this fire jet in the shader.
@@ -163,13 +163,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles
             });
 
             BezierCurve shapeCurve = new(ControlPoints);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 17; i++)
             {
-                float particleScale = 2f;
-                Color fireColor = Color.Lerp(FireParticleColorA, FireParticleColorB, Main.rand.NextFloat(0.7f));
-                Vector2 fireSpawnPosition = shapeCurve.Evaluate(Main.rand.NextFloat(0.06f, 1f));
-                var particle = new HeavySmokeParticle(fireSpawnPosition, Main.rand.NextVector2Circular(20f, 7f) + Vector2.UnitY * 14f, fireColor, 26, particleScale, 1f, 0.03f, true, -0.0045f, true);
-                GeneralParticleHandler.SpawnParticle(particle);
+                float fireScale = Main.rand.NextFloat(0.9f, 1.4f);
+                Color fireColor = Color.Lerp(FireParticleColorA, FireParticleColorB, Main.rand.NextFloat());
+                fireColor = Color.Lerp(fireColor, Color.Wheat, Main.rand.NextFloat(0.7f));
+
+                Vector2 fireSpawnPosition = shapeCurve.Evaluate(Main.rand.NextFloat(0.075f, 1f));
+                Vector2 fireVelocity = Main.rand.NextVector2Circular(20f, 7f) / fireScale + Vector2.UnitY * Main.rand.NextFloat(10f, 40f) + Owner.velocity;
+
+                FireParticle fire = new(fireSpawnPosition, fireVelocity, fireColor * (Projectile.width / 150f), Main.rand.Next(20, 42), fireScale);
+                fire.Spawn();
             }
 
             Time++;
