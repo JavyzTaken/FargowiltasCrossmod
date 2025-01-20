@@ -8,6 +8,7 @@ using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using System;
 using System.Drawing;
 using FargowiltasSouls;
+using Terraria.Audio;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -48,7 +49,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         /// </summary>
         public readonly float LegSizeFactor;
 
-        public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength)
+        public readonly int Index;
+
+        public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength, int index)
         {
             LegSizeFactor = legSizeFactor;
             DefaultOffset = defaultOffset;
@@ -56,17 +59,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg = new();
             Leg.Add(new(LegSizeFactor * legLength));
             Leg.Add(new(LegSizeFactor * legLength));
+            Index = index;
         }
-
+        Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
         public void Update(NPC owner)
         {
+            var hive = owner.GetDLCBehavior<PerfsEternityNew>();
             if (owner.IsABestiaryIconDummy)
             {
-                Leg.Update(owner.Center + DefaultOffset);
+                Leg.Update(LegCenter(hive) + DefaultOffset);
                 return;
             }
 
-            var hive = owner.GetDLCBehavior<PerfsEternityNew>();
             float spawnProgress = hive.SpawnProgress;
 
             // Calculate how many legs are on the ground.
@@ -82,18 +86,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Initialize the step destination if necessary.
             if (StepDestination == Vector2.Zero)
-                StepDestination = owner.Center + DefaultOffset;
+                StepDestination = LegCenter(hive) + DefaultOffset;
 
             // Keep the leg below the owner if they're falling.
             if (falling)
-                StepDestination = Vector2.Lerp(StepDestination, owner.Center + gravityDirection * LegSizeFactor * 160f, 1f);
+                StepDestination = Vector2.Lerp(StepDestination, LegCenter(hive) + gravityDirection * LegSizeFactor * 160f, 1f);
 
             // Prevent the leg from being behind walls.
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
-            Vector2 idealDefaultStepPosition = LumUtils.FindGround((owner.Center + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
+            Vector2 idealDefaultStepPosition = LumUtils.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
-                if (Collision.CanHitLine(owner.Center, 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
+                if (Collision.CanHitLine(LegCenter(hive), 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
                     break;
 
                 idealDefaultStepPosition -= gravityDirection * 8f;
@@ -103,7 +107,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             MovingDefaultStepPosition = Vector2.Lerp(MovingDefaultStepPosition, idealDefaultStepPosition, 0.11f);
 
             // Attach to the owner at all times.
-            Leg.StartingPoint = owner.Center;
+            Leg.StartingPoint = LegCenter(hive);
 
             // Keep the limbs from pointing downward by making them move above the spider.
             float legRotationInterpolant = 0.25f;
@@ -125,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // 3. An animation is already ongoing. Trying to restart it during this process would cause the animations to fail and keyframes to become inaccurate, as
             // they assume that when a leg starts an animation it was on ground to begin with.
             // 4. The owner is barely moving at all.
-            float perpendicularDistanceFromOwner = Math.Abs(LumUtils.SignedDistanceToLine(Leg.EndEffectorPosition, owner.Center, forwardDirection));
+            float perpendicularDistanceFromOwner = Math.Abs(LumUtils.SignedDistanceToLine(Leg.EndEffectorPosition, LegCenter(hive), forwardDirection));
             bool tooCloseToBody = perpendicularDistanceFromOwner <= Math.Abs(DefaultOffset.X) * 0.2f;
             bool tooFarFromOwner = perpendicularDistanceFromOwner >= LegSizeFactor * 130f || !StepDestination.WithinRange(MovingDefaultStepPosition, LegSizeFactor * 130f);
             bool shouldStepForward = tooFarFromOwner || tooCloseToBody;
@@ -167,7 +171,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Stop the animation once it has completed.
             if (StepAnimationInterpolant >= 1f)
+            {
                 StepAnimationInterpolant = 0f;
+                SoundEngine.PlaySound(SoundID.Dig with { Pitch = -0.5f }, StepDestination);
+            } 
         }
 
         public void KeepLegInPlace(Vector2 gravityDirection)

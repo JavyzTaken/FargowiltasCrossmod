@@ -48,7 +48,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public Vector2 GravityDirection = Vector2.UnitY;
 
         public PerforatorLeg[] Legs;
-        public int[][][] LegSprites;
+        public int[][][] LegSprites; // don't ask
+        public Vector2[] LegBraces;
 
         public Player Target => Main.player[NPC.target];
 
@@ -140,6 +141,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // cursed 3d array ahead
             Legs = new PerforatorLeg[4];
             LegSprites = new int[Legs.Length][][];
+            LegBraces = new Vector2[Legs.Length];
+
             for (int i = 0; i < Legs.Length; i++)
             {
                 float horizontalOffset;
@@ -156,7 +159,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
 
                 Vector2 legOffset = new(horizontalOffset, verticalOffset);
-                Legs[i] = new(LegSizeFactor * legOffset, LegSizeFactor, legOffset.Length() * 0.685f);
+                Legs[i] = new(LegSizeFactor * legOffset, LegSizeFactor, legOffset.Length() * 0.685f, i);
                 Legs[i].Leg[0].Rotation = legOffset.ToRotation();
                 Legs[i].Leg[1].Rotation = Vector2.UnitY.ToRotation();
 
@@ -169,6 +172,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         LegSprites[i][j][k] = Main.rand.Next(4);
                     }
                 }
+
+                float spriteLength = 80 + 22;
+                float angle = -Math.Sign(horizontalOffset);
+                float angleMult = i % 2 == 0 ? 2.4f : 0.7f;
+                angle *= MathHelper.PiOver2 * 0.22f * angleMult;
+
+                LegBraces[i] = Vector2.UnitY.RotatedBy(angle) * spriteLength * 1;
             }
         }
 
@@ -221,16 +231,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (leg.JointCount <= 0)
                     continue;
 
+                // draw leg brace
+                Vector2 dir = LegBraces[i].SafeNormalize(Vector2.Zero);
+                Vector2 start = NPC.Center - screenPos;
+                Vector2 end = start + dir * 80;
+                SpriteEffects direction = (LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                DrawLeg(Main.spriteBatch, LegTextures[0].Value, start, end, lightColor, 1f, direction);
+                // leg end
+                start = end + dir * 22;
+                DrawLeg(Main.spriteBatch, LegJointTextures[0].Value, start, end, lightColor, 1f, direction);
+
+                // draw leg
                 Vector2 previousPosition = leg.StartingPoint;
                 for (int j = 0; j < leg.JointCount; j++)
                 {
                     int partLength = (int)(leg[j].Offset.Length() / (JointParts - 0.7f));
                     int jointLength = (int)(partLength * 0.3f);
+                    int jointParts = JointParts;
+                    if (j == 0)
+                        jointParts += 1;
                     for (int k = 0; k < JointParts; k++)
                     {
                         bool joint = false;
                         int spriteIndex = LegSprites[i][j][k];
                         Texture2D legTexture;
+                        bool flip = false;
+                        if (j == 0)
+                            flip = true;
                         if (k == JointParts - 1)
                         {
                             if (j == 0)
@@ -241,24 +268,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             else
                                 legTexture = LegEndTextures[spriteIndex].Value;
                         }
-                            
                         else
                         {
-                            if (k == 0 && j == 1)
+                            if (k == 0)
                             {
                                 joint = true;
                                 legTexture = LegJointTextures[spriteIndex].Value;
+                                if (flip)
+                                    flip = false;
                             }
-  
                             else
                                 legTexture = LegTextures[spriteIndex].Value;
                         }
                         Vector2 partOffset = leg[j].Offset.SafeNormalize(Vector2.Zero) * (joint ? jointLength : partLength);
 
-                        SpriteEffects direction = (leg.EndEffectorPosition.X - NPC.Center.X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-                        Vector2 start = previousPosition - screenPos;
-                        Vector2 end = previousPosition + partOffset - screenPos;
-                        if (j == 0)
+                        direction = (leg.EndEffectorPosition.X - LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                        start = previousPosition - screenPos;
+                        end = previousPosition + partOffset - screenPos;
+                        if (flip)
                             (start, end) = (end, start);
                         DrawLeg(Main.spriteBatch, legTexture, start, end, lightColor, 1f, direction);
                         previousPosition += partOffset;
@@ -432,11 +459,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 obstacleAhead = true;
             }
             obstaclePosition += forwardDirectionToPlayer * 16f;
-
             // If there is not obstacle, terminate this method immediately- There would be no wall to walk on in the first place.
             if (!obstacleAhead)
                 return false;
-
+            
             // Lastly, check how far up the height of the found obstacle is.
             // If it's too short, ignore it.
             float minObstacleHeight = 200f;
