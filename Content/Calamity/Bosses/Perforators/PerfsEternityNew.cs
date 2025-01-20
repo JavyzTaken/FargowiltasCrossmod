@@ -1,31 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CalamityMod.Events;
-using CalamityMod.NPCs;
+﻿using CalamityMod.Events;
 using CalamityMod.NPCs.Perforator;
-using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
-using FargowiltasCrossmod.Core.Common;
-using FargowiltasSouls;
+using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using FargowiltasSouls.Content.Buffs.Masomode;
-using FargowiltasSouls.Core.Globals;
-using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using System;
+using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core.Common.InverseKinematics;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -33,7 +23,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternityNew : CalDLCEmodeBehavior
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
 
@@ -302,11 +292,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            
+
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
-            
+
         }
         #region AI
         public override bool PreAI()
@@ -332,6 +322,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             if (SpawnProgress < 1)
             {
+                // Ensure that legs are already grounded when the Perforator has fully spawned in.
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int j = 0; j < Legs.Length; j++)
+                        Legs[j]?.Update(NPC);
+                }
+
                 SpawnProgress += 1f / SpawnTime;
                 if (SpawnProgress < 0.8f)
                     NPC.Opacity = 0f;
@@ -345,7 +342,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
                 //NPC.Opacity = 1f;
             }
-                
+
 
 
             NewAI();
@@ -462,7 +459,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // If there is not obstacle, terminate this method immediately- There would be no wall to walk on in the first place.
             if (!obstacleAhead)
                 return false;
-            
+
             // Lastly, check how far up the height of the found obstacle is.
             // If it's too short, ignore it.
             float minObstacleHeight = 200f;

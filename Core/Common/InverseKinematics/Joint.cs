@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace FargowiltasCrossmod.Core.Common.InverseKinematics
@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
         /// <summary>
         /// The amount of penalty applied to the loss as a result of this joint's constraints.
         /// </summary>
-        public double ConstraintPenalties => Constraints.Sum(c => c.ApplyPenaltyLoss(this));
+        public double ConstraintPenalties(float gradientDescentCompletion) => Constraints.Sum(c => c.ApplyPenaltyLoss(this, gradientDescentCompletion));
 
         /// <summary>
         /// The offset of this joint from its starting point, either being the previous joint or the starting point of the kinematic chain.

@@ -12,7 +12,7 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
         /// </summary>
         public readonly float MaxAngleDifference = maxAngleDifference;
 
-        public double ApplyPenaltyLoss(Joint owner)
+        public double ApplyPenaltyLoss(Joint owner, float gradientDescentCompletion)
         {
             if (owner.previousJoint is null)
                 return 0f;

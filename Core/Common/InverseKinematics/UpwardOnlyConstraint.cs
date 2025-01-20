@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 
 namespace FargowiltasCrossmod.Core.Common.InverseKinematics
@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
             this.upDirectionGetter = upDirectionGetter;
         }
 
-        public double ApplyPenaltyLoss(Joint owner)
+        public double ApplyPenaltyLoss(Joint owner, float gradientDescentCompletion)
         {
             Vector2 jointDirection = owner.Offset.SafeNormalize(Vector2.Zero);
             float dot = MathHelper.Clamp(Vector2.Dot(jointDirection, upDirectionGetter().SafeNormalize(Vector2.Zero)), -1f, 1f);

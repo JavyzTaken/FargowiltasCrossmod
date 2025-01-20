@@ -1,14 +1,12 @@
-﻿using System.Linq;
-using FargowiltasCrossmod.Core.Calamity;
+﻿using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using System;
-using System.Drawing;
-using FargowiltasSouls;
+using System.Linq;
+using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -109,9 +107,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Attach to the owner at all times.
             Leg.StartingPoint = LegCenter(hive);
 
-            // Keep the limbs from pointing downward by making them move above the spider.
-            float legRotationInterpolant = 0.25f;
-            Leg[0].Rotation = Leg[0].Rotation.AngleLerp(gravityDirection.ToRotation() + MathF.PI, legRotationInterpolant);
+            // Keep the limbs from pointing downward.
+            Leg[0].Constraints = [new FixedAngleDifferenceConstraint(0.6f, gravityDirection.ToRotation() + MathF.PI)];
 
             // Move limbs forward if necessary.
             if (StepAnimationInterpolant > 0f)
@@ -123,17 +120,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // 1. A leg is unrealistically close to the body, step back.
             // 2. A leg is too far from the body and thusly lagging behind, step forward.
 
-            // However, a step cannot happen if any of the following conditions are true:
+            // However, as long as the owner is visible, a step cannot happen if any of the following conditions are true:
             // 1. The owner is falling. There would be no point to trying to step forward if there's no nearby ground in the first place.
             // 2. If in stepping forward, no more legs would be on the ground. It obviously makes no logical sense for a spider to move its leg if in doing so it would lose its balance.
             // 3. An animation is already ongoing. Trying to restart it during this process would cause the animations to fail and keyframes to become inaccurate, as
             // they assume that when a leg starts an animation it was on ground to begin with.
-            // 4. The owner is barely moving at all.
+            // 4. The owner is barely moving at all (assuming they're visible).
             float perpendicularDistanceFromOwner = Math.Abs(LumUtils.SignedDistanceToLine(Leg.EndEffectorPosition, LegCenter(hive), forwardDirection));
+
             bool tooCloseToBody = perpendicularDistanceFromOwner <= Math.Abs(DefaultOffset.X) * 0.2f;
             bool tooFarFromOwner = perpendicularDistanceFromOwner >= LegSizeFactor * 130f || !StepDestination.WithinRange(MovingDefaultStepPosition, LegSizeFactor * 130f);
             bool shouldStepForward = tooFarFromOwner || tooCloseToBody;
             bool cannotStepForward = falling || legsOnGroundIfISteppedForward <= 0 || StepAnimationInterpolant > 0f || owner.velocity.Length() <= 0.3f;
+            if (owner.Opacity <= 0.1f)
+                cannotStepForward = false;
+
             if (shouldStepForward && !cannotStepForward)
                 StartStepAnimation(owner, gravityDirection, forwardDirection);
         }
@@ -174,7 +175,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 StepAnimationInterpolant = 0f;
                 SoundEngine.PlaySound(SoundID.Dig with { Pitch = -0.5f }, StepDestination);
-            } 
+            }
         }
 
         public void KeepLegInPlace(Vector2 gravityDirection)
