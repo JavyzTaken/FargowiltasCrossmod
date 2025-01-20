@@ -160,7 +160,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public void UpdateMovementAnimation(Vector2 gravityDirection)
         {
             // Increment the animation interpolant.
-            StepAnimationInterpolant += 0.064f;
+            StepAnimationInterpolant += 0.05f; //0.064f;
 
             // Calculate the current movement destination based on the animation's completion.
             // This gradually goes from the starting position and ends up at the step destination, making a slight upward arc while doing so.

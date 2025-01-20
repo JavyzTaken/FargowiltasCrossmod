@@ -13,6 +13,7 @@ using System;
 using System.IO;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -60,12 +61,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         /// <summary>
         /// The acceleration of the spider's dash.
         /// </summary>
-        public const float DashAcceleration = 0.31f;
+        public static float DashAcceleration => 0.14f;
 
         /// <summary>
         /// The maximum speed at which the spider can dash.
         /// </summary>
-        public const float MaxDashSpeed = 7.2f;
+        public static float MaxDashSpeed => 15f;
 
         /// <summary>
         /// The default quantity of gravity imposed upon the spider.
@@ -127,6 +128,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 NPC.lifeMax = 5000000;
             }
+            NPC.Opacity = 0;
+            NPC.dontTakeDamage = true;
 
             // cursed 3d array ahead
             Legs = new PerforatorLeg[4];
@@ -174,7 +177,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public override void OnSpawn(IEntitySource source)
         {
-            NPC.Center -= Vector2.UnitY * 1000;
+            //NPC.Center -= Vector2.UnitY * 1000;
         }
 
         #region Draw
@@ -183,6 +186,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (!WorldSavingSystem.EternityMode)
                 return true;
 
+            // draw legs
             if (Legs is not null)
             {
                 if (NPC.IsABestiaryIconDummy)
@@ -194,7 +198,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 DrawLegSet(Legs, NPC.GetAlpha(drawColor), screenPos);
             }
 
-            return true;
+            // draw hive
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (NPC.spriteDirection == 1)
+                spriteEffects = SpriteEffects.FlipHorizontally;
+
+            Texture2D texture2D15 = TextureAssets.Npc[NPC.type].Value;
+            Vector2 halfSizeTexture = new Vector2((float)(TextureAssets.Npc[NPC.type].Value.Width / 2), (float)(TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2));
+
+            Vector2 drawLocation = NPC.Center - screenPos;
+            drawLocation -= new Vector2((float)texture2D15.Width, (float)(texture2D15.Height / Main.npcFrameCount[NPC.type])) * NPC.scale / 2f;
+            drawLocation += halfSizeTexture * NPC.scale + new Vector2(0f, NPC.gfxOffY);
+            spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, NPC.GetAlpha(drawColor), NPC.rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
+
+            texture2D15 = PerforatorHive.GlowTexture.Value;
+            Color glowmaskColor = Color.Lerp(Color.White, Color.Yellow, 0.5f);
+            glowmaskColor = NPC.GetAlpha(glowmaskColor);
+
+            spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, glowmaskColor, NPC.rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
+            return false;
         }
         public static void DrawLeg(SpriteBatch spriteBatch, Texture2D legTexture, Vector2 start, Vector2 end, Color color, float width, SpriteEffects direction)
         {
@@ -333,14 +355,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (SpawnProgress < 0.8f)
                     NPC.Opacity = 0f;
                 else if (SpawnProgress < 1f)
+                {
                     NPC.Opacity = (SpawnProgress - 0.8f) / 0.2f;
+                    NPC.dontTakeDamage = false;
+                }
                 else
                 {
                     NPC.Opacity = 1f;
+                    NPC.dontTakeDamage = false;
                     // do a little "spawn animation" thing
                     NPC.netUpdate = true;
                 }
-                //NPC.Opacity = 1f;
             }
 
 
