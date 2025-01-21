@@ -668,14 +668,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             Texture2D leftJawTexture = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/HadesJawLeft").Value;
             Texture2D rightJawTexture = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/ExoMechs/Hades/HadesJawRight").Value;
 
-            Vector2 drawPosition = NPC.Center - screenPos;
+            Vector2 drawPosition = (NPC.Center - screenPos) * HadesPostProcessingSystem.ScaleCorrection;
             Color glowmaskColor = Color.White * LumUtils.InverseLerp(5f, 15f, (lightColor.R + lightColor.G + lightColor.B) * 0.333f);
             Rectangle leftJawFrame = leftJawTexture.Frame(1, Main.npcFrameCount[NPC.type], 0, frame);
             Rectangle rightJawFrame = rightJawTexture.Frame(1, Main.npcFrameCount[NPC.type], 0, frame);
             Vector2 leftJawOrigin = leftJawFrame.Size() * new Vector2(0.38f, 0.54f);
             Vector2 rightJawOrigin = rightJawFrame.Size() * new Vector2(0.62f, 0.54f);
-            Vector2 leftJawPosition = drawPosition + new Vector2(-32f, 0f).RotatedBy(NPC.rotation) * NPC.spriteDirection;
-            Vector2 rightJawPosition = drawPosition + new Vector2(32f, 0f).RotatedBy(NPC.rotation) * NPC.spriteDirection;
+            Vector2 leftJawPosition = drawPosition + new Vector2(-32f, 0f).RotatedBy(NPC.rotation) * NPC.spriteDirection * HadesPostProcessingSystem.ScaleCorrection;
+            Vector2 rightJawPosition = drawPosition + new Vector2(32f, 0f).RotatedBy(NPC.rotation) * NPC.spriteDirection * HadesPostProcessingSystem.ScaleCorrection;
             Main.spriteBatch.Draw(leftJawTexture, leftJawPosition, leftJawFrame, NPC.GetAlpha(lightColor), NPC.rotation + JawRotation + MathHelper.Pi, leftJawOrigin, NPC.scale, SpriteEffects.FlipVertically, 0f);
             Main.spriteBatch.Draw(rightJawTexture, rightJawPosition, rightJawFrame, NPC.GetAlpha(lightColor), NPC.rotation - JawRotation + MathHelper.Pi, rightJawOrigin, NPC.scale, SpriteEffects.FlipVertically, 0f);
 
@@ -709,7 +709,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             Color reticleFlashBaseColor = Color.Lerp(reticleBaseColor, new Color(255, 255, 255, 0), reticleFadeToWhite) * reticleOpacity;
             Vector2 origin = leftReticleTexture.Size() * 0.5f;
 
-            Vector2 playerDrawPosition = Target.Center - Main.screenPosition;
+            Vector2 playerDrawPosition = (Target.Center - Main.screenPosition) * HadesPostProcessingSystem.ScaleCorrection;
             Main.spriteBatch.Draw(leftReticleTexture, playerDrawPosition - Vector2.UnitX * reticleOffsetDistance, null, reticleBaseColor, 0f, origin, 1f, SpriteEffects.None, 0f);
             Main.spriteBatch.Draw(rightReticleTexture, playerDrawPosition + Vector2.UnitX * reticleOffsetDistance, null, reticleBaseColor, 0f, origin, 1f, SpriteEffects.None, 0f);
 

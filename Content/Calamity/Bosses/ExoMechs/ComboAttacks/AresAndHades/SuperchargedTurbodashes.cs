@@ -359,14 +359,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                     blurWeights[i] = Utilities.GaussianDistribution(i / (float)(blurWeights.Length - 1f) * 1.5f, 0.6f);
 
                 float flash = LumUtils.InverseLerpBump(0.6f, 0.7f, 0.7f, 0.8f, electrifyInterpolant);
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.MotionBlurShader");
-                    shader.TrySetParameter("blurInterpolant", electrifyInterpolant * 0.8f);
+                    shader.TrySetParameter("blurInterpolant", electrifyInterpolant * 0.5f);
                     shader.TrySetParameter("blurWeights", blurWeights);
-                    shader.TrySetParameter("blurDirection", (MathHelper.TwoPi * i / 4f).ToRotationVector2());
+                    shader.TrySetParameter("blurDirection", (MathHelper.TwoPi * i / 2f).ToRotationVector2());
                     shader.Apply();
-                    Main.spriteBatch.Draw(HadesPostProcessingSystem.HadesTarget, Main.screenLastPosition - Main.screenPosition, new Color(255, 34, 1, 0) * electrifyInterpolant);
+                    Main.spriteBatch.Draw(HadesPostProcessingSystem.HadesTarget, Main.screenLastPosition - Main.screenPosition, null, new Color(255, 34, 1, 0) * electrifyInterpolant, 0f, Vector2.Zero, 2f, 0, 0f);
                 }
 
                 ManagedShader electricShader = ShaderManager.GetShader("FargowiltasCrossmod.HadesSuperchargeShader");
