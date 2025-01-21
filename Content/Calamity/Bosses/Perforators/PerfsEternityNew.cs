@@ -1,31 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using CalamityMod.Events;
-using CalamityMod.NPCs;
+﻿using CalamityMod.Events;
 using CalamityMod.NPCs.Perforator;
-using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
-using FargowiltasCrossmod.Core.Common;
-using FargowiltasSouls;
+using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using FargowiltasSouls.Content.Buffs.Masomode;
-using FargowiltasSouls.Core.Globals;
-using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using System;
+using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using FargowiltasCrossmod.Core.Common.InverseKinematics;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -33,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternityNew : CalDLCEmodeBehavior
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
 
@@ -48,7 +39,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public Vector2 GravityDirection = Vector2.UnitY;
 
         public PerforatorLeg[] Legs;
-        public int[][][] LegSprites;
+        public int[][][] LegSprites; // don't ask
+        public Vector2[] LegBraces;
 
         public Player Target => Main.player[NPC.target];
 
@@ -69,12 +61,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         /// <summary>
         /// The acceleration of the spider's dash.
         /// </summary>
-        public const float DashAcceleration = 0.31f;
+        public static float DashAcceleration => 0.14f;
 
         /// <summary>
         /// The maximum speed at which the spider can dash.
         /// </summary>
-        public const float MaxDashSpeed = 7.2f;
+        public static float MaxDashSpeed => 15f;
 
         /// <summary>
         /// The default quantity of gravity imposed upon the spider.
@@ -136,10 +128,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 NPC.lifeMax = 5000000;
             }
+            NPC.Opacity = 0;
+            NPC.dontTakeDamage = true;
 
             // cursed 3d array ahead
             Legs = new PerforatorLeg[4];
             LegSprites = new int[Legs.Length][][];
+            LegBraces = new Vector2[Legs.Length];
+
             for (int i = 0; i < Legs.Length; i++)
             {
                 float horizontalOffset;
@@ -156,7 +152,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
 
                 Vector2 legOffset = new(horizontalOffset, verticalOffset);
-                Legs[i] = new(LegSizeFactor * legOffset, LegSizeFactor, legOffset.Length() * 0.685f);
+                Legs[i] = new(LegSizeFactor * legOffset, LegSizeFactor, legOffset.Length() * 0.685f, i);
                 Legs[i].Leg[0].Rotation = legOffset.ToRotation();
                 Legs[i].Leg[1].Rotation = Vector2.UnitY.ToRotation();
 
@@ -169,12 +165,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         LegSprites[i][j][k] = Main.rand.Next(4);
                     }
                 }
+
+                float spriteLength = 80 + 22;
+                float angle = -Math.Sign(horizontalOffset);
+                float angleMult = i % 2 == 0 ? 2.4f : 0.7f;
+                angle *= MathHelper.PiOver2 * 0.22f * angleMult;
+
+                LegBraces[i] = Vector2.UnitY.RotatedBy(angle) * spriteLength * 1;
             }
         }
 
         public override void OnSpawn(IEntitySource source)
         {
-            NPC.Center -= Vector2.UnitY * 1000;
+            //NPC.Center -= Vector2.UnitY * 1000;
         }
 
         #region Draw
@@ -183,6 +186,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (!WorldSavingSystem.EternityMode)
                 return true;
 
+            // draw legs
             if (Legs is not null)
             {
                 if (NPC.IsABestiaryIconDummy)
@@ -194,7 +198,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 DrawLegSet(Legs, NPC.GetAlpha(drawColor), screenPos);
             }
 
-            return true;
+            // draw hive
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (NPC.spriteDirection == 1)
+                spriteEffects = SpriteEffects.FlipHorizontally;
+
+            Texture2D texture2D15 = TextureAssets.Npc[NPC.type].Value;
+            Vector2 halfSizeTexture = new Vector2((float)(TextureAssets.Npc[NPC.type].Value.Width / 2), (float)(TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2));
+
+            Vector2 drawLocation = NPC.Center - screenPos;
+            drawLocation -= new Vector2((float)texture2D15.Width, (float)(texture2D15.Height / Main.npcFrameCount[NPC.type])) * NPC.scale / 2f;
+            drawLocation += halfSizeTexture * NPC.scale + new Vector2(0f, NPC.gfxOffY);
+            spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, NPC.GetAlpha(drawColor), NPC.rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
+
+            texture2D15 = PerforatorHive.GlowTexture.Value;
+            Color glowmaskColor = Color.Lerp(Color.White, Color.Yellow, 0.5f);
+            glowmaskColor = NPC.GetAlpha(glowmaskColor);
+
+            spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, glowmaskColor, NPC.rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
+            return false;
         }
         public static void DrawLeg(SpriteBatch spriteBatch, Texture2D legTexture, Vector2 start, Vector2 end, Color color, float width, SpriteEffects direction)
         {
@@ -221,16 +243,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (leg.JointCount <= 0)
                     continue;
 
+                // draw leg brace
+                Vector2 dir = LegBraces[i].SafeNormalize(Vector2.Zero);
+                Vector2 start = NPC.Center - screenPos;
+                Vector2 end = start + dir * 80;
+                SpriteEffects direction = (LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                DrawLeg(Main.spriteBatch, LegTextures[0].Value, start, end, lightColor, 1f, direction);
+                // leg end
+                start = end + dir * 22;
+                DrawLeg(Main.spriteBatch, LegJointTextures[0].Value, start, end, lightColor, 1f, direction);
+
+                // draw leg
                 Vector2 previousPosition = leg.StartingPoint;
                 for (int j = 0; j < leg.JointCount; j++)
                 {
                     int partLength = (int)(leg[j].Offset.Length() / (JointParts - 0.7f));
                     int jointLength = (int)(partLength * 0.3f);
+                    int jointParts = JointParts;
+                    if (j == 0)
+                        jointParts += 1;
                     for (int k = 0; k < JointParts; k++)
                     {
                         bool joint = false;
                         int spriteIndex = LegSprites[i][j][k];
                         Texture2D legTexture;
+                        bool flip = false;
+                        if (j == 0)
+                            flip = true;
                         if (k == JointParts - 1)
                         {
                             if (j == 0)
@@ -241,24 +280,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             else
                                 legTexture = LegEndTextures[spriteIndex].Value;
                         }
-                            
                         else
                         {
-                            if (k == 0 && j == 1)
+                            if (k == 0)
                             {
                                 joint = true;
                                 legTexture = LegJointTextures[spriteIndex].Value;
+                                if (flip)
+                                    flip = false;
                             }
-  
                             else
                                 legTexture = LegTextures[spriteIndex].Value;
                         }
                         Vector2 partOffset = leg[j].Offset.SafeNormalize(Vector2.Zero) * (joint ? jointLength : partLength);
 
-                        SpriteEffects direction = (leg.EndEffectorPosition.X - NPC.Center.X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-                        Vector2 start = previousPosition - screenPos;
-                        Vector2 end = previousPosition + partOffset - screenPos;
-                        if (j == 0)
+                        direction = (leg.EndEffectorPosition.X - LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                        start = previousPosition - screenPos;
+                        end = previousPosition + partOffset - screenPos;
+                        if (flip)
                             (start, end) = (end, start);
                         DrawLeg(Main.spriteBatch, legTexture, start, end, lightColor, 1f, direction);
                         previousPosition += partOffset;
@@ -275,11 +314,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            
+
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
-            
+
         }
         #region AI
         public override bool PreAI()
@@ -305,20 +344,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             if (SpawnProgress < 1)
             {
+                // Ensure that legs are already grounded when the Perforator has fully spawned in.
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int j = 0; j < Legs.Length; j++)
+                        Legs[j]?.Update(NPC);
+                }
+
                 SpawnProgress += 1f / SpawnTime;
                 if (SpawnProgress < 0.8f)
                     NPC.Opacity = 0f;
                 else if (SpawnProgress < 1f)
+                {
                     NPC.Opacity = (SpawnProgress - 0.8f) / 0.2f;
+                    NPC.dontTakeDamage = false;
+                }
                 else
                 {
                     NPC.Opacity = 1f;
+                    NPC.dontTakeDamage = false;
                     // do a little "spawn animation" thing
                     NPC.netUpdate = true;
                 }
-                //NPC.Opacity = 1f;
             }
-                
+
 
 
             NewAI();
@@ -432,7 +481,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 obstacleAhead = true;
             }
             obstaclePosition += forwardDirectionToPlayer * 16f;
-
             // If there is not obstacle, terminate this method immediately- There would be no wall to walk on in the first place.
             if (!obstacleAhead)
                 return false;

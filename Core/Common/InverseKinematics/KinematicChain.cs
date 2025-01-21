@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria;
 
 namespace FargowiltasCrossmod.Core.Common.InverseKinematics
@@ -94,15 +94,17 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
         /// The loss function to use when calculating the gradient during update steps. Higher outputs correspond to a greater degree of incorrect-ness.
         /// </summary>
         /// <param name="idealEndEffectorPosition">The ideal end effector position that should be approached.</param>
-        private double LossFunction(Vector2 idealEndEffectorPosition) =>
-            Math.Pow(EndEffectorPosition.Distance(idealEndEffectorPosition) + (float)joints.Sum(j => j.ConstraintPenalties), 0.1f);
+        /// <param name="gradientDescentCompletion">How far along the gradient descent iteration steps are.</param>
+        private double LossFunction(Vector2 idealEndEffectorPosition, float gradientDescentCompletion) =>
+            Math.Pow(EndEffectorPosition.Distance(idealEndEffectorPosition) + (float)joints.Sum(j => j.ConstraintPenalties(gradientDescentCompletion)), 0.1f);
 
         /// <summary>
         /// Calculates the partial derivative of the <see cref="LossFunction(Vector2)"/> with respect to the <paramref name="inputIndex"/>-th input angle.
         /// </summary>
         /// <param name="idealEndEffectorPosition">The ideal end effector position that should be approached.</param>
         /// <param name="inputIndex">The input to take the partial derivative with respect to.</param>
-        private double CalculateLossGradient(Vector2 idealEndEffectorPosition, int inputIndex)
+        /// <param name="gradientDescentCompletion">How far along the gradient descent iteration steps are.</param>
+        private double CalculateLossGradient(Vector2 idealEndEffectorPosition, int inputIndex, float gradientDescentCompletion)
         {
             // Cache the original joint configurations.
             Joint joint = joints[inputIndex];
@@ -114,12 +116,12 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
             // Calculate the left side for the symmetric derivative.
             joint.Rotation = originalRotation + HalfDerivativeOffset;
             UpdateEndEffector();
-            double lossLeft = LossFunction(idealEndEffectorPosition);
+            double lossLeft = LossFunction(idealEndEffectorPosition, gradientDescentCompletion);
 
             // Calculate the right side for the symmetric derivative.
             joint.Rotation = originalRotation - HalfDerivativeOffset;
             UpdateEndEffector();
-            double lossRight = LossFunction(idealEndEffectorPosition);
+            double lossRight = LossFunction(idealEndEffectorPosition, gradientDescentCompletion);
 
             // Reset the joint back to their original values.
             joint.Rotation = originalRotation;
@@ -127,6 +129,11 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
 
             // Approximate the symmetric derivative by combining the aforementioned loss terms.
             return (lossLeft - lossRight) * InverseDerivativeOffset;
+        }
+
+        private static double SoftClamp(double x, double maxAbsoluteValue)
+        {
+            return Math.Tanh(x / maxAbsoluteValue) * maxAbsoluteValue;
         }
 
         /// <summary>
@@ -166,12 +173,7 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
                     // Calculate the partial derivative and cache it in the gradient.
                     // For the sake of numerical stability, the gradient values are clamped.
                     // This practice is common in the context of machine learning tasks where exploding gradients are a concern.
-                    gradient[j] = MathHelper.Clamp((float)CalculateLossGradient(idealEndEffectorPosition, j), -0.17f, 0.17f);
-
-                    // Add a tiny bit of variance to the gradient to help escape local minima.
-                    ulong seed = (ulong)(i * 12 + j);
-                    float random = MathHelper.Lerp(-0.09f, 0.09f, Utils.RandomFloat(ref seed)) * relaxationFactor;
-                    gradient[j] += random;
+                    gradient[j] = (float)SoftClamp(CalculateLossGradient(idealEndEffectorPosition, j, i / 200f), 0.17);
                 }
 
                 // Apply the iteration step.
@@ -181,10 +183,6 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
 
                 // Update the end effector position, now that the joint configurations have been updated.
                 UpdateEndEffector();
-
-                // If the end effector is sufficiently close to its destination, terminate the iteration loop immediately.
-                if (EndEffectorPosition.WithinRange(idealEndEffectorPosition, 10f))
-                    EndEffectorPosition = idealEndEffectorPosition;
             }
         }
 
