@@ -26,7 +26,7 @@ namespace FargowiltasCrossmod;
 public class FargowiltasCrossmod : Mod
 {
     internal static FargowiltasCrossmod Instance;
-    public static bool EnchantLoadingEnabled = false;
+    public static bool EnchantLoadingEnabled = true;
     public override void Load()
     {
         Instance = this;

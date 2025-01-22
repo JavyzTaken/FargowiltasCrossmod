@@ -689,6 +689,7 @@ Mods: {
 			AstralTrailStar.DisplayName: Astral Trail Star
 			BrimflameBurst.DisplayName: Brimflame Burst
 			ClamSlam.DisplayName: Clam Slam
+			BatMode.DisplayName: Bat Mode
 		}
 
 		Buffs: {
