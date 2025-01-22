@@ -63,11 +63,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 entity.FargoSouls().DeletionImmuneRank = 1;
             }
 
-            if (entity.ModProjectile != null && entity.ModProjectile.Mod == ModCompatibility.Calamity.Mod) // Global disables on all Calamity projectiles. Currently: Adamantite Enchantment
-            {
-                entity.FargoSouls().CanSplit = false;
-            }
-                
+            //if (entity.ModProjectile != null && entity.ModProjectile.Mod == ModCompatibility.Calamity.Mod) // Global disables on all Calamity projectiles. Currently: Adamantite Enchantment
+            //    entity.FargoSouls().CanSplit = false;
+
 
             if (new List<int>() {ModContent.ProjectileType<Flarenado>(), ModContent.ProjectileType<BrimstoneMonster>(), ModContent.ProjectileType<YharonBulletHellVortex>(),
             ModContent.ProjectileType<OldDukeVortex>(), ModContent.ProjectileType<Infernado>(),ModContent.ProjectileType<Infernado2>(),ModContent.ProjectileType<InfernadoRevenge>(),
@@ -85,25 +83,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            if (projectile.owner >= 0)
-            {
-                //attempt to make adamantite ench work with held proj weapons. didnt work.
-                //Player player = Main.player[projectile.owner];
-                //if (player.HasEffect<AdamantiteEffect>()
-                //&& FargoSoulsUtil.OnSpawnEnchCanAffectProjectile(projectile, false)
-                //&& projectile.FargoSouls().CanSplit && Array.IndexOf(FargoSoulsGlobalProjectile.NoSplit, projectile.type) <= -1
-                //&& projectile.aiStyle != ProjAIStyleID.Spear) {
-                //    if (projectile.owner == Main.myPlayer
-                //    && !(AdamantiteEffect.AdamIgnoreItems.Contains(player.HeldItem.type) || player.heldProj == projectile.whoAmI)
-                //    &&
-                //    source is EntitySource_Parent parent1 && parent1.Entity is Projectile sourceProj && !(sourceProj.aiStyle == ProjAIStyleID.Spear || sourceProj.minion || sourceProj.sentry || ProjectileID.Sets.IsAWhip[sourceProj.type] && !ProjectileID.Sets.IsAWhip[projectile.type]))
-                //    {
-                //        projectile.ArmorPenetration += projectile.damage / 2;
-                //        AdamantiteEffect.AdamantiteSplit(projectile, player.FargoSouls(), 1 + (int)player.FargoSouls().AdamantiteSpread);
-                //        projectile.FargoSouls().AdamModifier = player.FargoSouls().ForceEffect<AdamantiteEnchant>() ? 3 : 2;
-                //    }
-                //}
-            }
             if (projectile.type == ModContent.ProjectileType<RainExplosion>() && source is EntitySource_Parent parent && parent.Entity is Projectile parentProj && parentProj.GetGlobalProjectile<CalDLCProjectileChanges>().Ricoshot)
             {
                 projectile.hostile = false;

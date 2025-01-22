@@ -92,6 +92,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -130,6 +131,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
         public delegate bool Orig_CanToggleEternity();
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
+        public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -169,6 +171,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
             HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
+            HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -382,38 +385,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
             if (NonFargoBossAlive())
             {
-                
-                player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
-                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
-                {
-                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(300);
-
-                    if (ascentWhenFalling > 0.95f)
-                        ascentWhenFalling = 0.95f;
-                    if (ascentWhenRising > 0.16f)
-                        ascentWhenRising = 0.16f;
-                    if (maxCanAscendMultiplier > 1.1f)
-                        maxCanAscendMultiplier = 1.1f;
-                    if (maxAscentMultiplier > 3.2f)
-                        maxAscentMultiplier = 3.2f;
-                    if (constantAscend > 0.145f)
-                        constantAscend = 0.145f;
-                }
-                else // post yharon, use Drew's Wings stats
-                {
-                    ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(400);
-
-                    if (ascentWhenFalling > 1f)
-                        ascentWhenFalling = 1f;
-                    if (ascentWhenRising > 0.17f)
-                        ascentWhenRising = 0.17f;
-                    if (maxCanAscendMultiplier > 1.2f)
-                        maxCanAscendMultiplier = 1.2f;
-                    if (maxAscentMultiplier > 3.25f)
-                        maxAscentMultiplier = 3.25f;
-                    if (constantAscend > 0.15f)
-                        constantAscend = 0.15f;
-                }
+                ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(240, 9.5f, 2.7f);
+                if (ascentWhenFalling > 0.85f)
+                    ascentWhenFalling = 0.85f;
+                if (ascentWhenRising > 0.15f)
+                    ascentWhenRising = 0.15f;
+                if (maxCanAscendMultiplier > 1f)
+                    maxCanAscendMultiplier = 1f;
+                if (maxAscentMultiplier > 3f)
+                    maxAscentMultiplier = 3f;
+                if (constantAscend > 0.135f)
+                    constantAscend = 0.135f;
             }
             else
                 ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new Terraria.DataStructures.WingStats(1000);
@@ -423,21 +405,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             orig(self, player, ref speed, ref acceleration);
             if (NonFargoBossAlive())
             {
-                if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
-                {
-                    if (speed > 10.5f)
-                        speed = 10.5f;
-                    if (acceleration > 2.8f)
-                        acceleration = 2.8f;
-                }
-                else // post yharon, use Drew's Wings stats
-                {
-                    if (speed > 11.5f)
-                        speed = 11.5f;
-                    if (acceleration > 2.9f)
-                        acceleration = 2.9f;
-                }
-
+                
                 //ArmorIDs.Wing.Sets.Stats[self.Item.wingSlot] = new WingStats(361, 11.5f, 2.9f);
             }
         }
@@ -706,6 +674,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             orig(self);
             self.OncomingMutant.TextHoldShift = $"{Language.GetTextValue("Mods.FargowiltasCrossmod.UI.ToggledWithCal")}]\n[c/787878:{self.OncomingMutant.TextHoldShift}";
+        }
+
+        internal static float GetAdrenalineDamage_Detour(Orig_GetAdrenalineDamage orig, CalamityPlayer mp)
+        {
+            float value = orig(mp);
+            if (WorldSavingSystem.EternityMode)
+                value = value * 0.5f + 0.5f;
+            return value;
         }
         #endregion
     }
