@@ -49,14 +49,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public readonly int Index;
 
-        public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength, int index)
+        public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength1, float legLength2, int index)
         {
             LegSizeFactor = legSizeFactor;
             DefaultOffset = defaultOffset;
             StepAnimationInterpolant = 0.02f;
             Leg = new();
-            Leg.Add(new(LegSizeFactor * legLength));
-            Leg.Add(new(LegSizeFactor * legLength));
+            Leg.Add(new(LegSizeFactor * legLength1));
+            Leg.Add(new(LegSizeFactor * legLength2));
             Index = index;
         }
         Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
@@ -128,8 +128,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // 4. The owner is barely moving at all (assuming they're visible).
             float perpendicularDistanceFromOwner = Math.Abs(LumUtils.SignedDistanceToLine(Leg.EndEffectorPosition, LegCenter(hive), forwardDirection));
 
-            bool tooCloseToBody = perpendicularDistanceFromOwner <= Math.Abs(DefaultOffset.X) * 0.2f;
-            bool tooFarFromOwner = perpendicularDistanceFromOwner >= LegSizeFactor * 130f || !StepDestination.WithinRange(MovingDefaultStepPosition, LegSizeFactor * 130f);
+            bool tooCloseToBody = perpendicularDistanceFromOwner <= Math.Abs(DefaultOffset.X) * 0.3f;
+            bool tooFarFromOwner = perpendicularDistanceFromOwner >= LegSizeFactor * 100f || !StepDestination.WithinRange(MovingDefaultStepPosition, LegSizeFactor * 100f);
             bool shouldStepForward = tooFarFromOwner || tooCloseToBody;
             bool cannotStepForward = falling || legsOnGroundIfISteppedForward <= 0 || StepAnimationInterpolant > 0f || owner.velocity.Length() <= 0.3f;
             if (owner.Opacity <= 0.1f)

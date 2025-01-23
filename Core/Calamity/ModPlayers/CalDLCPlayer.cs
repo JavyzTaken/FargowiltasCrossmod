@@ -69,6 +69,15 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
+            if (Main.netMode != NetmodeID.SinglePlayer)
+            {
+                if (ModCompatibility.Calamity.Loaded) // Necessary here to sync in multiplayer
+                {
+                    ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", CalDLCConfig.Instance.EternityPriorityOverRev);
+                    if (CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
+                        CalamityMod.CalamityMod.ExternalFlag_DisableNonRevBossAI = true;
+                }
+            }
             //Main.NewText(BossRushEvent.BossRushStage);
         }
         public override void PreUpdateMovement()
@@ -185,6 +194,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PostUpdateMiscEffects()
         {
+            
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calPlayer = Player.Calamity();
             if (CalamitousPresence && !soulsPlayer.MutantPresence)

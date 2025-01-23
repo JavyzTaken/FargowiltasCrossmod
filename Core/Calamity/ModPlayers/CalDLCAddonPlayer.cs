@@ -50,6 +50,8 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public float ClamSlamHorizontalSpeed = 0;
         public int ClamSlamCooldown = 0;
         public int ClamSlamIframes = 0;
+        public int BatTime = 0;
+        public int BatCooldown = 0;
         public override void ResetEffects()
         {
             if (BrimflameDefenseTimer > 0)
@@ -67,6 +69,14 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             if (ClamSlamIframes > 0)
             {
                 ClamSlamIframes--;
+            }
+            if (BatTime > 0)
+            {
+                BatTime--;
+            }
+            if (BatCooldown > 0)
+            {
+                BatCooldown--;
             }
             base.ResetEffects();
         }
@@ -87,6 +97,13 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             {
                 Player.fullRotation = 0;
                 RuffianModifiedRotation = false;
+            }
+            if (BatTime > 0)
+            {
+                Player.AddImmuneTime(ImmunityCooldownID.Bosses, 2);
+                Player.immuneNoBlink = true;
+                Player.immuneTime = 5;
+                Player.immune = true;
             }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)

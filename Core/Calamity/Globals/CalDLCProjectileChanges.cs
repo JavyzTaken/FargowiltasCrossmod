@@ -152,9 +152,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (defenseDamage)
                     projectile.Calamity().DealsDefenseDamage = true;
             }
-            if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 75 && projectile.damage != 0)
+            if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage < 100 && projectile.damage != 0)
             {
-                projectile.damage = 75;
+                projectile.damage = 100;
             }
             if (BossRushEvent.BossRushActive && projectile.hostile && projectile.damage > 100 && NPC.AnyNPCs(NPCID.HallowBoss))
             {
