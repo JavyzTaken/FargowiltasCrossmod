@@ -614,7 +614,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 if (phase == BossRushDialoguePhase.StartRepeat && currLine == 0)
                 {
-                    Main.NewText("Let's get started", Color.Teal);
+                    Main.NewText("Let's get started.", Color.Teal);
                     BossRushEvent.BossRushStage = 1;
                 }
                 if (phase == BossRushDialoguePhase.TierOneComplete)
@@ -624,7 +624,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     //if (currLine == 1)
                         
                     if (currLine == 2)
-                        Main.NewText("Let's cut to the chase", Color.Teal);
+                        Main.NewText("Let's cut to the chase.", Color.Teal);
                 }
                 BossRushDialogueSystem.CurrentDialogueDelay = 60;
                 BossRushDialogueSystem.currentSequenceIndex += 1;

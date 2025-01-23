@@ -1,16 +1,3 @@
-New Update: v1.1.1.02
+New Update: v1.1.1.03
 
-Hive Mind now heals all damage during Phase 1
-Removed Tungsten Enchant DLC nerf (after base Souls tungsten reshift)
-Removed Adamantite Enchantment being disabled on Calamity content
-Decreased Life Force wing stats to Elysian Wings level
-Calamitous Presence:
--No longer disables Purity
--Now also removes 10% of your defense
-Astrum Core can now only be converted into Starcore post-Deus
-Astral Fountain only sets biome in Hardmode
-
-Eternity:
-Ataraxia: 0.65x damage
-Adrenaline gives half as much damage bonus
-Eternity Desert Scourge and Aquatic Scourge updated to use new Eternity Destroyer pierce resist formula
+Fixed multiplayer boss sync issue, affecting Empress of Light and other vanilla bosses

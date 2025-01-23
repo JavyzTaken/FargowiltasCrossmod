@@ -393,37 +393,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
             #region BRBalance
-            List<int> KingSlime =
-            [
-                NPCID.KingSlime,
-                    NPCID.BlueSlime,
-                    NPCID.SlimeSpiked,
-                    ModContent.NPCType<KingSlimeJewelRuby>()
-            ];
-            List<int> Eater = [NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail];
-            List<int> SlimeGod = [ ModContent.NPCType<EbonianPaladin>(), ModContent.NPCType<SplitEbonianPaladin>(),
-                    ModContent.NPCType<CrimulanPaladin>(), ModContent.NPCType<SplitCrimulanPaladin>(),
-                    ];
-            List<int> bossworms =
-            [
-
-                ModContent.NPCType<DesertScourgeHead>(), ModContent.NPCType<DesertScourgeBody>(), ModContent.NPCType<DesertScourgeTail>(),
-                    NPCID.EaterofWorldsHead, NPCID.EaterofWorldsBody, NPCID.EaterofWorldsTail,
-
-                    ModContent.NPCType<AquaticScourgeHead>(), ModContent.NPCType<AquaticScourgeBody>(),ModContent.NPCType<AquaticScourgeBodyAlt>(), ModContent.NPCType<AquaticScourgeTail>(),
-                    NPCID.TheDestroyer, NPCID.TheDestroyerBody, NPCID.TheDestroyerTail,
-                    ModContent.NPCType<AstrumDeusHead>(), ModContent.NPCType<AstrumDeusBody>(), ModContent.NPCType<AstrumDeusTail>(),
-                    ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>(),
-
-                ];
-            List<int> minionworms =
-            [
-                ModContent.NPCType<DesertNuisanceHead>(), ModContent.NPCType<DesertNuisanceBody>(), ModContent.NPCType<DesertNuisanceTail>(),
-                    ModContent.NPCType<PerforatorHeadSmall>(),ModContent.NPCType<PerforatorBodySmall>(), ModContent.NPCType<PerforatorTailSmall>(),
-                    ModContent.NPCType<PerforatorHeadMedium>(),ModContent.NPCType<PerforatorBodyMedium>(), ModContent.NPCType<PerforatorTailMedium>(),
-                    ModContent.NPCType<PerforatorHeadLarge>(),ModContent.NPCType<PerforatorBodyLarge>(), ModContent.NPCType<PerforatorTailLarge>(),
-
-                ];
             if (BossRushEvent.BossRushActive)
             {
                 
@@ -444,13 +413,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<Providence>())
                     npc.lifeMax = (int)(9000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Signus>())
-                    npc.lifeMax = (int)(2500000 / 1.6f);
+                    npc.lifeMax = (int)(5000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<CeaselessVoid>())
                     npc.lifeMax = (int)(4000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<DarkEnergy>())
                     npc.lifeMax = (int)(100000 / 1.6f);
                 if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverBody>() || npc.type == ModContent.NPCType<StormWeaverTail>())
-                    npc.lifeMax = (int)(40000000 / 1.6f);
+                    npc.lifeMax = (int)(23000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Polterghast>())
                     npc.lifeMax = (int)(6500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<PolterPhantom>())
@@ -458,25 +427,27 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<OldDuke>())
                     npc.lifeMax = (int)(3500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
-                    npc.lifeMax = (int)(30000000 / 1.6f);
+                    npc.lifeMax = (int)(10000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<CosmosChampion>())
                     npc.lifeMax = (int)(9000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Yharon>())
                     npc.lifeMax = (int)(11000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<AbomBoss>())
-                    npc.lifeMax = (int)(13000000 / 1.6f);
+                    npc.lifeMax = (int)(20000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<AresBody>() || npc.type == ModContent.NPCType<AresGaussNuke>() || npc.type == ModContent.NPCType<AresLaserCannon>() || npc.type == ModContent.NPCType<AresPlasmaFlamethrower>() || npc.type == ModContent.NPCType<AresTeslaCannon>())
-                    npc.lifeMax = (int)(10000000 / 1.6f);
+                    npc.lifeMax = (int)(40000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<ThanatosHead>() || npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosTail>())
-                    npc.lifeMax = (int)(25000000 / 1.6f);
+                    npc.lifeMax = (int)(11000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
-                    npc.lifeMax = (int)(7500000 / 1.6f);
+                    npc.lifeMax = (int)(3000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<SupremeCalamitas>())
                     npc.lifeMax = (int)(8000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<BrimstoneHeart>())
                     npc.lifeMax = (int)(300000 / 1.6f);
                 if (npc.type == ModContent.NPCType<SupremeCataclysm>() || npc.type == ModContent.NPCType<SupremeCatastrophe>())
-                    npc.lifeMax = (int)(1000000 / 1.6f);
+                    npc.lifeMax = (int)(3000000 / 1.6f);
+                if (npc.type == ModContent.NPCType<MutantBoss>())
+                    npc.lifeMax *= 3;
 
 
 
@@ -1520,6 +1491,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (numAI == 0)
                 {
+                    /*
                     if (HyperNPCs.Contains(npc.type) && WorldSavingSystem.EternityMode && npc.type != NPCID.WallofFleshEye)
                     {
                         numAI++;
@@ -1531,6 +1503,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             npc.position = newPos;
                         }
                     }
+                    */
                 }
             }
             if (npc.type == NPCID.DukeFishron && BossRushEvent.BossRushActive)
