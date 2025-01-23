@@ -429,7 +429,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<DevourerofGodsHead>() || npc.type == ModContent.NPCType<DevourerofGodsBody>() || npc.type == ModContent.NPCType<DevourerofGodsTail>())
                     npc.lifeMax = (int)(10000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<CosmosChampion>())
-                    npc.lifeMax = (int)(9000000 / 1.6f);
+                    npc.lifeMax = (int)(14000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Yharon>())
                     npc.lifeMax = (int)(11000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<AbomBoss>())
