@@ -6,6 +6,22 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg1.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg2.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg3.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg4.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegEnd1.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegEnd2.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegEnd3.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegEnd4.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint1.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint2.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint3.png" />
+    <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint4.png" />
+    <None Remove="Content\Calamity\Bosses\Perforators\FrightweaverLowerLeg.png" />
+    <None Remove="Content\Calamity\Bosses\Perforators\FrightweaverUpperLeg.png" />
+  </ItemGroup>
+  <ItemGroup>
 	<Reference Include="CalamityMod">
 		<HintPath>Libraries/CalamityMod.dll</HintPath>
 	</Reference>

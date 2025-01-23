@@ -30,6 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternity : CalDLCEmodeBehavior
     {
+        public override bool IsLoadingEnabled(Mod mod) => !PerfsEternityNew.Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
         public override void SetDefaults()
         {

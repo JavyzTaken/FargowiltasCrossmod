@@ -1,4 +1,7 @@
-﻿using Fargowiltas.NPCs;
+﻿using CalamityMod;
+using CalamityMod.Events;
+using CalamityMod.Skies;
+using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Core.Systems;
@@ -35,6 +38,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     int devi = NPC.NewNPC(new EntitySource_SpawnNPC(), Main.spawnTileX * 16, Main.spawnTileY * 16 - 400, ModContent.NPCType<Deviantt>());
                     NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, devi);
                     WorldSavingSystem.SpawnedDevi = true;
+                }
+                //DownedBossSystem.startedBossRushAtLeastOnce = false;
+                if (BossRushEvent.BossRushActive)
+                {
+                    
+                }
+                if ((Main.IsItRaining || Main.IsItStorming) && BossRushEvent.BossRushActive)
+                {
+                    Main.StopRain();
+                    Main.cloudAlpha = 0;
+                    if (Main.netMode == NetmodeID.Server)
+                        Main.SyncRain();
                 }
             }
             
