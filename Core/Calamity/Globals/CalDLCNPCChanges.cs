@@ -435,7 +435,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<AbomBoss>())
                     npc.lifeMax = (int)(20000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<AresBody>() || npc.type == ModContent.NPCType<AresGaussNuke>() || npc.type == ModContent.NPCType<AresLaserCannon>() || npc.type == ModContent.NPCType<AresPlasmaFlamethrower>() || npc.type == ModContent.NPCType<AresTeslaCannon>())
-                    npc.lifeMax = (int)(10000000 / 1.6f);
+                    npc.lifeMax = (int)(5000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<ThanatosHead>() || npc.type == ModContent.NPCType<ThanatosBody1>() || npc.type == ModContent.NPCType<ThanatosBody2>() || npc.type == ModContent.NPCType<ThanatosTail>())
                     npc.lifeMax = (int)(5000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
