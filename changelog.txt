@@ -1,4 +1,3 @@
 New Update: v1.1.1.03
 
-Reworked the Boss Rush - now only includes buffed-up post-Moon Lord bosses, with some surprises
-Fixed multiplayer boss sync issue, affecting Empress of Light and other vanilla bosses
+Fixed Boss Rush-exclusive AI applying outside of Boss Rush
