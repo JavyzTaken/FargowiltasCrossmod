@@ -421,7 +421,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (npc.type == ModContent.NPCType<StormWeaverHead>() || npc.type == ModContent.NPCType<StormWeaverBody>() || npc.type == ModContent.NPCType<StormWeaverTail>())
                     npc.lifeMax = (int)(23000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<Polterghast>())
-                    npc.lifeMax = (int)(4500000 / 1.6f);
+                    npc.lifeMax = (int)(5500000 / 1.6f);
                 if (npc.type == ModContent.NPCType<PolterPhantom>())
                     npc.lifeMax = (int)(3000000 / 1.6f);
                 if (npc.type == ModContent.NPCType<OldDuke>())
