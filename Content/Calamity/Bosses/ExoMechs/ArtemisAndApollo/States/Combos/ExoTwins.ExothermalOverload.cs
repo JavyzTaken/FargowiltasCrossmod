@@ -144,7 +144,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
             // Move the laser forward.
             else if (wrapperAITimer >= hoverRedirectTime + slowDownTime + chargeUpTime + energyGleamTime)
             {
-                ScreenShakeSystem.SetUniversalRumble(2.3f);
+                ScreenShakeSystem.SetUniversalRumble(2.3f, MathHelper.TwoPi, null, 0.2f);
                 npc.velocity = Vector2.Lerp(npc.velocity, moveDirection.ToRotationVector2() * 80f, 0.016f);
             }
 

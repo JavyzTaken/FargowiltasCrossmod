@@ -109,7 +109,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
                 Die();
 
             CustomExoMechsSky.RedSkyInterpolant = instabilityInterpolant;
-            ScreenShakeSystem.SetUniversalRumble(MathF.Pow(instabilityInterpolant, 1.5f) * maxScreenRumble);
+            ScreenShakeSystem.SetUniversalRumble(MathF.Pow(instabilityInterpolant, 1.5f) * maxScreenRumble, MathHelper.TwoPi, null, 0.2f);
         }
 
         /// <summary>

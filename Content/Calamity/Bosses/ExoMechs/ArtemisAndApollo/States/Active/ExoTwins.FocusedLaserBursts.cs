@@ -81,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 npc.SmoothFlyNear(hoverDestination, 0.089f, 0.86f);
                 npc.rotation = npc.rotation.AngleLerp(npc.AngleTo(Target.Center), 0.4f);
 
-                ScreenShakeSystem.SetUniversalRumble((wrappedAITimer / (float)FocusedLaserBursts_ChargeUpTime).Cubed() * 0.5f);
+                ScreenShakeSystem.SetUniversalRumble((wrappedAITimer / (float)FocusedLaserBursts_ChargeUpTime).Cubed() * 0.5f, MathHelper.TwoPi, null, 0.2f);
 
                 float chargeUpCompletion = wrappedAITimer / (float)FocusedLaserBursts_ChargeUpTime;
                 float particleSpawnChance = Utilities.InverseLerp(0f, 0.85f, chargeUpCompletion).Squared();

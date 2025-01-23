@@ -154,7 +154,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
 
                 float electrifyInterpolant = LumUtils.InverseLerp(0f, ElectrifyTime, AITimer);
                 float shakeIntensity = LumUtils.InverseLerpBump(0f, 0.75f, 0.95f, 1f, electrifyInterpolant).Squared() * 5f;
-                ScreenShakeSystem.SetUniversalRumble(shakeIntensity);
+                ScreenShakeSystem.SetUniversalRumble(shakeIntensity, MathHelper.TwoPi, null, 0.2f);
             }
 
             // Hover side to side above the target player after Hades is charged up and active.

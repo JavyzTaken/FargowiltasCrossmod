@@ -120,7 +120,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             teslaSphere.Resize((int)teslaSphereSize.X, (int)teslaSphereSize.Y);
 
             // Add a tiny amount of screen shake throughout the attack.
-            ScreenShakeSystem.SetUniversalRumble(LargeTeslaOrbBlast_ExplodeAnticipationInterpolant.Squared() * 3f);
+            ScreenShakeSystem.SetUniversalRumble(LargeTeslaOrbBlast_ExplodeAnticipationInterpolant.Squared() * 3f, MathHelper.TwoPi, null, 0.2f);
 
             if (AITimer >= LargeTeslaOrbBlast_OrbChargeUpTime + LargeTeslaOrbBlast_HomingBurstReleaseDelay + LargeTeslaOrbBlast_HomingBurstReleaseTime + LargeTeslaOrbBlast_ExplodeAnticipationTime + 60)
             {

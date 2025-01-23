@@ -116,7 +116,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 if (!DeathAnimation_SuccessfullyCollided)
                 {
                     ReleaseDeathAnimationParticles(npc);
-                    ScreenShakeSystem.SetUniversalRumble(CustomExoMechsSky.RedSkyInterpolant * 8f);
+                    ScreenShakeSystem.SetUniversalRumble(CustomExoMechsSky.RedSkyInterpolant * 8f, MathHelper.TwoPi, null, 0.2f);
                 }
                 twinAttributes.Frame = twinAttributes.Animation.CalculateFrame(AITimer / 40f % 1f, twinAttributes.InPhase2);
             }

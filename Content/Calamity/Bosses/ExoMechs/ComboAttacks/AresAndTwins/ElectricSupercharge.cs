@@ -131,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ComboAttacks
                 rightHandAimDestination = Target.Center;
             }
 
-            ScreenShakeSystem.SetUniversalRumble(LumUtils.InverseLerpBump(0f, 0.8f, 0.9f, 1f, AITimer / (float)ElectrifyTime).Squared() * 3f);
+            ScreenShakeSystem.SetUniversalRumble(LumUtils.InverseLerpBump(0f, 0.8f, 0.9f, 1f, AITimer / (float)ElectrifyTime).Squared() * 3f, MathHelper.TwoPi, null, 0.2f);
 
             if (AITimer <= AresBodyEternity.DetachHands_DetachmentDelay)
             {

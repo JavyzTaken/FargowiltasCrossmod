@@ -127,7 +127,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             ShiftLightColors(LumUtils.InverseLerp(0f, 16f, AITimer), malfunctionColors);
 
             // Make the screen rumble in accoradance with how much Ares is jittering.
-            ScreenShakeSystem.SetUniversalRumble(DeathAnimation_JitterInterpolant * 8f);
+            ScreenShakeSystem.SetUniversalRumble(DeathAnimation_JitterInterpolant * 8f, MathHelper.TwoPi, null, 0.2f);
 
             HandleDeathAnimationCoreVisualEffects();
             DeathAnimationHandUpdateWrapper();

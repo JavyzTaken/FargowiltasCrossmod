@@ -187,7 +187,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             }
 
             // Make the screen shake slightly before firing.
-            ScreenShakeSystem.SetUniversalRumble(chargeUpCompletion.Cubed() * 3f);
+            ScreenShakeSystem.SetUniversalRumble(chargeUpCompletion.Cubed() * 3f, MathHelper.TwoPi, null, 0.2f);
 
             // Fire.
             if (relativeTimer == chargeUpTime)
