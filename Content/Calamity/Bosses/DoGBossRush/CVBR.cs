@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
@@ -42,6 +43,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ProvidenceBossRush
         
         public override bool PreAI(NPC npc)
         {
+            if (!BossRushEvent.BossRushActive)
+                return base.PreAI(npc);
             if (npc.HasValidTarget) {
                 if (npc.GetLifePercent() > 0.3f)
                 {

@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.CeaselessVoid;
 using CalamityMod.NPCs.DevourerofGods;
@@ -47,6 +48,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ProvidenceBossRush
         
         public override bool PreAI(NPC npc)
         {
+            if (!BossRushEvent.BossRushActive)
+                return base.PreAI(npc);
+
             CalamityGlobalNPC calnpc = npc.Calamity();
             DevourerofGodsHead dog = (DevourerofGodsHead)npc.ModNPC;
             //Main.NewText("ai: " + npc.ai[0] + ", " + npc.ai[1] + ", " + npc.ai[2] + ", " + npc.ai[3]);
@@ -93,6 +97,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ProvidenceBossRush
         }
         public override void PostAI(NPC npc)
         {
+            if (!BossRushEvent.BossRushActive)
+                return;
+
             CalamityGlobalNPC calnpc = npc.Calamity();
             DevourerofGodsHead dog = (DevourerofGodsHead)npc.ModNPC;
             FieldInfo alphagatevalue = typeof(DevourerofGodsHead).GetField("alphaGateValue", LumUtils.UniversalBindingFlags);

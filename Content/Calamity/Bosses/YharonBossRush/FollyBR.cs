@@ -1,4 +1,5 @@
-﻿using CalamityMod.NPCs.ProfanedGuardians;
+﻿using CalamityMod.Events;
+using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
@@ -39,6 +40,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ProvidenceBossRush
         
         public override bool PreAI(NPC npc)
         {
+            if (!BossRushEvent.BossRushActive)
+                return base.PreAI(npc);
             NPC yhar = Main.npc[CalamityMod.NPCs.CalamityGlobalNPC.yharon];
             if (yhar != null && yhar.active)
             {
