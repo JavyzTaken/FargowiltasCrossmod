@@ -49,6 +49,8 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.UI.Elements;
 using Terraria.Localization;
+using CalamityMod.Skies;
+using Terraria.Graphics.Effects;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -93,6 +95,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo DetermineDrawEligibility_Method = typeof(BossRushSky).GetMethod("DetermineDrawEligibility", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -132,6 +135,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate bool Orig_CanToggleEternity();
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
         public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
+        public delegate bool Orig_DetermineDrawEligibility();
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -172,6 +176,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
             HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
+            HookHelper.ModifyMethodWithDetour(DetermineDrawEligibility_Method, DetermineDrawEligibility_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -682,6 +687,25 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (WorldSavingSystem.EternityMode)
                 value = value * 0.5f + 0.5f;
             return value;
+        }
+
+        internal static bool DetermineDrawEligibility_Detour(Orig_DetermineDrawEligibility orig)
+        {
+            if (SkyManager.Instance["CalamityMod:BossRush"] != null && SkyManager.Instance["CalamityMod:BossRush"].IsActive())
+                SkyManager.Instance.Deactivate("CalamityMod:BossRush", new object[0]);
+            if (Filters.Scene["CalamityMod:BossRush"].IsActive())
+                Filters.Scene["CalamityMod:BossRush"].Deactivate(new object[0]);
+            /*
+            if (useEffect != Filters.Scene["CalamityMod:BossRush"].IsActive())
+            {
+                if (useEffect)
+                    Filters.Scene.Activate("CalamityMod:BossRush");
+                else
+                    Filters.Scene["CalamityMod:BossRush"].Deactivate(new object[0]);
+            }
+            */
+
+            return false;
         }
         #endregion
     }
