@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
 using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatDebuffs;
-using CalamityMod.CalPlayer;
 using CalamityMod.Events;
 using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
@@ -11,7 +8,6 @@ using CalamityMod.Items.Fishing.AstralCatches;
 using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SulphurCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
-using CalamityMod.Items.LoreItems;
 using CalamityMod.Items.Materials;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
@@ -57,10 +53,11 @@ using CalamityMod.NPCs.SunkenSea;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.NPCs.Yharon;
-using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
+using FargowiltasCrossmod.Content.Calamity.Items.LoreItems;
 using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Core.Calamity.ItemDropRules;
 using FargowiltasCrossmod.Core.Calamity.Systems;
@@ -71,12 +68,9 @@ using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 using FargowiltasSouls.Content.Bosses.Champions.Earth;
 using FargowiltasSouls.Content.Bosses.Champions.Life;
-using FargowiltasSouls.Content.Bosses.Champions.Nature;
 using FargowiltasSouls.Content.Bosses.Champions.Shadow;
 using FargowiltasSouls.Content.Bosses.Champions.Spirit;
-using FargowiltasSouls.Content.Bosses.Champions.Terra;
 using FargowiltasSouls.Content.Bosses.Champions.Timber;
-using FargowiltasSouls.Content.Bosses.Champions.Will;
 using FargowiltasSouls.Content.Bosses.CursedCoffin;
 using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.Lifelight;
@@ -91,9 +85,9 @@ using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ItemDropRules.Conditions;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -251,14 +245,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 calNPC.VulnerableToCold = true;
                 calNPC.VulnerableToSickness = false;
             }
-                
+
             // deviantt
             if (npc.type == ModContent.NPCType<DeviBoss>())
             {
                 npc.lifeMax = (int)(npc.lifeMax * 1.3f);
                 calNPC.VulnerableToSickness = true;
             }
-                
+
             // brn
             if (npc.type == ModContent.NPCType<BanishedBaron>())
             {
@@ -267,7 +261,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 calNPC.VulnerableToWater = false;
                 calNPC.VulnerableToCold = false;
             }
-                
+
             // lifelight
             if (npc.type == ModContent.NPCType<LifeChallenger>())
             {
@@ -278,7 +272,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 calNPC.VulnerableToSickness = false;
                 calNPC.VulnerableToWater = false;
             }
-                
+
             //champions
             if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
             {
@@ -364,6 +358,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 || npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
             {
                 npc.lifeMax = (int)(npc.lifeMax * 1.7f);
+                if (CalDLCWorldSavingSystem.E_EternityRev)
+                    npc.lifeMax = (int)(npc.lifeMax * 1.3f);
             }
             if (npc.type == ModContent.NPCType<SupremeCalamitas>() || npc.type == ModContent.NPCType<BrimstoneHeart>() ||
                 npc.type == ModContent.NPCType<SoulSeekerSupreme>() || npc.type == ModContent.NPCType<SupremeCataclysm>() || npc.type == ModContent.NPCType<SupremeCatastrophe>())
@@ -933,6 +929,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 npcLoot.Add(hardmode);
             }
             #endregion
+
             #region Tim's Concoction drops
             void TimsConcoctionDrop(IItemDropRule rule)
             {
@@ -984,6 +981,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //if (npc.type == ModContent.NPCType<>)
             #endregion
 
+            #region Exo Mech Lore Item
+
+            if (ExoMechNPCIDs.ExoMechIDs.Contains(npc.type))
+            {
+                LeadingConditionRule exoMechFirstTimeDropRule = npcLoot.DefineConditionalDropSet(() => !DownedBossSystem.downedExoMechs && AresBody.CanDropLoot());
+                exoMechFirstTimeDropRule.OnSuccess(ItemDropRule.ByCondition(CalDLCConditions.EmodeAndRevCondition.ToDropCondition(ShowItemDropInUI.Never), ModContent.ItemType<LoreDraedon>()));
+            }
+
+            #endregion Exo Mech Lore Item
+
             #region Other edits
             switch (npc.type)
             {
@@ -995,7 +1002,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 default:
                     break;
             }
-                
+
             #endregion
 
             npcLoot.Add(emodeRule);
@@ -1169,7 +1176,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 spawnRate = (int)(spawnRate * 3f); // full compensation would be *= 4
                 maxSpawns = (int)Math.Ceiling(maxSpawns / 5f); // full compensation would be /= 10
             }
-                
+
         }
         public override bool InstancePerEntity => true;
         private int numAI;
@@ -1521,12 +1528,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 Main.dayTime = false;
                 Main.time = Main.nightLength / 2;
             }
-            
+
             if (npc.type == ModContent.NPCType<EarthChampion>() && BossRushEvent.BossRushActive)
             {
                 Main.player[Main.myPlayer].ZoneUnderworldHeight = true;
             }
-            
+
             if (npc.type == ModContent.NPCType<MutantBoss>() && BossRushEvent.BossRushActive)
             {
                 npc.ModNPC.SceneEffectPriority = SceneEffectPriority.None;
