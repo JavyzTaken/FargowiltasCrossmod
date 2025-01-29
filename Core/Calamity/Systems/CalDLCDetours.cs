@@ -51,6 +51,7 @@ using FargowiltasSouls.Content.UI.Elements;
 using Terraria.Localization;
 using CalamityMod.Skies;
 using Terraria.Graphics.Effects;
+using FargowiltasSouls.Content.UI;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
