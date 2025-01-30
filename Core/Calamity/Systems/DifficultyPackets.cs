@@ -139,6 +139,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalDLCWorldSavingSystem.EternityRev = containmentFlagWrapper[0];
             WorldSavingSystem.EternityMode = containmentFlagWrapper[1];
             WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[2];
+            if (WorldSavingSystem.ShouldBeEternityMode)
+                WorldSavingSystem.SpawnedDevi = true;
         }
     }
     public class EternityDeathPacket : BaseDLCPacket
@@ -162,6 +164,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalDLCWorldSavingSystem.EternityRev = containmentFlagWrapper[1];
             WorldSavingSystem.EternityMode = containmentFlagWrapper[2];
             WorldSavingSystem.ShouldBeEternityMode = containmentFlagWrapper[3];
+            if (WorldSavingSystem.ShouldBeEternityMode)
+                WorldSavingSystem.SpawnedDevi = true;
         }
     }
 }
