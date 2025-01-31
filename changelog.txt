@@ -1,4 +1,4 @@
-New Update: v1.1.1.04
+New Update: v1.1.1.05
 
 -Updated to Souls Mod v1.7.1.4
 -Fixed Mutant attack choice not working correctly after DLC attacks
