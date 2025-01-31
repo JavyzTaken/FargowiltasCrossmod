@@ -533,6 +533,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             AddBannerToItemRecipe(ItemID.IchorStickerBanner, ItemType<IchorSpear>());
 
             //post-ml
+            AddBannerToItemRecipe(ItemType<PhantomSpiritBanner>(),
+                ItemType<Necroplasm>(), 1, 50);
             AddBannerToItemRecipe(ItemType<ImpiousImmolatorBanner>(),
                 ItemType<BlasphemousDonut>());
             AddBannerToItemRecipe(ItemType<ScryllarBanner>(),
