@@ -7,6 +7,7 @@ using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
@@ -16,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -45,6 +47,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public ref float State => ref NPC.ai[0];
         public ref float Timer => ref NPC.ai[1];
+        public ref float AI2 => ref NPC.ai[2];
+        public ref float AI3 => ref NPC.ai[3];
         public enum States
         {
             // misc
@@ -415,16 +419,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Timer++;
             if (Timer < 60)
                 return;
-            if (Math.Abs(Target.Center.X - NPC.Center.X) < 200)
+            if (Math.Abs(Target.Center.X - NPC.Center.X) < 400)
                 ChooseAttack();
         }
         public void LegStabs()
         {
+            ref float ChosenLeg = ref AI2;
+
             WalkToPositionAI(Target.Center);
-            NPC.velocity *= 0.9f;
-            Main.NewText("stabby");
-            if (++Timer > 100)
+            NPC.velocity *= 0.2f;
+            int stabTelegraphTime = 40;
+            int stabTime = 25;
+            /*
+            if (Timer == 0)
+            {
+                ChosenLeg = ClosestLegIndex(Target.Center);
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                int sign = Math.Sign(leg.GetEndPoint().X - Target.Center.X);
+                Vector2 pos = Target.Center + new Vector2(sign * 100, -200);
+                leg.StartCustomAnimation(NPC, pos, 1f / stabTelegraphTime);
+            }
+            if (Timer == stabTelegraphTime)
+            {
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 offset = Vector2.Normalize(Target.Center - leg.GetEndPoint()) * 60;
+                leg.StartCustomAnimation(NPC, Target.Center + offset, 1f / stabTime);
+            }
+            */
+            if (++Timer > stabTelegraphTime + stabTime)
+            {
                 GoToNeutral();
+            }
+                
         }
         #endregion
         #region Help Methods
@@ -442,6 +469,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public void Reset()
         {
             Timer = 0;
+            AI2 = 0;
+            AI3 = 0;
+        }
+        public int ClosestLegIndex(Vector2 pos)
+        {
+            int min = 0;
+            for (int i = 1; i < Legs.Length; i++)
+                if (Legs[i].GetEndPoint().Distance(pos) < Legs[min].GetEndPoint().Distance(pos))
+                    min = i;
+            return min;
         }
         #endregion
         #region Walking Methods
@@ -454,7 +491,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 // check if player is reasonably above ground
                 Vector2 groundAtPlayerV = groundAtPlayer.ToWorldCoordinates();
-                Dust.NewDust(groundAtPlayerV, 1, 1, DustID.Torch);
                 bool validAboveGround = true;
                 int playerPointY = pos.ToTileCoordinates().Y;
                 int dir = Math.Sign(playerPointY - groundAtPlayer.Y); // should be negative
