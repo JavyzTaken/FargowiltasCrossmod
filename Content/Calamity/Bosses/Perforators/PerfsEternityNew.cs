@@ -1,9 +1,13 @@
 ﻿using CalamityMod;
 using CalamityMod.Events;
+using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.TownNPCs;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
@@ -30,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternityNew : CalDLCEmodeBehavior
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
 
@@ -38,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         // Basic targeting and movement fields
         public Player Target => Main.player[NPC.target];
         public static int HeightAboveGround = 275;
-        public static float Acceleration => 0.14f;
+        public static float Acceleration => 0.2f;
         public static float MaxMovementSpeed => 12f;
         #region Fight Related
 
@@ -92,7 +96,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 // far attacks
                 case States.RubbleStomp:
                 case States.LegAssault:
-                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 500;
+                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 700;
                     break;
             }
             return target;
@@ -101,7 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         #region Legs Related
 
-        public Vector2 GravityDirection = Vector2.UnitY;
+        public Vector2 GravityDirection => Vector2.UnitY;
 
         public PerforatorLeg[] Legs;
         public int[][][] LegSprites; // don't ask
@@ -401,9 +405,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void ManageLegs()
         {
-            // Reset the gravity direction to down every frame.
-            GravityDirection = Vector2.UnitY;
-
             // Look forward
             Vector2 forwardDirection = Vector2.UnitX * NPC.SafeDirectionTo(Target.Center).X.NonZeroSign();
             //float idealRotation = NPC.velocity.X * 0.05f + NPC.velocity.Y * NPC.spriteDirection * 0.097f + forwardDirection.ToRotation();
@@ -462,10 +463,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Vector2 targetPos = AttackStartOffset(Target.Center, (int)NextState);
             WalkToPositionAI(targetPos, speed);
             Timer++;
-            if (Timer < 60)
+            if (Timer < 80)
                 return;
             if (Math.Abs(targetPos.X - NPC.Center.X) < 100)
             {
+                Reset();
                 State = NextState;
                 return;
             }
@@ -475,7 +477,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             ref float ChosenLeg = ref AI2;
 
             WalkToPositionAI(Target.Center);
-            NPC.velocity *= 0.2f;
+            NPC.velocity *= 0.9f;
             int stabTelegraphTime = 40;
             int stabTime = 25;
             /*
@@ -503,12 +505,85 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void MediumWorm()
         {
-            GoToNeutral();
+            ref float WormCount = ref AI2;
+            int wormSegments = 10;
+            int wormFrequency = 15;
+            WalkToPositionAI(Target.Center, 0.6f);
+            if (Timer % wormFrequency == 0 && WormCount < wormSegments)
+            {
+                int segmentType = ModContent.NPCType<MediumWormBodySegment>();
+                if (WormCount == 0)
+                    segmentType = ModContent.NPCType<MediumWormHeadSegment>();
+                if (WormCount == wormSegments - 1)
+                    segmentType = ModContent.NPCType<MediumWormTailSegment>();
+
+                NPC minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center - Vector2.UnitY * NPC.height / 3, segmentType);
+                minion.velocity = -Vector2.UnitY * 10 + Vector2.UnitX * Main.rand.NextFloat(-7, 7);
+                NetSync(minion);
+                WormCount++;
+            }
+            if (++Timer > wormFrequency * wormSegments + 90)
+            {
+                GoToNeutral();
+            }
         }
         public void RubbleStomp()
         {
-            Timer++;
-            if (Timer > 160)
+            NPC.velocity *= 0.8f;
+            int stabTelegraphTime = 25;
+            int stabTime = 20;
+            
+            void TelegraphStab(int numStab)
+            {
+                ref float ChosenLeg = ref AI2;
+                if (numStab == 0)
+                    ChosenLeg = ClosestLegIndex(Target.Center);
+                else
+                    ChosenLeg = ClosestLegIndex(Legs[(int)ChosenLeg].GetEndPoint(), [(int)ChosenLeg]);
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 endPoint = leg.GetEndPoint();
+                Vector2 pos = endPoint + new Vector2(0, -200);
+                leg.StartCustomAnimation(NPC, pos, 1f / stabTelegraphTime);
+            }
+            void Stab()
+            {
+                ref float ChosenLeg = ref AI2;
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 endPoint = leg.GetEndPoint();
+                int dir = Math.Sign(endPoint.X - NPC.Center.X);
+                Vector2 pos = endPoint + new Vector2(dir * 90, 0);
+                pos = LumUtils.FindGround(pos.ToTileCoordinates(), GravityDirection).ToWorldCoordinates();
+                leg.StartCustomAnimation(NPC, pos, 1f / stabTime);
+                leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
+                {
+                    Vector2 endPoint = leg.GetEndPoint();
+                    if (DLCUtils.HostCheck)
+                    {
+                        int dir = Math.Sign(endPoint.X - npc.Center.X);
+                        int rubbleCount = 10;
+                        for (int i = 0; i < rubbleCount; i++)
+                        {
+                            Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(0.2f, 0.7f);
+                            Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                            if (p != null)
+                            {
+                                p.extraUpdates = 1;
+                            }
+                        }
+                    }
+                });
+            }
+            if (Timer == 0)
+                TelegraphStab(0);
+            if (Timer == stabTelegraphTime)
+                Stab();
+            if (Timer == stabTelegraphTime + stabTime)
+                TelegraphStab(1);
+            if (Timer == stabTelegraphTime + stabTime + stabTelegraphTime)
+                Stab();
+            if (++Timer > 160)
             {
                 GoToNeutral();
             }
@@ -541,12 +616,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             AI2 = 0;
             AI3 = 0;
         }
-        public int ClosestLegIndex(Vector2 pos)
+        public int ClosestLegIndex(Vector2 pos, List<int> except = null)
         {
-            int min = 0;
-            for (int i = 1; i < Legs.Length; i++)
-                if (Legs[i].GetEndPoint().Distance(pos) < Legs[min].GetEndPoint().Distance(pos))
+            int min = -1;
+            for (int i = 0; i < Legs.Length; i++)
+            {
+                if (except != null && except.Contains(i))
+                    continue;
+                if (min < 0 || Legs[i].GetEndPoint().Distance(pos) < Legs[min].GetEndPoint().Distance(pos))
                     min = i;
+            }
             return min;
         }
         #endregion
@@ -620,6 +699,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             float targetX = pos.X;
             int tiles = (int)((targetX - NPC.Center.X) / 16);
             int dir = Math.Sign(tiles);
+            if (dir == 0)
+                dir = 1;
             tiles = Math.Abs(tiles);
             Point point = LumUtils.FindGround(NPC.Center.ToTileCoordinates(), GravityDirection) - new Point(0, 1);
             for (int i = 0; i < tiles; i++)

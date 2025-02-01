@@ -16,6 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         /// The 0-1 interpolant of how far this leg is in its forward step animation.
         /// </summary>
         public float StepAnimationInterpolant;
+        public Action<PerforatorLeg, NPC> OnCompleteAnimation;
 
         /// <summary>
         /// The standard offset for this leg from its owner when not moving.
@@ -117,7 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Move limbs forward if necessary.
             if (StepAnimationInterpolant > 0f)
-                UpdateMovementAnimation(gravityDirection);
+                UpdateMovementAnimation(gravityDirection, owner);
             else
                 KeepLegInPlace(gravityDirection);
 
@@ -162,7 +163,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 idealStepPosition.Y = groundPositionSnapped.Y - MathHelper.Lerp(0f, 16f, tileSlopeInterpolant) + 2f;
         }
 
-        public void UpdateMovementAnimation(Vector2 gravityDirection)
+        public void UpdateMovementAnimation(Vector2 gravityDirection, NPC owner)
         {
             // Increment the animation interpolant.
             StepAnimationInterpolant += InterpolationSpeed; //0.064f;
@@ -180,6 +181,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 StepAnimationInterpolant = 0f;
                 SoundEngine.PlaySound(SoundID.Dig with { Pitch = -0.5f }, StepDestination);
+                if (OnCompleteAnimation != null)
+                {
+                    OnCompleteAnimation.Invoke(this, owner);
+                    OnCompleteAnimation = null;
+                }
             }
         }
 
@@ -225,5 +231,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
 
         public Vector2 GetEndPoint() => Leg.EndEffectorPosition;
+        public void SetAnimationEndAction(Action<PerforatorLeg, NPC> action) => OnCompleteAnimation = action;
     }
 }

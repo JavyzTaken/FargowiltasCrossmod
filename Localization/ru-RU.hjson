@@ -593,6 +593,9 @@ Mods: {
 			LargePerforatorTail.DisplayName: Большой Перфоратор
 			PermafrostBoss.DisplayName: Пермафрост
 			MutantBR.DisplayName: Мутант Б Р
+			// MediumWormBodySegment.DisplayName: Medium Worm Body Segment
+			// MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
+			// MediumWormTailSegment.DisplayName: Medium Worm Tail Segment
 		}
 
 		Projectiles: {
