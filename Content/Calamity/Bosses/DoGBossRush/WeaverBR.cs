@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
@@ -42,6 +43,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ProvidenceBossRush
         
         public override bool PreAI(NPC npc)
         {
+            if (!BossRushEvent.BossRushActive)
+                return base.PreAI(npc);
             CalamityGlobalNPC calnpc = npc.Calamity();
             StormWeaverHead weav = (StormWeaverHead)npc.ModNPC;
             //Main.NewText("ai: " + npc.ai[0] + ", " + npc.ai[1] + ", " + npc.ai[2] + ", " + npc.ai[3]);

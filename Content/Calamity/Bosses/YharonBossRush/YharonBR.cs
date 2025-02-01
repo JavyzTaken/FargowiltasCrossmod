@@ -1,4 +1,5 @@
-﻿using CalamityMod.NPCs.Bumblebirb;
+﻿using CalamityMod.Events;
+using CalamityMod.NPCs.Bumblebirb;
 using CalamityMod.NPCs.CalamityAIs.CalamityBossAIs;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
@@ -42,7 +43,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ProvidenceBossRush
         
         public override bool PreAI(NPC npc)
         {
-           if (npc.GetLifePercent() <= 0.53f && FuckerSpawnCounter == 0)
+            if (!BossRushEvent.BossRushActive)
+                return base.PreAI(npc);
+            if (npc.GetLifePercent() <= 0.53f && FuckerSpawnCounter == 0)
             {
                 FuckerSpawnCounter = 1;
                 NPC.NewNPCDirect(npc.GetSource_FromAI(), npc.Center, ModContent.NPCType<Bumblefuck>());

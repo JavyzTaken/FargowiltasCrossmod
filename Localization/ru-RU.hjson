@@ -592,7 +592,7 @@ Mods: {
 			LargePerforatorHead.DisplayName: Большой Перфоратор
 			LargePerforatorTail.DisplayName: Большой Перфоратор
 			PermafrostBoss.DisplayName: Пермафрост
-			// MutantBR.DisplayName: Mutant B R
+			MutantBR.DisplayName: Мутант Б Р
 		}
 
 		Projectiles: {

@@ -1,4 +1,5 @@
-New Update: v1.1.1.03
+New Update: v1.1.1.05
 
-Reworked the Boss Rush - now only includes buffed-up post-Moon Lord bosses, with some surprises
-Fixed multiplayer boss sync issue, affecting Empress of Light and other vanilla bosses
+-Updated to Souls Mod v1.7.1.4
+-Fixed Mutant attack choice not working correctly after DLC attacks
+-Added banner recipe for Necroplasm

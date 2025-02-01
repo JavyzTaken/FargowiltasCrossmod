@@ -1,6 +1,10 @@
 ﻿using CalamityMod.Systems;
 using CalamityMod.World;
+using Fargowiltas.Projectiles;
 using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasSouls.Content.NPCs;
+using FargowiltasSouls.Core.Systems;
+using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -26,14 +30,25 @@ namespace FargowiltasCrossmod.Core.Calamity
                 {
                     CalamityWorld.revenge = true;
                     CalamityWorld.death = true;
+
+                    int deviType = ModContent.NPCType<UnconsciousDeviantt>();
+                    if (!WorldSavingSystem.SpawnedDevi && !NPC.AnyNPCs(deviType))
+                    {
+                        WorldSavingSystem.SpawnedDevi = true;
+
+                        Vector2 spawnPos = (Main.zenithWorld || Main.remixWorld) ? Main.LocalPlayer.Center : Main.LocalPlayer.Center - 1000 * Vector2.UnitY;
+                        Projectile.NewProjectile(Main.LocalPlayer.GetSource_Misc(""), spawnPos, Vector2.Zero, ModContent.ProjectileType<SpawnProj>(), 0, 0, Main.myPlayer, deviType);
+
+                        FargoSoulsUtil.PrintLocalization("Announcement.HasAwoken", new Color(175, 75, 255), Language.GetTextValue("Mods.Fargowiltas.NPCs.Deviantt.DisplayName"));
+                    }
                 }
                 bool emode = value;
                 if (ModCompatibility.InfernumMode.Loaded)
                     if (ModCompatibility.InfernumMode.InfernumDifficulty && CalDLCConfig.Instance.InfernumDisablesEternity)
                         emode = false;
 
-                FargowiltasSouls.Core.Systems.WorldSavingSystem.EternityMode = emode;
-                FargowiltasSouls.Core.Systems.WorldSavingSystem.ShouldBeEternityMode = emode;
+                WorldSavingSystem.EternityMode = emode;
+                WorldSavingSystem.ShouldBeEternityMode = emode;
                 if (Main.netMode != NetmodeID.SinglePlayer)
                     PacketManager.SendPacket<EternityDeathPacket>();
             }
