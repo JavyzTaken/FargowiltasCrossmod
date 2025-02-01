@@ -38,6 +38,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public Vector2 MovingDefaultStepPosition;
 
         /// <summary>
+        /// The speed at which the current animation interpolates at.
+        /// </summary>
+        public float InterpolationSpeed;
+
+        /// <summary>
         /// The kinematic chain that governs the orientation of this leg.
         /// </summary>
         public KinematicChain Leg;
@@ -160,7 +165,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public void UpdateMovementAnimation(Vector2 gravityDirection)
         {
             // Increment the animation interpolant.
-            StepAnimationInterpolant += 0.05f; //0.064f;
+            StepAnimationInterpolant += InterpolationSpeed; //0.064f;
 
             // Calculate the current movement destination based on the animation's completion.
             // This gradually goes from the starting position and ends up at the step destination, making a slight upward arc while doing so.
@@ -185,7 +190,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Update(StepDestination);
         }
 
-        public void StartStepAnimation(NPC owner, Vector2 gravityDirection, Vector2 forwardDirection)
+        public void StartStepAnimation(NPC owner, Vector2 gravityDirection, Vector2 forwardDirection, float interpolationSpeed = 0.05f)
         {
             // Calculate the position to step towards.
             float ownerDirection = Vector2.Dot(owner.velocity, forwardDirection).NonZeroSign();
@@ -201,9 +206,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = LumUtils.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, 20f);
+            InterpolationSpeed = interpolationSpeed;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);
         }
+
+        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f)
+        {
+            // Start the animation.
+            StepAnimationInterpolant = 0.02f;
+            EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
+            StepDestination = endPosition;
+            InterpolationSpeed = interpolationSpeed;
+
+            // Apply slope vertical offsets to the step position.
+            ApplySlopeOffsets(ref StepDestination);
+        }
+
+        public Vector2 GetEndPoint() => Leg.EndEffectorPosition;
     }
 }

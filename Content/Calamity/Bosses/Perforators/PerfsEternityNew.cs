@@ -1,18 +1,23 @@
-﻿using CalamityMod.Events;
+﻿using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.NPCs.TownNPCs;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common.InverseKinematics;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -25,14 +30,46 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternityNew : CalDLCEmodeBehavior
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
 
         #region Fields
+        // Basic targeting and movement fields
+        public Player Target => Main.player[NPC.target];
+        public static int HeightAboveGround = 275;
+        public static float Acceleration => 0.14f;
+        public static float MaxMovementSpeed => 12f;
         #region Fight Related
+
         public float SpawnProgress;
         public static int SpawnTime = 60 * 3;
+
+        public ref float State => ref NPC.ai[0];
+        public ref float Timer => ref NPC.ai[1];
+        public ref float AI2 => ref NPC.ai[2];
+        public ref float AI3 => ref NPC.ai[3];
+        public enum States
+        {
+            // misc
+            Opening = 0,
+            MoveToPlayer,
+            // attacks
+            LegStabs
+        }
+        public List<States> Attacks
+        {
+            get
+            {
+                List<States> attacks =
+                    [
+                    States.LegStabs,
+                    ];
+                //if (!PhaseOne)
+                //    attacks.Add();
+                return attacks;
+            }
+        }
         #endregion
 
         #region Legs Related
@@ -42,9 +79,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public PerforatorLeg[] Legs;
         public int[][][] LegSprites; // don't ask
         public Vector2[] LegBraces;
-
-        public Player Target => Main.player[NPC.target];
-
 
         public bool WasWalkingUpward
         {
@@ -61,51 +95,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public const int LegPartLength = 80;
         public const int JointLength = 28;
-
-        /// <summary>
-        /// The acceleration of the spider's dash.
-        /// </summary>
-        public static float DashAcceleration => 0.14f;
-
-        /// <summary>
-        /// The maximum speed at which the spider can dash.
-        /// </summary>
-        public static float MaxDashSpeed => 10f;
-
-        /// <summary>
-        /// The default quantity of gravity imposed upon the spider.
-        /// </summary>
-        public const float DefaultGravity = 0.2f;
-
-        /// <summary>
-        /// The amount of deceleration imposed upon forward motion when the spider is undergoing spring motion due to being too far from/near to the ground.
-        /// </summary>
-        public const float ForwardDecelerationDuringSpringMotion = 0.04f;
-
-        /// <summary>
-        /// The amount of acceleration used when the spider begins walking up walls.
-        /// </summary>
-        public const float WallClimbAcceleration = 0.1f;
-
-        /// <summary>
-        /// The maximum speed that the spider can travel at when climbing up walls.
-        /// </summary>
-        public const float MaxWallClimbSpeed = 4.5f;
-
-        /// <summary>
-        /// How long, in frames, dashes last.
-        /// </summary>
-        public static readonly int DashDuration = LumUtils.SecondsToFrames(1.5f);
-
-        /// <summary>
-        /// The minimum amount of time a dash delay can last.
-        /// </summary>
-        public static readonly int MinDashDelayDuration = LumUtils.SecondsToFrames(1.5f);
-
-        /// <summary>
-        /// The maximum amount of time a dash delay can last.
-        /// </summary>
-        public static readonly int MaxDashDelayDuration = LumUtils.SecondsToFrames(3.5f);
         #endregion 
 
         #endregion Fields and Properties
@@ -210,7 +199,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 spriteEffects = SpriteEffects.FlipHorizontally;
 
             Texture2D texture2D15 = TextureAssets.Npc[NPC.type].Value;
-            Vector2 halfSizeTexture = new Vector2((float)(TextureAssets.Npc[NPC.type].Value.Width / 2), (float)(TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2));
+            Vector2 halfSizeTexture = new((float)(TextureAssets.Npc[NPC.type].Value.Width / 2), (float)(TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2));
 
             Vector2 drawLocation = NPC.Center - screenPos;
             drawLocation -= new Vector2((float)texture2D15.Width, (float)(texture2D15.Height / Main.npcFrameCount[NPC.type])) * NPC.scale / 2f;
@@ -301,7 +290,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         }
                         Vector2 partOffset = leg[j].Offset.SafeNormalize(Vector2.Zero) * (joint ? jointLength : partLength);
 
-                        direction = (leg.EndEffectorPosition.X - LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                        int spriteDir = (leg.EndEffectorPosition.X - LegBraces[i].X).NonZeroSign();
+                        if (k == 0 && j == 0)
+                            spriteDir *= -1;
+                        direction = spriteDir == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
                         start = previousPosition - screenPos;
                         end = previousPosition + partOffset - screenPos;
                         if (flip)
@@ -343,14 +335,49 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 NPC.velocity.Y += 1;
                 return false;
             }
-            Player target = Main.player[NPC.target];
-            Vector2 toTarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
 
             //low ground
             if (Main.LocalPlayer.active && !Main.LocalPlayer.ghost && !Main.LocalPlayer.dead && NPC.Distance(Main.LocalPlayer.Center) < 2000)
                 Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
+            switch ((States)State)
+            {
+                case States.Opening:
+                    Opening();
+                    break;
+                case States.MoveToPlayer:
+                    MoveToPlayerForAttack();
+                    break;
+                case States.LegStabs:
+                    LegStabs();
+                    break;
+            }
+            ManageLegs();
 
-            if (SpawnProgress < 1)
+            return false;
+        }
+        public void ManageLegs()
+        {
+            // Reset the gravity direction to down every frame.
+            GravityDirection = Vector2.UnitY;
+
+            // Look forward
+            Vector2 forwardDirection = Vector2.UnitX * NPC.SafeDirectionTo(Target.Center).X.NonZeroSign();
+            //float idealRotation = NPC.velocity.X * 0.05f + NPC.velocity.Y * NPC.spriteDirection * 0.097f + forwardDirection.ToRotation();
+            if (NPC.velocity.Length() >= 4f && Math.Sign(NPC.velocity.X) == (int)forwardDirection.X)
+                NPC.spriteDirection = (int)forwardDirection.X;
+            NPC.rotation = NPC.velocity.X / 20;
+            //NPC.rotation = NPC.rotation.AngleTowards(idealRotation, 0.09f).AngleLerp(idealRotation, 0.03f);
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < Legs.Length; j++)
+                    Legs[j]?.Update(NPC);
+            }
+        }
+        #region State Methods
+        public void Opening()
+        {
+            if (Timer < 1)
             {
                 // Ensure that legs are already grounded when the Perforator has fully spawned in.
                 for (int i = 0; i < 2; i++)
@@ -359,12 +386,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         Legs[j]?.Update(NPC);
                 }
 
-                SpawnProgress += 1f / SpawnTime;
-                if (SpawnProgress < 0.8f)
+                Timer += 1f / SpawnTime;
+                if (Timer < 0.8f)
                     NPC.Opacity = 0f;
-                else if (SpawnProgress < 1f)
+                else if (Timer < 1f)
                 {
-                    NPC.Opacity = (SpawnProgress - 0.8f) / 0.2f;
+                    NPC.Opacity = (Timer - 0.8f) / 0.2f;
                     NPC.dontTakeDamage = false;
                 }
                 else
@@ -374,134 +401,181 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     // do a little "spawn animation" thing
                     NPC.netUpdate = true;
                 }
-            }
-
-
-
-            NewAI();
-            return false;
-        }
-        public void NewAI()
-        {
-            // Reset the gravity direction to down every frame.
-            GravityDirection = Vector2.UnitY;
-
-            bool walkTowardsPlayer = true;
-            Vector2 forwardDirectionToPlayer = Vector2.UnitX * NPC.SafeDirectionTo(Target.Center).X.NonZeroSign();
-
-            // Check if the spider should walk up walls or not and act accordingly.
-            bool walkingUpward = CheckIfShouldWalkUpWalls(forwardDirectionToPlayer);
-            if (walkingUpward)
-            {
-                GravityDirection = forwardDirectionToPlayer;
-                walkTowardsPlayer = false;
-
-                if (NPC.velocity.Y >= -MaxWallClimbSpeed)
-                    NPC.velocity.Y -= WallClimbAcceleration;
-            }
-
-            if (walkingUpward != WasWalkingUpward)
-            {
-                WasWalkingUpward = walkingUpward;
-                if (walkingUpward)
-                {
-                    NPC.velocity.Y -= 7f;
-                    NPC.position.X += NPC.SafeDirectionTo(Target.Center).X * 16f;
-                }
-
-                NPC.netUpdate = true;
-            }
-
-            Vector2 forwardDirection = new(GravityDirection.Y, GravityDirection.X);
-            Vector2 absoluteForwardDirection = new(Math.Abs(GravityDirection.Y), Math.Abs(GravityDirection.X));
-            Vector2 absoluteGravityDirection = new(Math.Abs(GravityDirection.X), Math.Abs(GravityDirection.Y));
-            Vector2 groundPosition = LumUtils.FindGround(NPC.Center.ToTileCoordinates(), GravityDirection).ToWorldCoordinates();
-            float distanceFromGround = Vector2.Distance(NPC.Center, groundPosition);
-
-            if (distanceFromGround >= 300f)
-            {
-                NPC.velocity += GravityDirection * DefaultGravity;
-                NPC.velocity -= NPC.velocity * absoluteForwardDirection * ForwardDecelerationDuringSpringMotion;
-            }
-            else if (distanceFromGround <= 250f)
-            {
-                NPC.velocity -= GravityDirection * DefaultGravity;
-                NPC.velocity -= NPC.velocity * absoluteForwardDirection * ForwardDecelerationDuringSpringMotion;
+                WalkToPositionAI(Target.Center);
+                SpawnProgress = Timer;
             }
             else
             {
-                NPC.velocity -= NPC.velocity * absoluteGravityDirection * 0.16f;
-
-                if (walkTowardsPlayer)
-                {
-                    float perpendicularDistanceFromPlayer = Math.Abs(LumUtils.SignedDistanceToLine(NPC.Center, Target.Center, forwardDirection));
-
-                    // Slow down near the target.
-                    if (perpendicularDistanceFromPlayer <= 120f)
-                        NPC.velocity -= NPC.velocity * forwardDirection * 0.06f;
-
-                    // Move forward.
-                    else if (Math.Abs(Vector2.Dot(NPC.velocity, forwardDirection)) < MaxDashSpeed)
-                        NPC.velocity += NPC.SafeDirectionTo(Target.Center) * forwardDirection * DashAcceleration;
-
-                    // Slow down if the speed limit has been exceeded.
-                    else
-                        NPC.velocity -= NPC.velocity * forwardDirection * 0.04f;
-                }
-                else if (!walkingUpward)
-                    NPC.velocity -= NPC.velocity * forwardDirection * 0.05f;
-            }
-
-            // Disable gravity if minimal movement is happening.
-            NPC.noTileCollide = NPC.velocity.Length() <= 1.9f && !walkingUpward;
-
-            // Look forward.
-            float idealRotation = NPC.velocity.X * 0.05f + NPC.velocity.Y * NPC.spriteDirection * 0.097f + forwardDirection.ToRotation();
-            if (NPC.velocity.Length() >= 0.5f)
-                NPC.spriteDirection = Vector2.Dot(NPC.velocity, forwardDirection).NonZeroSign();
-            if (Math.Abs(forwardDirection.Y) >= 0.9f)
-            {
-                idealRotation += MathF.PI;
-                NPC.spriteDirection *= -1;
-            }
-            NPC.rotation = NPC.rotation.AngleTowards(idealRotation, 0.09f).AngleLerp(idealRotation, 0.03f);
-
-            for (int i = 0; i < 2; i++)
-            {
-                for (int j = 0; j < Legs.Length; j++)
-                    Legs[j]?.Update(NPC);
+                SpawnProgress = 1;
+                GoToNeutral();
             }
         }
-        public bool CheckIfShouldWalkUpWalls(Vector2 forwardDirectionToPlayer)
+        public void MoveToPlayerForAttack()
         {
-            // Check if the target can be detected. If they can, there's no reason to walk on walls, as adhering to natural gravity is sufficient to reach them.
-            if (Collision.CanHitLine(NPC.Center, 1, 1, Target.Center, 1, 1))
-                return false;
+            float speed = 0.5f;
+            if (Timer > 60)
+                speed += (Timer - 60) / 180f;
+            WalkToPositionAI(Target.Center, speed);
+            Timer++;
+            if (Timer < 60)
+                return;
+            if (Math.Abs(Target.Center.X - NPC.Center.X) < 400)
+                ChooseAttack();
+        }
+        public void LegStabs()
+        {
+            ref float ChosenLeg = ref AI2;
 
-            // Check up to 90 pixels forward and determine if there's an obstacle within that distance.
-            bool obstacleAhead = false;
-            float forwardCheckDistance = 90f;
-            Vector2 obstaclePosition = NPC.Center + forwardDirectionToPlayer * forwardCheckDistance;
-            while (!Collision.CanHit(NPC.Center, 1, 1, obstaclePosition, 1, 1))
+            WalkToPositionAI(Target.Center);
+            NPC.velocity *= 0.2f;
+            int stabTelegraphTime = 40;
+            int stabTime = 25;
+            /*
+            if (Timer == 0)
             {
-                // If there was an obstacle, make note of that and step back up in front of the obstacle.
-                obstaclePosition -= forwardDirectionToPlayer * 16f;
-                obstacleAhead = true;
+                ChosenLeg = ClosestLegIndex(Target.Center);
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                int sign = Math.Sign(leg.GetEndPoint().X - Target.Center.X);
+                Vector2 pos = Target.Center + new Vector2(sign * 100, -200);
+                leg.StartCustomAnimation(NPC, pos, 1f / stabTelegraphTime);
             }
-            obstaclePosition += forwardDirectionToPlayer * 16f;
-            // If there is not obstacle, terminate this method immediately- There would be no wall to walk on in the first place.
-            if (!obstacleAhead)
-                return false;
+            if (Timer == stabTelegraphTime)
+            {
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 offset = Vector2.Normalize(Target.Center - leg.GetEndPoint()) * 60;
+                leg.StartCustomAnimation(NPC, Target.Center + offset, 1f / stabTime);
+            }
+            */
+            if (++Timer > stabTelegraphTime + stabTime)
+            {
+                GoToNeutral();
+            }
+                
+        }
+        #endregion
+        #region Help Methods
+        public void ChooseAttack()
+        {
+            Reset();
+            var attacks = Attacks;
+            State = (int)Main.rand.NextFromCollection(attacks);
+        }
+        public void GoToNeutral()
+        {
+            State = (int)States.MoveToPlayer;
+            Reset();
+        }
+        public void Reset()
+        {
+            Timer = 0;
+            AI2 = 0;
+            AI3 = 0;
+        }
+        public int ClosestLegIndex(Vector2 pos)
+        {
+            int min = 0;
+            for (int i = 1; i < Legs.Length; i++)
+                if (Legs[i].GetEndPoint().Distance(pos) < Legs[min].GetEndPoint().Distance(pos))
+                    min = i;
+            return min;
+        }
+        #endregion
+        #region Walking Methods
+        public void WalkToPositionAI(Vector2 pos, float speedMod = 1f)
+        {
+            bool canWalkToPlayer = CheckIfCanWalk(pos, out Point groundAtPlayer);
+            groundAtPlayer = LumUtils.FindGround(groundAtPlayer, GravityDirection);
 
-            // Lastly, check how far up the height of the found obstacle is.
-            // If it's too short, ignore it.
-            float minObstacleHeight = 200f;
-            float obstacleHeight = LumUtils.FindGroundVertical(obstaclePosition.ToTileCoordinates()).ToWorldCoordinates().Distance(obstaclePosition);
-            if (obstacleHeight < minObstacleHeight)
-                return !Collision.SolidCollision(NPC.Center, 1, 64);
+            if (canWalkToPlayer)
+            {
+                // check if player is reasonably above ground
+                Vector2 groundAtPlayerV = groundAtPlayer.ToWorldCoordinates();
+                bool validAboveGround = true;
+                int playerPointY = pos.ToTileCoordinates().Y;
+                int dir = Math.Sign(playerPointY - groundAtPlayer.Y); // should be negative
+                if (dir < 0)
+                {
+                    while (groundAtPlayer.Y != playerPointY)
+                    {
+                        groundAtPlayer.Y += dir;
+                        if (Main.tile[groundAtPlayer.X, groundAtPlayer.Y].IsTileSolid())
+                        {
+                            validAboveGround = false;
+                            break;
+                        }
+                    }
+                }
+                else if (dir > 0)
+                    validAboveGround = false;
 
+                if (validAboveGround) // position has line of sight to the ground below it
+                {
+                    if (Math.Abs(groundAtPlayerV.Y - pos.Y) < HeightAboveGround * 2) // position isn't too far above ground
+                    {
+                        // all good! we can walk
+                        WalkTowards(pos, speedMod);
+                        return;
+                    }
+                }
+            }
+            FlyTowards(pos, speedMod);
+        }
+        public void WalkTowards(Vector2 pos, float speedMod)
+        {
+            int dir = Math.Sign(pos.X - NPC.Center.X);
+            Vector2 desiredPos = NPC.Center + dir * Vector2.UnitX * 80;
+            desiredPos = LumUtils.FindGround(desiredPos.ToTileCoordinates(), GravityDirection).ToWorldCoordinates() - Vector2.UnitY * HeightAboveGround;
+            Movement(desiredPos, speedMod);
+        }
+        public void FlyTowards(Vector2 pos, float speedMod)
+        {
+            Vector2 desiredPos = pos;
+            desiredPos = LumUtils.FindGround(desiredPos.ToTileCoordinates(), GravityDirection).ToWorldCoordinates() - Vector2.UnitY * HeightAboveGround;
+            Movement(desiredPos, speedMod);
+        }
+        public void Movement(Vector2 desiredPos, float speedMod)
+        {
+            speedMod *= 1.6f;
+            float accel = Acceleration * speedMod;
+            float decel = Acceleration * 2 * speedMod;
+            float resistance = NPC.velocity.Length() * accel / (MaxMovementSpeed * speedMod);
+            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel - resistance, decel + resistance);
+        }
+        // if there's a reasonable ground path to player's X position from the spider
+        // does not guarantee player to be at a reasonable spot above that ground position
+        public bool CheckIfCanWalk(Vector2 pos, out Point groundAtPlayer)
+        {
+            int maxHeight = HeightAboveGround * 2 / 16; 
+
+            float targetX = pos.X;
+            int tiles = (int)((targetX - NPC.Center.X) / 16);
+            int dir = Math.Sign(tiles);
+            tiles = Math.Abs(tiles);
+            Point point = LumUtils.FindGround(NPC.Center.ToTileCoordinates(), GravityDirection) - new Point(0, 1);
+            for (int i = 0; i < tiles; i++)
+            {
+                point.X += dir;
+                // make sure we are along ground
+                // search for surface tile
+                // (searches up if we're at solid tile, down if we're at air)
+                Point ground = LumUtils.FindGround(point, GravityDirection);
+
+                // abs is the height difference between this block and previous block
+                // if it's too great, we can't simply walk to the player
+                if (Math.Abs(ground.X - point.X) < maxHeight) // height difference small enough
+                    continue;
+                else // height difference too big
+                {
+                    groundAtPlayer = new(); // irrelevant
+                    return false;
+                }
+            }
+            groundAtPlayer = point;
+            // we got through iteration, each step passed the height check
             return true;
         }
+        #endregion
         #endregion
     }
 }
