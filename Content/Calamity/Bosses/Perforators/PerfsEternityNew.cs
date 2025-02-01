@@ -30,7 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternityNew : CalDLCEmodeBehavior
     {
-        public const bool Enabled = true;
+        public const bool Enabled = false;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
 
@@ -49,13 +49,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public ref float Timer => ref NPC.ai[1];
         public ref float AI2 => ref NPC.ai[2];
         public ref float AI3 => ref NPC.ai[3];
+        public ref float NextState => ref NPC.localAI[0];
+        public ref float Phase => ref NPC.localAI[2];
+        public bool PhaseTwo => Phase > 0;
         public enum States
         {
             // misc
             Opening = 0,
             MoveToPlayer,
             // attacks
-            LegStabs
+            SmallWorm,
+            MediumWorm,
+            RubbleStomp,
+            LegAssault,
+            // phase 2
+            BigWorm,
+            GroundSpikes
         }
         public List<States> Attacks
         {
@@ -63,12 +72,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 List<States> attacks =
                     [
-                    States.LegStabs,
+                    States.SmallWorm,
+                    States.MediumWorm,
+                    States.RubbleStomp,
+                    States.LegAssault,
                     ];
-                //if (!PhaseOne)
-                //    attacks.Add();
+                if (PhaseTwo)
+                {
+                    attacks.Add(States.BigWorm);
+                    attacks.Add(States.GroundSpikes);
+                }
                 return attacks;
             }
+        }
+        public Vector2 AttackStartOffset(Vector2 target, int State)
+        {
+            switch ((States)State)
+            {
+                // far attacks
+                case States.RubbleStomp:
+                case States.LegAssault:
+                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 500;
+                    break;
+            }
+            return target;
         }
         #endregion
 
@@ -314,11 +341,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-
+            for (int i = 0; i < NPC.localAI.Length; i++)
+                binaryWriter.Write(NPC.localAI[i]);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
-
+            for (int i = 0; i < NPC.localAI.Length; i++)
+                NPC.localAI[i] = binaryReader.ReadSingle();
         }
         #region AI
         public override bool PreAI()
@@ -347,8 +376,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 case States.MoveToPlayer:
                     MoveToPlayerForAttack();
                     break;
-                case States.LegStabs:
-                    LegStabs();
+                case States.SmallWorm:
+                    SmallWorm();
+                    break;
+                case States.MediumWorm:
+                    MediumWorm();
+                    break;
+                case States.RubbleStomp:
+                    RubbleStomp();
+                    break;
+                case States.LegAssault:
+                    LegAssault();
+                    break;
+                case States.BigWorm:
+                    BigWorm();
+                    break;
+                case States.GroundSpikes:
+                    GroundSpikes();
                     break;
             }
             ManageLegs();
@@ -415,14 +459,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             float speed = 0.5f;
             if (Timer > 60)
                 speed += (Timer - 60) / 180f;
-            WalkToPositionAI(Target.Center, speed);
+            Vector2 targetPos = AttackStartOffset(Target.Center, (int)NextState);
+            WalkToPositionAI(targetPos, speed);
             Timer++;
             if (Timer < 60)
                 return;
-            if (Math.Abs(Target.Center.X - NPC.Center.X) < 400)
-                ChooseAttack();
+            if (Math.Abs(targetPos.X - NPC.Center.X) < 100)
+            {
+                State = NextState;
+                return;
+            }
         }
-        public void LegStabs()
+        public void SmallWorm()
         {
             ref float ChosenLeg = ref AI2;
 
@@ -453,18 +501,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
                 
         }
+        public void MediumWorm()
+        {
+            GoToNeutral();
+        }
+        public void RubbleStomp()
+        {
+            Timer++;
+            if (Timer > 160)
+            {
+                GoToNeutral();
+            }
+        }
+        public void LegAssault()
+        {
+            GoToNeutral();
+        }
+        public void BigWorm()
+        {
+            GoToNeutral();
+        }
+        public void GroundSpikes()
+        {
+            GoToNeutral();
+        }
         #endregion
         #region Help Methods
-        public void ChooseAttack()
-        {
-            Reset();
-            var attacks = Attacks;
-            State = (int)Main.rand.NextFromCollection(attacks);
-        }
         public void GoToNeutral()
         {
             State = (int)States.MoveToPlayer;
             Reset();
+            var attacks = Attacks;
+            NextState = (int)Main.rand.NextFromCollection(attacks);
+            Main.NewText(Enum.GetName(typeof(States), (States)NextState));
         }
         public void Reset()
         {
