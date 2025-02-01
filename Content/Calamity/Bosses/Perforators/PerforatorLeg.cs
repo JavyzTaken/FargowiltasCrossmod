@@ -65,13 +65,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Add(new(LegSizeFactor * legLength2));
             Index = index;
         }
-        Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
+        public Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
+        public Vector2 DefaultPosition(PerfsEternityNew owner) => LegCenter(owner) + DefaultOffset;
         public void Update(NPC owner)
         {
             var hive = owner.GetDLCBehavior<PerfsEternityNew>();
             if (owner.IsABestiaryIconDummy)
             {
-                Leg.Update(LegCenter(hive) + DefaultOffset);
+                Leg.Update(DefaultPosition(hive));
                 return;
             }
 
@@ -90,7 +91,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Initialize the step destination if necessary.
             if (StepDestination == Vector2.Zero)
-                StepDestination = LegCenter(hive) + DefaultOffset;
+                StepDestination = DefaultPosition(hive);
 
             // Keep the leg below the owner if they're falling.
             if (falling)
@@ -98,7 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Prevent the leg from being behind walls.
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
-            Vector2 idealDefaultStepPosition = LumUtils.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
+            Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
                 if (Collision.CanHitLine(LegCenter(hive), 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
@@ -211,7 +212,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
-            StepDestination = LumUtils.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, 20f);
+            StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
 
             // Apply slope vertical offsets to the step position.
