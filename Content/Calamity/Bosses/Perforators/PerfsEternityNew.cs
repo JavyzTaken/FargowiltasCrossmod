@@ -67,11 +67,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // attacks
             SmallWorm,
             MediumWorm,
+            BigWorm,
             RubbleStomp,
             LegAssault,
             // phase 2
-            BigWorm,
-            GroundSpikes
+            GroundSpikes,
+            GroundSpikesAngled,
         }
         public List<States> Attacks
         {
@@ -82,13 +83,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     States.SmallWorm,
                     States.RubbleStomp,
                     States.LegAssault,
+                    States.BigWorm
                     ];
                 if (MediumWormCooldown <= 0)
                     attacks.Add(States.MediumWorm);
                 if (PhaseTwo)
                 {
-                    attacks.Add(States.BigWorm);
                     attacks.Add(States.GroundSpikes);
+                    attacks.Add(States.GroundSpikesAngled);
                 }
                 return attacks;
             }
@@ -558,7 +560,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 }
                 SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
             }
-            if (++Timer > 160)
+            if (++Timer > 220)
             {
                 GoToNeutral();
                 MediumWormCooldown = 60 * 25;
@@ -685,6 +687,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             else
             {
                 Main.NewText("what? how?");
+                Main.NewText($"illegal position is {p} and dir is {direction}");
                 return p;
             }
         }
@@ -747,7 +750,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             speedMod *= 1.6f;
             float accel = Acceleration * speedMod;
             float decel = Acceleration * 2 * speedMod;
-            float resistance = NPC.velocity.Length() * accel / (MaxMovementSpeed * speedMod);
+            float max = MaxMovementSpeed * speedMod;
+            if (max > Target.velocity.Length() + MaxMovementSpeed)
+                max = Target.velocity.Length() + MaxMovementSpeed;
+            float resistance = NPC.velocity.Length() * accel / max;
             NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel - resistance, decel + resistance);
         }
         // if there's a reasonable ground path to player's X position from the spider
@@ -773,8 +779,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                 // abs is the height difference between this block and previous block
                 // if it's too great, we can't simply walk to the player
-                if (Math.Abs(ground.X - point.X) < maxHeight) // height difference small enough
+                if (Math.Abs(ground.Y - point.Y) < maxHeight) // height difference small enough
+                {
                     continue;
+                }
                 else // height difference too big
                 {
                     groundAtPlayer = new(); // irrelevant

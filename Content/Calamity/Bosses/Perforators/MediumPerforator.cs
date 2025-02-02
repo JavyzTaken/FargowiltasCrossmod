@@ -7,6 +7,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
@@ -47,8 +48,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (!WorldSavingSystem.EternityMode) return;
 
-            if (DLCUtils.HostCheck)
-                Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -7).RotatedBy(Main.rand.NextFloat(-0.7f, 0.7f)), ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+            if (DLCUtils.HostCheck && npc.HasPlayerTarget)
+            {
+                int p = Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<GoldenShowerHoming>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer, npc.target, -40);
+                if (p.IsWithinBounds(Main.maxProjectiles))
+                {
+                    Main.projectile[p].extraUpdates = 1;
+                    Main.projectile[p].netUpdate = true;
+                }
+            }
+                
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

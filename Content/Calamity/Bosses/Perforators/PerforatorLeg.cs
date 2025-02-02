@@ -208,6 +208,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             else
                 aimAheadOffset /= LegSizeFactor;
             aimAheadOffset.X += Main.rand.NextFloatDirection() * 20f;
+            if (aimAheadOffset.HasNaNs())
+                aimAheadOffset = Vector2.Zero;
 
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
