@@ -699,6 +699,7 @@ Mods: {
 			// BrimflameBurst.DisplayName: Brimflame Burst
 			// ClamSlam.DisplayName: Clam Slam
 			// BatMode.DisplayName: Bat Mode
+			// PerfExplosion.DisplayName: Perf Explosion
 		}
 
 		Buffs: {

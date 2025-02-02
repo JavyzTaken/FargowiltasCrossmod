@@ -1,8 +1,24 @@
-﻿using CalamityMod.NPCs.Perforator;
+﻿using CalamityMod.Events;
+using CalamityMod.NPCs;
+using CalamityMod.NPCs.Perforator;
+using CalamityMod.Projectiles.Boss;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
-using FargowiltasCrossmod.Core.Common.BaseClasses;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles.Masomode;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,345 +26,162 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class LargePerforatorHead : WormHead
+    public class LargePerforator : CalDLCEmodeExtraGlobalNPC
     {
-        public override string Texture => "CalamityMod/NPCs/Perforator/PerforatorHeadLarge";
-        public override void SetStaticDefaults()
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchTypeRange(
+            ModContent.NPCType<PerforatorHeadLarge>(),
+            ModContent.NPCType<PerforatorBodyLarge>(),
+            ModContent.NPCType<PerforatorTailLarge>()
+        );
+        public Vector2 VelocityReal = Vector2.UnitY * 16;
+        public int Timer = 0;
+        public override void SetDefaults(NPC entity)
         {
+            if (!WorldSavingSystem.EternityMode) return;
+            entity.Opacity = 1f;
+        }
+        public override void SpawnNPC(int npc, int tileX, int tileY)
+        {
+            base.SpawnNPC(npc, tileX, tileY);
+        }
 
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (npc.type == ModContent.NPCType<PerforatorBodyLarge>())
             {
-                Hide = true,
-            };
+                SpriteEffects spriteEffects = SpriteEffects.None;
+                if (npc.spriteDirection == 1)
+                    spriteEffects = SpriteEffects.FlipHorizontally;
 
-            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
+                Texture2D texture2D15 = npc.localAI[3] == 1f ? PerforatorBodyLarge.AltTexture.Value : TextureAssets.Npc[npc.type].Value;
+                Vector2 halfSizeTexture = new Vector2((float)(TextureAssets.Npc[npc.type].Value.Width / 2), (float)(TextureAssets.Npc[npc.type].Value.Height / 2));
 
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
+                Vector2 drawLocation = npc.Center - screenPos;
+                drawLocation -= new Vector2((float)texture2D15.Width, (float)(texture2D15.Height)) * npc.scale / 2f;
+                drawLocation += halfSizeTexture * npc.scale + new Vector2(0f, npc.gfxOffY);
+                spriteBatch.Draw(texture2D15, drawLocation, npc.frame, npc.GetAlpha(drawColor), npc.rotation, halfSizeTexture, npc.scale, spriteEffects, 0f);
 
-            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
+                texture2D15 = npc.localAI[3] == 1f ? PerforatorBodyLarge.AltTexture_Glow.Value : PerforatorBodyLarge.Texture_Glow.Value;
+                Color glowmaskColor = Color.Lerp(Color.White, Color.Yellow, 0.5f) * npc.Opacity;
 
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-            NPCID.Sets.MPAllowedEnemies[Type] = true;
-        }
-        public override void SetDefaults()
-        {
-            NPC.width = 70;
-            NPC.height = 84;
-            NPC.scale = 1.2f;
-            NPC.lifeMax = 1200;
-            NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.defense = 20;
-            NPC.noTileCollide = true;
-            NPC.noGravity = true;
-            NPC.knockBackResist = 0f;
-            NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(silver: 20);
-            NPC.SpawnWithHigherTime(30);
-            NPC.aiStyle = -1;
-            NPC.damage = 40;
-            NPC.netAlways = true;
-            NPC.behindTiles = true;
-        }
-        public override void ApplyDifficultyAndPlayerScaling(int numPlayers, float balance, float bossAdjustment)
-        {
-
-            base.ApplyDifficultyAndPlayerScaling(numPlayers, balance, bossAdjustment);
-        }
-
-        public override void AI()
-        {
-            NPC.netUpdate = true; //fuck you worm mp code
-            if (!NPC.AnyNPCs(ModContent.NPCType<PerforatorHive>()))
-            {
-                NPC.active = false;
+                spriteBatch.Draw(texture2D15, drawLocation, npc.frame, glowmaskColor, npc.rotation, halfSizeTexture, npc.scale, spriteEffects, 0f);
+                return false;
             }
-            NPC.ai[3]++;
-
-            if (NPC.ai[3] >= 600 && NPC.ai[2] == 0)
+            else if (npc.type == ModContent.NPCType<PerforatorTailLarge>())
             {
-                NPC perf = null;
-                foreach (NPC n in Main.npc)
-                {
-                    if (n != null && n.active && n.type == ModContent.NPCType<PerforatorHive>())
-                    {
-                        perf = n;
-                    }
-                }
-                if (perf != null && perf.active && perf.type == ModContent.NPCType<PerforatorHive>())
-                {
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, (perf.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20, 0.08f);
-                    if (NPC.Distance(perf.Center) <= 20)
-                    {
-                        NPC.ai[2] = 1;
-                    }
-                }
+                SpriteEffects spriteEffects = SpriteEffects.None;
+                if (npc.spriteDirection == 1)
+                    spriteEffects = SpriteEffects.FlipHorizontally;
 
+                Texture2D texture2D15 = TextureAssets.Npc[npc.type].Value;
+                Vector2 halfSizeTexture = new Vector2((float)(TextureAssets.Npc[npc.type].Value.Width / 2), (float)(TextureAssets.Npc[npc.type].Value.Height / 2));
+
+                Vector2 drawLocation = npc.Center - screenPos;
+                drawLocation -= new Vector2((float)texture2D15.Width, (float)(texture2D15.Height)) * npc.scale / 2f;
+                drawLocation += halfSizeTexture * npc.scale + new Vector2(0f, npc.gfxOffY);
+                spriteBatch.Draw(texture2D15, drawLocation, npc.frame, npc.GetAlpha(drawColor), npc.rotation, halfSizeTexture, npc.scale, spriteEffects, 0f);
+
+                texture2D15 = PerforatorTailLarge.GlowTexture.Value;
+                Color glowmaskColor = Color.Lerp(Color.White, Color.Yellow, 0.5f);
+
+                spriteBatch.Draw(texture2D15, drawLocation, npc.frame, glowmaskColor, npc.rotation, halfSizeTexture, npc.scale, spriteEffects, 0f);
+                return false;
             }
-            if (NPC.ai[2] == 1)
+            return true;
+        }
+        public override bool SafePreAI(NPC npc)
+        {
+            npc.netUpdate = true; //fuck you worm mp code
+            
+            if (npc.type == ModContent.NPCType<PerforatorHeadLarge>())
             {
-                NPC perf = null;
-                foreach (NPC n in Main.npc)
+                npc.velocity = VelocityReal;
+            }
+            else
+            {
+                int hiveID = NPC.FindFirstNPC(ModContent.NPCType<PerforatorHive>());
+                if (hiveID.IsWithinBounds(Main.maxNPCs) && (Timer == 0 || npc.Distance(Main.npc[hiveID].Center) < 80))
                 {
-                    if (n != null && n.active && n.type == ModContent.NPCType<PerforatorHive>())
-                    {
-                        perf = n;
-                    }
-                    if (n != null && n.active && (n.type == ModContent.NPCType<LargePerforatorBody>() || n.type == ModContent.NPCType<LargePerforatorBody2>() ||
-                        n.type == ModContent.NPCType<LargePerforatorTail>()))
-                    {
-                        n.velocity = (NPC.Center - n.Center).SafeNormalize(Vector2.Zero) * 20;
-                        if (n.type == ModContent.NPCType<LargePerforatorTail>() && n.Distance(NPC.Center) <= 20)
-                        {
-                            NPC.active = false;
-                        }
-                    }
+                    npc.Center = Main.npc[hiveID].Center;
+                    npc.Opacity = 0f;
                 }
-                if (perf != null && perf.active && perf.type == ModContent.NPCType<PerforatorHive>())
+                else
+                    npc.Opacity = 1f;
+            }
+            Timer++;
+
+            return true;
+        }
+        public override void SafePostAI(NPC npc)
+        {
+            if (npc.type == ModContent.NPCType<PerforatorHeadLarge>())
+            {
+                if (Timer > 10)
                 {
-                    NPC.velocity = Vector2.Lerp(NPC.velocity, (perf.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 20, 0.03f);
-                    if (NPC.Distance(perf.Center) <= 30)
-                    {
-                        NPC.ai[2] = 1;
-                    }
+                    if (npc.HasPlayerTarget && npc.Center.Y > Main.player[npc.target].Center.Y)
+                        VelocityReal.Y -= 1.2f;
+                    else
+                        VelocityReal.Y += 1.2f;
+                    VelocityReal.Y = MathHelper.Clamp(VelocityReal.Y, -30, 30);
                 }
-                NPC.Center = perf.Center;
+
+                VelocityReal.X += Math.Sign(VelocityReal.X) * 0.1f;
+                if (Timer > 60 * 7)
+                    npc.StrikeInstantKill();
+                //npc.velocity = VelocityReal;
             }
         }
-
-        public override int BodyType => ModContent.NPCType<LargePerforatorBody>();
-        public override void Init()
+        /*
+        public void ManageWormStuff(NPC NPC)
         {
-            MinSegmentLength = 11;
-            MaxSegmentLength = 11;
-            CommonWormInit(this);
+            NPC.realLife = -1;
 
-        }
-        internal static void CommonWormInit(Worm worm)
-        {
-            worm.MoveSpeed = 12f;
-            worm.Acceleration = 0.2f;
-        }
+            // Get a target
+            if (NPC.target < 0 || NPC.target == Main.maxPlayers || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+                NPC.TargetClosest();
 
-        public override int TailType => ModContent.NPCType<LargePerforatorTail>();
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class LargePerforatorBody : WormBody
-    {
-        public override string Texture => "CalamityMod/NPCs/Perforator/PerforatorBodyLarge";
-        public override void SetStaticDefaults()
-        {
+            // Despawn safety, make sure to target another player if the current player target is too far away
+            if (Vector2.Distance(Main.player[NPC.target].Center, NPC.Center) > CalamityGlobalNPC.CatchUpDistance200Tiles)
+                NPC.TargetClosest();
 
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            Player player = Main.player[NPC.target];
+
+            if (Main.netMode != NetmodeID.MultiplayerClient)
             {
-                Hide = true,
-            };
-
-            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
-
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-            NPCID.Sets.MPAllowedEnemies[Type] = true;
-        }
-        public override void SetDefaults()
-        {
-            NPC.width = 60;
-            NPC.height = 60;
-            NPC.scale = 1.2f;
-            NPC.lifeMax = 1200;
-            NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.defense = 20;
-            NPC.noTileCollide = true;
-            NPC.noGravity = true;
-            NPC.knockBackResist = 0f;
-            NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(silver: 20);
-            NPC.SpawnWithHigherTime(30);
-            NPC.aiStyle = -1;
-            NPC.damage = 40;
-            NPC.netAlways = true;
-            NPC.behindTiles = true;
-        }
-        internal override void BodyTailAI()
-        {
-            if (NPC.realLife >= 0)
-            {
-                NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1 && owner.active)
+                if (NPC.ai[0] == 0f)
                 {
-                    return;
+                    int totalSegments = 10;
+                    NPC.ai[2] = totalSegments;
+                    NPC.ai[0] = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + (NPC.width / 2)), (int)(NPC.position.Y + NPC.height), ModContent.NPCType<PerforatorBodyMedium>(), NPC.whoAmI);
+                    Main.npc[(int)NPC.ai[0]].ai[1] = NPC.whoAmI;
+                    Main.npc[(int)NPC.ai[0]].ai[2] = NPC.ai[2] - 1f;
+                    NPC.netUpdate = true;
                 }
-            }
-            base.BodyTailAI();
-        }
-        public override void AI()
-        {
-            NPC.netUpdate = true; //fuck you worm mp code
-            if (NPC.realLife >= 0)
-            {
-                NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1)
+
+                // Splitting effect
+                if (!Main.npc[(int)NPC.ai[1]].active && !Main.npc[(int)NPC.ai[0]].active)
                 {
-                    return;
+                    NPC.life = 0;
+                    NPC.HitEffect(0, 10.0);
+                    NPC.checkDead();
+                    NPC.active = false;
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
-            }
-            base.AI();
-        }
-        public override void Init()
-        {
-            LargePerforatorHead.CommonWormInit(this);
-        }
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class LargePerforatorBody2 : WormBody
-    {
-        public override string Texture => "CalamityMod/NPCs/Perforator/PerforatorBodyLargeAlt";
-        public override void SetStaticDefaults()
-        {
-
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            {
-                Hide = true,
-            };
-
-            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
-
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-            NPCID.Sets.MPAllowedEnemies[Type] = true;
-        }
-        public override void SetDefaults()
-        {
-            NPC.width = 60;
-            NPC.height = 60;
-            NPC.scale = 1.2f;
-            NPC.lifeMax = 1200;
-            NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.defense = 20;
-            NPC.noTileCollide = true;
-            NPC.noGravity = true;
-            NPC.knockBackResist = 0f;
-            NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(silver: 20);
-            NPC.SpawnWithHigherTime(30);
-            NPC.aiStyle = -1;
-            NPC.damage = 40;
-            NPC.netAlways = true;
-            NPC.behindTiles = true;
-        }
-        internal override void BodyTailAI()
-        {
-            if (NPC.realLife >= 0)
-            {
-                NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1 && owner.active)
+                if (!Main.npc[(int)NPC.ai[0]].active)
                 {
-                    return;
+                    NPC.life = 0;
+                    NPC.HitEffect(0, 10.0);
+                    NPC.checkDead();
+                    NPC.active = false;
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
                 }
+
+                if (!NPC.active && Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
             }
-            base.BodyTailAI();
-        }
-        public override void AI()
-        {
-            NPC.netUpdate = true; //fuck you worm mp code
-            if (NPC.realLife >= 0)
-            {
-                NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1)
-                {
-                    return;
-                }
-            }
-            base.AI();
-        }
 
-        public override void Init()
-        {
-            LargePerforatorHead.CommonWormInit(this);
+            NPC.rotation = (float)Math.Atan2(NPC.velocity.Y, NPC.velocity.X) + MathHelper.PiOver2;
         }
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class LargePerforatorTail : WormTail
-    {
-        public override string Texture => "CalamityMod/NPCs/Perforator/PerforatorTailLarge";
-        public override void SetStaticDefaults()
-        {
-
-            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            {
-                Hide = true,
-            };
-
-            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
-
-            NPCID.Sets.BossBestiaryPriority.Add(Type);
-
-            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
-
-            NPCID.Sets.TrailingMode[NPC.type] = 0;
-            NPCID.Sets.TrailCacheLength[NPC.type] = 10;
-            NPCID.Sets.MPAllowedEnemies[Type] = true;
-        }
-        public override void SetDefaults()
-        {
-            NPC.width = 60;
-            NPC.height = 60;
-            NPC.scale = 1.2f;
-            NPC.lifeMax = 1200;
-            NPC.HitSound = SoundID.NPCHit1;
-            NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.defense = 20;
-            NPC.noTileCollide = true;
-            NPC.noGravity = true;
-            NPC.knockBackResist = 0f;
-            NPC.npcSlots = 10f;
-            NPC.value = Item.buyPrice(silver: 10);
-            NPC.SpawnWithHigherTime(30);
-            NPC.aiStyle = -1;
-            NPC.damage = 40;
-            NPC.netAlways = true;
-            NPC.behindTiles = true;
-        }
-        internal override void BodyTailAI()
-        {
-            if (NPC.realLife >= 0)
-            {
-                NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1 && owner.active)
-                {
-                    return;
-                }
-            }
-            base.BodyTailAI();
-        }
-        public override void AI()
-        {
-            NPC.netUpdate = true; //fuck you worm mp code
-            if (NPC.realLife >= 0)
-            {
-                NPC owner = Main.npc[NPC.realLife];
-                if (owner != null && owner.ai[2] == 1)
-                {
-                    return;
-                }
-            }
-            //base.AI();
-        }
-        public override void Init()
-        {
-            LargePerforatorHead.CommonWormInit(this);
-        }
+        */
     }
 }

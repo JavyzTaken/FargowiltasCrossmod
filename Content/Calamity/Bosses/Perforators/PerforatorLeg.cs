@@ -99,6 +99,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Prevent the leg from being behind walls.
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
+            if (stepOffset.HasNaNs())
+                stepOffset = Vector2.Zero;
             Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
