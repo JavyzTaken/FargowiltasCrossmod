@@ -26,7 +26,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Projectile.aiStyle = 0;
             Projectile.friendly = false;
             Projectile.hostile = true;
-            Projectile.DamageType = DamageClass.Generic;
             Projectile.penetrate = -1;
             Projectile.timeLeft = Duration;
             Projectile.tileCollide = false;
@@ -54,7 +53,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override void AI()
         {
             Projectile.position = Projectile.Center;
-            float scaleModifier = 1.7f;
+            float scaleModifier = 2f;
             Projectile.scale += scaleModifier * 5f / Duration;
             Projectile.width = Projectile.height = (int)(BaseRadius * Projectile.scale);
             Projectile.Center = Projectile.position;

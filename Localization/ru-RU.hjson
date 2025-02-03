@@ -700,6 +700,7 @@ Mods: {
 			// ClamSlam.DisplayName: Clam Slam
 			// BatMode.DisplayName: Bat Mode
 			// PerfExplosion.DisplayName: Perf Explosion
+			// PerforatorSpike.DisplayName: Perforator Spike
 		}
 
 		Buffs: {

@@ -44,6 +44,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public float InterpolationSpeed;
 
         /// <summary>
+        /// Remaining time that the limb is damaging.
+        /// Ticks down by 1 until 0 each tick.
+        /// </summary>
+        public int DamageTime;
+
+        /// <summary>
         /// The kinematic chain that governs the orientation of this leg.
         /// </summary>
         public KinematicChain Leg;
@@ -69,6 +75,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public Vector2 DefaultPosition(PerfsEternityNew owner) => LegCenter(owner) + DefaultOffset;
         public void Update(NPC owner)
         {
+            if (DamageTime > 0)
+                DamageTime--;
+
             var hive = owner.GetDLCBehavior<PerfsEternityNew>();
             if (owner.IsABestiaryIconDummy)
             {
@@ -101,7 +110,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
             if (stepOffset.HasNaNs())
                 stepOffset = Vector2.Zero;
-            Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
+            Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection, "A").ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
                 if (Collision.CanHitLine(LegCenter(hive), 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
@@ -216,7 +225,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
-            StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, 20f);
+            StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
 
             // Apply slope vertical offsets to the step position.

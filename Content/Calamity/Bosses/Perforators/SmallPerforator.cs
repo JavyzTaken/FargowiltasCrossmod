@@ -34,6 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     Main.spriteBatch.UseBlendState(BlendState.Additive);
 
+                    Texture2D tex = TextureAssets.Npc[npc.type].Value;
                     Color glowColor = Color.Red;
                     SpriteEffects spriteEffects = SpriteEffects.None;
                     if (npc.spriteDirection == 1)
@@ -41,7 +42,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     for (int j = 0; j < 12; j++)
                     {
                         Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 4f;
-                        Texture2D tex = TextureAssets.Npc[npc.type].Value;
                         Main.EntitySpriteDraw(tex, npc.Center + afterimageOffset - Main.screenPosition, null, glowColor, npc.rotation, tex.Size() * 0.5f, npc.scale, spriteEffects, 0f);
                     }
 
