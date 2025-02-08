@@ -1,9 +1,33 @@
 {
   "frames": {
-    "DistancedMetaballCircle.png": {
+    "ChromaticBurstParticle.png": {
       "frame": {
         "x": 0,
         "y": 0,
+        "w": 1024,
+        "h": 1024
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 1024,
+        "h": 1024
+      },
+      "sourceSize": {
+        "w": 1024,
+        "h": 1024
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "DistancedMetaballCircle.png": {
+      "frame": {
+        "x": 0,
+        "y": 1024,
         "w": 64,
         "h": 64
       },
@@ -31,8 +55,8 @@
     "image": "texture.png",
     "format": "RGBA8888",
     "size": {
-      "w": 64,
-      "h": 64
+      "w": 1024,
+      "h": 1088
     },
     "scale": 1
   }

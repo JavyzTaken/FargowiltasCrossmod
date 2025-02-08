@@ -30,7 +30,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             NormalDashes,
             PredictiveDashes,
             ConjureNuclearVortex,
-            KamikazeSharks
+            KamikazeSharks,
+
+            Phase2Transition
         }
 
         public enum OldDukeAnimation
@@ -149,6 +151,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public Player Target => Main.player[NPC.target];
 
+        /// <summary>
+        /// The life ratio at which the Old Duke transitions to his second phase.
+        /// </summary>
+        public static float Phase2LifeRatio => 0.6f;
+
         public override int NPCOverrideID => ModContent.NPCType<CalamityOD>();
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
@@ -180,9 +187,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             NPC.damage = NPC.defDamage;
             NPC.dontTakeDamage = false;
             NPC.Opacity = LumUtils.Saturate(NPC.Opacity + 0.15f);
-            EyeGlowOpacity = LumUtils.Saturate(EyeGlowOpacity - 0.02f);
+            EyeGlowOpacity = LumUtils.Saturate(EyeGlowOpacity + (Phase >= 2).ToDirectionInt() * 0.02f);
             AfterimageOpacity = LumUtils.Saturate(AfterimageOpacity - 0.02f);
-            RadioactiveGlowInterpolant = LumUtils.Saturate(RadioactiveGlowInterpolant - 0.041f);
+            RadioactiveGlowInterpolant = MathHelper.Clamp(RadioactiveGlowInterpolant - 0.041f, 0f, 5f);
             MotionBlurInterpolant = MathHelper.Clamp(MotionBlurInterpolant - 0.05f, 0f, 3f);
 
             switch (CurrentState)
@@ -201,6 +208,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     break;
                 case OldDukeAIState.KamikazeSharks:
                     DoBehavior_KamikazeSharks();
+                    break;
+                case OldDukeAIState.Phase2Transition:
+                    DoBehavior_Phase2Transition();
                     break;
             }
 
@@ -229,7 +239,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             for (int i = 0; i < 9; i++)
             {
-                Vector2 vomitVelocity = NPC.velocity.RotatedByRandom(0.1f) + Main.rand.NextVector2Circular(5f, 5f) * vomitScaleFactor;
+                float vomitSpeed = MathF.Max(Main.rand.NextFloat(9f, 14f), NPC.velocity.Length());
+                Vector2 vomitVelocity = NPC.SafeDirectionTo(MouthPosition).RotatedByRandom(0.1f) * vomitSpeed + Main.rand.NextVector2Circular(5f, 5f) * vomitScaleFactor;
                 ModContent.GetInstance<BileMetaball>().CreateParticle(MouthPosition, vomitVelocity, Main.rand.NextFloat(32f, 46f) * vomitScaleFactor, Main.rand.NextFloat());
             }
         }
@@ -253,13 +264,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int bubbleReleaseRate = 6;
             int spinWindupTime = 35;
             int baseSpinDuration = 38;
+            int postSpinGraceTime = 0;
             float spinRevolutions = 2f;
-            int spinTime = (int)(baseSpinDuration * spinRevolutions);
             float maxSpinArc = MathHelper.TwoPi / baseSpinDuration;
             float desiredSpinRadius = 300f;
             float bubbleSpeed = 6.3f;
             ref float spinAngle = ref NPC.ai[0];
             ref float spinDirection = ref NPC.ai[1];
+
+            if (Phase >= 2)
+            {
+                bubbleReleaseRate = 4;
+                baseSpinDuration = 29;
+                spinRevolutions = 3f;
+                bubbleSpeed = 4f;
+                desiredSpinRadius = 350f;
+                postSpinGraceTime += 20;
+            }
+
+            int spinTime = (int)(baseSpinDuration * spinRevolutions);
 
             NPC.damage = 0;
 
@@ -275,26 +298,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             if (AITimer <= spinWindupTime)
                 Animation = OldDukeAnimation.Dash;
 
-            float spinWindup = MathF.Pow(LumUtils.InverseLerp(0f, spinWindupTime, AITimer), 2.6f);
-            float spinArc = spinWindup * spinDirection * maxSpinArc;
-            float newDistance = MathHelper.Lerp(NPC.Distance(Target.Center), desiredSpinRadius, 0.085f);
-            NPC.Center = Target.Center + Target.SafeDirectionTo(NPC.Center).RotatedBy(spinArc) * newDistance;
-            NPC.rotation = NPC.rotation.AngleLerp(Target.AngleTo(NPC.Center) + MathHelper.PiOver2 * spinDirection, spinWindup * 0.95f + 0.05f);
-            NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.rotation.ToRotationVector2() * 30f, spinWindup * 0.4f);
-            AfterimageOpacity = MathHelper.SmoothStep(0f, 0.6f, spinWindup);
-
-            if (AITimer >= spinWindupTime && AITimer % bubbleReleaseRate == 0)
+            if (AITimer <= spinWindupTime + spinTime)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Vector2 bubbleDirection = NPC.SafeDirectionTo(Target.Center).RotatedByRandom(0.2f);
-                    Vector2 bubbleVelocity = bubbleDirection * bubbleSpeed;
-                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), MouthPosition, bubbleVelocity, ModContent.ProjectileType<LingeringAcidBubble>(), 270, 0f);
-                }
-                Vomit();
-            }
+                float spinWindup = MathF.Pow(LumUtils.InverseLerp(0f, spinWindupTime, AITimer), 2.6f);
+                float spinArc = spinWindup * spinDirection * maxSpinArc;
+                float newDistance = MathHelper.Lerp(NPC.Distance(Target.Center), desiredSpinRadius, 0.085f);
+                NPC.Center = Target.Center + Target.SafeDirectionTo(NPC.Center).RotatedBy(spinArc) * newDistance;
+                NPC.rotation = NPC.rotation.AngleLerp(Target.AngleTo(NPC.Center) + MathHelper.PiOver2 * spinDirection, spinWindup * 0.95f + 0.05f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.rotation.ToRotationVector2() * 30f, spinWindup * 0.4f);
+                AfterimageOpacity = MathHelper.SmoothStep(0f, 0.6f, spinWindup);
 
-            if (AITimer >= spinWindupTime + spinTime)
+                if (AITimer >= spinWindupTime && AITimer % bubbleReleaseRate == 0)
+                {
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        Vector2 bubbleDirection = NPC.SafeDirectionTo(Target.Center).RotatedByRandom(0.2f);
+                        Vector2 bubbleVelocity = bubbleDirection * bubbleSpeed;
+                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), MouthPosition, bubbleVelocity, ModContent.ProjectileType<LingeringAcidBubble>(), 270, 0f);
+                    }
+                    Vomit();
+                }
+            }
+            else
+                NPC.velocity *= 0.84f;
+
+            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime)
                 SwitchState();
         }
 
@@ -320,8 +348,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 recoilTime = 14;
                 dashSpeed = 106f;
             }
-
-            float recoilAcceleration = recoilTime * 0.1f;
+            if (Phase >= 2)
+            {
+                hoverTelegraphTime -= 2;
+                recoilTime -= 3;
+                dashSpeed += 16f;
+                dashTime -= 2;
+            }
 
             if (AITimer < hoverTelegraphTime)
             {
@@ -344,8 +377,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             }
             else if (AITimer <= hoverTelegraphTime + recoilTime)
             {
-                EyeGlowOpacity = LumUtils.InverseLerpBump(0f, 0.3f, 0.7f, 1f, (AITimer - hoverTelegraphTime) / (float)recoilTime);
+                EyeGlowOpacity = MathF.Max(EyeGlowOpacity, LumUtils.InverseLerpBump(0f, 0.3f, 0.7f, 1f, (AITimer - hoverTelegraphTime) / (float)recoilTime));
 
+                float recoilAcceleration = recoilTime * 0.2f;
                 NPC.velocity -= NPC.SafeDirectionTo(Target.Center) * recoilAcceleration;
                 Animation = OldDukeAnimation.IdleAnimation;
 
@@ -414,6 +448,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int dashSlowdownTime = 40;
             ref float hoverOffsetDirection = ref NPC.ai[0];
 
+            if (Phase >= 2)
+            {
+                maxHoverRedirectTime = 15;
+                dashDelay = 13;
+                dashSlowdownTime = 30;
+            }
+
             NPC.damage = 0;
             if (AITimer == 1)
             {
@@ -426,7 +467,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 float flySpeedInterpolant = MathF.Pow(AITimer / (float)maxHoverRedirectTime, 1.5f);
                 Vector2 hoverDestination = Target.Center + new Vector2(hoverOffsetDirection * 450f, -160f);
                 NPC.Center = Vector2.Lerp(NPC.Center, hoverDestination, flySpeedInterpolant * 0.12f);
-                NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.2f, 1f - flySpeedInterpolant * 0.3f);
+                NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.3f, 1f - flySpeedInterpolant * 0.4f);
                 RotateTowards(Target.Center, 0.12f);
                 Animation = OldDukeAnimation.IdleAnimation;
 
@@ -490,7 +531,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
                 MotionBlurInterpolant *= 0.8f;
                 NPC.Opacity = LumUtils.InverseLerp(0.5f, 0f, slowdownCompletion);
-                EyeGlowOpacity = MathF.Cbrt(1f - NPC.Opacity) * MathF.Sqrt(LumUtils.InverseLerp(1f, 0.85f, slowdownCompletion));
+                EyeGlowOpacity = MathF.Max(EyeGlowOpacity, MathF.Cbrt(1f - NPC.Opacity) * MathF.Sqrt(LumUtils.InverseLerp(1f, 0.85f, slowdownCompletion)));
                 NPC.dontTakeDamage = NPC.Opacity <= 0.6f;
             }
 
@@ -517,8 +558,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int vomitDelay = 90;
             int sharksPerSide = 5;
             int sharkVomitRate = 2;
-            int sharkVomitTime = sharksPerSide * sharkVomitRate * 2;
             ref float sharkHoverOffsetAngle = ref NPC.ai[0];
+
+            if (Phase >= 2)
+            {
+                vomitDelay = 72;
+                sharkVomitRate = 1;
+            }
+
+            int sharkVomitTime = sharksPerSide * sharkVomitRate * 2;
 
             NPC.damage = 0;
 
@@ -586,20 +634,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int sideHoverTime = 30;
             int recoilTime = 16;
             int dashTime = 18;
+            float hoverAngleArc = 0.93f;
+
+            if (Phase >= 2)
+                hoverAngleArc *= 1.15f;
 
             int sharkSide = (int)shark.ai[1];
             float sharkOffsetInterpolant = shark.ai[2];
             float hoverAngleOffset = shark.ai[3];
-            float hoverAngleArc = 0.93f;
             float hoverAngle = hoverAngleOffset + MathHelper.Lerp(-hoverAngleArc, hoverAngleArc, sharkOffsetInterpolant);
             if (sharkSide == 1)
                 hoverAngle += MathHelper.Pi;
 
-            // Attempt to hover to the sides.
             if (sharkBehavior.Time < 0f)
-            {
-                shark.velocity = shark.velocity.RotatedBy(MathHelper.Lerp(-0.05f, 0.05f, shark.whoAmI / 11f)) * 1.03f;
-            }
+                shark.velocity = shark.velocity.RotatedBy(MathHelper.Lerp(-0.076f, 0.076f, shark.whoAmI / 8.37f)) * 1.03f;
+
+            // Attempt to hover to the sides.
             if (sharkBehavior.Time < sideHoverTime)
             {
                 float hoverSharpness = MathHelper.SmoothStep(0.1f, 1f, MathF.Pow(LumUtils.InverseLerp(0.3f, 1f, sharkBehavior.Time / sideHoverTime), 1.9f));
@@ -634,6 +684,58 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// Performs the Old Duke's phase 2 transition state.
+        /// </summary>
+        public void DoBehavior_Phase2Transition()
+        {
+            int roarDelay = 60;
+            int roarTime = 90;
+
+            // Slow down.
+            NPC.velocity *= 0.93f;
+            if (NPC.velocity.Length() >= 35f)
+                NPC.velocity *= 0.85f;
+
+            NPC.dontTakeDamage = true;
+            NPC.spriteDirection = 1;
+
+            Animation = OldDukeAnimation.IdleAnimation;
+            NPC.rotation = NPC.rotation.AngleLerp(0f, 0.054f);
+
+            if (AITimer >= roarDelay && AITimer <= roarDelay + roarTime)
+            {
+                Phase = 2;
+                Animation = OldDukeAnimation.OpenMouth;
+                RadioactiveGlowInterpolant = MathHelper.Clamp(RadioactiveGlowInterpolant + 0.2f, 0f, 1.2f);
+
+                OldDukeSky.RainBrightnessFactor = MathHelper.Lerp(OldDukeSky.RainBrightnessFactor, 4f, 0.15f);
+                OldDukeSky.RainSpeed = MathHelper.Lerp(OldDukeSky.RainSpeed, 2.5f, 0.1f);
+
+                if (AITimer == roarDelay)
+                    SoundEngine.PlaySound(CalamityOD.RoarSound, Vector2.Lerp(NPC.Center, Main.LocalPlayer.Center, 0.85f));
+
+                if (AITimer % 8 == 0)
+                {
+                    BlendState burstBlend = LumUtils.SubtractiveBlending;
+                    Color burstColor = Color.White;
+                    if (AITimer % 24 != 0)
+                    {
+                        burstBlend = BlendState.Additive;
+                        burstColor = Color.YellowGreen;
+                    }
+
+                    ChromaticBurstParticle burst = new(MouthPosition, burstColor * 0.75f, burstBlend, 0.1f, 12);
+                    burst.Spawn();
+
+                    ScreenShakeSystem.StartShake(18f, MathHelper.TwoPi, null, 4.5f);
+                }
+            }
+
+            if (AITimer >= roarDelay + roarTime + 45)
+                SwitchState();
+        }
+
+        /// <summary>
         /// Switches the Old Duke's current state to the next one.
         /// </summary>
         public void SwitchState()
@@ -655,7 +757,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 case OldDukeAIState.NormalDashes:
                     CurrentState = OldDukeAIState.ConjureNuclearVortex;
                     break;
+
+                case OldDukeAIState.Phase2Transition:
+                    CurrentState = OldDukeAIState.NormalDashes;
+                    break;
             }
+
+            float lifeRatio = NPC.GetLifePercent();
+            if (lifeRatio < Phase2LifeRatio && Phase < 2)
+                CurrentState = OldDukeAIState.Phase2Transition;
 
             AITimer = 0;
             NPC.ai[0] = 0f;
