@@ -35,7 +35,7 @@ public class OldDukeFireParticleSystemManager : ModSystem
         Main.instance.GraphicsDevice.BlendState = BlendState.Additive;
 
         ManagedShader overlayShader = ShaderManager.GetShader("FargowiltasCrossmod.FireParticleDissolveShader");
-        overlayShader.TrySetParameter("pixelationLevel", 980f);
+        overlayShader.TrySetParameter("pixelationLevel", 1485f);
         overlayShader.TrySetParameter("turbulence", 0.023f);
         overlayShader.TrySetParameter("screenPosition", Main.screenPosition);
         overlayShader.TrySetParameter("uWorldViewProjection", world * Main.GameViewMatrix.TransformationMatrix * projection);

@@ -486,10 +486,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
                     for (int i = 0; i < 3; i++)
                     {
+                        float squish = Main.rand.NextFloat(0.4f, 0.5f);
                         float fireScale = Main.rand.NextFloat(100f, 240f);
                         Vector2 fireVelocity = NPC.velocity * 1.15f + Main.rand.NextVector2Circular(30f, 30f);
                         Color fireColor = new Color(Main.rand.Next(91, 170), 255, 9);
-                        OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(0.5f, 1f) * fireScale, fireColor);
+                        OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(1f - squish, 1f) * fireScale, fireColor);
                     }
                 }
             }
