@@ -43,6 +43,33 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// The timer for the rain shader visual.
+        /// </summary>
+        public static float RainTimer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The brightness factor for the rain shader visual.
+        /// </summary>
+        public static float RainBrightnessFactor
+        {
+            get;
+            set;
+        } = 1f;
+
+        /// <summary>
+        /// The speed at which the rain beats down.
+        /// </summary>
+        public static float RainSpeed
+        {
+            get;
+            set;
+        } = 1f;
+
+        /// <summary>
         /// The identifier key for this sky.
         /// </summary>
         public const string SkyKey = "FargowiltasCrossmod:OldDukeSky";
@@ -103,6 +130,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             if (Main.gamePaused)
                 return;
+
+            RainSpeed = MathHelper.Lerp(RainSpeed, 1f, 0.0167f);
+            RainBrightnessFactor = MathHelper.Lerp(RainBrightnessFactor, 1f, 0.0167f);
+            RainTimer = (RainTimer + RainSpeed / 30.75f) % 10000f;
 
             for (int i = 0; i < lightningFlashIntensities.Length; i++)
             {

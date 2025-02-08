@@ -113,6 +113,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// The Old Duke's current phase.
+        /// </summary>
+        public int Phase
+        {
+            get;
+            set;
+        } = 1;
+
+        /// <summary>
         /// The action that should be performed by the Old Duke's sulphurous sharkrons.
         /// </summary>
         public Action<SulphurousSharkronEternity>? SharkronPuppeteerAction
@@ -144,6 +153,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
+            binaryWriter.Write(Phase);
             binaryWriter.Write(NPC.spriteDirection);
             binaryWriter.Write(NPC.rotation);
             binaryWriter.Write(AITimer);
@@ -152,6 +162,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
+            Phase = binaryReader.ReadInt32();
             NPC.spriteDirection = binaryReader.ReadInt32();
             NPC.rotation = binaryReader.ReadSingle();
             AITimer = binaryReader.ReadInt32();
@@ -196,9 +207,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             ManagedScreenFilter rainOverlay = ShaderManager.GetFilter("FargowiltasCrossmod.OldDukeRainShader");
             rainOverlay.TrySetParameter("rainColor", new Color(120, 240, 40).ToVector4() * 0.4f);
             rainOverlay.TrySetParameter("screenCoordsOffset", Main.screenPosition / Main.ScreenSize.ToVector2());
-            rainOverlay.TrySetParameter("rainOpacity", 0.32f);
+            rainOverlay.TrySetParameter("rainOpacity", OldDukeSky.RainBrightnessFactor * 0.32f);
             rainOverlay.TrySetParameter("zoom", Main.GameViewMatrix.Zoom);
             rainOverlay.TrySetParameter("rainAngle", OldDukeSky.RainAngle);
+            rainOverlay.TrySetParameter("time", OldDukeSky.RainTimer);
             rainOverlay.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
             rainOverlay.Activate();
 
