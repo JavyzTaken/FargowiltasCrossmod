@@ -412,6 +412,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 dashSpeed += 9.6f;
                 dashTime -= 2;
             }
+            if (dashCounter <= 0f)
+            {
+                hoverTelegraphTime += 5;
+                recoilTime += 2;
+            }
 
             if (AITimer < hoverTelegraphTime)
             {
@@ -429,6 +434,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * hoverOffset;
                 NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.19f, 1f - flySpeedInterpolant * 0.19f);
                 RotateTowards(dashDestination, MathHelper.SmoothStep(0.06f, 0.3f, aimInterpolant.Cubed()));
+
+                // Go nuclear as a telegraph indicator on the first dash cycle to warn the player of said dashes.
+                if (dashCounter <= 0f)
+                    RadioactiveGlowInterpolant = LumUtils.InverseLerp(0f, 0.6f, LumUtils.Convert01To010(AITimer / (float)hoverTelegraphTime)) * 1.56f;
 
                 Animation = OldDukeAnimation.IdleAnimation;
             }
