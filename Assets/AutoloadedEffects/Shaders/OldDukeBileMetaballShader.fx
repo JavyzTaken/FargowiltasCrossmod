@@ -38,7 +38,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     // Use the lifetime ratio, along with some noise, to calculate how much this pixel should be dissolved.
     float distanceFromCenter = colorData.r;
     float dissolveThreshold = 0.8 - lifetimeRatio * dissolvePersistence - (0.7 - distanceFromCenter);
-    float dissolveNoise = tex2D(dissolveNoiseTexture, worldUV * 7);
+    float dissolveNoise = tex2D(dissolveNoiseTexture, worldUV * 7.5);
     float dissolveOpacity = smoothstep(dissolveThreshold, dissolveThreshold + 0.15, dissolveNoise);
     
     // Use the lifetime ratio, along with a little bit of noise again, to calculate the hue of this pixel.
@@ -46,7 +46,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float2 bloodTextureOffset = (tex2D(overlayTexture, uvOffsetNoiseCoords + globalTime * -0.1) - 0.5) * 0.03;
     bloodTextureOffset += globalTime * float2(0.012, -0.003);
     
-    float darkening = colorData.g + tex2D(bloodTexture, worldUV * 0.5) * 0.3;
+    float darkening = colorData.g - tex2D(bloodTexture, worldUV * 1.5 + lifetimeRatio * 0.05) * 0.1;
     float hue = smoothstep(0.75, 0, lifetimeRatio) + darkening * 0.4 + (0.7 - distanceFromCenter) * 0.04;
     
     // Combine color and opacity.

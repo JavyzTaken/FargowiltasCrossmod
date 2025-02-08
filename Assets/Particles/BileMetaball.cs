@@ -23,9 +23,34 @@ public class BileMetaball : MetaballType
 
     public override void UpdateParticle(MetaballInstance particle)
     {
-        particle.Size *= 0.978f;
+        bool inWater = Collision.WetCollision(particle.Center - Vector2.One * 8f, 16, 16);
+
+        // Have the vomit linger in the water.
+        // It's completely disgusting. Like, actually terrible. An extremely gross this to imagine.
+        // But it's a wonderful detail and thematically aligned.
+        // And that's what counts.
+        bool wasInWaterBefore = particle.ExtraInfo[1] == 1f;
+        float verticalAcceleration = wasInWaterBefore ? 0.27f : 0.56f;
+        if (inWater)
+            particle.ExtraInfo[1] = 1f;
+        else if (!wasInWaterBefore)
+            particle.Velocity.Y += verticalAcceleration;
+
+        if (wasInWaterBefore)
+        {
+            if (inWater)
+            {
+                particle.Velocity *= 0.98f;
+                particle.Velocity.Y = MathHelper.Lerp(particle.Velocity.Y, -2.6f, 0.1f);
+            }
+            else
+                particle.Velocity.Y = MathHelper.Clamp(particle.Velocity.Y + 0.4f, -36f, 10.5f);
+
+            particle.ExtraInfo[2] = MathHelper.Lerp(particle.ExtraInfo[2], 1f, 0.03f);
+        }
+
+        particle.Size *= wasInWaterBefore ? 0.997f : 0.985f;
         particle.Velocity.X *= 0.97f;
-        particle.Velocity.Y += 0.6f;
         if (particle.Velocity.Y > 16f)
             particle.Velocity.Y = MathHelper.Lerp(particle.Velocity.Y, 16f, 0.04f);
 
@@ -88,7 +113,7 @@ public class BileMetaball : MetaballType
 
             float rotation = particle.Velocity.ToRotation();
             Color color = new(1f, darknessInterpolant, dissolveInterpolant);
-            Vector2 particleSize = new Vector2(1f + squish, 1f - squish) * particle.Size;
+            Vector2 particleSize = new Vector2(1f + squish, 1f - squish + particle.ExtraInfo[2]) * particle.Size;
 
             Main.spriteBatch.Draw(texture, particle.Center - Main.screenPosition, null, color, rotation, null, particleSize / texture.Frame.Size(), SpriteEffects.None);
         }
