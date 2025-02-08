@@ -695,6 +695,10 @@ Mods: {
 			BatMode.DisplayName: Bat Mode
 			PerfExplosion.DisplayName: Perf Explosion
 			PerforatorSpike.DisplayName: Perforator Spike
+			FallingVomitGore.DisplayName: Gore
+			VortexFormingAcidDroplet.DisplayName: Acid Droplet
+			NuclearVortex.DisplayName: Nuclear Vortex
+			LingeringAcidBubble.DisplayName: Acid Bubble
 		}
 
 		Buffs: {

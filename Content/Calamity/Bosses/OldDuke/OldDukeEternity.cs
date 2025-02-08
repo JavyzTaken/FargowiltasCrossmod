@@ -1,0 +1,721 @@
+﻿using CalamityMod.NPCs.OldDuke;
+using FargowiltasCrossmod.Assets;
+using FargowiltasCrossmod.Assets.Particles;
+using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using Luminance.Assets;
+using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
+using CalamityOD = CalamityMod.NPCs.OldDuke.OldDuke;
+
+namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
+{
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    public class OldDukeEternity : CalDLCEmodeBehavior
+    {
+        public enum OldDukeAIState
+        {
+            BubbleSpin,
+            NormalDashes,
+            PredictiveDashes,
+            ConjureNuclearVortex,
+            KamikazeSharks
+        }
+
+        public enum OldDukeAnimation
+        {
+            IdleAnimation,
+            Dash,
+            OpenMouth
+        }
+
+        /// <summary>
+        /// A general-purpose frame counter for the Old Duke.
+        /// </summary>
+        public int FrameCounter
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Old Duke's Y frame.
+        /// </summary>
+        public int FrameY
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The opacity of the Old Duke's eye glow visual.
+        /// </summary>
+        public float EyeGlowOpacity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The opacity of the Old Duke's afterimages.
+        /// </summary>
+        public float AfterimageOpacity
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The amount of radioactive glow that the Old Duke currently has.
+        /// </summary>
+        public float RadioactiveGlowInterpolant
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The amount of motion blur that the Old Duke should render with.
+        /// </summary>
+        public float MotionBlurInterpolant
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Old Duke's current AI state.
+        /// </summary>
+        public OldDukeAIState CurrentState
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// A general-purpose AI timer dedicated towards the Old Duke's states. Is automatically reset when said states naturally shift.
+        /// </summary>
+        public int AITimer
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The action that should be performed by the Old Duke's sulphurous sharkrons.
+        /// </summary>
+        public Action<SulphurousSharkronEternity>? SharkronPuppeteerAction
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The Old Duke's current animation.
+        /// </summary>
+        public OldDukeAnimation Animation
+        {
+            get => (OldDukeAnimation)NPC.localAI[0];
+            set => NPC.localAI[0] = (int)value;
+        }
+
+        /// <summary>
+        /// The position of the Old Duke's mouth.
+        /// </summary>
+        public Vector2 MouthPosition => NPC.Center + new Vector2(NPC.width * 0.5f + 10f, NPC.spriteDirection * 36f).RotatedBy(NPC.rotation);
+
+        /// <summary>
+        /// The Old Duke's player target.
+        /// </summary>
+        public Player Target => Main.player[NPC.target];
+
+        public override int NPCOverrideID => ModContent.NPCType<CalamityOD>();
+
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(NPC.spriteDirection);
+            binaryWriter.Write(NPC.rotation);
+            binaryWriter.Write(AITimer);
+            binaryWriter.Write((int)CurrentState);
+        }
+
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
+        {
+            NPC.spriteDirection = binaryReader.ReadInt32();
+            NPC.rotation = binaryReader.ReadSingle();
+            AITimer = binaryReader.ReadInt32();
+            CurrentState = (OldDukeAIState)binaryReader.ReadInt32();
+        }
+
+        public override bool PreAI()
+        {
+            // Necessary for NPC.oldRot to be used.
+            NPCID.Sets.TrailingMode[NPC.type] = 3;
+
+            // TODO -- Improve for multiplayer.
+            NPC.TargetClosest();
+
+            NPC.damage = NPC.defDamage;
+            NPC.dontTakeDamage = false;
+            NPC.Opacity = LumUtils.Saturate(NPC.Opacity + 0.15f);
+            EyeGlowOpacity = LumUtils.Saturate(EyeGlowOpacity - 0.02f);
+            AfterimageOpacity = LumUtils.Saturate(AfterimageOpacity - 0.02f);
+            RadioactiveGlowInterpolant = LumUtils.Saturate(RadioactiveGlowInterpolant - 0.041f);
+            MotionBlurInterpolant = MathHelper.Clamp(MotionBlurInterpolant - 0.05f, 0f, 3f);
+
+            switch (CurrentState)
+            {
+                case OldDukeAIState.BubbleSpin:
+                    DoBehavior_BubbleSpin();
+                    break;
+                case OldDukeAIState.NormalDashes:
+                    DoBehavior_Dashes(false);
+                    break;
+                case OldDukeAIState.PredictiveDashes:
+                    DoBehavior_Dashes(true);
+                    break;
+                case OldDukeAIState.ConjureNuclearVortex:
+                    DoBehavior_ConjureNuclearVortex();
+                    break;
+                case OldDukeAIState.KamikazeSharks:
+                    DoBehavior_KamikazeSharks();
+                    break;
+            }
+
+            ManagedScreenFilter rainOverlay = ShaderManager.GetFilter("FargowiltasCrossmod.OldDukeRainShader");
+            rainOverlay.TrySetParameter("rainColor", new Color(120, 240, 40).ToVector4() * 0.4f);
+            rainOverlay.TrySetParameter("screenCoordsOffset", Main.screenPosition / Main.ScreenSize.ToVector2());
+            rainOverlay.TrySetParameter("rainOpacity", 0.32f);
+            rainOverlay.TrySetParameter("zoom", Main.GameViewMatrix.Zoom);
+            rainOverlay.TrySetParameter("rainAngle", OldDukeSky.RainAngle);
+            rainOverlay.SetTexture(MiscTexturesRegistry.WavyBlotchNoise.Value, 1, SamplerState.LinearWrap);
+            rainOverlay.Activate();
+
+            AITimer++;
+            return false;
+        }
+
+        /// <summary>
+        /// Makes the Old Duke create vomit particles.
+        /// </summary>
+        /// <param name="vomitScaleFactor">The scale factor of the ejected vomit. Defaults to 1.</param>
+        public void Vomit(float vomitScaleFactor = 1f)
+        {
+            if (Collision.SolidCollision(MouthPosition - Vector2.One * 36f, 18, 18))
+                return;
+
+            for (int i = 0; i < 9; i++)
+            {
+                Vector2 vomitVelocity = NPC.velocity.RotatedByRandom(0.1f) + Main.rand.NextVector2Circular(5f, 5f) * vomitScaleFactor;
+                ModContent.GetInstance<BileMetaball>().CreateParticle(MouthPosition, vomitVelocity, Main.rand.NextFloat(32f, 46f) * vomitScaleFactor, Main.rand.NextFloat());
+            }
+        }
+
+        /// <summary>
+        /// Makes the Old Duke look towards a given destination by updating his rotation.
+        /// </summary>
+        /// <param name="destination">The position to look towards.</param>
+        /// <param name="aimPrecision">The aim precision interpolant. Dictates how rapidly he updates his rotation.</param>
+        public void RotateTowards(Vector2 destination, float aimPrecision)
+        {
+            NPC.rotation = NPC.rotation.AngleLerp(NPC.AngleTo(destination), aimPrecision);
+            NPC.spriteDirection = (int)NPC.HorizontalDirectionTo(destination);
+        }
+
+        /// <summary>
+        /// Performs the Old Duke's Bubble Spin state.
+        /// </summary>
+        public void DoBehavior_BubbleSpin()
+        {
+            int bubbleReleaseRate = 6;
+            int spinWindupTime = 35;
+            int baseSpinDuration = 38;
+            float spinRevolutions = 2f;
+            int spinTime = (int)(baseSpinDuration * spinRevolutions);
+            float maxSpinArc = MathHelper.TwoPi / baseSpinDuration;
+            float desiredSpinRadius = 300f;
+            float bubbleSpeed = 6.3f;
+            ref float spinAngle = ref NPC.ai[0];
+            ref float spinDirection = ref NPC.ai[1];
+
+            NPC.damage = 0;
+
+            if (AITimer == 1)
+            {
+                SoundEngine.PlaySound(CalamityOD.VomitSound, NPC.Center);
+                spinDirection = NPC.velocity.X.NonZeroSign();
+                spinAngle = NPC.AngleTo(Target.Center) + MathHelper.PiOver2 * spinDirection;
+                NPC.netUpdate = true;
+            }
+
+            Animation = OldDukeAnimation.OpenMouth;
+            if (AITimer <= spinWindupTime)
+                Animation = OldDukeAnimation.Dash;
+
+            float spinWindup = MathF.Pow(LumUtils.InverseLerp(0f, spinWindupTime, AITimer), 2.6f);
+            float spinArc = spinWindup * spinDirection * maxSpinArc;
+            float newDistance = MathHelper.Lerp(NPC.Distance(Target.Center), desiredSpinRadius, 0.085f);
+            NPC.Center = Target.Center + Target.SafeDirectionTo(NPC.Center).RotatedBy(spinArc) * newDistance;
+            NPC.rotation = NPC.rotation.AngleLerp(Target.AngleTo(NPC.Center) + MathHelper.PiOver2 * spinDirection, spinWindup * 0.95f + 0.05f);
+            NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.rotation.ToRotationVector2() * 30f, spinWindup * 0.4f);
+            AfterimageOpacity = MathHelper.SmoothStep(0f, 0.6f, spinWindup);
+
+            if (AITimer >= spinWindupTime && AITimer % bubbleReleaseRate == 0)
+            {
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    Vector2 bubbleDirection = NPC.SafeDirectionTo(Target.Center).RotatedByRandom(0.2f);
+                    Vector2 bubbleVelocity = bubbleDirection * bubbleSpeed;
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), MouthPosition, bubbleVelocity, ModContent.ProjectileType<LingeringAcidBubble>(), 270, 0f);
+                }
+                Vomit();
+            }
+
+            if (AITimer >= spinWindupTime + spinTime)
+                SwitchState();
+        }
+
+        /// <summary>
+        /// Performs an Old Duke dash sequence attack.
+        /// </summary>
+        /// <param name="predictive">Whether the dashes are predictive or not.</param>
+        public void DoBehavior_Dashes(bool predictive)
+        {
+            int hoverTelegraphTime = 28;
+            int recoilTime = 17;
+            int dashTime = 12;
+            int dashCount = 4;
+            bool antiRamDashTechnology = true;
+            float dashSpeed = 119.5f;
+            Vector2 dashDestination = Target.Center;
+            ref float dashCounter = ref NPC.ai[0];
+
+            if (predictive)
+            {
+                dashDestination += Target.velocity * 22f;
+                hoverTelegraphTime = 32;
+                recoilTime = 14;
+                dashSpeed = 106f;
+            }
+
+            float recoilAcceleration = recoilTime * 0.1f;
+
+            if (AITimer < hoverTelegraphTime)
+            {
+                float aimInterpolant = AITimer / (float)hoverTelegraphTime;
+                float hoverOffset = MathHelper.Clamp(NPC.Distance(Target.Center), 240f, 540f);
+                float flySpeedInterpolant = LumUtils.InverseLerp(0.15f, 0.9f, aimInterpolant);
+                if (dashCounter >= 1f)
+                    flySpeedInterpolant = MathHelper.Lerp(flySpeedInterpolant, 1f, 0.5f);
+                if (hoverOffset > 540f)
+                    hoverOffset = 540f;
+
+                if (NPC.velocity.Length() > 40f)
+                    NPC.velocity *= 0.9f;
+
+                Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * hoverOffset;
+                NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.19f, 1f - flySpeedInterpolant * 0.19f);
+                RotateTowards(dashDestination, MathHelper.SmoothStep(0.06f, 0.3f, aimInterpolant.Cubed()));
+
+                Animation = OldDukeAnimation.IdleAnimation;
+            }
+            else if (AITimer <= hoverTelegraphTime + recoilTime)
+            {
+                EyeGlowOpacity = LumUtils.InverseLerpBump(0f, 0.3f, 0.7f, 1f, (AITimer - hoverTelegraphTime) / (float)recoilTime);
+
+                NPC.velocity -= NPC.SafeDirectionTo(Target.Center) * recoilAcceleration;
+                Animation = OldDukeAnimation.IdleAnimation;
+
+                RadioactiveGlowInterpolant = MathF.Max(RadioactiveGlowInterpolant, LumUtils.InverseLerp(0f, recoilTime, AITimer - hoverTelegraphTime).Squared());
+            }
+            else if (AITimer == hoverTelegraphTime + recoilTime + 1)
+            {
+                NPC.velocity = NPC.rotation.ToRotationVector2() * dashSpeed * 0.3f;
+                NPC.spriteDirection = NPC.velocity.X.NonZeroSign();
+                NPC.netUpdate = true;
+                NPC.oldPos = new Vector2[NPC.oldPos.Length];
+                RadioactiveGlowInterpolant = 1f;
+
+                OldDukeSky.CreateLightningFlash(new Vector2(Main.rand.NextFloat(), -0.1f));
+
+                if (antiRamDashTechnology)
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFlameBreath);
+
+                ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 20f, MathHelper.TwoPi, null, 0.9f);
+                EyeGlowOpacity = 1f;
+            }
+            else if (AITimer <= hoverTelegraphTime + recoilTime + dashTime)
+            {
+                float newSpeed = MathHelper.Lerp(NPC.velocity.Length(), dashSpeed, 0.2f);
+                NPC.velocity = NPC.velocity.SafeNormalize(Vector2.UnitY) * newSpeed;
+                NPC.rotation = NPC.velocity.ToRotation();
+                Animation = OldDukeAnimation.Dash;
+                AfterimageOpacity = 1f;
+                RadioactiveGlowInterpolant = 1f;
+
+                if (antiRamDashTechnology)
+                {
+                    Animation = OldDukeAnimation.OpenMouth;
+
+                    // No ramdash cheese for you!
+                    if (NPC.WithinRange(Target.Center, 210f))
+                        NPC.dontTakeDamage = true;
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float fireScale = Main.rand.NextFloat(100f, 240f);
+                        Vector2 fireVelocity = NPC.velocity * 1.15f + Main.rand.NextVector2Circular(30f, 30f);
+                        OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(0.5f, 1f) * fireScale, new Color(Main.rand.Next(100, 150), 255, 9));
+                    }
+                }
+            }
+            else
+            {
+                dashCounter++;
+                AITimer = 0;
+                NPC.netUpdate = true;
+
+                if (dashCounter >= dashCount)
+                    SwitchState();
+            }
+        }
+
+        /// <summary>
+        /// Performs the Old Duke's Conjure Nuclear Vortex state.
+        /// </summary>
+        public void DoBehavior_ConjureNuclearVortex()
+        {
+            int maxHoverRedirectTime = 25;
+            int dashDelay = 16;
+            int dashTime = 6;
+            int dashSlowdownTime = 40;
+            ref float hoverOffsetDirection = ref NPC.ai[0];
+
+            NPC.damage = 0;
+            if (AITimer == 1)
+            {
+                hoverOffsetDirection = -(int)NPC.HorizontalDirectionTo(Target.Center);
+                NPC.netUpdate = true;
+            }
+
+            if (AITimer < maxHoverRedirectTime)
+            {
+                float flySpeedInterpolant = MathF.Pow(AITimer / (float)maxHoverRedirectTime, 1.5f);
+                Vector2 hoverDestination = Target.Center + new Vector2(hoverOffsetDirection * 450f, -160f);
+                NPC.Center = Vector2.Lerp(NPC.Center, hoverDestination, flySpeedInterpolant * 0.12f);
+                NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.2f, 1f - flySpeedInterpolant * 0.3f);
+                RotateTowards(Target.Center, 0.12f);
+                Animation = OldDukeAnimation.IdleAnimation;
+
+                if (NPC.WithinRange(hoverDestination, 95f))
+                {
+                    AITimer = maxHoverRedirectTime;
+                    NPC.netUpdate = true;
+                }
+            }
+
+            // Look upwards in anticipation of the dash.
+            else if (AITimer <= maxHoverRedirectTime + dashDelay)
+            {
+                Vector2 dashDestination = Target.Center - Vector2.UnitY * 400f;
+                dashDestination.X += NPC.HorizontalDirectionTo(Target.Center) * 480f;
+                RotateTowards(dashDestination, 0.096f);
+                Animation = OldDukeAnimation.IdleAnimation;
+
+                // Dash.
+                if (AITimer == maxHoverRedirectTime + dashDelay)
+                {
+                    SoundEngine.PlaySound(CalamityOD.RoarSound, NPC.Center);
+                    NPC.velocity = (dashDestination - NPC.Center) / dashTime;
+                    NPC.netUpdate = true;
+                    ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 30f, MathHelper.TwoPi, null, 1f);
+
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), new Vector2(Target.Center.X + Target.velocity.X * 15f, dashDestination.Y - 250f), Vector2.Zero, ModContent.ProjectileType<NuclearVortex>(), 300, 0f);
+                }
+            }
+
+            // Perform dash effects.
+            else if (AITimer <= maxHoverRedirectTime + dashDelay + dashTime)
+            {
+                AfterimageOpacity = 1f;
+                RadioactiveGlowInterpolant = 1f;
+                NPC.rotation = NPC.velocity.ToRotation();
+                MotionBlurInterpolant = 3f;
+                Animation = OldDukeAnimation.Dash;
+
+                // Vomit acid droplets that form the vortex.
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        Vector2 acidVelocity = NPC.velocity.RotatedByRandom(0.73f) * Main.rand.NextFloat(0.3f, 0.5f);
+                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), MouthPosition, acidVelocity, ModContent.ProjectileType<VortexFormingAcidDroplet>(), 0, 0f);
+                    }
+                }
+            }
+
+            // Slow down after the dash and fade away.
+            else if (AITimer <= maxHoverRedirectTime + dashDelay + dashTime + dashSlowdownTime)
+            {
+                float slowdownCompletion = LumUtils.InverseLerp(0f, dashSlowdownTime, AITimer - (maxHoverRedirectTime + dashDelay + dashTime));
+
+                if (NPC.velocity.Length() > 16f)
+                    NPC.velocity = (NPC.velocity * 0.21f).ClampLength(16f, 1000f);
+                else
+                    NPC.velocity *= 0.95f;
+
+                MotionBlurInterpolant *= 0.8f;
+                NPC.Opacity = LumUtils.InverseLerp(0.5f, 0f, slowdownCompletion);
+                EyeGlowOpacity = MathF.Cbrt(1f - NPC.Opacity) * MathF.Sqrt(LumUtils.InverseLerp(1f, 0.85f, slowdownCompletion));
+                NPC.dontTakeDamage = NPC.Opacity <= 0.6f;
+            }
+
+            // Teleport to the side of the target to give a natural start to the next attack.
+            else
+            {
+                NPC.Center = Target.Center + Main.rand.NextVector2CircularEdge(420f, 420f);
+                NPC.oldPos = new Vector2[NPC.oldPos.Length];
+
+                float rotationOffsetAngle = NPC.HorizontalDirectionTo(Target.Center) * -MathHelper.PiOver2;
+                NPC.velocity = Target.SafeDirectionTo(NPC.Center).RotatedBy(rotationOffsetAngle) * 40f;
+                NPC.rotation = NPC.velocity.ToRotation();
+                SwitchState();
+            }
+
+            AfterimageOpacity = LumUtils.InverseLerp(20f, 60f, NPC.velocity.Length());
+        }
+
+        /// <summary>
+        /// Performs the Old Duke's Kamikaze Sharks state.
+        /// </summary>
+        public void DoBehavior_KamikazeSharks()
+        {
+            int vomitDelay = 90;
+            int sharksPerSide = 5;
+            int sharkVomitRate = 2;
+            int sharkVomitTime = sharksPerSide * sharkVomitRate * 2;
+            ref float sharkHoverOffsetAngle = ref NPC.ai[0];
+
+            NPC.damage = 0;
+
+            // Initialize the hover offset angle of the sharks.
+            if (AITimer == 1)
+            {
+                sharkHoverOffsetAngle = Main.rand.NextFloat(MathHelper.TwoPi);
+                NPC.netUpdate = true;
+            }
+
+            if (AITimer <= vomitDelay + sharkVomitTime)
+            {
+                if (AITimer == vomitDelay)
+                    SoundEngine.PlaySound(CalamityOD.VomitSound, NPC.Center);
+
+                // Hover to the side of the target.
+                Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * 450f - NPC.velocity * 40f;
+                Vector2 idealVelocity = NPC.SafeDirectionTo(hoverDestination) * 27f;
+                NPC.Center = Vector2.Lerp(NPC.Center, hoverDestination, 0.02f);
+                NPC.SimpleFlyMovement(idealVelocity, 0.51f);
+                RotateTowards(Target.Center, 0.15f);
+
+                bool vomitingSharks = AITimer >= vomitDelay;
+                if (vomitingSharks)
+                {
+                    Vomit(Main.rand.NextFloat(0.8f, 1f));
+                    if (Main.netMode != NetmodeID.MultiplayerClient && (AITimer - vomitDelay) % sharkVomitRate == 0)
+                    {
+                        int time = AITimer - vomitDelay - sharkVomitTime;
+                        int sharkIndex = (AITimer - vomitDelay) / sharkVomitRate;
+                        int sharkSide = sharkIndex % 2;
+                        float offsetInterpolant = sharkIndex / (float)sharksPerSide * 0.5f;
+                        NPC shark = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)MouthPosition.X, (int)MouthPosition.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, time, sharkSide, offsetInterpolant, sharkHoverOffsetAngle, NPC.target);
+                        shark.velocity = NPC.SafeDirectionTo(MouthPosition) * 11f + Main.rand.NextVector2Circular(5f, 5f);
+                    }
+                }
+
+                Animation = OldDukeAnimation.OpenMouth;
+            }
+            else
+            {
+                NPC.SmoothFlyNear(Target.Center, 0.04f, 0.95f);
+                RotateTowards(Target.Center, 0.17f);
+                Animation = OldDukeAnimation.IdleAnimation;
+            }
+
+            if (AITimer >= vomitDelay + sharkVomitTime + 70)
+                SwitchState();
+
+            // Since I hate uncentralized behavior code spread across multiple different files, make Old Duke do all the work and simply
+            // tell the sharkrons what to do in the moment, rather than doing some ugly "Check Old Duke's AI state and act accordingly" logic in the sharkron's code.
+            SharkronPuppeteerAction = DoBehavior_KamikazeSharks_PuppeteerShark;
+        }
+
+        /// <summary>
+        /// Handles the puppeteering of sulphurous sharkrons during the Old Duke's Kamikaze Sharks state.
+        /// </summary>
+        /// <param name="sharkBehavior">The shark being puppeteered.</param>
+        public void DoBehavior_KamikazeSharks_PuppeteerShark(SulphurousSharkronEternity sharkBehavior)
+        {
+            NPC shark = sharkBehavior.NPC;
+            shark.scale = LumUtils.Saturate(shark.scale + 0.16f);
+            shark.damage = 0;
+
+            int sideHoverTime = 30;
+            int recoilTime = 16;
+            int dashTime = 18;
+
+            int sharkSide = (int)shark.ai[1];
+            float sharkOffsetInterpolant = shark.ai[2];
+            float hoverAngleOffset = shark.ai[3];
+            float hoverAngleArc = 0.93f;
+            float hoverAngle = hoverAngleOffset + MathHelper.Lerp(-hoverAngleArc, hoverAngleArc, sharkOffsetInterpolant);
+            if (sharkSide == 1)
+                hoverAngle += MathHelper.Pi;
+
+            // Attempt to hover to the sides.
+            if (sharkBehavior.Time < 0f)
+            {
+                shark.velocity = shark.velocity.RotatedBy(MathHelper.Lerp(-0.05f, 0.05f, shark.whoAmI / 11f)) * 1.03f;
+            }
+            if (sharkBehavior.Time < sideHoverTime)
+            {
+                float hoverSharpness = MathHelper.SmoothStep(0.1f, 1f, MathF.Pow(LumUtils.InverseLerp(0.3f, 1f, sharkBehavior.Time / sideHoverTime), 1.9f));
+                Vector2 hoverDestination = Target.Center + hoverAngle.ToRotationVector2() * 418f;
+                float idealDirection = shark.AngleTo(hoverDestination);
+                float newSpeed = MathHelper.Lerp(shark.velocity.Length(), Target.velocity.Length() + 50f, 0.09f);
+                shark.Center = Vector2.Lerp(shark.Center, hoverDestination, hoverSharpness * 0.34f + 0.03f);
+                shark.SmoothFlyNear(hoverDestination, hoverSharpness * 0.27f, 1f - hoverSharpness * 0.33f);
+
+                shark.rotation = shark.AngleTo(Target.Center);
+                shark.spriteDirection = MathF.Cos(shark.rotation).NonZeroSign();
+                if (shark.spriteDirection == -1)
+                    shark.rotation += MathHelper.Pi;
+            }
+
+            // Recoil.
+            else if (sharkBehavior.Time < sideHoverTime + recoilTime)
+            {
+                float recoilSpeed = LumUtils.InverseLerp(0f, recoilTime, sharkBehavior.Time - sideHoverTime) * 32f;
+                shark.velocity = Vector2.Lerp(shark.velocity, shark.SafeDirectionTo(Target.Center) * -recoilSpeed, 1f);
+            }
+
+            // Fly forward.
+            else
+            {
+                shark.velocity = Vector2.Lerp(shark.velocity, shark.rotation.ToRotationVector2() * shark.spriteDirection * 100f, 0.1f);
+                shark.damage = shark.defDamage;
+
+                if (sharkBehavior.Time >= sideHoverTime + recoilTime + dashTime)
+                    sharkBehavior.Die();
+            }
+        }
+
+        /// <summary>
+        /// Switches the Old Duke's current state to the next one.
+        /// </summary>
+        public void SwitchState()
+        {
+            switch (CurrentState)
+            {
+                case OldDukeAIState.ConjureNuclearVortex:
+                    CurrentState = OldDukeAIState.BubbleSpin;
+                    break;
+                case OldDukeAIState.BubbleSpin:
+                    CurrentState = OldDukeAIState.PredictiveDashes;
+                    break;
+                case OldDukeAIState.PredictiveDashes:
+                    CurrentState = OldDukeAIState.KamikazeSharks;
+                    break;
+                case OldDukeAIState.KamikazeSharks:
+                    CurrentState = OldDukeAIState.NormalDashes;
+                    break;
+                case OldDukeAIState.NormalDashes:
+                    CurrentState = OldDukeAIState.ConjureNuclearVortex;
+                    break;
+            }
+
+            AITimer = 0;
+            NPC.ai[0] = 0f;
+            NPC.ai[1] = 0f;
+            NPC.ai[2] = 0f;
+            NPC.ai[3] = 0f;
+            NPC.netUpdate = true;
+        }
+
+        public override void FindFrame(int frameHeight)
+        {
+            switch (Animation)
+            {
+                case OldDukeAnimation.Dash:
+                    FrameY = 2;
+                    break;
+                case OldDukeAnimation.OpenMouth:
+                    FrameY = 6;
+                    break;
+                case OldDukeAnimation.IdleAnimation:
+                    FrameCounter++;
+                    FrameY = FrameCounter / 6 % 6;
+
+                    break;
+            }
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Main.spriteBatch.PrepareForShaders();
+
+            Texture2D texture = TextureAssets.Npc[NPC.type].Value;
+
+            // Define the Old Duke's frame.
+            // Done in here instead of FindFrame because the FindFrame hook seemingly doesn't override Calamity's, resulting in conflicts.
+            NPC.frame = texture.Frame(1, Main.npcFrameCount[NPC.type], 0, FrameY);
+
+            ManagedShader overlayShader = ShaderManager.GetShader("FargowiltasCrossmod.OldDukeRadioactiveOverlayShader");
+            overlayShader.TrySetParameter("blurInterpolant", MotionBlurInterpolant);
+            overlayShader.TrySetParameter("textureSize", texture.Size());
+            overlayShader.TrySetParameter("glowColor", new Vector3(0.53f, 1f, 0.03f));
+            overlayShader.TrySetParameter("frame", new Vector4(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height));
+            overlayShader.TrySetParameter("turbulence", 0.36f);
+            overlayShader.TrySetParameter("translucentAccent", new Vector3(0.8f, 0f, 1.2f));
+            overlayShader.TrySetParameter("glowInterpolant", RadioactiveGlowInterpolant.Squared());
+            overlayShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
+            overlayShader.Apply();
+
+            float rotation = NPC.rotation;
+            float rotationOffset = 0f;
+            SpriteEffects direction = SpriteEffects.None;
+            if (NPC.spriteDirection == -1)
+            {
+                rotationOffset = MathHelper.Pi;
+                direction = SpriteEffects.FlipHorizontally;
+            }
+            rotation += rotationOffset;
+
+            for (int i = 8; i >= 0; i--)
+            {
+                float afterimageOpacity = (1f - i / 9f).Squared() * AfterimageOpacity;
+                Vector2 afterimageDrawPosition = NPC.oldPos[i] + NPC.Size * 0.5f - Main.screenPosition;
+                Main.EntitySpriteDraw(texture, afterimageDrawPosition, NPC.frame, NPC.GetAlpha(lightColor) * afterimageOpacity, NPC.oldRot[i] + rotationOffset, NPC.frame.Size() * 0.5f, NPC.scale, direction);
+            }
+
+            Texture2D glowmask = CalamityOD.GlowTexture.Value;
+            Vector2 drawPosition = NPC.Center - screenPos;
+            Main.EntitySpriteDraw(texture, drawPosition, NPC.frame, NPC.GetAlpha(lightColor), rotation, NPC.frame.Size() * 0.5f, NPC.scale, direction);
+            Main.EntitySpriteDraw(glowmask, drawPosition, NPC.frame, Color.White * EyeGlowOpacity, rotation, NPC.frame.Size() * 0.5f, NPC.scale, direction);
+
+            Main.spriteBatch.ResetToDefault();
+            return false;
+        }
+    }
+}
