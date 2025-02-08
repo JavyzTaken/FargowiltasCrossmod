@@ -26,6 +26,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
     {
         public enum OldDukeAIState
         {
+            SpawnAnimation,
+
             BubbleSpin,
             NormalDashes,
             PredictiveDashes,
@@ -124,6 +126,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         } = 1;
 
         /// <summary>
+        /// The index of the attack the Old Duke is performing in his current phase's attack cycle.
+        /// </summary>
+        public int AttackCycleIndex
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// The action that should be performed by the Old Duke's sulphurous sharkrons.
         /// </summary>
         public Action<SulphurousSharkronEternity>? SharkronPuppeteerAction
@@ -156,10 +167,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public static float Phase2LifeRatio => 0.6f;
 
+        /// <summary>
+        /// The set of attacks the Old Duke should perform in his first phase.
+        /// </summary>
+        public static OldDukeAIState[] Phase1AttackCycle =>
+        [
+            OldDukeAIState.ConjureNuclearVortex,
+            OldDukeAIState.BubbleSpin,
+            OldDukeAIState.PredictiveDashes,
+            OldDukeAIState.KamikazeSharks,
+            OldDukeAIState.NormalDashes
+        ];
+
         public override int NPCOverrideID => ModContent.NPCType<CalamityOD>();
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
+            binaryWriter.Write(AttackCycleIndex);
             binaryWriter.Write(Phase);
             binaryWriter.Write(NPC.spriteDirection);
             binaryWriter.Write(NPC.rotation);
@@ -169,6 +193,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
+            AttackCycleIndex = binaryReader.ReadInt32();
             Phase = binaryReader.ReadInt32();
             NPC.spriteDirection = binaryReader.ReadInt32();
             NPC.rotation = binaryReader.ReadSingle();
@@ -194,6 +219,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             switch (CurrentState)
             {
+                case OldDukeAIState.SpawnAnimation:
+                    DoBehavior_SpawnAnimation();
+                    break;
                 case OldDukeAIState.BubbleSpin:
                     DoBehavior_BubbleSpin();
                     break;
@@ -254,6 +282,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         {
             NPC.rotation = NPC.rotation.AngleLerp(NPC.AngleTo(destination), aimPrecision);
             NPC.spriteDirection = (int)NPC.HorizontalDirectionTo(destination);
+        }
+
+        /// <summary>
+        /// Performs the Old Duke's Spawn Animation state.
+        /// </summary>
+        public void DoBehavior_SpawnAnimation()
+        {
+            NPC.damage = 0;
+            NPC.dontTakeDamage = true;
+
+            NPC.rotation = 0f;
+            NPC.spriteDirection = (int)NPC.HorizontalDirectionTo(Target.Center);
+
+            NPC.velocity.Y = LumUtils.InverseLerp(60f, 0f, AITimer) * -6f;
+            NPC.Opacity = LumUtils.InverseLerp(0f, 35f, AITimer);
+
+            Animation = OldDukeAnimation.IdleAnimation;
+            if (AITimer >= 50)
+            {
+                Animation = OldDukeAnimation.OpenMouth;
+                if (AITimer == 50)
+                {
+                    SoundEngine.PlaySound(CalamityOD.RoarSound, NPC.Center);
+                    ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 5.2f);
+                }
+            }
+
+            if (AITimer >= 95)
+                SwitchState();
         }
 
         /// <summary>
@@ -655,8 +712,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             {
                 float hoverSharpness = MathHelper.SmoothStep(0.1f, 1f, MathF.Pow(LumUtils.InverseLerp(0.3f, 1f, sharkBehavior.Time / sideHoverTime), 1.9f));
                 Vector2 hoverDestination = Target.Center + hoverAngle.ToRotationVector2() * 418f;
-                float idealDirection = shark.AngleTo(hoverDestination);
-                float newSpeed = MathHelper.Lerp(shark.velocity.Length(), Target.velocity.Length() + 50f, 0.09f);
                 shark.Center = Vector2.Lerp(shark.Center, hoverDestination, hoverSharpness * 0.34f + 0.03f);
                 shark.SmoothFlyNear(hoverDestination, hoverSharpness * 0.27f, 1f - hoverSharpness * 0.33f);
 
@@ -741,32 +796,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void SwitchState()
         {
-            switch (CurrentState)
-            {
-                case OldDukeAIState.ConjureNuclearVortex:
-                    CurrentState = OldDukeAIState.BubbleSpin;
-                    break;
-                case OldDukeAIState.BubbleSpin:
-                    CurrentState = OldDukeAIState.PredictiveDashes;
-                    break;
-                case OldDukeAIState.PredictiveDashes:
-                    CurrentState = OldDukeAIState.KamikazeSharks;
-                    break;
-                case OldDukeAIState.KamikazeSharks:
-                    CurrentState = OldDukeAIState.NormalDashes;
-                    break;
-                case OldDukeAIState.NormalDashes:
-                    CurrentState = OldDukeAIState.ConjureNuclearVortex;
-                    break;
+            OldDukeAIState[] attackCycle = Phase1AttackCycle;
 
-                case OldDukeAIState.Phase2Transition:
-                    CurrentState = OldDukeAIState.NormalDashes;
-                    break;
-            }
+            CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
+            AttackCycleIndex++;
 
             float lifeRatio = NPC.GetLifePercent();
             if (lifeRatio < Phase2LifeRatio && Phase < 2)
+            {
                 CurrentState = OldDukeAIState.Phase2Transition;
+                AttackCycleIndex = 0;
+            }
 
             AITimer = 0;
             NPC.ai[0] = 0f;
