@@ -56,7 +56,7 @@ public class FallingVomitGore : ModProjectile
             Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -2.6f, 0.1f);
         }
         else
-            Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y + 0.4f, -36f, 10.5f);
+            Projectile.velocity.Y = MathHelper.Clamp(Projectile.velocity.Y + 0.4f, -36f, 9.5f);
 
         Projectile.rotation += MathF.Abs(Projectile.velocity.Y) * Projectile.velocity.X.NonZeroSign() * 0.03f;
 

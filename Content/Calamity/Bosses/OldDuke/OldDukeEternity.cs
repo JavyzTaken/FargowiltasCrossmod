@@ -264,22 +264,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int bubbleReleaseRate = 6;
             int spinWindupTime = 35;
             int baseSpinDuration = 38;
-            int postSpinGraceTime = 0;
+            int postSpinGraceTime = 36;
             float spinRevolutions = 2f;
             float maxSpinArc = MathHelper.TwoPi / baseSpinDuration;
-            float desiredSpinRadius = 300f;
-            float bubbleSpeed = 6.3f;
+            float desiredSpinRadius = 320f;
+            float bubbleSpeed = 5.85f;
             ref float spinAngle = ref NPC.ai[0];
             ref float spinDirection = ref NPC.ai[1];
 
             if (Phase >= 2)
             {
-                bubbleReleaseRate = 4;
+                bubbleReleaseRate = 5;
                 baseSpinDuration = 29;
                 spinRevolutions = 3f;
                 bubbleSpeed = 4f;
                 desiredSpinRadius = 350f;
-                postSpinGraceTime += 20;
+                postSpinGraceTime = 25;
             }
 
             int spinTime = (int)(baseSpinDuration * spinRevolutions);
@@ -322,7 +322,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             else
                 NPC.velocity *= 0.84f;
 
-            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime)
+            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime || Main.mouseRight)
                 SwitchState();
         }
 
@@ -351,8 +351,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             if (Phase >= 2)
             {
                 hoverTelegraphTime -= 2;
-                recoilTime -= 3;
-                dashSpeed += 16f;
+                recoilTime -= 2;
+                dashSpeed += 9.6f;
                 dashTime -= 2;
             }
 
@@ -422,7 +422,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     {
                         float fireScale = Main.rand.NextFloat(100f, 240f);
                         Vector2 fireVelocity = NPC.velocity * 1.15f + Main.rand.NextVector2Circular(30f, 30f);
-                        OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(0.5f, 1f) * fireScale, new Color(Main.rand.Next(100, 150), 255, 9));
+                        Color fireColor = new Color(Main.rand.Next(91, 170), 255, 9);
+                        OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(0.5f, 1f) * fireScale, fireColor);
                     }
                 }
             }
@@ -495,7 +496,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 30f, MathHelper.TwoPi, null, 1f);
 
                     if (Main.netMode != NetmodeID.MultiplayerClient)
-                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), new Vector2(Target.Center.X + Target.velocity.X * 15f, dashDestination.Y - 250f), Vector2.Zero, ModContent.ProjectileType<NuclearVortex>(), 300, 0f);
+                        LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), new Vector2(Target.Center.X + Target.velocity.X * 15f, dashDestination.Y - 360f), Vector2.Zero, ModContent.ProjectileType<NuclearVortex>(), 300, 0f);
                 }
             }
 

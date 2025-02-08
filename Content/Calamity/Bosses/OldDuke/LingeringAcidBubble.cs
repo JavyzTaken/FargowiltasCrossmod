@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,7 +24,7 @@ public class LingeringAcidBubble : ModProjectile
         Projectile.hostile = true;
         Projectile.ignoreWater = true;
         Projectile.penetrate = -1;
-        Projectile.timeLeft = 210;
+        Projectile.timeLeft = 120;
         Projectile.scale = Main.rand?.NextFloat(0.85f, 1.4f) ?? 1f;
         CooldownSlot = ImmunityCooldownID.Bosses;
     }
@@ -35,6 +36,8 @@ public class LingeringAcidBubble : ModProjectile
 
         Time++;
     }
+
+    public override Color? GetAlpha(Color lightColor) => Color.White * Projectile.Opacity;
 
     public override bool? CanDamage() => Time >= 16f;
 }
