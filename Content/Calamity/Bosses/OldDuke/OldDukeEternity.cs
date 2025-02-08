@@ -34,7 +34,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             ConjureNuclearVortex,
             KamikazeSharks,
 
-            Phase2Transition
+            Phase2Transition,
+
+            Leave
         }
 
         public enum OldDukeAnimation
@@ -209,6 +211,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             // TODO -- Improve for multiplayer.
             NPC.TargetClosest();
 
+            bool everyoneIsDead = true;
+            foreach (Player player in Main.ActivePlayers)
+            {
+                if (!player.dead)
+                {
+                    everyoneIsDead = false;
+                    break;
+                }
+            }
+
             NPC.damage = NPC.defDamage;
             NPC.dontTakeDamage = false;
             NPC.Opacity = LumUtils.Saturate(NPC.Opacity + 0.15f);
@@ -216,6 +228,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             AfterimageOpacity = LumUtils.Saturate(AfterimageOpacity - 0.02f);
             RadioactiveGlowInterpolant = MathHelper.Clamp(RadioactiveGlowInterpolant - 0.041f, 0f, 5f);
             MotionBlurInterpolant = MathHelper.Clamp(MotionBlurInterpolant - 0.05f, 0f, 3f);
+
+            if (CurrentState != OldDukeAIState.Leave && everyoneIsDead)
+            {
+                SwitchState();
+                CurrentState = OldDukeAIState.Leave;
+            }
 
             switch (CurrentState)
             {
@@ -239,6 +257,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     break;
                 case OldDukeAIState.Phase2Transition:
                     DoBehavior_Phase2Transition();
+                    break;
+                case OldDukeAIState.Leave:
+                    DoBehavior_Leave();
                     break;
             }
 
@@ -294,6 +315,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             NPC.rotation = 0f;
             NPC.spriteDirection = (int)NPC.HorizontalDirectionTo(Target.Center);
+            if (NPC.spriteDirection == -1)
+                NPC.rotation += MathHelper.Pi;
 
             NPC.velocity.Y = LumUtils.InverseLerp(60f, 0f, AITimer) * -6f;
             NPC.Opacity = LumUtils.InverseLerp(0f, 35f, AITimer);
@@ -756,6 +779,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         {
             int roarDelay = 60;
             int roarTime = 90;
+            int roarVisualSpawnRate = 8;
 
             // Slow down.
             NPC.velocity *= 0.93f;
@@ -763,10 +787,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 NPC.velocity *= 0.85f;
 
             NPC.dontTakeDamage = true;
-            NPC.spriteDirection = 1;
+            NPC.spriteDirection = (int)NPC.HorizontalDirectionTo(Target.Center);
+
+            float idealRotation = 0f;
+            if (NPC.spriteDirection == -1)
+                idealRotation += MathHelper.Pi;
 
             Animation = OldDukeAnimation.IdleAnimation;
-            NPC.rotation = NPC.rotation.AngleLerp(0f, 0.054f);
+            NPC.rotation = NPC.rotation.AngleLerp(idealRotation, 0.074f);
 
             if (AITimer >= roarDelay && AITimer <= roarDelay + roarTime)
             {
@@ -780,11 +808,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 if (AITimer == roarDelay)
                     SoundEngine.PlaySound(CalamityOD.RoarSound, Vector2.Lerp(NPC.Center, Main.LocalPlayer.Center, 0.85f));
 
-                if (AITimer % 8 == 0)
+                if (AITimer % roarVisualSpawnRate == 0)
                 {
                     BlendState burstBlend = LumUtils.SubtractiveBlending;
                     Color burstColor = Color.White;
-                    if (AITimer % 24 != 0)
+                    if (AITimer % (roarVisualSpawnRate * 3) >= 1)
                     {
                         burstBlend = BlendState.Additive;
                         burstColor = Color.YellowGreen;
@@ -793,12 +821,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     ChromaticBurstParticle burst = new(MouthPosition, burstColor * 0.75f, burstBlend, 0.1f, 12);
                     burst.Spawn();
 
-                    ScreenShakeSystem.StartShake(18f, MathHelper.TwoPi, null, 4.5f);
+                    ScreenShakeSystem.StartShake(16f, MathHelper.TwoPi, null, 4.5f);
                 }
             }
 
             if (AITimer >= roarDelay + roarTime + 45)
                 SwitchState();
+        }
+
+        /// <summary>
+        /// Performs the Old Duke's leave state, making him vanish into the clouds.
+        /// </summary>
+        public void DoBehavior_Leave()
+        {
+            float speedUpInterpolant = LumUtils.InverseLerp(0f, 30f, AITimer) * 0.14f;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, new Vector2(NPC.spriteDirection * 56f, -150f), speedUpInterpolant);
+            NPC.rotation = NPC.rotation.AngleLerp(NPC.velocity.ToRotation(), 0.32f);
+
+            NPC.Opacity = LumUtils.InverseLerp(15f, 45f, AITimer);
+            OldDukeSky.RainSpeed = MathHelper.SmoothStep(0.35f, 1f, NPC.Opacity);
+            OldDukeSky.RainBrightnessFactor = NPC.Opacity;
+
+            if (AITimer >= 45)
+                NPC.active = false;
         }
 
         /// <summary>

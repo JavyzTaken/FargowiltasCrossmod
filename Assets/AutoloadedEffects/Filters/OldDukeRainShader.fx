@@ -2,6 +2,7 @@
 sampler noiseTexture : register(s1);
 
 float time;
+float opacity;
 float rainOpacity;
 float rainAngle;
 float2 zoom;
@@ -24,7 +25,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     
     rain = pow(smoothstep(0, 0.7, rain * 0.5), 2) * rainOpacity;
     
-    return tex2D(baseTexture, coords) + rain / (4 - rainColor) * rainColor;
+    return tex2D(baseTexture, coords) + rain / (4 - rainColor) * rainColor * pow(opacity, 3);
 }
 
 technique Technique1
