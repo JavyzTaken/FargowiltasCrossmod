@@ -26,6 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.friendly = false;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 1500;
+            Projectile.width = Projectile.height = 20;
             Main.projFrames[Type] = 10;
             
         }
