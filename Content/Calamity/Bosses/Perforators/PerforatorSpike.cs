@@ -28,8 +28,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         // Thus hitbox extends backwards from it
         public override string Texture => FargoSoulsUtil.EmptyTexture;
 
-        public static int TelegraphTime => 60;
-        public static int ExtensionTime => 16;
+        public static int TelegraphTime => 45;
+        public static int ExtensionTime => 13;
         public static int EndTime => 60;
         public static int FadeoutTime => 12;
         public ref float Timer => ref Projectile.ai[1];
@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 float num6 = 0f;
                 if (CanDamage() != false && Collision.CheckAABBvLineCollision(Main.LocalPlayer.Hitbox.TopLeft(), Main.LocalPlayer.Hitbox.Size(), Projectile.Center,
-                    Projectile.Center - Projectile.velocity * Length, Width * Projectile.scale + Main.LocalPlayer.FargoSouls().GrazeRadius * 2f + Player.defaultHeight, ref num6))
+                    Projectile.Center - Projectile.rotation.ToRotationVector2() * Length, Width * Projectile.scale + Main.LocalPlayer.FargoSouls().GrazeRadius * 2f + Player.defaultHeight, ref num6))
                 {
                     return true;
                 }
@@ -109,7 +109,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 float totalExtension = Length - TipLength;
                 float extensionPerFrame = totalExtension / ExtensionTime;
-                Projectile.velocity = extensionPerFrame * Projectile.rotation.ToRotationVector2();
+
+                // acceleration logic
+                float progress = (Timer - TelegraphTime);
+                float maxSpeed = extensionPerFrame * 2 / ExtensionTime;
+                float deltaVel = progress * maxSpeed;
+
+                Projectile.velocity = deltaVel * Projectile.rotation.ToRotationVector2();
             }
             else
                 Projectile.velocity *= 0;
@@ -131,7 +137,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 return true;
             }
             float num6 = 0f;
-            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center - Projectile.velocity * Length, Width * Projectile.scale, ref num6))
+            if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), Projectile.Center, Projectile.Center - Projectile.rotation.ToRotationVector2() * Length, Width * Projectile.scale, ref num6))
             {
                 return true;
             }
@@ -171,8 +177,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         Main.EntitySpriteDraw(bodies[i], bodyCenters[i] + afterimageOffset - Main.screenPosition, null, colors[i], Projectile.rotation, bodies[i].Size() / 2, Projectile.scale, effects);
                 }
             }
-
             Main.spriteBatch.ResetToDefault();
+
             Main.EntitySpriteDraw(tip, tipCenter - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
             for (int i = 0; i < BodyParts; i++)
                 Main.EntitySpriteDraw(bodies[i], bodyCenters[i] - Main.screenPosition, null, colors[i], Projectile.rotation, bodies[i].Size() / 2, Projectile.scale, effects);

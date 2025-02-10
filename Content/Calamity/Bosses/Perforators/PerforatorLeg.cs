@@ -61,6 +61,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public readonly int Index;
 
+        public int AnimationMode;
+        public const int Linear = 0;
+        public const int Accel = 1;
+        public const int Decel = 2;
+        public const int AccelDecel = 3;
+
         public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength1, float legLength2, int index)
         {
             LegSizeFactor = legSizeFactor;
@@ -180,9 +186,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Increment the animation interpolant.
             StepAnimationInterpolant += InterpolationSpeed; //0.064f;
 
+
             // Calculate the current movement destination based on the animation's completion.
             // This gradually goes from the starting position and ends up at the step destination, making a slight upward arc while doing so.
-            Vector2 movementDestination = Vector2.Lerp(EndEffectorPositionAtStartOfStep, StepDestination, LumUtils.Saturate(StepAnimationInterpolant));
+            float x = LumUtils.Saturate(StepAnimationInterpolant);
+
+            // Move differently based on the animation type.
+            switch (AnimationMode)
+            {
+                case Accel:
+                    x *= x;
+                    break;
+                case Decel:
+                    x = 2 * x - x * x;
+                    break;
+                case AccelDecel:
+                    x = 3 * x * x - 2 * x * x * x;
+                    break;
+            }
+
+            Vector2 movementDestination = Vector2.Lerp(EndEffectorPositionAtStartOfStep, StepDestination, x);
             movementDestination -= gravityDirection * LumUtils.Convert01To010(StepAnimationInterpolant) * 18f;
 
             // Move the leg.
@@ -208,7 +231,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Update(StepDestination);
         }
 
-        public void StartStepAnimation(NPC owner, Vector2 gravityDirection, Vector2 forwardDirection, float interpolationSpeed = 0.05f)
+        public void StartStepAnimation(NPC owner, Vector2 gravityDirection, Vector2 forwardDirection, float interpolationSpeed = 0.05f, int animationMode = AccelDecel)
         {
             // Calculate the position to step towards.
             float ownerDirection = Vector2.Dot(owner.velocity, forwardDirection).NonZeroSign();
@@ -227,18 +250,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
+            AnimationMode = animationMode;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);
         }
 
-        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f)
+        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f, int animationMode = AccelDecel)
         {
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = endPosition;
             InterpolationSpeed = interpolationSpeed;
+            AnimationMode = animationMode;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);
