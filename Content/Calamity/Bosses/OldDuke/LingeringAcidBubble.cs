@@ -19,8 +19,8 @@ public class LingeringAcidBubble : ModProjectile
 
     public override void SetDefaults()
     {
-        Projectile.width = 28;
-        Projectile.height = 28;
+        Projectile.width = 24;
+        Projectile.height = 24;
         Projectile.hostile = true;
         Projectile.ignoreWater = true;
         Projectile.penetrate = -1;

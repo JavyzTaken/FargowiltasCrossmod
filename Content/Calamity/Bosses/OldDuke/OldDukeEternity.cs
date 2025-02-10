@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -34,7 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             ConjureNuclearVortex,
             KamikazeSharks,
 
-            Phase2Transition,
+            Phase2Transition_Roar,
+            Phase2Transition_ConsumeFuelContainers,
 
             Leave
         }
@@ -160,6 +162,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public Vector2 MouthPosition => NPC.Center + new Vector2(NPC.width * 0.5f + 10f, NPC.spriteDirection * 36f).RotatedBy(NPC.rotation);
 
         /// <summary>
+        /// The position of the Old Duke's eye.
+        /// </summary>
+        public Vector2 EyePosition => NPC.Center + new Vector2(NPC.width * 0.5f - 8f, NPC.spriteDirection * -10f).RotatedBy(NPC.rotation);
+
+        /// <summary>
         /// The Old Duke's player target.
         /// </summary>
         public Player Target => Main.player[NPC.target];
@@ -167,7 +174,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// <summary>
         /// The life ratio at which the Old Duke transitions to his second phase.
         /// </summary>
-        public static float Phase2LifeRatio => 0.6f;
+        public static float Phase2LifeRatio => 0.9999f;
 
         /// <summary>
         /// The set of attacks the Old Duke should perform in his first phase.
@@ -230,10 +237,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             MotionBlurInterpolant = MathHelper.Clamp(MotionBlurInterpolant - 0.05f, 0f, 3f);
 
             if (CurrentState != OldDukeAIState.Leave && everyoneIsDead)
-            {
-                SwitchState();
-                CurrentState = OldDukeAIState.Leave;
-            }
+                SwitchStateTo(OldDukeAIState.Leave);
 
             switch (CurrentState)
             {
@@ -255,8 +259,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 case OldDukeAIState.KamikazeSharks:
                     DoBehavior_KamikazeSharks();
                     break;
-                case OldDukeAIState.Phase2Transition:
-                    DoBehavior_Phase2Transition();
+                case OldDukeAIState.Phase2Transition_Roar:
+                    DoBehavior_Phase2Transition_Roar();
+                    break;
+                case OldDukeAIState.Phase2Transition_ConsumeFuelContainers:
+                    DoBehavior_Phase2Transition_ConsumeFuelContainers();
                     break;
                 case OldDukeAIState.Leave:
                     DoBehavior_Leave();
@@ -310,6 +317,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void DoBehavior_SpawnAnimation()
         {
+            int roarDelay = 50;
+            int roarTime = 45;
+
             NPC.damage = 0;
             NPC.dontTakeDamage = true;
 
@@ -318,21 +328,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             if (NPC.spriteDirection == -1)
                 NPC.rotation += MathHelper.Pi;
 
-            NPC.velocity.Y = LumUtils.InverseLerp(60f, 0f, AITimer) * -6f;
-            NPC.Opacity = LumUtils.InverseLerp(0f, 35f, AITimer);
+            NPC.velocity.Y = LumUtils.InverseLerp(roarDelay, 0f, AITimer) * -6f;
+            NPC.Opacity = LumUtils.InverseLerp(0f, roarDelay * 0.67f, AITimer);
 
             Animation = OldDukeAnimation.IdleAnimation;
-            if (AITimer >= 50)
+            if (AITimer >= roarDelay)
             {
                 Animation = OldDukeAnimation.OpenMouth;
-                if (AITimer == 50)
+                if (AITimer == roarDelay)
                 {
                     SoundEngine.PlaySound(CalamityOD.RoarSound, NPC.Center);
                     ScreenShakeSystem.StartShakeAtPoint(NPC.Center, 5.2f);
                 }
             }
 
-            if (AITimer >= 95)
+            if (AITimer >= roarDelay + roarTime)
                 SwitchState();
         }
 
@@ -380,13 +390,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             if (AITimer <= spinWindupTime + spinTime)
             {
+                // Calculate a suppressed windup interpolant that determines how quickly the Old Duke should spin.
                 float spinWindup = MathF.Pow(LumUtils.InverseLerp(0f, spinWindupTime, AITimer), 2.6f);
-                float spinArc = spinWindup * spinDirection * maxSpinArc;
+
+                // Determine the Old Duke's current angular velocity (aka how much it should rotate relative to the player's position this frame).
+                float spinAngularVelocity = spinWindup * spinDirection * maxSpinArc;
+
+                // Update the Old Duke's position such that it linearly interpolates towards the desired spin radius, loosely keeping his radius consistent.
                 float newDistance = MathHelper.Lerp(NPC.Distance(Target.Center), desiredSpinRadius, 0.085f);
-                NPC.Center = Target.Center + Target.SafeDirectionTo(NPC.Center).RotatedBy(spinArc) * newDistance;
+
+                // Lock the Old Duke's position in place.
+                // Since the angles and distances are based on their previous values, this creates an illusion of motion, rather than appearing to be
+                // an unnatural, hard lock-on effect.
+                NPC.Center = Target.Center + Target.SafeDirectionTo(NPC.Center).RotatedBy(spinAngularVelocity) * newDistance;
+
                 NPC.rotation = NPC.rotation.AngleLerp(Target.AngleTo(NPC.Center) + MathHelper.PiOver2 * spinDirection, spinWindup * 0.95f + 0.05f);
-                NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.rotation.ToRotationVector2() * 30f, spinWindup * 0.4f);
                 AfterimageOpacity = MathHelper.SmoothStep(0f, 0.6f, spinWindup);
+
+                // Maintain a bit of momentum based on the Old Duke's tangent direction.
+                // This is important for after the spin, at which point he's decelerate in that direction a bit.
+                NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.rotation.ToRotationVector2() * 30f, spinWindup * 0.4f);
 
                 if (AITimer >= spinWindupTime && AITimer % bubbleReleaseRate == 0)
                 {
@@ -400,7 +423,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 }
             }
             else
-                NPC.velocity *= 0.84f;
+                NPC.velocity *= 0.91f;
 
             if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime || Main.mouseRight)
                 SwitchState();
@@ -413,8 +436,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public void DoBehavior_Dashes(bool predictive)
         {
             int hoverTelegraphTime = 28;
-            int recoilTime = 17;
-            int dashTime = 12;
+            int recoilTime = 16;
+            int dashTime = 13;
             int dashCount = 4;
             bool antiRamDashTechnology = true;
             float dashSpeed = 119.5f;
@@ -423,15 +446,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             if (predictive)
             {
-                dashDestination += Target.velocity * 22f;
+                dashDestination += Target.velocity * 20f;
                 hoverTelegraphTime = 32;
-                recoilTime = 14;
+                recoilTime = 13;
                 dashSpeed = 106f;
             }
             if (Phase >= 2)
             {
                 hoverTelegraphTime -= 2;
-                recoilTime -= 2;
+                recoilTime--;
                 dashSpeed += 9.6f;
                 dashTime -= 2;
             }
@@ -456,7 +479,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
                 Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * hoverOffset;
                 NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.19f, 1f - flySpeedInterpolant * 0.19f);
-                RotateTowards(dashDestination, MathHelper.SmoothStep(0.06f, 0.3f, aimInterpolant.Cubed()));
+                RotateTowards(dashDestination, 1f);
 
                 // Go nuclear as a telegraph indicator on the first dash cycle to warn the player of said dashes.
                 if (dashCounter <= 0f)
@@ -468,7 +491,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             {
                 EyeGlowOpacity = MathF.Max(EyeGlowOpacity, LumUtils.InverseLerpBump(0f, 0.3f, 0.7f, 1f, (AITimer - hoverTelegraphTime) / (float)recoilTime));
 
-                float recoilAcceleration = recoilTime * 0.2f;
+                float recoilAcceleration = 18.5f / recoilTime;
                 NPC.velocity -= NPC.SafeDirectionTo(Target.Center) * recoilAcceleration;
                 Animation = OldDukeAnimation.IdleAnimation;
 
@@ -773,9 +796,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
-        /// Performs the Old Duke's phase 2 transition state.
+        /// Performs the Old Duke's phase 2 roar transition state.
         /// </summary>
-        public void DoBehavior_Phase2Transition()
+        public void DoBehavior_Phase2Transition_Roar()
         {
             int roarDelay = 60;
             int roarTime = 90;
@@ -826,7 +849,102 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             }
 
             if (AITimer >= roarDelay + roarTime + 45)
-                SwitchState();
+                SwitchStateTo(OldDukeAIState.Phase2Transition_ConsumeFuelContainers);
+        }
+
+        /// <summary>
+        /// Performs the Old Duke's phase 2 fuel container consumption transition state.
+        /// </summary>
+        public void DoBehavior_Phase2Transition_ConsumeFuelContainers()
+        {
+            int diveTime = 40;
+            int containerSpawnDelay = 45;
+            ref float chompCountdown = ref NPC.ai[0];
+
+            NPC.damage = 0;
+            NPC.dontTakeDamage = true;
+            Animation = OldDukeAnimation.IdleAnimation;
+
+            // Dive downwards.
+            if (AITimer <= diveTime)
+            {
+                float speedInterpolant = LumUtils.InverseLerp(0f, 0.4f, AITimer / (float)diveTime) * 0.095f;
+                Vector2 idealVelocity = NPC.SafeDirectionTo(Target.Center + new Vector2(432f, 1776f)) * 81f;
+                NPC.velocity = Vector2.Lerp(NPC.velocity, idealVelocity, speedInterpolant);
+                NPC.rotation = NPC.velocity.ToRotation();
+            }
+
+            // Send fuel containers into the air from below.
+            if (AITimer == diveTime + containerSpawnDelay || AITimer == diveTime + containerSpawnDelay + 10 || AITimer == diveTime + containerSpawnDelay + 20)
+            {
+                SoundEngine.PlaySound(SoundID.Item106, Target.Center);
+                ScreenShakeSystem.StartShakeAtPoint(Target.Center, 3.2f);
+
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    Vector2 fuelSpawnPosition = Target.Center + Vector2.UnitY * 965f;
+                    if (AITimer == diveTime + containerSpawnDelay + 10)
+                        fuelSpawnPosition.X -= 300f;
+                    else if (AITimer == diveTime + containerSpawnDelay + 20)
+                        fuelSpawnPosition.X += 300f;
+                    else
+                        fuelSpawnPosition.Y -= 175f;
+
+                    fuelSpawnPosition.Y -= (AITimer - (diveTime + containerSpawnDelay)) * 15f;
+
+                    Vector2 fuelVelocity = -Vector2.UnitY.RotatedByRandom(0.01f) * 40f;
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), fuelSpawnPosition, fuelVelocity, ModContent.ProjectileType<TastyFuelContainer>(), 0, 0f);
+                }
+            }
+
+            // Eat fuel containers.
+            // Yummy........
+            if (AITimer >= diveTime + containerSpawnDelay + 30)
+            {
+                var containers = LumUtils.AllProjectilesByID(ModContent.ProjectileType<TastyFuelContainer>()).
+                    OrderByDescending(c => -MathHelper.Distance(c.Center.X, NPC.Center.X)).ToList();
+
+                if (containers.Count >= 1)
+                {
+                    Projectile closestContainer = containers.First();
+                    Vector2 flyDestination = closestContainer.Center;
+                    Vector2 velocity = closestContainer.velocity;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        flyDestination += velocity;
+                        TastyFuelContainer.UpdateVelocity(ref velocity);
+                    }
+                    flyDestination -= MouthPosition - NPC.Center;
+
+                    Vector2 idealVelocity = NPC.SafeDirectionTo(flyDestination) * 85f;
+                    NPC.Center = Vector2.Lerp(NPC.Center, flyDestination, 0.015f);
+                    NPC.velocity = Vector2.Lerp(NPC.velocity, idealVelocity, 0.056f);
+                    NPC.SmoothFlyNear(flyDestination, 0.1f, 0.905f);
+                    if (Vector2.Dot(NPC.velocity, idealVelocity) < 0f)
+                        NPC.velocity *= 0.9f;
+
+                    // Open the Old Duke's mouth in anticipation of eating the fuel container.
+                    if (chompCountdown >= 1f)
+                        chompCountdown--;
+                    else if (MouthPosition.WithinRange(closestContainer.Center, 235f))
+                        Animation = OldDukeAnimation.OpenMouth;
+
+                    // Chomp down on the container if sufficiently close.
+                    if (MouthPosition.WithinRange(closestContainer.Center, 65f))
+                    {
+                        closestContainer.Kill();
+                        chompCountdown = 5f;
+                        NPC.netUpdate = true;
+                    }
+
+                    NPC.rotation = NPC.rotation.AngleLerp(NPC.velocity.ToRotation(), 0.5f);
+                }
+
+                else
+                    AITimer = 0;
+
+                AfterimageOpacity = LumUtils.InverseLerp(20f, 54f, NPC.velocity.Length());
+            }
         }
 
         /// <summary>
@@ -859,7 +977,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             float lifeRatio = NPC.GetLifePercent();
             if (lifeRatio < Phase2LifeRatio && Phase < 2)
             {
-                CurrentState = OldDukeAIState.Phase2Transition;
+                CurrentState = OldDukeAIState.Phase2Transition_Roar;
                 AttackCycleIndex = 0;
             }
 
@@ -869,6 +987,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             NPC.ai[2] = 0f;
             NPC.ai[3] = 0f;
             NPC.netUpdate = true;
+        }
+
+        /// <summary>
+        /// Forces the Old Duke to switch to a given state.
+        /// </summary>
+        /// <param name="newState">The state to forcefully switch to.</param>
+        public void SwitchStateTo(OldDukeAIState newState)
+        {
+            SwitchState();
+            CurrentState = newState;
+            AttackCycleIndex--;
         }
 
         public override void FindFrame(int frameHeight)

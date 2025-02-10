@@ -705,6 +705,7 @@ Mods: {
 			// VortexFormingAcidDroplet.DisplayName: Acid Droplet
 			// NuclearVortex.DisplayName: Nuclear Vortex
 			// LingeringAcidBubble.DisplayName: Acid Bubble
+			// TastyFuelContainer.DisplayName: Tasty Fuel Container
 		}
 
 		Buffs: {

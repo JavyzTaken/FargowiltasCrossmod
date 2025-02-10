@@ -47,6 +47,30 @@
         "x": 0.5,
         "y": 0.5
       }
+    },
+    "SmallSmokeParticle.png": {
+      "frame": {
+        "x": 64,
+        "y": 1024,
+        "w": 22,
+        "h": 24
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 22,
+        "h": 24
+      },
+      "sourceSize": {
+        "w": 24,
+        "h": 24
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
     }
   },
   "meta": {
