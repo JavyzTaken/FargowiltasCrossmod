@@ -233,7 +233,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (!WorldSavingSystem.EternityMode)
                 return true;
 
-            // draw legs
+            // draw leg braces
             if (Legs is not null)
             {
                 if (NPC.IsABestiaryIconDummy)
@@ -242,7 +242,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         Legs[j]?.Update(NPC);
                 }
 
-                DrawLegSet(Legs, NPC.GetAlpha(drawColor), screenPos);
+                DrawLegBraces(Legs, NPC.GetAlpha(drawColor), screenPos);
             }
 
             // draw hive
@@ -264,6 +264,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             glowmaskColor = NPC.GetAlpha(glowmaskColor);
 
             spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, glowmaskColor, rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
+
+            // draw legs proper
+            if (Legs is not null)
+            {
+                if (NPC.IsABestiaryIconDummy)
+                {
+                    for (int j = 0; j < Legs.Length; j++)
+                        Legs[j]?.Update(NPC);
+                }
+
+                DrawLegSet(Legs, NPC.GetAlpha(drawColor), screenPos);
+            }
             return false;
         }
         public static void DrawLeg(SpriteBatch spriteBatch, Texture2D legTexture, Vector2 start, Vector2 end, Color color, float width, SpriteEffects direction, bool glow)
@@ -289,8 +301,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             spriteBatch.Draw(legTexture, start, null, color, rotation, legTexture.Size() * Vector2.UnitY * 0.5f, scale, direction, 0f);
         }
-
-        public void DrawLegSet(PerforatorLeg[] legs, Color lightColor, Vector2 screenPos)
+        public void DrawLegBraces(PerforatorLeg[] legs, Color lightColor, Vector2 screenPos)
         {
             for (int i = 0; i < legs.Length; i++)
             {
@@ -312,6 +323,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 // leg end
                 start = end + dir * 22;
                 DrawLeg(Main.spriteBatch, LegJointTextures[0].Value, start, end, lightColor, 1f, direction, glow: false);
+            }
+        }
+        public void DrawLegSet(PerforatorLeg[] legs, Color lightColor, Vector2 screenPos)
+        {
+            for (int i = 0; i < legs.Length; i++)
+            {
+                if (legs[i] is null)
+                    continue;
+
+                KinematicChain leg = legs[i].Leg;
+                if (leg.JointCount <= 0)
+                    continue;
+
+                bool glow = legs[i].DamageTime > 0;
 
                 // draw leg
                 Vector2 previousPosition = leg.StartingPoint;
@@ -362,9 +387,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         int spriteDir = (leg.EndEffectorPosition.X - LegBraces[i].X).NonZeroSign();
                         if (k == 0 && j == 0)
                             spriteDir *= -1;
-                        direction = spriteDir == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-                        start = previousPosition - screenPos;
-                        end = previousPosition + partOffset - screenPos;
+                        SpriteEffects direction = spriteDir == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                        Vector2 start = previousPosition - screenPos;
+                        Vector2 end = previousPosition + partOffset - screenPos;
 
                         if (flip)
                             (start, end) = (end, start);
