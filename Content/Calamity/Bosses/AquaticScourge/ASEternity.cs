@@ -24,6 +24,9 @@ using CalamityMod.Projectiles.Boss;
 using Terraria.ID;
 using CalamityMod.NPCs.AcidRain;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
+using System.Threading;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Http.Headers;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -114,65 +117,188 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 spriteBatch.Draw(t.Value, npc.Center - screenPos, null, drawColor, npc.rotation, t.Size() / 2, npc.scale, SpriteEffects.None, 0);
                 return false;
             }
+
+            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
+            {
+                if (npc.ai[2] == -1)
+                {
+                    return true;
+                }
+                NPC head = Main.npc[(int)npc.ai[2]];
+                ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
+
+                if ((head.GetLifePercent() > 0.6f && ashead.Hittable1 == npc.whoAmI) ||
+                    (head.GetLifePercent() > 0.3f && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= 0.6f) ||
+                    ( ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= 0.3f))
+                {
+                    Main.instance.LoadItem(ItemID.FloatingTube);
+                    Asset<Texture2D> t = TextureAssets.Item[ItemID.FloatingTube];
+                    spriteBatch.Draw(t.Value, npc.Center - screenPos, null, drawColor, npc.rotation, t.Size() / 2, 4, SpriteEffects.None, 1);
+                }
+
+
+            }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 1.15f);
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.2f);
+            entity.defense = 0;
+            entity.Calamity().DR = 0;
         }
-        public float[] Vars = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-        public int CurAttack = 0;
+        public override void SafePostAI(NPC npc)
+        {
+            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() && npc.whoAmI == 7)
+            {
+                //Main.NewText(npc.ai[0] + ", " + npc.ai[1] + ", " + npc.ai[2] + ", " + npc.ai[3]);
+                //Dust.NewDustPerfect(npc.Center, DustID.Terra).noGravity = true;
+            }
+            base.SafePostAI(npc);
+        }
+        
+        //segments
+        public bool Hittable;
+
+        //head
+        public int Hittable1 = 0;
+        public int Hittable2 = 0;
+        public int Hittable3 = 0;
+
+        public float FollowTurnSpeed = 1;
+        public int FollowTimer;
+
+
+        public int AttackChain = 0;
+        public int AttackPart = 0;
+
+        public float DashAttackTimer = 0;
+        public int RocksTimer = 0;
+        public int SpikeTimer = 0;
+
         public enum Attacks {
-            
+            Follow,
+            RockDashDashRock,
+            GasGasGasRockDash,
+            LittleDashes,
+
+            Transition1,
+
+            LittleDashesHomingSpikes,
+            SpikesThenGas,
+            GasThenSpikes,
+
+            Transition2,
         };
         
-        public void AdvanceAttack(Attacks[] cycle, int startAggro = 220)
-        {
-            Vars[0]++;
-            for (int i = 1; i < Vars.Length; i++)
-            {
-                Vars[i] = 0;
-            }
-            Vars[9] = startAggro;
-            
-            if (Vars[0] >= cycle.Length)
-            {
-                Vars[0] = 0;
-            }
-            CurAttack = (int)cycle[(int)Vars[0]];
-        }
-        public void SlowdownPrep(NPC npc, int time, SoundStyle endSound)
-        {
-            if (Vars[8] > time)
-            {
-                Vars[1]++;
-                Vars[8] = 0;
-                SoundEngine.PlaySound(endSound, npc.Center);
-            }
-        }
+        
         public override bool SafePreAI(NPC npc)
         {
+            if(npc.type == ModContent.NPCType<AquaticScourgeTail>())
+            {
+                npc.dontTakeDamage = true;
+            }
+            //npc.ai[0] = 3;
+            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
+            {
+                if (npc.ai[2] == -1)
+                {
+                    npc.StrikeInstantKill();
+                    return false;
+                }
+                NPC head = Main.npc[(int)npc.ai[2]];
+                ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
+                npc.dontTakeDamage = true;
 
-            if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && npc.ai[0] == 6 && npc.Calamity().newAI[0] >= 1)
+                if ((head.GetLifePercent() > 0.6f && ashead.Hittable1 == npc.whoAmI) ||
+                    (head.GetLifePercent() > 0.3f && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= 0.6f) ||
+                    (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= 0.3f))
+                {
+                    npc.dontTakeDamage = false;
+                }
+
+                //Main.NewText(head.GetLifePercent());
+                if ((ashead.Hittable1 == npc.whoAmI && head.GetLifePercent() < 0.65f) ||
+                    (ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() < 0.35f))
+                {
+                    DestroyAllSegmentsBelowMe();
+                    NPC.HitInfo info = new NPC.HitInfo();
+                    info.Damage = (int)(head.lifeMax * 0.05f);
+                    head.StrikeNPC(info, false, true);
+                }
+
+                void DestroyAllSegmentsBelowMe()
+                {
+                    bool reachedTail = false;
+                    int thing = npc.whoAmI;
+                    while (!reachedTail)
+                    {
+                        if (Main.npc[thing].type != ModContent.NPCType<AquaticScourgeTail>())
+                        {
+                            Main.npc[thing].realLife = -1;
+                            Main.npc[thing].ai[2] = -1;
+                            thing = (int)Main.npc[thing].ai[0];
+
+                        }
+                        else
+                        {
+                            reachedTail = true;
+                            Main.npc[thing].ai[1] = npc.ai[1];
+                        }
+                    }
+                }
+            }
+            if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && npc.Calamity().newAI[0] >= 1)
             {
                 npc.TargetClosest();
-
+                npc.dontTakeDamage = true;
                 //increases when angle is too different. increases turn rate when gets high enough. decreases over time when angle isnt too different
 
                 //Main.NewText(npc.GetLifePercent());
 
-                Attacks[] attackCycle = {
-                    
-                };
+                //max length is 40 in revengeance and 80 in death. i dont feel like changing the max length.
+                int maxLength = CalamityWorld.death ? 80 : 40;
 
+                //get segments that will be hittable throughout the fight
+                if (Hittable1 == 0)
+                {
+                    Hittable1 = FindSegment(2 * maxLength / 3);
+                }
+                if (Hittable2 == 0)
+                {
+                    Hittable2 = FindSegment(maxLength / 3);
+                }
+                if (Hittable3 == 0)
+                {
+                    Hittable3 = FindSegment(maxLength / 5);
+                }
 
+                if (npc.GetLifePercent() > 0.6f)
+                {
+                    Main.npc[Hittable1].GetGlobalNPC<ASPartsEternity>().Hittable = true;
+                }
+                else if (npc.GetLifePercent() > 0.3f)
+                {
+                    Main.npc[Hittable2].GetGlobalNPC<ASPartsEternity>().Hittable = true;
+                }
+                else
+                {
+                    Main.npc[Hittable3].GetGlobalNPC<ASPartsEternity>().Hittable = true;
+                }
 
-                ref float aggroTimer = ref Vars[9];
-                ref float attackTimer = ref Vars[8];
-                int att = CurAttack;
-                
-                
+                int FindSegment(int howFarDown)
+                {
+                    NPC segment = npc;
+                    for (int i = 0; i < howFarDown; i++)
+                    {
+                        NPC thing = Main.npc[(int)segment.ai[0]];
+                        if (thing != null && thing.active && (thing.type == ModContent.NPCType<AquaticScourgeBody>() || thing.type == ModContent.NPCType<AquaticScourgeBodyAlt>()))
+                        {
+                            segment = thing;
+                        }
+                    }
+                    return segment.whoAmI;
+                }
 
                 //Main.NewText(Vars[9]);
                 SoundStyle DSroar = new("CalamityMod/Sounds/Custom/DesertScourgeRoar");
@@ -189,26 +315,244 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     target = Main.player[npc.target];
                     Vector2 targetPos = target.Center;
 
-                    Follow(10, 1);
 
-
-                    void Dash(float speed, float time)
+                    float angleDiff = MathHelper.ToDegrees(FargoSoulsUtil.RotationDifference(npc.velocity, npc.AngleTo(targetPos).ToRotationVector2()));
+                    if (Math.Abs(angleDiff) > 10)
                     {
+                        FollowTurnSpeed += 0.01f;
+                    }else if (FollowTurnSpeed > 1)
+                    {
+                        FollowTurnSpeed -= 0.01f;
+                    }
+                    //Follow(10, aggroTimer);
 
+                    if (AttackChain == (int)Attacks.RockDashDashRock)
+                    {
+                        if (AttackPart == 0)
+                        {
+                            RandomRocks(10, npc.AngleTo(target.Center), 40);
+                        }
+                        else if (AttackPart == 1 || AttackPart == 2)
+                        {
+                            Dash(25, 100);
+                        }
+                        else if (AttackPart == 3)
+                        {
+                            RandomRocks(40, MathHelper.ToRadians(-90), 50);
+                        }
+                        else
+                        {
+                            AttackChain = (int)Attacks.Follow;
+                            AttackPart = 0;
+                        }
+                    }
+
+                    if (AttackChain == (int)Attacks.GasGasGasRockDash)
+                    {
+                        if (AttackPart < 3)
+                        {
+                            Dash(25, 100, 1);
+                        }else if (AttackPart == 3)
+                        {
+                            RandomRocks(40, MathHelper.ToRadians(-90), 50);
+                        }else if (AttackPart == 4)
+                        {
+                            Dash(30, 140);
+                        }else
+                        {
+                            AttackChain = (int)Attacks.Follow;
+                            AttackPart = 0;
+                        }
+                    }
+
+                    if (AttackChain == (int)Attacks.LittleDashes)
+                    {
+                        if (AttackPart < 3)
+                        {
+                            Dash(30, 50);
+                        }else if (AttackPart == 3)
+                        {
+                            Dash(25, 100, 1);
+                        }
+                        else
+                        {
+                            AttackChain = (int)Attacks.Follow;
+                            AttackPart = 0;
+                        }
+                    }
+
+                    if (AttackChain == (int)Attacks.LittleDashesHomingSpikes)
+                    {
+                        if (AttackPart < 8 && AttackPart % 2 == 0)
+                        {
+                            Dash(30, 80);
+                        }else if (AttackPart < 8)
+                        {
+                            Spikes(5, 30, true, 25);
+                        }else if (AttackPart == 8)
+                        {
+                            Dash(25, 100);
+                        }
+                        else
+                        {
+                            AttackChain = (int)Attacks.Follow;
+                            AttackPart = 0;
+                        }
+                    }
+
+                    if (AttackChain == (int)Attacks.SpikesThenGas)
+                    {
+                        if (AttackPart == 0)
+                        {
+                            Dash(25, 80);
+                        }else if (AttackPart == 1)
+                        {
+                            Spikes(5, 40, false);
+                        }
+                        else if (AttackPart < 4)
+                        {
+                            Dash(25, 100, 1);
+                        }
+                        else
+                        {
+                            AttackChain = (int)Attacks.Follow;
+                            AttackPart = 0;
+                        }
+                    }
+
+                    if (AttackChain == (int)Attacks.GasThenSpikes)
+                    {
+                        if (AttackPart < 3)
+                        {
+                            Dash(25, 100, 1);
+                        }
+                        else if (AttackPart == 3)
+                        {
+                            Dash(25, 80);
+                            
+                        }
+                        else if (AttackPart == 4)
+                        {
+                            Spikes(5, 40, false);
+                        }
+                        else
+                        {
+                            AttackChain = (int)Attacks.Follow;
+                            AttackPart = 0;
+                        }
+                    }
+
+                    if (AttackChain == (int)Attacks.Follow)
+                    {
+                        FollowTimer++;
+                        if (FollowTimer > 300 && npc.Distance(targetPos) < 800)
+                        {
+                            FollowTimer = 0;
+                            AttackChain = Main.rand.Next(1, 4);
+                            if (npc.GetLifePercent() <= 0.6f) AttackChain = Main.rand.Next(5, 8);
+                            //AttackChain = (int)Attacks.LittleDashesHomingSpikes;
+                        }
+                        //targetPos = npc.Center - npc.velocity.RotatedBy(MathHelper.ToRadians(10));
+                        Follow(10, FollowTurnSpeed);
+                    }
+
+
+
+                    void RandomRocks(float amount, float angle, float spread)
+                    {
+                        RocksTimer++;
+                        if (RocksTimer < 40)
+                        {
+                            targetPos = npc.Center + angle.ToRotationVector2();
+                            Follow(5, 5, 1.05f);
+                        }
+                        else if (RocksTimer == 40)
+                        {
+                            SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                            SoundEngine.PlaySound(Mroar, npc.Center);
+
+                            for (int i = 0; i < amount; i++)
+                            {
+                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.Pi/2).RotatedByRandom(MathHelper.ToRadians(spread)) * Main.rand.NextFloat(10, 15), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.CrabBoulder>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 1);
+                            }
+                        }
+                        if (RocksTimer == 60)
+                        {
+                            RocksTimer = 0;
+                            AttackPart++;
+                        }
+                    }
+                    void Dash(float speed, float time, int epicExtraFlag = 0)
+                    {
+                        DashAttackTimer++;
+                        
+                        if (DashAttackTimer == (int)(time * 0.8f) && epicExtraFlag == 1)
+                        {
+                            for (int i = 0; i < 20; i++)
+                            {
+                                SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat(2, 7), 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ToxicGas>(), FargoSoulsUtil.ScaledProjectileDamage(40), 1);
+                            }
+                        }
+
+                        if (DashAttackTimer < time * 0.3f)
+                        {
+                            
+                            Follow(3, 9, 1.05f);
+                        }
+                        else if (DashAttackTimer == (int)(time * 0.3f)+1)
+                        {
+                            
+                            SoundEngine.PlaySound(Mroar, npc.Center);
+                        }
+                        else 
+                        {
+                            Follow(speed, 1f, 1.06f);
+                        }
+
+                        if (DashAttackTimer > time && npc.Distance(targetPos) > 500)
+                        {
+                            DashAttackTimer = 0;
+                            //DashAttackState = 0;
+                            AttackPart++;
+                        }
+                    }
+                    void Spikes(float speed, float time, bool homing, int howFar = -1)
+                    {
+                        targetPos = npc.Center + npc.velocity * 10;
+                        Follow(speed, 1);
+                        int final = howFar == -1 ? maxLength : howFar;
+
+                        SpikeTimer++;
+                        if (SpikeTimer == (int)(time * 0.8f))
+                        {
+                            NPC n = npc;
+                            for (int i = 0; i < final; i++)
+                            {
+                                n = Main.npc[(int)n.ai[0]];
+                                if (n == null || !n.active || (n.type != ModContent.NPCType<AquaticScourgeBody>() && n.type != ModContent.NPCType<AquaticScourgeBodyAlt>()))
+                                {
+                                    break;
+                                }
+                                else if (n.type == ModContent.NPCType<AquaticScourgeBody>())
+                                {
+                                    int type = ModContent.ProjectileType<Tooth>();
+                                    Projectile.NewProjectileDirect(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 + 50)) * 20, type, npc.damage, 1, ai0:25, ai1: homing ? 1 : 0, ai2: target.whoAmI);
+                                    Projectile.NewProjectileDirect(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 - 50)) * 20, type, npc.damage, 1, ai0: 25, ai1: homing ? 1 : 0, ai2: target.whoAmI);
+                                    SoundEngine.PlaySound(SoundID.Item17, npc.Center);
+                                }
+                                
+                            }
+                        }
+                        if (SpikeTimer >= time)
+                        {
+                            SpikeTimer = 0;
+                            AttackPart++;
+                        }
                     }
                     //Follow the targetPos variable
                     void Follow(float maxSpeed, float turnSpeed, float acceleration = 1.05f) {
                         
-                        if (Vars[9] > 160 && npc.Distance(target.Center) > 500)
-                        {
-                            maxSpeed = 15;
-                        }
-                        //begin charge cycle when close to the player
-                        if (npc.Distance(target.Center) < 700 && Vars[9] < 150)
-                        {
-                            Vars[1]++;
-                            Vars[8] = 0;
-                        }
 
                         //speed up if too slow and vice versa
                         if (npc.velocity.Length() < maxSpeed)
@@ -219,36 +563,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         {
                             npc.velocity /= acceleration;
                         }
-
-                        //difference between angle of npc and the angle to the player
-                        float angle = MathHelper.ToDegrees(FargoSoulsUtil.RotationDifference(npc.velocity, npc.AngleTo(targetPos).ToRotationVector2()));
-
-                        //increase aggression if facing the complete wrong direction and vice versa
-                        if (Math.Abs(angle) > 80)
-                        {
-                            Vars[9]++;
-                        }
-                        else if (Vars[9] > 1)
-                        {
-                            Vars[9]--;
-                        }
+                        angleDiff = MathHelper.ToDegrees(FargoSoulsUtil.RotationDifference(npc.velocity, npc.AngleTo(targetPos).ToRotationVector2()));
                         //turning to face the player
-                        if (Math.Abs(angle) > 2f )
+                        if (Math.Abs(angleDiff) > 0.5f )
                         {
 
-                            //if aggro timer is up and facing the wrong way turn faster
-                            if (Math.Abs(angle) > 80)
-                            {
-                                if (Vars[9] > 60)
-                                {
-                                    turnSpeed *= 2;
-                                }
-                                if (Vars[9] > 200)
-                                {
-                                    turnSpeed *= 2;
-                                }
-                            }
-                            npc.velocity = npc.velocity.RotatedBy(MathHelper.ToRadians(angle > 0 ? turnSpeed : -turnSpeed));
+                            
+                            npc.velocity = npc.velocity.RotatedBy(MathHelper.ToRadians(angleDiff > 0 ? turnSpeed : -turnSpeed));
 
                         }
                     }
