@@ -676,6 +676,9 @@ Mods: {
 			ApolloRename: XS-11 Apollo
 			ExoTwinsRenameNormal: XS-01 Artemis and XS-11 Apollo
 			MutantBR.DisplayName: Mutant B R
+			MediumWormBodySegment.DisplayName: Medium Worm Body Segment
+			MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
+			MediumWormTailSegment.DisplayName: Medium Worm Tail Segment
 		}
 
 		Projectiles: {
@@ -817,6 +820,11 @@ Mods: {
 			PulseBlast.DisplayName: Pulse Blast
 			HadesLineTelegraph.DisplayName: Hades Line Telegraph
 			ApolloMissile2.DisplayName: Apollo Missile
+			BatMode.DisplayName: Bat Mode
+			PerfExplosion.DisplayName: Perf Explosion
+			PerforatorSpike.DisplayName: Perforator Spike
+			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
+
 		}
 
 		Buffs: {

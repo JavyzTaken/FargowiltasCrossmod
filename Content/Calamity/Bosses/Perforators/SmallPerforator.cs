@@ -2,13 +2,16 @@
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,6 +26,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         ModContent.NPCType<PerforatorBodySmall>(),
         ModContent.NPCType<PerforatorTailSmall>()
         );
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
+            {
+                if (npc.ai[3] < 60)
+                {
+                    Main.spriteBatch.UseBlendState(BlendState.Additive);
+
+                    Texture2D tex = TextureAssets.Npc[npc.type].Value;
+                    Color glowColor = Color.Red;
+                    SpriteEffects spriteEffects = SpriteEffects.None;
+                    if (npc.spriteDirection == 1)
+                        spriteEffects = SpriteEffects.FlipHorizontally;
+                    for (int j = 0; j < 12; j++)
+                    {
+                        Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 4f;
+                        Main.EntitySpriteDraw(tex, npc.Center + afterimageOffset - Main.screenPosition, null, glowColor, npc.rotation, tex.Size() * 0.5f, npc.scale, spriteEffects, 0f);
+                    }
+
+                    Main.spriteBatch.ResetToDefault();
+                }
+            }
+            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+        }
         public override bool SafePreAI(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return true;

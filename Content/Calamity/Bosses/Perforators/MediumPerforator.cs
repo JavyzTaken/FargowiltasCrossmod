@@ -1,15 +1,24 @@
-﻿using CalamityMod.NPCs.Perforator;
+﻿using CalamityMod.Events;
+using CalamityMod.NPCs;
+using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
@@ -23,22 +32,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             ModContent.NPCType<PerforatorBodyMedium>(),
             ModContent.NPCType<PerforatorTailMedium>()
         );
+        public Vector2 VelocityReal = Vector2.UnitY * 16;
         public override void SetDefaults(NPC entity)
         {
             if (!WorldSavingSystem.EternityMode) return;
             entity.lifeMax = 50;
+            entity.Opacity = 1f;
         }
         public override void SpawnNPC(int npc, int tileX, int tileY)
         {
             base.SpawnNPC(npc, tileX, tileY);
         }
-
         public override void OnKill(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return;
 
-            if (DLCUtils.HostCheck)
-                Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.7f, 0.7f)), ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+            if (DLCUtils.HostCheck && npc.HasPlayerTarget)
+            {
+                int p = Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<GoldenShowerHoming>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer, npc.target, -40);
+                if (p.IsWithinBounds(Main.maxProjectiles))
+                {
+                    Main.projectile[p].extraUpdates = 1;
+                    Main.projectile[p].netUpdate = true;
+                }
+            }
+                
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -47,7 +65,82 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override bool SafePreAI(NPC npc)
         {
             npc.netUpdate = true; //fuck you worm mp code
-            return base.SafePreAI(npc);
+            
+            if (Collision.SolidCollision(npc.position, npc.width, npc.height))
+            {
+                npc.StrikeInstantKill();
+            }
+            if (npc.type == ModContent.NPCType<PerforatorHeadMedium>())
+            {
+                npc.velocity = VelocityReal;
+            }
+
+            return true;
         }
+        public override void SafePostAI(NPC npc)
+        {
+            if (npc.type == ModContent.NPCType<PerforatorHeadMedium>())
+            {
+                VelocityReal.Y += 0.5f;
+                if (npc.HasPlayerTarget)
+                {
+                    Player player = Main.player[npc.target];
+                    VelocityReal.X += npc.HorizontalDirectionTo(player.Center) * 0.2f;
+                }
+                //npc.velocity = VelocityReal;
+            }
+        }
+        /*
+        public void ManageWormStuff(NPC NPC)
+        {
+            NPC.realLife = -1;
+
+            // Get a target
+            if (NPC.target < 0 || NPC.target == Main.maxPlayers || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+                NPC.TargetClosest();
+
+            // Despawn safety, make sure to target another player if the current player target is too far away
+            if (Vector2.Distance(Main.player[NPC.target].Center, NPC.Center) > CalamityGlobalNPC.CatchUpDistance200Tiles)
+                NPC.TargetClosest();
+
+            Player player = Main.player[NPC.target];
+
+            if (Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                if (NPC.ai[0] == 0f)
+                {
+                    int totalSegments = 10;
+                    NPC.ai[2] = totalSegments;
+                    NPC.ai[0] = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + (NPC.width / 2)), (int)(NPC.position.Y + NPC.height), ModContent.NPCType<PerforatorBodyMedium>(), NPC.whoAmI);
+                    Main.npc[(int)NPC.ai[0]].ai[1] = NPC.whoAmI;
+                    Main.npc[(int)NPC.ai[0]].ai[2] = NPC.ai[2] - 1f;
+                    NPC.netUpdate = true;
+                }
+
+                // Splitting effect
+                if (!Main.npc[(int)NPC.ai[1]].active && !Main.npc[(int)NPC.ai[0]].active)
+                {
+                    NPC.life = 0;
+                    NPC.HitEffect(0, 10.0);
+                    NPC.checkDead();
+                    NPC.active = false;
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                }
+                if (!Main.npc[(int)NPC.ai[0]].active)
+                {
+                    NPC.life = 0;
+                    NPC.HitEffect(0, 10.0);
+                    NPC.checkDead();
+                    NPC.active = false;
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+                }
+
+                if (!NPC.active && Main.netMode == NetmodeID.Server)
+                    NetMessage.SendData(MessageID.DamageNPC, -1, -1, null, NPC.whoAmI, -1f, 0f, 0f, 0, 0, 0);
+            }
+
+            NPC.rotation = (float)Math.Atan2(NPC.velocity.Y, NPC.velocity.X) + MathHelper.PiOver2;
+        }
+        */
     }
 }

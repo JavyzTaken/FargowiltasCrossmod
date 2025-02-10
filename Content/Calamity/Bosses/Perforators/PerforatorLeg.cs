@@ -16,6 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         /// The 0-1 interpolant of how far this leg is in its forward step animation.
         /// </summary>
         public float StepAnimationInterpolant;
+        public Action<PerforatorLeg, NPC> OnCompleteAnimation;
 
         /// <summary>
         /// The standard offset for this leg from its owner when not moving.
@@ -43,6 +44,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public float InterpolationSpeed;
 
         /// <summary>
+        /// Remaining time that the limb is damaging.
+        /// Ticks down by 1 until 0 each tick.
+        /// </summary>
+        public int DamageTime;
+
+        /// <summary>
         /// The kinematic chain that governs the orientation of this leg.
         /// </summary>
         public KinematicChain Leg;
@@ -54,6 +61,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public readonly int Index;
 
+        public int AnimationMode;
+        public const int Linear = 0;
+        public const int Accel = 1;
+        public const int Decel = 2;
+        public const int AccelDecel = 3;
+
         public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength1, float legLength2, int index)
         {
             LegSizeFactor = legSizeFactor;
@@ -64,13 +77,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Add(new(LegSizeFactor * legLength2));
             Index = index;
         }
-        Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
+        public Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
+        public Vector2 DefaultPosition(PerfsEternityNew owner) => LegCenter(owner) + DefaultOffset;
         public void Update(NPC owner)
         {
+            if (DamageTime > 0)
+                DamageTime--;
+
             var hive = owner.GetDLCBehavior<PerfsEternityNew>();
             if (owner.IsABestiaryIconDummy)
             {
-                Leg.Update(LegCenter(hive) + DefaultOffset);
+                Leg.Update(DefaultPosition(hive));
                 return;
             }
 
@@ -89,7 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Initialize the step destination if necessary.
             if (StepDestination == Vector2.Zero)
-                StepDestination = LegCenter(hive) + DefaultOffset;
+                StepDestination = DefaultPosition(hive);
 
             // Keep the leg below the owner if they're falling.
             if (falling)
@@ -97,7 +114,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Prevent the leg from being behind walls.
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
-            Vector2 idealDefaultStepPosition = LumUtils.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, -16f);
+            if (stepOffset.HasNaNs())
+                stepOffset = Vector2.Zero;
+            Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection, "A").ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
                 if (Collision.CanHitLine(LegCenter(hive), 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
@@ -117,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             // Move limbs forward if necessary.
             if (StepAnimationInterpolant > 0f)
-                UpdateMovementAnimation(gravityDirection);
+                UpdateMovementAnimation(gravityDirection, owner);
             else
                 KeepLegInPlace(gravityDirection);
 
@@ -162,14 +181,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 idealStepPosition.Y = groundPositionSnapped.Y - MathHelper.Lerp(0f, 16f, tileSlopeInterpolant) + 2f;
         }
 
-        public void UpdateMovementAnimation(Vector2 gravityDirection)
+        public void UpdateMovementAnimation(Vector2 gravityDirection, NPC owner)
         {
             // Increment the animation interpolant.
             StepAnimationInterpolant += InterpolationSpeed; //0.064f;
 
+
             // Calculate the current movement destination based on the animation's completion.
             // This gradually goes from the starting position and ends up at the step destination, making a slight upward arc while doing so.
-            Vector2 movementDestination = Vector2.Lerp(EndEffectorPositionAtStartOfStep, StepDestination, LumUtils.Saturate(StepAnimationInterpolant));
+            float x = LumUtils.Saturate(StepAnimationInterpolant);
+
+            // Move differently based on the animation type.
+            switch (AnimationMode)
+            {
+                case Accel:
+                    x *= x;
+                    break;
+                case Decel:
+                    x = 2 * x - x * x;
+                    break;
+                case AccelDecel:
+                    x = 3 * x * x - 2 * x * x * x;
+                    break;
+            }
+
+            Vector2 movementDestination = Vector2.Lerp(EndEffectorPositionAtStartOfStep, StepDestination, x);
             movementDestination -= gravityDirection * LumUtils.Convert01To010(StepAnimationInterpolant) * 18f;
 
             // Move the leg.
@@ -180,6 +216,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             {
                 StepAnimationInterpolant = 0f;
                 SoundEngine.PlaySound(SoundID.Dig with { Pitch = -0.5f }, StepDestination);
+                if (OnCompleteAnimation != null)
+                {
+                    OnCompleteAnimation.Invoke(this, owner);
+                    OnCompleteAnimation = null;
+                }
             }
         }
 
@@ -190,7 +231,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Update(StepDestination);
         }
 
-        public void StartStepAnimation(NPC owner, Vector2 gravityDirection, Vector2 forwardDirection, float interpolationSpeed = 0.05f)
+        public void StartStepAnimation(NPC owner, Vector2 gravityDirection, Vector2 forwardDirection, float interpolationSpeed = 0.05f, int animationMode = AccelDecel)
         {
             // Calculate the position to step towards.
             float ownerDirection = Vector2.Dot(owner.velocity, forwardDirection).NonZeroSign();
@@ -201,29 +242,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             else
                 aimAheadOffset /= LegSizeFactor;
             aimAheadOffset.X += Main.rand.NextFloatDirection() * 20f;
+            if (aimAheadOffset.HasNaNs())
+                aimAheadOffset = Vector2.Zero;
 
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
-            StepDestination = LumUtils.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection).ToWorldCoordinates(8f, 20f);
+            StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
+            if (owner.GetDLCBehavior<PerfsEternityNew>().PhaseTwo)
+                InterpolationSpeed *= 1.5f;
+            AnimationMode = animationMode;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);
         }
 
-        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f)
+        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f, int animationMode = AccelDecel)
         {
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = endPosition;
             InterpolationSpeed = interpolationSpeed;
+            AnimationMode = animationMode;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);
         }
 
         public Vector2 GetEndPoint() => Leg.EndEffectorPosition;
+        public void SetAnimationEndAction(Action<PerforatorLeg, NPC> action) => OnCompleteAnimation = action;
     }
 }
