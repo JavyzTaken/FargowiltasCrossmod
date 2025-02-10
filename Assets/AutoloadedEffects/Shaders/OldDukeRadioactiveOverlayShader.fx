@@ -1,6 +1,7 @@
 ﻿sampler baseTexture : register(s0);
 sampler noiseTexture : register(s1);
 
+float pixelationLevel;
 float blurInterpolant;
 float globalTime;
 float glowInterpolant;
@@ -25,7 +26,7 @@ float3 OverlayBlend(float3 top, float3 bottom)
 float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float2 framedCoords = (coords * textureSize - frame.xy) / frame.zw;
-    framedCoords = round(framedCoords * 100) / 100;
+    framedCoords = round(framedCoords * pixelationLevel) / pixelationLevel;
     
     float2 mouthOrigin = float2(0.86, 0.6);
     float2 polar = float2(atan2(framedCoords.y - mouthOrigin.y, framedCoords.x - mouthOrigin.x), distance(framedCoords, mouthOrigin));

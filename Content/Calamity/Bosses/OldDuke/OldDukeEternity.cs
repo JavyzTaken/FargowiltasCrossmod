@@ -228,6 +228,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 }
             }
 
+            float sparkSpawnProbability = MathHelper.SmoothStep(0.2f, 1f, RadioactiveGlowInterpolant) * NPC.Opacity.Cubed();
+            if (Main.netMode != NetmodeID.MultiplayerClient && Phase >= 2 && Main.rand.NextBool(sparkSpawnProbability))
+            {
+                int sparkLifetime = Main.rand.Next(7, 14);
+                Vector2 sparkRange = NPC.rotation.ToRotationVector2().RotatedByRandom(MathHelper.PiOver4) * -Main.rand.NextFloat(40f, 90f);
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), EyePosition, sparkRange, ModContent.ProjectileType<FuelSpark>(), 0, 0f, -1, sparkLifetime);
+            }
+
             NPC.damage = NPC.defDamage;
             NPC.dontTakeDamage = false;
             NPC.Opacity = LumUtils.Saturate(NPC.Opacity + 0.15f);
@@ -849,7 +857,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             }
 
             if (AITimer >= roarDelay + roarTime + 45)
-                SwitchStateTo(OldDukeAIState.Phase2Transition_ConsumeFuelContainers);
+                SwitchState();
         }
 
         /// <summary>
@@ -884,15 +892,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 {
                     Vector2 fuelSpawnPosition = Target.Center + Vector2.UnitY * 965f;
                     if (AITimer == diveTime + containerSpawnDelay + 10)
-                        fuelSpawnPosition.X -= 300f;
+                        fuelSpawnPosition.X -= Target.velocity.X * 12f + 300f;
                     else if (AITimer == diveTime + containerSpawnDelay + 20)
-                        fuelSpawnPosition.X += 300f;
+                        fuelSpawnPosition.X += Target.velocity.X * 12f + 300f;
                     else
-                        fuelSpawnPosition.Y -= 175f;
+                        fuelSpawnPosition.Y -= 240f;
 
                     fuelSpawnPosition.Y -= (AITimer - (diveTime + containerSpawnDelay)) * 15f;
 
-                    Vector2 fuelVelocity = -Vector2.UnitY.RotatedByRandom(0.01f) * 40f;
+                    Vector2 fuelVelocity = -Vector2.UnitY.RotatedByRandom(0.01f) * 37f;
                     LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), fuelSpawnPosition, fuelVelocity, ModContent.ProjectileType<TastyFuelContainer>(), 0, 0f);
                 }
             }
@@ -930,10 +938,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                         Animation = OldDukeAnimation.OpenMouth;
 
                     // Chomp down on the container if sufficiently close.
-                    if (MouthPosition.WithinRange(closestContainer.Center, 65f))
+                    if (MouthPosition.WithinRange(closestContainer.Center, 74f))
                     {
                         closestContainer.Kill();
                         chompCountdown = 5f;
+                        RadioactiveGlowInterpolant = 1.5f;
                         NPC.netUpdate = true;
                     }
 
@@ -941,7 +950,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 }
 
                 else
-                    AITimer = 0;
+                    SwitchStateTo(OldDukeAIState.Phase2Transition_Roar);
 
                 AfterimageOpacity = LumUtils.InverseLerp(20f, 54f, NPC.velocity.Length());
             }
@@ -977,7 +986,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             float lifeRatio = NPC.GetLifePercent();
             if (lifeRatio < Phase2LifeRatio && Phase < 2)
             {
-                CurrentState = OldDukeAIState.Phase2Transition_Roar;
+                CurrentState = OldDukeAIState.Phase2Transition_ConsumeFuelContainers;
                 AttackCycleIndex = 0;
             }
 
@@ -997,7 +1006,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         {
             SwitchState();
             CurrentState = newState;
-            AttackCycleIndex--;
+            if (AttackCycleIndex >= 1)
+                AttackCycleIndex--;
         }
 
         public override void FindFrame(int frameHeight)
@@ -1036,6 +1046,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             overlayShader.TrySetParameter("turbulence", 0.36f);
             overlayShader.TrySetParameter("translucentAccent", new Vector3(0.8f, 0f, 1.2f));
             overlayShader.TrySetParameter("glowInterpolant", RadioactiveGlowInterpolant.Squared());
+            overlayShader.TrySetParameter("pixelationLevel", 105f);
             overlayShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
             overlayShader.Apply();
 
