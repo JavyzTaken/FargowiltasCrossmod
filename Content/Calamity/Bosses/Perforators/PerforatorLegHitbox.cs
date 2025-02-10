@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CalamityMod;
+using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
@@ -115,7 +116,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            base.OnHitPlayer(target, info);
+            if (info.Damage > 0)
+                target.AddBuff(ModContent.BuffType<BurningBlood>(), 60 * 3);
         }
     }
 }

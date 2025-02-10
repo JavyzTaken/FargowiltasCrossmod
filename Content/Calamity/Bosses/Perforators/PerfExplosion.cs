@@ -1,4 +1,5 @@
-﻿using FargowiltasSouls;
+﻿using CalamityMod.Buffs.DamageOverTime;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Projectiles.Masomode;
@@ -80,6 +81,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
         {
             modifiers.Knockback *= 3;
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (info.Damage > 0)
+                target.AddBuff(ModContent.BuffType<BurningBlood>(), 60 * 3);
         }
     }
 }

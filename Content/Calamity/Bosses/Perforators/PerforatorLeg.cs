@@ -250,6 +250,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
+            if (owner.GetDLCBehavior<PerfsEternityNew>().PhaseTwo)
+                InterpolationSpeed *= 1.5f;
             AnimationMode = animationMode;
 
             // Apply slope vertical offsets to the step position.

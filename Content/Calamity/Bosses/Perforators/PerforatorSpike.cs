@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CalamityMod;
+using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Common;
@@ -130,7 +131,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            if (!Damaging || Projectile.Opacity < 0.5f)
+            if (!Damaging || Projectile.Opacity < 0.9f)
                 return false;
             if (projHitbox.Intersects(targetHitbox))
             {
@@ -186,7 +187,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            base.OnHitPlayer(target, info);
+            if (info.Damage > 0)
+                target.AddBuff(ModContent.BuffType<BurningBlood>(), 60 * 3);
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

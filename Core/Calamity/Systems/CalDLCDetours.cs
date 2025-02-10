@@ -52,6 +52,7 @@ using Terraria.Localization;
 using CalamityMod.Skies;
 using Terraria.Graphics.Effects;
 using FargowiltasSouls.Content.UI;
+using CalamityMod.NPCs.Perforator;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -91,12 +92,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo ModifyHurtInfo_CalamityMethod = typeof(CalamityPlayer).GetMethod("ModifyHurtInfo_Calamity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BRDialogueTick_Method = typeof(BossRushDialogueSystem).GetMethod("Tick", LumUtils.UniversalBindingFlags);
-        //private static readonly MethodInfo BRSceneWeight_Method = typeof(BossRushScene).GetMethod("GetWeight", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DetermineDrawEligibility_Method = typeof(BossRushSky).GetMethod("DetermineDrawEligibility", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MediumPerforatorOnKill_Method = typeof(PerforatorBodyMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -130,13 +131,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_ModifyHurtInfo_Calamity(CalamityPlayer self, ref Player.HurtInfo info);
         public delegate void Orig_MinimalEffects(ToggleBackend self);
         public delegate void Orig_BRDialogueTick();
-        //public delegate void Orig_BRSceneWeight();
-
         public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
         public delegate bool Orig_CanToggleEternity();
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
         public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
         public delegate bool Orig_DetermineDrawEligibility();
+        public delegate void Orig_MediumPerforatorOnKill(PerforatorBodyMedium self);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -178,6 +178,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
             HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
             HookHelper.ModifyMethodWithDetour(DetermineDrawEligibility_Method, DetermineDrawEligibility_Detour);
+            HookHelper.ModifyMethodWithDetour(MediumPerforatorOnKill_Method, MediumPerforatorOnKill_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -707,6 +708,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             */
 
             return false;
+        }
+
+        internal static void MediumPerforatorOnKill_Detour(Orig_MediumPerforatorOnKill orig, PerforatorBodyMedium self)
+        {
+            if (CalDLCWorldSavingSystem.E_EternityRev)
+                return;
+            orig(self);
         }
         #endregion
     }
