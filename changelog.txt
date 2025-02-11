@@ -1,5 +1,3 @@
 New Update: v1.1.1.05
 
--Updated to Souls Mod v1.7.1.4
--Fixed Mutant attack choice not working correctly after DLC attacks
--Added banner recipe for Necroplasm
+-Updated to Calamity Mod v2.0.4.006
