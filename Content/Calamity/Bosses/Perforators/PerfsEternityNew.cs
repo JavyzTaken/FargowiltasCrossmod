@@ -728,7 +728,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 int dir = Math.Sign(endPoint.X - NPC.Center.X);
                 Vector2 pos = endPoint + new Vector2(dir * 90, 0);
                 pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "D").ToWorldCoordinates();
-                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel);
+                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
                 leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
                 {
                     Vector2 endPoint = leg.GetEndPoint();
@@ -802,7 +802,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         Vector2 pos = Target.Center;
                         pos += endPoint.DirectionTo(pos) * 80;
                         //pos = endPoint + endPoint.DirectionTo(pos) * 380;
-                        leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel);
+                        leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
                         leg.DamageTime = 2 * (int)(stabTime);
 
                         if (DLCUtils.HostCheck)
@@ -891,7 +891,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     Vector2 pos = endPoint + new Vector2(dir * -80);
                     pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "D").ToWorldCoordinates();
                     pos.Y += 40;
-                    leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel);
+                    leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
                     if (i == 0)
                     {
                         leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
@@ -955,7 +955,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Vector2 pos = endPoint + new Vector2(dir * 90, 0);
                 pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "D").ToWorldCoordinates();
                 pos.Y += 40;
-                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel);
+                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
                 leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
                 {
                     if (!npc.HasPlayerTarget)
