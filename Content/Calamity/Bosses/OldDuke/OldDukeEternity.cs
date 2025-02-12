@@ -38,6 +38,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             Phase2Transition_Roar,
             Phase2Transition_ConsumeFuelContainers,
 
+            VomitRadioactiveCinders,
+
             Leave
         }
 
@@ -272,6 +274,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     break;
                 case OldDukeAIState.Phase2Transition_ConsumeFuelContainers:
                     DoBehavior_Phase2Transition_ConsumeFuelContainers();
+                    break;
+                case OldDukeAIState.VomitRadioactiveCinders:
+                    DoBehavior_VomitRadioactiveCinders();
                     break;
                 case OldDukeAIState.Leave:
                     DoBehavior_Leave();
@@ -744,6 +749,70 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// Performs the Old Duke's Vomit Radioactive Cinders state.
+        /// </summary>
+        public void DoBehavior_VomitRadioactiveCinders()
+        {
+            int hoverRedirectTime = 36;
+            int slowdownTime = 10;
+            int cinderCount = 23;
+            int cinderReleaseRate = 3;
+            int cinderReleaseTime = cinderReleaseRate * cinderCount;
+            float standardCinderSpeed = 31f;
+
+            Animation = OldDukeAnimation.IdleAnimation;
+
+            if (AITimer <= hoverRedirectTime)
+            {
+                float flySpeedInterpolant = LumUtils.InverseLerp(0f, hoverRedirectTime, AITimer);
+                Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * new Vector2(600f, 475f);
+                NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.285f, 1f - flySpeedInterpolant * 0.19f);
+                RotateTowards(Target.Center, 0.1f);
+
+                if (NPC.WithinRange(hoverDestination, 50f))
+                {
+                    AITimer = hoverRedirectTime + 1;
+                    NPC.netUpdate = true;
+                }
+            }
+
+            // Slow down considerably in anticipation of the cinder vomit.
+            else if (AITimer <= hoverRedirectTime + slowdownTime)
+            {
+                NPC.velocity *= 0.9f;
+                RotateTowards(Target.Center, 0.14f);
+            }
+
+            // Vomit cinders.
+            else if (AITimer <= hoverRedirectTime + slowdownTime + cinderReleaseTime)
+            {
+                int relativeTimer = AITimer - hoverRedirectTime - slowdownTime;
+                if (relativeTimer == 1)
+                {
+                    SoundEngine.PlaySound(CalamityOD.VomitSound, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFlameBreath, NPC.Center);
+                }
+
+                // Look towards the player.
+                RotateTowards(Target.Center, 0.12f);
+
+                NPC.velocity *= 0.95f;
+
+                if (Main.netMode != NetmodeID.MultiplayerClient && relativeTimer % cinderReleaseRate == 0)
+                {
+                    Vector2 vomitDirection = NPC.rotation.ToRotationVector2();
+                    NPC.velocity -= vomitDirection * 4.2f;
+
+                    Vector2 cinderVelocity = vomitDirection.RotatedByRandom(0.82f) * standardCinderSpeed * Main.rand.NextFloat(0.7f, 1.3f);
+                    LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), MouthPosition, cinderVelocity, ModContent.ProjectileType<SwervingRadioactiveCinder>(), 270, 0f);
+
+                    NPC.netUpdate = true;
+                    NPC.netSpam = 0;
+                }
+            }
+        }
+
+        /// <summary>
         /// Handles the puppeteering of sulphurous sharkrons during the Old Duke's Kamikaze Sharks state.
         /// </summary>
         /// <param name="sharkBehavior">The shark being puppeteered.</param>
@@ -979,6 +1048,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public void SwitchState()
         {
             OldDukeAIState[] attackCycle = Phase1AttackCycle;
+            attackCycle = [OldDukeAIState.VomitRadioactiveCinders, OldDukeAIState.PredictiveDashes];
 
             CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
             AttackCycleIndex++;
