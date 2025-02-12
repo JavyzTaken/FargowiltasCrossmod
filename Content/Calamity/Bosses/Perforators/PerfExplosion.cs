@@ -38,11 +38,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Projectile.FargoSouls().CanSplit = false;
 
             Projectile.scale = 1f;
-
         }
         public override void OnSpawn(IEntitySource source)
         {
-            SoundEngine.PlaySound(SoundID.DD2_GhastlyGlaiveImpactGhost with { Pitch = 0.3f }, Projectile.Center);
+            //SoundEngine.PlaySound(SoundID.DD2_GhastlyGlaiveImpactGhost with { Pitch = 0.3f }, Projectile.Center);
             //Projectile.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -58,12 +57,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Projectile.scale += scaleModifier * 5f / Duration;
             Projectile.width = Projectile.height = (int)(BaseRadius * Projectile.scale);
             Projectile.Center = Projectile.position;
+
             if (Projectile.timeLeft < 8)
                 Projectile.Opacity -= 0.15f;
         }
         public override bool ShouldUpdatePosition() => false;
         public override bool PreDraw(ref Color lightColor)
         {
+            if (Projectile.damage <= 0f && Projectile.Opacity > 0.4f)
+                Projectile.Opacity = 0.4f;
+
             float rotation = Projectile.rotation;
             Vector2 drawPos = Projectile.Center;
             var texture = TextureAssets.Projectile[Projectile.type].Value;
