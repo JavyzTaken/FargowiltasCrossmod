@@ -32,6 +32,7 @@ public class NuclearHurricane : ModProjectile
 
     private static float WavinessFactor => 0.16f;
 
+    // TODO -- Consider creating some sort of vfx config option that slows this down. Concerns were brought up about this being too fast by default for those with photosensitivity.
     /// <summary>
     /// A general-purpose timer which determines the animation of visuals for this hurricane.
     /// </summary>
