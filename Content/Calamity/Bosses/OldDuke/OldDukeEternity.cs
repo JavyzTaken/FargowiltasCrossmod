@@ -315,6 +315,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// Makes the Old Duke create mouth fire particles.
+        /// </summary>
+        public void BreatheFire(int particleCount = 3)
+        {
+            float fireBreathSpeed = MathHelper.Clamp(NPC.velocity.Length() * 1.15f, 60f, 1000f);
+            for (int i = 0; i < particleCount; i++)
+            {
+                float squish = Main.rand.NextFloat(0.4f, 0.5f);
+                float fireScale = Main.rand.NextFloat(100f, 240f);
+                Vector2 fireVelocity = NPC.rotation.ToRotationVector2() * fireBreathSpeed + Main.rand.NextVector2Circular(30f, 30f);
+                Color fireColor = new Color(Main.rand.Next(91, 170), 255, 9);
+                OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(1f - squish, 1f) * fireScale, fireColor);
+            }
+        }
+
+        /// <summary>
         /// Makes the Old Duke look towards a given destination by updating his rotation.
         /// </summary>
         /// <param name="destination">The position to look towards.</param>
@@ -543,14 +559,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     if (NPC.WithinRange(Target.Center, 210f))
                         NPC.dontTakeDamage = true;
 
-                    for (int i = 0; i < 3; i++)
-                    {
-                        float squish = Main.rand.NextFloat(0.4f, 0.5f);
-                        float fireScale = Main.rand.NextFloat(100f, 240f);
-                        Vector2 fireVelocity = NPC.velocity * 1.15f + Main.rand.NextVector2Circular(30f, 30f);
-                        Color fireColor = new Color(Main.rand.Next(91, 170), 255, 9);
-                        OldDukeFireParticleSystemManager.ParticleSystem.CreateNew(MouthPosition + NPC.velocity * 3f, fireVelocity, new Vector2(1f - squish, 1f) * fireScale, fireColor);
-                    }
+                    BreatheFire();
                 }
             }
             else
@@ -755,17 +764,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         {
             int hoverRedirectTime = 36;
             int slowdownTime = 10;
-            int cinderCount = 23;
-            int cinderReleaseRate = 3;
+            int cinderCount = 20;
+            int cinderReleaseRate = 4;
             int cinderReleaseTime = cinderReleaseRate * cinderCount;
-            float standardCinderSpeed = 31f;
+            int attackTransitionDelay = 50;
+            float standardCinderSpeed = 26.5f;
 
             Animation = OldDukeAnimation.IdleAnimation;
 
             if (AITimer <= hoverRedirectTime)
             {
                 float flySpeedInterpolant = LumUtils.InverseLerp(0f, hoverRedirectTime, AITimer);
-                Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * new Vector2(600f, 475f);
+                Vector2 hoverDestination = Target.Center + Target.SafeDirectionTo(NPC.Center) * new Vector2(520f, 400f);
+                NPC.Center = Vector2.Lerp(NPC.Center, hoverDestination, flySpeedInterpolant * 0.15f);
                 NPC.SmoothFlyNear(hoverDestination, flySpeedInterpolant * 0.285f, 1f - flySpeedInterpolant * 0.19f);
                 RotateTowards(Target.Center, 0.1f);
 
@@ -779,13 +790,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             // Slow down considerably in anticipation of the cinder vomit.
             else if (AITimer <= hoverRedirectTime + slowdownTime)
             {
-                NPC.velocity *= 0.9f;
+                NPC.velocity *= 0.85f;
                 RotateTowards(Target.Center, 0.14f);
             }
 
             // Vomit cinders.
             else if (AITimer <= hoverRedirectTime + slowdownTime + cinderReleaseTime)
             {
+                Animation = OldDukeAnimation.OpenMouth;
+
                 int relativeTimer = AITimer - hoverRedirectTime - slowdownTime;
                 if (relativeTimer == 1)
                 {
@@ -796,20 +809,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 // Look towards the player.
                 RotateTowards(Target.Center, 0.12f);
 
-                NPC.velocity *= 0.95f;
+                NPC.velocity *= 0.93f;
+                BreatheFire(1);
 
                 if (Main.netMode != NetmodeID.MultiplayerClient && relativeTimer % cinderReleaseRate == 0)
                 {
                     Vector2 vomitDirection = NPC.rotation.ToRotationVector2();
-                    NPC.velocity -= vomitDirection * 4.2f;
+                    NPC.velocity -= vomitDirection * 0.3f;
 
-                    Vector2 cinderVelocity = vomitDirection.RotatedByRandom(0.82f) * standardCinderSpeed * Main.rand.NextFloat(0.7f, 1.3f);
+                    Vector2 cinderVelocity = vomitDirection.RotatedByRandom(0.92f) * standardCinderSpeed * Main.rand.NextFloat(0.75f, 1.15f);
                     LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), MouthPosition, cinderVelocity, ModContent.ProjectileType<SwervingRadioactiveCinder>(), 270, 0f);
 
                     NPC.netUpdate = true;
                     NPC.netSpam = 0;
                 }
             }
+
+            if (AITimer >= hoverRedirectTime + slowdownTime + cinderReleaseTime + attackTransitionDelay)
+                SwitchState();
         }
 
         /// <summary>

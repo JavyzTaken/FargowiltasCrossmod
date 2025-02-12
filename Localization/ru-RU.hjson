@@ -707,6 +707,7 @@ Mods: {
 			// LingeringAcidBubble.DisplayName: Acid Bubble
 			// TastyFuelContainer.DisplayName: Tasty Fuel Container
 			// FuelSpark.DisplayName: Fuel Spark
+			// SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
 			// PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
 		}
 
