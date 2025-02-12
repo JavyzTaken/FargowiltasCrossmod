@@ -22,6 +22,9 @@
     <None Remove="Content\Calamity\Bosses\Perforators\FrightweaverUpperLeg.png" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Remove="Libraries\CalamityMod.dll" />
+  </ItemGroup>
+  <ItemGroup>
 	<Reference Include="CalamityMod">
 		<HintPath>Libraries/CalamityMod.dll</HintPath>
 	</Reference>

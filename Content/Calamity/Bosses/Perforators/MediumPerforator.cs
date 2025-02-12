@@ -43,7 +43,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             base.SpawnNPC(npc, tileX, tileY);
         }
-
         public override void OnKill(NPC npc)
         {
             if (!WorldSavingSystem.EternityMode) return;
