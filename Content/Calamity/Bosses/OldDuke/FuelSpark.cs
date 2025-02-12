@@ -35,12 +35,12 @@ public class FuelSpark : ModProjectile, IPixelatedPrimitiveRenderer
     public Vector2[] ArcPoints;
 
     /// <summary>
-    /// How long this sphere should exist, in frames.
+    /// How long this spark should exist, in frames.
     /// </summary>
     public ref float Lifetime => ref Projectile.ai[0];
 
     /// <summary>
-    /// How long this sphere has existed, in frames.
+    /// How long this spark has existed, in frames.
     /// </summary>
     public ref float Time => ref Projectile.ai[2];
 
