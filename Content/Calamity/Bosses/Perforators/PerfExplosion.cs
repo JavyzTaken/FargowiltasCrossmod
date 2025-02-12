@@ -65,7 +65,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override bool PreDraw(ref Color lightColor)
         {
             if (Projectile.damage <= 0f && Projectile.Opacity > 0.4f)
-                Projectile.Opacity = 0.4f;
+                Projectile.Opacity = 0.6f;
 
             float rotation = Projectile.rotation;
             Vector2 drawPos = Projectile.Center;

@@ -32,7 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             ModContent.NPCType<PerforatorBodyMedium>(),
             ModContent.NPCType<PerforatorTailMedium>()
         );
-        public Vector2 VelocityReal = Vector2.UnitY * 16;
+        public Vector2 VelocityReal = Vector2.UnitY * 22;
         public override void SetDefaults(NPC entity)
         {
             if (!WorldSavingSystem.EternityMode) return;
@@ -49,10 +49,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             if (DLCUtils.HostCheck && npc.HasPlayerTarget)
             {
-                int p = Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<GoldenShowerHoming>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer, npc.target, 1);
+                float shotSpeed = Main.rand.NextFloat(7f, 16f);
+                Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2.8f);
+                Vector2 vel = shotDir * shotSpeed;
+                if (vel.Y < -6)
+                    vel.Y *= 0.6f;
+                int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 if (p.IsWithinBounds(Main.maxProjectiles))
                 {
-                    Main.projectile[p].extraUpdates = 0;
+                    Main.projectile[p].extraUpdates = 1;
                     Main.projectile[p].netUpdate = true;
                 }
             }
