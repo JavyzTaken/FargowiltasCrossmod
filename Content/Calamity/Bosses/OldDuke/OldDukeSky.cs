@@ -93,7 +93,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             skyShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 2, SamplerState.LinearWrap);
             skyShader.Apply();
 
-            Main.spriteBatch.Draw(MiscTexturesRegistry.Pixel.Value, screenArea, new Color(46, 51, 60) * Opacity * opacity);
+            Main.spriteBatch.Draw(MiscTexturesRegistry.Pixel.Value, screenArea, Main.ColorOfTheSkies * Opacity * opacity);
 
             Main.spriteBatch.End();
             Main.spriteBatch.Begin();
@@ -154,6 +154,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public override Color OnTileColor(Color inColor)
         {
             inColor = Color.Lerp(inColor, new Color(216, 255, 230) * 0.75f, Opacity * 0.9f);
+            Main.ColorOfTheSkies = new Color(46, 51, 60);
             return inColor;
         }
 

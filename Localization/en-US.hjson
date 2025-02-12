@@ -703,6 +703,7 @@ Mods: {
 			FuelSpark.DisplayName: Fuel Spark
 			SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
 			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
+			NuclearHurricane.DisplayName: Nuclear Hurricane
 		}
 
 		Buffs: {

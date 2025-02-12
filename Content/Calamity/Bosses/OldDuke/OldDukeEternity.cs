@@ -39,6 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             Phase2Transition_ConsumeFuelContainers,
 
             VomitRadioactiveCinders,
+            ConjureNuclearHurricane,
 
             Leave
         }
@@ -277,6 +278,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     break;
                 case OldDukeAIState.VomitRadioactiveCinders:
                     DoBehavior_VomitRadioactiveCinders();
+                    break;
+                case OldDukeAIState.ConjureNuclearHurricane:
+                    DoBehavior_ConjureNuclearHurricane();
                     break;
                 case OldDukeAIState.Leave:
                     DoBehavior_Leave();
@@ -830,6 +834,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// Performs the Old Duke's Conjure Nuclear Hurricane state.
+        /// </summary>
+        public void DoBehavior_ConjureNuclearHurricane()
+        {
+            NPC.velocity *= 0.92f;
+            NPC.Center = Vector2.Lerp(NPC.Center, Target.Center, 0.01f);
+
+            if (AITimer == 1)
+            {
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 0, 0f, -1, 10f);
+            }
+
+            NPC.Opacity = 0f;
+            NPC.dontTakeDamage = true;
+
+            if (AITimer >= 60000)
+                AITimer = -5;
+        }
+
+        /// <summary>
         /// Handles the puppeteering of sulphurous sharkrons during the Old Duke's Kamikaze Sharks state.
         /// </summary>
         /// <param name="sharkBehavior">The shark being puppeteered.</param>
@@ -1065,7 +1089,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public void SwitchState()
         {
             OldDukeAIState[] attackCycle = Phase1AttackCycle;
-            attackCycle = [OldDukeAIState.VomitRadioactiveCinders, OldDukeAIState.PredictiveDashes];
+            attackCycle = [OldDukeAIState.ConjureNuclearHurricane, OldDukeAIState.PredictiveDashes];
 
             CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
             AttackCycleIndex++;
