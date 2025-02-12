@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static bool AstralInfectionActive_Detour(Orig_AstralInfectionActive orig, AstralInfectionBiome self, Player player)
         {
             bool result = orig(self, player);
-            if (FargoServerConfig.Instance.Fountains && Main.SceneMetrics.ActiveFountainColor == ModContent.Find<ModWaterStyle>("CalamityMod/AstralWater").Slot)
+            if (FargoServerConfig.Instance.Fountains && Main.SceneMetrics.ActiveFountainColor == ModContent.Find<ModWaterStyle>("CalamityMod/AstralWater").Slot && Main.hardMode)
                 return true;
             return result;
         }

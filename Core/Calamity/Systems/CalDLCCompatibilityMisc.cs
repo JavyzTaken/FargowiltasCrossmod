@@ -40,6 +40,7 @@ using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles;
 using CalamityMod.Systems;
+using CalamityMod.UI.DraedonSummoning;
 using CalamityMod.World;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
@@ -71,6 +72,7 @@ using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
@@ -191,89 +193,72 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             //float: dimness factor to be used when boss spawned
             //int[]: list of npc ids to not delete when spawning
             //int[]: list of other npc ids that need to die to continue event
-            for (int i = Bosses.Count - 1; i >= 0; i--)
-            {
-                if (Bosses[i].EntityID == NPCID.KingSlime)
-                {
-                    Bosses[i] = new Boss(NPCID.KingSlime, permittedNPCs: [NPCID.BlueSlime, NPCID.SlimeSpiked, NPCID.Pinky, NPCID.SpikedIceSlime, NPCID.SpikedJungleSlime, ModContent.NPCType<KingSlimeJewelRuby>(), ModContent.NPCType<KingSlimeJewelEmerald>(), ModContent.NPCType<KingSlimeJewelSapphire>()]);
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<TimberChampion>(), permittedNPCs: [ModContent.NPCType<TimberChampionHead>(), ModContent.NPCType<LesserSquirrel>()]));
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<TrojanSquirrel>(), spawnContext: type =>
-                    {
-                        NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
-                        DownedBossSystem.startedBossRushAtLeastOnce = true;
-                    }, permittedNPCs: [ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrelHead>()]));   
-                }
-                if (Bosses[i].EntityID == NPCID.QueenBee)
-                {
-                    Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<RoyalSubject>());
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<NatureChampion>(), permittedNPCs: [ModContent.NPCType<NatureChampionHead>()]));
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<SpiritChampion>(), permittedNPCs: [ModContent.NPCType<SpiritChampionHand>()]));
 
-                }
-                if (Bosses[i].EntityID == ModContent.NPCType<SlimeGodCore>())
-                {
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<DeviBoss>()));
-                }
-                if (Bosses[i].EntityID == NPCID.QueenSlimeBoss)
-                {
-                    Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<GelatinSubject>());
-                    Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<GelatinSlime>());
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<EarthChampion>(), permittedNPCs: [ModContent.NPCType<EarthChampionHand>()]));
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<TerraChampion>(), permittedNPCs: [ModContent.NPCType<TerraChampionBody>(), ModContent.NPCType<TerraChampionTail>()]));
+            Bosses =
+                [
+                new Boss(NPCID.KingSlime, spawnContext: type => {
+                    NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
+
+                    
+                },permittedNPCs: new int[] { NPCID.BlueSlime, NPCID.YellowSlime, NPCID.PurpleSlime, NPCID.RedSlime, NPCID.GreenSlime, NPCID.RedSlime,
+                    NPCID.IceSlime, NPCID.UmbrellaSlime, NPCID.Pinky, NPCID.SlimeSpiked, NPCID.RainbowSlime, ModContent.NPCType<KingSlimeJewelRuby>(),
+                    ModContent.NPCType<KingSlimeJewelSapphire>(), ModContent.NPCType<KingSlimeJewelEmerald>() }),
+
+                new Boss(NPCID.MoonLordCore, spawnContext: type =>{
+                    NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
+                    // When Moon Lord spawns, Boss Rush is considered to be started at least once.
+                    // King Slime will then be skipped
+                    DownedBossSystem.startedBossRushAtLeastOnce = true;
+                }, permittedNPCs: [NPCID.MoonLordLeechBlob, NPCID.MoonLordHand, NPCID.MoonLordHead, NPCID.MoonLordFreeEye]),
+                new Boss(ModContent.NPCType<Providence>(), TimeChangeContext.Day, type =>{
+                    SoundEngine.PlaySound(Providence.SpawnSound, Main.player[ClosestPlayerToWorldCenter].Center);
+                    int provi = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
+                    Main.npc[provi].timeLeft *= 20;
+                    CalamityUtils.BossAwakenMessage(provi);
+                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<ProvSpawnDefense>(), ModContent.NPCType<ProvSpawnHealer>(), ModContent.NPCType<ProvSpawnOffense>(),
+                    ModContent.NPCType<ProfanedGuardianCommander>(), ModContent.NPCType<ProfanedGuardianDefender>(), ModContent.NPCType<ProfanedGuardianHealer>()]),
                 
-                }
-                if (Bosses[i].EntityID == ModContent.NPCType<Cryogen>())
-                {
-                    Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<PermafrostBoss>());
-                }
-                if (Bosses[i].EntityID == NPCID.Spazmatism)
-                {
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<WillChampion>()));
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<BanishedBaron>()));
-                }
-                if (Bosses[i].EntityID == NPCID.Plantera)
-                {
-                    Bosses[i].HostileNPCsToNotDelete.Add(ModContent.NPCType<CrystalLeaf>());
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<LifeChampion>(), TimeChangeContext.Day, type => {
-                        SoundEngine.PlaySound(SoundID.ScaryScream, Main.player[ClosestPlayerToWorldCenter].Center);
-                        int lief = NPC.NewNPC(new EntitySource_WorldEvent(), (int)Main.player[ClosestPlayerToWorldCenter].Center.X, (int)Main.player[ClosestPlayerToWorldCenter].Center.Y - 300, type, 1);
-                        Main.npc[lief].timeLeft *= 20;
-                        CalamityUtils.BossAwakenMessage(lief);
-                    }, usesSpecialSound: true));
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<LifeChallenger>(), TimeChangeContext.Day, type => {
-                        SoundEngine.PlaySound(SoundID.ScaryScream, Main.player[ClosestPlayerToWorldCenter].Center);
-                        int lief = NPC.NewNPC(new EntitySource_WorldEvent(), (int)Main.player[ClosestPlayerToWorldCenter].Center.X, (int)Main.player[ClosestPlayerToWorldCenter].Center.Y - 300, type, 1);
-                        Main.npc[lief].timeLeft *= 20;
-                        CalamityUtils.BossAwakenMessage(lief);
-                    }, usesSpecialSound: true));
-                }
-                if (Bosses[i].EntityID == NPCID.DukeFishron)
-                {
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<ShadowChampion>(), TimeChangeContext.Night, permittedNPCs: [ModContent.NPCType<ShadowOrbNPC>()]));
-                }
-                if (Bosses[i].EntityID == ModContent.NPCType<StormWeaverHead>())
-                {
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<CosmosChampion>(), spawnContext: type =>
-                    {
-                        int erd = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
-                        Main.npc[erd].timeLeft *= 20;
-                        CalamityUtils.BossAwakenMessage(erd);
-                    }));
-                }
-                if (Bosses[i].EntityID == ModContent.NPCType<Draedon>())
-                {
-                    Bosses.Insert(i, new Boss(ModContent.NPCType<AbomBoss>()));
-                }
-                if (Bosses[i].EntityID == ModContent.NPCType<SupremeCalamitas>())
-                {
-                    Bosses.Add(new Boss(ModContent.NPCType<MutantBoss>(), permittedNPCs: [ModContent.NPCType<MutantIllusion>()]));
-                }
 
-            }
-            BossIDsAfterDeath.Add(ModContent.NPCType<TimberChampion>(), [ModContent.NPCType<TimberChampionHead>()]);
-            BossIDsAfterDeath.Add(ModContent.NPCType<Cryogen>(), [ModContent.NPCType<PermafrostBoss>()]);
+                new Boss(ModContent.NPCType<Polterghast>(), permittedNPCs: [ModContent.NPCType<PhantomFuckYou>(), ModContent.NPCType<PolterghastHook>(), ModContent.NPCType<PolterPhantom>()]),
+                new Boss(ModContent.NPCType<OldDuke>(), spawnContext: type => {
+                    int od = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X + Main.rand.Next(-100, 101)), (int)Main.player[ClosestPlayerToWorldCenter].Center.Y - 300, type, 1);
+                    CalamityUtils.BossAwakenMessage(od);
+                    Main.npc[od].timeLeft *= 20;
+                }, permittedNPCs: [ModContent.NPCType<SulphurousSharkron>(), ModContent.NPCType<OldDukeToothBall>()]),
+                new Boss(ModContent.NPCType<DevourerofGodsHead>(), spawnContext: type => {
+                    SoundEngine.PlaySound(DevourerofGodsHead.SpawnSound, Main.player[ClosestPlayerToWorldCenter].Center);
+                    NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
+                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<DevourerofGodsBody>(), ModContent.NPCType<DevourerofGodsTail>(), ModContent.NPCType<CosmicGuardianBody>(), ModContent.NPCType<CosmicGuardianHead>(), ModContent.NPCType<CosmicGuardianTail>(), 
+                ModContent.NPCType<Signus>(), ModContent.NPCType<CeaselessVoid>(), ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>()]),
+                new Boss(ModContent.NPCType<CosmosChampion>(), spawnContext: type => {
+                    int erd = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
+                    Main.npc[erd].timeLeft *= 20;
+                    CalamityUtils.BossAwakenMessage(erd);
+                }),
+                new Boss(ModContent.NPCType<Yharon>(), permittedNPCs: ModContent.NPCType<Bumblefuck>()),
+                new Boss(ModContent.NPCType<AbomBoss>()),
+                new Boss(ModContent.NPCType<Draedon>(), spawnContext: type =>
+                {
+                    if (!NPC.AnyNPCs(ModContent.NPCType<Draedon>()))
+                    {
+                        Player player = Main.player[ClosestPlayerToWorldCenter];
+
+                        SoundEngine.PlaySound(CodebreakerUI.SummonSound, player.Center);
+                        Vector2 spawnPos = player.Center + new Vector2(-8f, -100f);
+                        int draedon = NPC.NewNPC(new EntitySource_WorldEvent("CalamityMod_BossRush"), (int)spawnPos.X, (int)spawnPos.Y, ModContent.NPCType<Draedon>());
+                        Main.npc[draedon].timeLeft *= 20;
+                    }
+                }, usesSpecialSound: true, permittedNPCs: new int[] { ModContent.NPCType<Apollo>(), ModContent.NPCType<AresBody>(), ModContent.NPCType<AresGaussNuke>(), ModContent.NPCType<AresLaserCannon>(), ModContent.NPCType<AresPlasmaFlamethrower>(), ModContent.NPCType<AresTeslaCannon>(), ModContent.NPCType<Artemis>(), ModContent.NPCType<ThanatosBody1>(), ModContent.NPCType<ThanatosBody2>(), ModContent.NPCType<ThanatosHead>(), ModContent.NPCType<ThanatosTail>() }),
+                new Boss(ModContent.NPCType<SupremeCalamitas>(), spawnContext: type => {
+                    SoundEngine.PlaySound(SupremeCalamitas.SpawnSound, Main.player[ClosestPlayerToWorldCenter].Center);
+                    CalamityUtils.SpawnBossBetter(Main.player[ClosestPlayerToWorldCenter].Top - new Vector2(42, 84f), type);
+                }, dimnessFactor: 0.5f, permittedNPCs: [ModContent.NPCType<SepulcherArm>(), ModContent.NPCType<SepulcherBody>(), ModContent.NPCType<SepulcherHead>(), ModContent.NPCType<SepulcherTail>(), ModContent.NPCType<SepulcherBodyEnergyBall>(), ModContent.NPCType<SoulSeekerSupreme>(), ModContent.NPCType<BrimstoneHeart>(), ModContent.NPCType<SupremeCataclysm>(), ModContent.NPCType<SupremeCatastrophe>()]),
+                new Boss(ModContent.NPCType<MutantBoss>(), permittedNPCs: [ModContent.NPCType<MutantIllusion>()])
+                ];
+            
             
             BossDeathEffects.Remove(ModContent.NPCType<SupremeCalamitas>());
+            BossDeathEffects.Remove(ModContent.NPCType<DevourerofGodsHead>());
             BossDeathEffects.Add(ModContent.NPCType<MutantBoss>(), npc => { BossRushDialogueSystem.StartDialogue(DownedBossSystem.downedBossRush ? BossRushDialoguePhase.EndRepeat : BossRushDialoguePhase.End); });
 
             ////Adding bosses to boss rush

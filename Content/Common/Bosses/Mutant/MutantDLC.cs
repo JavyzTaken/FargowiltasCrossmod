@@ -133,6 +133,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         public float OldAttackChoice = 0;
         public int Timer = 0;
         public int Counter = 0;
+        public int VanillaAttackBuffer;
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write7BitEncodedInt((int)DLCAttackChoice);
@@ -142,6 +143,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             binaryWriter.Write(OldAttackChoice);
             binaryWriter.Write(FirstFrame);
             binaryWriter.Write(PlayStoria);
+            binaryWriter.Write7BitEncodedInt(VanillaAttackBuffer);
         }
 
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
@@ -153,6 +155,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             OldAttackChoice = binaryReader.ReadSingle();
             FirstFrame = binaryReader.ReadBoolean();
             PlayStoria = binaryReader.ReadBoolean();
+            VanillaAttackBuffer = binaryReader.Read7BitEncodedInt();
         }
 
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => DLCAttackChoice == DLCAttack.PrepareAresNuke ? false : base.CanHitPlayer(npc, target, ref cooldownSlot);
@@ -320,6 +323,11 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             else if (DLCAttackChoice > DLCAttack.None) //p2
             {
+                if (attackChoice != 28)
+                {
+                    VanillaAttackBuffer = (int)attackChoice;
+                    npc.netUpdate = true;
+                }
                 attackChoice = 28; //empty normal attack
             }
             switch (DLCAttackChoice) //new attacks
@@ -473,8 +481,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             void ChooseNextAttack(params int[] args)
             {
                 MutantBoss mutantBoss = npc.ModNPC as MutantBoss;
-                float buffer = npc.ai[0] + 1;
-                npc.ai[0] = 48;
+                float buffer = VanillaAttackBuffer + 1;
+                npc.ai[0] = 52;
                 npc.ai[1] = 0;
                 npc.ai[2] = buffer;
                 npc.ai[3] = 0;

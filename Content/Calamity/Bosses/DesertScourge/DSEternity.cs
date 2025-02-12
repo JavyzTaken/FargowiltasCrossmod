@@ -10,6 +10,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using FargowiltasSouls.Core.Globals;
@@ -965,13 +966,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
-            if (projectile.penetrate > 1)
-                modifiers.FinalDamage /= 1.5f;
-        }
-        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
-        {
-            if (!FargoSoulsUtil.IsSummonDamage(projectile) && projectile.damage > 1)
-                projectile.damage = (int)Math.Min(projectile.damage - 1, projectile.damage * 0.75);
+            DestroyerSegment.PierceResistance(projectile, ref modifiers);
         }
         public override bool PreAI()
         {

@@ -501,7 +501,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //prehardmode
             AddBannerToItemRecipe(ItemType<CuttlefishBanner>(),
                 ItemType<InkBomb>());
-            AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<CocosFeather>(), 5, 1);
+            //AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<CocosFeather>(), 5, 1);
             AddBannerToItemRecipe(ItemID.HarpyBanner, ItemType<SkyGlaze>());
             AddBannerToItemRecipe(ItemID.TombCrawlerBanner, ItemType<BurntSienna>());
             AddBannerToItemRecipe(ItemID.DemonBanner, ItemType<BladecrestOathsword>());
@@ -533,6 +533,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             AddBannerToItemRecipe(ItemID.IchorStickerBanner, ItemType<IchorSpear>());
 
             //post-ml
+            AddBannerToItemRecipe(ItemType<PhantomSpiritBanner>(),
+                ItemType<Necroplasm>(), 1, 50);
             AddBannerToItemRecipe(ItemType<ImpiousImmolatorBanner>(),
                 ItemType<BlasphemousDonut>());
             AddBannerToItemRecipe(ItemType<ScryllarBanner>(),

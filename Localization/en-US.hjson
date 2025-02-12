@@ -586,6 +586,10 @@ Mods: {
 			LargePerforatorHead.DisplayName: Large Perforator
 			LargePerforatorTail.DisplayName: Large Perforator
 			PermafrostBoss.DisplayName: Permafrost
+			MutantBR.DisplayName: Mutant B R
+			MediumWormBodySegment.DisplayName: Medium Worm Body Segment
+			MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
+			MediumWormTailSegment.DisplayName: Medium Worm Tail Segment
 		}
 
 		Projectiles: {
@@ -688,6 +692,10 @@ Mods: {
 			AstralTrailStar.DisplayName: Astral Trail Star
 			BrimflameBurst.DisplayName: Brimflame Burst
 			ClamSlam.DisplayName: Clam Slam
+			BatMode.DisplayName: Bat Mode
+			PerfExplosion.DisplayName: Perf Explosion
+			PerforatorSpike.DisplayName: Perforator Spike
+			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
 		}
 
 		Buffs: {
@@ -785,7 +793,7 @@ Mods: {
 		Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 
 		ExpandedTooltips: {
-			FountainAstral: Forces surrounding biome state to Astral Infection upon activation
+			FountainAstral: Forces surrounding biome state to Astral Infection (in hardmode only) upon activation
 			FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
 			FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
 			FountainSunken: Forces surrounding biome state to Sunken Sea upon activation

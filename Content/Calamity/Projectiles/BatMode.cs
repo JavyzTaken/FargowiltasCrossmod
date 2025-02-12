@@ -12,6 +12,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -25,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class VampireBat : ModProjectile
+    public class BatMode : ModProjectile
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -40,34 +41,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         {
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.width = Projectile.height = 10;
+            Projectile.width = Projectile.height = 60;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 400;
+            Projectile.timeLeft = 240;
             Projectile.penetrate = -1;
             Main.projFrames[Type] = 4;
-            ProjectileID.Sets.CultistIsResistantTo[Type] = true;
+            Projectile.DamageType = DamageClass.Generic;
         }
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             Color color = lightColor;
-            if (Projectile.ai[0] == 1)
+            
+            for (int i = 0; i < 30; i++)
             {
-                color = Color.Red with { A = 200 };
+                float offX = (float)Math.Sin((Projectile.timeLeft + i*20) * 0.01f *10) * Projectile.width/2;
+                float offY = (float)Math.Cos((Projectile.timeLeft ) * 0.01f + i * 10) * Projectile.width/2;
+                Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition + new Vector2(offX, offY), new Rectangle(0, t.Height() / 4 * Projectile.frame, t.Width(), t.Height() / 4), color, Projectile.rotation, new Vector2(t.Width(), t.Height() / 4) / 2, Projectile.scale, i % 2 == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             }
             
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, t.Height() / 4 * Projectile.frame, t.Width(), t.Height() / 4), color, Projectile.rotation, new Vector2(t.Width(), t.Height() / 4) / 2, Projectile.scale, Projectile.direction == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             return false;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.damage = 0;
-            Projectile.ai[0] = 1;
-            Projectile.velocity *= 0;
+            if (Projectile.owner < 0 || !Main.player[Projectile.owner].active || Main.player[Projectile.owner].dead)
+            {
+                Projectile.Kill();
+                return;
+            }
+            Player owner = Main.player[Projectile.owner];
+            owner.HealEffect(10);
         }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
+            for (int i = 0; i < Projectile.width; i += 3)
+            {
+                for (int j = 0; j < Projectile.height; j += 3)
+                {
+                    Dust d = Dust.NewDustDirect(Projectile.position + new Vector2(i, j), 1, 1, DustID.Smoke, Scale: 1.2f);
+                    d.velocity *= 0.5f;
+                }
+            }
         }
         public override void AI()
         {
@@ -83,36 +98,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                     Projectile.frame = 0;
                 }
             } 
-            NPC target = Projectile.FindTargetWithinRange(1000, true);
             if (Projectile.owner < 0 || !Main.player[Projectile.owner].active || Main.player[Projectile.owner].dead)
             {
                 Projectile.Kill();
                 return;
             }
-            else
-            {
-                int maxSpeed = 10;
-                if (Main.player[Projectile.owner].ForceEffect<UmbraphileEffect>())
-                {
-                    maxSpeed = 15;
-                }
-                if (target != null && target.active && Projectile.ai[0] == 0)
-                {
-                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * maxSpeed, 0.03f);
-                }
-                else if (Projectile.ai[0] == 1)
-                {
-                    Dust d = Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.RedTorch, Scale: 1);
-                    d.noGravity = true;
-                    d.velocity = Vector2.Zero;
-                    Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.player[Projectile.owner].Center - Projectile.Center).SafeNormalize(Vector2.Zero) * (maxSpeed + 2), 0.05f);
-                    if (Projectile.Hitbox.Intersects(Main.player[Projectile.owner].Hitbox))
-                    {
-                        Main.player[Projectile.owner].HealEffect(35);
-                        Projectile.Kill();
-                    }
-                }
-            }
+            Player owner = Main.player[Projectile.owner];
+            Projectile.Center = owner.Center;
             
         }
     }

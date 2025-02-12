@@ -2,12 +2,16 @@
 using CalamityMod.Buffs;
 using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatDebuffs;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
+using CalamityMod.Systems;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Souls;
+using FargowiltasSouls.Content.Projectiles.BossWeapons;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,6 +132,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             }
                         }
                     }
+                }
+            }
+            if (npc.type == NPCID.KingSlime && BossRushEvent.BossRushActive && npc.GetLifePercent() <= 0.5f)
+            {
+                if (BossRushDialogueSystem.Phase < CalamityMod.Enums.BossRushDialoguePhase.TierOneComplete)
+                    BossRushDialogueSystem.StartDialogue(CalamityMod.Enums.BossRushDialoguePhase.TierOneComplete);
+                if (BossRushDialogueSystem.currentSequenceIndex == 2 && BossRushDialogueSystem.Phase == CalamityMod.Enums.BossRushDialoguePhase.TierOneComplete)
+                {
+                    Projectile.NewProjectileDirect(npc.GetSource_Death(), npc.Center + new Vector2(0, -800), new Vector2(0, 20), ModContent.ProjectileType<HentaiSpearThrown>(), 20000, 1, 0);
+                    npc.StrikeInstantKill();
                 }
             }
             return base.PreAI(npc);

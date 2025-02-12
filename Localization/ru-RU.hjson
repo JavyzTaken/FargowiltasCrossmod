@@ -592,6 +592,10 @@ Mods: {
 			LargePerforatorHead.DisplayName: Большой Перфоратор
 			LargePerforatorTail.DisplayName: Большой Перфоратор
 			PermafrostBoss.DisplayName: Пермафрост
+			MutantBR.DisplayName: Мутант Б Р
+			// MediumWormBodySegment.DisplayName: Medium Worm Body Segment
+			// MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
+			// MediumWormTailSegment.DisplayName: Medium Worm Tail Segment
 		}
 
 		Projectiles: {
@@ -694,6 +698,10 @@ Mods: {
 			// AstralTrailStar.DisplayName: Astral Trail Star
 			// BrimflameBurst.DisplayName: Brimflame Burst
 			// ClamSlam.DisplayName: Clam Slam
+			// BatMode.DisplayName: Bat Mode
+			// PerfExplosion.DisplayName: Perf Explosion
+			// PerforatorSpike.DisplayName: Perforator Spike
+			// PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
 		}
 
 		Buffs: {
@@ -791,7 +799,7 @@ Mods: {
 		// Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
 
 		ExpandedTooltips: {
-			FountainAstral: Заставляет окружающий биом смениться на астральную инфекцию при активации
+			FountainAstral: Заставляет окружающий биом смениться на астральную инфекцию (только в хардмоде) при активации
 			FountainCrags: Заставляет окружающий биом смениться на серную скалу при активации
 			FountainSulphur: Заставляет окружающий биом смениться на сернистое море при активации
 			FountainSunken: Заставляет окружающий биом смениться на затерянное море при активации
