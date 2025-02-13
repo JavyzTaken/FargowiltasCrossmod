@@ -197,7 +197,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public static OldDukeAIState[] Phase2AttackCycle =>
         [
             OldDukeAIState.VomitRadioactiveCinders,
-            OldDukeAIState.NormalDashes,
+            OldDukeAIState.PredictiveDashes,
             OldDukeAIState.KamikazeSharks,
             OldDukeAIState.NormalDashes,
             OldDukeAIState.ConjureNuclearVortex,
@@ -809,6 +809,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             // Slow down considerably in anticipation of the cinder vomit.
             else if (AITimer <= hoverRedirectTime + slowdownTime)
             {
+                if (NPC.WithinRange(Target.Center, 240f))
+                    NPC.Center -= NPC.SafeDirectionTo(Target.Center) * 24f;
+
                 NPC.velocity *= 0.85f;
                 RotateTowards(Target.Center, 0.14f);
             }
