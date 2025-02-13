@@ -1,4 +1,5 @@
 ﻿using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.NPCs.Perforator;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Souls;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
@@ -18,6 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
     public class PerfExplosion : ModProjectile
     {
+        public ref float Owner => ref Projectile.ai[0];
         public override string Texture => "CalamityMod/Particles/HollowCircleHardEdge";
         public int Duration = 20;
         public const int BaseRadius = 80;
@@ -64,6 +66,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Projectile.scale += scaleModifier * 5f / Duration;
             Projectile.width = Projectile.height = (int)(BaseRadius * Projectile.scale);
             Projectile.Center = Projectile.position;
+
+            if (((int)Owner).IsWithinBounds(Main.maxNPCs))
+            {
+                NPC owner = Main.npc[(int)Owner];
+                if (owner != null && owner.TypeAlive<PerforatorHive>())
+                    Projectile.Center = owner.Center;
+            }
 
             if (Projectile.timeLeft < 8)
                 Projectile.Opacity -= 0.15f;
