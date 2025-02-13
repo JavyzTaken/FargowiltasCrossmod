@@ -191,6 +191,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             OldDukeAIState.NormalDashes
         ];
 
+        /// <summary>
+        /// The set of attacks the Old Duke should perform in his second phase.
+        /// </summary>
+        public static OldDukeAIState[] Phase2AttackCycle =>
+        [
+            OldDukeAIState.VomitRadioactiveCinders,
+            OldDukeAIState.NormalDashes,
+            OldDukeAIState.KamikazeSharks,
+            OldDukeAIState.NormalDashes,
+            OldDukeAIState.ConjureNuclearVortex,
+            OldDukeAIState.BubbleSpin,
+            OldDukeAIState.PredictiveDashes,
+            OldDukeAIState.NormalDashes,
+        ];
+
         public override int NPCOverrideID => ModContent.NPCType<CalamityOD>();
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
@@ -1089,7 +1104,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public void SwitchState()
         {
             OldDukeAIState[] attackCycle = Phase1AttackCycle;
-            attackCycle = [OldDukeAIState.ConjureNuclearHurricane, OldDukeAIState.PredictiveDashes];
+            if (Phase >= 2)
+                attackCycle = Phase2AttackCycle;
 
             CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
             AttackCycleIndex++;
