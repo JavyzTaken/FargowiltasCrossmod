@@ -696,6 +696,7 @@ Mods: {
 			PerfExplosion.DisplayName: Perf Explosion
 			PerforatorSpike.DisplayName: Perforator Spike
 			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
+			PerforatorRubble.DisplayName: Perforator Rubble
 		}
 
 		Buffs: {

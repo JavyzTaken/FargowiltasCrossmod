@@ -1,19 +1,14 @@
 ﻿using CalamityMod;
 using CalamityMod.Events;
-using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.NPCs.Perforator;
-using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
-using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
-using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.Cavern;
-using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
@@ -576,7 +571,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             float dist = Target.Distance(NPC.Center);
             if (dist > 300)
                 speed += (dist - 300) / 500;
-            WalkToPositionAI(Target.Center, speed);
+            WalkToPositionAI(Target.Center, speed, 315);
             int interval = 80;
             if (Timer % interval == 0)
             {
@@ -759,11 +754,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     if (DLCUtils.HostCheck)
                     {
                         int dir = Math.Sign(endPoint.X - npc.Center.X);
-                        int rubbleCount = 17;
+                        int rubbleCount = 9;
                         for (int i = 0; i < rubbleCount; i++)
                         {
                             Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(0.2f, 1f);
-                            Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                            Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                             if (p != null)
                             {
                                 p.extraUpdates = 1;
@@ -874,6 +869,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void GroundSpikes()
         {
+            ClearGore();
+
             NPC.velocity *= 0.8f;
             int stabTelegraphTime = 35;
             int stabTime = 10;
@@ -951,6 +948,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void GroundSpikesAngled()
         {
+            ClearGore();
+
             NPC.velocity *= 0.8f;
             if (Timer < 25)
                 NPC.velocity.Y -= 0.5f;
@@ -1053,6 +1052,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Timer = 0;
             AI2 = 0;
             AI3 = 0;
+        }
+        public static void ClearGore()
+        {
+            for (int i = 0; i < Main.gore.Length; i++)
+            {
+                if (Main.gore[i].timeLeft > 5)
+                    Main.gore[i].timeLeft = 5;
+            }
+                
         }
         public int ClosestLegIndex(Vector2 pos, List<int> except = null)
         {
