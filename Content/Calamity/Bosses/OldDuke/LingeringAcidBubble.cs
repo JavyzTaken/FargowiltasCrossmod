@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -35,6 +36,18 @@ public class LingeringAcidBubble : ModProjectile
         Projectile.frame = (int)Time / 5 % Main.projFrames[Type];
 
         Time++;
+    }
+
+    public override void OnKill(int timeLeft)
+    {
+        // Pop!
+        SoundEngine.PlaySound(SoundID.Item54, Projectile.Center);
+
+        for (int i = 0; i < 12; i++)
+        {
+            Dust bubble = Dust.NewDustPerfect(Projectile.Center, DustID.BubbleBurst_Green);
+            bubble.velocity = Main.rand.NextVector2Circular(3f, 3f);
+        }
     }
 
     public override Color? GetAlpha(Color lightColor) => Color.White * Projectile.Opacity;
