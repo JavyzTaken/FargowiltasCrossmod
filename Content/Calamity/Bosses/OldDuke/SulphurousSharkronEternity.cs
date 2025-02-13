@@ -5,7 +5,6 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -23,16 +22,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// How long this sharkron has existed for.
         /// </summary>
         public ref float Time => ref NPC.ai[0];
-
-        // TODO -- Sync.
-        /// <summary>
-        /// An extra AI value for this sharkron.
-        /// </summary>
-        public float ExtraAI
-        {
-            get;
-            set;
-        }
 
         public override int NPCOverrideID => ModContent.NPCType<SulphurousSharkron>();
 
@@ -101,11 +90,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             }
 
             NPC.active = false;
-        }
-
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
-        {
-            return true;
         }
     }
 }
