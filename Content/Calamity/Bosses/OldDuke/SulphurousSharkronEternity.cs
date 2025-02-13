@@ -1,4 +1,5 @@
-﻿using CalamityMod.NPCs.OldDuke;
+﻿using CalamityMod.Dusts;
+using CalamityMod.NPCs.OldDuke;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
@@ -78,6 +79,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
                 for (int i = 0; i < 5; i++)
                     LumUtils.NewProjectileBetter(NPC.GetSource_Death(), NPC.Center, goreDirection * Main.rand.NextFloat(16f, 40f) * new Vector2(Main.rand.NextFloat(1f, 1.7f), 1f), ModContent.ProjectileType<FallingVomitGore>(), 270, 0f);
+            }
+
+            for (int i = 0; i < 15; i++)
+            {
+                Dust toxicDust = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, (int)CalamityDusts.SulphurousSeaAcid, 0f, 0f, 100, default, 2f);
+                toxicDust.velocity *= new Vector2(3f, 6f);
+
+                if (Main.rand.NextBool())
+                {
+                    toxicDust.scale = 0.5f;
+                    toxicDust.fadeIn = Main.rand.NextFloat(1f, 2f);
+                }
+            }
+
+            if (Main.netMode != NetmodeID.Server)
+            {
+                Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity * 0.2f, calamity.Find<ModGore>("SulphurousSharkronGore").Type, NPC.scale);
+                Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity * 0.2f, calamity.Find<ModGore>("SulphurousSharkronGore2").Type, NPC.scale);
             }
 
             NPC.active = false;
