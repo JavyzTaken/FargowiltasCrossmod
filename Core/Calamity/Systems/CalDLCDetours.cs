@@ -719,20 +719,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         internal static void MediumPerforatorHeadOnKill_Detour(Orig_MediumPerforatorHeadOnKill orig, PerforatorHeadMedium self)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev && PerfsEternityNew.Enabled)
+            if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
         }
 
         internal static void MediumPerforatorBodyOnKill_Detour(Orig_MediumPerforatorBodyOnKill orig, PerforatorBodyMedium self)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev && PerfsEternityNew.Enabled)
+            if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
         }
         internal static void MediumPerforatorTailOnKill_Detour(Orig_MediumPerforatorTailOnKill orig, PerforatorTailMedium self)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev && PerfsEternityNew.Enabled)
+            if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
         }

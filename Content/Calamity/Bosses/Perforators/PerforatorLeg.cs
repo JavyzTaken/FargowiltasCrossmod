@@ -90,14 +90,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Add(new(LegSizeFactor * legLength2));
             Index = index;
         }
-        public Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
-        public Vector2 DefaultPosition(PerfsEternityNew owner) => LegCenter(owner) + DefaultOffset;
+        public Vector2 LegCenter(PerfsEternity owner) => owner.NPC.Center + owner.LegBraces[Index];
+        public Vector2 DefaultPosition(PerfsEternity owner) => LegCenter(owner) + DefaultOffset;
         public void Update(NPC owner)
         {
             if (DamageTime > 0)
                 DamageTime--;
 
-            var hive = owner.GetDLCBehavior<PerfsEternityNew>();
+            var hive = owner.GetDLCBehavior<PerfsEternity>();
             if (owner.IsABestiaryIconDummy)
             {
                 Leg.Update(DefaultPosition(hive));
@@ -129,7 +129,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
             if (stepOffset.HasNaNs())
                 stepOffset = Vector2.Zero;
-            Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection, "A").ToWorldCoordinates(8f, -16f);
+            Vector2 idealDefaultStepPosition = PerfsEternity.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection, "A").ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
                 if (Collision.CanHitLine(LegCenter(hive), 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
@@ -262,9 +262,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
-            StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
+            StepDestination = PerfsEternity.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
-            if (owner.GetDLCBehavior<PerfsEternityNew>().PhaseTwo)
+            if (owner.GetDLCBehavior<PerfsEternity>().PhaseTwo)
                 InterpolationSpeed *= 1.5f;
             AnimationMode = AccelDecel;
             StepSound = true;
