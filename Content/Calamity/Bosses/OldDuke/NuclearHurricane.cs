@@ -155,7 +155,7 @@ public class NuclearHurricane : ModProjectile
         glowShader.TrySetParameter("localTime", time);
         glowShader.TrySetParameter("maxBumpSquish", MaxVisualBumpSquish);
         glowShader.TrySetParameter("wavinessFactor", WavinessFactor);
-        glowShader.TrySetParameter("glowColor", new Vector4(0.81f, 0.9f, 0.1f, 1f) * Projectile.Opacity * 2f);
+        glowShader.TrySetParameter("glowColor", new Vector4(0.81f, 0.9f, 0.1f, 1f) * Projectile.Opacity * 1.5f);
         glowShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.85f) * world * view * projection);
         glowShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
         glowShader.Apply();
@@ -180,11 +180,11 @@ public class NuclearHurricane : ModProjectile
 
         // Render foam A.
         ManagedShader foamShader = ShaderManager.GetShader("FargowiltasCrossmod.NuclearHurricaneFoamShader");
-        foamShader.TrySetParameter("localTime", time);
+        foamShader.TrySetParameter("localTime", time * 1.2f);
         foamShader.TrySetParameter("maxBumpSquish", MaxVisualBumpSquish);
         foamShader.TrySetParameter("wavinessFactor", WavinessFactor);
         foamShader.TrySetParameter("zoom", 0.4f);
-        foamShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.125f) * world * view * projection);
+        foamShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.25f) * world * view * projection);
         foamShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
         foamShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
@@ -192,8 +192,8 @@ public class NuclearHurricane : ModProjectile
         gd.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, MeshRegistry.CylinderVertices.VertexCount, 0, MeshRegistry.CylinderIndices.IndexCount / 3);
 
         // Render foam B.
-        foamShader.TrySetParameter("zoom", 0.25f);
-        foamShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.24f) * world * view * projection);
+        foamShader.TrySetParameter("zoom", 0.275f);
+        foamShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.5f) * world * view * projection);
         foamShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
         foamShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);

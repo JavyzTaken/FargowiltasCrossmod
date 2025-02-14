@@ -1111,6 +1111,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 attackCycle = Phase2AttackCycle;
 
             CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
+            CurrentState = OldDukeAIState.ConjureNuclearHurricane;
             AttackCycleIndex++;
 
             float lifeRatio = NPC.GetLifePercent();
