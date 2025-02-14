@@ -1,15 +1,16 @@
 ﻿using FargowiltasSouls.Core.Systems;
-using Microsoft.Xna.Framework.Graphics;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using ReLogic.Content;
 
 namespace FargowiltasCrossmod.Core.Common
 {
@@ -106,6 +107,72 @@ namespace FargowiltasCrossmod.Core.Common
             }
         }
         public static void RandomFromListExcept<T>(this Queue<T> queue, IEnumerable<T> list, params T[] exclude) => queue.RandomFromList(list.Except(exclude));
+
+        // Because apparently SoundStyle.Volume doesn't allow for going past a certain threshold...
+        /// <summary>
+        /// Modifies the volume of a played sound slot instance.
+        /// </summary>
+        /// <param name="soundSlot">The sound slot to affect.</param>
+        /// <param name="volumeFactor">The volume modifier factor.</param>
+        public static SlotId WithVolumeBoost(this SlotId soundSlot, float volumeFactor)
+        {
+            if (SoundEngine.TryGetActiveSound(soundSlot, out ActiveSound? sound) && sound is not null)
+                sound.Volume *= volumeFactor;
+
+            return soundSlot;
+        }
+
+        /// <summary>
+        /// Calculates the intersection points between a ellipse and a line.
+        /// </summary>
+        /// <param name="start">The line's pivot point.</param>
+        /// <param name="direction">The line's direction.</param>
+        /// <param name="ellipseCenter">The center position of the ellipse.</param>
+        /// <param name="ellipseSize">The size of the ellipse.</param>
+        /// <param name="ellipseRotation">The rotation of the ellipse.</param>
+        /// <param name="solutionA">The first resulting solution.</param>
+        /// <param name="solutionB">The second resulting solution.</param>
+        public static void LineEllipseIntersectionCheck(Vector2 start, Vector2 direction, Vector2 ellipseCenter, Vector2 ellipseSize, float ellipseRotation, out Vector2 solutionA, out Vector2 solutionB)
+        {
+            // Taken by solving solutions from the following two equations:
+            // y - v = m * (x - u)
+            // (x / w)^2 + (y / h)^2 = 1
+
+            // Rearranging terms in the linear equation results in the following definition for y:
+            // y = m * (x - u) + v
+
+            // In order to solve for x, it's simply a matter of plugging in this equation in for y in the ellipse equation, like so:
+            // (x / w)^2 + ((m * (x - u) + v) / h)^2 = 1
+
+            // And now, for solving...
+            // Just go to some online website to get the result. I'm not writing out all the diabolical algebra steps in a code comment.
+            // https://www.symbolab.com/solver/step-by-step/%5Cleft(%5Cfrac%7Bx%7D%7Bw%7D%5Cright)%5E%7B2%7D%2B%5Cleft(%5Cfrac%7Bm%5Cleft(x-u%5Cright)%2Bv%7D%7Bh%7D%5Cright)%5E%7B2%7D%3D1?or=input
+
+            // Rotating the actual ellipse in the above equation makes everything kind of brain-melting so instead just do a little bit of a relativistic magic and
+            // do a reverse-rotation on the line for the same effect in practice.
+            start = start.RotatedBy(-ellipseRotation, ellipseCenter);
+            direction = direction.RotatedBy(-ellipseRotation);
+
+            float m = direction.Y / direction.X;
+            float u = start.X - ellipseCenter.X;
+            float v = start.Y - ellipseCenter.Y;
+            float w = ellipseSize.X;
+            float h = ellipseSize.Y;
+
+            float numeratorFirstHalf = -w * (m.Squared() * u * -2f + m * v * 2f);
+            float numeratorSecondHalf = MathF.Sqrt(-m.Squared() * u.Squared() + m * u * v * 2f + m.Squared() * w.Squared() + h.Squared() - v.Squared()) * h * 2f;
+            float denominator = (m.Squared() * w.Squared() + h.Squared()) * 2f;
+
+            float xSolutionA = (numeratorFirstHalf - numeratorSecondHalf) * w / denominator;
+            float xSolutionB = (numeratorFirstHalf + numeratorSecondHalf) * w / denominator;
+
+            // Now that the two solution X values are known, it's simply a matter of plugging X back into the linear equation to get Y.
+            float ySolutionA = m * (xSolutionA - u) + v;
+            float ySolutionB = m * (xSolutionB - u) + v;
+
+            solutionA = new Vector2(xSolutionA, ySolutionA).RotatedBy(ellipseRotation) + ellipseCenter;
+            solutionB = new Vector2(xSolutionB, ySolutionB).RotatedBy(ellipseRotation) + ellipseCenter;
+        }
 
         #endregion
     }

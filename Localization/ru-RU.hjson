@@ -42,7 +42,12 @@ Mods: {
 			Deactivation: Режим Вечная смерть выключен.
 		}
 
-		UI.ToggledWithCal: Переключается с помощью переключателя сложностей Calamity
+		UI: {
+			ToggledWithCal: Переключается с помощью переключателя сложностей Calamity
+			// HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
+			// AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
+			// ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+		}
 
 		Configs: {
 			CalDLCConfig: {
@@ -84,6 +89,11 @@ Mods: {
 						Включён: Режим Инфернум полностью отключает режим Вечность.
 						Выключен: Режим Вечность будет включён, но ИИ боссов режима Инфернум будет брать приоритет, если не включён  «Приоритет Вечности над режимами Calamity».
 						'''
+				}
+
+				VoiceActingEnabled: {
+					// Label: Voice Acting Enabled
+					// Tooltip: Whether voice acting is enabled in the mod
 				}
 			}
 		}
@@ -547,6 +557,8 @@ Mods: {
 					'''
 			}
 
+			// Lore.LoreDraedon.DisplayName: Draedon
+
 			FathomSwarmerEnchant: {
 				// DisplayName: Fathom Swarmer Enchantment
 				/* Tooltip:
@@ -592,6 +604,83 @@ Mods: {
 			LargePerforatorHead.DisplayName: Большой Перфоратор
 			LargePerforatorTail.DisplayName: Большой Перфоратор
 			PermafrostBoss.DisplayName: Пермафрост
+
+			AresHand: {
+				// DisplayName: Ares Hand
+				// EnergyKatanaDisplayName: XF-09 Ares Energy Katana
+				// PulseCannonDisplayName: XF-09 Ares Pulse Cannon
+			}
+
+			Draedon: {
+				// IntroductionMonologue1: I have waited long for this moment.
+				// IntroductionMonologue2: Your nature fascinates me, for I do not understand it.
+				// IntroductionMonologue3: You will face my creations, which have surpassed even gods.
+				// IntroductionMonologue4: And you will show me your disposition through battle.
+				// IntroductionMonologue5: Now, choose.
+				// IntroductionMonologueBrief: Make your choice.
+				// ExoMechChoiceResponse1: Excellent. Your flight abilities will be enhanced as the experiment begins.
+				// ExoMechChoiceResponse2: They will arrive shortly.
+				// Interjection1: Hmm...
+				// Interjection2_Thermal_Minor: It appears that you have thus far sustained minor thermal burns.
+				// Interjection2_Thermal_Major: It appears that you have thus far sustained major thermal burns.
+				// Interjection2_Thermal_NearLethal: It appears that you have thus far sustained near-lethal thermal burns.
+				// Interjection2_Plasma_Minor: It appears that you have thus far sustained minor plasma burns.
+				// Interjection2_Plasma_Major: It appears that you have thus far sustained major plasma burns.
+				// Interjection2_Plasma_NearLethal: It appears that you have thus far sustained near-lethal plasma burns.
+				// Interjection2_Electricity_Minor: It appears that you have sustained minor nerve damage from electric shocks.
+				// Interjection2_Electricity_Major: It appears that you have sustained major nerve damage from electric shocks.
+				// Interjection2_Electricity_NearLethal: It appears that you have sustained near-lethal nerve damage from electric shocks.
+				// Interjection2_Internal_Minor: It appears that you are currently suffering from minor internal organ damage.
+				// Interjection2_Internal_Major: It appears that you are currently suffering from major internal organ damage.
+				// Interjection2_Internal_NearLethal: It appears that you are currently suffering from near-lethal internal organ damage.
+				// Interjection2_BluntForceTrauma_Minor: It appears that you have been struck by minor blunt force trauma.
+				// Interjection2_BluntForceTrauma_Major: It appears that you have been struck by major blunt force trauma.
+				// Interjection2_BluntForceTrauma_NearLethal: It appears that you have been struck by near-lethal blunt force trauma.
+				// Interjection2_Undamaged: It appears that you have not sustained any damage. Fascinating.
+				// Interjection3: These results are excellent.
+				// Interjection4: We shall now reset the variables to their controls for the next phase of testing.
+				// Interjection5: Now, prepare yourself.
+				// Interjection6: My remaining machines shall return shortly.
+				// Interjection7: Marvelous.
+				// Interjection8: Your abilities up to this point have captured my interest.
+				// Interjection9: Now, it is time for the final phase of testing.
+				// Interjection10: I have instructed my last machine to operate at maximum firepower.
+				// Interjection10_Plural: I have instructed my last machines to operate at maximum firepower.
+				// Interjection11: Good luck.
+				// EndOfBattle_FirstDefeat1: Extraordinary!
+				// EndOfBattle_FirstDefeat2: This outcome has fallen far outside the expectations of my hypotheses.
+				// EndOfBattle_FirstDefeat3: I shall soon depart. There is much to be examined from this encounter. Before that, however...
+				// EndOfBattle_FirstDefeat4: Take this, as an extension of gratitude for your time.
+				// EndOfBattle_FirstDefeat5: If you wish to do combat with my machines again, you know how to operate the Codebreaker.
+				// EndOfBattle_FirstDefeat6: Farewell.
+				// EndOfBattle_SuccessiveDefeat1: Another completed experiment.
+				// EndOfBattle_SuccessiveDefeat2: Allow me a moment to analyze the results...
+				// EndOfBattle_SuccessiveDefeat3_Perfect: Extraordinary! Your combat engagement, patience, precision, and skill have not gone unnoticed.
+				// EndOfBattle_SuccessiveDefeat3_Excellent: Your aptitude is excellent. With a bit more precision, a perfect outcome may be within reach.
+				// EndOfBattle_SuccessiveDefeat3_Good: This outcome is useful.
+				// EndOfBattle_SuccessiveDefeat3_Acceptable: This outcome is unremarkable, yet serviceable.
+				// EndOfBattle_SuccessiveDefeat3_Bad: This data is of little use to me.
+				// EndOfBattle_SuccessiveDefeat3_WhyDidYouMeltTheBoss: This data is of no use to me.
+				// EndOfBattle_SuccessiveDefeat4_Perfect: This data is of sublime quality.
+				// EndOfBattle_SuccessiveDefeat4_Excellent: Perhaps soon a revolutionary insight shall be discovered?
+				// EndOfBattle_SuccessiveDefeat4_ImproveFightTime: Should you desire to engage my machines again, I would suggest a more drawn out fight.
+				// EndOfBattle_SuccessiveDefeat4_ImproveAggression: Should you desire to engage my machines again, I would suggest a more risky combat approach.
+				// EndOfBattle_SuccessiveDefeat4_ImproveBuffs: Should you desire to engage my machines again, I would suggest a reduction in consumable enhancements.
+				// EndOfBattle_SuccessiveDefeat4_ImproveHitCounter: Should you desire to engage my machines again, I would suggest greater dodging precision.
+				// EndOfBattle_SuccessiveDefeat4_Bad: A more refined combat approach would be more conducive to insightful analysis.
+				// EndOfBattle_SuccessiveDefeat4_WhyDidYouMeltTheBoss: That was far, far too short for me to draw any insightful conclusions.
+				// EndOfBattle_SuccessiveDefeat5: I await the next battle.
+				// EndOfBattle_FirstDefeatReconBodyKill1: Intriguing...
+				// EndOfBattle_FirstDefeatReconBodyKill2: A temperamental disposition was not a data point I had considered.
+				// EndOfBattle_FirstDefeatReconBodyKill3: Regardless, as I was saying...
+				// Death: Precisely within the margins of my calculations.
+				// PlayerDeathAtAmusingTime: That was rather inopportune, but still within the margins of my calculations.
+				// Error: The fabric of this reality rips at the seams.
+			}
+
+			// ThanatosRename: XM-04 Hades
+			// ApolloRename: XS-11 Apollo
+			// ExoTwinsRenameNormal: XS-01 Artemis and XS-11 Apollo
 			MutantBR.DisplayName: Мутант Б Р
 			// MediumWormBodySegment.DisplayName: Medium Worm Body Segment
 			// MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
@@ -687,7 +776,42 @@ Mods: {
 			SulphurCloud.DisplayName: Сернистое облако
 			PureGel.DisplayName: Чистейший гель
 			HiveMindPulse.DisplayName: Разум улей пульс
+			// ApolloLineTelegraph.DisplayName: Telegraph
+			// ApolloMissile.DisplayName: Plasma Missile
+			// AresMissile.DisplayName: Thermal Missile
+			// AresMissileBackground.DisplayName: Thermal Missile
+			// ArtemisLaserImproved.DisplayName: Thermal Laser
+			// ArtemisLaserSmall.DisplayName: Small Thermal Laser
+			// CannonLaserbeam.DisplayName: Energized Thermal Deathray
+			// DraedonLootCrate.DisplayName: Draedon Loot Crate
+			// ExoelectricBlast.DisplayName: Exoelectric Blast
+			// ExoOverloadDeathray.DisplayName: Exo Overload Deathray
+			// GaussNuke.DisplayName: Gauss Nuke
+			// GaussNukeBoom.DisplayName: Thermonuclear Explosion
+			// HadesExoEnergyOrb.DisplayName: Exoelectric Energy Orb
+			// HadesLaserBurst.DisplayName: Laser Burst
+			// HadesMine.DisplayName: Hades Mine
+			// HadesSuperLaserbeam.DisplayName: Exo Energy Blast
+			// HomingTeslaBurst.DisplayName: Tesla Burst
+			// LargeTeslaSphere.DisplayName: Tesla Sphere
+			// LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
+			// LingeringPlasmaFireball.DisplayName: Plasma Fireball
+			// SmallTeslaArc.DisplayName: Tesla Arc
+			// ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
 			ScourgeSandstream.DisplayName: Пещаный поток бича
+			// SmallTeslaSphere.DisplayName: Tesla Sphere
+			// PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
+			// BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
+			// AresDeathAnimationExplosion.DisplayName: Explosion
+			// SmallHadesSegmentExplosion.DisplayName: Explosion
+			// BigHadesSegmentExplosion.DisplayName: Explosion
+			// AresCoreLaserSmall.DisplayName: Energized Spark
+			// AresSwingingKatanas.DisplayName: XF-09 Ares Energy Katana
+			// ApolloPlasmaFireball.DisplayName: Plasma Fireball
+			// AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+			// ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+			// HadesMissile.DisplayName: Fortified Missile
+			// CodebreakerDataStream.DisplayName: Codebreaker Data Stream
 			// CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
 			// BigBubble.DisplayName: Big Bubble
 			// Bubble.DisplayName: Bubble
@@ -698,6 +822,10 @@ Mods: {
 			// AstralTrailStar.DisplayName: Astral Trail Star
 			// BrimflameBurst.DisplayName: Brimflame Burst
 			// ClamSlam.DisplayName: Clam Slam
+			// SmallCannonLaser.DisplayName: Laser
+			// PulseBlast.DisplayName: Pulse Blast
+			// HadesLineTelegraph.DisplayName: Hades Line Telegraph
+			// ApolloMissile2.DisplayName: Apollo Missile
 			// BatMode.DisplayName: Bat Mode
 			// PerfExplosion.DisplayName: Perf Explosion
 			// PerforatorSpike.DisplayName: Perforator Spike
