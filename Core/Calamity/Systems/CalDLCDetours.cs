@@ -53,6 +53,7 @@ using CalamityMod.Skies;
 using Terraria.Graphics.Effects;
 using FargowiltasSouls.Content.UI;
 using CalamityMod.NPCs.Perforator;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -97,7 +98,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DetermineDrawEligibility_Method = typeof(BossRushSky).GetMethod("DetermineDrawEligibility", LumUtils.UniversalBindingFlags);
-        private static readonly MethodInfo MediumPerforatorOnKill_Method = typeof(PerforatorBodyMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MediumPerforatorHeadOnKill_Method = typeof(PerforatorHeadMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MediumPerforatorBodyOnKill_Method = typeof(PerforatorBodyMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MediumPerforatorTailOnKill_Method = typeof(PerforatorTailMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -136,7 +139,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
         public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
         public delegate bool Orig_DetermineDrawEligibility();
-        public delegate void Orig_MediumPerforatorOnKill(PerforatorBodyMedium self);
+        public delegate void Orig_MediumPerforatorHeadOnKill(PerforatorHeadMedium self);
+        public delegate void Orig_MediumPerforatorBodyOnKill(PerforatorBodyMedium self);
+        public delegate void Orig_MediumPerforatorTailOnKill(PerforatorTailMedium self);
 
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -178,7 +183,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
             HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
             HookHelper.ModifyMethodWithDetour(DetermineDrawEligibility_Method, DetermineDrawEligibility_Detour);
-            HookHelper.ModifyMethodWithDetour(MediumPerforatorOnKill_Method, MediumPerforatorOnKill_Detour);
+            HookHelper.ModifyMethodWithDetour(MediumPerforatorHeadOnKill_Method, MediumPerforatorHeadOnKill_Detour);
+            HookHelper.ModifyMethodWithDetour(MediumPerforatorBodyOnKill_Method, MediumPerforatorBodyOnKill_Detour);
+            HookHelper.ModifyMethodWithDetour(MediumPerforatorTailOnKill_Method, MediumPerforatorTailOnKill_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -710,7 +717,20 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             return false;
         }
 
-        internal static void MediumPerforatorOnKill_Detour(Orig_MediumPerforatorOnKill orig, PerforatorBodyMedium self)
+        internal static void MediumPerforatorHeadOnKill_Detour(Orig_MediumPerforatorHeadOnKill orig, PerforatorHeadMedium self)
+        {
+            if (CalDLCWorldSavingSystem.E_EternityRev)
+                return;
+            orig(self);
+        }
+
+        internal static void MediumPerforatorBodyOnKill_Detour(Orig_MediumPerforatorBodyOnKill orig, PerforatorBodyMedium self)
+        {
+            if (CalDLCWorldSavingSystem.E_EternityRev)
+                return;
+            orig(self);
+        }
+        internal static void MediumPerforatorTailOnKill_Detour(Orig_MediumPerforatorTailOnKill orig, PerforatorTailMedium self)
         {
             if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;

@@ -20,6 +20,7 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using CalamityMod.Items.Tools;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -112,23 +113,39 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
         public override int ToggleItemType => ModContent.ItemType<MarniteEnchant>();
         public override bool ExtraAttackEffect => true;
-        public static void MarniteTileEffect(Player player, Vector2 worldPos)
+        public override void PostUpdateEquips(Player player)
         {
-            int n = FargoSoulsUtil.FindClosestHostileNPC(worldPos, 500);
-            if (n >= 0)
+            var addonPlayer = player.CalamityAddon();
+            if (player.HeldItem != null && player.HeldItem.IsWeapon() && player.FargoSouls().WeaponUseTimer > 0) // using weapon
             {
-                if (Main.rand.NextBool(5)) {
-                    NPC target = Main.npc[n];
-                    Vector2 vel = (target.Center - (worldPos - new Vector2(8, 8))).SafeNormalize(Vector2.Zero) * 2;
-                    float damage = 13;
-                    damage += player.HeldItem.pick / 10;
-                    if (player.ForceEffect<MarniteLasersEffect>()) damage *= 2.5f;
-                    int index = Projectile.NewProjectile(player.GetSource_EffectItem<MarniteLasersEffect>(), worldPos - new Vector2(8, 8), vel, ModContent.ProjectileType<MarniteLaser>(), (int)damage, 1, player.whoAmI);
-                    if (index.IsWithinBounds(Main.maxProjectiles) && Main.projectile[index] is Projectile proj)
+                addonPlayer.MarniteTimer = 0;
+            }
+            else
+            {
+                addonPlayer.MarniteTimer++;
+                if (addonPlayer.MarniteTimer > 25)
+                {
+                    addonPlayer.MarniteTimer = 0;
+
+                    int nearestNPCID = FargoSoulsUtil.FindClosestHostileNPC(player.Center, 490, true, true);
+                    if (nearestNPCID.IsWithinBounds(Main.maxNPCs))
                     {
-                        proj.knockBack += 10;
+                        NPC nearestNPC = Main.npc[nearestNPCID];
+                        if (nearestNPC.Alive())
+                        {
+                            Vector2 pos = Main.rand.NextVector2FromRectangle(player.Hitbox);
+                            Vector2 vel = pos.DirectionTo(nearestNPC.Center) * 2;
+
+                            float damage = player.ForceEffect<MarniteLasersEffect>() ? 150 : 30;
+
+                            int index = Projectile.NewProjectile(player.GetSource_EffectItem<MarniteLasersEffect>(), pos, vel, ModContent.ProjectileType<MarniteLaser>(), (int)damage, 1, player.whoAmI);
+                            if (index.IsWithinBounds(Main.maxProjectiles) && Main.projectile[index] is Projectile proj)
+                            {
+                                proj.knockBack += 10;
+                            }
+                            NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, index);
+                        }
                     }
-                    NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, index);
                 }
             }
         }

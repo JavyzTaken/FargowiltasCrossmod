@@ -52,6 +52,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int ClamSlamIframes = 0;
         public int BatTime = 0;
         public int BatCooldown = 0;
+        public int MarniteTimer;
         public override void ResetEffects()
         {
             if (BrimflameDefenseTimer > 0)

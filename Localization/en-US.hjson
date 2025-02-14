@@ -390,11 +390,11 @@ Mods: {
 			}
 
 			MarniteEnchant: {
-				DisplayName: Marnite Enchantment
+				DisplayName: Marnite Architect Enchantment
 				Tooltip:
 					'''
 					10% increased placement speed and +5 tile placement range
-					Lasers strike nearby enemies when building and mining
+					Lasers strike nearby enemies while not attacking, or while using tools
 					Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
 					'''
 			}
@@ -425,7 +425,7 @@ Mods: {
 				Tooltip:
 					'''
 					[i:FargowiltasCrossmod/MarniteEnchant] 25% Increased placement speed and +10 placement range
-					[i:FargowiltasCrossmod/MarniteEnchant] Lasers strike nearby enemies when building and mining
+					[i:FargowiltasCrossmod/MarniteEnchant] Lasers strike nearby enemies while not attacking, or while using tools
 					[i:FargowiltasCrossmod/WulfrumEnchant] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
 					[i:FargowiltasCrossmod/DesertProwlerEnchant] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
 					[i:FargowiltasCrossmod/AerospecEnchant] Jumping and using double jumps increase critical strike chance and summon damage
@@ -533,7 +533,7 @@ Mods: {
 			}
 
 			SulphurEnchant: {
-				DisplayName: Sulphur Enchantment
+				DisplayName: Sulphurous Enchantment
 				Tooltip:
 					'''
 					Grants a sulphur jump that spawns a sulphur bubble on use
@@ -824,7 +824,7 @@ Mods: {
 			PerfExplosion.DisplayName: Perf Explosion
 			PerforatorSpike.DisplayName: Perforator Spike
 			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
-
+			PerforatorRubble.DisplayName: Perforator Rubble
 		}
 
 		Buffs: {
@@ -895,7 +895,7 @@ Mods: {
 
 		WizardEffect: {
 			Aerospec: Crit and damage bonus doubled
-			Marnite: Stronger daggers, +15% placement speed and +5 placement range
+			Marnite: Stronger lasers, +15% placement speed and +5 placement range
 			DesertProwler: Stronger jumps
 			Wulfrum: Scanned Enemies take even more extra damage from debuffs
 			Hydrothermic: Longer overheat charge, more attack speed increase

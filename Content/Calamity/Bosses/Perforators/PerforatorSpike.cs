@@ -147,10 +147,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Texture2D tip = PerfsEternityNew.LegEndTextures[Sprites[0]].Value;
+            Texture2D tip = PerfsEternity.LegEndTextures[Sprites[0]].Value;
             Texture2D[] bodies = new Texture2D[BodyParts];
             for (int i = 0; i < BodyParts; i++)
-                bodies[i] = PerfsEternityNew.LegTextures[Sprites[i + 1]].Value;
+                bodies[i] = PerfsEternity.LegTextures[Sprites[i + 1]].Value;
 
             SpriteEffects effects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 

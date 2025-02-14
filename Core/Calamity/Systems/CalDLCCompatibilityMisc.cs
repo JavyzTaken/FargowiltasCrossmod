@@ -322,7 +322,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalamityLists.debuffList.Add(ModContent.BuffType<RushJobBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<TwinsInstallBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<SnowstormCDBuff>());
-            CalamityLists.debuffList.Add(ModContent.BuffType<CorruptingBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<HellFireBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<LeadPoisonBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<OriPoisonBuff>());

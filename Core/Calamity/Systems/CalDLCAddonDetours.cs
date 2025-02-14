@@ -40,8 +40,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         public override void Load()
         {
-            On_Player.PickTile += PickTile_Detour;
-            On_Player.PlaceThing_Tiles_PlaceIt += PlaceThing_Tiles_PlaceIt_Detour;
             //On_Projectile.Damage += BigPlayer;
             //On_Player.Update_NPCCollision += BigPlayerNPCs;
             //On_LegacyPlayerRenderer.DrawPlayer += DrawBigPlayer;
@@ -53,26 +51,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             AerospecJumpEffect.ResetAeroCrit(self);
             orig(self);
-        }
-
-        private void PickTile_Detour(On_Player.orig_PickTile orig, Player self, int x, int y, int pickPower)
-        {
-            if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server)
-            {
-                MarniteLasersEffect.MarniteTileEffect(self, new Microsoft.Xna.Framework.Vector2(x, y).ToWorldCoordinates());
-            }
-            orig(self, x, y, pickPower);
-        }
-
-        private TileObject PlaceThing_Tiles_PlaceIt_Detour(On_Player.orig_PlaceThing_Tiles_PlaceIt orig, Player self, bool newObjectType, TileObject data, int tileToCreate)
-        {
-            TileObject returnvalue = orig(self, newObjectType, data, tileToCreate);
-            if (self.HasEffect<MarniteLasersEffect>() && Main.netMode != NetmodeID.Server && Main.tile[Main.MouseWorld.ToTileCoordinates()].HasTile)
-            {
-               
-                MarniteLasersEffect.MarniteTileEffect(self, Main.MouseWorld);
-            }
-            return returnvalue;
         }
 
         //private void DrawBigPlayer(On_LegacyPlayerRenderer.orig_DrawPlayer orig, LegacyPlayerRenderer self, Camera camera, Player drawPlayer, Vector2 position, float rotation, Vector2 rotationOrigin, float shadow, float scale)
