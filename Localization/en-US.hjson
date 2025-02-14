@@ -380,7 +380,7 @@ Mods: {
 			}
 
 			MarniteEnchant: {
-				DisplayName: Marnite Enchantment
+				DisplayName: Marnite Architect Enchantment
 				Tooltip:
 					'''
 					10% increased placement speed and +5 tile placement range
@@ -523,7 +523,7 @@ Mods: {
 			}
 
 			SulphurEnchant: {
-				DisplayName: Sulphur Enchantment
+				DisplayName: Sulphurous Enchantment
 				Tooltip:
 					'''
 					Grants a sulphur jump that spawns a sulphur bubble on use
