@@ -17,6 +17,8 @@ public class NuclearVortex : ModProjectile
     /// </summary>
     public ref float Time => ref Projectile.ai[0];
 
+    public override string Texture => MiscTexturesRegistry.InvisiblePixelPath;
+
     public override void SetStaticDefaults()
     {
         ProjectileID.Sets.TrailingMode[Type] = 2;
