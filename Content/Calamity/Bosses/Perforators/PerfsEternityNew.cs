@@ -409,6 +409,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.velocity.Y += 1;
+                ManageLegs();
                 return false;
             }
 
@@ -647,7 +648,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void BigWorm()
         {
-            int expTelegraph = 85;
+            int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 85;
             int endTime = 150;
             if (NPC.velocity.X.NonZeroSign() == NPC.HorizontalDirectionTo(Target.Center))
                 NPC.velocity *= 0.99f;
@@ -872,7 +873,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             ClearGore();
 
             NPC.velocity *= 0.8f;
-            int stabTelegraphTime = 35;
+            int stabTelegraphTime = WorldSavingSystem.MasochistModeReal ? 45 : 35;
             int stabTime = 10;
             if (Timer < 25)
                 NPC.velocity.Y -= 0.5f;
@@ -953,7 +954,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             NPC.velocity *= 0.8f;
             if (Timer < 25)
                 NPC.velocity.Y -= 0.5f;
-            int stabTelegraphTime = 35;
+            int stabTelegraphTime = WorldSavingSystem.MasochistModeReal ? 45 : 35;
             int stabTime = 10;
 
             void TelegraphStab()
@@ -1083,8 +1084,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             else
             {
-                Main.NewText("what? how? " + num);
-                Main.NewText($"illegal position is {p} and dir is {direction}");
+                //Main.NewText("what? how? " + num);
+                //Main.NewText($"illegal position is {p} and dir is {direction}");
                 return p;
             }
         }

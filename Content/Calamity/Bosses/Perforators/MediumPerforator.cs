@@ -50,7 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (DLCUtils.HostCheck && npc.HasPlayerTarget)
             {
                 float shotSpeed = Main.rand.NextFloat(7f, 16f);
-                Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2.8f);
+                Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.2f);
                 Vector2 vel = shotDir * shotSpeed;
                 if (vel.Y < -6)
                     vel.Y *= 0.6f;
