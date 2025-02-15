@@ -30,6 +30,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
     {
         public float AeroCritBoost;
         public int FeatherJumpsRemaining;
+        public float ExploCritBoost;
         public int usedWeaponTimer;
         public float ProwlerCharge;
         public bool AutoProwler = false;
