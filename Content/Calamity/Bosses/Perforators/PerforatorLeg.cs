@@ -16,6 +16,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         /// The 0-1 interpolant of how far this leg is in its forward step animation.
         /// </summary>
         public float StepAnimationInterpolant;
+        /// <summary>
+        /// An action to perform when the leg completes its animation.
+        /// </summary>
         public Action<PerforatorLeg, NPC> OnCompleteAnimation;
 
         /// <summary>
@@ -60,6 +63,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public readonly float LegSizeFactor;
 
         public readonly int Index;
+
+        /// <summary>
+        /// Which animation mode the animation should use.
+        /// Options: Linear (0), Accel (1), Decel (2), Accel and decel (3)
+        /// </summary>
+        public int AnimationMode;
+
+        /// <summary>
+        /// Whether the step sound should be played when completing the animation.
+        /// </summary>
+        public bool StepSound;
+
+        public const int Linear = 0;
+        public const int Accel = 1;
+        public const int Decel = 2;
+        public const int AccelDecel = 3;
 
         public PerforatorLeg(Vector2 defaultOffset, float legSizeFactor, float legLength1, float legLength2, int index)
         {
@@ -180,9 +199,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Increment the animation interpolant.
             StepAnimationInterpolant += InterpolationSpeed; //0.064f;
 
+
             // Calculate the current movement destination based on the animation's completion.
             // This gradually goes from the starting position and ends up at the step destination, making a slight upward arc while doing so.
-            Vector2 movementDestination = Vector2.Lerp(EndEffectorPositionAtStartOfStep, StepDestination, LumUtils.Saturate(StepAnimationInterpolant));
+            float x = LumUtils.Saturate(StepAnimationInterpolant);
+
+            // Move differently based on the animation type.
+            switch (AnimationMode)
+            {
+                case Accel:
+                    x *= x;
+                    break;
+                case Decel:
+                    x = 2 * x - x * x;
+                    break;
+                case AccelDecel:
+                    x = 3 * x * x - 2 * x * x * x;
+                    break;
+            }
+
+            Vector2 movementDestination = Vector2.Lerp(EndEffectorPositionAtStartOfStep, StepDestination, x);
             movementDestination -= gravityDirection * LumUtils.Convert01To010(StepAnimationInterpolant) * 18f;
 
             // Move the leg.
@@ -192,7 +228,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (StepAnimationInterpolant >= 1f)
             {
                 StepAnimationInterpolant = 0f;
-                SoundEngine.PlaySound(SoundID.Dig with { Pitch = -0.5f }, StepDestination);
+                if (StepSound)
+                    SoundEngine.PlaySound(SoundID.Dig with { Pitch = -0.5f }, StepDestination);
                 if (OnCompleteAnimation != null)
                 {
                     OnCompleteAnimation.Invoke(this, owner);
@@ -227,18 +264,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
+            if (owner.GetDLCBehavior<PerfsEternityNew>().PhaseTwo)
+                InterpolationSpeed *= 1.5f;
+            AnimationMode = AccelDecel;
+            StepSound = true;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);
         }
 
-        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f)
+        public void StartCustomAnimation(NPC owner, Vector2 endPosition, float interpolationSpeed = 0.05f, int animationMode = AccelDecel, bool stepSound = false)
         {
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
             StepDestination = endPosition;
             InterpolationSpeed = interpolationSpeed;
+            AnimationMode = animationMode;
+            StepSound = stepSound;
 
             // Apply slope vertical offsets to the step position.
             ApplySlopeOffsets(ref StepDestination);

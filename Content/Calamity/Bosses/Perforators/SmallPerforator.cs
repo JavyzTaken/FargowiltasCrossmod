@@ -26,6 +26,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         ModContent.NPCType<PerforatorBodySmall>(),
         ModContent.NPCType<PerforatorTailSmall>()
         );
+        public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
+        {
+            if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
+            {
+                if (npc.ai[3] < 60)
+                    return false;
+            }
+            else
+            {
+                NPC owner = npc.realLife >= 0 ? Main.npc[npc.realLife] : null;
+                if (owner == null || owner.ai[3] < 60)
+                    return false;
+            }
+            return base.CanHitPlayer(npc, target, ref cooldownSlot);
+        }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())

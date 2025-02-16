@@ -42,6 +42,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.penetrate = -1;
             Projectile.timeLeft = 100;
             Projectile.light = 1f;
+
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 15;
+            Projectile.FargoSouls().noInteractionWithNPCImmunityFrames = true;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {

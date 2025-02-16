@@ -701,6 +701,8 @@ Mods: {
 			// BatMode.DisplayName: Bat Mode
 			// PerfExplosion.DisplayName: Perf Explosion
 			// PerforatorSpike.DisplayName: Perforator Spike
+			// PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
+			// PerforatorRubble.DisplayName: Perforator Rubble
 			// ExplorationFeather.DisplayName: Exploration Feather
 		}
 
