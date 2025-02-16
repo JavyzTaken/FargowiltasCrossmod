@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ASEternity : CalDLCEmodeBehavior
     {
-        public static bool Enabled = false;
+        public static bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeHead>();
 
