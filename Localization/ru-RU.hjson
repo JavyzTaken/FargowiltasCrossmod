@@ -480,13 +480,7 @@ Mods: {
 
 			ReaverEnchant: {
 				// DisplayName: Reaver Enchantment
-				/* Tooltip:
-					'''
-					Several stats up!
-					These buffs decrease when you are hit
-					The buffs can become negative
-					The buffs regenerate over time
-					''' */
+				// Tooltip: ""
 			}
 
 			HydrothermicEnchant: {
@@ -907,7 +901,7 @@ Mods: {
 			DesertProwler: Более сильные прыжки
 			Wulfrum: Просканированные враги получают ещё больше доп. урона от дебаффов
 			// Hydrothermic: Longer overheat charge, more attack speed increase
-			// Daedalus: Grants wings if you don't have any, Can fly higher
+			// Daedalus: Increases arrow damage, amount and speed
 			SnowRuffian: Даёт немного полёта
 			// Reaver: More drastic stat changes
 			// Plaguebringer: Plague cloud deals more damage and charges from longer away
@@ -970,6 +964,18 @@ Mods: {
 			VictideHelmet: шлем прилива
 			AerospecHelmet: шлем аэрофаза
 			StatigelHelmet: шлем статигеля
+		}
+
+		ActiveSkills: {
+			ReaverEffect: {
+				// DisplayName: Reaver Adaptability
+				/* Tooltip:
+					'''
+					Switch between Plated Mode and Swift Mode
+					Plated Mode: Increases defense by 15 and damage reduction by 15%, taking damage grants Reaver Rage and summons a thorn spike
+					Swift Mode: Increases wing time and speed by 10%, reduces dash cooldown, increases hook speed, and grants life regeneration
+					''' */
+			}
 		}
 	}
 }

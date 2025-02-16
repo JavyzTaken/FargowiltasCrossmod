@@ -35,7 +35,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             player.AddEffect<ReaverEffect>(Item);
             player.AddEffect<DaedalusEffect>(Item);
             player.AddEffect<SnowRuffianEffect>(Item);
-            player.CalamityAddon().ReaverHide = hideVisual;
             player.CalamityAddon().HydrothermicHide = hideVisual;
         }
         public override void AddRecipes()

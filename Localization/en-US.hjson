@@ -474,13 +474,7 @@ Mods: {
 
 			ReaverEnchant: {
 				DisplayName: Reaver Enchantment
-				Tooltip:
-					'''
-					Several stats up!
-					These buffs decrease when you are hit
-					The buffs can become negative
-					The buffs regenerate over time
-					'''
+				Tooltip: ""
 			}
 
 			HydrothermicEnchant: {
@@ -903,7 +897,7 @@ Mods: {
 			Hydrothermic: Longer overheat charge, more attack speed increase
 			Daedalus: Increases arrow damage, amount and speed
 			SnowRuffian: Grants some flight time
-			Reaver: More drastic stat changes
+			Reaver: Defense and damage reduction increased to 30 and 30%, increased life regen and movement speed, increased thorn damage and buff duration
 			Plaguebringer: Plague cloud deals more damage and charges from longer away
 			PlagueReaper:
 				'''
@@ -964,6 +958,18 @@ Mods: {
 			VictideHelmet: Victide Headpiece
 			AerospecHelmet: Aerospec Headpiece
 			StatigelHelmet: Statigel Headpiece
+		}
+
+		ActiveSkills: {
+			ReaverEffect: {
+				DisplayName: Reaver Adaptability
+				Tooltip:
+					'''
+					Switch between Plated Mode and Swift Mode
+					Plated Mode: Increases defense by 15 and damage reduction by 15%, taking damage grants Reaver Rage and summons a thorn spike
+					Swift Mode: Grants massive life regeneration, increases wing time and speed by 10%, reduces dash cooldown, increases hook speed
+					'''
+			}
 		}
 	}
 }

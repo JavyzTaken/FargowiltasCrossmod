@@ -35,8 +35,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public bool AutoProwler = false;
         public int PlagueCharge;
         public int DaedalusTimer;
-        public int ReaverBuff;
-        public bool ReaverHide;
+        public bool ReaverToggle;
         public int ThermalCharge;
         public bool Overheating;
         public bool HydrothermicHide;
