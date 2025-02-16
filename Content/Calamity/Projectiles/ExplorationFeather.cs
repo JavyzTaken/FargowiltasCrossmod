@@ -72,7 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 Projectile.timeLeft = 300;
                 Projectile.rotation = Utils.AngleLerp(Projectile.rotation, Projectile.ai[0], 0.03f);
                 Projectile.Center = owner.Center - Projectile.rotation.ToRotationVector2() * 30;
-                if (owner.CalamityAddon().ExploCritBoost > 40)
+                if (owner.CalamityAddon().ExploFeatherCount > 40)
                 {
                     Projectile.velocity = Projectile.rotation.ToRotationVector2() * -20;
                     Projectile.ai[1] = 1;
