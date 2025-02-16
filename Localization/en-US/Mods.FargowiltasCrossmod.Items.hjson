@@ -328,14 +328,13 @@ ExplorationForce: {
 	DisplayName: Force of Exploration
 	Tooltip:
 		'''
-		[i:FargowiltasCrossmod/MarniteEnchant] 25% Increased placement speed and +10 placement range
-		[i:FargowiltasCrossmod/MarniteEnchant] Lasers strike nearby enemies while not attacking, or while using tools
-		[i:FargowiltasCrossmod/WulfrumEnchant] A wulfrum drone tells you enemy debuff weaknesses and makes enemies take extra debuff damage
-		[i:FargowiltasCrossmod/DesertProwlerEnchant] Replaces jumping and boot hovering with a charged sand jump that boosts you horizontally
-		[i:FargowiltasCrossmod/AerospecEnchant] Jumping and using double jumps increase critical strike chance and summon damage
-		[i:FargowiltasCrossmod/SulphurEnchant] Grants an extra jump that spawns a bubble, shooting the bubble releases toxic gas
-		[i:FargowiltasCrossmod/VictideEnchant] Gives you urchin spikes, which after attacking for a short time and releasing attack, launch outward
-		Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
+		Grants unlimited jumps in the air
+		Hold W while jumping to launch upward quickly
+		Hold S while jumping to dive downwards
+		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a feather attatched to you
+			Once 8 feathers are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/AerospecEnchant] Increases crit chance and summon damage by 5% every time you use a jump
+			The boost resets when the feathers are launched out
 		'''
 }
 
