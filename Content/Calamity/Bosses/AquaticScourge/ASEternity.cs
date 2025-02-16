@@ -326,137 +326,132 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     }
                     //Follow(10, aggroTimer);
 
-                    if (AttackChain == (int)Attacks.RockDashDashRock)
+                    switch ((Attacks)AttackChain)
                     {
-                        if (AttackPart == 0)
-                        {
-                            RandomRocks(10, npc.AngleTo(target.Center), 40);
-                        }
-                        else if (AttackPart == 1 || AttackPart == 2)
-                        {
-                            Dash(25, 100);
-                        }
-                        else if (AttackPart == 3)
-                        {
-                            RandomRocks(40, MathHelper.ToRadians(-90), 50);
-                        }
-                        else
-                        {
-                            AttackChain = (int)Attacks.Follow;
-                            AttackPart = 0;
-                        }
+                        case Attacks.RockDashDashRock:
+                            if (AttackPart == 0)
+                            {
+                                RandomRocks(10, npc.AngleTo(target.Center), 40);
+                            }
+                            else if (AttackPart == 1 || AttackPart == 2)
+                            {
+                                Dash(25, 100);
+                            }
+                            else if (AttackPart == 3)
+                            {
+                                RandomRocks(40, MathHelper.ToRadians(-90), 50);
+                            }
+                            else
+                            {
+                                AttackChain = (int)Attacks.Follow;
+                                AttackPart = 0;
+                            }
+                            break;
+                        case Attacks.GasGasGasRockDash:
+                            if (AttackPart < 3)
+                            {
+                                Dash(25, 100, 1);
+                            }
+                            else if (AttackPart == 3)
+                            {
+                                RandomRocks(40, MathHelper.ToRadians(-90), 50);
+                            }
+                            else if (AttackPart == 4)
+                            {
+                                Dash(30, 140);
+                            }
+                            else
+                            {
+                                AttackChain = (int)Attacks.Follow;
+                                AttackPart = 0;
+                            }
+                            break;
+                        case Attacks.LittleDashes:
+                            if (AttackPart < 3)
+                            {
+                                Dash(30, 50);
+                            }
+                            else if (AttackPart == 3)
+                            {
+                                Dash(25, 100, 1);
+                            }
+                            else
+                            {
+                                AttackChain = (int)Attacks.Follow;
+                                AttackPart = 0;
+                            }
+                            break;
+                        case Attacks.LittleDashesHomingSpikes:
+                            if (AttackPart < 8 && AttackPart % 2 == 0)
+                            {
+                                Dash(30, 80);
+                            }
+                            else if (AttackPart < 8)
+                            {
+                                Spikes(5, 30, true, 25);
+                            }
+                            else if (AttackPart == 8)
+                            {
+                                Dash(25, 100);
+                            }
+                            else
+                            {
+                                AttackChain = (int)Attacks.Follow;
+                                AttackPart = 0;
+                            }
+                            break;
+                        case Attacks.SpikesThenGas:
+                            if (AttackPart == 0)
+                            {
+                                Dash(25, 80);
+                            }
+                            else if (AttackPart == 1)
+                            {
+                                Spikes(5, 40, false);
+                            }
+                            else if (AttackPart < 4)
+                            {
+                                Dash(25, 100, 1);
+                            }
+                            else
+                            {
+                                AttackChain = (int)Attacks.Follow;
+                                AttackPart = 0;
+                            }
+                            break;
+                        case Attacks.GasThenSpikes:
+                            if (AttackPart < 3)
+                            {
+                                Dash(25, 100, 1);
+                            }
+                            else if (AttackPart == 3)
+                            {
+                                Dash(25, 80);
+
+                            }
+                            else if (AttackPart == 4)
+                            {
+                                Spikes(5, 40, false);
+                            }
+                            else
+                            {
+                                AttackChain = (int)Attacks.Follow;
+                                AttackPart = 0;
+                            }
+                            break;
+                        case Attacks.Follow:
+                            FollowTimer++;
+                            if (FollowTimer > 300 && npc.Distance(targetPos) < 800)
+                            {
+                                FollowTimer = 0;
+                                AttackChain = Main.rand.Next(1, 4);
+                                if (npc.GetLifePercent() <= 0.6f) AttackChain = Main.rand.Next(5, 8);
+                                //AttackChain = (int)Attacks.LittleDashesHomingSpikes;
+                            }
+                            //targetPos = npc.Center - npc.velocity.RotatedBy(MathHelper.ToRadians(10));
+                            Follow(10, FollowTurnSpeed);
+                            break;
                     }
-
-                    if (AttackChain == (int)Attacks.GasGasGasRockDash)
-                    {
-                        if (AttackPart < 3)
-                        {
-                            Dash(25, 100, 1);
-                        }else if (AttackPart == 3)
-                        {
-                            RandomRocks(40, MathHelper.ToRadians(-90), 50);
-                        }else if (AttackPart == 4)
-                        {
-                            Dash(30, 140);
-                        }else
-                        {
-                            AttackChain = (int)Attacks.Follow;
-                            AttackPart = 0;
-                        }
-                    }
-
-                    if (AttackChain == (int)Attacks.LittleDashes)
-                    {
-                        if (AttackPart < 3)
-                        {
-                            Dash(30, 50);
-                        }else if (AttackPart == 3)
-                        {
-                            Dash(25, 100, 1);
-                        }
-                        else
-                        {
-                            AttackChain = (int)Attacks.Follow;
-                            AttackPart = 0;
-                        }
-                    }
-
-                    if (AttackChain == (int)Attacks.LittleDashesHomingSpikes)
-                    {
-                        if (AttackPart < 8 && AttackPart % 2 == 0)
-                        {
-                            Dash(30, 80);
-                        }else if (AttackPart < 8)
-                        {
-                            Spikes(5, 30, true, 25);
-                        }else if (AttackPart == 8)
-                        {
-                            Dash(25, 100);
-                        }
-                        else
-                        {
-                            AttackChain = (int)Attacks.Follow;
-                            AttackPart = 0;
-                        }
-                    }
-
-                    if (AttackChain == (int)Attacks.SpikesThenGas)
-                    {
-                        if (AttackPart == 0)
-                        {
-                            Dash(25, 80);
-                        }else if (AttackPart == 1)
-                        {
-                            Spikes(5, 40, false);
-                        }
-                        else if (AttackPart < 4)
-                        {
-                            Dash(25, 100, 1);
-                        }
-                        else
-                        {
-                            AttackChain = (int)Attacks.Follow;
-                            AttackPart = 0;
-                        }
-                    }
-
-                    if (AttackChain == (int)Attacks.GasThenSpikes)
-                    {
-                        if (AttackPart < 3)
-                        {
-                            Dash(25, 100, 1);
-                        }
-                        else if (AttackPart == 3)
-                        {
-                            Dash(25, 80);
-                            
-                        }
-                        else if (AttackPart == 4)
-                        {
-                            Spikes(5, 40, false);
-                        }
-                        else
-                        {
-                            AttackChain = (int)Attacks.Follow;
-                            AttackPart = 0;
-                        }
-                    }
-
-                    if (AttackChain == (int)Attacks.Follow)
-                    {
-                        FollowTimer++;
-                        if (FollowTimer > 300 && npc.Distance(targetPos) < 800)
-                        {
-                            FollowTimer = 0;
-                            AttackChain = Main.rand.Next(1, 4);
-                            if (npc.GetLifePercent() <= 0.6f) AttackChain = Main.rand.Next(5, 8);
-                            //AttackChain = (int)Attacks.LittleDashesHomingSpikes;
-                        }
-                        //targetPos = npc.Center - npc.velocity.RotatedBy(MathHelper.ToRadians(10));
-                        Follow(10, FollowTurnSpeed);
-                    }
-
-
 
                     void RandomRocks(float amount, float angle, float spread)
                     {
