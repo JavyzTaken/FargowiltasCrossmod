@@ -19,6 +19,22 @@
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint3.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint4.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\PerforatorRubble.png" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Config.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.EModeBalance.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Items.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.NPCs.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Projectiles.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Toggler.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.WizardEffect.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.Config.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.EModeBalance.hjson" />
+    <None Remove="localization\ru-ru\Mods.FargowiltasCrossmod.Items.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.NPCs.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.Projectiles.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.Toggler.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.WizardEffect.hjson" />
   </ItemGroup>
   <ItemGroup>
     <Reference Remove="Libraries\CalamityMod.dll" />

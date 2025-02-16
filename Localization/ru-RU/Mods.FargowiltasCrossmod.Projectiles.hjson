@@ -1,0 +1,144 @@
+FungusBall.DisplayName: Грибной шар
+MushroomSpear.DisplayName: Грибное копьё
+ShroomGas.DisplayName: Грибной газ
+SandChunk.DisplayName: Песчаный кусок
+SuckedSandBlast.DisplayName: Песчаный выстрел
+CursedLightning.DisplayName: Проклятая молния
+CurvingCursedFlames.DisplayName: Изгибающееся проклятое пламя
+MovingCorruptCloud.DisplayName: Движущееся искажённое облако
+ShadeLightningCloud.DisplayName: Теневое молниеносное облако
+ToothBall.DisplayName: Шар зубов
+// Tooth.DisplayName: Tooth
+HomingRocket.DisplayName: Самонаводящаяся ракета
+HomingSickle.DisplayName: Самонаводящаяся коса
+HallowedSlimeSpike.DisplayName: Шип освящённого слизня
+BouncingFireball.DisplayName: Прыгающий шар огня
+BigLight.DisplayName: Большой свет
+DestructionBolt.DisplayName: Снаряд разрушения
+StarofDestruction.DisplayName: Звезда разрушения
+
+Boss: {
+	AcceleratingEbonianGlob.DisplayName: Эбонитовый сгусток
+	AcceleratingCrimulanGlob.DisplayName: Багротановый сгусток
+	SlimeHomingEbonianGlob.DisplayName: Эбонитовый сгусток
+	SlimeHomingCrimuleanGlob.DisplayName: Багротановый сгусток
+	MutantYharonVortex.DisplayName: Солнце
+}
+
+SlamTelegraph.DisplayName: Удар Телеграф
+IceBomb.DisplayName: Ледяная бомба
+IceCrystal.DisplayName: Ледяной кристал
+IceChain.DisplayName: Ледяная цепь
+IceTrident.DisplayName: Ледяной трезубец
+CrimsonPaladinSpike.DisplayName: Багряный шип
+PermafrostHeldWeapon.DisplayName: Пермафрост Оружие в Руках
+MutantOldDuke.DisplayName: Старый Герцог
+DLCMutantSpearSpin.DisplayName: Атлантида Мутанта
+DLCMutantSpearDash.DisplayName: Атлантида Мутанта
+MutantAresNuke.DisplayName: Гаусс-бомба Мутанта
+MutantAresBomb.DisplayName: Гаусс-бомба Мутанта
+DLCMutantFishronRitual.DisplayName: Гаусс-ритуал Мутанта
+MutantSlimeGod.DisplayName: Бог слизней
+DLCBloomLine.DisplayName: Линия Телеграфа
+MutantSCal.DisplayName: Щит-череп Каламитас
+MutantPBG.DisplayName: Разносчица Голиаф
+MutantAureusSpawn.DisplayName: Порождение Ареуса
+MutantHolyRay.DisplayName: Святой Луч
+MutantDoGBody.DisplayName: Пожиратель богов
+MutantDoGHead.DisplayName: Пожиратель богов
+MutantDoGTail.DisplayName: Пожиратель богов
+MutantPolter.DisplayName: Некроплазм
+ArcticPaw.DisplayName: Арктическая лапа
+Blizzard.DisplayName: Метель
+DarkIceCrystal.DisplayName: Кристалл тёмного льда
+FrostFlare.DisplayName: Морозная сигнальная ракета
+FrostShard.DisplayName: Морозный осколок
+IceArrow.DisplayName: Ледяная стрела
+IceShot.DisplayName: Ледяной выстрел
+IceStar.DisplayName: Ледяная звезда
+CryogenRitual.DisplayName: Ритуал Криогена
+PermafrostRitual.DisplayName: Ритуал Пермафроста
+IceCloud.DisplayName: Обмораживающий снег
+BrimstoneDebris.DisplayName: Серные обломки
+BrimstonePulse.DisplayName: Серный пульс
+BrimstoneClone.DisplayName: Серный клон
+BrimBeam.DisplayName: Серолуч
+BrimstoneChainExplosion.DisplayName: Серный цепной взрыв
+BrimstoneTeleport.DisplayName: Серный телепорт
+BrimstoneFireblast.DisplayName: Шар серного огня
+// FeatherJumpFeather.DisplayName: Feather
+// MarniteDagger.DisplayName: Marnite Dagger
+MarniteLaser.DisplayName: Мранитовый лазер
+// ProwlerTornado.DisplayName: Prowler Tornado
+// WulfrumCollector.DisplayName: Wulfrum Collector
+WulfrumScanner.DisplayName: Вульфрумовый сканер
+CrystalPlatform.DisplayName: Кристальная платформа
+// PlagueCloud.DisplayName: Plague Cloud
+// Eruption.DisplayName: Eruption
+// VampireBat.DisplayName: Vampire Bat
+SulphurBubble.DisplayName: Сернистый пкзырь
+VictideSpike.DisplayName: Приливной шип
+GoldenShowerShot.DisplayName: Выстрел золотого дождя
+HiveMindFiretrail.DisplayName: Проклятый огонь
+BrainMassProjectile.DisplayName: Гнилое мозговое вещество
+GravityVileClot.DisplayName: Мерзкий сгусток
+VileClotDrop.DisplayName: Мерзкий сгусток
+SulphurCloud.DisplayName: Сернистое облако
+PureGel.DisplayName: Чистейший гель
+HiveMindPulse.DisplayName: Разум улей пульс
+// ApolloLineTelegraph.DisplayName: Telegraph
+// ApolloMissile.DisplayName: Plasma Missile
+// AresMissile.DisplayName: Thermal Missile
+// AresMissileBackground.DisplayName: Thermal Missile
+// ArtemisLaserImproved.DisplayName: Thermal Laser
+// ArtemisLaserSmall.DisplayName: Small Thermal Laser
+// CannonLaserbeam.DisplayName: Energized Thermal Deathray
+// DraedonLootCrate.DisplayName: Draedon Loot Crate
+// ExoelectricBlast.DisplayName: Exoelectric Blast
+// ExoOverloadDeathray.DisplayName: Exo Overload Deathray
+// GaussNuke.DisplayName: Gauss Nuke
+// GaussNukeBoom.DisplayName: Thermonuclear Explosion
+// HadesExoEnergyOrb.DisplayName: Exoelectric Energy Orb
+// HadesLaserBurst.DisplayName: Laser Burst
+// HadesMine.DisplayName: Hades Mine
+// HadesSuperLaserbeam.DisplayName: Exo Energy Blast
+// HomingTeslaBurst.DisplayName: Tesla Burst
+// LargeTeslaSphere.DisplayName: Tesla Sphere
+// LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
+// LingeringPlasmaFireball.DisplayName: Plasma Fireball
+// SmallTeslaArc.DisplayName: Tesla Arc
+// ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
+ScourgeSandstream.DisplayName: Пещаный поток бича
+// SmallTeslaSphere.DisplayName: Tesla Sphere
+// PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
+// BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
+// AresDeathAnimationExplosion.DisplayName: Explosion
+// SmallHadesSegmentExplosion.DisplayName: Explosion
+// BigHadesSegmentExplosion.DisplayName: Explosion
+// AresCoreLaserSmall.DisplayName: Energized Spark
+// AresSwingingKatanas.DisplayName: XF-09 Ares Energy Katana
+// ApolloPlasmaFireball.DisplayName: Plasma Fireball
+// AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+// ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+// HadesMissile.DisplayName: Fortified Missile
+// CodebreakerDataStream.DisplayName: Codebreaker Data Stream
+// CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
+// BigBubble.DisplayName: Big Bubble
+// Bubble.DisplayName: Bubble
+// AquaticSuck.DisplayName: Aquatic Suck
+// FlamableGas.DisplayName: Flamable Gas
+// ToxicGas.DisplayName: Toxic Gas
+// FathomAngler.DisplayName: Fathom Angler
+// AstralTrailStar.DisplayName: Astral Trail Star
+// BrimflameBurst.DisplayName: Brimflame Burst
+// ClamSlam.DisplayName: Clam Slam
+// SmallCannonLaser.DisplayName: Laser
+// PulseBlast.DisplayName: Pulse Blast
+// HadesLineTelegraph.DisplayName: Hades Line Telegraph
+// ApolloMissile2.DisplayName: Apollo Missile
+// BatMode.DisplayName: Bat Mode
+// PerfExplosion.DisplayName: Perf Explosion
+// PerforatorSpike.DisplayName: Perforator Spike
+// PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
+// PerforatorRubble.DisplayName: Perforator Rubble
+// DaedalusArrow.DisplayName: Daedalus Arrow
