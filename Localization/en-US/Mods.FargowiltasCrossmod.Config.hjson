@@ -46,27 +46,54 @@ CalDLCConfig: {
 
 "": {
 	CalDLCConfig: {
-		DisplayName: Cal D L C Config
-		Headers.Modes: Modes Header
+		DisplayName: {
+			$parentVal: Cal D L C Config
+		}
+
+		Headers: {
+			Modes: {
+				$parentVal: Modes Header
+			}
+		}
 
 		EternityPriorityOverRev: {
-			Label: Eternity Priority Over Rev
-			Tooltip: ""
+			Label: {
+				$parentVal: Eternity Priority Over Rev
+			}
+
+			Tooltip: {
+				$parentVal: ""
+			}
 		}
 
 		ConsumableSummons: {
-			Label: Consumable Summons
-			Tooltip: ""
+			Label: {
+				$parentVal: Consumable Summons
+			}
+
+			Tooltip: {
+				$parentVal: ""
+			}
 		}
 
 		VoiceActingEnabled: {
-			Label: Voice Acting Enabled
-			Tooltip: ""
+			Label: {
+				$parentVal: Voice Acting Enabled
+			}
+
+			Tooltip: {
+				$parentVal: ""
+			}
 		}
 
 		InfernumDisablesEternity: {
-			Label: Infernum Disables Eternity
-			Tooltip: ""
+			Label: {
+				$parentVal: Infernum Disables Eternity
+			}
+
+			Tooltip: {
+				$parentVal: ""
+			}
 		}
 	}
 }

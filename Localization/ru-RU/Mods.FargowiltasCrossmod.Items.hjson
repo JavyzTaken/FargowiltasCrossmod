@@ -386,8 +386,9 @@ HydrothermicEnchant: {
 	// DisplayName: Hydrothermic Enchantment
 	/* Tooltip:
 		'''
-		After attacking for too long, your weapon overheats
-		While overheated, attack speed is increased, DR is reduced, and you cannot stop attacking
+		Attacking builds up heat
+		At full heat, stop attacking to vent it, increasing damage reduction by up to 30% and firing chaos flares towards your cursor for up to 3 seconds
+		Getting hit also vents heat, regardless of heat level
 		''' */
 }
 

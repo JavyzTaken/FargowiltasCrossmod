@@ -47,27 +47,74 @@ CalDLCConfig: {
 
 "": {
 	CalDLCConfig: {
-		// DisplayName: Cal D L C Config
-		// Headers.Modes: Modes Header
+		DisplayName: {
+			$parentVal: {
+				// $parentVal: Cal D L C Config
+			}
+		}
+
+		Headers: {
+			Modes: {
+				$parentVal: {
+					// $parentVal: Modes Header
+				}
+			}
+		}
 
 		EternityPriorityOverRev: {
-			// Label: Eternity Priority Over Rev
-			// Tooltip: ""
+			Label: {
+				$parentVal: {
+					// $parentVal: Eternity Priority Over Rev
+				}
+			}
+
+			Tooltip: {
+				$parentVal: {
+					// $parentVal: ""
+				}
+			}
 		}
 
 		ConsumableSummons: {
-			// Label: Consumable Summons
-			// Tooltip: ""
+			Label: {
+				$parentVal: {
+					// $parentVal: Consumable Summons
+				}
+			}
+
+			Tooltip: {
+				$parentVal: {
+					// $parentVal: ""
+				}
+			}
 		}
 
 		VoiceActingEnabled: {
-			// Label: Voice Acting Enabled
-			// Tooltip: ""
+			Label: {
+				$parentVal: {
+					// $parentVal: Voice Acting Enabled
+				}
+			}
+
+			Tooltip: {
+				$parentVal: {
+					// $parentVal: ""
+				}
+			}
 		}
 
 		InfernumDisablesEternity: {
-			// Label: Infernum Disables Eternity
-			// Tooltip: ""
+			Label: {
+				$parentVal: {
+					// $parentVal: Infernum Disables Eternity
+				}
+			}
+
+			Tooltip: {
+				$parentVal: {
+					// $parentVal: ""
+				}
+			}
 		}
 	}
 }

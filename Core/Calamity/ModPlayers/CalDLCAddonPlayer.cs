@@ -37,8 +37,9 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int PlagueCharge;
         public int DaedalusTimer;
         public bool ReaverToggle;
-        public int ThermalCharge;
-        public bool Overheating;
+        public float HydrothermicHeat;
+        public float HydrothermicFlareCooldown;
+        public bool HydrothermicOverheat;
         public bool HydrothermicHide;
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;

@@ -101,7 +101,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 
                 bool forceEffect = player.ForceEffect<DaedalusEffect>();
                 float arrowSpeed = forceEffect ? 16f : 12f;
-                int projDamage = forceEffect ? 110 : 80;
+                int projDamage = forceEffect ? 100 : 65;
+                projDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, projDamage);
+
                 int amt = forceEffect ? 6 : 4;
                 float knockback = 1f;
                 // ignore all this shit
