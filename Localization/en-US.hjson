@@ -450,8 +450,9 @@ Mods: {
 				DisplayName: Daedalus Enchantment
 				Tooltip:
 					'''
-					Grants unlimited flight, but flight ends if you fly too high
-					Improves wing gliding
+					Increases flight time by 25%
+					After a second in the air, attacks are accompanied by powerful arrows from the sky
+					Getting hit or landing removes this bonus and cuts your wing time in half 
 					'''
 			}
 
@@ -825,6 +826,7 @@ Mods: {
 			PerforatorSpike.DisplayName: Perforator Spike
 			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
 			PerforatorRubble.DisplayName: Perforator Rubble
+			DaedalusArrow.DisplayName: Daedalus Arrow
 		}
 
 		Buffs: {
@@ -899,7 +901,7 @@ Mods: {
 			DesertProwler: Stronger jumps
 			Wulfrum: Scanned Enemies take even more extra damage from debuffs
 			Hydrothermic: Longer overheat charge, more attack speed increase
-			Daedalus: Grants wings if you don't have any, Can fly higher
+			Daedalus: Increases arrow damage, amount and speed
 			SnowRuffian: Grants some flight time
 			Reaver: More drastic stat changes
 			Plaguebringer: Plague cloud deals more damage and charges from longer away

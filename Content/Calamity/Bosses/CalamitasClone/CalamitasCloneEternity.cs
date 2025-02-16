@@ -33,7 +33,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamitasCloneEternity : CalDLCEmodeBehavior
     {
-        public const bool Enabled = true;
+        public const bool Enabled = false;
         #region Fields
         public Player Target => Main.player[NPC.target];
         public static float Acceleration => 0.8f;

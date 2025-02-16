@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public float ProwlerCharge;
         public bool AutoProwler = false;
         public int PlagueCharge;
-        public int DaedalusHeight;
+        public int DaedalusTimer;
         public int ReaverBuff;
         public bool ReaverHide;
         public int ThermalCharge;
@@ -56,29 +56,17 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public override void ResetEffects()
         {
             if (BrimflameDefenseTimer > 0)
-            {
                 BrimflameDefenseTimer--;
-            }
             if (BrimflameShootingTimer > 0)
-            {
                 BrimflameShootingTimer--;
-            }
             if (ClamSlamCooldown > 0)
-            {
                 ClamSlamCooldown--;
-            }
             if (ClamSlamIframes > 0)
-            {
                 ClamSlamIframes--;
-            }
             if (BatTime > 0)
-            {
                 BatTime--;
-            }
             if (BatCooldown > 0)
-            {
                 BatCooldown--;
-            }
             base.ResetEffects();
         }
         public override bool IsLoadingEnabled(Mod mod)
@@ -106,6 +94,11 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 Player.immuneTime = 5;
                 Player.immune = true;
             }
+        }
+        public override void PostUpdateMiscEffects()
+        {
+            if (!Player.HasEffect<DaedalusEffect>() && DaedalusTimer > 0)
+                DaedalusTimer--;
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
