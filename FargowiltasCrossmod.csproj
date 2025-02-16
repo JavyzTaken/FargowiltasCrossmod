@@ -37,9 +37,6 @@
     <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.WizardEffect.hjson" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Remove="Libraries\CalamityMod.dll" />
-  </ItemGroup>
-  <ItemGroup>
 	<Reference Include="CalamityMod">
 		<HintPath>Libraries/CalamityMod.dll</HintPath>
 	</Reference>
