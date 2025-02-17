@@ -19,6 +19,7 @@ AddedEffects: {
 	CalamityConjurist: Эффект нуклеосинтеза
 	ThoriumConjurist: Эффекты подвески Юмы и кристаллического скорпиона
 	CalamityTrawler: Эффекты глубоководного водолазного костюма
+	// CalamityWorldShaper: Effects of Marnite Enchantment
 	ThoriumUniverse:
 		'''
 		Увеличивает метательную скорость атаки на 15%

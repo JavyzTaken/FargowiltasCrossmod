@@ -330,6 +330,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Insert(8, new TooltipLine(Mod, "CalColossusSoul", Language.GetTextValue(key + "CalamityColossus")));
             }
+            if (item.type == ModContent.ItemType<TrawlerSoul>() && !item.social)
+            {
+                tooltips.Insert(8, new TooltipLine(Mod, "CalFishSoul", Language.GetTextValue(key + "CalamityTrawler")));
+            }
+            if (item.type == ModContent.ItemType<WorldShaperSoul>() && !item.social)
+            {
+                tooltips.Insert(tooltips.Count - 3, new TooltipLine(Mod, "CalWorldShaper", Language.GetTextValue(key + "CalamityWorldShaper")));
+            }
 
             if (item.type == ModContent.ItemType<BerserkerSoul>() && !item.social)
             {
@@ -351,14 +359,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 tooltips.Insert(7, new TooltipLine(Mod, "CalConjurSoul", Language.GetTextValue(key + "CalamityConjurist")));
             }
 
-            if (item.type == ModContent.ItemType<TrawlerSoul>() && !item.social)
-            {
-                tooltips.Insert(8, new TooltipLine(Mod, "CalFishSoul", Language.GetTextValue(key + "CalamityTrawler")));
-            }
-
+            int expert = tooltips.FindIndex(x => x.Name == "Expert");
             if (item.type == ModContent.ItemType<UniverseSoul>() && !item.social)
             {
-                tooltips.Insert(15, new TooltipLine(Mod, "CalUniverseSoul",
+                tooltips.Insert(expert - 1, new TooltipLine(Mod, "CalUniverseSoul",
                     Language.GetTextValue(key + "CalamityBerserker") + "\n" +
                     Language.GetTextValue(key + "CalamitySniper") + "\n" +
                     Language.GetTextValue(key + "CalamityWizard") + "\n" +
@@ -368,10 +372,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (item.type == ModContent.ItemType<DimensionSoul>() && !item.social)
             {
-                tooltips.Insert(21, new TooltipLine(Mod, "CalDimensionSoul",
+                tooltips.Insert(expert - 1, new TooltipLine(Mod, "CalDimensionSoul",
                     Language.GetTextValue(key + "CalamityColossus") + "\n" +
                     Language.GetTextValue(key + "AngelTreads") + "\n" +
-                    Language.GetTextValue(key + "CalamityTrawler")));
+                    Language.GetTextValue(key + "CalamityTrawler") + "\n" +
+                    Language.GetTextValue(key + "CalamityWorldShaper")));
             }
 
             if (FargoClientConfig.Instance.ExpandedTooltips)
