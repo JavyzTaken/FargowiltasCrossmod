@@ -138,14 +138,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 player.fireWalk = true;
                 player.buffImmune[BuffID.OnFire] = true;
             }
-            if (item.type == ModContent.ItemType<SupersonicSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            bool dimSoul = item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>();
+            bool uniSoul = item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>();
+
+            if (item.type == ModContent.ItemType<SupersonicSoul>() || dimSoul)
             {
                 if (player.AddEffect<StatisVoidSashEffect>(item))
                 {
                     ModContent.GetInstance<StatisVoidSash>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<ColossusSoul>() || dimSoul)
             {
                 if (player.AddEffect<AmalgamEffect>(item))
                 {
@@ -159,21 +162,33 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
                 ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
             }
-            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<TrawlerSoul>() || dimSoul)
+            {
+                if (player.AddEffect<AbyssalDivingSuitEffect>(item))
+                {
+                    ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
+                }
+            }
+            if (item.type == ModContent.ItemType<WorldShaperSoul>() || dimSoul)
+            {
+                MarniteEnchant.AddEffects(player, item);
+            }
+
+            if (item.type == ModContent.ItemType<BerserkerSoul>() || uniSoul)
             {
                 if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<ArchWizardsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<ArchWizardsSoul>() || uniSoul)
             {
                 if (player.AddEffect<EtherealTalismanEffect>(item))
                 {
                     ModContent.GetInstance<EtherealTalisman>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<SnipersSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<SnipersSoul>() || uniSoul)
             {
                 if (player.AddEffect<ElementalQuiverEffect>(item))
                 {
@@ -184,14 +199,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<ConjuristsSoul>() || uniSoul)
             {
                 if (player.AddEffect<NucleogenesisEffect>(item))
                 {
                     ModContent.GetInstance<Nucleogenesis>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (uniSoul)
             {
                 player.Calamity().rogueVelocity += 0.15f;
                 if (player.AddEffect<NanotechEffect>(item))
@@ -201,13 +216,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<EclipseMirrorEffect>(item))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
-                }
-            }
-            if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
-            {
-                if (player.AddEffect<AbyssalDivingSuitEffect>(item))
-                {
-                    ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
                 }
             }
 

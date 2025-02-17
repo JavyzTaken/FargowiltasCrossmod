@@ -10,9 +10,6 @@ using FargowiltasSouls.Content.Buffs;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -37,6 +34,8 @@ using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.Typeless;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {

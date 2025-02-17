@@ -35,6 +35,7 @@ using Fargowiltas.Items.Summons.Abom;
 using Fargowiltas.Items.Tiles;
 using Fargowiltas.Utilities;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
 using FargowiltasCrossmod.Core;
@@ -865,6 +866,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         .AddIngredient<ArchaicPowder>()
                         .AddIngredient<SpelunkersAmulet>()
                         .AddIngredient<OnyxExcavatorKey>()
+                        .AddIngredient<MarniteEnchant>()
                         .AddIngredient<AbomEnergy>(10);
                 }
 
