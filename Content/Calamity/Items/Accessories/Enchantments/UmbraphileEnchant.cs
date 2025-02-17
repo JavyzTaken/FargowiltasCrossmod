@@ -78,7 +78,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => null; // Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<UmbraphileEnchant>();
         public override bool ActiveSkill => true;
         public override void ActiveSkillJustPressed(Player player, bool stunned)

@@ -37,6 +37,7 @@ using FargowiltasSouls.Content.UI.Elements;
 using FargowiltasSouls.Core.ModPlayers;
 using Mono.Cecil;
 using FargowiltasSouls.Assets.Sounds;
+using CalamityMod.Buffs.StatBuffs;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -80,7 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class HydrothermicEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<ElementsHeader>();
         public override int ToggleItemType => ModContent.ItemType<HydrothermicEnchant>();
 
         public const int MaxHeat = 60 * 8;
@@ -90,12 +91,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             var modPlayer = player.FargoSouls();
             bool force = player.ForceEffect<HydrothermicEffect>();
 
+            bool disabled = player.HasEffect<ElementsForceEffect>() && dlc.ReaverToggle;
+
             if (player.whoAmI == Main.myPlayer)
                 CooldownBarManager.Activate("HydrothermicHeat", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/HydrothermicEnchant").Value, HydrothermicEnchant.NameColor,
                     () => Main.LocalPlayer.CalamityAddon().HydrothermicHeat / MaxHeat, true, 60 * 10, activeFunction: player.HasEffect<HydrothermicEffect>);
 
             float heatLevel = dlc.HydrothermicHeat / MaxHeat;
-            player.endurance += (force ? 0.45f : 0.3f) * heatLevel;
+            if (!player.HasEffectEnchant<HydrothermicEffect>())
+                player.endurance += (force ? 0.45f : 0.3f) * heatLevel;
             if (dlc.HydrothermicOverheat)
             {
                 if (!dlc.HydrothermicHide)
@@ -111,6 +115,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     if (player.whoAmI == Main.myPlayer)
                     {
                         int flareDamage = force ? 350 : 200;
+                        if (player.HasEffect<ElementsForceEffect>())
+                            flareDamage = 2400;
                         flareDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, flareDamage);
                         Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, player.DirectionTo(Main.MouseWorld).RotatedByRandom(MathHelper.PiOver2 * 0.03f) * Main.rand.NextFloat(13f, 17f), 
                             ModContent.ProjectileType<HydrothermicFlare>(), flareDamage, 2f, player.whoAmI);
@@ -129,7 +135,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
             else
             {
-                if (modPlayer.WeaponUseTimer > 0)
+                if (modPlayer.WeaponUseTimer > 0 && !disabled)
                 {
                     if (dlc.HydrothermicHeat < MaxHeat)
                         dlc.HydrothermicHeat += 1;
@@ -160,6 +166,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             {
                 player.CalamityAddon().HydrothermicOverheat = true;
                 SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/ExoMechs/ThanatosVent"), player.Center);
+
+                if (player.HasEffect<ElementsForceEffect>())
+                {
+                    player.AddBuff(ModContent.BuffType<ReaverRage>(), 60 * 10);
+                }
             }
         }
         public override void DrawEffects(Player player, PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)

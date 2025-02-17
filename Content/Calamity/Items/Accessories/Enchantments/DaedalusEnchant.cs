@@ -72,12 +72,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DaedalusEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<ElementsHeader>();
         public override int ToggleItemType => ModContent.ItemType<DaedalusEnchant>();
         public const float WindupTime = 60f;
         public override void PostUpdateEquips(Player player)
         {
             var addonPlayer = player.CalamityAddon();
+            if (player.HasEffect<ElementsForceEffect>() && !addonPlayer.ReaverToggle)
+                return;
             if (player.velocity.Y != 0)
             {
                 addonPlayer.DaedalusTimer++;
@@ -98,10 +100,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             if (addonPlayer.DaedalusTimer > WindupTime + 40)
             {
                 addonPlayer.DaedalusTimer = (int)WindupTime;
-
                 bool forceEffect = player.ForceEffect<DaedalusEffect>();
                 float arrowSpeed = forceEffect ? 16f : 12f;
                 int projDamage = forceEffect ? 100 : 65;
+                if (player.HasEffect<ElementsForceEffect>())
+                    projDamage = 600;
                 projDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, projDamage);
 
                 int amt = forceEffect ? 6 : 4;
@@ -133,7 +136,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void OnHitByEither(Player player, NPC npc, Projectile proj)
         {
             var addonPlayer = player.CalamityAddon();
-            if (addonPlayer.DaedalusTimer > WindupTime)
+            if (addonPlayer.DaedalusTimer > WindupTime && !player.HasEffect<ElementsForceEffect>())
             {
                 addonPlayer.DaedalusTimer = 0;
                 player.wingTime /= 2;

@@ -25,7 +25,7 @@ DraedonsHeartEffect: Draedons Heart
 CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
 SplendorJamEffect: Splendor Jam
 ExplorationHeader: Force of Exploration
-AerospecJumpEffect: Jump Crit
+AerospecJumpEffect: Aerospec Effect
 MarniteRepulsionEffect: Marnite Repulsion
 MarniteLasersEffect: Marnite Lasers
 DesertProwlerEffect: Charge Jump

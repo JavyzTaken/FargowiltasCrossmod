@@ -41,6 +41,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public float HydrothermicFlareCooldown;
         public bool HydrothermicOverheat;
         public bool HydrothermicHide;
+        public int ElementsAirTime;
         public int NumJumpsUsed = 0;
         public bool AllowJumpsUsedInc = false;
         public bool RuffianModifiedRotation = false;
