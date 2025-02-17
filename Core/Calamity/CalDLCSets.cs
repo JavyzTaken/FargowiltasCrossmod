@@ -55,6 +55,7 @@ namespace FargowiltasCrossmod.Core.Calamity
 
             public static bool[] AdamantiteExclude;
             public static bool[] TungstenExclude;
+            public static bool[] MarniteExclude;
         }
         public class NPCs
         {
@@ -148,6 +149,21 @@ namespace FargowiltasCrossmod.Core.Calamity
             Items.TungstenExclude = itemFactory.CreateBoolSet(false,
                 ItemType<OldLordClaymore>(),
                 ItemType<BladecrestOathsword>()
+            );
+            Items.MarniteExclude = itemFactory.CreateBoolSet(false,  // set of boss viable tools
+              //ItemID.RodofDiscord, // this is intentional
+                ItemID.Rockfish,
+                ItemID.ButchersChainsaw,
+                ItemID.LucyTheAxe,
+                ItemType<FellerofEvergreens>(),
+                ItemType<AxeofPurity>(),
+                ItemType<HydraulicVoltCrasher>(),
+                ItemType<InfernaCutter>(),
+                ItemType<Respiteblock>(),
+                ItemType<RelicOfConvergence>(),
+                ItemType<RelicOfResilience>(),
+                ItemType<Grax>(),
+                ItemType<PhotonRipper>()
             );
             #endregion
 
