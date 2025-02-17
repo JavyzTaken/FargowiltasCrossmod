@@ -116,7 +116,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void PostUpdateEquips(Player player)
         {
             var addonPlayer = player.CalamityAddon();
-            if (player.HeldItem != null && player.HeldItem.IsWeapon() && player.FargoSouls().WeaponUseTimer > 0) // using weapon
+            Item item = player.HeldItem;
+            bool marniteExclusion = item != null && player.itemAnimation > 0 && CalDLCSets.Items.MarniteExclude[item.type];
+            if (item != null && item.IsWeapon() && player.FargoSouls().WeaponUseTimer > 0 || marniteExclusion) // using weapon or boss viable tool
             {
                 addonPlayer.MarniteTimer = 0;
             }
