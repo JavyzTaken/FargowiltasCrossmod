@@ -20,9 +20,7 @@
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint4.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\FrightweaverLowerLeg.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\FrightweaverUpperLeg.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Remove="Libraries\CalamityMod.dll" />
+    <None Remove="Content\Calamity\Bosses\Perforators\PerforatorRubble.png" />
   </ItemGroup>
   <ItemGroup>
 	<Reference Include="CalamityMod">

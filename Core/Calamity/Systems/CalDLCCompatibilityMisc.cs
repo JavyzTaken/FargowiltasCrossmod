@@ -1,43 +1,88 @@
-﻿using CalamityMod;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using CalamityMod;
+using CalamityMod.CalPlayer;
 using CalamityMod.Enums;
 using CalamityMod.Events;
+using CalamityMod.NPCs;
+using CalamityMod.NPCs.AquaticScourge;
+using CalamityMod.NPCs.AstrumAureus;
+using CalamityMod.NPCs.AstrumDeus;
+using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.NPCs.Bumblebirb;
+using CalamityMod.NPCs.CalClone;
 using CalamityMod.NPCs.CeaselessVoid;
+using CalamityMod.NPCs.Crabulon;
+using CalamityMod.NPCs.Cryogen;
+using CalamityMod.NPCs.DesertScourge;
 using CalamityMod.NPCs.DevourerofGods;
 using CalamityMod.NPCs.ExoMechs;
 using CalamityMod.NPCs.ExoMechs.Apollo;
 using CalamityMod.NPCs.ExoMechs.Ares;
 using CalamityMod.NPCs.ExoMechs.Artemis;
 using CalamityMod.NPCs.ExoMechs.Thanatos;
+using CalamityMod.NPCs.HiveMind;
+using CalamityMod.NPCs.Leviathan;
 using CalamityMod.NPCs.NormalNPCs;
 using CalamityMod.NPCs.OldDuke;
+using CalamityMod.NPCs.Perforator;
+using CalamityMod.NPCs.PlaguebringerGoliath;
 using CalamityMod.NPCs.Polterghast;
 using CalamityMod.NPCs.ProfanedGuardians;
 using CalamityMod.NPCs.Providence;
+using CalamityMod.NPCs.Ravager;
 using CalamityMod.NPCs.Signus;
+using CalamityMod.NPCs.SlimeGod;
 using CalamityMod.NPCs.StormWeaver;
 using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.Yharon;
+using CalamityMod.Projectiles;
 using CalamityMod.Systems;
 using CalamityMod.UI.DraedonSummoning;
+using CalamityMod.World;
+using Fargowiltas.NPCs;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
+using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
+using FargowiltasCrossmod.Content.Calamity.Toggles;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
+using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
+using FargowiltasSouls.Content.Bosses.Champions.Earth;
+using FargowiltasSouls.Content.Bosses.Champions.Life;
+using FargowiltasSouls.Content.Bosses.Champions.Nature;
+using FargowiltasSouls.Content.Bosses.Champions.Shadow;
+using FargowiltasSouls.Content.Bosses.Champions.Spirit;
+using FargowiltasSouls.Content.Bosses.Champions.Terra;
+using FargowiltasSouls.Content.Bosses.Champions.Timber;
+using FargowiltasSouls.Content.Bosses.Champions.Will;
+using FargowiltasSouls.Content.Bosses.DeviBoss;
+using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
 using FargowiltasSouls.Content.Buffs;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Buffs.Souls;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
+using FargowiltasSouls.Content.Projectiles.Masomode;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using static CalamityMod.Events.BossRushEvent;
+using static FargowiltasCrossmod.Core.Common.Globals.DevianttGlobalNPC;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -154,7 +199,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 new Boss(NPCID.KingSlime, spawnContext: type => {
                     NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
 
-
+                    
                 },permittedNPCs: new int[] { NPCID.BlueSlime, NPCID.YellowSlime, NPCID.PurpleSlime, NPCID.RedSlime, NPCID.GreenSlime, NPCID.RedSlime,
                     NPCID.IceSlime, NPCID.UmbrellaSlime, NPCID.Pinky, NPCID.SlimeSpiked, NPCID.RainbowSlime, ModContent.NPCType<KingSlimeJewelRuby>(),
                     ModContent.NPCType<KingSlimeJewelSapphire>(), ModContent.NPCType<KingSlimeJewelEmerald>() }),
@@ -172,7 +217,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     CalamityUtils.BossAwakenMessage(provi);
                 }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<ProvSpawnDefense>(), ModContent.NPCType<ProvSpawnHealer>(), ModContent.NPCType<ProvSpawnOffense>(),
                     ModContent.NPCType<ProfanedGuardianCommander>(), ModContent.NPCType<ProfanedGuardianDefender>(), ModContent.NPCType<ProfanedGuardianHealer>()]),
-
+                
 
                 new Boss(ModContent.NPCType<Polterghast>(), permittedNPCs: [ModContent.NPCType<PhantomFuckYou>(), ModContent.NPCType<PolterghastHook>(), ModContent.NPCType<PolterPhantom>()]),
                 new Boss(ModContent.NPCType<OldDuke>(), spawnContext: type => {
@@ -183,7 +228,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 new Boss(ModContent.NPCType<DevourerofGodsHead>(), spawnContext: type => {
                     SoundEngine.PlaySound(DevourerofGodsHead.SpawnSound, Main.player[ClosestPlayerToWorldCenter].Center);
                     NPC.SpawnOnPlayer(ClosestPlayerToWorldCenter, type);
-                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<DevourerofGodsBody>(), ModContent.NPCType<DevourerofGodsTail>(), ModContent.NPCType<CosmicGuardianBody>(), ModContent.NPCType<CosmicGuardianHead>(), ModContent.NPCType<CosmicGuardianTail>(),
+                }, usesSpecialSound: true, permittedNPCs: [ModContent.NPCType<DevourerofGodsBody>(), ModContent.NPCType<DevourerofGodsTail>(), ModContent.NPCType<CosmicGuardianBody>(), ModContent.NPCType<CosmicGuardianHead>(), ModContent.NPCType<CosmicGuardianTail>(), 
                 ModContent.NPCType<Signus>(), ModContent.NPCType<CeaselessVoid>(), ModContent.NPCType<StormWeaverHead>(), ModContent.NPCType<StormWeaverBody>(), ModContent.NPCType<StormWeaverTail>()]),
                 new Boss(ModContent.NPCType<CosmosChampion>(), spawnContext: type => {
                     int erd = NPC.NewNPC(new EntitySource_WorldEvent(), (int)(Main.player[ClosestPlayerToWorldCenter].Center.X), (int)(Main.player[ClosestPlayerToWorldCenter].Center.Y - 400), type, 1);
@@ -210,8 +255,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 }, dimnessFactor: 0.5f, permittedNPCs: [ModContent.NPCType<SepulcherArm>(), ModContent.NPCType<SepulcherBody>(), ModContent.NPCType<SepulcherHead>(), ModContent.NPCType<SepulcherTail>(), ModContent.NPCType<SepulcherBodyEnergyBall>(), ModContent.NPCType<SoulSeekerSupreme>(), ModContent.NPCType<BrimstoneHeart>(), ModContent.NPCType<SupremeCataclysm>(), ModContent.NPCType<SupremeCatastrophe>()]),
                 new Boss(ModContent.NPCType<MutantBoss>(), permittedNPCs: [ModContent.NPCType<MutantIllusion>()])
                 ];
-
-
+            
+            
             BossDeathEffects.Remove(ModContent.NPCType<SupremeCalamitas>());
             BossDeathEffects.Remove(ModContent.NPCType<DevourerofGodsHead>());
             BossDeathEffects.Add(ModContent.NPCType<MutantBoss>(), npc => { BossRushDialogueSystem.StartDialogue(DownedBossSystem.downedBossRush ? BossRushDialoguePhase.EndRepeat : BossRushDialoguePhase.End); });
@@ -277,7 +322,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalamityLists.debuffList.Add(ModContent.BuffType<RushJobBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<TwinsInstallBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<SnowstormCDBuff>());
-            //CalamityLists.debuffList.Add(ModContent.BuffType<CorruptingBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<HellFireBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<LeadPoisonBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<OriPoisonBuff>());

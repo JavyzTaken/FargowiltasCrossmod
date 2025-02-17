@@ -710,6 +710,8 @@ Mods: {
 			// SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
 			// PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
 			// NuclearHurricane.DisplayName: Nuclear Hurricane
+			// PerforatorRubble.DisplayName: Perforator Rubble
+			// ExplorationFeather.DisplayName: Exploration Feather
 		}
 
 		Buffs: {

@@ -32,11 +32,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             ModContent.NPCType<PerforatorBodyMedium>(),
             ModContent.NPCType<PerforatorTailMedium>()
         );
-        public Vector2 VelocityReal = Vector2.UnitY * 16;
+        public Vector2 VelocityReal = Vector2.UnitY * 22;
         public override void SetDefaults(NPC entity)
         {
             if (!WorldSavingSystem.EternityMode) return;
-            entity.lifeMax = 50;
+            entity.lifeMax = 5000;
             entity.Opacity = 1f;
         }
         public override void SpawnNPC(int npc, int tileX, int tileY)
@@ -49,7 +49,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
             if (DLCUtils.HostCheck && npc.HasPlayerTarget)
             {
-                int p = Projectile.NewProjectile(npc.GetSource_Death(), npc.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<GoldenShowerHoming>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, Main.myPlayer, npc.target, -40);
+                float shotSpeed = Main.rand.NextFloat(7f, 16f);
+                Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.2f);
+                Vector2 vel = shotDir * shotSpeed;
+                if (vel.Y < -6)
+                    vel.Y *= 0.6f;
+                int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
                 if (p.IsWithinBounds(Main.maxProjectiles))
                 {
                     Main.projectile[p].extraUpdates = 1;
@@ -81,11 +86,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (npc.type == ModContent.NPCType<PerforatorHeadMedium>())
             {
-                VelocityReal.Y += 0.5f;
+                VelocityReal.Y += 0.75f;
                 if (npc.HasPlayerTarget)
                 {
                     Player player = Main.player[npc.target];
-                    VelocityReal.X += npc.HorizontalDirectionTo(player.Center) * 0.2f;
+                    VelocityReal.X += npc.HorizontalDirectionTo(player.Center) * 0.3f;
                 }
                 //npc.velocity = VelocityReal;
             }
