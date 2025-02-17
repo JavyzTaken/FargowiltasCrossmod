@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -16,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class AstrumCor : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<AstrumDeusHead>();
-        public override string NPCName => "Astrum Deus";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.AstrumDeusHead.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<Starcore>().AddTile(TileID.WorkBenches).DisableDecraft().Register();

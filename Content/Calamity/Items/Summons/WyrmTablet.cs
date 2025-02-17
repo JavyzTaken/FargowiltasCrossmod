@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -18,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class WyrmTablet : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<EidolonWyrmHead>();
-        public override string NPCName => "Eidolon Wyrm";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.EidolonWyrmHead.DisplayName");
         public override void AddRecipes()
         {
         }

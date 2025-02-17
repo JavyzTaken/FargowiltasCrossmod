@@ -4,6 +4,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -13,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/ProfanedCore";
         public override int NPCType => ModContent.NPCType<Providence>();
-        public override string NPCName => "Providence";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.Providence.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<ProfanedCore>().AddTile(TileID.WorkBenches).Register();

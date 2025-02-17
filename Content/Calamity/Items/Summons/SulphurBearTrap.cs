@@ -6,6 +6,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -14,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class SulphurBearTrap : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<CragmawMire>();
-        public override string NPCName => "Cragmaw Mire";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.CragmawMire.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CorrodedFossil>(15).AddRecipeGroup(RecipeGroupID.IronBar, 5).AddTile(TileID.Anvils).Register();

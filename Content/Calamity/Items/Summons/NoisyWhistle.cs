@@ -19,7 +19,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/DeathWhistle";
         public override int NPCType => ModContent.NPCType<RavagerBody>();
-        public override string NPCName => "Ravager";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.RavagerBody.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<DeathWhistle>().AddTile(TileID.WorkBenches).Register();

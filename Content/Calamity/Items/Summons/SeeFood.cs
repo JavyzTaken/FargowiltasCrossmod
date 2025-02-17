@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -16,7 +17,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/Seafood";
         public override int NPCType => ModContent.NPCType<AquaticScourgeHead>();
-        public override string NPCName => "Aquatic Scourge";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.AquaticScourgeHead.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<Seafood>().AddTile(TileID.WorkBenches).Register();

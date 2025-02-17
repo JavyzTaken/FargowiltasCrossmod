@@ -4,6 +4,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -13,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/CryoKey";
         public override int NPCType => ModContent.NPCType<Cryogen>();
-        public override string NPCName => "Cryogen";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.Cryogen.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CryoKey>().AddTile(TileID.WorkBenches).Register();

@@ -13,6 +13,7 @@ using Fargowiltas.Items.Summons.Deviantt;
 using Fargowiltas.Items.Tiles;
 using Fargowiltas;
 using static Terraria.ModLoader.ModContent;
+using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Core.Common.Globals
 {
@@ -36,16 +37,16 @@ namespace FargowiltasCrossmod.Core.Common.Globals
         {
             if (!ModCompatibility.Calamity.Loaded)
                 return;
-            NPCShop shop = new(ModContent.NPCType<Deviantt>(), "Calamity");
+            NPCShop shop = new(ModContent.NPCType<Deviantt>(), Language.GetTextValue("Mods.FargowiltasCrossmod.Chats.ShopModSwapperCalamity"));
 
-            Condition killedClam = new Condition("After killing a Giant Clam", () => CalDLCCompatibilityMisc.DownedClam);
-            Condition killedPlaguebringerMini = new Condition("After killing a Plaguebringer", () => CalDLCWorldSavingSystem.downedMiniPlaguebringer);
-            Condition killedReaperShark = new Condition("After killing a Reaper Shark", () => CalDLCWorldSavingSystem.downedReaperShark);
-            Condition killedColossalSquid = new Condition("After killing a Colossal Squid", () => CalDLCWorldSavingSystem.downedColossalSquid);
-            Condition killedEidolonWyrm = new Condition("After killing an Eidolon Wyrm", () => CalDLCWorldSavingSystem.downedEidolonWyrm);
-            Condition killedCloudElemental = new Condition("After killing a Cloud Elemental", () => CalDLCWorldSavingSystem.downedCloudElemental);
-            Condition killedEarthElemental = new Condition("After killing an Earth Elemental", () => CalDLCWorldSavingSystem.downedEarthElemental);
-            Condition killedArmoredDigger = new Condition("After killing an Armored Digger", () => CalDLCWorldSavingSystem.downedArmoredDigger);
+            Condition killedClam = new Condition("Mods.FargowiltasCrossmod.Conditions.GiantClamDowned", () => CalDLCCompatibilityMisc.DownedClam);
+            Condition killedPlaguebringerMini = new Condition("Mods.FargowiltasCrossmod.Conditions.PlaguebringerDowned", () => CalDLCWorldSavingSystem.downedMiniPlaguebringer);
+            Condition killedReaperShark = new Condition("Mods.FargowiltasCrossmod.Conditions.ReaperSharkDowned", () => CalDLCWorldSavingSystem.downedReaperShark);
+            Condition killedColossalSquid = new Condition("Mods.FargowiltasCrossmod.Conditions.ColossalSquidDowned", () => CalDLCWorldSavingSystem.downedColossalSquid);
+            Condition killedEidolonWyrm = new Condition("Mods.FargowiltasCrossmod.Conditions.EidolonWyrmDowned", () => CalDLCWorldSavingSystem.downedEidolonWyrm);
+            Condition killedCloudElemental = new Condition("Mods.FargowiltasCrossmod.Conditions.CloudElementalDowned", () => CalDLCWorldSavingSystem.downedCloudElemental);
+            Condition killedEarthElemental = new Condition("Mods.FargowiltasCrossmod.Conditions.EarthElementalDowned", () => CalDLCWorldSavingSystem.downedEarthElemental);
+            Condition killedArmoredDigger = new Condition("Mods.FargowiltasCrossmod.Conditions.ArmoredDiggerDowned", () => CalDLCWorldSavingSystem.downedArmoredDigger);
 
             shop.Add(new Item(ModContent.ItemType<ClamPearl>()) { shopCustomPrice = Item.buyPrice(gold: 5) }, killedClam);
             shop.Add(new Item(ModContent.ItemType<AbandonedRemote>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedArmoredDigger);

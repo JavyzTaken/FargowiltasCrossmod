@@ -4,6 +4,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -13,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/DecapoditaSprout";
         public override int NPCType => ModContent.NPCType<Crabulon>();
-        public override string NPCName => "Crabulon";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.Crabulon.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<DecapoditaSprout>().AddTile(TileID.WorkBenches).Register();

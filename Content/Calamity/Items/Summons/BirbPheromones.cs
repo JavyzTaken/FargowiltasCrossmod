@@ -4,6 +4,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -13,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/ExoticPheromones";
         public override int NPCType => ModContent.NPCType<Bumblefuck>();
-        public override string NPCName => "Dragonfolly";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.Bumblefuck.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<ExoticPheromones>().AddTile(TileID.WorkBenches).Register();

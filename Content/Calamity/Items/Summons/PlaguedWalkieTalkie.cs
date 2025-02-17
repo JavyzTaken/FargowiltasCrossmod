@@ -7,6 +7,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -15,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class PlaguedWalkieTalkie : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<PlaguebringerMiniboss>();
-        public override string NPCName => "Plaguebringer";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.PlaguebringerMiniboss.DisplayName");
         public override void AddRecipes()
         {
         }

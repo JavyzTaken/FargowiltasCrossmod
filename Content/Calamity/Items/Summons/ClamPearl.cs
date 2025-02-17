@@ -6,6 +6,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -14,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class ClamPearl : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<GiantClam>();
-        public override string NPCName => "Giant Clam";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.GiantClam.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<SeaPrism>(20).AddIngredient<PearlShard>(5).AddTile(TileID.Anvils).Register();

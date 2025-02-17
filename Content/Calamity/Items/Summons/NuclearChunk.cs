@@ -4,6 +4,7 @@ using CalamityMod.NPCs.AcidRain;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -12,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class NuclearChunk : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<NuclearTerror>();
-        public override string NPCName => "Nuclear Terror";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.NuclearTerror.DisplayName");
         public override void AddRecipes()
         {
         }

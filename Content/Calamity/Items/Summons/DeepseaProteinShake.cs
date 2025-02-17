@@ -4,6 +4,7 @@ using CalamityMod.NPCs.Abyss;
 using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -12,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class DeepseaProteinShake : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<ReaperShark>();
-        public override string NPCName => "Reaper Shark";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.ReaperShark.DisplayName");
         public override void AddRecipes()
         {
         }

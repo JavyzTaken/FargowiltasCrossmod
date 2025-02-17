@@ -15,6 +15,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -23,7 +24,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class EyeofExtinction : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<SupremeCalamitas>();
-        public override string NPCName => "Supreme Calamitas";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.SupremeCalamitas.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<AshesofCalamity>(10).AddIngredient<AuricBar>(4).AddTile(TileID.WorkBenches).Register();

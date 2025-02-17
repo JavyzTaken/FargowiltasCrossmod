@@ -628,17 +628,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 if (phase == BossRushDialoguePhase.StartRepeat && currLine == 0)
                 {
-                    Main.NewText("Let's get started.", Color.Teal);
+                    Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.Chats.BRChange1"), Color.Teal);
                     BossRushEvent.BossRushStage = 1;
                 }
                 if (phase == BossRushDialoguePhase.TierOneComplete)
                 {
                     if (currLine == 0)
-                        Main.NewText("This is boring.", Color.Teal);
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.Chats.BRChange2"), Color.Teal);
                     //if (currLine == 1)
                         
                     if (currLine == 2)
-                        Main.NewText("Let's cut to the chase.", Color.Teal);
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.Chats.BRChange3"), Color.Teal);
                 }
                 BossRushDialogueSystem.CurrentDialogueDelay = 60;
                 BossRushDialogueSystem.currentSequenceIndex += 1;

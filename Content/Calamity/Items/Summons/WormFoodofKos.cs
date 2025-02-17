@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -15,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class WormFoodofKos : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<StormWeaverHead>();
-        public override string NPCName => "Storm Weaver";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.StormWeaverHead.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<RuneofKos>().AddTile(TileID.WorkBenches).Register();

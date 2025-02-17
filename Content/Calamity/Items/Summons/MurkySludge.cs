@@ -4,6 +4,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -13,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/OverloadedSludge";
         public override int NPCType => ModContent.NPCType<SlimeGodCore>();
-        public override string NPCName => "Slime God";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.SlimeGodCore.DisplayName");
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<OverloadedSludge>().AddTile(TileID.WorkBenches).Register();

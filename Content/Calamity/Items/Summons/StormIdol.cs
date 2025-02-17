@@ -6,6 +6,7 @@ using Fargowiltas.Items.Summons;
 using FargowiltasCrossmod.Core;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
@@ -15,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         //FUCK you fabsol for making me type this
         public override int NPCType => ModContent.NPCType<ThiccWaifu>();
-        public override string NPCName => "Cloud Elemental";
+        public override string NPCName => Language.GetTextValue("Mods.CalamityMod.NPCs.ThiccWaifu.DisplayName");
         public override void AddRecipes()
         {
         }

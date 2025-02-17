@@ -9,6 +9,7 @@ using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
@@ -64,7 +65,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     {
                         WorldSavingSystem.EternityMode = false;
                         WorldSavingSystem.ShouldBeEternityMode = false;
-                        Main.NewText("[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode].");
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.Configs.CalDLCConfig.EmodeBannedByInfernum"));
                         if (Main.netMode != NetmodeID.SinglePlayer)
                             PacketManager.SendPacket<EternityRevPacket>();
                     }

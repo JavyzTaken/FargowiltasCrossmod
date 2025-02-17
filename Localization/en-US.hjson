@@ -80,6 +80,8 @@ Mods: {
 						Disabled: Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
 						'''
 				}
+
+				EmodeBannedByInfernum: "[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode]."
 			}
 		}
 
@@ -576,6 +578,9 @@ Mods: {
 					Only goes on cooldown on enemy hits
 					'''
 			}
+
+			# This is used to detect and remove lines, not displayed. Must match Cal's localization.
+			NotConsumable: Not consumable
 		}
 
 		NPCs: {
@@ -697,6 +702,7 @@ Mods: {
 			PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
 			PerforatorRubble.DisplayName: Perforator Rubble
 			ExplorationFeather.DisplayName: Exploration Feather
+			SulphurParticulate.DisplayName: Sulphur Particulate
 		}
 
 		Buffs: {
@@ -834,6 +840,35 @@ Mods: {
 			VictideHelmet: Victide Headpiece
 			AerospecHelmet: Aerospec Headpiece
 			StatigelHelmet: Statigel Headpiece
+		}
+
+		Conditions: {
+			GiantClamDowned: After killing a Giant Clam
+			PlaguebringerDowned: After killing a Plaguebringer
+			ReaperSharkDowned: After killing a Reaper Shark
+			ColossalSquidDowned: After killing a Colossal Squid
+			EidolonWyrmDowned: After killing an Eidolon Wyrm
+			CloudElementalDowned: After killing a Cloud Elemental
+			EarthElementalDowned: After killing an Earth Elemental
+			ArmoredDiggerDowned: After killing an Armored Digger
+			CragmawMireDowned: Kill a Cragmaw Mire
+			MaulerDowned: Kill a Mauler
+			NuclearTerrorDowned: Kill a Nuclear Terror
+			GreatSandSharkDowned: Kill a Great Sand Shark
+			InDeathMode: In Death Mode
+		}
+
+		Chats: {
+			PermafrostChat1: You clearly possess great skill! My thanks to you for freeing me, and providing an opportunity to defrost my fighting abilities.
+			PermafrostChat2: Aah, a good round of sparring. I need the exercise, so thanks for that.
+			BRChange1: Let's get started.
+			BRChange2: This is boring.
+			BRChange3: Let's cut to the chase.
+			MutantP2: Time to stop playing around.
+			MutantDoG: The world is trembling..
+			ShopModSwapperDefault: Switch Mod
+			ShopModSwapperVanilla: Vanilla
+			ShopModSwapperCalamity: Calamity mod
 		}
 	}
 }
