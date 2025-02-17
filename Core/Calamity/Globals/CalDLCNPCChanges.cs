@@ -115,7 +115,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ModContent.NPCType<SupremeCataclysm>(),
             ModContent.NPCType<SupremeCatastrophe>(),
             ModContent.NPCType<Cataclysm>(),
-            ModContent.NPCType<Catastrophe>()
+            ModContent.NPCType<Catastrophe>(),
+            ModContent.NPCType<ProfanedGuardianDefender>(),
+            ModContent.NPCType<ProfanedGuardianHealer>(),
+            ModContent.NPCType<EbonianPaladin>(),
+            ModContent.NPCType<SplitEbonianPaladin>(),
+            ModContent.NPCType<CrimulanPaladin>(),
+            ModContent.NPCType<SplitCrimulanPaladin>()
 
         ];
         public override void SetStaticDefaults()

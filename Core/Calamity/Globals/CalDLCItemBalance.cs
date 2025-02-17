@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<MechanicalLeashOfCthulhu>())
                 return 0.5f;
             if (item.type == ItemType<Blender>())
-                return 1f;
+                return 2f;
             if (item.type == ItemType<NukeFishron>() || item.type == ItemType<GolemTome2>() || item.type == ItemType<DestroyerGun2>())
                 return 2f;
 
@@ -81,7 +81,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             // Rogue
             if (item.type == ItemType<NanoblackReaper>()) return 0.4f;
             if (item.type == ItemType<ScarletDevil>()) return 0.4f;
-            if (item.type == ItemType<TheAtomSplitter>()) return 0.25f;
+            if (item.type == ItemType<TheAtomSplitter>()) return 0.75f;
             if (item.type == ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
