@@ -172,8 +172,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             }
             if (Slamming)
             {
-                player.fall
-                SlamParticleTimer++;
                 player.maxFallSpeed = 15;
                 if (SlamParticleTimer < 40)
                 {
