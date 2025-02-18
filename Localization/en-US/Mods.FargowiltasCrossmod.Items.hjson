@@ -490,3 +490,6 @@ MolluskEnchant: {
 		Only goes on cooldown on enemy hits
 		'''
 }
+
+# This is used to detect and remove lines, not displayed. Must match Cal's localization.
+NotConsumable: Not consumable

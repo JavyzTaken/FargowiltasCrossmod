@@ -18,7 +18,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class WyrmTablet : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<EidolonWyrmHead>();
-        public override string NPCName => "Eidolon Wyrm";
         public override void AddRecipes()
         {
         }

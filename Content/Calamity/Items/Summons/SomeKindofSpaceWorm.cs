@@ -16,7 +16,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/CosmicWorm";
         public override int NPCType => ModContent.NPCType<DevourerofGodsHead>();
-        public override string NPCName => "Devourer of Gods";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CosmicWorm>().AddTile(TileID.WorkBenches).Register();

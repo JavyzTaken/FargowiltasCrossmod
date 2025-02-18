@@ -14,7 +14,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class ClamPearl : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<GiantClam>();
-        public override string NPCName => "Giant Clam";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<SeaPrism>(20).AddIngredient<PearlShard>(5).AddTile(TileID.Anvils).Register();
