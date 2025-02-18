@@ -336,7 +336,7 @@ GaleForce: {
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
 		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
 		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
-			 Once 8 spines are spawned, the next jump launches them out to home onto targets
+		     Once 6 spines are spawned, the next jump launches them out to home onto targets
 		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
 		'''
 }

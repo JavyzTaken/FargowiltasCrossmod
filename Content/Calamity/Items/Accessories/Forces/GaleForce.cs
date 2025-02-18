@@ -79,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             if (player.controlJump && player.GetJumpState<GaleJump>().Active)
             {
                 Timer++;
-                if (Timer >= 10)
+                if (Timer >= 8)
                 {
                     Projectile.NewProjectile(player.GetSource_EffectItem<GaleSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 700), 0, player.whoAmI);
                     Timer = 0;
@@ -172,10 +172,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             }
             if (Slamming)
             {
+                SlamParticleTimer++;
                 player.maxFallSpeed = 15;
                 if (SlamParticleTimer < 40)
                 {
-                    if (SlamParticleTimer % 10 == 0 && player.HasEffect<GaleSulphurEffect>())
+                    if (SlamParticleTimer % 5 == 0 && player.HasEffect<GaleSulphurEffect>())
                     {
                         Projectile.NewProjectile(player.GetSource_EffectItem<GaleSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 700), 0, player.whoAmI);
                     }
