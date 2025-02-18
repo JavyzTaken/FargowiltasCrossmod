@@ -29,6 +29,8 @@ using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.Typeless;
 using Fargowiltas;
 using CalamityMod.Items.Placeables.Furniture;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
