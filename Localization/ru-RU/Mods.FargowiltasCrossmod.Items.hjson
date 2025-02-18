@@ -326,19 +326,20 @@ WulfrumEnchant: {
 		'''
 }
 
-ExplorationForce: {
-	DisplayName: Артефакт исследования
-	Tooltip:
+GaleForce: {
+	// DisplayName: Force of Gale
+	/* Tooltip:
 		'''
-		[i:FargowiltasCrossmod/MarniteEnchant] Увеличивает скорость размещения блоков на 25% и дальность размещения блоков на 5
-		[i:FargowiltasCrossmod/MarniteEnchant] Лазеры выходят из блоков, которые вы ставите или копаете, и атакуют ближайших врагов
-		[i:FargowiltasCrossmod/WulfrumEnchant] Вульфрумовый дрон показывает слабости врагов к дебаффам и делает их менее устойчивым к любым дебаффам с уроном
-		[i:FargowiltasCrossmod/DesertProwlerEnchant] ВВЕРХ чтобы зарядить прыжок, который также увеличивает скорость передвижения
-		[i:FargowiltasCrossmod/AerospecEnchant] Прыжок и двойные прыжки увеличивают шанс критического удара и урон призывателя
-		[i:FargowiltasCrossmod/SulphurEnchant] Даёт дополнительный прыжок с пузырём; атакуйте пузырь, чтобы выпустить токсичные газы
-		[i:FargowiltasCrossmod/VictideEnchant] Даёт морские иглы, которые вылетают, если какое-то время атаковать и перестать
-		Эффекты [i:CalamityMod/MarniteRepulsionShield] мранитового репульсионного щита
-		'''
+		Grants unlimited jumps in the air
+
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
+		     Hold S while jumping to dive downwards
+		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
+		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
+		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
+			 Once 8 spines are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
+		''' */
 }
 
 SnowRuffianEnchant: {

@@ -84,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<SulphurEnchant>();
         public override bool ExtraAttackEffect => true;
 

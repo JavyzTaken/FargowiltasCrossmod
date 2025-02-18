@@ -24,7 +24,11 @@ YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName
 DraedonsHeartEffect: Draedons Heart
 CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
 SplendorJamEffect: Splendor Jam
-ExplorationHeader: Force of Exploration
+GaleHeader: Force of Gale
+GaleSlowfallEffect: Slowfall
+GaleStatigelEffect: Damage from Speed
+GaleJumpEffect: Infinite Jumps
+GaleSpineEffect: Spines
 AerospecJumpEffect: Aerospec Effect
 MarniteRepulsionEffect: Marnite Repulsion
 MarniteLasersEffect: Marnite Lasers

@@ -24,7 +24,11 @@ YharimsGiftEffect: Дар Ярима
 DraedonsHeartEffect: Сердце Дрэйдона
 CalamityEffect: Бедствие
 SplendorJamEffect: Splendor Jam
-ExplorationHeader: Артефакт исследования
+// GaleHeader: Force of Gale
+// GaleSlowfallEffect: Slowfall
+// GaleStatigelEffect: Damage from Speed
+// GaleJumpEffect: Infinite Jumps
+// GaleSpineEffect: Spines
 AerospecJumpEffect: Крит прыжки
 MarniteRepulsionEffect: Мранитовая репульсия
 MarniteLasersEffect: Мранитовые лазеры

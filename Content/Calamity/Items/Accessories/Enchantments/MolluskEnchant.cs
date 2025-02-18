@@ -76,7 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>(); // TODO: fix
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>(); // TODO: fix
         public override int ToggleItemType => ModContent.ItemType<MolluskEnchant>();
         
         public static void MolluskTrigger(Player player)
