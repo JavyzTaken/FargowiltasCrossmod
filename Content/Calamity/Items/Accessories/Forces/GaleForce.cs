@@ -22,12 +22,14 @@ using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
+using CalamityMod;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class ExplorationForce : BaseForce
+    [LegacyName("ExplorationForce")]
+    public class GaleForce : BaseForce
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
@@ -41,11 +43,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<ExplorationJumpEffect>(Item);
-            player.AddEffect<ExplorationSulphurEffect>(Item);
-            player.AddEffect<ExplorationFeatherEffect>(Item);
-            player.AddEffect<ExplorationSlowfallEffect>(Item);
-            player.AddEffect<ExplorationStatigelEffect>(Item);
+            player.AddEffect<GaleJumpEffect>(Item);
+            player.AddEffect<GaleSulphurEffect>(Item);
+            player.AddEffect<GaleSpineEffect>(Item);
+            player.AddEffect<GaleSlowfallEffect>(Item);
+            player.AddEffect<GaleStatigelEffect>(Item);
             //player.AddEffect<AerospecJumpEffect>(Item);
             //MarniteEnchant.AddEffects(player, Item);
             //player.AddEffect<DesertProwlerEffect>(Item);
@@ -67,28 +69,28 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         }
         
     }
-    public class ExplorationSulphurEffect : AccessoryEffect
+    public class GaleSulphurEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<SulphurEnchant>();
         public int Timer;
         public override void PostUpdateEquips(Player player)
         {
-            if (player.controlJump)
+            if (player.controlJump && player.GetJumpState<GaleJump>().Active)
             {
                 Timer++;
-                if (Timer >= 10)
+                if (Timer >= 8)
                 {
-                    Projectile.NewProjectile(player.GetSource_EffectItem<ExplorationSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 300), 0, player.whoAmI);
+                    Projectile.NewProjectile(player.GetSource_EffectItem<GaleSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 700), 0, player.whoAmI);
                     Timer = 0;
                 }
             }
             base.PostUpdateEquips(player);
         }
     }
-    public class ExplorationSlowfallEffect : AccessoryEffect
+    public class GaleSlowfallEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<SnowRuffianEnchant>();
         public override void PostUpdateEquips(Player player)
         {
@@ -99,9 +101,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             base.PostUpdateEquips(player);
         }
     }
-    public class ExplorationStatigelEffect : AccessoryEffect
+    public class GaleStatigelEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<StatigelEnchant>();
         public override void PostUpdateEquips(Player player)
         {
@@ -112,34 +114,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             player.GetDamage(DamageClass.Generic) += bonusDamage;
 
             CooldownBarManager.Activate("StatigelDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/StatigelEnchant").Value, new Color(89, 170, 204),
-                () => DamageFormula(Main.LocalPlayer.velocity.Length() / 25f), true, 60, () => player.HasEffect<ExplorationStatigelEffect>());
+                () => DamageFormula(Main.LocalPlayer.velocity.Length() / 25f), true, 60, () => player.HasEffect<GaleStatigelEffect>());
             base.PostUpdateEquips(player);
         }
         
     }
-    public class ExplorationFeatherEffect : AccessoryEffect
+    public class GaleSpineEffect : AccessoryEffect
     {
         //handled by explorationjump (only active if jump effect is also active)
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<VictideEnchant>();
         
     }
-    public class ExplorationJumpEffect : AccessoryEffect
+    public class GaleJumpEffect : AccessoryEffect
     {
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<ExplorationForce>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
+        public override int ToggleItemType => ModContent.ItemType<GaleForce>();
         public bool JumpNoDown = false;
         public bool Slamming = false;
+        public int SlamParticleTimer = 0;
         public override void PostUpdateEquips(Player player)
         {
             
-            player.GetJumpState<ExplorationJump>().Enable();
+            player.GetJumpState<GaleJump>().Enable();
             player.jumpSpeedBoost += 1;
             player.maxRunSpeed += 1.25f;
             player.runAcceleration *= 1.2f;
             player.noFallDmg = true;
             //Main.NewText(JumpNoUp);
-            if (player.GetJumpState<ExplorationJump>().Active && !player.controlDown)
+            if (player.GetJumpState<GaleJump>().Active && !player.controlDown)
             {
                 JumpNoDown = true;
             }
@@ -147,16 +150,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             {
                 JumpNoDown = false;
             }
-            if (player.controlUp && player.GetJumpState<ExplorationJump>().Active)
+            if (player.controlUp && player.GetJumpState<GaleJump>().Active)
             {
                 player.jumpSpeedBoost += 8;
             }
-            if (player.controlDown && !JumpNoDown && player.GetJumpState<ExplorationJump>().Active)
+            if (player.controlDown && !JumpNoDown && player.GetJumpState<GaleJump>().Active)
             {
                 player.StopExtraJumpInProgress() ;
                 Slamming = true;
                 player.velocity.Y = 20;
                 player.maxFallSpeed = 20;
+            }
+            if (player.jump == 15 && player.controlUp && Collision.SolidCollision(player.BottomLeft, player.width, 12, true))
+            {
+                player.controlJump = false;
+                player.releaseJump = true;
             }
             if (!player.controlDown)
             {
@@ -164,38 +172,51 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             }
             if (Slamming)
             {
+                SlamParticleTimer++;
                 player.maxFallSpeed = 15;
-                if (Main.rand.NextBool())
+                if (SlamParticleTimer < 40)
                 {
-                    Vector2 pos = player.Bottom + new Vector2(Main.rand.NextFloat(-10, 11), Main.rand.NextFloat(-1, 2));
-                    Vector2 vel = Vector2.UnitX.RotateRandom(MathHelper.TwoPi) * new Vector2(Main.rand.NextFloat(0, 0.5f), Main.rand.NextFloat(0, 0.5f));
+                    if (SlamParticleTimer % 5 == 0 && player.HasEffect<GaleSulphurEffect>())
+                    {
+                        Projectile.NewProjectile(player.GetSource_EffectItem<GaleSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 700), 0, player.whoAmI);
+                    }
                     
                     if (Main.rand.NextBool())
                     {
-                        GenericSparkle p = new GenericSparkle(pos, vel, Color.SkyBlue, Color.White, 0.7f, 40, Main.rand.NextFloat(-0.2f, 0.2f));
-                        GeneralParticleHandler.SpawnParticle(p);
-                    }
-                    else
-                    {
-                        SparkleParticle p = new SparkleParticle(pos, vel, Color.SkyBlue, Color.White, 0.7f, 60, Main.rand.NextFloat(-0.2f, 0.2f));
-                        GeneralParticleHandler.SpawnParticle(p);
-                    }
-                    if (Main.rand.NextBool(4))
-                    {
-                        Gore gore = Main.gore[Gore.NewGore(player.GetSource_EffectItem<ExplorationJumpEffect>(), player.Bottom - new Vector2(15, 0), Vector2.Zero, Main.rand.Next(11, 14))];
-                        gore.velocity *= 0.5f;
+                        Vector2 pos = player.Bottom + new Vector2(Main.rand.NextFloat(-10, 11), Main.rand.NextFloat(-1, 2));
+                        Vector2 vel = Vector2.UnitX.RotateRandom(MathHelper.TwoPi) * new Vector2(Main.rand.NextFloat(0, 0.5f), Main.rand.NextFloat(0, 0.5f));
+
+                        if (Main.rand.NextBool())
+                        {
+                            GenericSparkle p = new GenericSparkle(pos, vel, Color.SkyBlue, Color.White, 0.7f, 40, Main.rand.NextFloat(-0.2f, 0.2f));
+                            GeneralParticleHandler.SpawnParticle(p);
+                        }
+                        else
+                        {
+                            SparkleParticle p = new SparkleParticle(pos, vel, Color.SkyBlue, Color.White, 0.7f, 60, Main.rand.NextFloat(-0.2f, 0.2f));
+                            GeneralParticleHandler.SpawnParticle(p);
+                        }
+                        if (Main.rand.NextBool(4))
+                        {
+                            Gore gore = Main.gore[Gore.NewGore(player.GetSource_EffectItem<GaleJumpEffect>(), player.Bottom - new Vector2(15, 0), Vector2.Zero, Main.rand.Next(11, 14))];
+                            gore.velocity *= 0.5f;
+                        }
                     }
                 }
             }
-            base.PostUpdateEquips(player);
+            else
+            {
+                SlamParticleTimer = 0;
+            }
+                base.PostUpdateEquips(player);
         }
     }
-    public class ExplorationJump : ExtraJump
+    public class GaleJump : ExtraJump
     {
         
         public override float GetDurationMultiplier(Player player)
         {
-            return 1.5f;
+            return 2.5f;
         }
         public override Position GetDefaultPosition()
         {
@@ -204,37 +225,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         
         public override void UpdateHorizontalSpeeds(Player player)
         {
-            player.runAcceleration *= 4;
-            player.maxRunSpeed *= 2;
+            player.runAcceleration *= 8;
+            player.maxRunSpeed *= 2.5f;
             base.UpdateHorizontalSpeeds(player);
         }
         public override void OnStarted(Player player, ref bool playSound)
         {
-            if (player.HasEffect<ExplorationFeatherEffect>())
+            if (player.HasEffect<GaleSpineEffect>())
             {
-                player.CalamityAddon().ExploFeatherCount += 5;
+                player.CalamityAddon().ExploFeatherCount += 1;
+                int count = (int)player.CalamityAddon().ExploFeatherCount;
                 float boost = player.CalamityAddon().ExploFeatherCount;
                 float rotation = 0;
-                if (boost == 5 || boost == 10) rotation += 20;
-                if (boost == 15 || boost == 20) rotation -= 20;
-                if (boost == 25 || boost == 30) rotation += 40;
-                if (boost == 35 || boost == 40) rotation -= 40;
-                if (player.CalamityAddon().ExploFeatherCount % 10 == 0)
-                    rotation += 180;
+                if (count == 1 || count == 2) rotation = 40;
+                if (count == 3 || count == 4) rotation = 20;
+                if (count == 5 || count == 6) rotation = 0;
+                //rotation = 0;
+                rotation *= count % 2 == 0 ? 1 : -1;
                 rotation = MathHelper.ToRadians(rotation);
-                if (boost > 45)
+                if (boost >= 8)
                 {
                     player.CalamityAddon().ExploFeatherCount = 0;
                 }
-                else if (boost <= 40)
+                else if (boost <= 6)
                 {
-                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<ExplorationFeatherEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<ExplorationFeather>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 300), 5, player.whoAmI, rotation);
+                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 350), 5, player.whoAmI, rotation , player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
                 }
             }
-            player.GetJumpState<ExplorationJump>().Available = true;
+            player.GetJumpState<GaleJump>().Available = true;
             for (int i = 0; i < player.width; i += 5)
             {
-                Gore gore = Main.gore[Gore.NewGore(player.GetSource_EffectItem<ExplorationJumpEffect>(), player.BottomLeft + new Vector2(i - 15, Main.rand.NextFloat(-1, 2)), Vector2.Zero, Main.rand.Next(11, 14))];
+                Gore gore = Main.gore[Gore.NewGore(player.GetSource_EffectItem<GaleJumpEffect>(), player.BottomLeft + new Vector2(i - 15, Main.rand.NextFloat(-1, 2)), Vector2.Zero, Main.rand.Next(11, 14))];
                 gore.velocity *= 0.5f;
             }
             for (int i = -5; i < player.width+5; i += 4)
@@ -277,7 +298,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             }
             if (Main.rand.NextBool(4))
             {
-                Gore gore = Main.gore[Gore.NewGore(player.GetSource_EffectItem<ExplorationJumpEffect>(), player.Bottom - new Vector2(15, 0), Vector2.Zero, Main.rand.Next(11, 14))];
+                Gore gore = Main.gore[Gore.NewGore(player.GetSource_EffectItem<GaleJumpEffect>(), player.Bottom - new Vector2(15, 0), Vector2.Zero, Main.rand.Next(11, 14))];
                 gore.velocity *= 0.5f;
             }
             base.ShowVisuals(player);

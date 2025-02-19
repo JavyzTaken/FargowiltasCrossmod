@@ -32,20 +32,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void AI()
         {
+            
             Vector2 pos = Projectile.Center + new Vector2(Main.rand.NextFloat(0, Projectile.width), 0).RotatedByRandom(MathHelper.TwoPi);
             Vector2 vel = new Vector2(Main.rand.NextFloat(0, 2), 0).RotatedByRandom(MathHelper.TwoPi);
-            if (Main.rand.NextBool(5))
+            if (Main.rand.NextBool(5) && Projectile.timeLeft < 170)
             {
-                if (Main.rand.NextBool())
-                {
-                    GenericSparkle p = new GenericSparkle(pos, vel, Color.DarkSeaGreen, Color.Green, 0.7f, 40, Main.rand.NextFloat(-0.2f, 0.2f));
+                    CritSpark p = new CritSpark(pos, vel, Color.DarkSeaGreen, Color.Green, 0.9f, 40, Main.rand.NextFloat(-0.2f, 0.2f));
                     GeneralParticleHandler.SpawnParticle(p);
-                }
-                else
-                {
-                    SparkleParticle p = new SparkleParticle(pos, vel, Color.DarkSeaGreen, Color.Green, 0.7f, 60, Main.rand.NextFloat(-0.2f, 0.2f));
-                    GeneralParticleHandler.SpawnParticle(p);
-                }
             }
             base.AI();
         }

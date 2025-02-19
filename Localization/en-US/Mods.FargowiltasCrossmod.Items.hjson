@@ -325,17 +325,19 @@ WulfrumEnchant: {
 		'''
 }
 
-ExplorationForce: {
-	DisplayName: Force of Exploration
+GaleForce: {
+	DisplayName: Force of Gale
 	Tooltip:
 		'''
 		Grants unlimited jumps in the air
-		Hold W while jumping to launch upward quickly
-		Hold S while jumping to dive downwards
-		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a feather attatched to you
-			Once 8 feathers are spawned, the next jump launches them out to home onto targets
-		[i:FargowiltasCrossmod/AerospecEnchant] Increases crit chance and summon damage by 5% every time you use a jump
-			The boost resets when the feathers are launched out
+
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
+		     Hold S while jumping to dive downwards
+		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
+		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
+		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
+		     Once 6 spines are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
 		'''
 }
 

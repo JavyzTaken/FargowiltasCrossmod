@@ -19,7 +19,6 @@
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint3.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint4.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\PerforatorRubble.png" />
-    <None Remove="Content\Calamity\Items\Accessories\Forces\ExplorationForce.png" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Config.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.EModeBalance.hjson" />
