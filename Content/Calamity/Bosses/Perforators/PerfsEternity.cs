@@ -1045,7 +1045,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             State = (int)States.MoveToPlayer;
 
             // debug
-            NextState = (int)States.LegAssault;
+            //NextState = (int)States.LegAssault;
         }
         public void Reset()
         {
