@@ -98,6 +98,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalDLCNPCChanges : GlobalNPC
     {
+        public bool ImmuneToAllDebuffs = false;
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
         private static List<int> SuffocationImmune =

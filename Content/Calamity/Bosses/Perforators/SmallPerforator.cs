@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
@@ -26,8 +27,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         ModContent.NPCType<PerforatorBodySmall>(),
         ModContent.NPCType<PerforatorTailSmall>()
         );
+        public override void SetDefaults(NPC entity)
+        {
+            if (!WorldSavingSystem.EternityMode)
+                return;
+            entity.CalamityDLC().ImmuneToAllDebuffs = true;
+        }
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
         {
+            if (!WorldSavingSystem.EternityMode) 
+                return base.CanHitPlayer(npc, target, ref cooldownSlot);
+
             if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
             {
                 if (npc.ai[3] < 60)
@@ -43,6 +53,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (!WorldSavingSystem.EternityMode)
+                return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
             if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
             {
                 if (npc.ai[3] < 60)
@@ -67,7 +79,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool SafePreAI(NPC npc)
         {
-            if (!WorldSavingSystem.EternityMode) return true;
+            if (!WorldSavingSystem.EternityMode) 
+                return true;
             npc.netUpdate = true; //fuck you worm mp code
             if (npc.type == ModContent.NPCType<PerforatorBodySmall>() || npc.type == ModContent.NPCType<PerforatorTailSmall>())
             {

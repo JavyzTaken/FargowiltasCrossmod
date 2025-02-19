@@ -696,7 +696,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         Vector2 vel = shotDir * shotSpeed;
                         if (vel.Y < -6)
                             vel.Y *= 0.6f;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI);
+                        Vector2 pos = NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f;
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: pos.Y);
                     }
                 }
             }
@@ -757,7 +758,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         for (int i = 0; i < rubbleCount; i++)
                         {
                             Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(0.2f, 1f);
-                            Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                            Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: endPoint.Y - 50);
                             if (p != null)
                             {
                                 p.extraUpdates = 1;
@@ -783,7 +784,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             float walkbackTime = 25;
             float windupTime = 40;
-            float stabTime = 15;
+            float stabTime = 18;
             void TelegraphStab()
             {
                 ref float ChosenLeg1 = ref AI2;
@@ -1044,7 +1045,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             State = (int)States.MoveToPlayer;
 
             // debug
-            //NextState = (int)States.LegAssault;
+            NextState = (int)States.LegAssault;
         }
         public void Reset()
         {

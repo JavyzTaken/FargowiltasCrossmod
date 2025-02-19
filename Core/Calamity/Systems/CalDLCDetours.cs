@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalDLCDetours : ICustomDetourProvider
+    public class CalDLCDetours : ModSystem, ICustomDetourProvider
     {
         // AI override
         // GlobalNPC
@@ -143,6 +143,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MediumPerforatorBodyOnKill(PerforatorBodyMedium self);
         public delegate void Orig_MediumPerforatorTailOnKill(PerforatorTailMedium self);
 
+        public override void Load()
+        {
+            On_NPC.AddBuff += NPCAddBuff_Detour;
+        }
         void ICustomDetourProvider.ModifyMethods()
         {
             // AI override
@@ -735,6 +739,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
+        }
+
+        internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)
+        {
+            if (self.CalamityDLC().ImmuneToAllDebuffs)
+                return;
+            orig(self, type, time, quiet);
         }
         #endregion
     }

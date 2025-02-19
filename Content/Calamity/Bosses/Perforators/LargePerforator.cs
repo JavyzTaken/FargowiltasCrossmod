@@ -4,6 +4,7 @@ using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
@@ -39,6 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (!WorldSavingSystem.EternityMode) return;
             entity.Opacity = 1f;
+            entity.CalamityDLC().ImmuneToAllDebuffs = true;
         }
         public override void SpawnNPC(int npc, int tileX, int tileY)
         {

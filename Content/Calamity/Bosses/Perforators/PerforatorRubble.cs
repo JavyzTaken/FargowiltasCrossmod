@@ -39,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             => Projectile.Distance(FargoSoulsUtil.ClosestPointInHitbox(targetHitbox, Projectile.Center)) < projHitbox.Width / 2;
         public override void AI()
         {
-            if (Projectile.velocity.Y > 0)
+            if (Projectile.velocity.Y > 0 && Projectile.Center.Y >= Projectile.ai[0])
                 Projectile.tileCollide = true;
 
             Projectile.rotation += (Projectile.velocity.X / 120f + Projectile.velocity.X.NonZeroSign() * 0.04f) * MathHelper.PiOver2;
