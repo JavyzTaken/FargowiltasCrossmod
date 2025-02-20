@@ -27,6 +27,7 @@ using System.IO;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using CalamityMod.Events;
+using FargowiltasSouls.Content.Buffs.Masomode;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -227,6 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Main.LocalPlayer.ZoneSnow = true;
+            Main.LocalPlayer.buffImmune[ModContent.BuffType<HypothermiaBuff>()] = true;
 
             int n = NPC.FindFirstNPC(ModContent.NPCType<DILF>());
             if (n != -1 && n != Main.maxNPCs)
