@@ -136,13 +136,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 return false;
             }
 
-            
-            //Fungal clump phase 1
+
+            // not fungal phase
             if (ai_Phase == 0)
             {
                 ai_Phase++;
-                //if (DLCUtils.HostCheck)
-                    //NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
                 ai_attackCycleIndex = 0;
                 //NPC.HealEffect(-50);
                 attackCycle = [-1, 1];
@@ -169,12 +167,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 
             }
             
-            //fungal clump phase
+            // also not fungal phase
             if (ai_Phase == 4 && NPC.GetLifePercent() < 0.2f)
             {
                 ai_Phase++;
-                //if (DLCUtils.HostCheck)
-                    //NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
                 ai_attackCycleIndex = 0;
                 //NPC.HealEffect(-50);
                 attackCycle = [-1, 1, -1, 2, 1];
@@ -221,7 +217,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     NPC.velocity.X = 0;
                 }
                 ai_Timer++;
-                if (ai_Timer == 300)
+                if (ai_Timer == 180)
                 {
                     IncrementCycle();
                     ai_Timer = 0;
