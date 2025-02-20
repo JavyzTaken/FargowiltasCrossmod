@@ -346,7 +346,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             else // not sucking
             {
                 ai[3]--;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center) / 80, 0.03f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center) / 80, 0.05f);
             }
             Vector2 toplayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
 
@@ -371,9 +371,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * 20, ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                    float spread = 14f;
                     for (int i = -2; i < 3; i++)
                     {
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                        float dir = -MathHelper.PiOver2 + MathHelper.ToRadians(i * spread);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.rotation.ToRotationVector2().RotatedBy(dir) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                     }
                 }
                 SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.Center);
@@ -472,36 +474,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                         const float xTracking = 0.25f;
                         NPC.velocity.Y += gravity;
                         NPC.velocity.X += Math.Sign(player.Center.X - NPC.Center.X) * xTracking;
-                        if (Collision.SolidCollision(NPC.position, NPC.width, NPC.height) || timer > 60 * 5) //end attack on collision or after safety max time
+                        if ((timer < 60 * 5 && Collision.SolidCollision(NPC.position, NPC.width, NPC.height)) || (timer > 60 * 5 && timer < 60 * 6)) //end attack on collision or after safety max time
                         {
                             NPC.velocity /= 4;
                             SoundEngine.PlaySound(SoundID.Item62, NPC.Center);
                             Main.LocalPlayer.Calamity().GeneralScreenShakePower = 20f;
-                            const int ShotCount = 10; //per side
+                            timer = 60 * 6;
+                        }
+                        if (timer >= 60 * 6)
+                        {
+                            const int ShotCount = 10;
                             const int MaxShotSpeed = 16;
-                            for (int i = 0; i < ShotCount; i++)
+                            for (int side = -1; side < 2; side += 2)
                             {
-                                for (int side = -1; side < 2; side += 2)
+                                for (int c = 0; c < 3; c++)
                                 {
-
+                                    float i = Main.rand.NextFloat(0, 12f);
+                                    float j = Main.rand.NextFloat(1, 3f);
                                     float speed = MaxShotSpeed * (float)(i + 1) / ShotCount;
                                     Vector2 dir = (-Vector2.UnitY).RotatedBy(side * MathHelper.Pi / 9.85f);
-                                    float randfac = MathHelper.Pi / 18f;
+                                    float randfac = MathHelper.Pi / 8f;
                                     float randrot = Main.rand.NextFloat(-randfac, randfac);
-                                    for (int j = -1; j < 2; j += 2)
-                                    {
-                                        float offset = randfac * NPC.width / 5f;
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX * side * (offset + (NPC.width / 3))), speed * dir.RotatedBy(randfac * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 2f);
-                                    }
-
+                                    float offset = randfac * NPC.width / 5f;
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX * side * (offset + (NPC.width / 3))), speed * dir.RotatedBy(randrot * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 2f);
                                 }
                             }
-                            timer = 0;
-                            attackStep = 0;
-                            DoSlam = false;
-                            CanDoSlam = false;
-                            //IncrementCycle(NPC);
-                            return;
+
+                            
+                            if (timer >= 60 * 6 + 8)
+                            {
+                                timer = 0;
+                                attackStep = 0;
+                                DoSlam = false;
+                                CanDoSlam = false;
+                                //IncrementCycle(NPC);
+                                return;
+                            }
                         }
                     }
                     break;
