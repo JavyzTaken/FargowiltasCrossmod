@@ -667,7 +667,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedByRandom(MathHelper.Pi / 8.5f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedByRandom(MathHelper.Pi / 8.5f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                         if (WorldSavingSystem.MasochistModeReal)
                         {
@@ -675,7 +675,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                             {
                                 for (int i = 0; i < 5; i++)
                                 {
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(MathHelper.Pi * 0.25f * dir).RotatedByRandom(MathHelper.Pi / 16f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(MathHelper.Pi * 0.25f * dir).RotatedByRandom(MathHelper.Pi / 16f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                                 }
                             }
                         }

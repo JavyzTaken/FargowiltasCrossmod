@@ -49,9 +49,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            if (Projectile.localAI[0] >= 5) lightColor.A += 50;
+            float lerp = LumUtils.Sin01(MathF.Tau * Projectile.localAI[0] / 20f);
+            lightColor.A += (byte)(50 * lerp);
+            Color backglowColor = Color.Lerp(CalamityMod.NPCs.Cryogen.Cryogen.BackglowColor, Color.DarkSlateBlue, lerp);
 
-            Projectile.DrawProjectileWithBackglow(CalamityMod.NPCs.Cryogen.Cryogen.BackglowColor, lightColor, 4f);
+            Projectile.DrawProjectileWithBackglow(backglowColor, lightColor, 4f);
             /*
 
             Rectangle rect = new Rectangle(0, 30 * Projectile.frame, 12, 30);
@@ -72,8 +74,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            float lerp = MathF.Sin(MathF.Tau * Projectile.localAI[0] / 20f);
+            Projectile.rotation += lerp * MathHelper.PiOver4 * 0.17f;
             Projectile.localAI[0]++;
-            if (Projectile.localAI[0] > 10) Projectile.localAI[0] = 0;
+            if (Projectile.localAI[0] > 20) Projectile.localAI[0] = 0;
+            Dust.NewDustDirect(Projectile.Center, 0, 0, DustID.SnowflakeIce).noGravity = true;
             base.AI();
         }
     }
