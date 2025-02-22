@@ -1055,8 +1055,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 RecentAttacks.Add((States)State);
             else
             {
-                RecentAttacks[0] = RecentAttacks[1];
-                RecentAttacks[1] = (States)State;
+                for (int i = 0; i < RecentAttacks.Count - 1; i++)
+                    RecentAttacks[i] = RecentAttacks[i + 1];
+                RecentAttacks[^1] = (States)State;
             }
             if (!PhaseTwo && NPC.GetLifePercent() < 0.65f) // enter p2
             {
