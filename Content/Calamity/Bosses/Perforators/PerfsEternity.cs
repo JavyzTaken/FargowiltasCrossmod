@@ -53,6 +53,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public ref float AI4 => ref NPC.localAI[3];
         public ref float NextState => ref NPC.localAI[0];
         public ref float Phase => ref NPC.localAI[2];
+        public ref float PassiveRainTimer => ref NPC.localAI[1];
+
         public int MediumWormCooldown = 0;
         public List<States> RecentAttacks = [];
         public bool PhaseTwo => Phase > 0;
@@ -419,6 +421,31 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (MediumWormCooldown > 0)
                 MediumWormCooldown--;
 
+            // maso passive
+            if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget)
+            {
+                if (++PassiveRainTimer >= 25)
+                {
+                    PassiveRainTimer = 0;
+                    SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
+                    if (DLCUtils.HostCheck)
+                    {
+                        float shotSpeed = 6f;
+                        Vector2 shotVel = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.5f);
+                        int p = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + shotVel * NPC.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, 
+                            ai0: NPC.whoAmI, ai1: Target.Top.Y - 20);
+                        /*
+                        if (p != Main.maxProjectiles)
+                        {
+                            Main.projectile[p].extraUpdates = 1;
+                            Main.projectile[p].netUpdate = true;
+                        }
+                        */
+                    }
+
+                }
+            }
+
             switch ((States)State)
             {
                 case States.Opening:
@@ -596,7 +623,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 leg.StartCustomAnimation(NPC, Target.Center + offset, 1f / stabTime);
             }
             */
-            float time = WorldSavingSystem.MasochistModeReal ? 4.9f : 3.9f;
+            float time = 3.9f;
             if (++Timer >= (int)(interval * time))
             {
                 GoToNeutral();
@@ -872,7 +899,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             ClearGore();
 
             NPC.velocity *= 0.8f;
-            int stabTelegraphTime = WorldSavingSystem.MasochistModeReal ? 45 : 35;
+            int stabTelegraphTime = 45;
             int stabTime = 10;
             if (Timer < 25)
                 NPC.velocity.Y -= 0.5f;
@@ -919,7 +946,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         {
                             if (!npc.HasPlayerTarget)
                                 return;
-                            int spacing = WorldSavingSystem.MasochistModeReal ? 115 : 140;
+                            int spacing = WorldSavingSystem.MasochistModeReal ? 125 : 140;
                             int random = 20;
                             if (DLCUtils.HostCheck)
                             {
@@ -953,7 +980,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             NPC.velocity *= 0.8f;
             if (Timer < 25)
                 NPC.velocity.Y -= 0.5f;
-            int stabTelegraphTime = WorldSavingSystem.MasochistModeReal ? 45 : 35;
+            int stabTelegraphTime = 45;
             int stabTime = 10;
 
             void TelegraphStab()
