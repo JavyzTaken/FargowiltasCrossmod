@@ -484,7 +484,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                         if (timer >= 60 * 6)
                         {
                             const int ShotCount = 10;
-                            const int MaxShotSpeed = 16;
+                            const int MaxShotSpeed = 14;
                             for (int side = -1; side < 2; side += 2)
                             {
                                 for (int c = 0; c < 3; c++)
@@ -493,10 +493,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                                     float j = Main.rand.NextFloat(1, 3f);
                                     float speed = MaxShotSpeed * (float)(i + 1) / ShotCount;
                                     Vector2 dir = (-Vector2.UnitY).RotatedBy(side * MathHelper.Pi / 9.85f);
-                                    float randfac = MathHelper.Pi / 8f;
+                                    float randfac = MathHelper.Pi / 12f;
                                     float randrot = Main.rand.NextFloat(-randfac, randfac);
                                     float offset = randfac * NPC.width / 5f;
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX * side * (offset + (NPC.width / 3))), speed * dir.RotatedBy(randrot * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 2f);
+                                    Vector2 vel = speed * dir.RotatedBy(randrot * j);
+
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX * side * (offset + (NPC.width / 3))), vel, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 2f);
                                 }
                             }
 

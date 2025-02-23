@@ -29,6 +29,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
+            if (Projectile.localAI[2] == 2)
+                t = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/DesertScourge/SandChunk");
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, new Color(250, 250, 250), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
@@ -46,6 +48,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         }
         public override void AI()
         {
+            if (Projectile.localAI[2] == 0)
+                Projectile.localAI[2] += Main.rand.Next(1, 8);
             if (Projectile.timeLeft % 5 == 0)
             {
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Dirt, Scale: Projectile.scale).noGravity = true;
@@ -61,7 +65,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 Projectile.Kill();
             }
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            if (Projectile.localAI[2] == 2)
+                Projectile.rotation += MathHelper.PiOver2 * 0.05f;
+            else
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
     }
 }
