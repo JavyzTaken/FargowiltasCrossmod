@@ -10,6 +10,7 @@ using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -553,10 +554,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 else if (phase == 0)
                 {
                     if (DLCUtils.HostCheck)
+                    {
                         for (int i = 0; i < 5; i++)
                         {
-                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye * (i / 2f + 3), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye * (i / 2f + 3), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
+                    }
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                 }
                 else
@@ -594,10 +597,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 }
                 else
                 {
+                    int start = WorldSavingSystem.MasochistModeReal ? -3 : 0;
+                    int end = WorldSavingSystem.MasochistModeReal ? 7 : 4;
                     if (DLCUtils.HostCheck)
-                        for (int i = 0; i < 4; i++)
+                        for (int i = start; i < end; i++)
                         {
-                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(MathHelper.ToRadians((i - 1) * 10 - 5f)) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            float rotation = MathHelper.ToRadians((i - 1) * 10 - 5f);
+                            if (WorldSavingSystem.MasochistModeReal)
+                            {
+                                if (i < 0)
+                                    rotation = MathHelper.ToRadians((0 - 1) * 10 - 5f) + MathF.Tau * 0.078f * i;
+                                else if (i >= 4)
+                                    rotation = MathHelper.ToRadians((3 - 1) * 10 - 5f) + MathF.Tau * 0.078f * (i - 3);
+                            }
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, toTargetfromEye.RotatedBy(rotation) * 4, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                     SoundEngine.PlaySound(SoundID.Item20, eyePos);
                 }
