@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using CalamityMod.Buffs.Potions;
 using CalamityMod.Events;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.Particles;
@@ -55,7 +56,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public ref float Phase => ref NPC.localAI[2];
         public ref float PassiveRainTimer => ref NPC.localAI[1];
 
-        public int MediumWormCooldown = 0;
         public List<States> RecentAttacks = [];
         public bool PhaseTwo => Phase > 0;
         public enum States
@@ -72,6 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // phase 2
             GroundSpikes,
             GroundSpikesAngled,
+            GroundSpikeCharge,
         }
         public List<States> Attacks
         {
@@ -80,16 +81,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 List<States> attacks =
                     [
                     States.SmallWorm,
+                    States.MediumWorm,
+                    States.BigWorm,
                     States.RubbleStomp,
                     States.LegAssault,
-                    States.BigWorm,
                     ];
-                if (MediumWormCooldown <= 0)
-                    attacks.Add(States.MediumWorm);
                 if (PhaseTwo)
                 {
                     attacks.Add(States.GroundSpikes);
                     attacks.Add(States.GroundSpikesAngled);
+                    attacks.Add(States.GroundSpikeCharge);
+
+                    attacks.Remove(States.MediumWorm);
+                    attacks.Remove(States.BigWorm);
                 }
                 return attacks;
             }
@@ -384,7 +388,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             for (int i = 0; i < NPC.localAI.Length; i++)
                 binaryWriter.Write(NPC.localAI[i]);
-            binaryWriter.Write7BitEncodedInt(MediumWormCooldown);
             for (int i = 0; i < RecentAttacks.Count; i++)
                 binaryWriter.Write7BitEncodedInt((int)RecentAttacks[i]);
         }
@@ -392,7 +395,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             for (int i = 0; i < NPC.localAI.Length; i++)
                 NPC.localAI[i] = binaryReader.ReadSingle();
-            MediumWormCooldown = binaryReader.Read7BitEncodedInt();
             for (int i = 0; i < RecentAttacks.Count; i++)
                 RecentAttacks[i] = (States)binaryReader.Read7BitEncodedInt();
         }
@@ -416,10 +418,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             //low ground
             if (Main.LocalPlayer.active && !Main.LocalPlayer.ghost && !Main.LocalPlayer.dead && NPC.Distance(Main.LocalPlayer.Center) < 2000)
                 Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
-
-            // manage global timers
-            if (MediumWormCooldown > 0)
-                MediumWormCooldown--;
 
             // maso passive
             if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget)
@@ -474,6 +472,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     break;
                 case States.GroundSpikesAngled:
                     GroundSpikesAngled();
+                    break;
+                case States.GroundSpikeCharge:
+                    GroundSpikesCharge();
                     break;
             }
             ManageLegs();
@@ -581,6 +582,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 case States.LegAssault:
                     target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 650;
                     leniency = 50;
+                    break;
+
+                case States.GroundSpikeCharge:
+                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 650;
+                    leniency = 30;
                     break;
 
                 default:
@@ -784,7 +790,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         int rubbleCount = 9;
                         for (int i = 0; i < rubbleCount; i++)
                         {
-                            Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(0.2f, 1f);
+                            Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * MathHelper.Lerp(0.2f, 1f, (float)i / rubbleCount);
                             Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: endPoint.Y - 50);
                             if (p != null)
                             {
@@ -1044,13 +1050,71 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (++Timer > 120)
                 GoToNeutral();
         }
+        public void GroundSpikesCharge()
+        {
+            ClearGore();
+
+            int startTime = 35;
+            int chargeTime = 100;
+            int endlagTime = 30;
+            int height = 140;
+            if (Timer < startTime) // windup
+            {
+                if (Timer == 25)
+                {
+                    for (int index = 0; index < Legs.Length; index++)
+                    {
+                        var leg = Legs[index];
+                        int time = chargeTime + startTime - 25;
+                        leg.DamageTime = 2 * time;
+
+                        if (DLCUtils.HostCheck)
+                        {
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), leg.GetEndPoint(), Vector2.Zero, ModContent.ProjectileType<PerforatorLegHitbox>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: index, ai2: time);
+                        }
+                    }
+                }
+                float dir = NPC.HorizontalDirectionTo(Target.Center);
+                Vector2 desiredPos = Target.Center + Vector2.UnitX * 700 * -dir;
+                WalkToPositionAI(desiredPos, 1.5f, height);
+                if (Timer == startTime - 5)
+                {
+                    AI4 = Target.Center.X + dir * 800;
+                    NPC.netUpdate = true;
+                }
+            }
+            else if (Timer < startTime + chargeTime) // charge
+            {
+                Vector2 desiredPos = new(AI4, Target.Center.Y);
+                WalkToPositionAI(desiredPos, 1.75f, height);
+
+                int freq = WorldSavingSystem.MasochistModeReal ? 10 : 14;
+                if (Timer % freq == 0)
+                {
+                    int random = 30;
+                    Vector2 pos = NPC.Center;
+                    pos.X += Main.rand.NextFloat(-random, 0);
+                    pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "E").ToWorldCoordinates();
+
+                    Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2 * 0.23f);
+
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: -30);
+                }
+            }
+            else // endlag
+            {
+                NPC.velocity *= 0.95f;
+            }
+            if (++Timer >= startTime + chargeTime + endlagTime)
+                GoToNeutral();
+        }
         #endregion
         #region Help Methods
         public void GoToNeutral()
         {
             Reset();
             var attacks = Attacks;
-            int memoryMax = PhaseTwo ? 3 : 2;
+            int memoryMax = PhaseTwo ? 2 : 2;
             if (RecentAttacks.Count < memoryMax)
                 RecentAttacks.Add((States)State);
             else
@@ -1059,7 +1123,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     RecentAttacks[i] = RecentAttacks[i + 1];
                 RecentAttacks[^1] = (States)State;
             }
-            if (!PhaseTwo && NPC.GetLifePercent() < 0.65f) // enter p2
+            if (!PhaseTwo && NPC.GetLifePercent() < 0.5f) // enter p2
             {
                 NextState = (int)States.GroundSpikes;
                 Phase = 2;

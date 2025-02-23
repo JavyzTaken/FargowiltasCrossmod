@@ -49,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Main.dust[bloody].velocity *= 0f;
 
             if (Projectile.velocity.Y < 12f)
-                Projectile.velocity.Y += 0.09f;
+                Projectile.velocity.Y += 0.07f;
 
             Projectile.velocity.X *= 0.995f;
         }
