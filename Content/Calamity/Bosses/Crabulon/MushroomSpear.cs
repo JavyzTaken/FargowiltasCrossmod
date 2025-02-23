@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -75,10 +76,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         }
         public override void AI()
         {
+            int vel = WorldSavingSystem.MasochistModeReal ? 40 : 25;
             Projectile.ai[1]++;
             if (Projectile.ai[1] == 60)
             {
-                Projectile.velocity.Y = -25;
+                Projectile.velocity.Y = -vel;
                 SoundEngine.PlaySound(SoundID.DD2_BallistaTowerShot with { Pitch = 0.5f }, Projectile.Center);
             }
             if (Projectile.ai[1] == 70)
@@ -86,10 +88,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 Projectile.velocity.Y = 0;
 
             }
-            if (Projectile.ai[1] == 90) Projectile.velocity.Y = 25;
+            if (Projectile.ai[1] == 90) Projectile.velocity.Y = vel;
             if (Projectile.ai[1] == 100) Projectile.Kill();
-
-            if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.ai[1] == 20)
+            int delay = WorldSavingSystem.MasochistModeReal ? 12 : 20;
+            if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.ai[1] == delay)
             {
                 if (Projectile.ai[0] < 0)
                 {
