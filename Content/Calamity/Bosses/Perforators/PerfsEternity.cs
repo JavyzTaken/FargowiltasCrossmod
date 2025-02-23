@@ -143,7 +143,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override void SetDefaults()
         {
             if (!WorldSavingSystem.EternityMode) return;
-            NPC.lifeMax = (int)(NPC.lifeMax * 1.6f);
+            NPC.lifeMax = (int)(NPC.lifeMax * 1.4f);
             NPC.noGravity = true;
             if (BossRushEvent.BossRushActive)
             {
@@ -503,7 +503,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (Timer < 1)
             {
                 // Ensure that legs are already grounded when the Perforator has fully spawned in.
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     for (int j = 0; j < Legs.Length; j++)
                         Legs[j]?.Update(NPC);
@@ -673,8 +673,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 85;
             int endTime = 150;
-            if (PhaseTwo)
-                endTime += 20;
             if (NPC.velocity.X.NonZeroSign() == NPC.HorizontalDirectionTo(Target.Center))
                 NPC.velocity *= 0.99f;
             else
@@ -716,22 +714,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadLarge>());
                     minion.GetGlobalNPC<LargePerforator>().VelocityReal = -Vector2.UnitY * 18 + Vector2.UnitX * NPC.HorizontalDirectionTo(Target.Center) * 3;
 
-                    if (!PhaseTwo)
+                    for (int i = 0; i < 60; i++)
                     {
-                        for (int i = 0; i < 60; i++)
-                        {
-                            float shotSpeed = Main.rand.NextFloat(4f, 20f);
-                            Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2f);
-                            Vector2 vel = shotDir * shotSpeed;
-                            if (vel.Y < -6)
-                                vel.Y *= 0.6f;
-                            Vector2 pos = NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f;
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: pos.Y);
-                        }
+                        float shotSpeed = Main.rand.NextFloat(4f, 20f);
+                        Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2f);
+                        Vector2 vel = shotDir * shotSpeed;
+                        if (vel.Y < -6)
+                            vel.Y *= 0.6f;
+                        Vector2 pos = NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f;
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: pos.Y);
                     }
                 }
             }
-            if (PhaseTwo && (Timer == expTelegraph - 80 || Timer == expTelegraph + 20))
+            if (PhaseTwo && (Timer == expTelegraph - 80))
             {
                 SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
                 if (DLCUtils.HostCheck)
@@ -1109,7 +1104,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                     Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2 * 0.23f);
 
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: -30);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: -12);
                 }
             }
             else // endlag
