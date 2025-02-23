@@ -92,8 +92,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     attacks.Add(States.GroundSpikesAngled);
                     attacks.Add(States.GroundSpikeCharge);
 
-                    attacks.Remove(States.MediumWorm);
-                    attacks.Remove(States.BigWorm);
+                    attacks.Remove(States.SmallWorm);
+                    //attacks.Remove(States.BigWorm);
                 }
                 return attacks;
             }
@@ -597,8 +597,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void SmallWorm()
         {
-            ref float ChosenLeg = ref AI2;
-
             float speed = 0.2f;
             float dist = Target.Distance(NPC.Center);
             if (dist > 300)
@@ -611,24 +609,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 if (DLCUtils.HostCheck)
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
             }
-
-            /*
-            if (Timer == 0)
-            {
-                ChosenLeg = ClosestLegIndex(Target.Center);
-                NPC.netUpdate = true;
-                var leg = Legs[(int)ChosenLeg];
-                int sign = Math.Sign(leg.GetEndPoint().X - Target.Center.X);
-                Vector2 pos = Target.Center + new Vector2(sign * 100, -200);
-                leg.StartCustomAnimation(NPC, pos, 1f / stabTelegraphTime);
-            }
-            if (Timer == stabTelegraphTime)
-            {
-                var leg = Legs[(int)ChosenLeg];
-                Vector2 offset = Vector2.Normalize(Target.Center - leg.GetEndPoint()) * 60;
-                leg.StartCustomAnimation(NPC, Target.Center + offset, 1f / stabTime);
-            }
-            */
             float time = 3.9f;
             if (++Timer >= (int)(interval * time))
             {
@@ -638,49 +618,63 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void MediumWorm()
         {
-            /*
-            ref float WormCount = ref AI2;
-            int wormSegments = 10;
-            int wormFrequency = 15;
-            WalkToPositionAI(Target.Center, 0.6f);
-            if (Timer % wormFrequency == 0 && WormCount < wormSegments)
+            if (!PhaseTwo)
             {
-                int segmentType = ModContent.NPCType<MediumWormBodySegment>();
-                if (WormCount == 0)
-                    segmentType = ModContent.NPCType<MediumWormHeadSegment>();
-                if (WormCount == wormSegments - 1)
-                    segmentType = ModContent.NPCType<MediumWormTailSegment>();
-
-                NPC minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center - Vector2.UnitY * NPC.height / 3, segmentType);
-                minion.velocity = -Vector2.UnitY * 10 + Vector2.UnitX * Main.rand.NextFloat(-7, 7);
-                NetSync(minion);
-                WormCount++;
-            }
-            if (++Timer > wormFrequency * wormSegments + 90)
-            {
-                GoToNeutral();
-            }
-            */
-            WalkToPositionAI(Target.Center, 0.6f);
-            if (Timer == 0)
-            {
-                if (DLCUtils.HostCheck)
+                WalkToPositionAI(Target.Center, 0.6f);
+                if (Timer == 0)
                 {
-                    var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadMedium>());
-                    minion.GetGlobalNPC<MediumPerforator>().VelocityReal = -Vector2.UnitY * 24;
+                    if (DLCUtils.HostCheck)
+                    {
+                        var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadMedium>());
+                        minion.GetGlobalNPC<MediumPerforator>().VelocityReal = -Vector2.UnitY * 24;
+                    }
+                    SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
                 }
-                SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
+                if (++Timer > 150)
+                {
+                    GoToNeutral();
+                    //MediumWormCooldown = 60 * 25;
+                }
             }
-            if (++Timer > 150)
+            else
             {
-                GoToNeutral();
-                //MediumWormCooldown = 60 * 25;
+                float speed = 0.2f;
+                float dist = Target.Distance(NPC.Center);
+                if (dist > 300)
+                    speed += (dist - 300) / 500;
+                WalkToPositionAI(Target.Center, speed, 315);
+                int interval = 80;
+                if (Timer % interval == 0)
+                {
+                    if (Timer == interval)
+                    {
+                        if (DLCUtils.HostCheck)
+                        {
+                            var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadMedium>());
+                            minion.GetGlobalNPC<MediumPerforator>().VelocityReal = -Vector2.UnitY * 24;
+                        }
+                        SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
+                    }
+                    else
+                    {
+                        SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
+                        if (DLCUtils.HostCheck)
+                            NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
+                    }
+                }
+                float time = 3.9f;
+                if (++Timer >= (int)(interval * time))
+                {
+                    GoToNeutral();
+                }
             }
         }
         public void BigWorm()
         {
             int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 85;
             int endTime = 150;
+            if (PhaseTwo)
+                endTime += 20;
             if (NPC.velocity.X.NonZeroSign() == NPC.HorizontalDirectionTo(Target.Center))
                 NPC.velocity *= 0.99f;
             else
@@ -722,17 +716,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadLarge>());
                     minion.GetGlobalNPC<LargePerforator>().VelocityReal = -Vector2.UnitY * 18 + Vector2.UnitX * NPC.HorizontalDirectionTo(Target.Center) * 3;
 
-                    for (int i = 0; i < 60; i++)
+                    if (!PhaseTwo)
                     {
-                        float shotSpeed = Main.rand.NextFloat(4f, 20f);
-                        Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2f);
-                        Vector2 vel = shotDir * shotSpeed;
-                        if (vel.Y < -6)
-                            vel.Y *= 0.6f;
-                        Vector2 pos = NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: pos.Y);
+                        for (int i = 0; i < 60; i++)
+                        {
+                            float shotSpeed = Main.rand.NextFloat(4f, 20f);
+                            Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2f);
+                            Vector2 vel = shotDir * shotSpeed;
+                            if (vel.Y < -6)
+                                vel.Y *= 0.6f;
+                            Vector2 pos = NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f;
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: pos.Y);
+                        }
                     }
                 }
+            }
+            if (PhaseTwo && (Timer == expTelegraph - 80 || Timer == expTelegraph + 20))
+            {
+                SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
+                if (DLCUtils.HostCheck)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
             }
             if (++Timer > expTelegraph + endTime)
             {
@@ -1060,18 +1063,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             int height = 140;
             if (Timer < startTime) // windup
             {
-                if (Timer == 25)
+                if (Timer == 15)
                 {
                     for (int index = 0; index < Legs.Length; index++)
                     {
                         var leg = Legs[index];
-                        int time = chargeTime + startTime - 25;
+                        int time = chargeTime + startTime - 15;
                         leg.DamageTime = 2 * time;
-
-                        if (DLCUtils.HostCheck)
-                        {
-                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), leg.GetEndPoint(), Vector2.Zero, ModContent.ProjectileType<PerforatorLegHitbox>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: index, ai2: time);
-                        }
                     }
                 }
                 float dir = NPC.HorizontalDirectionTo(Target.Center);
@@ -1081,6 +1079,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     AI4 = Target.Center.X + dir * 800;
                     NPC.netUpdate = true;
+                }
+                if (Timer == startTime - 1)
+                {
+                    for (int index = 0; index < Legs.Length; index++)
+                    {
+                        var leg = Legs[index];
+                        int time = chargeTime + 1;
+                        if (DLCUtils.HostCheck)
+                        {
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), leg.GetEndPoint(), Vector2.Zero, ModContent.ProjectileType<PerforatorLegHitbox>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: index, ai2: time);
+                        }
+                    }
+                    
                 }
             }
             else if (Timer < startTime + chargeTime) // charge
@@ -1114,7 +1125,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             Reset();
             var attacks = Attacks;
-            int memoryMax = PhaseTwo ? 2 : 2;
+            int memoryMax = PhaseTwo ? 3 : 2;
             if (RecentAttacks.Count < memoryMax)
                 RecentAttacks.Add((States)State);
             else
@@ -1123,7 +1134,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     RecentAttacks[i] = RecentAttacks[i + 1];
                 RecentAttacks[^1] = (States)State;
             }
-            if (!PhaseTwo && NPC.GetLifePercent() < 0.5f) // enter p2
+            float threshold = WorldSavingSystem.MasochistModeReal ? 0.65f : 0.55f;
+            if (!PhaseTwo && NPC.GetLifePercent() < threshold) // enter p2
             {
                 NextState = (int)States.GroundSpikes;
                 Phase = 2;
@@ -1131,6 +1143,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             else
             {
                 attacks = attacks.Except(RecentAttacks).ToList();
+                if (PhaseTwo) // prevent bad combos
+                {
+                    if (State == (int)States.MediumWorm)
+                        attacks.Remove(States.BigWorm);
+                    if (State == (int)States.BigWorm)
+                        attacks.Remove(States.MediumWorm);
+                }
                 NextState = (int)Main.rand.NextFromCollection(attacks);
             }
             //Main.NewText(Enum.GetName(typeof(States), (States)NextState));
