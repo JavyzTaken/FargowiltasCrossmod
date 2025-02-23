@@ -15,6 +15,7 @@ using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -178,7 +179,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (NPC.ai[2] < 20)
             {
                 NPC.ai[2]++;
-
+                Main.NewText("idle");
                 return true;
             }
 
@@ -242,8 +243,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 TooFarCheck(NPC, ref collision);
                 WormMovement(NPC, collision);
 
+                int idleTime = WorldSavingSystem.MasochistModeReal ? 240 : 500;
                 ai[0]++;
-                if (ai[0] == 250 && phase > 0 && CanDoSlam && SlamCooldown <= 0) //initiate slam, only after first phase (nuisances)
+                if (ai[0] == idleTime / 2 && phase > 0 && CanDoSlam && SlamCooldown <= 0) //initiate slam, only after first phase (nuisances)
                 {
                     CanDoSlam = false;
                     SlamCooldown = 60 * 10;
@@ -251,7 +253,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                     NPC.netUpdate = true;
                     NetSync(NPC);
                 }
-                if (ai[0] == 500)
+                if (ai[0] >= idleTime)
                 {
                     ai[0] = 0;
                     IncrementCycle(NPC);
@@ -337,6 +339,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (ai[3] >= 0) // sucking
             {
                 ai[3]++;
+                if (WorldSavingSystem.MasochistModeReal)
+                    ai[3]++;
                 NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center) / 50, 0.03f);
 
                 // open mouth
@@ -388,17 +392,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             if (ai[3] >= 0)
             {
+                int increment = WorldSavingSystem.MasochistModeReal ? 2 : 1;
                 if (drawInfo[1] > 0)
                 {
-                    drawInfo[1]--;
+                    drawInfo[1] -= increment;
                 }
                 if (drawInfo[1] <= 0)
                 {
-                    ai[2]++;
+                    ai[2] += increment;
                     if (ai[2] > 200)
                     {
                         if (drawInfo[2] > 0)
-                            drawInfo[2]--;
+                            drawInfo[2] -= increment;
                         if (drawInfo[2] <= 0)
                         {
                             drawInfo[2] = 200;
@@ -561,7 +566,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             Player target = Main.player[NPC.target];
             Vector2 offset = lungePos;
             if (target.Center.X > NPC.Center.X) offset.X = -offset.X;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center + offset - NPC.Center).SafeNormalize(Vector2.Zero) * 15, 0.05f);
+            int speed = WorldSavingSystem.MasochistModeReal ? 20 : 15;
+            float lerp = WorldSavingSystem.MasochistModeReal ? 0.08f : 0.05f;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center + offset - NPC.Center).SafeNormalize(Vector2.Zero) * speed, lerp);
             if (NPC.Distance(target.Center + offset) <= 50)
                 lungeInfo[0]++;
             if (lungeInfo[0] == 10)

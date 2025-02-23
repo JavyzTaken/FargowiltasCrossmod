@@ -13,7 +13,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
     {
         public override void SetDefaults()
         {
-            NPC.lifeMax /= 2;
+            NPC.lifeMax /= 3;
         }
     }
     public class NuisanceHeadEternity : NuisanceEternity

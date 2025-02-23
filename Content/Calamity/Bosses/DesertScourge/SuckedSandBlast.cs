@@ -1,4 +1,5 @@
 ﻿using FargowiltasCrossmod.Core;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -60,7 +61,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 Projectile.Kill();
                 return;
             }
-            Projectile.velocity = (owner.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * 10;
+            float speed = 10;
+            if (WorldSavingSystem.MasochistModeReal)
+                speed = 14;
+            Projectile.velocity = (owner.Center - Projectile.Center).SafeNormalize(Vector2.Zero) * speed;
             if (Projectile.Hitbox.Intersects(owner.Hitbox))
             {
                 Projectile.Kill();
