@@ -145,8 +145,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public int LastAttack = 0;
         public bool DidRainDash = false;
 
-        public const float Subphase2HP = 0.5f;
-        public const float Subphase3HP = 0.175f;
+        public static float Subphase2HP => WorldSavingSystem.MasochistModeReal ? 0.65f : 0.5f;
+        public static float Subphase3HP => WorldSavingSystem.MasochistModeReal ? 0.25f : 0.175f;
         public static int Subphase(NPC NPC)
         {
             float life = NPC.GetLifePercent();
