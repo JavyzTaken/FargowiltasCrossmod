@@ -51,11 +51,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             player.AddEffect<MarniteRepulsionEffect>(item);
             player.AddEffect<MarniteLasersEffect>(item);
-            player.tileSpeed += 0.1f;
+            player.tileSpeed += 0.25f;
             player.blockRange += 5;
             if (player.FargoSouls().ForceEffect(item.type))
             {
-                player.tileSpeed += 0.15f;
+                player.tileSpeed += 0.25f;
                 player.blockRange += 5;
             }
         }
