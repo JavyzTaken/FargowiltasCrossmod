@@ -92,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 {
                     for (int i = 0; i < Main.maxProjectiles; i++)
                     {
-                        if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<SulphurCloud>())
+                        if (Main.projectile[i] != null && Main.projectile[i].active && Main.projectile[i].damage > 0 && i != Projectile.whoAmI && Main.projectile[i].Hitbox.Intersects(Projectile.Hitbox) && Main.projectile[i].type != ModContent.ProjectileType<SulphurCloud>() && Main.projectile[i].type != ModContent.ProjectileType<SulphurBubble>())
                         {
                             for (int a = 0; a < 2; a++)
                                 OnHitEffect(Main.projectile[i].damage);
@@ -125,6 +125,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 damage *= 2;
                 count *= 2;
             }
+            if (damage < 20)
+                damage = 20;
             for (int j = 0; j < count; j++)
             {
                 int proj = Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(0, Main.rand.NextFloat(gasSpeedMin, gasSpeedMax)).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<SulphurCloud>(), damage, 0, Projectile.owner);
