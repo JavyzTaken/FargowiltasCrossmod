@@ -95,7 +95,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             float neutralAcceleration = 0.15f; //speed X increase while gliding and not holding up or down
             float boostAcceleration = 0.25f; //speed X increase while holding down
             float risingDecel = 0.99f; //speed X is multiplied by this when holding up
-            float upwardAccel = 0.8f; //speed increase on Y while holding up
+            float upwardAccel = 1f; //speed increase on Y while holding up
 
             if (player.wingTimeMax == 0)
             {
@@ -104,8 +104,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 {
                     player.Calamity().snowRuffianSet = false;
                     player.wings = EquipLoader.GetEquipSlot(ModCompatibility.Calamity.Mod, "SnowRuffianMask", EquipType.Wings);
-                    player.wingsLogic = 46;
-                    player.wingTimeMax = player.GetWingStats(46).FlyTime;
+                    //player.wingsLogic = 46;
+                    //player.wingTimeMax = player.GetWingStats(46).FlyTime;
+                    int starlightWings = EquipLoader.GetEquipSlot(ModCompatibility.Calamity.Mod, "StarlightWings", EquipType.Wings);
+                    player.wingsLogic = starlightWings;
+                    player.wingTimeMax = 150;
+                    player.wingAccRunSpeed = player.GetWingStats(starlightWings).AccRunAccelerationMult;
                 }
                 
                 
