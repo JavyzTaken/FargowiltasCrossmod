@@ -179,7 +179,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (NPC.ai[2] < 20)
             {
                 NPC.ai[2]++;
-                Main.NewText("idle");
                 return true;
             }
 

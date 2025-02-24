@@ -380,6 +380,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         #endregion
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
+            if (State == (int)States.GroundSpikeCharge && Timer > 35)
+                return base.CanHitPlayer(target, ref cooldownSlot);
             return false;
         }
 
@@ -673,6 +675,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 85;
             int endTime = 150;
+            NPC.velocity.Y *= 0.91f;
             if (NPC.velocity.X.NonZeroSign() == NPC.HorizontalDirectionTo(Target.Center))
                 NPC.velocity *= 0.99f;
             else
@@ -1055,7 +1058,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             int startTime = 35;
             int chargeTime = 100;
             int endlagTime = 30;
-            int height = 140;
+            int height = 190;
             if (Timer < startTime) // windup
             {
                 if (Timer == 15)
@@ -1151,7 +1154,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             State = (int)States.MoveToPlayer;
 
             // debug
-            //NextState = (int)States.LegAssault;
+            //NextState = (int)States.SmallWorm;
         }
         public void Reset()
         {
