@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/AstralChunk";
         public override int NPCType => ModContent.NPCType<AstrumAureus>();
-        public override string NPCName => "Astrum Aureus";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<AstralChunk>().AddTile(TileID.WorkBenches).Register();

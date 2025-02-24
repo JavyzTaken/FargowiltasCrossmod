@@ -78,6 +78,22 @@ Draedon: {
 	// Error: The fabric of this reality rips at the seams.
 }
 
+MutantGFBText: {
+	// QuoteP2: Time to stop playing around.
+	// QuoteDoG: The world is trembling..
+}
+
+ShopModSwapper: {
+	// Default: Switch Mod
+	// Vanilla: Vanilla
+	// Calamity: Calamity mod
+}
+
+PermafrostChat: {
+	// Defeat1: You clearly possess great skill! My thanks to you for freeing me, and providing an opportunity to defrost my fighting abilities.
+	// Defeat2: Aah, a good round of sparring. I need the exercise, so thanks for that.
+}
+
 // ThanatosRename: XM-04 Hades
 // ApolloRename: XS-11 Apollo
 // ExoTwinsRenameNormal: XS-01 Artemis and XS-11 Apollo

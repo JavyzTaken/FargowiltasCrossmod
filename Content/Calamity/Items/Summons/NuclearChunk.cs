@@ -12,7 +12,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class NuclearChunk : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<NuclearTerror>();
-        public override string NPCName => "Nuclear Terror";
         public override void AddRecipes()
         {
         }

@@ -16,7 +16,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class AstrumCor : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<AstrumDeusHead>();
-        public override string NPCName => "Astrum Deus";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<Starcore>().AddTile(TileID.WorkBenches).DisableDecraft().Register();

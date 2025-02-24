@@ -15,7 +15,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class MaulerSkull : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<Mauler>();
-        public override string NPCName => "Mauler";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CorrodedFossil>(10).AddIngredient<NuclearChunk>().AddTile(TileID.Anvils).Register();

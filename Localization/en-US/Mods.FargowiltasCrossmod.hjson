@@ -82,3 +82,11 @@ RecipeGroups: {
 	DaedalusHelmet: Daedalus Headpiece
 	HydrothermicHelmet: Hydrothermic Headpiece
 }
+
+BossRushDialogue: {
+	Start: Let's get started.
+	EndP1_1: This is boring.
+	EndP1_2: Let's cut to the chase.
+}
+
+EmodeBannedByInfernum: "[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode]."

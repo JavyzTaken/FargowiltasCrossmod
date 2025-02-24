@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/BloodwormItem";
         public override int NPCType => ModContent.NPCType<OldDuke>();
-        public override string NPCName => "Old Duke";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<BloodwormItem>().AddTile(TileID.WorkBenches).Register();

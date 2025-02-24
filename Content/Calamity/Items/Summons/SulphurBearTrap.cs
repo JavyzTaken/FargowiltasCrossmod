@@ -14,7 +14,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class SulphurBearTrap : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<CragmawMire>();
-        public override string NPCName => "Cragmaw Mire";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CorrodedFossil>(15).AddRecipeGroup(RecipeGroupID.IronBar, 5).AddTile(TileID.Anvils).Register();

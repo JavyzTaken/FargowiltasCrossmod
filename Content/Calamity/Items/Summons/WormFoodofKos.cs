@@ -15,7 +15,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class WormFoodofKos : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<StormWeaverHead>();
-        public override string NPCName => "Storm Weaver";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<RuneofKos>().AddTile(TileID.WorkBenches).Register();

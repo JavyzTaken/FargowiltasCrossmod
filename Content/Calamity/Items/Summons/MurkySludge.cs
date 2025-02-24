@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/OverloadedSludge";
         public override int NPCType => ModContent.NPCType<SlimeGodCore>();
-        public override string NPCName => "Slime God";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<OverloadedSludge>().AddTile(TileID.WorkBenches).Register();

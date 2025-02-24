@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/ProfanedCore";
         public override int NPCType => ModContent.NPCType<Providence>();
-        public override string NPCName => "Providence";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<ProfanedCore>().AddTile(TileID.WorkBenches).Register();

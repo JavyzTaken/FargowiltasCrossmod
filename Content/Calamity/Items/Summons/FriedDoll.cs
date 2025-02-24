@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/CharredIdol";
         public override int NPCType => ModContent.NPCType<BrimstoneElemental>();
-        public override string NPCName => "Brimstone Elemental";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CharredIdol>().AddTile(TileID.WorkBenches).Register();
