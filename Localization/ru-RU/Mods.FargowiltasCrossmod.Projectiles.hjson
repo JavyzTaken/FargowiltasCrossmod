@@ -6,9 +6,9 @@ SuckedSandBlast.DisplayName: Песчаный выстрел
 CursedLightning.DisplayName: Проклятая молния
 CurvingCursedFlames.DisplayName: Изгибающееся проклятое пламя
 MovingCorruptCloud.DisplayName: Движущееся искажённое облако
-ShadeLightningCloud.DisplayName: Теневое молниеносное облако
+ShadeLightningCloud.DisplayName: Теневое молниевое облако
 ToothBall.DisplayName: Шар зубов
-// Tooth.DisplayName: Tooth
+Tooth.DisplayName: Зуб
 HomingRocket.DisplayName: Самонаводящаяся ракета
 HomingSickle.DisplayName: Самонаводящаяся коса
 HallowedSlimeSpike.DisplayName: Шип освящённого слизня
@@ -66,7 +66,7 @@ BrimBeam.DisplayName: Серолуч
 BrimstoneChainExplosion.DisplayName: Серный цепной взрыв
 BrimstoneTeleport.DisplayName: Серный телепорт
 BrimstoneFireblast.DisplayName: Шар серного огня
-// FeatherJumpFeather.DisplayName: Feather
+FeatherJumpFeather.DisplayName: Перо
 // MarniteDagger.DisplayName: Marnite Dagger
 MarniteLaser.DisplayName: Мранитовый лазер
 // ProwlerTornado.DisplayName: Prowler Tornado
@@ -74,7 +74,7 @@ MarniteLaser.DisplayName: Мранитовый лазер
 WulfrumScanner.DisplayName: Вульфрумовый сканер
 CrystalPlatform.DisplayName: Кристальная платформа
 // PlagueCloud.DisplayName: Plague Cloud
-// Eruption.DisplayName: Eruption
+Eruption.DisplayName: Извержение
 // VampireBat.DisplayName: Vampire Bat
 SulphurBubble.DisplayName: Сернистый пкзырь
 VictideSpike.DisplayName: Приливной шип
@@ -86,29 +86,29 @@ VileClotDrop.DisplayName: Мерзкий сгусток
 SulphurCloud.DisplayName: Сернистое облако
 PureGel.DisplayName: Чистейший гель
 HiveMindPulse.DisplayName: Разум улей пульс
-// ApolloLineTelegraph.DisplayName: Telegraph
-// ApolloMissile.DisplayName: Plasma Missile
-// AresMissile.DisplayName: Thermal Missile
-// AresMissileBackground.DisplayName: Thermal Missile
-// ArtemisLaserImproved.DisplayName: Thermal Laser
-// ArtemisLaserSmall.DisplayName: Small Thermal Laser
-// CannonLaserbeam.DisplayName: Energized Thermal Deathray
-// DraedonLootCrate.DisplayName: Draedon Loot Crate
-// ExoelectricBlast.DisplayName: Exoelectric Blast
-// ExoOverloadDeathray.DisplayName: Exo Overload Deathray
-// GaussNuke.DisplayName: Gauss Nuke
-// GaussNukeBoom.DisplayName: Thermonuclear Explosion
-// HadesExoEnergyOrb.DisplayName: Exoelectric Energy Orb
-// HadesLaserBurst.DisplayName: Laser Burst
-// HadesMine.DisplayName: Hades Mine
-// HadesSuperLaserbeam.DisplayName: Exo Energy Blast
+ApolloLineTelegraph.DisplayName: Телеграф
+ApolloMissile.DisplayName: Плазма-ракета
+AresMissile.DisplayName: Тепловая боеголовка
+AresMissileBackground.DisplayName: Тепловая боеголовка
+ArtemisLaserImproved.DisplayName: Тепловой лазер
+ArtemisLaserSmall.DisplayName: Маленький тепловой лазер
+CannonLaserbeam.DisplayName: Энергетический тепловой луч смерти
+DraedonLootCrate.DisplayName: Ящик с лутом Дрэйдона
+ExoelectricBlast.DisplayName: Экзо-электрический взрыв
+ExoOverloadDeathray.DisplayName: Луч смерти экзо-перегрузки
+GaussNuke.DisplayName: Гаусс-бомба
+GaussNukeBoom.DisplayName: Термоядерный взрыв
+HadesExoEnergyOrb.DisplayName: Экзо-электрическая энергетическая сфера
+HadesLaserBurst.DisplayName: Лазеры
+HadesMine.DisplayName: Аидова мина
+HadesSuperLaserbeam.DisplayName: Взрыв экзо-энергии
 // HomingTeslaBurst.DisplayName: Tesla Burst
 // LargeTeslaSphere.DisplayName: Tesla Sphere
 // LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
 // LingeringPlasmaFireball.DisplayName: Plasma Fireball
 // SmallTeslaArc.DisplayName: Tesla Arc
 // ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
-ScourgeSandstream.DisplayName: Пещаный поток бича
+ScourgeSandstream.DisplayName: Песчаный поток бича
 // SmallTeslaSphere.DisplayName: Tesla Sphere
 // PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
 // BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam

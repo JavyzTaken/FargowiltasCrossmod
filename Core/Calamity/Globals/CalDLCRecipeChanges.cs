@@ -962,13 +962,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ));
 
             //reaver head group
-            RecipeGroup ReaverHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Reaver Headpiece"}",
+            RecipeGroup ReaverHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("ReaverHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadExplore>(),
                 ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>(),
                 ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyReaverHelms", ReaverHelmsGroup);
             //daedalus head group
-            RecipeGroup DeadalusHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Daedalus Headpiece"}",
+            RecipeGroup DeadalusHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("DaedalusHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMelee>(),
                 ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadRanged>(),
                 ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusHeadMagic>(),
@@ -1008,7 +1008,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<CalamityMod.Items.Armor.Statigel.StatigelHeadSummon>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyStatisHelms", StatigelHelmsGroup);
             //aerospec head group
-            RecipeGroup HydrothermHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {"Hydrothermic Headpiece"}",
+            RecipeGroup HydrothermHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("HydrothermicHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMelee>(),
                 ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadRanged>(),
                 ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicHeadMagic>(),

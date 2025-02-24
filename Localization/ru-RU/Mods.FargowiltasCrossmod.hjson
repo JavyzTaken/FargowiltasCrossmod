@@ -42,9 +42,9 @@ EternityDeathDifficulty: {
 
 UI: {
 	ToggledWithCal: Переключается с помощью переключателя сложностей Calamity
-	// HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
-	// AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
-	// ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+	HadesIconMessage: Аид, змеевидный ужас с непробиваемой бронёй и бесчисленными лазерными турелями.
+	AresIconMessage: Арес, дьявольское чудовище огромного веса с четырьмя отсоединяющимися Экзо-суперорудиями.
+	ArtemisAndApolloIconMessage: Артемида и Аполлон, пара экстремально ловких истребителей с нестабильными запасами энергии.
 }
 
 Buffs: {
@@ -81,5 +81,8 @@ RecipeGroups: {
 	EvilBar: слиток зла
 	VictideHelmet: шлем прилива
 	AerospecHelmet: шлем аэрофаза
-	StatigelHelmet: шлем статигеля
+	StatigelHelmet: статигелевый шлем
+	ReaverHelmet: шлем разорителя
+	DaedalusHelmet: шлем Дедала
+	HydrothermicHelmet: гидротермический шлем
 }

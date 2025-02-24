@@ -300,7 +300,7 @@ MarniteEnchant: {
 	Tooltip:
 		'''
 		Увеличивает скорость размещения блоков на 10% и дальность размещения блоков на 5
-		Пока вы ставите или копаете блоки, из них выходят лазеры, которые атакуют ближайших врагов
+		Пока Вы не атакуете или используете инструменты, Вы выпускаете лазеры в ближайших врагов
 		Эффекты [i:CalamityMod/MarniteRepulsionShield] мранитового репульсионного щита
 		'''
 }
@@ -327,26 +327,26 @@ WulfrumEnchant: {
 }
 
 GaleForce: {
-	// DisplayName: Force of Gale
-	/* Tooltip:
+	DisplayName: Артефакт бури
+	Tooltip:
 		'''
-		Grants unlimited jumps in the air
+		Даёт бесконечные двойные прыжки
 
-		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
-		     Hold S while jumping to dive downwards
-		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
-		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
-		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
-		     Once 6 spines are spawned, the next jump launches them out to home onto targets
-		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
-		''' */
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте W во время прыжка, чтобы запустить себя вверх
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы устремиться вниз
+		[i:FargowiltasCrossmod/SnowRuffianEnchant] Удерживайте W, чтобы замедлить падение
+		[i:FargowiltasCrossmod/SulphurEnchant] Прыжки выпускают из Вас токсичные сернистые газы
+		[i:FargowiltasCrossmod/VictideEnchant] Прыжки также прикрепляют к Вашей спине острые позвонки
+		[i:FargowiltasCrossmod/VictideEnchant] Когда из Вас торчит 6 позвонков, следующий прыжок выпускает их. Позвонки самонаводятся на врагов
+		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до 40%
+		'''
 }
 
 SnowRuffianEnchant: {
 	DisplayName: Зачарование снежного бандита
 	Tooltip:
 		'''
-		Позволяет парить в воздухе, даже если на вас нет крыльев
+		Позволяет парить в воздухе, даже если на Вас нет крыльев
 		При медленном падении на крыльях, вы ускоряетесь
 		Нажмите ВВЕРХ в медленном падении, чтобы перенаправить движение вверх
 		Нажмите ВНИЗ в медленном падении, чтобы сильнее ускоряться
@@ -354,13 +354,13 @@ SnowRuffianEnchant: {
 }
 
 DaedalusEnchant: {
-	// DisplayName: Daedalus Enchantment
-	/* Tooltip:
+	DisplayName: Зачарование Дедала
+	Tooltip:
 		'''
-		Increases flight time by 25%
-		After a second in the air, attacks are accompanied by powerful arrows from the sky
-		Getting hit or landing removes this bonus and cuts your wing time in half 
-		''' */
+		Увеличивает время полёта на 25%
+		Если Вы находитесь в воздухе больше секунды, ваши атаки сопровождаются мощными стрелами с неба
+		Получение урона или приземление убирают этот бонус и срезают половину времени полёта
+		'''
 }
 
 PlagueReaperEnchant: {
@@ -380,33 +380,34 @@ PlaguebringerEnchant: {
 }
 
 ReaverEnchant: {
-	// DisplayName: Reaver Enchantment
-	// Tooltip: ""
+	DisplayName: Зачарование разорителя
+	Tooltip: ""
 }
 
 HydrothermicEnchant: {
-	// DisplayName: Hydrothermic Enchantment
-	/* Tooltip:
+	DisplayName: Зачарование гидротермов
+	Tooltip:
 		'''
-		Attacking builds up heat
-		At full heat, stop attacking to vent it, increasing damage reduction by up to 30% and firing chaos flares towards your cursor for up to 3 seconds
-		Getting hit also vents heat, regardless of heat level
-		''' */
+		Атаки заряжают жар
+		При полном заряде жара, прекратите атаковать, чтобы выпустить его, увеличивая сопротивление урону до 30%
+		и заставляя Вас выпускать вспышки хаоса в сторону курсора до 3 секунд
+		Получение урона так же выпускает ваш жар, независимо от его уровня
+		'''
 }
 
 ElementsForce: {
-	// DisplayName: Force of the Elements
-	/* Tooltip:
+	DisplayName: Артефакт элементов
+	Tooltip:
 		'''
-		Magma Mode:
-		[i:FargowiltasCrossmod/ReaverEnchant] Increased damage reduction by 30% and defense by 30
-		[i:FargowiltasCrossmod/HydrothermicEnchant] Attacking builds up heat, stop attacking at full heat or get hit to vent it
-		Venting heat grants Reaver Rage and summons powerful chaos flares for up to 3 seconds
-		Blizzard Mode:
-		[i:FargowiltasCrossmod/ReaverEnchant] Increased flight time and speed, life regen, hook velocity and reduced dash cooldown
-		[i:FargowiltasCrossmod/AerospecEnchant] Grants up to +50% damage the longer you've stayed in the air
-		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air, attacks are accompanied by powerful arrows from the sky
-		''' */
+		[c/E03131:Режим магмы:]
+		[i:FargowiltasCrossmod/ReaverEnchant] Увеличивает сопротивление урону на 30% и защиту на 30
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Атаки заряжают жар, прекратите атаковать при полном заряде или получите урон, чтобы выпустить его
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Выпуск жара даёт бафф «Ярость разорителя» и выпускает сильные вспышки хаоса до 3 секунд
+		[c/45A8EF:Режим метели:]
+		[i:FargowiltasCrossmod/ReaverEnchant] Увеличивает время и скорость полёта, регенерацию здоровья, скорость крюков и частоту использования рывков
+		[i:FargowiltasCrossmod/AerospecEnchant] Даёт до +50% к урону в зависимости от того, сколько Вы времени провели в воздухе
+		[i:FargowiltasCrossmod/DaedalusEnchant] Если Вы находитесь в воздухе больше секунды, ваши атаки сопровождаются мощными стрелами с неба
+		'''
 }
 
 UmbraphileEnchant: {
@@ -433,7 +434,7 @@ StatigelEnchant: {
 		'''
 		Увеличивает максимальную скорость передвижения
 		Значительно уменьшает ускорение и замедление
-		Чем быстрее вы двигаетесь, тем больше урона наносите, до +35%
+		Чем быстрее Вы двигаетесь, тем больше урона наносите, до +35%
 		'''
 }
 
@@ -452,11 +453,11 @@ VictideEnchant: {
 		'''
 		Дарует морские иглы, которые торчат из вашего тела
 		Защита увеличена на 4 пока иглы в вашем теле
-		Иглы заряжаются, пока вы атакуете, и вылетают наружу, когда вы перестаёте
+		Иглы заряжаются, пока Вы атакуете, и вылетают наружу, когда Вы перестаёте
 		'''
 }
 
-// Lore.LoreDraedon.DisplayName: Draedon
+Lore.LoreDraedon.DisplayName: Дрэйдон
 
 FathomSwarmerEnchant: {
 	// DisplayName: Fathom Swarmer Enchantment

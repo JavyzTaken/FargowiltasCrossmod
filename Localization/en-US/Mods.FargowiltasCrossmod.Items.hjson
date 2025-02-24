@@ -332,11 +332,11 @@ GaleForce: {
 		Grants unlimited jumps in the air
 
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
-		     Hold S while jumping to dive downwards
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold S while jumping to dive downwards
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
 		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
 		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
-		     Once 6 spines are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/VictideEnchant] Once 6 spines are spawned, the next jump launches them out to home onto targets
 		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
 		'''
 }
@@ -397,11 +397,11 @@ ElementsForce: {
 	DisplayName: Force of the Elements
 	Tooltip:
 		'''
-		Magma Mode:
+		[c/E03131:Magma Mode:]
 		[i:FargowiltasCrossmod/ReaverEnchant] Increased damage reduction by 30% and defense by 30
 		[i:FargowiltasCrossmod/HydrothermicEnchant] Attacking builds up heat, stop attacking at full heat or get hit to vent it
-		Venting heat grants Reaver Rage and summons powerful chaos flares for up to 3 seconds
-		Blizzard Mode:
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Venting heat grants Reaver Rage and summons powerful chaos flares for up to 3 seconds
+		[c/45A8EF:Blizzard Mode:]
 		[i:FargowiltasCrossmod/ReaverEnchant] Increased flight time and speed, life regen, hook velocity and reduced dash cooldown
 		[i:FargowiltasCrossmod/AerospecEnchant] Grants up to +50% damage the longer you've stayed in the air
 		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air, attacks are accompanied by powerful arrows from the sky
