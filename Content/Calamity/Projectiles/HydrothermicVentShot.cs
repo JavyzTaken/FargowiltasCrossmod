@@ -21,11 +21,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailingMode[Type] = 1;
-            ProjectileID.Sets.TrailCacheLength[Type] = 8;
+            ProjectileID.Sets.TrailCacheLength[Type] = 14;
         }
         public override void SetDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 8;
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.friendly = true;
