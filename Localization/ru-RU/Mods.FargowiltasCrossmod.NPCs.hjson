@@ -6,98 +6,98 @@ LargePerforatorTail.DisplayName: Большой Перфоратор
 PermafrostBoss.DisplayName: Пермафрост
 
 AresHand: {
-	// DisplayName: Ares Hand
-	// EnergyKatanaDisplayName: XF-09 Ares Energy Katana
-	// PulseCannonDisplayName: XF-09 Ares Pulse Cannon
+	DisplayName: Рука Арес
+	EnergyKatanaDisplayName: Энергетическая катана ВУ-09 Ареса
+	PulseCannonDisplayName: Пульс-пушка ВУ-09 Ареса
 }
 
 Draedon: {
-	// IntroductionMonologue1: I have waited long for this moment.
-	// IntroductionMonologue2: Your nature fascinates me, for I do not understand it.
-	// IntroductionMonologue3: You will face my creations, which have surpassed even gods.
-	// IntroductionMonologue4: And you will show me your disposition through battle.
-	// IntroductionMonologue5: Now, choose.
-	// IntroductionMonologueBrief: Make your choice.
-	// ExoMechChoiceResponse1: Excellent. Your flight abilities will be enhanced as the experiment begins.
-	// ExoMechChoiceResponse2: They will arrive shortly.
-	// Interjection1: Hmm...
-	// Interjection2_Thermal_Minor: It appears that you have thus far sustained minor thermal burns.
-	// Interjection2_Thermal_Major: It appears that you have thus far sustained major thermal burns.
-	// Interjection2_Thermal_NearLethal: It appears that you have thus far sustained near-lethal thermal burns.
-	// Interjection2_Plasma_Minor: It appears that you have thus far sustained minor plasma burns.
-	// Interjection2_Plasma_Major: It appears that you have thus far sustained major plasma burns.
-	// Interjection2_Plasma_NearLethal: It appears that you have thus far sustained near-lethal plasma burns.
-	// Interjection2_Electricity_Minor: It appears that you have sustained minor nerve damage from electric shocks.
-	// Interjection2_Electricity_Major: It appears that you have sustained major nerve damage from electric shocks.
-	// Interjection2_Electricity_NearLethal: It appears that you have sustained near-lethal nerve damage from electric shocks.
-	// Interjection2_Internal_Minor: It appears that you are currently suffering from minor internal organ damage.
-	// Interjection2_Internal_Major: It appears that you are currently suffering from major internal organ damage.
-	// Interjection2_Internal_NearLethal: It appears that you are currently suffering from near-lethal internal organ damage.
-	// Interjection2_BluntForceTrauma_Minor: It appears that you have been struck by minor blunt force trauma.
-	// Interjection2_BluntForceTrauma_Major: It appears that you have been struck by major blunt force trauma.
-	// Interjection2_BluntForceTrauma_NearLethal: It appears that you have been struck by near-lethal blunt force trauma.
-	// Interjection2_Undamaged: It appears that you have not sustained any damage. Fascinating.
-	// Interjection3: These results are excellent.
-	// Interjection4: We shall now reset the variables to their controls for the next phase of testing.
-	// Interjection5: Now, prepare yourself.
-	// Interjection6: My remaining machines shall return shortly.
-	// Interjection7: Marvelous.
-	// Interjection8: Your abilities up to this point have captured my interest.
-	// Interjection9: Now, it is time for the final phase of testing.
-	// Interjection10: I have instructed my last machine to operate at maximum firepower.
-	// Interjection10_Plural: I have instructed my last machines to operate at maximum firepower.
-	// Interjection11: Good luck.
-	// EndOfBattle_FirstDefeat1: Extraordinary!
-	// EndOfBattle_FirstDefeat2: This outcome has fallen far outside the expectations of my hypotheses.
-	// EndOfBattle_FirstDefeat3: I shall soon depart. There is much to be examined from this encounter. Before that, however...
-	// EndOfBattle_FirstDefeat4: Take this, as an extension of gratitude for your time.
-	// EndOfBattle_FirstDefeat5: If you wish to do combat with my machines again, you know how to operate the Codebreaker.
-	// EndOfBattle_FirstDefeat6: Farewell.
-	// EndOfBattle_SuccessiveDefeat1: Another completed experiment.
-	// EndOfBattle_SuccessiveDefeat2: Allow me a moment to analyze the results...
-	// EndOfBattle_SuccessiveDefeat3_Perfect: Extraordinary! Your combat engagement, patience, precision, and skill have not gone unnoticed.
-	// EndOfBattle_SuccessiveDefeat3_Excellent: Your aptitude is excellent. With a bit more precision, a perfect outcome may be within reach.
-	// EndOfBattle_SuccessiveDefeat3_Good: This outcome is useful.
-	// EndOfBattle_SuccessiveDefeat3_Acceptable: This outcome is unremarkable, yet serviceable.
-	// EndOfBattle_SuccessiveDefeat3_Bad: This data is of little use to me.
-	// EndOfBattle_SuccessiveDefeat3_WhyDidYouMeltTheBoss: This data is of no use to me.
-	// EndOfBattle_SuccessiveDefeat4_Perfect: This data is of sublime quality.
-	// EndOfBattle_SuccessiveDefeat4_Excellent: Perhaps soon a revolutionary insight shall be discovered?
-	// EndOfBattle_SuccessiveDefeat4_ImproveFightTime: Should you desire to engage my machines again, I would suggest a more drawn out fight.
-	// EndOfBattle_SuccessiveDefeat4_ImproveAggression: Should you desire to engage my machines again, I would suggest a more risky combat approach.
-	// EndOfBattle_SuccessiveDefeat4_ImproveBuffs: Should you desire to engage my machines again, I would suggest a reduction in consumable enhancements.
-	// EndOfBattle_SuccessiveDefeat4_ImproveHitCounter: Should you desire to engage my machines again, I would suggest greater dodging precision.
-	// EndOfBattle_SuccessiveDefeat4_Bad: A more refined combat approach would be more conducive to insightful analysis.
-	// EndOfBattle_SuccessiveDefeat4_WhyDidYouMeltTheBoss: That was far, far too short for me to draw any insightful conclusions.
-	// EndOfBattle_SuccessiveDefeat5: I await the next battle.
-	// EndOfBattle_FirstDefeatReconBodyKill1: Intriguing...
-	// EndOfBattle_FirstDefeatReconBodyKill2: A temperamental disposition was not a data point I had considered.
-	// EndOfBattle_FirstDefeatReconBodyKill3: Regardless, as I was saying...
-	// Death: Precisely within the margins of my calculations.
-	// PlayerDeathAtAmusingTime: That was rather inopportune, but still within the margins of my calculations.
-	// Error: The fabric of this reality rips at the seams.
+	IntroductionMonologue1: Я долго ждал этого момента.
+	IntroductionMonologue2: Твоя природа удивляет меня, поскольку мне её никогда не понять.
+	IntroductionMonologue3: Ты вступишь в бой с моими созданиями, превзошедшими даже богов.
+	IntroductionMonologue4: И ты покажешь мне свой нрав во время боя.
+	IntroductionMonologue5: Теперь же, сделай выбор.
+	IntroductionMonologueBrief: Сделай выбор.
+	ExoMechChoiceResponse1: Прекрасно. Твои летательные способности будут улучшены с началом эксперимента.
+	ExoMechChoiceResponse2: Они скоро прибудут.
+	Interjection1: Хмм...
+	Interjection2_Thermal_Minor: Как я вижу, до сих пор тебе удалось выдержать лёгкие тепловые ожоги.
+	Interjection2_Thermal_Major: Как я вижу, до сих пор тебе удалось выдержать тяжёлые тепловые ожоги.
+	Interjection2_Thermal_NearLethal: Как я вижу, до сих пор тебе удалось выдержать почти смертельные тепловые ожоги.
+	Interjection2_Plasma_Minor: Как я вижу, до сих пор тебе удалось выдержать лёгкие ожоги от плазмы.
+	Interjection2_Plasma_Major: Как я вижу, до сих пор тебе удалось выдержать тяжёлые ожоги от плазмы.
+	Interjection2_Plasma_NearLethal: Как я вижу, до сих пор тебе удалось выдержать почти смертельные ожоги от плазмы.
+	Interjection2_Electricity_Minor: Как я вижу, тебе удалось выдержать лёгкий урон по нервной системе от электрического шока.
+	Interjection2_Electricity_Major: Как я вижу, тебе удалось выдержать тяжёлый урон по нервной системе от электрического шока.
+	Interjection2_Electricity_NearLethal: Как я вижу, тебе удалось выдержать почти смертельный урон по нервной системе от электрического шока.
+	Interjection2_Internal_Minor: Как я вижу, сейчас ты испытываешь незначительный урон по внутренним органам.
+	Interjection2_Internal_Major: Как я вижу, сейчас ты испытываешь значительный урон по внутренним органам.
+	Interjection2_Internal_NearLethal: Как я вижу, сейчас ты испытываешь почти смертельный урон по внутренним органам.
+	Interjection2_BluntForceTrauma_Minor: Как я вижу, сейчас ты испытываешь незначительные повреждения от ударов тупым предметом.
+	Interjection2_BluntForceTrauma_Major: Как я вижу, сейчас ты испытываешь значительные повреждения от ударов тупым предметом.
+	Interjection2_BluntForceTrauma_NearLethal: Как я вижу, сейчас ты испытываешь почти смертельные повреждения от ударов тупым предметом.
+	Interjection2_Undamaged: Как я вижу, ты не испытываешь никаких повреждений. Удивительно.
+	Interjection3: Данные результаты превосходны.
+	Interjection4: Теперь, чтобы приступить к следующей фазе тестирования, мы восстановим все переменные до их исходных значений.
+	Interjection5: А теперь приготовься.
+	Interjection6: Оставшиеся машины скоро вновь прибудут.
+	Interjection7: Чудесно.
+	Interjection8: Твои способности на данный момент захватили мой интерес.
+	Interjection9: Пришло время приступить к последней фазе тестирования.
+	Interjection10: Я дал инструкции последней машине работать с максимальной мощностью.
+	Interjection10_Plural: Я дал инструкции последним машинам работать с максимальной мощностью.
+	Interjection11: Удачи.
+	EndOfBattle_FirstDefeat1: Невероятно!
+	EndOfBattle_FirstDefeat2: Данный исход выходит далеко за рамки моей гипотезы.
+	EndOfBattle_FirstDefeat3: Я вынужден скоро покинуть это место. Слишком много нужно изучить в данной битве. Однако, перед этим...
+	EndOfBattle_FirstDefeat4: Возьми это как дополнительная благодарность за твоё время.
+	EndOfBattle_FirstDefeat5: Если ты желаешь вновь сразиться с моими машинами, ты знаешь, как использовать дешифратор.
+	EndOfBattle_FirstDefeat6: Успехов тебе.
+	EndOfBattle_SuccessiveDefeat1: Ещё один завершённый эксперимент.
+	EndOfBattle_SuccessiveDefeat2: Позволь мне провести анализ его результатов...
+	EndOfBattle_SuccessiveDefeat3_Perfect: Невероятно! Твоя агрессия в перемешку с терпением и точностью, твои навыки сложно не заметить.
+	EndOfBattle_SuccessiveDefeat3_Excellent: Твои способности великолепны. Не хватает лишь немного точности, и идеальный исход будет не так далёк от реальности.
+	EndOfBattle_SuccessiveDefeat3_Good: Данный исход довольно полезен.
+	EndOfBattle_SuccessiveDefeat3_Acceptable: Данный исход ничем не примечателен, но данные использовать можно.
+	EndOfBattle_SuccessiveDefeat3_Bad: Эти данные не совсем подходят для моих исследований.
+	EndOfBattle_SuccessiveDefeat3_WhyDidYouMeltTheBoss: Я не могу использовать эти данные.
+	EndOfBattle_SuccessiveDefeat4_Perfect: Ты предоставил мне идеальные данные.
+	EndOfBattle_SuccessiveDefeat4_Excellent: Возможно, скоро нами будет сделано революционное открытие?
+	EndOfBattle_SuccessiveDefeat4_ImproveFightTime: Если ты пожелаешь вновь вызвать мои машины, я рекомендую увеличить длину битвы с ними.
+	EndOfBattle_SuccessiveDefeat4_ImproveAggression: Если ты пожелаешь вновь вызвать мои машины, я рекомендую стараться быть более рискованным.
+	EndOfBattle_SuccessiveDefeat4_ImproveBuffs: Если ты пожелаешь вновь вызвать мои машины, я рекомендую снизить использование расходуемых улучшений.
+	EndOfBattle_SuccessiveDefeat4_ImproveHitCounter: Если ты пожелаешь вновь вызвать мои машины, я рекомендую улучшить навыки уворота.
+	EndOfBattle_SuccessiveDefeat4_Bad: Более утончённый подход к битве привёл бы к более точному анализу.
+	EndOfBattle_SuccessiveDefeat4_WhyDidYouMeltTheBoss: Эта битва была слишком, слишком короткой, чтобы прийти к каким-то выводам.
+	EndOfBattle_SuccessiveDefeat5: Я в ожидании нашей следующей битвы.
+	EndOfBattle_FirstDefeatReconBodyKill1: Интригующе...
+	EndOfBattle_FirstDefeatReconBodyKill2: Темпераментный нрав не входил в данные для рассчётов.
+	EndOfBattle_FirstDefeatReconBodyKill3: Как бы то ни было...
+	Death: Всё точно в пределах моих рассчётов.
+	PlayerDeathAtAmusingTime: Это было довольно неудачно, но всё ещё в пределах моих рассчётов.
+	Error: Полотно реальности рвётся по швам.
 }
 
 MutantGFBText: {
-	// QuoteP2: Time to stop playing around.
-	// QuoteDoG: The world is trembling..
+	QuoteP2: Пора кончать уже с этими играми.
+	QuoteDoG: Мир сотрясается..
 }
 
 ShopModSwapper: {
-	// Default: Switch Mod
-	// Vanilla: Vanilla
-	// Calamity: Calamity mod
+	Default: Сменить мод
+	Vanilla: Базовая игра
+	Calamity: Calamity Mod
 }
 
 PermafrostChat: {
-	// Defeat1: You clearly possess great skill! My thanks to you for freeing me, and providing an opportunity to defrost my fighting abilities.
-	// Defeat2: Aah, a good round of sparring. I need the exercise, so thanks for that.
+	Defeat1: Ты явно обладаешь огромными силами! Благодарю тебя за своё освобождение, а также за возможность разморозить мои боевые навыки.
+	Defeat2: Ах, неплохой спарринг. Разминка – это полезно, спасибо за неё.
 }
 
-// ThanatosRename: XM-04 Hades
-// ApolloRename: XS-11 Apollo
-// ExoTwinsRenameNormal: XS-01 Artemis and XS-11 Apollo
+ThanatosRename: ВМ-04 Аид
+ApolloRename: ВП-11 Аполлон
+ExoTwinsRenameNormal: ВП-01 Артемида и ВП-11 Аполлон
 MutantBR.DisplayName: Мутант Б Р
-// MediumWormBodySegment.DisplayName: Medium Worm Body Segment
-// MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
-// MediumWormTailSegment.DisplayName: Medium Worm Tail Segment
+MediumWormBodySegment.DisplayName: Сегмент тела среднего червя
+MediumWormHeadSegment.DisplayName: Сегмент головы среднего червя
+MediumWormTailSegment.DisplayName: Сегмент хвоста среднего червя
