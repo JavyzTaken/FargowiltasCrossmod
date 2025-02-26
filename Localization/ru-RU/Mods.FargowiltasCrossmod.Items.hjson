@@ -19,7 +19,7 @@ AddedEffects: {
 	CalamityConjurist: Эффект нуклеосинтеза
 	ThoriumConjurist: Эффекты подвески Юмы и кристаллического скорпиона
 	CalamityTrawler: Эффекты глубоководного водолазного костюма
-	// CalamityWorldShaper: Effects of Marnite Enchantment
+	CalamityWorldShaper: Эффекты зачарования мранитового архитектора
 	ThoriumUniverse:
 		'''
 		Увеличивает метательную скорость атаки на 15%
@@ -327,7 +327,7 @@ WulfrumEnchant: {
 }
 
 GaleForce: {
-	DisplayName: Артефакт бури
+	DisplayName: Артефакт Бури
 	Tooltip:
 		'''
 		Даёт бесконечные двойные прыжки
@@ -396,7 +396,7 @@ HydrothermicEnchant: {
 }
 
 ElementsForce: {
-	DisplayName: Артефакт элементов
+	DisplayName: Артефакт Элементов
 	Tooltip:
 		'''
 		[c/E03131:Режим магмы:]
@@ -420,12 +420,12 @@ UmbraphileEnchant: {
 }
 
 TitanHeartEnchant: {
-	// DisplayName: Titan Heart Enchantment
-	/* Tooltip:
+	DisplayName: Зачарование сердца титана
+	Tooltip:
 		'''
-		Adrenaline builds up faster while grounded
-		While adrenaline is partially charged, receive up to 15% damage reduction
-		''' */
+		Адреналин заряжается быстрее, пока Вы на земле
+		Пока адреналин частично заряжен, Вы получаете до +15% к сопротивлению урону
+		'''
 }
 
 StatigelEnchant: {
