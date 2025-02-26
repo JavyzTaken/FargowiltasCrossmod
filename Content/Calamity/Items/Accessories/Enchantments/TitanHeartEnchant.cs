@@ -31,6 +31,7 @@ using CalamityMod.Items.Fishing.AstralCatches;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.CalPlayer;
+using CalamityMod.Dusts;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -112,7 +113,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                         }
                     }
                     else
+                    {
                         calPlayer.playFullAdrenalineSound = true;
+
+                        // dust
+                        for (int i = 0; i < 1; i++)
+                        {
+                            Vector2 pos = player.Bottom;
+                            pos.X += Main.rand.NextFloat(-50, 50);
+                            Vector2 aimPos = player.Center + Main.rand.NextVector2Circular(player.width / 2, player.width / 2);
+                            Vector2 aim = (aimPos - pos) / 10;
+                            int d = Dust.NewDust(pos, 0, 0, DustID.PurpleTorch, aim.X, aim.Y, Scale: 2);
+                            Main.dust[d].noGravity = true;
+                            Main.dust[d].velocity = aim;
+                        }
+                    }
                 }
             }
         }
