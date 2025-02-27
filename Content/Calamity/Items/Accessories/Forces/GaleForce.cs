@@ -45,7 +45,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<GaleJumpEffect>(Item);
-            player.AddEffect<GaleSulphurEffect>(Item);
             player.AddEffect<GaleSpineEffect>(Item);
             player.AddEffect<GaleSlowfallEffect>(Item);
             player.AddEffect<GaleStatigelEffect>(Item);
@@ -69,25 +68,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.Register();
         }
         
-    }
-    public class GaleSulphurEffect : AccessoryEffect
-    {
-        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
-        public override int ToggleItemType => ModContent.ItemType<SulphurEnchant>();
-        public int Timer;
-        public override void PostUpdateEquips(Player player)
-        {
-            if (player.controlJump && player.GetJumpState<GaleJump>().Active)
-            {
-                Timer++;
-                if (Timer >= 8)
-                {
-                    Projectile.NewProjectile(player.GetSource_EffectItem<GaleSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 700), 0, player.whoAmI);
-                    Timer = 0;
-                }
-            }
-            base.PostUpdateEquips(player);
-        }
     }
     public class GaleSlowfallEffect : AccessoryEffect
     {
@@ -125,7 +105,45 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         //handled by explorationjump (only active if jump effect is also active)
         public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<VictideEnchant>();
-        
+        public int SpineSpawnTimer = 0;
+        public bool SpawnedAlready = false;
+        public override void PostUpdate(Player player)
+        {
+            if (player.GetJumpState<GaleJump>().Active)
+            {
+                SpineSpawnTimer++;
+                if (SpineSpawnTimer >= 10 && !SpawnedAlready)
+                {
+                    player.CalamityAddon().ExploFeatherCount += 1;
+                    int count = (int)player.CalamityAddon().ExploFeatherCount;
+                    float boost = player.CalamityAddon().ExploFeatherCount;
+                    float rotation = 0;
+                    if (count == 1 || count == 2) rotation = 40;
+                    if (count == 3 || count == 4) rotation = 20;
+                    if (count == 5 || count == 6) rotation = 0;
+                    //rotation = 0;
+                    rotation *= count % 2 == 0 ? 1 : -1;
+                    rotation = MathHelper.ToRadians(rotation);
+                    if (boost >= 8)
+                    {
+                        player.CalamityAddon().ExploFeatherCount = 0;
+                    }
+                    else if (boost <= 6)
+                    {
+                        Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 350), 5, player.whoAmI, rotation, player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
+                    }
+                    SpineSpawnTimer = 0;
+                    SpawnedAlready = true;
+                }
+            }
+            else
+            {
+                SpineSpawnTimer = 0;
+                SpawnedAlready = false;
+            }
+                base.PostUpdate(player);
+        }
+
     }
     public class GaleJumpEffect : AccessoryEffect
     {
@@ -181,10 +199,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
                 player.maxFallSpeed = 15;
                 if (SlamParticleTimer < 40)
                 {
-                    if (SlamParticleTimer % 5 == 0 && player.HasEffect<GaleSulphurEffect>())
-                    {
-                        Projectile.NewProjectile(player.GetSource_EffectItem<GaleSulphurEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<SulphurParticulate>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 700), 0, player.whoAmI);
-                    }
                     
                     if (Main.rand.NextBool())
                     {
@@ -230,33 +244,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         
         public override void UpdateHorizontalSpeeds(Player player)
         {
-            player.runAcceleration *= 8;
-            player.maxRunSpeed *= 2.5f;
+            player.runAcceleration *= 4;
+            player.maxRunSpeed *= 2.2f;
             base.UpdateHorizontalSpeeds(player);
         }
         public override void OnStarted(Player player, ref bool playSound)
         {
-            if (player.HasEffect<GaleSpineEffect>())
-            {
-                player.CalamityAddon().ExploFeatherCount += 1;
-                int count = (int)player.CalamityAddon().ExploFeatherCount;
-                float boost = player.CalamityAddon().ExploFeatherCount;
-                float rotation = 0;
-                if (count == 1 || count == 2) rotation = 40;
-                if (count == 3 || count == 4) rotation = 20;
-                if (count == 5 || count == 6) rotation = 0;
-                //rotation = 0;
-                rotation *= count % 2 == 0 ? 1 : -1;
-                rotation = MathHelper.ToRadians(rotation);
-                if (boost >= 8)
-                {
-                    player.CalamityAddon().ExploFeatherCount = 0;
-                }
-                else if (boost <= 6)
-                {
-                    Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 350), 5, player.whoAmI, rotation , player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
-                }
-            }
+            
             player.GetJumpState<GaleJump>().Available = true;
             for (int i = 0; i < player.width; i += 5)
             {
