@@ -35,10 +35,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation + MathHelper.PiOver4, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
-        public override bool CanHitPlayer(Player target)
-        {
-            return base.CanHitPlayer(target);
-        }
         public override void AI()
         {
             if (Projectile.timeLeft == 200) {

@@ -23,6 +23,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
 using CalamityMod;
+using FargowiltasSouls.Content.Items.Accessories.Souls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
 {
@@ -135,7 +136,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public int SlamParticleTimer = 0;
         public override void PostUpdateEquips(Player player)
         {
-            
+            if (!player.HasEffect<JumpsDisabled>())
+            {
+                player.wings = 0;
+                player.wingsLogic = 0;
+            }
             player.GetJumpState<GaleJump>().Enable();
             player.jumpSpeedBoost += 1;
             player.maxRunSpeed += 1.25f;

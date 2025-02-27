@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 400;
+            Projectile.timeLeft = 450;
             Projectile.ai[1] = 200;
             Projectile.ai[2] = 200;
         }
@@ -52,7 +52,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     color = Color.Black * 0;
                 }
                 //Main.NewText(wind + "" + pos + "" + color + "" + opacity);
-                Main.EntitySpriteDraw(wind, pos, null, color, Projectile.localAI[0] + MathHelper.ToRadians(i), wind.Size() / 2, 1 + i / 10f, SpriteEffects.None);
+                Main.EntitySpriteDraw(wind, pos, null, color, Projectile.localAI[0] + MathHelper.ToRadians(i), wind.Size() / 2, 1 + i / (7f), SpriteEffects.None);
             }
             Projectile.localAI[0] += MathHelper.ToRadians(3);
             return false;
@@ -63,7 +63,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         }
         public override void AI()
         {
-            if (Projectile.timeLeft == 399)
+            if (Projectile.timeLeft == 449)
             {
                 Projectile.ai[2] = 200;
                 Projectile.ai[1] = 200;

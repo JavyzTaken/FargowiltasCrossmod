@@ -330,7 +330,7 @@ GaleForce: {
 	Tooltip:
 		'''
 		Grants unlimited jumps in the air
-
+		Disables wings if this effect is enabled
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
 		     Hold S while jumping to dive downwards
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall

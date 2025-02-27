@@ -27,6 +27,10 @@ using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Http.Headers;
+using CalamityMod.Projectiles.Enemy;
+using CalamityMod.NPCs;
+using Terraria.ModLoader.IO;
+using System.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -122,14 +126,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             {
                 if (npc.ai[2] == -1)
                 {
-                    return true;
+                    return false;
                 }
                 NPC head = Main.npc[(int)npc.ai[2]];
                 ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
 
-                if ((head.GetLifePercent() > 0.6f && ashead.Hittable1 == npc.whoAmI) ||
-                    (head.GetLifePercent() > 0.3f && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= 0.6f) ||
-                    ( ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= 0.3f))
+                if ((head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
+                    (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
+                    ( ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent))
                 {
                     Main.instance.LoadItem(ItemID.FloatingTube);
                     Asset<Texture2D> t = TextureAssets.Item[ItemID.FloatingTube];
@@ -140,23 +144,92 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
+        public override bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
+        {
+            if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && (npc.justHit || npc.life <= npc.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
+            {
+                return true;
+            }
+            if ((npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>()) && npc.ai[2] >= 0) {
+                NPC head = Main.npc[(int)npc.ai[2]];
+                ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
+                if ((head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
+                        (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
+                        (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent))
+                {
+                    return true;
+                }
+            }
+            return base.DrawHealthBar(npc, hbPosition, ref scale, ref position);
+        }
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.2f);
-            entity.defense = 0;
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.3f);
+            entity.defense = 20;
             entity.Calamity().DR = 0;
         }
-        public override void SafePostAI(NPC npc)
+        public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {
-            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() && npc.whoAmI == 7)
-            {
-                //Main.NewText(npc.ai[0] + ", " + npc.ai[1] + ", " + npc.ai[2] + ", " + npc.ai[3]);
-                //Dust.NewDustPerfect(npc.Center, DustID.Terra).noGravity = true;
-            }
-            base.SafePostAI(npc);
+            base.ModifyHitByProjectile(npc, projectile, ref modifiers);
+
+            if (ProjectileID.Sets.CultistIsResistantTo[projectile.type] && !FargoSoulsUtil.IsSummonDamage(projectile))
+                modifiers.FinalDamage *= 0.8f;
         }
-        
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(Hittable);
+            binaryWriter.Write(DidSuck);
+            binaryWriter.Write7BitEncodedInt(Hittable1);
+            binaryWriter.Write7BitEncodedInt(Hittable2);
+            binaryWriter.Write7BitEncodedInt(Hittable3);
+
+            binaryWriter.Write7BitEncodedInt(FollowTimer);
+            binaryWriter.Write7BitEncodedInt(RocksTimer);
+            binaryWriter.Write7BitEncodedInt(SpikeTimer);
+            binaryWriter.Write7BitEncodedInt(SpinTimer);
+            binaryWriter.Write7BitEncodedInt(SuckTimer);
+
+            binaryWriter.Write7BitEncodedInt(AttackChain);
+            binaryWriter.Write7BitEncodedInt(AttackPart);
+
+            binaryWriter.Write7BitEncodedInt(LastFewAttacks[0]);
+            binaryWriter.Write7BitEncodedInt(LastFewAttacks[1]);
+
+            binaryWriter.Write(FollowTurnSpeed);
+            binaryWriter.Write(DashAttackTimer);
+            binaryWriter.Write(StorePosition.X);
+            binaryWriter.Write(StorePosition.Y);
+            base.SendExtraAI(npc, bitWriter, binaryWriter);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            Hittable = binaryReader.ReadBoolean();
+            DidSuck = binaryReader.ReadBoolean();
+
+            Hittable1 = binaryReader.Read7BitEncodedInt();
+            Hittable2 = binaryReader.Read7BitEncodedInt();
+            Hittable3 = binaryReader.Read7BitEncodedInt();
+
+            FollowTimer = binaryReader.Read7BitEncodedInt();
+            RocksTimer = binaryReader.Read7BitEncodedInt();
+            SpikeTimer = binaryReader.Read7BitEncodedInt();
+            SpinTimer = binaryReader.Read7BitEncodedInt();
+            SuckTimer = binaryReader.Read7BitEncodedInt();
+
+            AttackChain = binaryReader.Read7BitEncodedInt();
+            AttackPart = binaryReader.Read7BitEncodedInt();
+
+            LastFewAttacks[0] = binaryReader.Read7BitEncodedInt();
+            LastFewAttacks[1] = binaryReader.Read7BitEncodedInt();
+
+            FollowTurnSpeed = binaryReader.ReadSingle();
+            DashAttackTimer = binaryReader.ReadSingle();
+            StorePosition.X = binaryReader.ReadSingle();
+            StorePosition.Y = binaryReader.ReadSingle();
+
+        }
+
         //segments
         public bool Hittable;
 
@@ -176,6 +249,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public int RocksTimer = 0;
         public int SpikeTimer = 0;
 
+        public int SuckTimer = 0;
+        public int SpinTimer = 0;
+        public Vector2 StorePosition = Vector2.Zero;
+
+        public int[] LastFewAttacks = [-1, -1];
+        public bool DidSuck = false;
+
+        public float Phase2Percent = 0.8f;
+        public float Phase3Percent = 0.4f;
+        public int ProjectileDamage = 120;
+
         public enum Attacks {
             Follow,
             RockDashDashRock,
@@ -187,8 +271,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             LittleDashesHomingSpikes,
             SpikesThenGas,
             GasThenSpikes,
+            CircleSpikes,
+            BigSuck,
 
             Transition2,
+
         };
         
         
@@ -210,21 +297,58 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
                 npc.dontTakeDamage = true;
 
-                if ((head.GetLifePercent() > 0.6f && ashead.Hittable1 == npc.whoAmI) ||
-                    (head.GetLifePercent() > 0.3f && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= 0.6f) ||
-                    (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= 0.3f))
+                if ((head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
+                    (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
+                    (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent))
                 {
                     npc.dontTakeDamage = false;
                 }
-
-                //Main.NewText(head.GetLifePercent());
-                if ((ashead.Hittable1 == npc.whoAmI && head.GetLifePercent() < 0.65f) ||
-                    (ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() < 0.35f))
+                //take damage if near a segment that can
+                NPC prev = Main.npc[(int)npc.ai[1]];
+                NPC next = Main.npc[(int)npc.ai[0]];
+                NPC prevprev = Main.npc[(int)Main.npc[(int)npc.ai[1]].ai[1]];
+                NPC nextnext = Main.npc[(int)Main.npc[(int)npc.ai[0]].ai[0]];
+                if ((next != null && next.active && !next.dontTakeDamage && (ashead.Hittable1 == next.whoAmI || ashead.Hittable2 == next.whoAmI || ashead.Hittable3 == next.whoAmI)) ||
+                    (prev != null && prev.active && !prev.dontTakeDamage && (ashead.Hittable1 == prev.whoAmI || ashead.Hittable2 == prev.whoAmI || ashead.Hittable3 == prev.whoAmI)) ||
+                    (nextnext != null && nextnext.active && !nextnext.dontTakeDamage && (ashead.Hittable1 == nextnext.whoAmI || ashead.Hittable2 == nextnext.whoAmI || ashead.Hittable3 == nextnext.whoAmI)) ||
+                    (prevprev != null && prevprev.active && !prevprev.dontTakeDamage && (ashead.Hittable1 == prevprev.whoAmI || ashead.Hittable2 == prevprev.whoAmI || ashead.Hittable3 == prevprev.whoAmI)))
                 {
+                    npc.dontTakeDamage = false;
+                }
+                //take damage if in non hostile phase
+                if (!(head.justHit || head.life <= head.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
+                {
+                    npc.dontTakeDamage = false;
+                }
+                //Main.NewText(head.GetLifePercent());
+                if ((ashead.Hittable1 == npc.whoAmI && head.GetLifePercent() < Phase2Percent + 0.05f) ||
+                    (ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() < Phase3Percent + 0.05f))
+                {
+                    ashead.DidSuck = false;
                     DestroyAllSegmentsBelowMe();
                     NPC.HitInfo info = new NPC.HitInfo();
                     info.Damage = (int)(head.lifeMax * 0.05f);
                     head.StrikeNPC(info, false, true);
+                    ashead.AttackPart = 0;
+                    ashead.DashAttackTimer = 0;
+                    ashead.FollowTimer = 0;
+                    ashead.RocksTimer = 0;
+                    ashead.SuckTimer = 0;
+                    ashead.SpikeTimer = 0;
+                    ashead.SpinTimer = 0;
+                    if (FargoSoulsUtil.HostCheck)
+                    {
+                        for (int i = 0; i < Main.maxProjectiles; i++)
+                        {
+                            if (Main.projectile[i].active && Main.projectile[i].type == ModContent.ProjectileType<AquaticSuck>() && Main.projectile[i].ai[0] == head.whoAmI)
+                            {
+                                Main.projectile[i].Kill();
+                                NetMessage.SendData(MessageID.SyncProjectile, number: i);
+                                break;
+                            }
+                        }
+                    }
+                    ashead.AttackChain = head.GetLifePercent() > Phase3Percent + 0.05f ? (int)Attacks.Transition1 : (int)Attacks.Transition2;
                 }
 
                 void DestroyAllSegmentsBelowMe()
@@ -248,8 +372,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     }
                 }
             }
-            if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && npc.Calamity().newAI[0] >= 1)
+            if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && npc.Calamity().newAI[2] == 0 && npc.ai[0] == 0)
             {
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    int maxLength = 50;
+                    int Previous = npc.whoAmI;
+                    for (int segments = 0; segments < maxLength; segments++)
+                    {
+                        int next;
+                        if (segments >= 0 && segments < maxLength - 1)
+                        {
+                            if (segments % 2 == 0)
+                                next = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<AquaticScourgeBodyAlt>(), npc.whoAmI);
+                            else
+                                next = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<AquaticScourgeBody>(), npc.whoAmI);
+                        }
+                        else
+                            next = NPC.NewNPC(npc.GetSource_FromAI(), (int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<AquaticScourgeTail>(), npc.whoAmI);
+
+                        Main.npc[next].realLife = npc.whoAmI;
+                        Main.npc[next].ai[2] = npc.whoAmI;
+                        Main.npc[next].ai[1] = Previous;
+                        Main.npc[Previous].ai[0] = next;
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, next);
+                        Previous = next;
+                    }
+                }
+
+                npc.Calamity().newAI[2] = 1f;
+                return false;
+            }
+            if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && (npc.justHit || npc.life <= npc.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
+            {
+                npc.boss = true;
+                npc.damage = 150;
+                if (BossRushEvent.BossRushActive) npc.damage = 300;
                 npc.TargetClosest();
                 npc.dontTakeDamage = true;
                 //increases when angle is too different. increases turn rate when gets high enough. decreases over time when angle isnt too different
@@ -257,7 +415,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 //Main.NewText(npc.GetLifePercent());
 
                 //max length is 40 in revengeance and 80 in death. i dont feel like changing the max length.
-                int maxLength = CalamityWorld.death ? 80 : 40;
+                int maxLength = 50;
 
                 //get segments that will be hittable throughout the fight
                 if (Hittable1 == 0)
@@ -273,11 +431,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     Hittable3 = FindSegment(maxLength / 5);
                 }
 
-                if (npc.GetLifePercent() > 0.6f)
+                if (npc.GetLifePercent() > Phase2Percent)
                 {
                     Main.npc[Hittable1].GetGlobalNPC<ASPartsEternity>().Hittable = true;
                 }
-                else if (npc.GetLifePercent() > 0.3f)
+                else if (npc.GetLifePercent() > Phase3Percent)
                 {
                     Main.npc[Hittable2].GetGlobalNPC<ASPartsEternity>().Hittable = true;
                 }
@@ -324,8 +482,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     {
                         FollowTurnSpeed -= 0.01f;
                     }
+                    
                     //Follow(10, aggroTimer);
-
                     switch ((Attacks)AttackChain)
                     {
                         case Attacks.RockDashDashRock:
@@ -369,7 +527,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         case Attacks.LittleDashes:
                             if (AttackPart < 3)
                             {
-                                Dash(30, 50);
+                                Dash(30, 60);
                             }
                             else if (AttackPart == 3)
                             {
@@ -439,14 +597,213 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 AttackPart = 0;
                             }
                             break;
+                        case Attacks.BigSuck:
+                            if (AttackPart == 0)
+                            {
+                                Follow(2, 4);
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<AquaticSuck>(), 0, 0, -1, npc.whoAmI);
+                                    NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                }
+                                AttackPart++;
+                            }
+                            else if (AttackPart == 1)
+                            {
+                                SuckTimer++;
+                                if (SuckTimer > 60)
+                                {
+                                    target.velocity += target.AngleTo(npc.Center).ToRotationVector2() * 0.2f;
+                                }
+                                if (SuckTimer % 60 == 0 && SuckTimer <= 350 && FargoSoulsUtil.HostCheck)
+                                {
+                                    for (int i = -4; i < 5; i++)
+                                    {
+                                        Vector2 pos = npc.Center + npc.velocity.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(i*15 + Main.rand.NextFloat(-20, 21))) * (960 + npc.Distance(targetPos) + Main.rand.NextFloat(0, 50));
+                                        int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), pos, pos.AngleTo(npc.Center).ToRotationVector2() * 4, ModContent.ProjectileType<SuckedRock>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1, -1, npc.whoAmI, i == 0 ? 1 : 0);
+                                        NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                    }
+                                }
+                                if (npc.Distance(targetPos) > 600)
+                                {
+                                    Follow(10, 1);
+                                }
+                                else
+                                {
+                                    Follow(3, 1);
+                                }
+                                if (SuckTimer >= 450)
+                                {
+                                    SuckTimer = 0;
+                                    AttackPart++;
+                                }
+                            }else if (AttackPart == 2)
+                            {
+                                SpinAround(18, 3, 140);
+                                if (SpinTimer % 20 == 0)
+                                {
+                                    SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                                    if (FargoSoulsUtil.HostCheck)
+                                    {
+                                        for (int i = 0; i < 10; i++)
+                                        {
+                                            int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-20, 20))) * Main.rand.NextFloat(10, 20), ModContent.ProjectileType<CrabBoulder>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1);
+                                            NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                        }
+                                    }
+                                }
+                            }else if (AttackPart == 3)
+                            {
+
+                                if (npc.Distance(target.Center) > 500 && SuckTimer < 30)
+                                {
+                                    Follow(20, 3, 1.05f);
+                                }
+                                else if (SuckTimer < 50)
+                                {
+                                    targetPos = target.Center + target.velocity * 40;
+                                    Follow(7, 5);
+                                }
+                                else
+                                {
+                                    Follow(4, 1);
+                                }
+                                    SuckTimer++;
+                                if ( SuckTimer > 50 && SuckTimer <= 80)
+                                {
+                                    SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                                    if (FargoSoulsUtil.HostCheck)
+                                    {
+                                        int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-10, 11))) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<SuckedRock>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1, -1, npc.whoAmI, 3);
+                                        NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                    }
+                                }
+                                if (SuckTimer > 100)
+                                {
+                                    SuckTimer = 0;
+                                    AttackPart++;
+                                }
+                            }
+                            else
+                            {
+                                AttackPart = 0;
+                                AttackChain = (int)Attacks.Follow;
+                            }
+                            break;
+                        case Attacks.CircleSpikes:
+                            //Main.NewText(AttackPart);
+                            if (AttackPart == 0)
+                            {
+                                
+                                Dash(30, 80);
+                                
+                            }
+                            else if (AttackPart == 1)
+                            {
+                                SpinAround(20, -5, 260, 1.1f);
+                                if (SpinTimer % 15 == 0)
+                                {
+                                    NPC n = npc;
+                                    for (int i = 0; i < 10; i++)
+                                    {
+                                        n = Main.npc[(int)n.ai[0]];
+                                        if (n == null || !n.active || (n.type != ModContent.NPCType<AquaticScourgeBody>() && n.type != ModContent.NPCType<AquaticScourgeBodyAlt>()))
+                                        {
+                                            break;
+                                        }
+                                        else if (n.type == ModContent.NPCType<AquaticScourgeBody>())
+                                        {
+                                            if (FargoSoulsUtil.HostCheck)
+                                            {
+                                                int type = ModContent.ProjectileType<Tooth>();
+                                                int proj = Projectile.NewProjectile(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 + 50)) * 20, type, FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1, ai0: 25, ai1: 0, ai2: target.whoAmI);
+                                                int proj2 = Projectile.NewProjectile(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 - 50)) * 20, type, FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1, ai0: 25, ai1: 0, ai2: target.whoAmI);
+                                                NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                                NetMessage.SendData(MessageID.SyncProjectile, number: proj2);
+                                            }
+                                            SoundEngine.PlaySound(SoundID.Item17, npc.Center);
+                                        }
+
+                                    }
+                                }
+                            }else if (AttackPart == 2)
+                            {
+                                Dash(30, 80);
+                            }
+                            else
+                            {
+                                AttackPart = 0;
+                                AttackChain = (int)Attacks.Follow;
+                            }
+                            break;
+                        case Attacks.Transition1:
+                            FollowTimer++;
+                            npc.velocity *= 0.95f;
+                            if (FollowTimer == 80)
+                            {
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    for (int i = 0; i < 40; i++)
+                                    {
+                                        int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat(2, 9), 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ToxicGas>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1);
+                                        NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                    }
+                                }
+                                SoundEngine.PlaySound(DSroar, npc.Center);
+                            }
+                            if (FollowTimer > 100)
+                            {
+                                FollowTimer = 200;
+                                AttackChain = (int)Attacks.Follow;
+                            }
+                            
+                            break;
+                        case Attacks.Transition2:
+                            FollowTimer++;
+                            npc.velocity *= 0.95f;
+                            if (FollowTimer == 80)
+                            {
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    for (int i = 0; i < 60; i++)
+                                    {
+                                        int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat(3, 11), 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ToxicGas>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1);
+                                        NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                    }
+                                }
+                                SoundEngine.PlaySound(DSroar, npc.Center);
+                            }
+                            if (FollowTimer > 100)
+                            {
+                                FollowTimer = 200;
+                                AttackChain = (int)Attacks.Follow;
+                            }
+                            break;
                         case Attacks.Follow:
                             FollowTimer++;
+                            
                             if (FollowTimer > 300 && npc.Distance(targetPos) < 800)
                             {
                                 FollowTimer = 0;
-                                AttackChain = Main.rand.Next(1, 4);
-                                if (npc.GetLifePercent() <= 0.6f) AttackChain = Main.rand.Next(5, 8);
-                                //AttackChain = (int)Attacks.LittleDashesHomingSpikes;
+                                AttackChain = LastFewAttacks[0];
+                                if (FargoSoulsUtil.HostCheck)
+                                {
+                                    while (LastFewAttacks[0] == AttackChain)
+                                    {
+                                        AttackChain = Main.rand.Next(1, 4);
+                                        if (npc.GetLifePercent() <= Phase2Percent) AttackChain = Main.rand.Next(5, 8);
+                                        if (npc.GetLifePercent() <= Phase3Percent) AttackChain = Main.rand.Next(5, 9);
+                                    }
+                                    LastFewAttacks[1] = LastFewAttacks[0];
+                                    LastFewAttacks[0] = AttackChain;
+                                    npc.netUpdate = true;
+                                }
+                                if (((npc.GetLifePercent() < Phase2Percent && npc.GetLifePercent() > Phase3Percent) || npc.GetLifePercent() < Phase3Percent) && !DidSuck)
+                                {
+                                    AttackChain = (int)Attacks.BigSuck;
+                                    DidSuck = true;
+                                }
+                                
                             }
                             //targetPos = npc.Center - npc.velocity.RotatedBy(MathHelper.ToRadians(10));
                             Follow(10, FollowTurnSpeed);
@@ -466,9 +823,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
                             SoundEngine.PlaySound(Mroar, npc.Center);
 
-                            for (int i = 0; i < amount; i++)
+                            if (FargoSoulsUtil.HostCheck)
                             {
-                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.Pi/2).RotatedByRandom(MathHelper.ToRadians(spread)) * Main.rand.NextFloat(10, 15), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.CrabBoulder>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 1);
+                                for (int i = 0; i < amount; i++)
+                                {
+                                    int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.rotation.ToRotationVector2().RotatedBy(-MathHelper.Pi / 2).RotatedByRandom(MathHelper.ToRadians(spread)) * Main.rand.NextFloat(10, 15), ModContent.ProjectileType<CalamityMod.Projectiles.Enemy.CrabBoulder>(), FargoSoulsUtil.ScaledProjectileDamage(npc.damage), 1);
+                                    NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                }
                             }
                         }
                         if (RocksTimer == 60)
@@ -483,10 +844,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         
                         if (DashAttackTimer == (int)(time * 0.8f) && epicExtraFlag == 1)
                         {
-                            for (int i = 0; i < 20; i++)
+                            SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
+                            if (FargoSoulsUtil.HostCheck)
                             {
-                                SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
-                                Projectile.NewProjectileDirect(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat(2, 7), 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ToxicGas>(), FargoSoulsUtil.ScaledProjectileDamage(40), 1);
+                                for (int i = 0; i < 20; i++)
+                                {
+                                    
+                                    int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, new Vector2(Main.rand.NextFloat(2, 7), 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ToxicGas>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1);
+                                    NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                }
                             }
                         }
 
@@ -522,18 +888,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         if (SpikeTimer == (int)(time * 0.8f))
                         {
                             NPC n = npc;
+                            int counter = 0;
                             for (int i = 0; i < final; i++)
                             {
+                                counter++;
                                 n = Main.npc[(int)n.ai[0]];
                                 if (n == null || !n.active || (n.type != ModContent.NPCType<AquaticScourgeBody>() && n.type != ModContent.NPCType<AquaticScourgeBodyAlt>()))
                                 {
                                     break;
                                 }
-                                else if (n.type == ModContent.NPCType<AquaticScourgeBody>())
+                                else if (n.type == ModContent.NPCType<AquaticScourgeBody>() && counter % 2 == 0)
                                 {
-                                    int type = ModContent.ProjectileType<Tooth>();
-                                    Projectile.NewProjectileDirect(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 + 50)) * 20, type, npc.damage, 1, ai0:25, ai1: homing ? 1 : 0, ai2: target.whoAmI);
-                                    Projectile.NewProjectileDirect(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 - 50)) * 20, type, npc.damage, 1, ai0: 25, ai1: homing ? 1 : 0, ai2: target.whoAmI);
+                                    if (FargoSoulsUtil.HostCheck)
+                                    {
+                                        int type = ModContent.ProjectileType<Tooth>();
+                                        int proj = Projectile.NewProjectile(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 + 80)) * 20, type, FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1, ai0: 25, ai1: homing ? 1 : 0, ai2: target.whoAmI);
+                                        int proj2 = Projectile.NewProjectile(n.GetSource_FromAI(), n.Center, n.rotation.ToRotationVector2().RotatedBy(MathHelper.ToRadians(90 - 80)) * 20, type, FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1, ai0: 25, ai1: homing ? 1 : 0, ai2: target.whoAmI);
+                                        NetMessage.SendData(MessageID.SyncProjectile, number: proj);
+                                        NetMessage.SendData(MessageID.SyncProjectile, number: proj2);
+                                    }
                                     SoundEngine.PlaySound(SoundID.Item17, npc.Center);
                                 }
                                 
@@ -545,11 +918,34 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             AttackPart++;
                         }
                     }
+                    void SpinAround(float maxSpeed, float turnSpeed, int time, float acceleration = 1.05f)
+                    {
+                        SpinTimer++;
+                        if (npc.velocity.Length() < maxSpeed)
+                        {
+                            npc.velocity *= acceleration;
+                        }
+                        else
+                        {
+                            npc.velocity /= acceleration;
+                        }
+                        npc.velocity = npc.velocity.RotatedBy(MathHelper.ToRadians(turnSpeed));
+                        if (SpinTimer >= time)
+                        {
+                            SpinTimer = 0;
+                            AttackPart++;
+                        }
+                    }
+                    
                     //Follow the targetPos variable
                     void Follow(float maxSpeed, float turnSpeed, float acceleration = 1.05f) {
                         
 
                         //speed up if too slow and vice versa
+                        if (npc.velocity == Vector2.Zero)
+                        {
+                            npc.velocity = new Vector2(1, 1);
+                        }
                         if (npc.velocity.Length() < maxSpeed)
                         {
                             npc.velocity *= acceleration;
@@ -568,7 +964,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 
                         }
                     }
-                    //Charge
 
                 }
                 npc.rotation = npc.velocity.ToRotation() + MathHelper.PiOver2;
