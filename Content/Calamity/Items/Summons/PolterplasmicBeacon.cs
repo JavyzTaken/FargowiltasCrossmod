@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/NecroplasmicBeacon";
         public override int NPCType => ModContent.NPCType<Polterghast>();
-        public override string NPCName => "Polterghast";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<NecroplasmicBeacon>().AddTile(TileID.WorkBenches).Register();

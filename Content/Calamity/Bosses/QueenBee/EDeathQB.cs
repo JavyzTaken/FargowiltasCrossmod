@@ -15,6 +15,8 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
 {
@@ -29,6 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
 
             Player player = Main.player[NPC.target];
             CalamityGlobalNPC calamityGlobalNPC = NPC.Calamity();
+            var qbEternity = NPC.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.QueenBee>();
 
             float maxEnrageScale = 2f;
             float enrageScale = 0.5f; // death default
@@ -248,6 +251,45 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
                         NPC.netSpam = 10;
                 }
                 return false;
+            }
+
+            bool doingBeeswarm = (NPC.ai[0] == 3f || NPC.ai[0] == 1f) && (qbEternity.InPhase2 && qbEternity.BeeSwarmTimer > 600);
+            if (doingBeeswarm && qbEternity.BeeSwarmTimer == 780 && !qbEternity.SubjectDR && NPC.HasPlayerTarget) // stinger spread during bee swarm; only if no subjects
+            {
+                Vector2 stingerSpawnLocation = new Vector2(NPC.Center.X + (Main.rand.Next(20) * NPC.direction), NPC.position.Y + NPC.height * 0.8f);
+                SoundEngine.PlaySound(SoundID.Item17, stingerSpawnLocation);
+                if (Main.netMode != NetmodeID.MultiplayerClient)
+                {
+                    float stingerSpeed = (phase6 ? 5f : 4f) + enrageScale;
+                    if (WorldSavingSystem.MasochistModeReal)
+                        stingerSpeed += 1f;
+
+                    Vector2 projectileVelocity = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.UnitY) * stingerSpeed;
+                    int type = Main.zenithWorld ? ModContent.ProjectileType<PlagueStingerGoliathV2>() : ProjectileID.QueenBeeStinger;
+                    int numProj = 11;
+                    int spread = 50;
+
+                    if (WorldSavingSystem.MasochistModeReal)
+                    {
+                        numProj += 4;
+                        spread += 15;
+                    }
+
+                    float rotation = MathHelper.ToRadians(spread);
+                    for (int i = 0; i < numProj; i++)
+                    {
+                        Vector2 perturbedSpeed = projectileVelocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (float)(numProj - 1)));
+                        if (i % 2f != 0f)
+                            perturbedSpeed *= 0.8f;
+
+                        int projectile = Projectile.NewProjectile(NPC.GetSource_FromAI(), stingerSpawnLocation + perturbedSpeed.SafeNormalize(Vector2.UnitY) * 10f, perturbedSpeed, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0f, Main.myPlayer, 0f, Main.player[NPC.target].position.Y);
+                        Main.projectile[projectile].timeLeft = 1200;
+                        Main.projectile[projectile].extraUpdates = 1;
+
+                        if (!Main.zenithWorld)
+                            Main.projectile[projectile].tileCollide = false;
+                    }
+                }
             }
             return true;
         }

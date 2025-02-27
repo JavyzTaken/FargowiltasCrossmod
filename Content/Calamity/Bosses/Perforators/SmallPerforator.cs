@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CalamityMod.NPCs.Perforator;
+using CalamityMod.Particles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
@@ -26,8 +29,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         ModContent.NPCType<PerforatorBodySmall>(),
         ModContent.NPCType<PerforatorTailSmall>()
         );
+        public override void SetDefaults(NPC entity)
+        {
+            if (!WorldSavingSystem.EternityMode)
+                return;
+            entity.CalamityDLC().ImmuneToAllDebuffs = true;
+        }
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
         {
+            if (!WorldSavingSystem.EternityMode) 
+                return base.CanHitPlayer(npc, target, ref cooldownSlot);
+
             if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
             {
                 if (npc.ai[3] < 60)
@@ -43,6 +55,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (!WorldSavingSystem.EternityMode)
+                return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
             if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
             {
                 if (npc.ai[3] < 60)
@@ -67,7 +81,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool SafePreAI(NPC npc)
         {
-            if (!WorldSavingSystem.EternityMode) return true;
+            if (!WorldSavingSystem.EternityMode) 
+                return true;
             npc.netUpdate = true; //fuck you worm mp code
             if (npc.type == ModContent.NPCType<PerforatorBodySmall>() || npc.type == ModContent.NPCType<PerforatorTailSmall>())
             {
@@ -143,8 +158,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         }
                         if (perf != null && target != null)
                         {
-                            npc.Center = perf.Center + (target.Center - perf.Center).SafeNormalize(Vector2.Zero) * 80;
+                            Vector2 offsetDir = (target.Center - perf.Center).SafeNormalize(Vector2.Zero);
+                            npc.Center = perf.Center + offsetDir * 80;
                             npc.rotation = npc.AngleTo(target.Center) + MathHelper.PiOver2;
+
+                            int count = Main.rand.NextBool(3) ? 1 : 0;
+                            if (npc.ai[3] == 10) // right when spawning ish
+                            {
+                                count = 25;
+                            }
+                            for (int i = 0; i < count; i++)
+                            {
+                                Color color = Main.rand.NextBool(10)  ? Color.Gold : Color.Red;
+                                float distance = 80;
+                                Vector2 offset = offsetDir.RotatedByRandom(MathHelper.PiOver2 * 0.3f);
+                                Particle p = new BloodParticle(perf.Center + offset * distance, offset.SafeNormalize(-Vector2.UnitY) * Main.rand.NextFloat(7, 14), Main.rand.Next(15, 25), Main.rand.NextFloat(0.7f, 1.3f), color);
+                                GeneralParticleHandler.SpawnParticle(p);
+                            }
                         }
                     }
                     if (npc.ai[3] == 60)

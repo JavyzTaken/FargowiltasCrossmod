@@ -136,13 +136,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 return false;
             }
 
-            
-            //Fungal clump phase 1
+
+            // not fungal phase
             if (ai_Phase == 0)
             {
                 ai_Phase++;
-                //if (DLCUtils.HostCheck)
-                    //NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
                 ai_attackCycleIndex = 0;
                 //NPC.HealEffect(-50);
                 attackCycle = [-1, 1];
@@ -169,12 +167,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 
             }
             
-            //fungal clump phase
+            // also not fungal phase
             if (ai_Phase == 4 && NPC.GetLifePercent() < 0.2f)
             {
                 ai_Phase++;
-                //if (DLCUtils.HostCheck)
-                    //NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
                 ai_attackCycleIndex = 0;
                 //NPC.HealEffect(-50);
                 attackCycle = [-1, 1, -1, 2, 1];
@@ -221,7 +217,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                     NPC.velocity.X = 0;
                 }
                 ai_Timer++;
-                if (ai_Timer == 300)
+                if (ai_Timer == 180)
                 {
                     IncrementCycle();
                     ai_Timer = 0;
@@ -358,13 +354,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (ai_Timer == 60) NPC.velocity.X = 0;
             if (ai_Timer > 60 && ai_Timer < 120)
             {
+                float speedMod = WorldSavingSystem.MasochistModeReal ? 1.4f : 1f;
                 if ((target.Center.X > NPC.Center.X || NPC.velocity.X > 0) && NPC.velocity.X >= 0)
                 {
-                    NPC.velocity.X += 0.2f;
+                    NPC.velocity.X += 0.2f * speedMod;
                 }
                 else if ((target.Center.X < NPC.Center.X || NPC.velocity.X < 0) && NPC.velocity.X <= 0)
                 {
-                    NPC.velocity.X -= 0.2f;
+                    NPC.velocity.X -= 0.2f * speedMod;
                 }
                 ai_Animation = 1;
 
@@ -374,7 +371,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 //if (DLCUtils.HostCheck)
                     //Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
             }
-            if (ai_Timer > 30 && ai_Timer % 20 == 0) 
+            int freq = WorldSavingSystem.MasochistModeReal ? 12 : 20;
+            if (ai_Timer > 30 && ai_Timer % freq == 0) 
             {
                 if (DLCUtils.HostCheck)
                 {
@@ -469,7 +467,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             ref float ai_Animation = ref NPC.ai[0];
             ref float ai_Timer = ref NPC.ai[2];
 
-            float telegraphTime = 40;
+            float telegraphTime = WorldSavingSystem.MasochistModeReal ? 20 : 40;
 
             ai_Timer++;
             ai_Animation = 3;
@@ -528,12 +526,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: -10);
                     }
                 }
-                if (type == 2)
+                else if (type == 2)
                 {
                     for (int i = 0; i < 10; i++)
                     {
                         if (DLCUtils.HostCheck)
                             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.BottomLeft + new Vector2(Main.rand.Next(0, NPC.width), -5), new Vector2(Main.rand.NextFloat(), Main.rand.NextFloat()) / 5, ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                    }
+                }
+                else
+                {
+                    if (WorldSavingSystem.MasochistModeReal)
+                    {
+                        if (DLCUtils.HostCheck)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: 5);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: -5);
+                        }
                     }
                 }
             }

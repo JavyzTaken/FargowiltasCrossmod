@@ -23,7 +23,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class EyeofExtinction : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<SupremeCalamitas>();
-        public override string NPCName => "Supreme Calamitas";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<AshesofCalamity>(10).AddIngredient<AuricBar>(4).AddTile(TileID.WorkBenches).Register();

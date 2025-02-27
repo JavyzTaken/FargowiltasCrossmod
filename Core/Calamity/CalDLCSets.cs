@@ -26,6 +26,8 @@ using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.Typeless;
 using Fargowiltas;
 using CalamityMod.Items.Placeables.Furniture;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
@@ -55,6 +57,11 @@ namespace FargowiltasCrossmod.Core.Calamity
             public static bool[] AdamantiteExclude;
             public static bool[] TungstenExclude;
             public static bool[] MarniteExclude;
+
+            /// <summary>
+            /// Items for which emode changes should be explicitly disabled. Exists to remove conflicts with Calamity item changes for the same item.
+            /// </summary>
+            public static bool[] DisabledEmodeChanges; 
         }
         public class NPCs
         {
@@ -163,6 +170,10 @@ namespace FargowiltasCrossmod.Core.Calamity
                 ItemType<RelicOfResilience>(),
                 ItemType<Grax>(),
                 ItemType<PhotonRipper>()
+            );
+
+            Items.DisabledEmodeChanges = itemFactory.CreateBoolSet(false,
+                ItemID.StarCannon
             );
             #endregion
 

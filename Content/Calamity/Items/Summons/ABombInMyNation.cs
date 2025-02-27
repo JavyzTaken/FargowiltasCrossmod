@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/Abombination";
         public override int NPCType => ModContent.NPCType<PlaguebringerGoliath>();
-        public override string NPCName => "Plaguebringer Goliath";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<Abombination>().AddTile(TileID.WorkBenches).Register();

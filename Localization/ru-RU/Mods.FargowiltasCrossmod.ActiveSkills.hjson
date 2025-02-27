@@ -1,14 +1,16 @@
-ReaverEffect: {
-	// DisplayName: Reaver Adaptability
-	/* Tooltip:
+﻿ReaverEffect: {
+	DisplayName: Адаптивность разорителя
+	Tooltip:
 		'''
-		Switch between Plated and Swift Mode
-		Plated Mode: Increases defense by 15 and damage reduction by 15%, taking damage grants Reaver Rage and summons a thorn spike
-		Swift Mode: Grants massive life regeneration, increases wing time and speed by 10%, reduces dash cooldown, increases hook speed
-		''' */
+		Переключает между плакированным и облегченным режимами
+		Плакированный: Увеличивает защиту на 15 и сопротивление урона на 15%,
+		получение урона даёт бафф «Ярость разорителя» и выпускает колючие шипы
+		Облегчённый: Значительно увеличивает регенерацию здоровья, увеличивает скорость и время полёта на 10%,
+		увеличивает частоту использования рывка, увеличивает скорость крюков-кошек
+		'''
 }
 
 ElementsForceEffect: {
-	// DisplayName: Elemental Shift
-	// Tooltip: Switch between Magma and Blizzard Mode
+	DisplayName: Элементальный сдвиг
+	Tooltip: Переключает между режимами магмы и метели
 }

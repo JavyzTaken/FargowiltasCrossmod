@@ -1,10 +1,14 @@
 ﻿
 using CalamityMod;
 using CalamityMod.Buffs.DamageOverTime;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.NPCs.CalClone;
+using CalamityMod.NPCs.Perforator;
+using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
+using CalamityMod.World;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -33,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CalamitasCloneEternity : CalDLCEmodeBehavior
     {
-        public const bool Enabled = false;
+        public const bool Enabled = true;
         #region Fields
         public Player Target => Main.player[NPC.target];
         public static float Acceleration => 0.8f;
@@ -44,6 +48,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
         public enum States
         {
+            Intro,
             ChargedGigablast
         }
         public List<States> Attacks
@@ -63,7 +68,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public override void SetDefaults()
         {
-            
+            NPC.scale = 1f;
+
+            NPC.defense = 25;
+            NPC.DR_NERD(0.15f);
+            int hp = 25000;
+            NPC.LifeMaxNERB(hp, hp, 520000);
+            double HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01;
+            NPC.lifeMax += (int)(NPC.lifeMax * HPBoost);
         }
         
         public override bool PreAI()
@@ -157,6 +169,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 return false;
             switch ((States)State)
             {
+                case States.Intro:
+                    Intro();
+                    break;
                 case States.ChargedGigablast:
                     ChargedGigablast();
                     break;
@@ -165,9 +180,77 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             return false;
         }
         #region States
+        public void Intro()
+        {
+            NPC.dontTakeDamage = true;
+            int introTime = 60 * 3;
+            if (Timer < introTime)
+            {
+                NeutralMovement();
+            }
+            if (Timer == introTime + 30)
+            {
+                if (DLCUtils.HostCheck)
+                {
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Cataclysm>());
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Catastrophe>());
+                }
+            }
+            if (++Timer > introTime + 90)
+            {
+                State = (int)States.ChargedGigablast;
+                Timer = 0;
+            }
+        }
         public void ChargedGigablast()
         {
+            NeutralMovement();
+        }
+        #endregion
+
+        #region Help Methods
+        public void NeutralMovement()
+        {
             float distance = 660f;
+
+            Timer++;
+            int telegraphStart = 60 * 6 + 30;
+            int shot = 60 * 8;
+            if (Timer > telegraphStart)
+            {
+                distance = 400f;
+                // particle telegraph
+                float progress = (Timer - telegraphStart) / (shot - telegraphStart);
+                float freq = 10f - 8f * progress;
+                float rand = MathHelper.PiOver4 * 0.4f;
+                Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + Main.rand.NextFloat(-rand, rand)).ToRotationVector2();
+                if (Main.rand.NextBool((int)freq))
+                {
+                    Vector2 velocity = dir * 20;
+                    PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                    GeneralParticleHandler.SpawnParticle(spark2);
+                }
+                if (Main.rand.NextBool((int)freq))
+                {
+                    
+                    
+                    Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                    failShotDust.noGravity = true;
+                    failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);
+                    failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                }
+            }
+            if (Timer > shot)
+            {
+                Timer = 0;
+                if (DLCUtils.HostCheck)
+                {
+                    Vector2 projPos = NPC.Center;
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<ChargedGigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
+                }
+            }
+
             Vector2 pos = Target.Center;
             Vector2 offset = Target.DirectionTo(NPC.Center) * distance;
             if (Math.Abs(FargoSoulsUtil.RotationDifference(offset, -Vector2.UnitY)) > MathHelper.PiOver2 * 0.7f)
@@ -178,9 +261,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 speed /= 2;
             Movement(pos, speed);
         }
-        #endregion
-
-        #region Help Methods
         public void Movement(Vector2 desiredPos, float speedMod)
         {
             speedMod *= 1.6f;

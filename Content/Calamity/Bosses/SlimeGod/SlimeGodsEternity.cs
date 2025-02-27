@@ -71,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             {
                 if (Empowered)
                 {
-                    modifiers.FinalDamage /= 2;
+                    modifiers.FinalDamage /= 1.75f;
                 }
             }
 
@@ -132,6 +132,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 {
                     return EmpoweredAI(npc);
                 }
+                else
+                    npc.dontTakeDamage = true;
             }
             return true;
 

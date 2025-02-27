@@ -120,7 +120,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
             ref float timer = ref NPC.ai[0];
             ref float attack = ref NPC.ai[2];
             ref float phase = ref NPC.ai[3];
-            if (NPC.life < NPC.lifeMax * 0.15f && phase != (int)Phases.Final)
+            if (NPC.life < NPC.lifeMax * 0.2f && phase != (int)Phases.Final)
             {
                 FullReset();
                 phase = (int)Phases.Final;
@@ -380,7 +380,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                     NPC.Opacity = 1;
                     const int ShotCount = 16;
                     SoundEngine.PlaySound(ExitSound, NPC.Center);
-                    NPC.SimpleStrikeNPC((int)Math.Round(NPC.lifeMax * 0.125f), 1);
+                    NPC.SimpleStrikeNPC((int)Math.Round(NPC.lifeMax * 0.15f), 1);
                     //screenshake
                     if (DLCUtils.HostCheck)
                     {
@@ -405,7 +405,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 ref float attack = ref NPC.ai[2];
                 Player player = Main.player[NPC.target];
 
-                const int partialAttackTime = 100;
+                int partialAttackTime = WorldSavingSystem.MasochistModeReal ? 80 : 100;
                 const int partialAttacks = 3;
                 if (partialTimer <= 0)
                 {
@@ -469,7 +469,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 ref float partialTimer = ref NPC.ai[1];
                 ref float attack = ref NPC.ai[2];
                 Player player = Main.player[NPC.target];
-                const int DashTime = 108; //divisible by 4 pls
+                int DashTime = WorldSavingSystem.MasochistModeReal ? 86 : 108; //divisible by 4 pls
                 const int Dashes = 3;
                 float speedmod = 1.2f;
                 if (partialTimer < DashTime * 0.7f)
@@ -550,6 +550,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 else
                 {
                     NPC.velocity *= 0.96f;
+                    if (WorldSavingSystem.MasochistModeReal)
+                        NPC.velocity *= 0.9f;
                     if (NPC.velocity.Length() < 2)
                     {
                         attack = LatestAttack == (int)Attacks.MettatonHeart ? (int)Attacks.SpinDash : (int)Attacks.MettatonHeart; //defaults to latter for first attack
@@ -563,9 +565,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 ref float phase = ref NPC.ai[3];
                 Vector2 desiredPos = Main.player[NPC.target].Center - Vector2.UnitY * 300;
                 NPC.velocity = (desiredPos - NPC.Center) * 0.05f;
-                if (NPC.life < NPC.lifeMax * 0.15f)
+                if (NPC.life < NPC.lifeMax * 0.2f)
                 {
-                    NPC.life = (int)(NPC.lifeMax * 0.15f);
+                    NPC.life = (int)(NPC.lifeMax * 0.2f);
                 }
                 if (timer < 120)
                 {

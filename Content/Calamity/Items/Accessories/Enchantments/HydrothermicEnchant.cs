@@ -61,7 +61,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<HydrothermicEffect>(Item);
-            player.CalamityAddon().HydrothermicHide = hideVisual;
         }
         
         public override void AddRecipes()
@@ -102,11 +101,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 player.endurance += (force ? 0.45f : 0.3f) * heatLevel;
             if (dlc.HydrothermicOverheat)
             {
-                if (!dlc.HydrothermicHide)
-                {
-                    player.Calamity().ProvidenceBurnEffectDrawer.ParticleSpawnRate = 1;
-                    player.Calamity().ProvidenceBurnEffectDrawer.Update();
-                }
+                player.Calamity().ProvidenceBurnEffectDrawer.ParticleSpawnRate = 1;
+                player.Calamity().ProvidenceBurnEffectDrawer.Update();
 
                 dlc.HydrothermicFlareCooldown -= heatLevel / 10f;
                 if (dlc.HydrothermicFlareCooldown <= 0)
@@ -118,8 +114,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                         if (player.HasEffect<ElementsForceEffect>())
                             flareDamage = 2400;
                         flareDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, flareDamage);
-                        Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, player.DirectionTo(Main.MouseWorld).RotatedByRandom(MathHelper.PiOver2 * 0.03f) * Main.rand.NextFloat(13f, 17f), 
-                            ModContent.ProjectileType<HydrothermicFlare>(), flareDamage, 2f, player.whoAmI);
+                        Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, player.DirectionTo(Main.MouseWorld).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(13f, 17f), 
+                            ModContent.ProjectileType<HydrothermicVentShot>(), flareDamage, 2f, player.whoAmI);
                     }
                 }
 
@@ -176,7 +172,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void DrawEffects(Player player, PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             base.DrawEffects(player, drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
-            if (drawInfo.shadow == 0f && !player.CalamityAddon().HydrothermicHide)
+            if (drawInfo.shadow == 0f)
             {
                 Asset<Texture2D> t = ModContent.Request<Texture2D>("CalamityMod/Particles/BloomCircle");
                 Main.spriteBatch.SetBlendState(BlendState.Additive);

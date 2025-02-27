@@ -22,6 +22,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -409,7 +410,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                         npc.ai[3] = 0;
                         npc.netUpdate = true;
                         FargoSoulsUtil.ClearHostileProjectiles(1, npc.whoAmI);
-                        EdgyBossText("Time to stop playing around.");
+                        EdgyBossText(Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.MutantGFBText.QuoteP2"));
                     }
                     return true;
                 }
@@ -1413,7 +1414,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     else
                         npc.localAI[1] = 5;
 
-                    EdgyBossText("The world is trembling..");
+                    EdgyBossText(Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.MutantGFBText.QuoteDoG"));
                 }
 
                 if (++npc.ai[1] > 60)

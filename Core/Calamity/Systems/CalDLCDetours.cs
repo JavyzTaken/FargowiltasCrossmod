@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalDLCDetours : ICustomDetourProvider
+    public class CalDLCDetours : ModSystem, ICustomDetourProvider
     {
         // AI override
         // GlobalNPC
@@ -101,6 +101,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MediumPerforatorHeadOnKill_Method = typeof(PerforatorHeadMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MediumPerforatorBodyOnKill_Method = typeof(PerforatorBodyMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MediumPerforatorTailOnKill_Method = typeof(PerforatorTailMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo EmodeBalance_Method = typeof(EmodeItemBalance).GetMethod("EmodeBalance", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -142,7 +143,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MediumPerforatorHeadOnKill(PerforatorHeadMedium self);
         public delegate void Orig_MediumPerforatorBodyOnKill(PerforatorBodyMedium self);
         public delegate void Orig_MediumPerforatorTailOnKill(PerforatorTailMedium self);
+        public delegate EmodeItemBalance.EModeChange Orig_EmodeBalance(ref Item item, ref float balanceNumber, ref string[] balanceTextKeys, ref string extra);
 
+        public override void Load()
+        {
+            On_NPC.AddBuff += NPCAddBuff_Detour;
+        }
         void ICustomDetourProvider.ModifyMethods()
         {
             // AI override
@@ -186,6 +192,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(MediumPerforatorHeadOnKill_Method, MediumPerforatorHeadOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(MediumPerforatorBodyOnKill_Method, MediumPerforatorBodyOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(MediumPerforatorTailOnKill_Method, MediumPerforatorTailOnKill_Detour);
+            HookHelper.ModifyMethodWithDetour(EmodeBalance_Method, EmodeBalance_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -628,17 +635,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 if (phase == BossRushDialoguePhase.StartRepeat && currLine == 0)
                 {
-                    Main.NewText("Let's get started.", Color.Teal);
+                    Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.BossRushDialogue.Start"), Color.Teal);
                     BossRushEvent.BossRushStage = 1;
                 }
                 if (phase == BossRushDialoguePhase.TierOneComplete)
                 {
                     if (currLine == 0)
-                        Main.NewText("This is boring.", Color.Teal);
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.BossRushDialogue.EndP1_1"), Color.Teal);
                     //if (currLine == 1)
                         
                     if (currLine == 2)
-                        Main.NewText("Let's cut to the chase.", Color.Teal);
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.BossRushDialogue.EndP1_2"), Color.Teal);
                 }
                 BossRushDialogueSystem.CurrentDialogueDelay = 60;
                 BossRushDialogueSystem.currentSequenceIndex += 1;
@@ -735,6 +742,22 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
+        }
+
+        internal static EmodeItemBalance.EModeChange EmodeBalance_Detour(Orig_EmodeBalance orig, ref Item item, ref float balanceNumber, ref string[] balanceTextKeys, ref string extra)
+        {
+            if (CalDLCSets.GetValue(CalDLCSets.Items.DisabledEmodeChanges, item.type))
+                return EmodeItemBalance.EModeChange.None;
+            return orig(ref item, ref balanceNumber, ref balanceTextKeys, ref extra);
+        }
+
+        #endregion
+        #region Vanilla Detours
+        internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)
+        {
+            if (self.CalamityDLC().ImmuneToAllDebuffs)
+                return;
+            orig(self, type, time, quiet);
         }
         #endregion
     }

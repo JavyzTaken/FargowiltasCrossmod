@@ -90,6 +90,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
@@ -98,6 +99,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class CalDLCNPCChanges : GlobalNPC
     {
+        public bool ImmuneToAllDebuffs = false;
         public override bool IsLoadingEnabled(Mod mod) => ModCompatibility.Calamity.Loaded;
 
         private static List<int> SuffocationImmune =
@@ -921,7 +923,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 });
                 npcLoot.DefineConditionalDropSet(If(() => !death && (Condition.Hardmode.IsMet()), () => !death && (Condition.Hardmode.IsMet()), "")).Add(ItemID.CursedFlame, 1, 2, 5);
                 npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet()), () => death && (Condition.Hardmode.IsMet()), "")).Add(ItemID.CursedFlame, 1, 6, 15);
-                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet()), () => death && (Condition.Hardmode.IsMet()), "In Death Mode")).Add(ItemID.SoulofNight, 1, 4, 8);
+                npcLoot.DefineConditionalDropSet(If(() => death && (Condition.Hardmode.IsMet()), () => death && (Condition.Hardmode.IsMet()), Language.GetTextValue("Mods.FargowiltasCrossmod.Conditions.InDeathMod"))).Add(ItemID.SoulofNight, 1, 4, 8);
             }
             if (npc.type == NPCID.SandElemental)
             {
@@ -1079,7 +1081,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (doDeviText && Main.netMode != NetmodeID.Server)
             {
-                Main.NewText("A new item has been unlocked in Deviantt's shop!", Color.HotPink);
+                string seller = Language.GetTextValue($"Mods.Fargowiltas.NPCs.Deviantt.DisplayName");
+                Main.NewText(Language.GetTextValue("Mods.Fargowiltas.MessageInfo.NewItemUnlocked", seller), Color.HotPink);
             }
             #endregion
             //the thing
@@ -1639,12 +1642,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (PermafrostDefeatLine == 1)
                 {
-                    chat = "You clearly possess great skill! My thanks to you for freeing me, and providing an opportunity to defrost my fighting abilities.";
+                    chat = Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.PermafrostChat.Defeat1");
                     PermafrostDefeatLine = 0;
                 }
                 if (PermafrostDefeatLine == 2)
                 {
-                    chat = "Aah, a good round of sparring. I need the exercise, so thanks for that.";
+                    chat = Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.PermafrostChat.Defeat2");
                     PermafrostDefeatLine = 0;
                 }
             }
@@ -1653,10 +1656,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
 
 
-            Condition killedCragmaw = new Condition("Kill a Cragmaw Mire", () => CalDLCCompatibilityMisc.DownedCragmaw);
-            Condition killedMauler = new Condition("Kill a Mauler", () => CalDLCCompatibilityMisc.DownedMauler);
-            Condition killedNuclear = new Condition("Kill a Nuclear Terror", () => CalDLCCompatibilityMisc.DownedNuclear);
-            Condition killedGSS = new Condition("Kill a Great Sand Shark", () => CalDLCCompatibilityMisc.DownedGSS);
+            Condition killedCragmaw = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedCragmaw);
+            Condition killedMauler = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedMauler);
+            Condition killedNuclear = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedNuclear);
+            Condition killedGSS = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedGSS);
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
                 shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);

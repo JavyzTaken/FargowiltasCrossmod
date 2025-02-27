@@ -277,10 +277,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (WorldSavingSystem.EternityMode)
             {
+                string notConsumable = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.NotConsumable");
                 for (int i = 0; i < tooltips.Count; i++)
                 {
-                    tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
-                    tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
+                    tooltips[i].Text = tooltips[i].Text.Replace("\n" + notConsumable, "");
+                    tooltips[i].Text = tooltips[i].Text.Replace(notConsumable, "");
                 }
             }
             for (int i = 0; i < tooltips.Count; i++)

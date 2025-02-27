@@ -16,7 +16,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class AbandonedRemote : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<ArmoredDiggerHead>();
-        public override string NPCName => "Armored Digger";
         public override void AddRecipes()
         {
         }

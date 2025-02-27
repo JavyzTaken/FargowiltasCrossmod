@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class ColossalTentacle : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<ColossalSquid>();
-        public override string NPCName => "Colossal Squid";
         public override void AddRecipes()
         {
         }

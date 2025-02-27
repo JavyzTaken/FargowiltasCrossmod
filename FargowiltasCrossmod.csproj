@@ -18,6 +18,7 @@
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint2.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint3.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint4.png" />
+    <None Remove="Assets\ExtraTextures\TitanHeartAdrenalineBar.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\PerforatorRubble.png" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Config.hjson" />

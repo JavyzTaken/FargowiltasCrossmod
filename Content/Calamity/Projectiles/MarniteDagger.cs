@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.hostile = false;
             ProjectileID.Sets.CultistIsResistantTo[Type] = true;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 240;
+            Projectile.timeLeft = 480;
             Projectile.scale = 0.7f;
             Projectile.width = Projectile.height = 8;
             ProjectileID.Sets.TrailingMode[Type] = 2;

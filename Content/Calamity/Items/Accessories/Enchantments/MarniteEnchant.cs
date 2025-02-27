@@ -51,11 +51,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             player.AddEffect<MarniteRepulsionEffect>(item);
             player.AddEffect<MarniteLasersEffect>(item);
-            player.tileSpeed += 0.1f;
+            player.tileSpeed += 0.25f;
             player.blockRange += 5;
             if (player.FargoSouls().ForceEffect(item.type))
             {
-                player.tileSpeed += 0.15f;
+                player.tileSpeed += 0.25f;
                 player.blockRange += 5;
             }
         }
@@ -129,7 +129,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 {
                     addonPlayer.MarniteTimer = 0;
 
-                    int nearestNPCID = FargoSoulsUtil.FindClosestHostileNPC(player.Center, 490, true, true);
+                    bool forceEffect = player.ForceEffect<MarniteLasersEffect>();
+                    int detectionRange = forceEffect ? 930 : 490;
+
+                    int nearestNPCID = FargoSoulsUtil.FindClosestHostileNPC(player.Center, detectionRange, true, true);
                     if (nearestNPCID.IsWithinBounds(Main.maxNPCs))
                     {
                         NPC nearestNPC = Main.npc[nearestNPCID];
@@ -138,7 +141,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                             Vector2 pos = Main.rand.NextVector2FromRectangle(player.Hitbox);
                             Vector2 vel = pos.DirectionTo(nearestNPC.Center) * 2;
 
-                            float damage = player.ForceEffect<MarniteLasersEffect>() ? 150 : 30;
+                            float damage = player.ForceEffect<MarniteLasersEffect>() ? 80 : 30;
+                            damage *= player.ActualClassDamage(DamageClass.Generic);
 
                             int index = Projectile.NewProjectile(player.GetSource_EffectItem<MarniteLasersEffect>(), pos, vel, ModContent.ProjectileType<MarniteLaser>(), (int)damage, 1, player.whoAmI);
                             if (index.IsWithinBounds(Main.maxProjectiles) && Main.projectile[index] is Projectile proj)
