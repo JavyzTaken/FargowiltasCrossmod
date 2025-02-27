@@ -49,6 +49,26 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
         public ref float CustomRotation => ref NPC.localAI[0];
 
+        public int Phase
+        {
+            get
+            {
+                if (State == (int)States.Intro)
+                    return 1;
+                int brothers = 0;
+                if (Cataclysm != null && Cataclysm.Alive())
+                    brothers++;
+                if (Catastrophe != null && Catastrophe.Alive())
+                    brothers++;
+                return brothers switch
+                {
+                    2 => 1,
+                    1 => 2,
+                    _ => 3
+                };
+            }
+        }
+
         public enum States
         {
             Intro,
@@ -236,6 +256,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Timer++;
             int telegraphStart = 60 * 6 + 30;
             int shot = 60 * 8;
+            if (Phase >= 2)
+            {
+                telegraphStart += 60 * 6;
+                shot += 60 * 6;
+            }
             if (Timer > telegraphStart)
             {
                 distance = 400f;
@@ -258,6 +283,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     failShotDust.noGravity = true;
                     failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);
                     failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                }
+            }
+            else
+            {
+                if (Phase >= 2)
+                {
+                    if (Timer % 40 == 39)
+                    {
+                        float projectileVelocity = 14f;
+                        int type = ModContent.ProjectileType<BrimstoneHellfireball>();
+                        Vector2 fireballVelocity = Vector2.Normalize(Target.Center - NPC.Center) * projectileVelocity;
+                        Vector2 balloffset = Vector2.Normalize(fireballVelocity) * 40f;
+                        int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + balloffset, fireballVelocity, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 0f, Main.myPlayer, Target.position.X, Target.position.Y);
+                        Main.projectile[proj].netUpdate = true;
+                    }
                 }
             }
             if (Timer > shot)

@@ -19,6 +19,7 @@ using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -40,13 +41,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
     {
         public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.CalClone.Cataclysm>();
     }
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class CatastropheEternity : CalamitasBrothersEternity
     {
         public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.CalClone.Catastrophe>();
     }
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public abstract class CalamitasBrothersEternity : CalDLCEmodeBehavior
     {
-        public const bool Enabled = false;
         #region Fields
         public Player Target => Main.player[NPC.target];
         public static float Acceleration => 0.5f;
@@ -81,7 +85,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Dash,
             Flamethrower,
             Fireballs,
-            Stunned
+            Stunned,
+            Transition
         }
         public List<States> Attacks
         {
@@ -133,9 +138,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             #region Standard
             if (CalamityGlobalNPC.calamitas < 0 || !Main.npc[CalamityGlobalNPC.calamitas].active)
             {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                    NPC.StrikeInstantKill();
-
+                NPC.active = false;
+                NPC.netUpdate = true;
                 return false;
             }
 
@@ -240,15 +244,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 case States.Stunned:
                     Stunned();
                     break;
+                case States.Transition:
+                    Transition();
+                    break;
             }
             Timer++;
-            if (State != (int)States.Intro && !PhaseTwo && OtherBrother == null)
+            if (State != (int)States.Intro && State != (int)States.Transition && !PhaseTwo && OtherBrother == null)
             {
-                PhaseTwo = true;
-                int lifeBonus = (int)(NPC.lifeMax * (2 / 3f));
-                NPC.lifeMax += lifeBonus;
-                NPC.life += lifeBonus;
-                NPC.HealEffect(lifeBonus);
+                Reset();
+                State = (int)States.Transition;
                 NPC.netUpdate = true;
             }
             return false;
@@ -474,7 +478,43 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 RepulseOtherBrother(ref desiredPos);
                 Movement(desiredPos, 0.4f);
             }
-            if (StunTimer >= stunTime && Timer % CycleTime == 0)
+            if (StunTimer >= stunTime && (PhaseTwo || Timer % CycleTime == 0))
+                GoToNeutral();
+        }
+        public void Transition()
+        {
+            int transTime = 80;
+            int endTime = 30;
+            if (Timer < transTime - 15)
+            {
+                int idealDistance = 400;
+                Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * idealDistance;
+                Movement(desiredPos, 1f);
+            }
+            else
+                NPC.velocity *= 0.92f;
+            if (Timer == transTime)
+            {
+                PhaseTwo = true;
+                int lifeBonus = (int)(NPC.lifeMax * (2 / 3f));
+                NPC.lifeMax += lifeBonus;
+                NPC.life += lifeBonus;
+                NPC.HealEffect(lifeBonus);
+                NPC.netUpdate = true;
+
+                SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
+                ScreenShakeSystem.StartShake(20f);
+                if (DLCUtils.HostCheck)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CalcloneWave>(), 0, 0f);
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SoulSeeker>(), 0, NPC.whoAmI, i);
+                    }
+                }
+            }
+            if (Timer >= transTime + endTime)
                 GoToNeutral();
         }
         #endregion
@@ -495,6 +535,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             AI2 = 0;
             AI3 = 0;
             StunTimer = 0;
+            NPC.netUpdate = true;
         }
         public void GetStunned()
         {
@@ -505,6 +546,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             StunTimer = 0;
             State = (int)States.Stunned;
             SoundEngine.PlaySound(new SoundStyle("FargowiltasSouls/Assets/Sounds/Debuffs/DizzyBird") with { Pitch = -0.2f });
+            NPC.netUpdate = true;
         }
         public void RepulseOtherBrother(ref Vector2 desiredPos)
         {

@@ -12,9 +12,12 @@ using CalamityMod.NPCs.CalClone;
 using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core.Calamity;
+using FargowiltasCrossmod.Core;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class ChargedGigablast : ModProjectile
     {
         bool withinRange = false;
@@ -106,7 +109,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             if (withinRange)
             {
-                Projectile.velocity *= 1.02f;
+                if (Projectile.velocity.Length() < 20)
+                    Projectile.velocity *= 1.02f;
             }
         }
 
