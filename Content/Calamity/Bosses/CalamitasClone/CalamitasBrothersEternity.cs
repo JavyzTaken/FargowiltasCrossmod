@@ -52,6 +52,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public static float Acceleration => 0.5f;
         public static float MaxMovementSpeed => 30f;
 
+        public bool PhaseTwo = false;
         public ref float Timer => ref NPC.ai[0];
         public ref float State => ref NPC.ai[1];
         public ref float AI2 => ref NPC.ai[2];
@@ -113,6 +114,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
+            binaryWriter.Write(PhaseTwo);
             for (int i = 0; i < NPC.localAI.Length; i++)
             {
                 binaryWriter.Write(NPC.localAI[i]);
@@ -120,6 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
+            PhaseTwo = binaryReader.ReadBoolean();
             for (int i = 0; i < NPC.localAI.Length; i++)
             {
                 NPC.localAI[i] = binaryReader.ReadSingle();
@@ -239,6 +242,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     break;
             }
             Timer++;
+            if (State != (int)States.Intro && !PhaseTwo && OtherBrother == null)
+            {
+                PhaseTwo = true;
+                int lifeBonus = (int)(NPC.lifeMax * (2 / 3f));
+                NPC.lifeMax += lifeBonus;
+                NPC.life += lifeBonus;
+                NPC.HealEffect(lifeBonus);
+                NPC.netUpdate = true;
+            }
             return false;
         }
         #region States
@@ -378,6 +390,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public void Fireballs()
         {
+            ref float ballDir = ref AI2;
+            if (ballDir == 0)
+            {
+                ballDir = Main.rand.NextBool() ? 1 : -1;
+                NPC.netUpdate = true;
+            }
+
             int startup = 60;
             // movement
             int idealDistance = 420;
@@ -411,19 +430,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             else
             {
+                CustomRotation = 1;
+                float diff = FargoSoulsUtil.RotationDifference(ForwardRotation.ToRotationVector2(), NPC.DirectionTo(Target.Center));
+                NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / 140f);
+
                 int shotTimer = (int)Timer - startup;
 
                 int shotCount = 6;
                 int freq = 12;
                 float sinePeriod = (shotCount * freq) - freq * 0.35f; // assymetric
-                if (AI2 == 0)
-                    AI2 = Main.rand.NextBool() ? 1 : -1;
                 if (shotTimer % freq == freq - 1 && shotTimer < freq * shotCount)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         float rot = MathF.Sin(MathF.Tau * shotTimer / sinePeriod);
+                        rot *= ballDir;
                         rot *= MathHelper.PiOver2 * 0.32f;
                         Vector2 dir = (ForwardRotation + rot).ToRotationVector2();
                         float speed = 17f;
@@ -445,6 +467,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             StunTimer++;
             if (StunTimer < 60)
                 NPC.rotation += Main.rand.NextFloat(-1, 1) * MathHelper.PiOver4 * 0.75f * (1f - (StunTimer / 60f));
+            else
+            {
+                float idealDistance = Math.Min(NPC.Distance(Target.Center), 600);
+                Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * idealDistance;
+                RepulseOtherBrother(ref desiredPos);
+                Movement(desiredPos, 0.4f);
+            }
             if (StunTimer >= stunTime && Timer % CycleTime == 0)
                 GoToNeutral();
         }

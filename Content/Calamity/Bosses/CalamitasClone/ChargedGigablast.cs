@@ -37,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Projectile.Opacity = 0f;
             Projectile.tileCollide = false;
 
-            Projectile.scale = 2f;
+            Projectile.scale = 1.5f;
         }
 
         public override void AI()

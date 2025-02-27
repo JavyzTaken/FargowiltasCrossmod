@@ -16,6 +16,7 @@ using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using FargowiltasSouls.Core.NPCMatching;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
@@ -41,10 +42,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         #region Fields
         public Player Target => Main.player[NPC.target];
         public static float Acceleration => 0.8f;
-        public static float MaxMovementSpeed => 30f;
+        public static float MaxMovementSpeed => 18f;
 
         public ref float Timer => ref NPC.ai[0];
         public ref float State => ref NPC.ai[1];
+
+        public ref float CustomRotation => ref NPC.localAI[0];
 
         public enum States
         {
@@ -59,6 +62,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 return attacks;
             }
         }
+        public NPC Cataclysm => FargoSoulsUtil.NPCExists(CalamityGlobalNPC.cataclysm, ModContent.NPCType<Cataclysm>());
+        public NPC Catastrophe => FargoSoulsUtil.NPCExists(CalamityGlobalNPC.catastrophe, ModContent.NPCType<Catastrophe>());
         #endregion
         public override bool IsLoadingEnabled(Mod mod) => Enabled;
         public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.CalClone.CalamitasClone>();
@@ -77,7 +82,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             double HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01;
             NPC.lifeMax += (int)(NPC.lifeMax * HPBoost);
         }
-        
+
+        public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            for (int i = 0; i < NPC.localAI.Length; i++)
+            {
+                binaryWriter.Write(NPC.localAI[i]);
+            }
+        }
+        public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
+        {
+            for (int i = 0; i < NPC.localAI.Length; i++)
+            {
+                NPC.localAI[i] = binaryReader.ReadSingle();
+            }
+        }
+
         public override bool PreAI()
         {
             #region Standard
@@ -252,7 +272,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
 
             Vector2 pos = Target.Center;
-            Vector2 offset = Target.DirectionTo(NPC.Center) * distance;
+            float offsetDir = Target.DirectionTo(NPC.Center).ToRotation();
+
+            // get far away from brothers so it doesn't hit them for free
+            NPC[] brothers = [Cataclysm, Catastrophe];
+
+            Vector2 offset = offsetDir.ToRotationVector2() * distance;
+            pos += offset;
+            for (int i = 0; i < brothers.Length; i++)
+            {
+                if (brothers[i] == null) continue;
+                int minDistance = 700;
+                if (pos.Distance(brothers[i].Center) < minDistance)
+                    pos = brothers[i].Center + brothers[i].DirectionTo(pos) * minDistance;
+            }
+            pos -= offset;
+
             if (Math.Abs(FargoSoulsUtil.RotationDifference(offset, -Vector2.UnitY)) > MathHelper.PiOver2 * 0.7f)
                 offset = offset.RotateTowards(-Vector2.UnitY.ToRotation(), 0.07f);
             pos += offset;
