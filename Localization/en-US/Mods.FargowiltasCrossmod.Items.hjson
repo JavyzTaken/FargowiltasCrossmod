@@ -326,17 +326,17 @@ WulfrumEnchant: {
 }
 
 GaleForce: {
-	DisplayName: Force of Gale
+	DisplayName: Force of the Gale
 	Tooltip:
 		'''
 		Grants unlimited jumps in the air
-
+		Disables wings if this effect is enabled
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold S while jumping to dive downwards
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
-		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
 		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
 		[i:FargowiltasCrossmod/VictideEnchant] Once 6 spines are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/SulphurEnchant] Spines inflict Sulphuric Poisoning
 		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
 		'''
 }
