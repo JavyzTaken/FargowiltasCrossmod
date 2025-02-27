@@ -331,13 +331,13 @@ GaleForce: {
 	Tooltip:
 		'''
 		Даёт бесконечные двойные прыжки
-
+		Отключает крылья, если этот эффект включён
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте W во время прыжка, чтобы запустить себя вверх
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы устремиться вниз
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Удерживайте W, чтобы замедлить падение
-		[i:FargowiltasCrossmod/SulphurEnchant] Прыжки выпускают из Вас токсичные сернистые газы
 		[i:FargowiltasCrossmod/VictideEnchant] Прыжки также прикрепляют к Вашей спине острые позвонки
-		[i:FargowiltasCrossmod/VictideEnchant] Когда из Вас торчит 6 позвонков, следующий прыжок выпускает их. Позвонки самонаводятся на врагов
+		[i:FargowiltasCrossmod/VictideEnchant] Когда из Вас торчит 6 позвонков, следующий прыжок выпускает их
+		[i:FargowiltasCrossmod/SulphurEnchant] Позвонки самонаводятся на врагов и накладывают дебафф «Сернистое отравление»
 		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до 40%
 		'''
 }

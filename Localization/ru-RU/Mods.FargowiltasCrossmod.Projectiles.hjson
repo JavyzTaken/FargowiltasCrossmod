@@ -146,5 +146,5 @@ ExplorationFeather.DisplayName: Exploration Feather
 SulphurParticulate.DisplayName: Сернистые газы
 GaleSpine.DisplayName: Позвонок Бури
 HydrothermicVentShot.DisplayName: Гидротермический выстрел перегрева
-// ChargedGigablast.DisplayName: Charged Gigablast
-// SuckedRock.DisplayName: Sucked Rock
+ChargedGigablast.DisplayName: Заряженный гигавзрыв
+SuckedRock.DisplayName: Булыжник
