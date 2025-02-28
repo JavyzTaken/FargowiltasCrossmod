@@ -410,11 +410,7 @@ ElementsForce: {
 
 UmbraphileEnchant: {
 	DisplayName: Umbraphile Enchantment
-	Tooltip:
-		'''
-		Using a healing potion release a swarm of bats instead of healing you
-		The bats lifesteal from enemies for you
-		'''
+	Tooltip: ""
 }
 
 TitanHeartEnchant: {

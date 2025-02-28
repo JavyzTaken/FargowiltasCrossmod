@@ -2,6 +2,7 @@
 using CalamityMod.Projectiles.Typeless;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.LunarEvents.Vortex;
@@ -30,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Bat;
         public override void SetStaticDefaults()
@@ -41,26 +42,47 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         {
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.width = Projectile.height = 60;
+            Projectile.width = Projectile.height = 6;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 240;
             Projectile.penetrate = -1;
             Main.projFrames[Type] = 4;
             Projectile.DamageType = DamageClass.Generic;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
+            ProjectileID.Sets.TrailCacheLength[Type] = 3;
+            ProjectileID.Sets.TrailingMode[Type] = 2;
+        }
+        public override void OnSpawn(IEntitySource source)
+        {
+            if (Projectile.owner < 0 || !Main.player[Projectile.owner].active || Main.player[Projectile.owner].dead)
+            {
+                Projectile.Kill();
+                return;
+            }
+            Projectile.timeLeft = Main.player[Projectile.owner].CalamityAddon().BatTime;
         }
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             Color color = lightColor;
-            
-            for (int i = 0; i < 30; i++)
+            //FargoSoulsUtil.GenericProjectileDraw(Projectile, lightColor, t.Value);
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
             {
-                float offX = (float)Math.Sin((Projectile.timeLeft + i*20) * 0.01f *10) * Projectile.width/2;
-                float offY = (float)Math.Cos((Projectile.timeLeft ) * 0.01f + i * 10) * Projectile.width/2;
-                Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition + new Vector2(offX, offY), new Rectangle(0, t.Height() / 4 * Projectile.frame, t.Width(), t.Height() / 4), color, Projectile.rotation, new Vector2(t.Width(), t.Height() / 4) / 2, Projectile.scale, i % 2 == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+                Main.EntitySpriteDraw(t.Value, Projectile.oldPos[i] + Projectile.Size/2 - Main.screenPosition, new Rectangle(0, t.Height() / 4 * Projectile.frame, t.Width(), t.Height() / 4), lightColor * (1 - i / 3f), Projectile.oldRot[i], new Vector2(t.Width(), t.Height() / 4) / 2, Projectile.scale, Projectile.direction == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             }
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, t.Height() / 4 * Projectile.frame, t.Width(), t.Height() / 4), lightColor, Projectile.rotation, new Vector2(t.Width(), t.Height() / 4) / 2, Projectile.scale, Projectile.direction == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             
             return false;
+        }
+        public override bool? CanHitNPC(NPC target)
+        {
+            if (Projectile.owner < 0 || !Main.player[Projectile.owner].active || Main.player[Projectile.owner].dead)
+            {
+                Projectile.Kill();
+                return false;
+            }
+            return Main.player[Projectile.owner].CalamityAddon().BatHitCD == 0;
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -70,18 +92,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 return;
             }
             Player owner = Main.player[Projectile.owner];
-            owner.HealEffect(10);
+            owner.CalamityAddon().BatHitCD = 20;
+            owner.Heal(10);
         }
         public override void OnKill(int timeLeft)
         {
             base.OnKill(timeLeft);
-            for (int i = 0; i < Projectile.width; i += 3)
+            for (int i = 0; i < 5; i++)
             {
-                for (int j = 0; j < Projectile.height; j += 3)
-                {
-                    Dust d = Dust.NewDustDirect(Projectile.position + new Vector2(i, j), 1, 1, DustID.Smoke, Scale: 1.2f);
-                    d.velocity *= 0.5f;
-                }
+                Dust d = Dust.NewDustDirect(Projectile.Center, 1, 1, DustID.Smoke, Scale: 1.2f);
+                d.velocity *= 0.5f;
             }
         }
         public override void AI()
@@ -104,7 +124,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 return;
             }
             Player owner = Main.player[Projectile.owner];
-            Projectile.Center = owner.Center;
+            Projectile.direction = owner.direction;
+            Projectile.velocity += Projectile.AngleTo(owner.Center).ToRotationVector2();
+            
+            //not allowed to be too far
+            if (Projectile.Distance(owner.Center) > 60)
+            {
+                Projectile.Center = owner.Center;
+                Projectile.velocity = new Vector2(Main.rand.NextFloat(1, 10), 0).RotatedByRandom(MathHelper.TwoPi);
+            }
             
         }
     }

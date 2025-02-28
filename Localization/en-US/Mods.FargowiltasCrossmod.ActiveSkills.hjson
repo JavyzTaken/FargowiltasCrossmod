@@ -8,6 +8,16 @@ ReaverEffect: {
 		'''
 }
 
+UmbraphileEffect: {
+	DisplayName: Bat Swarm Transformation
+	Tooltip:
+		'''
+		Temporarily become a swarm of bats
+		While in this form, you are immune to damage, have +30% increased movement speed, and infinite flight
+		The bat swarm deals damage and steals life on hit
+		'''
+}
+
 ElementsForceEffect: {
 	DisplayName: Elemental Shift
 	Tooltip: Switch between Magma and Blizzard Mode

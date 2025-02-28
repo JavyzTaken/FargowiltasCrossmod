@@ -56,6 +56,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int ClamSlamIframes = 0;
         public int BatTime = 0;
         public int BatCooldown = 0;
+        public int BatHitCD = 0;
         public int MarniteTimer;
         public bool TitanHeartAdrenaline;
 
@@ -71,8 +72,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 ClamSlamIframes--;
             if (BatTime > 0)
                 BatTime--;
-            if (BatCooldown > 0)
+            if (BatCooldown > 0 && BatTime == 0)
                 BatCooldown--;
+            if (BatHitCD > 0)
+                BatHitCD--;
             base.ResetEffects();
         }
         public override bool IsLoadingEnabled(Mod mod)
