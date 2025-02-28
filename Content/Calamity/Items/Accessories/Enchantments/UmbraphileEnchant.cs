@@ -27,6 +27,9 @@ using Terraria.Audio;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
+using FargowiltasSouls.Content.UI.Elements;
+using Microsoft.Xna.Framework.Graphics;
+using FargowiltasSouls.Content.Items;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -35,9 +38,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [LegacyName("UmbraphileEnchantment")]
     public class UmbraphileEnchant : BaseEnchant
     {
+        public override List<AccessoryEffect> ActiveSkillTooltips =>
+            [AccessoryEffectLoader.GetEffect<UmbraphileEffect>()];
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Color nameColor => new Color(117, 69, 87);
 
@@ -76,25 +81,56 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return true;
         }
         public override Header ToggleHeader => null; // Header.GetHeader<DevastationHeader>();
         public override int ToggleItemType => ModContent.ItemType<UmbraphileEnchant>();
         public override bool ActiveSkill => true;
+        public override void PostUpdateEquips(Player player)
+        {
+            CalDLCAddonPlayer cd = player.GetModPlayer<CalDLCAddonPlayer>();
+            if (cd.BatTime == 1)
+            {
+                for (int i = 0; i < player.width; i += 3)
+                {
+                    for (int j = 0; j < player.height; j += 3)
+                    {
+                        Dust d = Dust.NewDustDirect(player.position + new Vector2(i, j), 1, 1, DustID.Smoke, Scale: 1.2f);
+                        d.velocity *= 0.5f;
+                    }
+                }
+            }
+            if (cd.BatTime > 0)
+            {
+                player.moveSpeed += 0.3f;
+                player.Calamity().infiniteFlight = true;
+                CooldownBarManager.Activate("UmbraphileCooldown", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/UmbraphileEnchant").Value, new Color(200, 50, 50),
+                () => cd.BatTime / 180f);
+            }
+            else if (cd.BatCooldown > 0)
+            {
+                CooldownBarManager.Activate("UmbraphileCooldown", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/UmbraphileEnchant").Value, new Color(200, 50, 50),
+                () => 1 - cd.BatCooldown / (60 * 60f));
+            }
+            base.PostUpdate(player);
+        }
         public override void ActiveSkillJustPressed(Player player, bool stunned)
         {
             
             CalDLCAddonPlayer cd = player.GetModPlayer<CalDLCAddonPlayer>();
             if (cd.BatCooldown == 0)
             {
-                cd.BatCooldown = 240;
-                cd.BatTime = 240;
-                Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<UmbraphileEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<BatMode>(), 100, 0, player.whoAmI);
-                for (int i = 0; i < proj.width; i += 3)
+                cd.BatCooldown = 60 * 60;
+                cd.BatTime = 180;
+                for (int i = 0; i < 20; i++)
                 {
-                    for (int j = 0; j < proj.height; j += 3)
+                    Projectile proj = Projectile.NewProjectileDirect(player.GetSource_EffectItem<UmbraphileEffect>(), player.Center, new Vector2(Main.rand.NextFloat(1, 10), 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<BatMode>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 100), 0, player.whoAmI);
+                }
+                for (int i = 0; i < player.width; i += 3)
+                {
+                    for (int j = 0; j < player.height; j += 3)
                     {
-                        Dust d = Dust.NewDustDirect(proj.position + new Vector2(i, j), 1, 1, DustID.Smoke, Scale:1.2f);
+                        Dust d = Dust.NewDustDirect(player.position + new Vector2(i, j), 1, 1, DustID.Smoke, Scale:1.2f);
                         d.velocity *= 0.5f;
                     }
                 }

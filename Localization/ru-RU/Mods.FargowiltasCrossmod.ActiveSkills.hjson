@@ -1,4 +1,4 @@
-﻿ReaverEffect: {
+ReaverEffect: {
 	DisplayName: Адаптивность разорителя
 	Tooltip:
 		'''
@@ -8,6 +8,16 @@
 		Облегчённый: Значительно увеличивает регенерацию здоровья, увеличивает скорость и время полёта на 10%,
 		увеличивает частоту использования рывка, увеличивает скорость крюков-кошек
 		'''
+}
+
+UmbraphileEffect: {
+	// DisplayName: Bat Swarm Transformation
+	/* Tooltip:
+		'''
+		Temporarily become a swarm of bats
+		While in this form, you are immune to damage, have +30% increased movement speed, and infinite flight
+		The bat swarm deals damage and steals life on hit
+		''' */
 }
 
 ElementsForceEffect: {
