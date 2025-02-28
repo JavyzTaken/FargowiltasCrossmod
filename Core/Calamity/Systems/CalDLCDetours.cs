@@ -346,7 +346,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void FMSVerticalSpeed_Detour(Orig_FMSVerticalSpeed orig, FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
         {
             orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-            if (NonFargoBossAlive())
+            if (NonFargoBossAlive() && self is not EternitySoul)
             {
                 player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
                 if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
@@ -380,7 +380,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void FMSHorizontalSpeed_Detour(Orig_FMSHorizontalSpeed orig, FlightMasteryWings self, Player player, ref float speed, ref float acceleration)
         {
             orig(self, player, ref speed, ref acceleration);
-            if (NonFargoBossAlive())
+            if (NonFargoBossAlive() && self is not EternitySoul)
             {
                 if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
                 {
