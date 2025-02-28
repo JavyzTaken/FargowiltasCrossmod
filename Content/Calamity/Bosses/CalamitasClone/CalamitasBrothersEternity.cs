@@ -285,6 +285,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             int windupTime = 80;
             int windbackTime = 20;
             int chargeTime = 38;
+            if (PhaseTwo)
+            {
+                if (Timer < 30)
+                    Timer = 30;
+            }
             if (Timer < windupTime)
             {
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * 400;
@@ -312,18 +317,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 GoToNeutral();
             }
         }
+        public int Flamethrower_WindupTime => 50;
+        public int Flamethrower_PullbackTime => 45;
+        public int Flamethrower_SweepTime => PhaseTwo ? 60 : 80;
         public void Flamethrower()
         {
             ref float sweepDir = ref AI2;
 
-            int windupTime = 50;
-            int pullbackTime = 45;
-            int sweepTime = 80;
 
             int firePreStartup = 10;
             int idealDistance = 280;
 
-            void Flames(float speed = 8f)
+            void Flames(float speed = 6f)
             {
                 if (Timer % 22 == 0)
                 {
@@ -338,16 +343,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 }
             }
 
-            if (Timer < windupTime)
+            if (Timer < Flamethrower_WindupTime)
             {
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * idealDistance;
                 RepulseOtherBrother(ref desiredPos);
                 Movement(desiredPos, 1f);
             }
-            else if (Timer < windupTime + pullbackTime)
+            else if (Timer < Flamethrower_WindupTime + Flamethrower_PullbackTime)
             {
                 CustomRotation = 1;
-                if (Timer == windupTime)
+                if (Timer == Flamethrower_WindupTime)
                 {
                     var otherBrother = OtherBrother;
                     if (otherBrother != null && otherBrother.TryGetDLCBehavior(out CalamitasBrothersEternity brotherAI) && brotherAI.State == State && brotherAI.Timer > Timer)
@@ -369,25 +374,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * idealDistance;
                 Movement(desiredPos, 0.75f);
 
-                if (Timer > windupTime + pullbackTime - firePreStartup)
+                if (Timer > Flamethrower_WindupTime + Flamethrower_PullbackTime - firePreStartup)
                 {
                     Flames();
                 }
             }
-            else if (Timer < windupTime + pullbackTime + sweepTime)
+            else if (Timer < Flamethrower_WindupTime + Flamethrower_PullbackTime + Flamethrower_SweepTime)
             {
                 CustomRotation = 1;
-                NPC.rotation -= sweepDir * MathHelper.Pi / sweepTime;
+                NPC.rotation -= sweepDir * MathHelper.Pi / Flamethrower_SweepTime;
                 NPC.velocity *= 0.94f;
 
-                float progress = (Timer - windupTime - pullbackTime) / sweepTime;
+                float progress = (Timer - Flamethrower_WindupTime - Flamethrower_PullbackTime) / Flamethrower_SweepTime;
                 Flames(6f + progress * 8f);
             }
             else
             {
+                if (PhaseTwo)
+                    CustomRotation = 1;
                 NPC.velocity *= 0.93f;
             }
-            if (Timer >= CycleTime)
+            int endTime = CycleTime;
+            if (PhaseTwo)
+                endTime += Flamethrower_SweepTime;
+            if (Timer >= endTime)
             {
                 GoToNeutral();
             }

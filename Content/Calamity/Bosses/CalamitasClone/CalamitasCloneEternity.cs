@@ -287,9 +287,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             else
             {
-                if (Phase >= 2)
+                if (Phase >= 2 && Timer > 60)
                 {
-                    if (Timer % 40 == 39)
+                    int freq = 40;
+                    if (Phase == 3)
+                        freq = 20;
+                    if (Timer % freq == freq - 1)
                     {
                         float projectileVelocity = 14f;
                         int type = ModContent.ProjectileType<BrimstoneHellfireball>();

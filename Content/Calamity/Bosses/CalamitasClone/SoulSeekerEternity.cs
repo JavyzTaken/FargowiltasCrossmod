@@ -118,14 +118,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 case States.Dash:
                     Dash();
                     break;
-                /*
                 case States.Flamethrower:
                     Flamethrower();
                     break;
                 case States.Fireballs:
                     Fireballs();
                     break;
-                */
                 default:
                     DefaultBehavior();
                     break;
@@ -186,7 +184,48 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public void Flamethrower()
         {
-            
+            var parentAI = Parent.GetDLCBehavior<CalamitasBrothersEternity>();
+
+
+            int flameStart = parentAI.Flamethrower_WindupTime + parentAI.Flamethrower_PullbackTime + parentAI.Flamethrower_SweepTime;
+
+            float sweepDir = -parentAI.AI2;
+            float seekerDir = parentAI.ForwardRotation + (sweepDir * MathHelper.PiOver2 * 2.4f);
+
+            Vector2 dir = seekerDir.ToRotationVector2().RotatedBy(MathHelper.PiOver2 * 0.13f * (SeekerNumber - 2));
+
+            if (sweepDir != 0)
+            {
+                if (parentAI.Timer >= flameStart && parentAI.Timer < flameStart + parentAI.Flamethrower_SweepTime)
+                {
+                    float progress = (parentAI.Timer - flameStart) / parentAI.Flamethrower_SweepTime;
+                    dir = dir.RotatedBy(-MathHelper.Pi * 1.1f * sweepDir * progress);
+                    if (SeekerNumber == 3) // flamethrower
+                    {
+                        float speed = 6f + progress * 8f;
+                        if (parentAI.Timer % 22 == 0)
+                        {
+                            SoundEngine.PlaySound(SoundID.Item34 with { Volume = 5 }, NPC.Center);
+                        }
+                        if (parentAI.Timer % 3 == 0)
+                        {
+                            int type = ModContent.ProjectileType<BrimstoneFire>();
+                            int damage = FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, type, damage, 0f, Main.myPlayer, 0f, 0f);
+                        }
+                    }
+                }
+                Vector2 desiredPos = Parent.Center + dir * BaseOffset;
+                CustomRotation = 1;
+                NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.DirectionTo(Parent.Center).ToRotation(), 0.2f);
+                Movement(desiredPos, 3f);
+            }
+            else
+            {
+                float offset = SeekerNumber * MathHelper.TwoPi / TotalSeekers;
+                Vector2 desiredPos = Parent.Center + offset.ToRotationVector2() * BaseOffset;
+                Movement(desiredPos, 1f);
+            }
         }
         public void Fireballs()
         {
@@ -198,14 +237,43 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 i = SeekerNumber - 6;
             int sign = Math.Sign(i);
 
-            if (parentAI.Timer < 4)
-                AI3 = Parent.rotation;
-            if (parentAI.Timer < 50)
+
+            int telegraph = 50;
+            int shotStart = telegraph + 12 * 5;
+            if (parentAI.Timer < telegraph + shotStart)
+            {
+                if (parentAI.Timer < telegraph + shotStart - 15)
+                    AI3 = Parent.rotation;
+
+                if (parentAI.Timer > telegraph + shotStart / 2)
+                {
+                    // particle telegraph
+                    float freq = 2f;
+                    float rand = MathHelper.PiOver4 * 0.05f;
+                    Vector2 particledir = (-NPC.rotation + Main.rand.NextFloat(-rand, rand)).ToRotationVector2();
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Vector2 velocity = particledir * 12;
+                        velocity += Parent.velocity + NPC.velocity;
+                        PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                        GeneralParticleHandler.SpawnParticle(spark2);
+                    }
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                        failShotDust.noGravity = true;
+                        failShotDust.velocity = particledir * 16 * Main.rand.NextFloat(0.5f, 1.3f);
+                        failShotDust.velocity += Parent.velocity + NPC.velocity;
+                        failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                    }
+                }
+            }
+            else
             {
                 int freq = 10;
-                int offset = 2 * Math.Abs(i);
-                if (parentAI.Timer % freq == offset - 1)
+                if (parentAI.Timer % freq == 0)
                 {
+                    SoundEngine.PlaySound(SoundID.Item34, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         for (int d = 0; d < 3; d++)
@@ -213,17 +281,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
                         int type = ModContent.ProjectileType<BrimstoneBarrage>();
                         int damage = NPC.GetProjectileDamage(type);
-                        float speed = 6f;
+                        float speed = 14f;
                         Vector2 velocity = (NPC.rotation + MathHelper.Pi).ToRotationVector2() * speed;
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 1f, Parent.target, 1f, 0f, speed * 3f);
+                        if (SeekerNumber == 0)
+                        {
+                            velocity = (AI3 + MathHelper.PiOver2).ToRotationVector2() * speed;
+                            Projectile.NewProjectile(Parent.GetSource_FromAI(), Parent.Center, velocity, type, damage, 1f, Parent.target, 1f, 0f, speed * 3f);
+                        }
                     }
                 }
             }
 
-            Vector2 dir = AI3.ToRotationVector2().RotatedBy(MathHelper.PiOver2 + MathHelper.PiOver2 * 0.2f * (i + sign));
+            Vector2 dir = AI3.ToRotationVector2().RotatedBy(MathHelper.PiOver2 + MathHelper.PiOver2 * 0.3f * i);
             Vector2 desiredPos = Parent.Center + dir * BaseOffset;
             CustomRotation = 1;
-            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.DirectionTo(Parent.Center).ToRotation(), 0.2f);
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.DirectionTo(Parent.Center).ToRotation(), 1f);
             Movement(desiredPos, 1f);
         }
         #endregion
