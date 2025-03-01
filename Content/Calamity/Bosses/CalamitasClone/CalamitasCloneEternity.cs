@@ -19,6 +19,7 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using FargowiltasSouls.Core.NPCMatching;
 using Luminance.Common.Utilities;
+using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -230,8 +231,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             if (Timer == introTime + 30)
             {
+                SoundEngine.PlaySound(SoundID.ForceRoarPitched, NPC.Center);
+                ScreenShakeSystem.StartShake(20f);
                 if (DLCUtils.HostCheck)
                 {
+                    float speed = 20;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CalcloneWave>(), 0, 0, Main.myPlayer, ai2: speed);
+
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Cataclysm>());
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<Catastrophe>());
                 }
@@ -258,8 +264,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             int shot = 60 * 8;
             if (Phase >= 2)
             {
-                telegraphStart += 60 * 6;
-                shot += 60 * 6;
+                telegraphStart += 60 * 16;
+                shot += 60 * 16;
             }
             if (Timer > telegraphStart)
             {
@@ -277,8 +283,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 }
                 if (Main.rand.NextBool((int)freq))
                 {
-                    
-                    
                     Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
                     failShotDust.noGravity = true;
                     failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);

@@ -124,6 +124,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 case States.Fireballs:
                     Fireballs();
                     break;
+                case States.SpinDashes:
+                    SpinDashes();
+                    break;
                 default:
                     DefaultBehavior();
                     break;
@@ -135,7 +138,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void DefaultBehavior()
         {
             float offset = SeekerNumber * MathHelper.TwoPi / TotalSeekers;
-            Vector2 desiredPos = Parent.Center + offset.ToRotationVector2() * BaseOffset;
+            Vector2 desiredPos = Parent.Center + (Parent.rotation + offset).ToRotationVector2() * BaseOffset;
             Movement(desiredPos, 1f);
         }
         #region Attacks
@@ -298,6 +301,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             CustomRotation = 1;
             NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.DirectionTo(Parent.Center).ToRotation(), 1f);
             Movement(desiredPos, 1f);
+        }
+        public void SpinDashes()
+        {
+            var parentAI = Parent.GetDLCBehavior<CalamitasBrothersEternity>();
+
+            float offset = SeekerNumber * MathHelper.TwoPi / TotalSeekers;
+            Vector2 desiredPos = Parent.Center + (Parent.rotation + offset).ToRotationVector2() * BaseOffset;
+            Movement(desiredPos, 1f);
+
+            int windupTime = 40;
+            int windbackTime = 10;
+            int chargeTime = 36;
+            int endTime = 3;
+            int cycle = windupTime + windbackTime + chargeTime + endTime;
+            float cycleTimer = parentAI.Timer % cycle;
+            if (cycleTimer == windupTime / 2)
+            {
+                SoundEngine.PlaySound(SoundID.Item34, NPC.Center);
+                if (DLCUtils.HostCheck)
+                {
+                    for (int d = 0; d < 3; d++)
+                        Dust.NewDust(NPC.position, NPC.width, NPC.height, (int)CalamityDusts.Brimstone, 0f, 0f, 100, default, 2f);
+
+                    int type = ModContent.ProjectileType<BrimstoneBarrage>();
+                    int damage = NPC.GetProjectileDamage(type);
+                    float speed = 9f;
+                    Vector2 velocity = offset.ToRotationVector2() * speed;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 1f, Parent.target, 1f, 0f, speed * 3f);
+                }
+            }
         }
         #endregion
         #endregion

@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\AutoloadedEffects\Shaders\GlobalOverlays\CalcloneWaveShader.fx" />
     <None Remove="Assets\ExtraTextures\AquaticScourge\ASHead.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg1.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg2.png" />
