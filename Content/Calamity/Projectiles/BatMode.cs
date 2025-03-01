@@ -61,6 +61,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 return;
             }
             Projectile.timeLeft = Main.player[Projectile.owner].CalamityAddon().BatTime;
+            Projectile.ai[0] = Main.rand.NextFloat(-1, 1);
+            Projectile.ai[1] = Main.rand.NextFloat(-1, 1);
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -86,14 +88,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            
+
             if (Projectile.owner < 0 || !Main.player[Projectile.owner].active || Main.player[Projectile.owner].dead)
             {
                 Projectile.Kill();
                 return;
             }
             Player owner = Main.player[Projectile.owner];
+
+            int heal = owner.ForceEffect<UmbraphileEffect>() ? 10 : 20;
             owner.CalamityAddon().BatHitCD = 20;
-            owner.Heal(10);
+            owner.Heal(heal);
         }
         public override void OnKill(int timeLeft)
         {
@@ -124,14 +130,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
                 return;
             }
             Player owner = Main.player[Projectile.owner];
+            Vector2 offset = new Vector2(Projectile.ai[0], Projectile.ai[1]) * 60;
+            Projectile.ai[0] += 0.1f;
+            Projectile.ai[1] += 0.1f;
+            if (Projectile.ai[0] > 1)
+            {
+                Projectile.ai[0] = -1;
+            }
+            if (Projectile.ai[1] > 1)
+            {
+                Projectile.ai[1] = -1;
+            }
             Projectile.direction = owner.direction;
-            Projectile.velocity += Projectile.AngleTo(owner.Center).ToRotationVector2();
+            Projectile.velocity = FargoSoulsUtil.SmartAccel(Projectile.position, owner.Center + offset, Projectile.velocity, 2f, 1f);
             
             //not allowed to be too far
             if (Projectile.Distance(owner.Center) > 60)
             {
-                Projectile.Center = owner.Center;
-                Projectile.velocity = new Vector2(Main.rand.NextFloat(1, 10), 0).RotatedByRandom(MathHelper.TwoPi);
+                Projectile.Center = owner.Center + owner.AngleTo(Projectile.Center).ToRotationVector2() * 60;
             }
             
         }

@@ -57,6 +57,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int ClamSlamIframes = 0;
         public int BatTime = 0;
         public int BatCooldown = 0;
+        public int BatStartupTimer = 0;
         public int BatHitCD = 0;
         public int MarniteTimer;
         public bool TitanHeartAdrenaline;
@@ -82,6 +83,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 BatCooldown--;
             if (BatHitCD > 0)
                 BatHitCD--;
+            if (BatStartupTimer > 0)
+            {
+                BatStartupTimer--;
+            }
             if (EmpyreanCooldown > 0)
                 EmpyreanCooldown--;
             base.ResetEffects();
@@ -104,7 +109,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 Player.fullRotation = 0;
                 RuffianModifiedRotation = false;
             }
-            if (BatTime > 0)
+            if (BatTime > 0 && BatStartupTimer == 0)
             {
                 Player.AddImmuneTime(ImmunityCooldownID.Bosses, 2);
                 Player.immuneNoBlink = true;
