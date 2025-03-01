@@ -24,6 +24,7 @@ using System.Reflection;
 using CalamityMod.UI.Rippers;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using CalamityMod.Projectiles.Rogue;
 
 namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
@@ -59,6 +60,11 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int BatHitCD = 0;
         public int MarniteTimer;
         public bool TitanHeartAdrenaline;
+        public bool EmpyreanRage;
+        public int EmpyreanSlowTimer = 0;
+        public bool EmpyreanEmpowered = true;
+        public int EmpyreanCooldown = 0;
+        public int EmpyreanCooldownMax = 0;
 
         public override void ResetEffects()
         {
@@ -76,6 +82,8 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 BatCooldown--;
             if (BatHitCD > 0)
                 BatHitCD--;
+            if (EmpyreanCooldown > 0)
+                EmpyreanCooldown--;
             base.ResetEffects();
         }
         public override bool IsLoadingEnabled(Mod mod)
@@ -118,6 +126,22 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 {
                     TitanHeartAdrenaline = false;
                     typeof(RipperUI).GetField("adrenBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/AdrenalineBar", AssetRequestMode.ImmediateLoad).Value);
+                }
+            }
+            if (Player.HasEffect<EmpyreanEffect>())
+            {
+                if (!EmpyreanRage)
+                {
+                    EmpyreanRage = true;
+                    typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("FargowiltasCrossmod/Assets/ExtraTextures/EmpyreanRageBar", AssetRequestMode.ImmediateLoad).Value);
+                }
+            }
+            else
+            {
+                if (EmpyreanRage)
+                {
+                    EmpyreanRage = false;
+                    typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/RageBar", AssetRequestMode.ImmediateLoad).Value);
                 }
             }
         }
@@ -176,6 +200,32 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 }
 
             }
+        }
+        public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+        {
+            if (EmpyreanEmpowered)
+            {
+                modifiers.ScalingBonusDamage += 1f;
+                if (Player.ForceEffect<EmpyreanEffect>())
+                {
+                    modifiers.ScalingBonusDamage += 1f;
+                }
+            }
+            base.ModifyHitNPC(target, ref modifiers);
+        }
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            EmpyreanEffect.EmpyreanProjectileEffect(Player, item.GetSource_OnHit(target), target.Center, damageDone);
+            base.OnHitNPCWithItem(item, target, hit, damageDone);
+        }
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            EmpyreanEffect.EmpyreanProjectileEffect(Player, proj.GetSource_OnHit(target), proj.Center, damageDone);
+            base.OnHitNPCWithProj(proj, target, hit, damageDone);
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            EmpyreanEffect.EmpyreanHitEffect(Player);
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
