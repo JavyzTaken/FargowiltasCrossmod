@@ -320,7 +320,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             int endTime = 3;
             int cycle = windupTime + windbackTime + chargeTime + endTime;
             float cycleTimer = parentAI.Timer % cycle;
-            if (cycleTimer > windupTime && cycleTimer == windupTime / 2)
+            if (parentAI.Timer > windupTime && cycleTimer == windupTime / 2)
             {
                 SoundEngine.PlaySound(SoundID.Item34, NPC.Center);
                 if (DLCUtils.HostCheck)
