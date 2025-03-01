@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke;
 
@@ -73,14 +74,24 @@ public class NuclearHurricane : ModProjectile
     public override void AI()
     {
         Time += 1f / (Z + 1f);
-
         Z = MathHelper.Lerp(Z, 0.01f, 0.03f);
+
+        // TODO -- Remove.
         if (Main.mouseRight)
             Z = 10f;
 
         Projectile.scale = 1f / (Z + 1f);
         Projectile.Opacity = 1f;
         Projectile.Resize(1400, 2600);
+
+        // Attempt to follow the nearest player.
+        Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
+        Projectile.velocity += Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
+        Projectile.velocity = Projectile.velocity.ClampLength(0f, 9f);
+
+        // Stay in the world.
+        Vector2 shoveDistance = Projectile.Size * 0.6f;
+        Projectile.Center = Vector2.Clamp(Projectile.Center, shoveDistance, new Vector2(Main.maxTilesX, Main.maxTilesY) * 16f - shoveDistance);
 
         ApplyParallaxPositioning();
 
@@ -93,24 +104,40 @@ public class NuclearHurricane : ModProjectile
             // Cache the bump value of the height separately for ease of use. This is used a couple times in the shaders that compose this hurricane.
             float heightBump = QuadraticBump(heightInterpolant);
 
-            // Calculate the wave value (and its corresponding derivative for later velocity math) based on the math used by the vertex shader
+            // Calculate the wave value (and its corresponding derivative for later velocity math) based on the math used by the vertex shader.
             float horizontalOffsetWave = MathF.Sin(heightInterpolant * -6.283f + VisualsTime);
             float horizontalOffsetWaveDerivative = MathF.Cos(heightInterpolant * -6.283f + VisualsTime);
 
             // Apply offsets based on the math that governs the hurricane's shape.
             // If you update the shaders, update this too.
-            float horizontalPichFactor = heightBump * MathHelper.Lerp(1f, MaxVisualBumpSquish, heightBump);
+            float horizontalSquishFactor = heightBump * MathHelper.Lerp(1f, MaxVisualBumpSquish, heightBump);
             Vector2 spawnPosition = Projectile.Center + Vector2.UnitY * (heightInterpolant - 0.5f) * Projectile.height * Projectile.scale;
-            spawnPosition.X += horizontalOffsetWave * horizontalPichFactor * Projectile.width * Projectile.scale * WavinessFactor;
+            spawnPosition.X += horizontalOffsetWave * horizontalSquishFactor * Projectile.width * Projectile.scale * WavinessFactor;
 
             // Offsets based on height, accounting for the shape of the hurricane is now. Now offset based on the cylinder angle.
-            spawnPosition.X += MathF.Cos(cylinderAngle) * Projectile.width * Projectile.scale * horizontalPichFactor * 0.54f;
+            spawnPosition.X += MathF.Cos(cylinderAngle) * Projectile.width * Projectile.scale * horizontalSquishFactor * 0.54f;
 
             Dust energy = Dust.NewDustPerfect(spawnPosition, 267);
             energy.color = Color.White;
             energy.velocity = new Vector2(horizontalOffsetWaveDerivative * 25f, -10f) * Projectile.scale;
             energy.scale *= Main.rand.NextFloat(0.6f, 0.925f) * Projectile.scale;
             energy.noGravity = true;
+        }
+
+        // Create projectiles around the hurricane.
+        if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.scale >= 0.9f && Projectile.timeLeft % 4 == 0)
+        {
+            float x = Main.rand.NextFloatDirection() * Projectile.width * 0.4f;
+            float y = Main.rand.NextFloat(-0.4f, 0.2f) * Projectile.height;
+            Vector2 spawnPosition = Projectile.Center + new Vector2(x, y);
+
+            WeightedRandom<int> projectileSelector = new WeightedRandom<int>(Projectile.whoAmI + Projectile.timeLeft);
+            projectileSelector.Add(ModContent.ProjectileType<AquaticUrchinProjectile>(), 1.05);
+            projectileSelector.Add(ModContent.ProjectileType<ArsenalCrate>(), 0.5);
+            projectileSelector.Add(ModContent.ProjectileType<ExplosiveCrate>(), 0.5);
+            projectileSelector.Add(ModContent.ProjectileType<TrasherProjectile>(), 0.24);
+
+            LumUtils.NewProjectileBetter(Projectile.GetSource_FromThis(), spawnPosition, Main.rand.NextVector2CircularEdge(15f, 4f), projectileSelector.Get(), 250, 0f);
         }
     }
 
@@ -120,12 +147,33 @@ public class NuclearHurricane : ModProjectile
             return;
 
         // God.
-        // This ensures that the hurricane's apparent position isn't as responsive to camera movements if he's in the background, giving a pseudo-parallax visual.
+        // This ensures that the hurricane's apparent position isn't as responsive to camera movements if it's in the background, giving a pseudo-parallax visual.
         // Idea is basically the hurricane going
         // "Oh? You moved 30 pixels in this direction? Well I'm in the background bozo so I'm gonna follow you and go in the same direction by, say, 27 pixels. This will make it look like I only moved 3 pixels"
         float parallax = 1f - MathF.Pow(2f, Z * -0.8f);
         Vector2 targetOffset = Main.LocalPlayer.position - Main.LocalPlayer.oldPosition;
         Projectile.position += targetOffset * LumUtils.Saturate(parallax);
+    }
+
+    public static void AffectProjectileVelocity(Projectile projectile)
+    {
+        int hurricaneID = ModContent.ProjectileType<NuclearHurricane>();
+        float maximumForce = 3.3f;
+        float maximumFlySpeed = 27.5f;
+        foreach (Projectile hurricane in Main.ActiveProjectiles)
+        {
+            if (hurricane.type != hurricaneID)
+                continue;
+
+            float heightInterpolant = LumUtils.InverseLerp(hurricane.Top.Y, hurricane.Bottom.Y, projectile.Center.Y);
+            float horizontalAcceleration = -MathF.Sin(heightInterpolant * -6.283f + hurricane.As<NuclearHurricane>().VisualsTime); // Second derivative of wave value.
+            float distanceFromCenter = projectile.Distance(hurricane.Center);
+            float distanceCoefficient = hurricane.width * hurricane.width * 0.4f;
+            float force = MathF.Min(maximumForce, distanceCoefficient / (distanceFromCenter.Squared() + 0.0001f)); // Faux inverse square distance proportionality law with a cap and division by zero safety check.
+            Vector2 acceleration = new Vector2(horizontalAcceleration, -0.75f) * force;
+
+            projectile.velocity = (projectile.velocity + acceleration).ClampLength(0f, maximumFlySpeed);
+        }
     }
 
     private static float QuadraticBump(float x)
@@ -257,7 +305,22 @@ public class NuclearHurricane : ModProjectile
         return false;
     }
 
-    public override bool? CanDamage() => Z >= -0.05f;
+    public override bool? CanDamage() => Z <= 0.05f;
 
-    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) => false;
+    public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+    {
+        Rectangle top = Utils.CenteredRectangle(Projectile.Top + Vector2.UnitY * 250f, new Vector2(Projectile.width, 300f));
+        if (targetHitbox.Intersects(top))
+            return true;
+
+        Rectangle bottom = Utils.CenteredRectangle(Projectile.Bottom - Vector2.UnitY * 250f, new Vector2(Projectile.width, 300f));
+        if (targetHitbox.Intersects(bottom))
+            return true;
+
+        Rectangle center = Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * MaxVisualBumpSquish * 0.85f, Projectile.height * 0.85f));
+        if (targetHitbox.Intersects(center))
+            return true;
+
+        return false;
+    }
 }

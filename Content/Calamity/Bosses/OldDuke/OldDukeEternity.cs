@@ -488,6 +488,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int dashTime = 13;
             int dashCount = 4;
             bool antiRamDashTechnology = true;
+            bool hurricaneAttack = CurrentState == OldDukeAIState.ConjureNuclearHurricane;
             float dashSpeed = 119.5f;
             Vector2 dashDestination = Target.Center;
             ref float dashCounter = ref NPC.ai[0];
@@ -587,7 +588,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 AITimer = 0;
                 NPC.netUpdate = true;
 
-                if (dashCounter >= dashCount)
+                if (dashCounter >= dashCount && !hurricaneAttack)
                     SwitchState();
             }
         }
@@ -859,16 +860,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             NPC.velocity *= 0.92f;
             NPC.Center = Vector2.Lerp(NPC.Center, Target.Center, 0.01f);
 
-            if (AITimer == 1)
+            if (AITimer == 1 && !LumUtils.AnyProjectiles(ModContent.ProjectileType<NuclearHurricane>()))
             {
-                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 0, 0f, -1, 10f);
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f);
             }
 
-            NPC.Opacity = 0f;
-            NPC.dontTakeDamage = true;
-
-            if (AITimer >= 60000)
-                AITimer = -5;
+            DoBehavior_Dashes(false);
         }
 
         /// <summary>

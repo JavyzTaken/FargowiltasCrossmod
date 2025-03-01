@@ -712,6 +712,11 @@ Mods: {
 			// NuclearHurricane.DisplayName: Nuclear Hurricane
 			// PerforatorRubble.DisplayName: Perforator Rubble
 			// ExplorationFeather.DisplayName: Exploration Feather
+			// AquaticUrchinProjectile.DisplayName: Aquatic Urchin
+			// SulphurParticulate.DisplayName: Sulphur Particulate
+			// ArsenalCrate.DisplayName: Crate
+			// ExplosiveCrate.DisplayName: Explosive Crate
+			// TrasherProjectile.DisplayName: Trasher
 		}
 
 		Buffs: {
