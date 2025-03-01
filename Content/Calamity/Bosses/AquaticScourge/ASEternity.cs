@@ -63,10 +63,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         }
         public override void UpdateLifeRegen(ref int damage)
         {
+            /*
             if (NPC.lifeRegen < 0)
             {
                 NPC.lifeRegen = (int)Math.Round(NPC.lifeRegen / 4f);
             }
+            */
         }
         /*
 
@@ -206,8 +208,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         {
             base.ModifyHitByProjectile(npc, projectile, ref modifiers);
 
-            if (ProjectileID.Sets.CultistIsResistantTo[projectile.type] && !FargoSoulsUtil.IsSummonDamage(projectile))
-                modifiers.FinalDamage *= 0.8f;
+            //if (ProjectileID.Sets.CultistIsResistantTo[projectile.type] && !FargoSoulsUtil.IsSummonDamage(projectile))
+            //    modifiers.FinalDamage *= 0.8f;
         }
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
