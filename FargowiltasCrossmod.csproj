@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\ExtraTextures\AquaticScourge\ASHead.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg1.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg2.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg3.png" />
@@ -19,6 +20,9 @@
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint3.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLegJoint4.png" />
     <None Remove="Assets\ExtraTextures\TitanHeartAdrenalineBar.png" />
+    <None Remove="Content\Calamity\Bosses\AquaticScourge\ASHead.png" />
+    <None Remove="Content\Calamity\Bosses\AquaticScourge\ASJawLeft.png" />
+    <None Remove="Content\Calamity\Bosses\AquaticScourge\ASJawRight.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\PerforatorRubble.png" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Config.hjson" />

@@ -31,6 +31,8 @@ using CalamityMod.Projectiles.Enemy;
 using CalamityMod.NPCs;
 using Terraria.ModLoader.IO;
 using System.IO;
+using CalamityMod.Particles;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -114,14 +116,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            
-            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() && npc.ai[3] >= 1)
-            {
-                Asset<Texture2D> t = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/AquaticScourge/SpikelessASBody");
-                spriteBatch.Draw(t.Value, npc.Center - screenPos, null, drawColor, npc.rotation, t.Size() / 2, npc.scale, SpriteEffects.None, 0);
-                return false;
-            }
-
             if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
             {
                 if (npc.ai[2] == -1)
@@ -137,10 +131,49 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 {
                     Main.instance.LoadItem(ItemID.FloatingTube);
                     Asset<Texture2D> t = TextureAssets.Item[ItemID.FloatingTube];
-                    spriteBatch.Draw(t.Value, npc.Center - screenPos, null, drawColor, npc.rotation, t.Size() / 2, 4, SpriteEffects.None, 1);
+                    spriteBatch.Draw(t.Value, npc.Center - screenPos, null, drawColor, npc.rotation, t.Size() / 2, 4, SpriteEffects.None, 0);
                 }
 
 
+            }
+
+            if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
+            {
+                SpriteEffects spriteEffects = SpriteEffects.None;
+                if (npc.spriteDirection == 1)
+                    spriteEffects = SpriteEffects.FlipHorizontally;
+
+                string path = "FargowiltasCrossmod/Assets/ExtraTextures/AquaticScourge/";
+                Texture2D head = ModContent.Request<Texture2D>(path + "ASHead", AssetRequestMode.ImmediateLoad).Value;
+                Texture2D left = ModContent.Request<Texture2D>(path + "ASJawLeft", AssetRequestMode.ImmediateLoad).Value;
+                Texture2D right = ModContent.Request<Texture2D>(path + "ASJawRight", AssetRequestMode.ImmediateLoad).Value;
+                Vector2 scaledDraw = new Vector2(TextureAssets.Npc[npc.type].Value.Width / 2, TextureAssets.Npc[npc.type].Value.Height / 2);
+
+                Vector2 drawLocation = npc.Center - screenPos;
+                drawLocation -= new Vector2(head.Width, head.Height) * npc.scale / 2f;
+                drawLocation += scaledDraw * npc.scale + new Vector2(0f, npc.gfxOffY);
+                Color color = npc.GetAlpha(drawColor);
+
+                if (CalamityWorld.revenge || BossRushEvent.BossRushActive || Main.zenithWorld)
+                {
+                    if (npc.Calamity().newAI[3] > 300f)
+                        color = Color.Lerp(color, Color.SandyBrown, MathHelper.Clamp((npc.Calamity().newAI[3] - 300f) / 180f, 0f, 1f));
+                    else if (npc.localAI[3] > 0f)
+                        color = Color.Lerp(color, Color.SandyBrown, MathHelper.Clamp(npc.localAI[3] / 90f, 0f, 1f));
+                }
+
+                float open = Math.Clamp(OpenMouth, 0, 1);
+                Vector2 offset = new(-26, 12);
+                float maxOpen = MathHelper.PiOver4 * 1f;
+
+                // head
+                spriteBatch.Draw(head, npc.Center - screenPos, npc.frame, color, npc.rotation, head.Size() / 2, 1, spriteEffects, 0);
+                // left
+                spriteBatch.Draw(left, drawLocation + offset.RotatedBy(npc.rotation), null, color, npc.rotation - open * maxOpen, left.Size() / 2, npc.scale, SpriteEffects.None, 0);
+                offset.X *= -1;
+                // right
+                spriteBatch.Draw(right, drawLocation + offset.RotatedBy(npc.rotation), null, color, npc.rotation + open * maxOpen, right.Size() / 2, npc.scale, SpriteEffects.None, 0);
+                return false;
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
@@ -179,7 +212,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(Hittable);
-            binaryWriter.Write(DidSuck);
+            binaryWriter.Write7BitEncodedInt(SuckCooldown);
             binaryWriter.Write7BitEncodedInt(Hittable1);
             binaryWriter.Write7BitEncodedInt(Hittable2);
             binaryWriter.Write7BitEncodedInt(Hittable3);
@@ -205,8 +238,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             Hittable = binaryReader.ReadBoolean();
-            DidSuck = binaryReader.ReadBoolean();
 
+            SuckCooldown = binaryReader.Read7BitEncodedInt();
             Hittable1 = binaryReader.Read7BitEncodedInt();
             Hittable2 = binaryReader.Read7BitEncodedInt();
             Hittable3 = binaryReader.Read7BitEncodedInt();
@@ -246,6 +279,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public int AttackPart = 0;
 
         public float DashAttackTimer = 0;
+        public float OpenMouth = 0;
         public int RocksTimer = 0;
         public int SpikeTimer = 0;
 
@@ -254,7 +288,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public Vector2 StorePosition = Vector2.Zero;
 
         public int[] LastFewAttacks = [-1, -1];
-        public bool DidSuck = false;
+        public int SuckCooldown = 0;
 
         public float Phase2Percent = 0.8f;
         public float Phase3Percent = 0.4f;
@@ -324,7 +358,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 if ((ashead.Hittable1 == npc.whoAmI && head.GetLifePercent() < Phase2Percent + 0.05f) ||
                     (ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() < Phase3Percent + 0.05f))
                 {
-                    ashead.DidSuck = false;
+                    ashead.SuckCooldown = 0;
                     DestroyAllSegmentsBelowMe();
                     NPC.HitInfo info = new NPC.HitInfo();
                     info.Damage = (int)(head.lifeMax * 0.05f);
@@ -482,6 +516,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     {
                         FollowTurnSpeed -= 0.01f;
                     }
+                    if (SuckCooldown > 0)
+                        SuckCooldown--;
                     
                     //Follow(10, aggroTimer);
                     switch ((Attacks)AttackChain)
@@ -611,7 +647,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             else if (AttackPart == 1)
                             {
                                 SuckTimer++;
-                                if (SuckTimer > 60)
+                                if (SuckTimer <= 60)
+                                {
+                                    OpenMouth = MathHelper.SmoothStep(0, 1, SuckTimer / 60f);
+                                }
+                                else
                                 {
                                     target.velocity += target.AngleTo(npc.Center).ToRotationVector2() * 0.2f;
                                 }
@@ -624,6 +664,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                         NetMessage.SendData(MessageID.SyncProjectile, number: proj);
                                     }
                                 }
+                                if (SuckTimer > 350 && SuckTimer <= 380)
+                                {
+                                    OpenMouth = MathHelper.SmoothStep(1, 0, (SuckTimer - 350) / 30f);
+                                }
                                 if (npc.Distance(targetPos) > 600)
                                 {
                                     Follow(10, 1);
@@ -631,6 +675,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 else
                                 {
                                     Follow(3, 1);
+                                }
+                                if (SuckTimer >= 430)
+                                {
+                                    OpenMouth = MathHelper.SmoothStep(0, 1, (SuckTimer - 430f) / 20f);
                                 }
                                 if (SuckTimer >= 450)
                                 {
@@ -678,6 +726,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                         NetMessage.SendData(MessageID.SyncProjectile, number: proj);
                                     }
                                 }
+                                if (SuckTimer >= 80)
+                                {
+                                    OpenMouth = MathHelper.SmoothStep(1, 0, (SuckTimer - 80f) / 20f);
+                                }
                                 if (SuckTimer > 100)
                                 {
                                     SuckTimer = 0;
@@ -688,6 +740,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackPart = 0;
                                 AttackChain = (int)Attacks.Follow;
+                                SuckCooldown = 60 * 55;
+                                npc.netUpdate = true;
                             }
                             break;
                         case Attacks.CircleSpikes:
@@ -781,8 +835,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             break;
                         case Attacks.Follow:
                             FollowTimer++;
-                            
-                            if (FollowTimer > 300 && npc.Distance(targetPos) < 800)
+
+                            int idleTime = WorldSavingSystem.MasochistModeReal ? 140 : 300;
+                            if (npc.GetLifePercent() < Phase2Percent)
+                                idleTime -= 40;
+                            if (npc.GetLifePercent() < Phase3Percent)
+                                idleTime -= 40;
+
+                            if (FollowTimer > idleTime && npc.Distance(targetPos) < 800)
                             {
                                 FollowTimer = 0;
                                 AttackChain = LastFewAttacks[0];
@@ -798,10 +858,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                     LastFewAttacks[0] = AttackChain;
                                     npc.netUpdate = true;
                                 }
-                                if (((npc.GetLifePercent() < Phase2Percent && npc.GetLifePercent() > Phase3Percent) || npc.GetLifePercent() < Phase3Percent) && !DidSuck)
+                                if (((npc.GetLifePercent() < Phase2Percent && npc.GetLifePercent() > Phase3Percent) || npc.GetLifePercent() < Phase3Percent) && SuckCooldown <= 0)
                                 {
                                     AttackChain = (int)Attacks.BigSuck;
-                                    DidSuck = true;
+                                    SuckCooldown = 60 * 55;
                                 }
                                 
                             }
@@ -815,8 +875,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         RocksTimer++;
                         if (RocksTimer < 40)
                         {
-                            targetPos = npc.Center + angle.ToRotationVector2();
-                            Follow(5, 5, 1.05f);
+                            if (RocksTimer < 5 && npc.Distance(target.Center) > 500)
+                            {
+                                RocksTimer = 0;
+                                targetPos = target.Center;
+                                Follow(20, 7, 1.1f);
+                            }
+                            else
+                            {
+                                targetPos = npc.Center + angle.ToRotationVector2();
+                                Follow(5, 5, 1.05f);
+
+                                if (RocksTimer > 20)
+                                {
+                                    float open = MathHelper.SmoothStep(0, 1, (RocksTimer - 20f) / 20f);
+                                    if (OpenMouth < open)
+                                        OpenMouth = open;
+                                }
+                            }
                         }
                         else if (RocksTimer == 40)
                         {
@@ -831,6 +907,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                     NetMessage.SendData(MessageID.SyncProjectile, number: proj);
                                 }
                             }
+                        }
+                        if (RocksTimer > 40)
+                        {
+                            OpenMouth = MathHelper.SmoothStep(1, 0, MathF.Pow((RocksTimer - 40f) / 20f, 2f));
                         }
                         if (RocksTimer == 60)
                         {
@@ -858,7 +938,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 
                         if (DashAttackTimer < time * 0.3f)
                         {
-                            
+                            float open = MathHelper.SmoothStep(0, 1, DashAttackTimer / (time * 0.3f));
+                            if (OpenMouth < open)
+                                OpenMouth = open;
                             Follow(3, 9, 1.05f);
                         }
                         else if (DashAttackTimer == (int)(time * 0.3f)+1)
@@ -868,7 +950,21 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         }
                         else 
                         {
+                            for (int i = -1; i < 2; i += 2)
+                            {
+                                Color color = new Color(100, (int)MathHelper.Lerp(120, 255, Main.rand.NextFloat(0.4f)) + Main.rand.Next(-50, 50), 50);
+                                Vector2 vel = -npc.velocity.RotatedBy(MathHelper.PiOver4 * i);
+                                Particle p = new TimedSmokeParticle(npc.Center + vel.SafeNormalize(Vector2.UnitY) * npc.width / 3, vel.RotatedByRandom(MathHelper.PiOver4 * 0.4f) * Main.rand.NextFloat(0.5f, 0.7f), Color.Gray, color, Main.rand.NextFloat(0.7f, 1.3f), 0.7f, 26);
+                                GeneralParticleHandler.SpawnParticle(p);
+                            }
                             Follow(speed, 1f, 1.06f);
+                        }
+
+
+                        if (DashAttackTimer > time * 0.8f)
+                        {
+                            float close = (DashAttackTimer - time * 0.8f) / (time * 0.2f);
+                            OpenMouth = MathHelper.SmoothStep(1, 0, close);
                         }
 
                         if (DashAttackTimer > time && npc.Distance(targetPos) > 500)
@@ -897,7 +993,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 {
                                     break;
                                 }
-                                else if (n.type == ModContent.NPCType<AquaticScourgeBody>() && counter % 2 == 0)
+                                else if (n.type == ModContent.NPCType<AquaticScourgeBody>() && counter % 4 == 0)
                                 {
                                     if (FargoSoulsUtil.HostCheck)
                                     {
