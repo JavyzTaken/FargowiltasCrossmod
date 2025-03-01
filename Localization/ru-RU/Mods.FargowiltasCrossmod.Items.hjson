@@ -19,7 +19,7 @@ AddedEffects: {
 	CalamityConjurist: Эффект нуклеосинтеза
 	ThoriumConjurist: Эффекты подвески Юмы и кристаллического скорпиона
 	CalamityTrawler: Эффекты глубоководного водолазного костюма
-	// CalamityWorldShaper: Effects of Marnite Enchantment
+	CalamityWorldShaper: Эффекты зачарования мранитового архитектора
 	ThoriumUniverse:
 		'''
 		Увеличивает метательную скорость атаки на 15%
@@ -327,17 +327,17 @@ WulfrumEnchant: {
 }
 
 GaleForce: {
-	DisplayName: Артефакт бури
+	DisplayName: Артефакт Бури
 	Tooltip:
 		'''
 		Даёт бесконечные двойные прыжки
-
+		Отключает крылья, если этот эффект включён
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте W во время прыжка, чтобы запустить себя вверх
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы устремиться вниз
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Удерживайте W, чтобы замедлить падение
-		[i:FargowiltasCrossmod/SulphurEnchant] Прыжки выпускают из Вас токсичные сернистые газы
 		[i:FargowiltasCrossmod/VictideEnchant] Прыжки также прикрепляют к Вашей спине острые позвонки
-		[i:FargowiltasCrossmod/VictideEnchant] Когда из Вас торчит 6 позвонков, следующий прыжок выпускает их. Позвонки самонаводятся на врагов
+		[i:FargowiltasCrossmod/VictideEnchant] Когда из Вас торчит 6 позвонков, следующий прыжок выпускает их
+		[i:FargowiltasCrossmod/SulphurEnchant] Позвонки самонаводятся на врагов и накладывают дебафф «Сернистое отравление»
 		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до 40%
 		'''
 }
@@ -396,7 +396,7 @@ HydrothermicEnchant: {
 }
 
 ElementsForce: {
-	DisplayName: Артефакт элементов
+	DisplayName: Артефакт Элементов
 	Tooltip:
 		'''
 		[c/E03131:Режим магмы:]
@@ -412,20 +412,16 @@ ElementsForce: {
 
 UmbraphileEnchant: {
 	// DisplayName: Umbraphile Enchantment
-	/* Tooltip:
-		'''
-		Using a healing potion release a swarm of bats instead of healing you
-		The bats lifesteal from enemies for you
-		''' */
+	// Tooltip: ""
 }
 
 TitanHeartEnchant: {
-	// DisplayName: Titan Heart Enchantment
-	/* Tooltip:
+	DisplayName: Зачарование сердца титана
+	Tooltip:
 		'''
-		Adrenaline builds up faster while grounded
-		While adrenaline is partially charged, receive up to 15% damage reduction
-		''' */
+		Адреналин заряжается быстрее, пока Вы на земле
+		Пока адреналин частично заряжен, Вы получаете до +15% к сопротивлению урону
+		'''
 }
 
 StatigelEnchant: {
@@ -498,3 +494,13 @@ MolluskEnchant: {
 
 # This is used to detect and remove lines, not displayed. Must match Cal's localization.
 // NotConsumable: Not consumable
+
+EmpyreanEnchant: {
+	// DisplayName: Empyrean Enchantment
+	/* Tooltip:
+		'''
+		Moving slowly or standing still for 2 seconds empowers your next hit
+		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
+		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
+		''' */
+}

@@ -1,9 +1,9 @@
 Aerospec: Бонус к шансу крит. удара и урону призываемых существ удвоен
-Marnite: Усиленные лазеры, +15% к скорости размещения и +5 к дальности размещения блоков
+Marnite: Урон и дальность лазеров увеличены, бонусы к размещению удвоены
 DesertProwler: Более сильные прыжки
 Wulfrum: Просканированные враги получают ещё больше доп. урона от дебаффов
 Hydrothermic: Перегрев длится дольше, сопротивление урону увеличено до 45%, урон вспышек увеличен
-Daedalus: Увеличивает урон, кол-во и скорость стрел
+Daedalus: Урон, кол-во и скорость стрел увеличены
 SnowRuffian: Даёт немного полёта
 Reaver:
 	'''
@@ -16,12 +16,13 @@ Reaver:
 	Debuffs spread from farther 
 	Enemies spread debuffs for a longer amount of time
 	''' */
-// Umbraphile: Bats deal more damage and travel faster
+// Umbraphile: Bats deal more damage and heal for more
 Sulphur: Прыжки создают 3 пузыря, которые наносят больше урона
 Victide: Иглы игнорируют гравитацию и накладывают дебафф Кислотный яд
-Statigel: Увеличена максимальная скорость, бонус к урону удвоен
-// TitanHeart: Doubled damage reduction, increased grounded charge rate
+Statigel: Максимальная скорость увеличена, бонус к урону удвоен
+TitanHeart: Сопротивлению урону удвоени, скорость заряда на земле удвоена
 // FathomSwarmer: Larger Light, Faster Fish
 // Astral: Longer trail, more damage
 // Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
 // Mollusk: More damage, More immunity frames
+// Empyrean: Increases damage, healing, and rage generation

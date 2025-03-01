@@ -19,7 +19,7 @@ AddedEffects: {
 	CalamityConjurist: Effects of Nucleogenesis
 	ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
 	CalamityTrawler: Effects of Abyssal Diving Suit
-	CalamityWorldShaper: Effects of Marnite Enchantment
+	CalamityWorldShaper: Effects of Marnite Architect Enchantment
 	ThoriumUniverse:
 		'''
 		15% increased throwing velocity
@@ -326,17 +326,17 @@ WulfrumEnchant: {
 }
 
 GaleForce: {
-	DisplayName: Force of Gale
+	DisplayName: Force of the Gale
 	Tooltip:
 		'''
 		Grants unlimited jumps in the air
-
+		Disables wings if this effect is enabled
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold S while jumping to dive downwards
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
-		[i:FargowiltasCrossmod/SulphurEnchant] Jumps leave behind toxic sulphur particulates 
 		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
 		[i:FargowiltasCrossmod/VictideEnchant] Once 6 spines are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/SulphurEnchant] Spines inflict Sulphuric Poisoning
 		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
 		'''
 }
@@ -410,11 +410,7 @@ ElementsForce: {
 
 UmbraphileEnchant: {
 	DisplayName: Umbraphile Enchantment
-	Tooltip:
-		'''
-		Using a healing potion release a swarm of bats instead of healing you
-		The bats lifesteal from enemies for you
-		'''
+	Tooltip: ""
 }
 
 TitanHeartEnchant: {
@@ -496,3 +492,13 @@ MolluskEnchant: {
 
 # This is used to detect and remove lines, not displayed. Must match Cal's localization.
 NotConsumable: Not consumable
+
+EmpyreanEnchant: {
+	DisplayName: Empyrean Enchantment
+	Tooltip:
+		'''
+		Moving slowly or standing still for 2 seconds empowers your next hit
+		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
+		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
+		'''
+}

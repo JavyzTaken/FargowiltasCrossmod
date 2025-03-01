@@ -200,7 +200,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<SlimyShield>())
                 NerfTooltip("SlimyShield");
 
-            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
+            if (item.ModItem != null && item.ModItem is FlightMasteryWings && item.ModItem is not EternitySoul)
                 NerfTooltip("FlightMastery");
 
             if (item.type == ItemType<LifeForce>())

@@ -75,7 +75,7 @@ WulfrumScanner.DisplayName: Вульфрумовый сканер
 CrystalPlatform.DisplayName: Кристальная платформа
 // PlagueCloud.DisplayName: Plague Cloud
 Eruption.DisplayName: Извержение
-// VampireBat.DisplayName: Vampire Bat
+VampireBat.DisplayName: Vampire Bat
 SulphurBubble.DisplayName: Сернистый пкзырь
 VictideSpike.DisplayName: Приливной шип
 GoldenShowerShot.DisplayName: Выстрел золотого дождя
@@ -102,47 +102,51 @@ HadesExoEnergyOrb.DisplayName: Экзо-электрическая энерге�
 HadesLaserBurst.DisplayName: Лазеры
 HadesMine.DisplayName: Аидова мина
 HadesSuperLaserbeam.DisplayName: Взрыв экзо-энергии
-// HomingTeslaBurst.DisplayName: Tesla Burst
-// LargeTeslaSphere.DisplayName: Tesla Sphere
-// LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
-// LingeringPlasmaFireball.DisplayName: Plasma Fireball
-// SmallTeslaArc.DisplayName: Tesla Arc
-// ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
+HomingTeslaBurst.DisplayName: Выстрел Тесла
+LargeTeslaSphere.DisplayName: Сфера Тесла
+LargeTeslaSphereExplosion.DisplayName: Взрыв Тесла
+LingeringPlasmaFireball.DisplayName: Шар плазменного огня
+SmallTeslaArc.DisplayName: Дуга Тесла
+ExothermalDisintegrationRay.DisplayName: Экзотермальный луч дизинтеграции
 ScourgeSandstream.DisplayName: Песчаный поток бича
-// SmallTeslaSphere.DisplayName: Tesla Sphere
-// PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
-// BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
-// AresDeathAnimationExplosion.DisplayName: Explosion
-// SmallHadesSegmentExplosion.DisplayName: Explosion
-// BigHadesSegmentExplosion.DisplayName: Explosion
-// AresCoreLaserSmall.DisplayName: Energized Spark
-// AresSwingingKatanas.DisplayName: XF-09 Ares Energy Katana
-// ApolloPlasmaFireball.DisplayName: Plasma Fireball
-// AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
-// ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
-// HadesMissile.DisplayName: Fortified Missile
-// CodebreakerDataStream.DisplayName: Codebreaker Data Stream
-// CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
-// BigBubble.DisplayName: Big Bubble
-// Bubble.DisplayName: Bubble
-// AquaticSuck.DisplayName: Aquatic Suck
-// FlamableGas.DisplayName: Flamable Gas
-// ToxicGas.DisplayName: Toxic Gas
+SmallTeslaSphere.DisplayName: Сфера Тесла
+PlasmaFlameJet.DisplayName: Пламя экзо-плазмы
+BlazingExoLaserbeam.DisplayName: Горящий экзо-лазерный луч
+AresDeathAnimationExplosion.DisplayName: Взрыв
+SmallHadesSegmentExplosion.DisplayName: Взрыв
+BigHadesSegmentExplosion.DisplayName: Взрыв
+AresCoreLaserSmall.DisplayName: Заряженная искра
+AresSwingingKatanas.DisplayName: Энергетическая катана ВУ-09 Ареса
+ApolloPlasmaFireball.DisplayName: Шар плазменного огня
+AresHyperfuturisticPortal.DisplayName: Гиперфутуристичный портал
+ExoTwinHyperfuturisticPortal.DisplayName: Гиперфутуристичный портал
+HadesMissile.DisplayName: Укреплённая ракета
+CodebreakerDataStream.DisplayName: Поток данных дешифратора
+CrabulonJumpTelegraph.DisplayName: Телеграф Прыжка Крабулона
+BigBubble.DisplayName: Большой пузырь
+Bubble.DisplayName: Пузырь
+AquaticSuck.DisplayName: Акватическое всасывание
+FlamableGas.DisplayName: Горючий газ
+ToxicGas.DisplayName: Токсичный газ
 // FathomAngler.DisplayName: Fathom Angler
 // AstralTrailStar.DisplayName: Astral Trail Star
 // BrimflameBurst.DisplayName: Brimflame Burst
 // ClamSlam.DisplayName: Clam Slam
-// SmallCannonLaser.DisplayName: Laser
-// PulseBlast.DisplayName: Pulse Blast
-// HadesLineTelegraph.DisplayName: Hades Line Telegraph
-// ApolloMissile2.DisplayName: Apollo Missile
-// BatMode.DisplayName: Bat Mode
-// PerfExplosion.DisplayName: Perf Explosion
-// PerforatorSpike.DisplayName: Perforator Spike
-// PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
-// PerforatorRubble.DisplayName: Perforator Rubble
-// DaedalusArrow.DisplayName: Daedalus Arrow
-// ExplorationFeather.DisplayName: Exploration Feather
-// SulphurParticulate.DisplayName: Sulphur Particulate
-// GaleSpine.DisplayName: Gale Spine
-// HydrothermicVentShot.DisplayName: Hydrothermic Vent Shot
+SmallCannonLaser.DisplayName: Лазер
+PulseBlast.DisplayName: Взрывной пульс
+HadesLineTelegraph.DisplayName: Телеграф Линии Аида
+ApolloMissile2.DisplayName: Аполлонова ракета
+BatMode.DisplayName: Режим летучей мыши
+PerfExplosion.DisplayName: Взрыв Перфораторов
+PerforatorSpike.DisplayName: Шипы Перфораторов
+PerforatorLegHitbox.DisplayName: Хитбокс ноги Улья
+PerforatorRubble.DisplayName: Валуны Перфораторов
+DaedalusArrow.DisplayName: Стрела Дедала
+ExplorationFeather.DisplayName: Exploration Feather
+SulphurParticulate.DisplayName: Сернистые газы
+GaleSpine.DisplayName: Позвонок Бури
+HydrothermicVentShot.DisplayName: Гидротермический выстрел перегрева
+ChargedGigablast.DisplayName: Заряженный гигавзрыв
+SuckedRock.DisplayName: Булыжник
+// CalcloneWave.DisplayName: Calclone Wave
+// EmpyreanStar.DisplayName: Empyrean Star

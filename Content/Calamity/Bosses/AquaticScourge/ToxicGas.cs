@@ -26,18 +26,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.friendly = false;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 1500;
-            Projectile.width = Projectile.height = 20;
+            Projectile.width = Projectile.height = 30;
             Main.projFrames[Type] = 10;
             
         }
         public override bool PreDraw(ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
-            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, Projectile.frame * 56, 40, 56), lightColor * 0.8f, Projectile.rotation, t.Size() / 2 / 10, Projectile.scale, Projectile.direction == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
-            return false;
-        }
-        public override bool CanHitPlayer(Player target)
-        {
+            Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, new Rectangle(0, Projectile.frame * 56, 40, 56), lightColor * 0.8f, Projectile.rotation, new Vector2(t.Width(), t.Height()/10)/2, Projectile.scale, Projectile.direction == -1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
             return false;
         }
         public override void AI()
