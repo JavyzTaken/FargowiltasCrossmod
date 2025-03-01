@@ -145,6 +145,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void Dash()
         {
             var parentAI = Parent.GetDLCBehavior<CalamitasBrothersEternity>();
+            int windupTime = 80;
+            int windbackTime = 20;
+            int chargeTime = 38;
+
             int i;
             if (SeekerNumber < 3)
                 i = SeekerNumber + 1;
@@ -158,7 +162,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 if (parentAI.Timer == 99)
                     NPC.netUpdate = true;
             }
-            else
+            else if (parentAI.Timer < windupTime + windbackTime + chargeTime + 2)
             {
                 int freq = 15;
                 int offset = 5 * Math.Abs(i);
@@ -311,7 +315,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Movement(desiredPos, 1f);
 
             int windupTime = 40;
-            int windbackTime = 10;
+            int windbackTime = 15;
             int chargeTime = 36;
             int endTime = 3;
             int cycle = windupTime + windbackTime + chargeTime + endTime;

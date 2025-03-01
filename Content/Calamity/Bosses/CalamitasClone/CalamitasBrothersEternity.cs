@@ -328,7 +328,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public int Flamethrower_WindupTime => 50;
         public int Flamethrower_PullbackTime => 45;
-        public int Flamethrower_SweepTime => PhaseTwo ? 60 : 80;
+        public int Flamethrower_SweepTime => PhaseTwo ? 70 : 80;
         public void Flamethrower()
         {
             ref float sweepDir = ref AI2;
@@ -468,8 +468,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
                 int shotTimer = (int)Timer - startup;
 
-                int shotCount = 6;
-                int freq = 12;
+                int shotCount = 5;
+                int freq = 15;
+                if (WorldSavingSystem.MasochistModeReal)
+                {
+                    shotCount = 6;
+                    freq = 12;
+                }
                 float sinePeriod = (shotCount * freq) - freq * 0.35f; // assymetric
                 if (shotTimer % freq == freq - 1 && shotTimer < freq * shotCount)
                 {
@@ -493,7 +498,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void SpinDashes()
         {
             int windupTime = 40;
-            int windbackTime = 10;
+            int windbackTime = 15;
             int chargeTime = 36;
             int endTime = 3;
             int cycle = windupTime + windbackTime + chargeTime + endTime;

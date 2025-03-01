@@ -18,6 +18,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -61,6 +62,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     brothers++;
                 if (Catastrophe != null && Catastrophe.Alive())
                     brothers++;
+
+                if (brothers == 1 && !NPC.AnyNPCs(ModContent.NPCType<SoulSeeker>()))
+                    return 1; // treat as in phase 1 if transition not done yet
+
                 return brothers switch
                 {
                     2 => 1,
@@ -269,7 +274,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             if (Timer > telegraphStart)
             {
-                distance = 400f;
+                distance = 350f;
                 // particle telegraph
                 float progress = (Timer - telegraphStart) / (shot - telegraphStart);
                 float freq = 10f - 8f * progress;
@@ -293,7 +298,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 if (Phase >= 2 && Timer > 60)
                 {
-                    int freq = 40;
+                    int freq = WorldSavingSystem.MasochistModeReal ? 40 : 55;
                     if (Phase == 3)
                         freq = 20;
                     if (Timer % freq == freq - 1)
@@ -329,7 +334,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             for (int i = 0; i < brothers.Length; i++)
             {
                 if (brothers[i] == null) continue;
-                int minDistance = 700;
+                int minDistance = 450;
                 if (pos.Distance(brothers[i].Center) < minDistance)
                     pos = brothers[i].Center + brothers[i].DirectionTo(pos) * minDistance;
             }
@@ -338,9 +343,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (Math.Abs(FargoSoulsUtil.RotationDifference(offset, -Vector2.UnitY)) > MathHelper.PiOver2 * 0.7f)
                 offset = offset.RotateTowards(-Vector2.UnitY.ToRotation(), 0.07f);
             pos += offset;
-            float speed = 0.4f;
+            float speed = 0.6f;
             if (Target.Distance(NPC.Center) < distance)
-                speed /= 2;
+                speed /= 3;
             Movement(pos, speed);
         }
         public void Movement(Vector2 desiredPos, float speedMod)
