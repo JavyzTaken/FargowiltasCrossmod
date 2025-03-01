@@ -173,7 +173,34 @@ namespace FargowiltasCrossmod.Core.Calamity
             );
 
             Items.DisabledEmodeChanges = itemFactory.CreateBoolSet(false,
-                ItemID.StarCannon
+                ItemID.StarCannon,
+                ItemID.SuperStarCannon,
+                ItemID.VampireKnives,
+                ItemID.IceBlade,
+                ItemID.FrozenTurtleShell,
+                ItemID.FrozenShield,
+                ItemID.HallowedGreaves,
+                ItemID.HallowedHeadgear,
+                ItemID.HallowedHelmet,
+                ItemID.HallowedHood,
+                ItemID.HallowedMask,
+                ItemID.HallowedPlateMail,
+                ItemID.AncientHallowedGreaves,
+                ItemID.AncientHallowedHeadgear,
+                ItemID.AncientHallowedHelmet,
+                ItemID.AncientHallowedHood,
+                ItemID.AncientHallowedMask,
+                ItemID.AncientHallowedPlateMail,
+                ItemID.BeeGun,
+                ItemID.MonkStaffT1,
+                ItemID.MonkStaffT2,
+                ItemID.MonkStaffT3,
+                ItemID.MoltenFury,
+                ItemID.DaedalusStormbow,
+                ItemID.Razorpine,
+                ItemID.BlizzardStaff,
+                ItemID.LaserMachinegun,
+                ItemID.DD2SquireBetsySword
             );
             #endregion
 
