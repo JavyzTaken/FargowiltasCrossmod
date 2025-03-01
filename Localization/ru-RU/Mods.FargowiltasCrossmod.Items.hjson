@@ -423,8 +423,8 @@ TitanHeartEnchant: {
 	// DisplayName: Titan Heart Enchantment
 	/* Tooltip:
 		'''
-		Increases damage by 15%
-		Makes you larger
+		Adrenaline builds up faster while grounded
+		While adrenaline is partially charged, receive up to 15% damage reduction
 		''' */
 }
 

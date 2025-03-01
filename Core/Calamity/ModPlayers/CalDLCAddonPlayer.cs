@@ -21,6 +21,9 @@ using CalamityMod;
 using CalamityMod.Events;
 using Terraria.GameInput;
 using System.Reflection;
+using CalamityMod.UI.Rippers;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 {
@@ -54,6 +57,8 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int BatTime = 0;
         public int BatCooldown = 0;
         public int MarniteTimer;
+        public bool TitanHeartAdrenaline;
+
         public override void ResetEffects()
         {
             if (BrimflameDefenseTimer > 0)
@@ -94,6 +99,23 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 Player.immuneNoBlink = true;
                 Player.immuneTime = 5;
                 Player.immune = true;
+            }
+
+            if (Player.HasEffect<TitanHeartEffect>())
+            {
+                if (!TitanHeartAdrenaline)
+                {
+                    TitanHeartAdrenaline = true;
+                    typeof(RipperUI).GetField("adrenBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("FargowiltasCrossmod/Assets/ExtraTextures/TitanHeartAdrenalineBar", AssetRequestMode.ImmediateLoad).Value);
+                }
+            }
+            else
+            {
+                if (TitanHeartAdrenaline)
+                {
+                    TitanHeartAdrenaline = false;
+                    typeof(RipperUI).GetField("adrenBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/AdrenalineBar", AssetRequestMode.ImmediateLoad).Value);
+                }
             }
         }
         public override void PostUpdateMiscEffects()
