@@ -440,7 +440,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && (npc.justHit || npc.life <= npc.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
             {
                 npc.boss = true;
-                npc.damage = 150;
+                npc.damage = 110;
                 if (BossRushEvent.BossRushActive) npc.damage = 300;
                 npc.TargetClosest();
                 npc.dontTakeDamage = true;
@@ -873,7 +873,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     void RandomRocks(float amount, float angle, float spread)
                     {
                         RocksTimer++;
-                        if (RocksTimer < 40)
+                        int telegraphTime = 60;
+                        if (RocksTimer < telegraphTime)
                         {
                             if (RocksTimer < 5 && npc.Distance(target.Center) > 500)
                             {
@@ -894,7 +895,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 }
                             }
                         }
-                        else if (RocksTimer == 40)
+                        else if (RocksTimer == telegraphTime)
                         {
                             SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
                             SoundEngine.PlaySound(Mroar, npc.Center);
@@ -908,11 +909,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 }
                             }
                         }
-                        if (RocksTimer > 40)
+                        if (RocksTimer > telegraphTime)
                         {
                             OpenMouth = MathHelper.SmoothStep(1, 0, MathF.Pow((RocksTimer - 40f) / 20f, 2f));
                         }
-                        if (RocksTimer == 60)
+                        if (RocksTimer == telegraphTime + 20)
                         {
                             RocksTimer = 0;
                             AttackPart++;
@@ -957,7 +958,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 Particle p = new TimedSmokeParticle(npc.Center + vel.SafeNormalize(Vector2.UnitY) * npc.width / 3, vel.RotatedByRandom(MathHelper.PiOver4 * 0.4f) * Main.rand.NextFloat(0.5f, 0.7f), Color.Gray, color, Main.rand.NextFloat(0.7f, 1.3f), 0.7f, 26);
                                 GeneralParticleHandler.SpawnParticle(p);
                             }
-                            Follow(speed, 1f, 1.06f);
+                            Follow(speed, 0.8f, 1.06f);
                         }
 
 
