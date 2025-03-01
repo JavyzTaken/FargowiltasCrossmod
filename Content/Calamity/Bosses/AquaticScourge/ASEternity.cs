@@ -527,7 +527,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         case Attacks.RockDashDashRock:
                             if (AttackPart == 0)
                             {
-                                RandomRocks(10, npc.AngleTo(target.Center), 40);
+                                RandomRocks(6, npc.AngleTo(target.Center), 40);
                             }
                             else if (AttackPart == 1 || AttackPart == 2)
                             {
@@ -535,7 +535,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             }
                             else if (AttackPart == 3)
                             {
-                                RandomRocks(40, MathHelper.ToRadians(-90), 50);
+                                RandomRocks(28, MathHelper.ToRadians(-90), 50);
                             }
                             else
                             {
@@ -550,7 +550,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             }
                             else if (AttackPart == 3)
                             {
-                                RandomRocks(40, MathHelper.ToRadians(-90), 50);
+                                RandomRocks(28, MathHelper.ToRadians(-90), 50);
                             }
                             else if (AttackPart == 4)
                             {
@@ -655,7 +655,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 }
                                 else
                                 {
-                                    target.velocity += target.AngleTo(npc.Center).ToRotationVector2() * 0.2f;
+                                    Vector2 pull = target.AngleTo(npc.Center).ToRotationVector2() * 0.2f;
+                                    target.velocity.X += pull.X;
+                                    if (target.velocity.Y != 0)
+                                        target.velocity.Y += pull.Y;
                                 }
                                 if (SuckTimer % 60 == 0 && SuckTimer <= 350 && FargoSoulsUtil.HostCheck)
                                 {
@@ -695,7 +698,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                     SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
                                     if (FargoSoulsUtil.HostCheck)
                                     {
-                                        for (int i = 0; i < 10; i++)
+                                        for (int i = 0; i < 4; i++)
                                         {
                                             int proj = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, npc.velocity.SafeNormalize(Vector2.Zero).RotatedBy(MathHelper.ToRadians(Main.rand.NextFloat(-20, 20))) * Main.rand.NextFloat(10, 20), ModContent.ProjectileType<CrabBoulder>(), FargoSoulsUtil.ScaledProjectileDamage(ProjectileDamage), 1);
                                             NetMessage.SendData(MessageID.SyncProjectile, number: proj);
@@ -719,7 +722,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                     Follow(4, 1);
                                 }
                                     SuckTimer++;
-                                if ( SuckTimer > 50 && SuckTimer <= 80)
+                                if ( SuckTimer > 50 && SuckTimer <= 80 && SuckTimer % 4 == 0)
                                 {
                                     SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
                                     if (FargoSoulsUtil.HostCheck)
@@ -868,30 +871,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 
                             }
                             //targetPos = npc.Center - npc.velocity.RotatedBy(MathHelper.ToRadians(10));
-                            Follow(10, FollowTurnSpeed);
+                            float speed = 10;
+                            float dist = target.Distance(npc.Center);
+                            float minDist = 200;
+                            if (dist < minDist)
+                            {
+                                speed = 3f + 7f * (dist / minDist);
+                            }
+                            Follow(speed, FollowTurnSpeed);
                             break;
                     }
 
                     void RandomRocks(float amount, float angle, float spread)
                     {
                         RocksTimer++;
-                        int telegraphTime = 60;
+                        int telegraphTime = 40;
                         if (RocksTimer < telegraphTime)
                         {
-                            if (RocksTimer < 5 && npc.Distance(target.Center) > 500)
+                            if (RocksTimer < 5 && npc.Distance(target.Center) > 350)
                             {
                                 RocksTimer = 0;
                                 targetPos = target.Center;
-                                Follow(20, 7, 1.1f);
+                                Follow(16, 7, 1.05f);
                             }
                             else
                             {
                                 targetPos = npc.Center + angle.ToRotationVector2();
                                 Follow(5, 5, 1.05f);
 
-                                if (RocksTimer > 20)
+                                if (RocksTimer > 10)
                                 {
-                                    float open = MathHelper.SmoothStep(0, 1, (RocksTimer - 20f) / 20f);
+                                    float open = MathHelper.SmoothStep(0, 1, (RocksTimer - 10f) / telegraphTime);
                                     if (OpenMouth < open)
                                         OpenMouth = open;
                                 }
