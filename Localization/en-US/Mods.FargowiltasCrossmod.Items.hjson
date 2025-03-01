@@ -492,3 +492,13 @@ MolluskEnchant: {
 
 # This is used to detect and remove lines, not displayed. Must match Cal's localization.
 NotConsumable: Not consumable
+
+EmpyreanEnchant: {
+	DisplayName: Empyrean Enchantment
+	Tooltip:
+		'''
+		Moving slowly or standing still for 2 seconds empowers your next hit
+		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
+		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
+		'''
+}
