@@ -129,6 +129,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             #region Standard
             // Emit light
             Lighting.AddLight((int)((NPC.position.X + (NPC.width / 2)) / 16f), (int)((NPC.position.Y + (NPC.height / 2)) / 16f), 1f, 0f, 0f);
+            Main.dayTime = false;
+            Main.time = Main.nightLength / 2;
 
             // Don't take damage if any brothers are alive
             NPC.dontTakeDamage = Main.npc.Any(n => n.TypeAlive<Cataclysm>() || n.TypeAlive<Catastrophe>());
@@ -334,7 +336,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             for (int i = 0; i < brothers.Length; i++)
             {
                 if (brothers[i] == null) continue;
-                int minDistance = 450;
+                int minDistance = 580;
                 if (pos.Distance(brothers[i].Center) < minDistance)
                     pos = brothers[i].Center + brothers[i].DirectionTo(pos) * minDistance;
             }

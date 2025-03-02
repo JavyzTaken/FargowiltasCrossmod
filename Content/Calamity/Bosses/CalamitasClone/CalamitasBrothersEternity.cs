@@ -627,7 +627,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             AI3 = 0;
             StunTimer = 0;
             State = (int)States.Stunned;
-            SoundEngine.PlaySound(new SoundStyle("FargowiltasSouls/Assets/Sounds/Debuffs/DizzyBird") with { Pitch = -0.2f });
+            SoundEngine.PlaySound(new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f });
             NPC.netUpdate = true;
         }
         public void RepulseOtherBrother(ref Vector2 desiredPos)
