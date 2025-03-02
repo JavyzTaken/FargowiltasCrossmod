@@ -411,8 +411,8 @@ ElementsForce: {
 }
 
 UmbraphileEnchant: {
-	// DisplayName: Umbraphile Enchantment
-	// Tooltip: ""
+	DisplayName: Зачарование фанатика тени
+	Tooltip: ""
 }
 
 TitanHeartEnchant: {
@@ -496,11 +496,12 @@ MolluskEnchant: {
 // NotConsumable: Not consumable
 
 EmpyreanEnchant: {
-	// DisplayName: Empyrean Enchantment
-	/* Tooltip:
+	DisplayName: Зачарование возвышения
+	Tooltip:
 		'''
-		Moving slowly or standing still for 2 seconds empowers your next hit
-		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
-		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
-		''' */
+		Если Вы медленно двигаетесь или стоите 2 секунды, следующая ваша атака будет усилена
+		Усиленные атаки наносят двойной урон, исцеляют Вас на 20 ОЗ, заполняют шкалу ярости
+		и создают самонаводящиеся возвышенные звёзды при попадании
+		У этого эффекта есть перезарядка от 12 до 4 секунд, зависящая от Вашего уровня заряда ярости
+		'''
 }
