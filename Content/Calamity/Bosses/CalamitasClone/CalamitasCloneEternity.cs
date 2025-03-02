@@ -550,7 +550,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Timer++;
             float startup = 30f;
             float ballTelegraph = 50f;
-            float shotTime = 60 * 1.2f;
+            float shotTime = 60 * 1.4f;
             float volleys = 3;
             float volleyTime = shotTime + ballTelegraph;
 
