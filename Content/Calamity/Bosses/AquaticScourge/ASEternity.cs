@@ -206,6 +206,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             entity.defense = 20;
             entity.Calamity().DR = 0;
             entity.buffImmune[BuffID.Darkness] = true;
+
+            entity.damage = 110;
+            if (BossRushEvent.BossRushActive) entity.damage = 300;
         }
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {
@@ -451,8 +454,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             if (npc.type == ModContent.NPCType<AquaticScourgeHead>() && (npc.justHit || npc.life <= npc.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
             {
                 npc.boss = true;
-                npc.damage = 110;
-                if (BossRushEvent.BossRushActive) npc.damage = 300;
+                npc.damage = npc.GetAttackDamage_ScaledByStrength(60);
+                if (BossRushEvent.BossRushActive) npc.damage = npc.GetAttackDamage_ScaledByStrength(300);
                 npc.TargetClosest();
                 npc.dontTakeDamage = true;
                 npc.CalamityDLC().ImmuneToAllDebuffs = true;
