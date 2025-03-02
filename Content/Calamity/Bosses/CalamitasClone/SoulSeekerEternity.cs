@@ -313,6 +313,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             float offset = SeekerNumber * MathHelper.TwoPi / TotalSeekers;
             Vector2 desiredPos = Parent.Center + (Parent.rotation + offset).ToRotationVector2() * BaseOffset;
             Movement(desiredPos, 1f);
+            CustomRotation = 1;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.DirectionTo(Parent.Center).ToRotation(), 0.2f);
 
             int windupTime = 40;
             int windbackTime = 15;
