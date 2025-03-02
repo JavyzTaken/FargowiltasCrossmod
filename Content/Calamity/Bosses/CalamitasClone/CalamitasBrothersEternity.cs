@@ -56,7 +56,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
     {
         #region Fields
         public Player Target => Main.player[NPC.target];
-        public static float Acceleration => 0.5f;
+        public static float Acceleration => 0.7f;
         public static float MaxMovementSpeed => 30f;
 
         public bool PhaseTwo = false;

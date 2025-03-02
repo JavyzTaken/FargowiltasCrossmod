@@ -73,24 +73,32 @@ namespace CalamityMod.Projectiles.Boss
 
             if (!withinRange)
             {
-                float inertia =  60f;
-                float homeSpeed = 30f;
-                float minDist = 40f;
-                if (target >= 0 && Main.player[target].active && !Main.player[target].dead)
+                if (Projectile.timeLeft < 30)
                 {
-                    if (Projectile.Distance(Main.player[target].Center) > minDist)
+                    float inertia = 80f;
+                    float homeSpeed = 50f;
+                    float minDist = 40f;
+                    if (target >= 0 && Main.player[target].active && !Main.player[target].dead)
                     {
-                        Vector2 moveDirection = Projectile.SafeDirectionTo(Main.player[target].Center, Vector2.UnitY);
-                        Projectile.velocity = (Projectile.velocity * (inertia - 1f) + moveDirection * homeSpeed) / inertia;
+                        if (Projectile.Distance(Main.player[target].Center) > minDist)
+                        {
+                            Vector2 moveDirection = Projectile.SafeDirectionTo(Main.player[target].Center, Vector2.UnitY);
+                            Projectile.velocity = (Projectile.velocity * (inertia - 1f) + moveDirection * homeSpeed) / inertia;
+                        }
+                    }
+                    else
+                    {
+                        if (Projectile.ai[0] != -1f)
+                        {
+                            Projectile.ai[0] = -1f;
+                            Projectile.netUpdate = true;
+                        }
                     }
                 }
                 else
                 {
-                    if (Projectile.ai[0] != -1f)
-                    {
-                        Projectile.ai[0] = -1f;
-                        Projectile.netUpdate = true;
-                    }
+                    if (Projectile.velocity.Length() < 16f)
+                        Projectile.velocity *= 1.05f;
                 }
             }
 

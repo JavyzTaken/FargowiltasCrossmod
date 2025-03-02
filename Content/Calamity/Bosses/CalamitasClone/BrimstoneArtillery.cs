@@ -16,7 +16,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
     {
         public override void Movement()
         {
-            Projectile.velocity.Y += 0.8f;
+            Projectile.velocity.Y += 0.68f;
         }
     }
 }

@@ -417,7 +417,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             Vector2 CalculateAngle(float xPos)
             {
-                float gravity = 0.8f;
+                float gravity = 0.68f;
 
                 float xDif = xPos - NPC.Center.X;
                 float yDif = Target.Center.Y - NPC.Center.Y;
@@ -465,7 +465,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 if (DLCUtils.HostCheck)
                 {
-                    float maxRandom = 400;
+                    float maxRandom = 550;
                     float random = Main.rand.NextFloat(-maxRandom, maxRandom);
                     Vector2 randomDir = CalculateAngle(targetX + random);
 
@@ -596,7 +596,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                         {
                             Vector2 projPos = NPC.Center;
                             Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + i * MathHelper.PiOver4 * 1.4f).ToRotationVector2();
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 16f, ModContent.ProjectileType<Fireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 5f, ModContent.ProjectileType<Fireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
                         }
                     }
                 }
