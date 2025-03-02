@@ -106,6 +106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 return attacks;
             }
         }
+        public List<int> AvailableStates = [];
         #endregion
         public override bool IsLoadingEnabled(Mod mod) => CalamitasCloneEternity.Enabled;
         public override void SetStaticDefaults()
@@ -574,6 +575,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             else
                 NPC.velocity *= 0.92f;
+            if (Timer < transTime)
+                NPC.dontTakeDamage = true;
+            else
+                NPC.dontTakeDamage = false;
             if (Timer == transTime)
             {
                 PhaseTwo = true;
@@ -605,11 +610,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void GoToNeutral()
         {
             Reset();
-            if (State != (int)States.Stunned)
-                PreviousState = State;
-            var attacks = Attacks;
-            attacks.Remove((States)PreviousState);
-            State = (int)Main.rand.NextFromCollection(attacks);
+            if (PhaseTwo)
+            {
+                int index;
+                if (AvailableStates.Count < 1)
+                {
+                    AvailableStates.Clear();
+                    foreach (var attack in Attacks)
+                        AvailableStates.Add((int)attack);
+                    AvailableStates.Remove((int)PreviousState); //avoid possible repeat after refilling list
+                }
+                if (FargoSoulsUtil.HostCheck) //only run for host in mp, will sync to others
+                {
+                    index = Main.rand.Next(AvailableStates.Count);
+                    State = AvailableStates[index];
+                    AvailableStates.RemoveAt(index);
+                }
+                PreviousState = (int)State;
+                NPC.netUpdate = true;
+            }
+            else
+            {
+                if (FargoSoulsUtil.HostCheck)
+                {
+                    if (State != (int)States.Stunned)
+                        PreviousState = State;
+                    var attacks = Attacks;
+                    attacks.Remove((States)PreviousState);
+                    State = (int)Main.rand.NextFromCollection(attacks);
+                    NPC.netUpdate = true;
+                }
+            }
         }
         public void Reset()
         {
