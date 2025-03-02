@@ -647,7 +647,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             for (int i = 0; i < brothers.Length; i++)
             {
                 if (brothers[i] == null) continue;
-                int minDistance = 580;
+                int minDistance = 660;
                 if (pos.Distance(brothers[i].Center) < minDistance)
                     pos = brothers[i].Center + brothers[i].DirectionTo(pos) * minDistance;
             }
