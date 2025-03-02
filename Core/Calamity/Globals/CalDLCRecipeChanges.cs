@@ -889,6 +889,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     recipe.AddIngredient(ItemID.SoulofNight, 3);
                 }
+                if (recipe.HasResult<BionomicCluster>() && recipe.RemoveIngredient(ItemID.HallowedBar))
+                {
+                    recipe.AddRecipeGroup("FargowiltasSouls:AnyMythrilBar", 5);
+                }
                 if (recipe.HasResult<MechLure>() && recipe.HasTile(TileID.MythrilAnvil))
                 {
                     recipe.DisableRecipe();
