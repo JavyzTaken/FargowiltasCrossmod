@@ -27,7 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
         public override void SetDefaults()
         {
-            Projectile.Calamity().DealsDefenseDamage = true;
+            Projectile.Calamity().DealsDefenseDamage = false;
             Projectile.width = 34;
             Projectile.height = 34;
             Projectile.hostile = true;
