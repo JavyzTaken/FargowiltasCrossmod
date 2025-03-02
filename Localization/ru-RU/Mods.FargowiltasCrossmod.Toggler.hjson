@@ -44,8 +44,8 @@ StatigelEffect: Ускорение и урон статигеля
 SulphurEffect: Прыжок с пузырём
 VictideEffect: Морские иглы
 // TitanHeartEffect: Titan Size
-// UmbraphileEffect: Bat Mode
+UmbraphileEffect: Режим летучей мыши
 // FathomSwarmerEffect: Angler Fish
 // BrimflameEffect: Brimflame Burst
 // MolluskEffect: Mollusk Slam
-// EmpyreanEffect: Empowered Hits
+EmpyreanEffect: Усиленные атаки
