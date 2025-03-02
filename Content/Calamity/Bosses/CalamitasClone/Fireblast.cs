@@ -73,8 +73,8 @@ namespace CalamityMod.Projectiles.Boss
 
             if (!withinRange)
             {
-                float inertia =  90f;
-                float homeSpeed = 25f;
+                float inertia =  60f;
+                float homeSpeed = 30f;
                 float minDist = 40f;
                 if (target >= 0 && Main.player[target].active && !Main.player[target].dead)
                 {
@@ -184,7 +184,7 @@ namespace CalamityMod.Projectiles.Boss
             {
                 if (Projectile.owner == Main.myPlayer)
                 {
-                    int totalProjectiles = 18;
+                    int totalProjectiles = 13;
                     float radians = MathHelper.TwoPi / totalProjectiles;
                     int type = ModContent.ProjectileType<BrimstoneBarrage>();
                     float velocity = 8f;

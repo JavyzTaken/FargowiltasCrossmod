@@ -115,6 +115,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public override void SetDefaults()
         {
+            NPC.BossBar = ModContent.GetInstance<BrothersBossBar>();
             NPC.scale = 1f;
 
             NPC.defense = 25;
