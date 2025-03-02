@@ -264,7 +264,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void Intro()
         {
             NPC.dontTakeDamage = true;
-            int introTime = 60 * 3;
+            int introTime = 90;
             if (Timer < introTime)
             {
                 NeutralMovement();

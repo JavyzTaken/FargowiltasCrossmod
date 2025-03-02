@@ -118,7 +118,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             NPC.defense = 15;
             NPC.DR_NERD(0.225f);
-            int hp = 22000;
+            int hp = 18000;
             NPC.LifeMaxNERB(hp, hp, 80000);
             double HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01;
             NPC.lifeMax += (int)(NPC.lifeMax * HPBoost);
