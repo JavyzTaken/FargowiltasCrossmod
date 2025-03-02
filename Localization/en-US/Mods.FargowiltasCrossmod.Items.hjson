@@ -42,9 +42,9 @@ VagabondsSoul: {
 	DisplayName: Vagabond's Soul
 	Tooltip:
 		'''
-		30% increased rogue damage
-		15% increased rogue projectile velocity
-		15% increased rogue critical chance
+		22% increased rogue damage
+		20% increased rogue projectile velocity
+		10% increased rogue critical chance
 		Effects of Nanotech and Eclipse Mirror
 		'''
 }
