@@ -67,6 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public ref float CustomRotation => ref NPC.localAI[0];
         public ref float PreviousState => ref NPC.localAI[1];
         public ref float StunTimer => ref NPC.localAI[2];
+        public ref float ContactDamage => ref NPC.localAI[3];
         public const int CycleTime = 60 * 3;
 
         public bool Cataclysm => NPC.type == ModContent.NPCType<Cataclysm>();
@@ -139,6 +140,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 NPC.localAI[i] = binaryReader.ReadSingle();
             }
+        }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            if (ContactDamage == 1)
+                return base.CanHitPlayer(target, ref cooldownSlot);
+            return false;
         }
         public override bool PreAI()
         {
@@ -230,6 +237,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     NPC.rotation = calCloneBroRotation;
             }
             CustomRotation = 0;
+            ContactDamage = 0;
             #endregion
 
             if (!NPC.HasPlayerTarget) // just in case
@@ -322,9 +330,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             else if (Timer < windupTime + windbackTime + chargeTime)
             {
                 NPC.velocity += NPC.DirectionTo(Target.Center) * 1.2f;
+                ContactDamage = 1;
             }
             else
             {
+                ContactDamage = 1;
                 NPC.velocity *= 0.93f;
             }
             if (Timer >= CycleTime)
@@ -345,6 +355,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             void Flames(float speed = 10f)
             {
+                ContactDamage = 1;
                 if (Timer % 22 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item34 with { Volume = 5 }, NPC.Center);
@@ -545,10 +556,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             else if (cycleTimer < windupTime + windbackTime + chargeTime)
             {
                 NPC.velocity += NPC.DirectionTo(Target.Center) * 1.5f;
+                ContactDamage = 1;
             }
             else
             {
                 NPC.velocity *= 0.93f;
+                ContactDamage = 1;
             }
             if (Timer >= totalTime)
             {
