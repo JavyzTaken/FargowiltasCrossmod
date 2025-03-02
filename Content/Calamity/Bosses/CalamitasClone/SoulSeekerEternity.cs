@@ -316,7 +316,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             int windupTime = 40;
             int windbackTime = 15;
-            int chargeTime = 36;
+            int chargeTime = 40;
             int endTime = 3;
             int cycle = windupTime + windbackTime + chargeTime + endTime;
             float cycleTimer = parentAI.Timer % cycle;

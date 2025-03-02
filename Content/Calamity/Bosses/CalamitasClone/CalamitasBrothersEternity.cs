@@ -17,6 +17,7 @@ using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Patreon.DanielTheRobot;
+using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Content.Projectiles.Souls;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
@@ -293,11 +294,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             int windupTime = 80;
             int windbackTime = 20;
-            int chargeTime = 38;
+            int chargeTime = 40;
             if (PhaseTwo)
             {
                 if (Timer < 30)
                     Timer = 30;
+            }
+            if (Timer == windupTime + (int)(windbackTime / 2))
+            {
+                if (DLCUtils.HostCheck)
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + ForwardRotation.ToRotationVector2() * 40, Vector2.Zero, ModContent.ProjectileType<BrothersEyeFlash>(), 0, 0, Main.myPlayer, NPC.whoAmI);
             }
             if (Timer < windupTime)
             {
@@ -326,9 +332,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 GoToNeutral();
             }
         }
-        public int Flamethrower_WindupTime => 50;
-        public int Flamethrower_PullbackTime => 45;
-        public int Flamethrower_SweepTime => PhaseTwo ? 70 : 80;
+        public int Flamethrower_WindupTime => 50;  
+        public int Flamethrower_PullbackTime => WorldSavingSystem.MasochistModeReal ? 45 : 60;
+        public int Flamethrower_SweepTime => (PhaseTwo ? 70 : 80) + (WorldSavingSystem.MasochistModeReal ? 0 : 10);
         public void Flamethrower()
         {
             ref float sweepDir = ref AI2;
@@ -337,7 +343,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             int firePreStartup = 10;
             int idealDistance = 280;
 
-            void Flames(float speed = 6f)
+            void Flames(float speed = 10f)
             {
                 if (Timer % 22 == 0)
                 {
@@ -404,7 +410,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.velocity *= 0.94f;
 
                 float progress = (Timer - Flamethrower_WindupTime - Flamethrower_PullbackTime) / Flamethrower_SweepTime;
-                Flames(6f + progress * 8f);
+                Flames(10f + progress * 12f);
             }
             else
             {
@@ -499,12 +505,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             int windupTime = 40;
             int windbackTime = 15;
-            int chargeTime = 36;
+            int chargeTime = 38;
             int endTime = 3;
             int cycle = windupTime + windbackTime + chargeTime + endTime;
             float cycleTimer = Timer % cycle;
 
             int totalTime = cycle * 5;
+
+            if (cycleTimer == windupTime + (int)(windbackTime / 2))
+            {
+                if (DLCUtils.HostCheck)
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + ForwardRotation.ToRotationVector2() * 40, Vector2.Zero, ModContent.ProjectileType<BrothersEyeFlash>(), 0, 0, Main.myPlayer, NPC.whoAmI);
+            }
 
             if (cycleTimer < windupTime)
             {
