@@ -140,6 +140,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.localAI[i] = binaryReader.ReadSingle();
             }
         }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return false;
+        }
 
         public override bool PreAI()
         {
