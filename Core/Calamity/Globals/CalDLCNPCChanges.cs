@@ -1004,7 +1004,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 case NPCID.Plantera:
                     LeadingConditionRule leadingConditionRule = new(DropHelper.If(() => !NPC.downedPlantBoss, true, DropHelper.FirstKillText));
-                    leadingConditionRule.Add(DropHelper.PerPlayer(ModContent.ItemType<LivingShard>()));
+                    leadingConditionRule.Add(DropHelper.PerPlayer(ModContent.ItemType<LivingShard>(), 1, 30, 30));
                     npcLoot.Add(leadingConditionRule);
                     break;
                 default:
