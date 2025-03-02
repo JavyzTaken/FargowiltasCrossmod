@@ -288,7 +288,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
                         int type = ModContent.ProjectileType<BrimstoneBarrage>();
                         int damage = NPC.GetProjectileDamage(type);
-                        float speed = 14f;
+                        float speed = 10f;
                         Vector2 velocity = (NPC.rotation + MathHelper.Pi).ToRotationVector2() * speed;
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, velocity, type, damage, 1f, Parent.target, 1f, 0f, speed * 3f);
                         if (SeekerNumber == 0)
