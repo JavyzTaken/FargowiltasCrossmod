@@ -1447,6 +1447,24 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
             #endregion SummonDrops
+            if (ImmuneToAllDebuffs)
+            {
+                for (int i = NPC.maxBuffs - 1; i >= 0; i--)
+                {
+                    npc.buffTime[i] = 0;
+                    npc.buffType[i] = 0;
+                    for (int j = i + 1; j < NPC.maxBuffs; j++)
+                    {
+                        npc.buffTime[j - 1] = npc.buffTime[j];
+                        npc.buffType[j - 1] = npc.buffType[j];
+                        npc.buffTime[j] = 0;
+                        npc.buffType[j] = 0;
+                    }
+                }
+
+                if (Main.netMode == 2)
+                    NetMessage.SendData(54, -1, -1, null, npc.whoAmI);
+            }
             //if (BossRushEvent.BossRushActive)
             //{
             //    if (!killedAquatic && BossRushEvent.BossRushStage > 19)

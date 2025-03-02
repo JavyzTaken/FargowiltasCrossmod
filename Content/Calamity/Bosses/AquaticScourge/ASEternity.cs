@@ -33,6 +33,7 @@ using Terraria.ModLoader.IO;
 using System.IO;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
+using FargowiltasCrossmod.Core.Calamity;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -115,6 +116,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             ModContent.NPCType<AquaticScourgeHead>(), 
             ModContent.NPCType<AquaticScourgeBodyAlt>(), 
             ModContent.NPCType<AquaticScourgeTail>());
+
 
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -203,6 +205,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.3f);
             entity.defense = 20;
             entity.Calamity().DR = 0;
+            entity.buffImmune[BuffID.Darkness] = true;
         }
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {
@@ -273,7 +276,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public int Hittable2 = 0;
         public int Hittable3 = 0;
 
-        public float FollowTurnSpeed = 1;
+        public float FollowTurnSpeed = 0.4f;
+        public static float FollowTurnSpeedMax => 0.4f;
         public int FollowTimer;
 
 
@@ -320,6 +324,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             if(npc.type == ModContent.NPCType<AquaticScourgeTail>())
             {
                 npc.dontTakeDamage = true;
+                npc.CalamityDLC().ImmuneToAllDebuffs = true;
             }
             //npc.ai[0] = 3;
             if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
@@ -332,12 +337,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 NPC head = Main.npc[(int)npc.ai[2]];
                 ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
                 npc.dontTakeDamage = true;
+                npc.CalamityDLC().ImmuneToAllDebuffs = true;
 
                 if ((head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
                     (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
                     (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent))
                 {
                     npc.dontTakeDamage = false;
+                    npc.CalamityDLC().ImmuneToAllDebuffs = false;
                 }
                 //take damage if near a segment that can
                 NPC prev = Main.npc[(int)npc.ai[1]];
@@ -350,11 +357,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     (prevprev != null && prevprev.active && !prevprev.dontTakeDamage && (ashead.Hittable1 == prevprev.whoAmI || ashead.Hittable2 == prevprev.whoAmI || ashead.Hittable3 == prevprev.whoAmI)))
                 {
                     npc.dontTakeDamage = false;
+                    npc.CalamityDLC().ImmuneToAllDebuffs = true; // still immune to debuffs!!
                 }
                 //take damage if in non hostile phase
                 if (!(head.justHit || head.life <= head.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
                 {
                     npc.dontTakeDamage = false;
+                    npc.CalamityDLC().ImmuneToAllDebuffs = false;
                 }
                 //Main.NewText(head.GetLifePercent());
                 if ((ashead.Hittable1 == npc.whoAmI && head.GetLifePercent() < Phase2Percent + 0.05f) ||
@@ -446,6 +455,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 if (BossRushEvent.BossRushActive) npc.damage = 300;
                 npc.TargetClosest();
                 npc.dontTakeDamage = true;
+                npc.CalamityDLC().ImmuneToAllDebuffs = true;
                 //increases when angle is too different. increases turn rate when gets high enough. decreases over time when angle isnt too different
 
                 //Main.NewText(npc.GetLifePercent());
@@ -513,8 +523,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     float angleDiff = MathHelper.ToDegrees(FargoSoulsUtil.RotationDifference(npc.velocity, npc.AngleTo(targetPos).ToRotationVector2()));
                     if (Math.Abs(angleDiff) > 10)
                     {
-                        FollowTurnSpeed += 0.01f;
-                    }else if (FollowTurnSpeed > 1)
+                        FollowTurnSpeed += 0.005f;
+                    }else if (FollowTurnSpeed > FollowTurnSpeedMax)
                     {
                         FollowTurnSpeed -= 0.01f;
                     }
@@ -973,10 +983,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             Follow(speed, 0.8f, 1.06f);
                         }
 
-
+                        float mouthClose = 0.88f;
                         if (DashAttackTimer > time * 0.8f)
                         {
-                            float close = (DashAttackTimer - time * 0.8f) / (time * 0.2f);
+                            float close = (DashAttackTimer - time * mouthClose) / (time * (1 - mouthClose));
                             OpenMouth = MathHelper.SmoothStep(1, 0, close);
                         }
 
