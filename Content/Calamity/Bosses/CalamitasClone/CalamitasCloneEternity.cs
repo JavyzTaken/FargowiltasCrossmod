@@ -15,8 +15,10 @@ using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.CursedCoffin;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Patreon.DanielTheRobot;
+using FargowiltasSouls.Content.WorldGeneration;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
@@ -33,6 +35,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static CalamityMod.World.CustomActions;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
@@ -78,16 +81,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public enum States
         {
             Intro,
-            ChargedGigablast
+            ChargedGigablast,
+            Transition,
+            Artillery,
+            Gigablasts,
+            Bombs,
         }
         public List<States> Attacks
         {
             get
             {
                 List<States> attacks = [States.ChargedGigablast];
+                if (Phase == 3)
+                {
+                    attacks = [
+                        States.Artillery,
+                        States.Gigablasts,
+                        States.Bombs
+                        ];
+                }
                 return attacks;
             }
         }
+        public List<int> AvailableStates = [];
         public NPC Cataclysm => FargoSoulsUtil.NPCExists(CalamityGlobalNPC.cataclysm, ModContent.NPCType<Cataclysm>());
         public NPC Catastrophe => FargoSoulsUtil.NPCExists(CalamityGlobalNPC.catastrophe, ModContent.NPCType<Catastrophe>());
         #endregion
@@ -175,46 +191,51 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             #endregion
 
             #region Rotation
-            // Rotation
-            Vector2 npcCenter = new Vector2(NPC.Center.X, NPC.position.Y + NPC.height - 59f);
-            Vector2 lookAt = new Vector2(Target.position.X - (Target.width / 2), Target.position.Y - (Target.height / 2));
-            Vector2 rotationVector = npcCenter - lookAt;
-
-
-            float rotation = (float)Math.Atan2(rotationVector.Y, rotationVector.X) + MathHelper.PiOver2;
-            if (rotation < 0f)
-                rotation += MathHelper.TwoPi;
-            else if (rotation > MathHelper.TwoPi)
-                rotation -= MathHelper.TwoPi;
-
-            float rotationAmt = 0.1f;
-            if (NPC.rotation < rotation)
+            if (CustomRotation == 0)
             {
-                if ((rotation - NPC.rotation) > MathHelper.Pi)
-                    NPC.rotation -= rotationAmt;
-                else
-                    NPC.rotation += rotationAmt;
-            }
-            else if (NPC.rotation > rotation)
-            {
-                if ((NPC.rotation - rotation) > MathHelper.Pi)
-                    NPC.rotation += rotationAmt;
-                else
-                    NPC.rotation -= rotationAmt;
-            }
+                // Rotation
+                Vector2 npcCenter = new Vector2(NPC.Center.X, NPC.position.Y + NPC.height - 59f);
+                Vector2 lookAt = new Vector2(Target.position.X - (Target.width / 2), Target.position.Y - (Target.height / 2));
+                Vector2 rotationVector = npcCenter - lookAt;
 
-            if (NPC.rotation > rotation - rotationAmt && NPC.rotation < rotation + rotationAmt)
-                NPC.rotation = rotation;
-            if (NPC.rotation < 0f)
-                NPC.rotation += MathHelper.TwoPi;
-            else if (NPC.rotation > MathHelper.TwoPi)
-                NPC.rotation -= MathHelper.TwoPi;
-            if (NPC.rotation > rotation - rotationAmt && NPC.rotation < rotation + rotationAmt)
-                NPC.rotation = rotation;
+
+                float rotation = (float)Math.Atan2(rotationVector.Y, rotationVector.X) + MathHelper.PiOver2;
+                if (rotation < 0f)
+                    rotation += MathHelper.TwoPi;
+                else if (rotation > MathHelper.TwoPi)
+                    rotation -= MathHelper.TwoPi;
+
+                float rotationAmt = 0.1f;
+                if (NPC.rotation < rotation)
+                {
+                    if ((rotation - NPC.rotation) > MathHelper.Pi)
+                        NPC.rotation -= rotationAmt;
+                    else
+                        NPC.rotation += rotationAmt;
+                }
+                else if (NPC.rotation > rotation)
+                {
+                    if ((NPC.rotation - rotation) > MathHelper.Pi)
+                        NPC.rotation += rotationAmt;
+                    else
+                        NPC.rotation -= rotationAmt;
+                }
+
+                if (NPC.rotation > rotation - rotationAmt && NPC.rotation < rotation + rotationAmt)
+                    NPC.rotation = rotation;
+                if (NPC.rotation < 0f)
+                    NPC.rotation += MathHelper.TwoPi;
+                else if (NPC.rotation > MathHelper.TwoPi)
+                    NPC.rotation -= MathHelper.TwoPi;
+                if (NPC.rotation > rotation - rotationAmt && NPC.rotation < rotation + rotationAmt)
+                    NPC.rotation = rotation;
+            }
+            CustomRotation = 0;
             #endregion
 
             if (!NPC.HasPlayerTarget) // just in case
                 return false;
+
             switch ((States)State)
             {
                 case States.Intro:
@@ -222,6 +243,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     break;
                 case States.ChargedGigablast:
                     ChargedGigablast();
+                    break;
+                case States.Transition:
+                    Transition();
+                    break;
+                case States.Artillery:
+                    Artillery();
+                    break;
+                case States.Gigablasts:
+                    Gigablasts();
+                    break;
+                case States.Bombs:
+                    Bombs();
                     break;
             }
 
@@ -257,16 +290,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public void ChargedGigablast()
         {
-            NeutralMovement();
-        }
-        #endregion
-
-        #region Help Methods
-        public void NeutralMovement()
-        {
-            float distance = 660f;
-
+            if (Phase >= 3)
+            {
+                Reset();
+                State = (int)States.Transition;
+                return;
+            }
             Timer++;
+            float distance = 660f;
             int telegraphStart = 60 * 6 + 30;
             int shot = 60 * 8;
             if (Phase >= 2)
@@ -305,12 +336,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                         freq = 20;
                     if (Timer % freq == freq - 1)
                     {
-                        float projectileVelocity = 14f;
-                        int type = ModContent.ProjectileType<BrimstoneHellfireball>();
-                        Vector2 fireballVelocity = Vector2.Normalize(Target.Center - NPC.Center) * projectileVelocity;
-                        Vector2 balloffset = Vector2.Normalize(fireballVelocity) * 40f;
-                        int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + balloffset, fireballVelocity, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 0f, Main.myPlayer, Target.position.X, Target.position.Y);
-                        Main.projectile[proj].netUpdate = true;
+                        if (DLCUtils.HostCheck)
+                        {
+                            float projectileVelocity = 14f;
+                            int type = ModContent.ProjectileType<BrimstoneFireball>();
+                            Vector2 fireballVelocity = Vector2.Normalize(Target.Center - NPC.Center) * projectileVelocity;
+                            Vector2 balloffset = Vector2.Normalize(fireballVelocity) * 40f;
+                            int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + balloffset, fireballVelocity, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 0f, Main.myPlayer, Target.position.X, Target.position.Y);
+                            Main.projectile[proj].netUpdate = true;
+                        }
                     }
                 }
             }
@@ -324,7 +358,284 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<ChargedGigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
                 }
             }
+            NeutralMovement(distance);
+        }
+        public void Transition()
+        {
+            Timer++;
+            int transTime = 80;
+            int endTime = 30;
+            if (Timer < transTime - 15)
+            {
+                NeutralMovement();
+            }
+            else
+                NPC.velocity *= 0.92f;
+            if (Timer < transTime)
+                NPC.dontTakeDamage = true;
+            else
+                NPC.dontTakeDamage = false;
+            if (Timer == transTime)
+            {
+                NPC.netUpdate = true;
+                SoundEngine.PlaySound(SoundID.ForceRoarPitched, NPC.Center);
+                ScreenShakeSystem.StartShake(20f);
+                if (DLCUtils.HostCheck)
+                {
+                    float speed = 36;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CalcloneWave>(), 0, 0, Main.myPlayer, ai2: speed);
+                }
+            }
+            if (Timer >= transTime + endTime)
+                GoToNeutral();
 
+        }
+        public void Artillery()
+        {
+            // movement
+            float distance = 200f;
+            Vector2 pos = Target.Center;
+            float offsetDir = Target.DirectionTo(NPC.Center).ToRotation();
+
+            Vector2 offset = offsetDir.ToRotationVector2() * distance;
+
+            offset = offset.RotateTowards(-Vector2.UnitY.ToRotation(), 0.15f);
+            pos += offset;
+            float speed = 0.5f;
+            if (Target.Center.Y < NPC.Center.Y - 50)
+                speed = 1.2f;
+            else if (Target.Distance(NPC.Center) < distance)
+                NPC.velocity.Y *= 0.92f;
+            Movement(pos, speed);
+
+            // attack
+
+            Vector2 CalculateAngle(float xPos)
+            {
+                float gravity = 0.8f;
+
+                float xDif = xPos - NPC.Center.X;
+                float yDif = Target.Center.Y - NPC.Center.Y;
+
+                float velY = -18; // initial y vel
+                float arcTop = yDif - 290;
+
+                do
+                {
+                    arcTop -= 10;
+                    if (yDif < 0) // if player is above
+                    {
+
+                        // calculate initial y vel that results in good arc above
+                        if (-arcTop * gravity >= 0) // imaginary sqrt is BAD
+                        {
+                            float newVelY = -MathF.Sqrt(-arcTop * gravity) / 1.5f;
+                            if (newVelY < velY)
+                                velY = newVelY;
+                        }
+                    }
+                }
+                while (MathF.Pow(velY / gravity, 2) + (2 * yDif / gravity) < 0);
+
+                float sqrtNum = MathF.Pow(velY / gravity, 2) + (2 * yDif / gravity);
+
+                if (sqrtNum < 0) // imaginary sqrt is BAD
+                    sqrtNum = 0;
+                float t = -velY / gravity + MathF.Sqrt(sqrtNum);
+                float velX = xDif / t;
+                return velX * Vector2.UnitX + velY * Vector2.UnitY;
+            }
+            float targetX = Target.Center.X + Target.velocity.X * 42;
+            Vector2 dir = CalculateAngle(targetX);
+
+            CustomRotation = 1;
+            NPC.rotation = Vector2.Lerp(NPC.rotation.ToRotationVector2(), dir.RotatedBy(-MathHelper.PiOver2), 0.1f).ToRotation();
+
+            int startup = 40;
+            int frequency = 11;
+            int totalTime = 60 * 6;
+            int endTime = 40;
+            Timer++;
+            if (Timer > startup && Timer % frequency == 0 && Timer < totalTime)
+            {
+                if (DLCUtils.HostCheck)
+                {
+                    float maxRandom = 400;
+                    float random = Main.rand.NextFloat(-maxRandom, maxRandom);
+                    Vector2 randomDir = CalculateAngle(targetX + random);
+
+                    Vector2 balloffset = dir.SafeNormalize(-Vector2.UnitY) * 40f;
+
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + balloffset, randomDir, ModContent.ProjectileType<BrimstoneArtillery>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 1f, Main.myPlayer, Target.position.X, Target.position.Y);
+
+                }
+            }
+            if (Timer > totalTime + endTime)
+                GoToNeutral();
+        }
+        public void Gigablasts()
+        {
+            Timer++;
+            float startup = 60f;
+            float ballTelegraph = 30f;
+            float shotTime = 60 * 3f;
+            float volleys = 3;
+            float volleyTime = shotTime + ballTelegraph;
+            float shotFrequency = 19f;
+
+            float distance = 660f;
+            if (Timer < startup)
+            {
+                distance = 200f;
+            }
+            else
+            {
+                float volleyTimer = (Timer - startup) % volleyTime;
+                if (volleyTimer < ballTelegraph)
+                {
+                    distance = 350f;
+                    // particle telegraph
+                    float progress = volleyTimer / ballTelegraph;
+                    float freq = 10f - 8f * progress;
+                    float rand = MathHelper.PiOver4 * 0.4f;
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + Main.rand.NextFloat(-rand, rand)).ToRotationVector2();
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Vector2 velocity = dir * 20;
+                        PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                        GeneralParticleHandler.SpawnParticle(spark2);
+                    }
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                        failShotDust.noGravity = true;
+                        failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);
+                        failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                    }
+                }
+                else if (volleyTimer == ballTelegraph)
+                {
+                    if (DLCUtils.HostCheck)
+                    {
+                        Vector2 projPos = NPC.Center;
+                        Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<Gigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
+                    }
+                }
+                else
+                {
+                    if (volleyTimer % shotFrequency == shotFrequency - 1)
+                    {
+                        if (DLCUtils.HostCheck)
+                        {
+                            float projectileVelocity = 14f;
+                            int type = ModContent.ProjectileType<BrimstoneFireball>();
+                            Vector2 fireballVelocity = Vector2.Normalize(Target.Center - NPC.Center) * projectileVelocity;
+                            Vector2 balloffset = Vector2.Normalize(fireballVelocity) * 40f;
+                            int proj = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + balloffset, fireballVelocity, type, FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 0f, Main.myPlayer, Target.position.X, Target.position.Y);
+                            Main.projectile[proj].netUpdate = true;
+                        }
+                    }
+                }
+            }
+            if (Timer > startup + volleys * volleyTime)
+            {
+                GoToNeutral();
+                return;
+            }
+            NeutralMovement(distance);
+        }
+        public void Bombs()
+        {
+            Timer++;
+            float startup = 30f;
+            float ballTelegraph = 50f;
+            float shotTime = 60 * 1.2f;
+            float volleys = 3;
+            float volleyTime = shotTime + ballTelegraph;
+
+            float distance = 600f;
+            if (Timer < startup)
+            {
+                distance = 200f;
+            }
+            else
+            {
+                float volleyTimer = (Timer - startup) % volleyTime;
+                if (volleyTimer < ballTelegraph)
+                {
+                    // particle telegraph
+                    float progress = volleyTimer / ballTelegraph;
+                    float freq = 10f - 8f * progress;
+                    float rand = MathHelper.PiOver4 * 0.4f;
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + Main.rand.NextFloat(-rand, rand)).ToRotationVector2();
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Vector2 velocity = dir * 20;
+                        PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                        GeneralParticleHandler.SpawnParticle(spark2);
+                    }
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                        failShotDust.noGravity = true;
+                        failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);
+                        failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                    }
+                }
+                else if (volleyTimer == ballTelegraph)
+                {
+                    for (int i = -1; i <= 1; i++)
+                    {
+                        if (DLCUtils.HostCheck)
+                        {
+                            Vector2 projPos = NPC.Center;
+                            Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + i * MathHelper.PiOver4 * 1.4f).ToRotationVector2();
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 16f, ModContent.ProjectileType<Fireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
+                        }
+                    }
+                }
+                else
+                {
+                    distance = 200f;
+                }
+            }
+            if (Timer > startup + volleys * volleyTime)
+            {
+                GoToNeutral();
+                return;
+            }
+            NeutralMovement(distance);
+        }
+        #endregion
+
+        #region Help Methods
+        public void GoToNeutral()
+        {
+            Reset();
+            int index;
+            if (AvailableStates.Count < 1)
+            {
+                AvailableStates.Clear();
+                foreach (var attack in Attacks)
+                    AvailableStates.Add((int)attack);
+                AvailableStates.Remove((int)State); //avoid possible repeat after refilling list
+            }
+            if (FargoSoulsUtil.HostCheck) //only run for host in mp, will sync to others
+            {
+                index = Main.rand.Next(AvailableStates.Count);
+                State = AvailableStates[index];
+                AvailableStates.RemoveAt(index);
+            }
+            NPC.netUpdate = true;
+        }
+        public void Reset()
+        {
+            Timer = 0;
+            NPC.netUpdate = true;
+        }
+        public void NeutralMovement(float distance = 660f)
+        {
             Vector2 pos = Target.Center;
             float offsetDir = Target.DirectionTo(NPC.Center).ToRotation();
 

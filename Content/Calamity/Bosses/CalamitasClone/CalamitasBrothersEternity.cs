@@ -34,7 +34,6 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {

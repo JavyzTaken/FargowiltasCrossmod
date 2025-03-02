@@ -18,7 +18,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class ChargedGigablast : ModProjectile
+    public class Gigablast : ModProjectile
     {
         bool withinRange = false;
         public override string Texture => "CalamityMod/Projectiles/Boss/SCalBrimstoneGigablast";
@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.penetrate = 1;
-            Projectile.timeLeft = 60 * 6;
+            Projectile.timeLeft = 60 * 7;
             Projectile.Opacity = 0f;
             Projectile.tileCollide = false;
 
@@ -78,8 +78,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             if (!withinRange && Main.player[target].Alive())
             {
-                Vector2 vectorToIdlePosition = Main.player[target].Center - Projectile.Center;
-                float speed = 14f;
+                Vector2 targetPos = Main.player[target].Center + Main.player[target].velocity * 5;
+                Vector2 vectorToIdlePosition = targetPos - Projectile.Center;
+                float speed = 33f;
                 float inertia = 45f;
                 vectorToIdlePosition.Normalize();
                 vectorToIdlePosition *= speed;
@@ -104,7 +105,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 SparkParticle orb = new SparkParticle(Projectile.Center - Projectile.velocity + Main.rand.NextVector2Circular(30, 30), -Projectile.velocity * Main.rand.NextFloat(0.1f, 1f), false, 14, Main.rand.NextFloat(0.5f, 0.75f), (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * Projectile.Opacity);
                 GeneralParticleHandler.SpawnParticle(orb);
             }
-            if ((Projectile.timeLeft < 120 && !withinRange) || (targetDist < 150))
+            if ((Projectile.timeLeft < 120 && !withinRange))
             {
                 withinRange = true;
             }
