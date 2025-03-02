@@ -333,7 +333,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
         }
         public int Flamethrower_WindupTime => 50;  
-        public int Flamethrower_PullbackTime => WorldSavingSystem.MasochistModeReal ? 45 : 60;
+        public int Flamethrower_PullbackTime => WorldSavingSystem.MasochistModeReal ? 50 : 60;
         public int Flamethrower_SweepTime => (PhaseTwo ? 70 : 80) + (WorldSavingSystem.MasochistModeReal ? 0 : 10);
         public void Flamethrower()
         {
