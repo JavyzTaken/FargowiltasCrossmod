@@ -148,11 +148,11 @@ GaleSpine.DisplayName: Позвонок Бури
 HydrothermicVentShot.DisplayName: Гидротермический выстрел перегрева
 ChargedGigablast.DisplayName: Заряженный гигавзрыв
 SuckedRock.DisplayName: Булыжник
-// CalcloneWave.DisplayName: Calclone Wave
+CalcloneWave.DisplayName: Калклон волна
 EmpyreanStar.DisplayName: Возвышенная звезда
-// BrimstoneArtillery.DisplayName: Brimstone Artillery
-// BrimstoneFireball.DisplayName: Brimstone Fireball
-// Gigablast.DisplayName: Gigablast
-// Fireblast.DisplayName: Fireblast
-// BrimstoneBall.DisplayName: Brimstone Ball
-// BrothersEyeFlash.DisplayName: Brothers Eye Flash
+BrimstoneArtillery.DisplayName: Серная артиллерия
+BrimstoneFireball.DisplayName: Шар серного огня
+Gigablast.DisplayName: Гигавзрыв
+Fireblast.DisplayName: Огненный взрыв
+BrimstoneBall.DisplayName: Серный шар
+BrothersEyeFlash.DisplayName: Вспышка глаза братьев
