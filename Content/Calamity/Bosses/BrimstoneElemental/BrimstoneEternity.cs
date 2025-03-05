@@ -94,6 +94,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             NPC.damage = NPC.defDamage;
             NPC.dontTakeDamage = false;
             NPC.Opacity = 1;
+            NPC.chaseable = true;
             CalamityGlobalNPC.brimstoneElemental = NPC.whoAmI;
 
             //useful values
