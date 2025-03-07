@@ -196,6 +196,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public static OldDukeAIState[] Phase2AttackCycle =>
         [
+            OldDukeAIState.ConjureNuclearHurricane,
             OldDukeAIState.VomitRadioactiveCinders,
             OldDukeAIState.PredictiveDashes,
             OldDukeAIState.KamikazeSharks,
@@ -585,8 +586,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             else
             {
                 dashCounter++;
-                AITimer = 0;
                 NPC.netUpdate = true;
+                AITimer = 0;
 
                 if (dashCounter >= dashCount && !hurricaneAttack)
                     SwitchState();
@@ -858,17 +859,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public void DoBehavior_ConjureNuclearHurricane()
         {
             int hurricaneLifetime = 480;
+            ref float actualTimer = ref NPC.ai[0];
 
             if (AITimer == 1 && !LumUtils.AnyProjectiles(ModContent.ProjectileType<NuclearHurricane>()))
-            {
                 LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f, hurricaneLifetime);
-            }
 
-            if (AITimer >= hurricaneLifetime)
-                AITimer = 0;
+            actualTimer++;
+            if (actualTimer >= hurricaneLifetime)
+                SwitchState();
 
             DoBehavior_Dashes(false);
             NPC.velocity *= 0.91f;
+
+            if (actualTimer <= 10)
+                NPC.damage = 0;
         }
 
         /// <summary>
@@ -1111,7 +1115,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 attackCycle = Phase2AttackCycle;
 
             CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
-            CurrentState = OldDukeAIState.ConjureNuclearHurricane;
             AttackCycleIndex++;
 
             float lifeRatio = NPC.GetLifePercent();

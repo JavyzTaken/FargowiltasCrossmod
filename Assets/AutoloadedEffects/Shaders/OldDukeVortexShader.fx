@@ -22,7 +22,9 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 coords : TEXCOORD
     float4 color = saturate(float4(spin, spin, spin, 1) / (1.1 - float4(sampleColor.rgb, 1)));
     color = round(color * 8) / 8;
     
-    return color * edgeFade * smoothstep(0.01, 0.2, spin) * sampleColor.a;
+    float innerCore = smoothstep(0.24, 0.07, polar.y) * sampleColor.a;
+    
+    return color * edgeFade * smoothstep(0.01, 0.2, spin) * sampleColor.a + innerCore;
 }
 
 technique Technique1
