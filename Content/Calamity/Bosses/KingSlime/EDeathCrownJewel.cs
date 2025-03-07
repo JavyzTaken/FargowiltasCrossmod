@@ -3,6 +3,7 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -26,6 +27,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.KingSlime
                 return true;
             }
             NPC.ai[0] = 0; //don't fire normal shots
+            int slime = NPC.FindFirstNPC(NPCID.KingSlime);
+            if (slime.IsWithinBounds(Main.maxNPCs) && Main.npc[slime] != null && Main.npc[slime].Alive())
+            {
+                if (Main.npc[slime].GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.KingSlime>().DeathTimer > 0)
+                    return true;
+            }
             if (++Timer >= 180)
             {
                 Player target = Main.player[NPC.target];
