@@ -24,6 +24,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             Projectile.rotation += 0.12f * Projectile.direction;
 
+            if (Projectile.velocity.Length() < 17)
+                Projectile.velocity *= 1.1f;
+
             Lighting.AddLight(Projectile.Center, 0.25f, 0f, 0f);
 
             for (int i = 0; i < 2; i++)

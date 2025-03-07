@@ -210,6 +210,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     if (SeekerNumber == 3) // flamethrower
                     {
                         float speed = 6f + progress * 8f;
+                        float speedMod = LumUtils.Saturate((parentAI.Timer - flameStart) / 25f);
+                        speed *= speedMod;
+                        speed = MathHelper.Clamp(speed, 2, 100);
                         if (parentAI.Timer % 22 == 0)
                         {
                             SoundEngine.PlaySound(SoundID.Item34 with { Volume = 5 }, NPC.Center);

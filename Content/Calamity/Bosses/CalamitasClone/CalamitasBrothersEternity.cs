@@ -350,7 +350,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             ref float sweepDir = ref AI2;
 
 
-            int firePreStartup = 10;
+            int firePreStartup = 30;
             int idealDistance = 280;
 
             void Flames(float speed = 10f)
@@ -409,9 +409,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     desiredPos.Y = floor.Y - 500;
                 Movement(desiredPos, 0.75f);
 
-                if (Timer > Flamethrower_WindupTime + Flamethrower_PullbackTime - firePreStartup)
+                float startFire = Flamethrower_WindupTime + Flamethrower_PullbackTime - firePreStartup;
+                if (Timer > startFire)
                 {
-                    Flames();
+                    float speed = LumUtils.Saturate((Timer - startFire) / 25f);
+                    speed *= 10;
+                    speed = MathHelper.Clamp(speed, 2, 10);
+                    Flames(speed);
                 }
             }
             else if (Timer < Flamethrower_WindupTime + Flamethrower_PullbackTime + Flamethrower_SweepTime)
@@ -481,7 +485,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 CustomRotation = 1;
                 float diff = FargoSoulsUtil.RotationDifference(ForwardRotation.ToRotationVector2(), NPC.DirectionTo(Target.Center));
-                NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / 140f);
+                NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / 120f);
 
                 int shotTimer = (int)Timer - startup;
 
@@ -500,9 +504,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     {
                         float rot = MathF.Sin(MathF.Tau * shotTimer / sinePeriod);
                         rot *= ballDir;
-                        rot *= MathHelper.PiOver2 * 0.32f;
+                        rot *= MathHelper.PiOver2 * 0.4f;
                         Vector2 dir = (ForwardRotation + rot).ToRotationVector2();
-                        float speed = 17f;
+                        float speed = 3.5f;
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, ModContent.ProjectileType<BrimstoneBall>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
                     }
                 }
