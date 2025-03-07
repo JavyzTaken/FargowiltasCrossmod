@@ -454,12 +454,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Vector2 dir = CalculateAngle(targetX);
 
             CustomRotation = 1;
-            NPC.rotation = Vector2.Lerp(NPC.rotation.ToRotationVector2(), dir.RotatedBy(-MathHelper.PiOver2), 0.1f).ToRotation();
+            NPC.rotation = NPC.rotation.ToRotationVector2().RotateTowards(dir.ToRotation() - MathHelper.PiOver2, 0.05f).ToRotation();
+            //NPC.rotation = Vector2.Lerp(NPC.rotation.ToRotationVector2(), dir.RotatedBy(-MathHelper.PiOver2), 0.001f).ToRotation();
 
             int startup = 40;
             int frequency = 11;
             int totalTime = 60 * 6;
-            int endTime = 40;
+            int endTime = 20;
             Timer++;
             if (Timer > startup && Timer % frequency == 0 && Timer < totalTime)
             {
@@ -481,7 +482,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void Gigablasts()
         {
             Timer++;
-            float startup = 60f;
+            float startup = 30f;
             float ballTelegraph = 30f;
             float shotTime = 60 * 3f;
             float volleys = 3;
@@ -555,14 +556,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Timer++;
             float startup = 30f;
             float ballTelegraph = 50f;
-            float shotTime = 60 * 1.4f;
-            float volleys = 3;
+            float shotTime = 60 * 0.8f;
+            float volleys = 4;
             float volleyTime = shotTime + ballTelegraph;
+            if (WorldSavingSystem.MasochistModeReal)
+            {
+                startup = 30f;
+                ballTelegraph = 50f;
+                shotTime = 60 * 0.5f;
+                volleys = 6;
+                volleyTime = shotTime + ballTelegraph;
+            }
 
-            float distance = 600f;
+            float distance = 450f;
             if (Timer < startup)
             {
-                distance = 200f;
+                distance = 450f;
             }
             else
             {
@@ -590,6 +599,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 }
                 else if (volleyTimer == ballTelegraph)
                 {
+                    if (DLCUtils.HostCheck)
+                    {
+                        Vector2 projPos = NPC.Center;
+                        Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 7f, ModContent.ProjectileType<Fireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
+                    }
+                    /*
                     for (int i = -1; i <= 1; i++)
                     {
                         if (DLCUtils.HostCheck)
@@ -599,6 +615,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                             Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 5f, ModContent.ProjectileType<Fireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
                         }
                     }
+                    */
                 }
                 else
                 {
@@ -618,20 +635,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void GoToNeutral()
         {
             Reset();
-            int index;
-            if (AvailableStates.Count < 1)
+            State = (int)((States)State switch
             {
-                AvailableStates.Clear();
-                foreach (var attack in Attacks)
-                    AvailableStates.Add((int)attack);
-                AvailableStates.Remove((int)State); //avoid possible repeat after refilling list
-            }
-            if (FargoSoulsUtil.HostCheck) //only run for host in mp, will sync to others
-            {
-                index = Main.rand.Next(AvailableStates.Count);
-                State = AvailableStates[index];
-                AvailableStates.RemoveAt(index);
-            }
+                States.Artillery => States.Gigablasts,
+                States.Gigablasts => States.Bombs,
+                _ => States.Artillery
+            });
             NPC.netUpdate = true;
         }
         public void Reset()

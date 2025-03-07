@@ -11,10 +11,13 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Humanizer.In;
 using CalamityMod.Particles;
+using CalamityMod;
+using CalamityMod.Projectiles.Boss;
+using FargowiltasSouls;
+using Luminance.Common.Utilities;
 
-namespace CalamityMod.Projectiles.Boss
+namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
     public class Fireblast : ModProjectile
     {
@@ -35,7 +38,7 @@ namespace CalamityMod.Projectiles.Boss
             Projectile.ignoreWater = true;
             Projectile.penetrate = 1;
             Projectile.Opacity = 0f;
-            Projectile.timeLeft = 50;
+            Projectile.timeLeft = 60;
             Projectile.tileCollide = false;
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
@@ -73,32 +76,19 @@ namespace CalamityMod.Projectiles.Boss
 
             if (!withinRange)
             {
-                if (Projectile.timeLeft < 30)
+                if (Projectile.velocity.Length() < 25f)
+                    Projectile.velocity *= 1.05f;
+                if (Main.player[target] != null && Main.player[target].Alive())
                 {
-                    float inertia = 80f;
-                    float homeSpeed = 50f;
-                    float minDist = 40f;
-                    if (target >= 0 && Main.player[target].active && !Main.player[target].dead)
+                    Vector2 toPlayer = Projectile.DirectionTo(Main.player[target].Center);
+
+                    Projectile.velocity = Projectile.velocity.RotateTowards(toPlayer.ToRotation(), 0.02f);
+
+                    float diff = FargoSoulsUtil.RotationDifference(Projectile.velocity, toPlayer);
+                    if (Math.Abs(diff) > MathHelper.PiOver2 && Projectile.timeLeft > 10)
                     {
-                        if (Projectile.Distance(Main.player[target].Center) > minDist)
-                        {
-                            Vector2 moveDirection = Projectile.SafeDirectionTo(Main.player[target].Center, Vector2.UnitY);
-                            Projectile.velocity = (Projectile.velocity * (inertia - 1f) + moveDirection * homeSpeed) / inertia;
-                        }
+                        Projectile.timeLeft = 10;
                     }
-                    else
-                    {
-                        if (Projectile.ai[0] != -1f)
-                        {
-                            Projectile.ai[0] = -1f;
-                            Projectile.netUpdate = true;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Projectile.velocity.Length() < 16f)
-                        Projectile.velocity *= 1.05f;
                 }
             }
 
@@ -115,6 +105,8 @@ namespace CalamityMod.Projectiles.Boss
             }
             if ((Projectile.timeLeft == 1 && !withinRange)) // When within 14 blocks of player or when it runs out of time
             {
+                Projectile.Kill();
+                return;
                 if (!setLifetime)
                 {
                     Projectile.timeLeft = 60;
@@ -125,7 +117,7 @@ namespace CalamityMod.Projectiles.Boss
             }
             if (withinRange && Projectile.ai[2] == 0f)
             {
-                Projectile.velocity *= 0.9f;
+                Projectile.velocity *= 0.99f;
                 for (int i = 0; i < 2; i++)
                 {
                     Dust failShotDust = Dust.NewDustPerfect(Projectile.Center, Main.rand.NextBool(3) ? 60 : 114);
@@ -141,7 +133,7 @@ namespace CalamityMod.Projectiles.Boss
                 if (Projectile.timeLeft == 30)
                 {
                     Projectile.Opacity = 0;
-                    Projectile.velocity *= 0;
+                    //Projectile.velocity *= 0;
                     for (int i = 0; i < 2; i++)
                     {
                         Particle bloom = new BloomParticle(Projectile.Center, Vector2.Zero, new Color(121, 21, 77), 0.1f, 0.7f, 30, false);
@@ -192,6 +184,19 @@ namespace CalamityMod.Projectiles.Boss
             {
                 if (Projectile.owner == Main.myPlayer)
                 {
+                    int spread = 4;
+                    int type = ModContent.ProjectileType<BrimstoneBarrageGravitating>();
+                    float velocity = 24f;
+                    Vector2 baseVel = Projectile.velocity.SafeNormalize(Vector2.UnitY);
+                    float spreadRot = MathHelper.PiOver2 * 0.2f;
+                    Vector2 aimPos = Projectile.Center - baseVel * 50;
+                    for (int k = -spread; k < spread; k++)
+                    {
+                        Vector2 dir = baseVel.RotatedBy(spreadRot * k);
+                        float aim = (Projectile.Center + dir * 80).DirectionTo(aimPos).ToRotation();
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, dir * velocity, type, (int)Math.Round(Projectile.damage * 0.75), 0f, Projectile.owner, 0f, Projectile.ai[1], ai2: aim);
+                    }
+                    /*
                     int totalProjectiles = 13;
                     float radians = MathHelper.TwoPi / totalProjectiles;
                     int type = ModContent.ProjectileType<BrimstoneBarrage>();
@@ -202,6 +207,7 @@ namespace CalamityMod.Projectiles.Boss
                         Vector2 velocity2 = spinningPoint.RotatedBy(radians * k);
                         Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity2, type, (int)Math.Round(Projectile.damage * 0.75), 0f, Projectile.owner, 0f, Projectile.ai[1], velocity * 1.5f);
                     }
+                    */
                 }
 
                 if (Projectile.ai[1] == 2f)
