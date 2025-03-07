@@ -39,7 +39,7 @@ OutlawsEssence: {
 }
 
 VagabondsSoul: {
-	DisplayName: Душа беглеца
+	DisplayName: Душа Беглеца
 	Tooltip:
 		'''
 		Увеличивает разбойный урон на 22%
