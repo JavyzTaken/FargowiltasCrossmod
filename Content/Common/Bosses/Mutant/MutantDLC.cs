@@ -563,6 +563,9 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
                 mutantBoss.endTimeVariance = WorldSavingSystem.MasochistModeReal ? Main.rand.NextFloat() : 0;
 
+                npc.ai[2] = 24;
+                VariantChoice = Variant.Vanilla;
+
                 /*text = "";
                 foreach (float f in attackHistory)
                     text += f.ToString() + " ";
