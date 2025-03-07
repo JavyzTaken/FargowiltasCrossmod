@@ -857,15 +857,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void DoBehavior_ConjureNuclearHurricane()
         {
-            NPC.velocity *= 0.92f;
-            NPC.Center = Vector2.Lerp(NPC.Center, Target.Center, 0.01f);
+            int hurricaneLifetime = 480;
 
             if (AITimer == 1 && !LumUtils.AnyProjectiles(ModContent.ProjectileType<NuclearHurricane>()))
             {
-                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f);
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f, hurricaneLifetime);
             }
 
+            if (AITimer >= hurricaneLifetime)
+                AITimer = 0;
+
             DoBehavior_Dashes(false);
+            NPC.velocity *= 0.91f;
         }
 
         /// <summary>

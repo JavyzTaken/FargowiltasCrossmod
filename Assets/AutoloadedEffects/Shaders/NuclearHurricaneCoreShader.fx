@@ -4,6 +4,7 @@ float localTime;
 float maxBumpSquish;
 float wavinessFactor;
 float opacity;
+float dissolveInterpolant;
 float3 baseColor;
 float3 additiveAccentColor;
 matrix uWorldViewProjection;
@@ -68,7 +69,10 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     // Make the top and bottom fade out. A separate effect will handle that.
     float extremesFade = smoothstep(0.2, 1, bump);
     
-    return float4(saturate(color), 1) * horizontalEdgeFade * opacity * extremesFade;
+    float dissolveNoise = tex2D(baseTexture, (coords * float2(2, 1) + float2(coords.y * wave + noise * 0.4, -localTime)) * 1.2);
+    float dissolveOpacity = smoothstep(-0.2, 0, dissolveNoise - dissolveInterpolant * 1.2);
+    
+    return float4(saturate(color), 1) * horizontalEdgeFade * opacity * extremesFade * dissolveOpacity;
 }
 
 technique Technique1

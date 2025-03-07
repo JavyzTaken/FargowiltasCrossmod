@@ -3,6 +3,7 @@
 float localTime;
 float maxBumpSquish;
 float wavinessFactor;
+float dissolveInterpolant;
 float zoom;
 matrix uWorldViewProjection;
 
@@ -59,7 +60,7 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
     // Use the first noise value as a warping offset on a second noise value, which will dictate the appearance of foam on the hurricane.
     noise = tex2D(baseTexture, (coords * float2(1, 2) + float2(localTime * 1.3, coords.x * 1.7) + noise * 0.02) * zoom);
 
-    return smoothstep(0.45, 1, noise) * opacity;
+    return smoothstep(0.45, 1, noise - dissolveInterpolant * 0.5) * opacity;
 }
 
 technique Technique1

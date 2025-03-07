@@ -33,11 +33,21 @@ public class NuclearHurricane : ModProjectile
 
     private static float WavinessFactor => 0.16f;
 
+    /// <summary>
+    /// The dissolve interpolant of this hurricane.
+    /// </summary>
+    public float DissolveInterpolant => LumUtils.InverseLerp(Lifetime - 60f, Lifetime, Time);
+
     // TODO -- Consider creating some sort of vfx config option that slows this down. Concerns were brought up about this being too fast by default for those with photosensitivity.
     /// <summary>
     /// A general-purpose timer which determines the animation of visuals for this hurricane.
     /// </summary>
     public float VisualsTime => Time / 32f + Projectile.identity * 0.33f;
+
+    /// <summary>
+    /// How long this hurricane should exist for, in frames.
+    /// </summary>
+    public int Lifetime => (int)Projectile.ai[1];
 
     /// <summary>
     /// The Z position of this hurricane.
@@ -76,18 +86,11 @@ public class NuclearHurricane : ModProjectile
         Time += 1f / (Z + 1f);
         Z = MathHelper.Lerp(Z, 0.01f, 0.03f);
 
-        // TODO -- Remove.
-        if (Main.mouseRight)
-            Z = 10f;
-
         Projectile.scale = 1f / (Z + 1f);
         Projectile.Opacity = 1f;
         Projectile.Resize(1400, 2600);
 
-        // Attempt to follow the nearest player.
-        Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
-        Projectile.velocity += Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
-        Projectile.velocity = Projectile.velocity.ClampLength(0f, 9f);
+        MoveTowardsTarget();
 
         // Stay in the world.
         Vector2 shoveDistance = Projectile.Size * 0.6f;
@@ -95,7 +98,8 @@ public class NuclearHurricane : ModProjectile
 
         ApplyParallaxPositioning();
 
-        for (int i = 0; i < Projectile.scale * 25f; i++)
+        float dissolveInterpolant = DissolveInterpolant;
+        for (int i = 0; i < Projectile.scale * (1f - dissolveInterpolant) * 25f; i++)
         {
             // Calculate the height and angle of the dust on the hurricane.
             float heightInterpolant = Main.rand.NextFloat(0.2f, 0.8f);
@@ -125,7 +129,7 @@ public class NuclearHurricane : ModProjectile
         }
 
         // Create projectiles around the hurricane.
-        if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.scale >= 0.9f && Projectile.timeLeft % 4 == 0)
+        if (Main.netMode != NetmodeID.MultiplayerClient && Projectile.scale >= 0.9f && Projectile.timeLeft % 6 == 0 && dissolveInterpolant <= 0.1f)
         {
             float x = Main.rand.NextFloatDirection() * Projectile.width * 0.4f;
             float y = Main.rand.NextFloat(-0.4f, 0.2f) * Projectile.height;
@@ -138,6 +142,26 @@ public class NuclearHurricane : ModProjectile
             projectileSelector.Add(ModContent.ProjectileType<TrasherProjectile>(), 0.24);
 
             LumUtils.NewProjectileBetter(Projectile.GetSource_FromThis(), spawnPosition, Main.rand.NextVector2CircularEdge(15f, 4f), projectileSelector.Get(), 250, 0f);
+        }
+
+        if (Time >= Lifetime)
+            Projectile.Kill();
+    }
+
+    private void MoveTowardsTarget()
+    {
+        float worldEdgeFluff = 2150f;
+
+        // Don't force the player into a hit at the world border.
+        bool nearWorldEdge = Projectile.Left.X < worldEdgeFluff || Projectile.Right.X > Main.maxTilesX * 16f - worldEdgeFluff;
+        if (nearWorldEdge)
+            Projectile.velocity *= 0.993f;
+
+        else
+        {
+            Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
+            Vector2 acceleration = Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
+            Projectile.velocity = (Projectile.velocity + acceleration).ClampLength(0f, 13f);
         }
     }
 
@@ -159,7 +183,7 @@ public class NuclearHurricane : ModProjectile
     {
         int hurricaneID = ModContent.ProjectileType<NuclearHurricane>();
         float maximumForce = 3.3f;
-        float maximumFlySpeed = 27.5f;
+        float maximumFlySpeed = 23.5f;
         foreach (Projectile hurricane in Main.ActiveProjectiles)
         {
             if (hurricane.type != hurricaneID)
@@ -203,7 +227,7 @@ public class NuclearHurricane : ModProjectile
         glowShader.TrySetParameter("localTime", time);
         glowShader.TrySetParameter("maxBumpSquish", MaxVisualBumpSquish);
         glowShader.TrySetParameter("wavinessFactor", WavinessFactor);
-        glowShader.TrySetParameter("glowColor", new Vector4(0.81f, 0.9f, 0.1f, 1f) * Projectile.Opacity * 1.5f);
+        glowShader.TrySetParameter("glowColor", new Vector4(0.81f, 0.9f, 0.1f, 1f) * Projectile.Opacity * (1f - DissolveInterpolant) * 1.5f);
         glowShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.85f) * world * view * projection);
         glowShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
         glowShader.Apply();
@@ -220,6 +244,7 @@ public class NuclearHurricane : ModProjectile
         coreShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1f) * world * view * projection);
         coreShader.TrySetParameter("baseColor", new Vector3(0.7f, 0.95f, 0f));
         coreShader.TrySetParameter("additiveAccentColor", new Vector3(0.7f, 1f, 0f));
+        coreShader.TrySetParameter("dissolveInterpolant", DissolveInterpolant);
         coreShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
         coreShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
@@ -233,6 +258,7 @@ public class NuclearHurricane : ModProjectile
         foamShader.TrySetParameter("wavinessFactor", WavinessFactor);
         foamShader.TrySetParameter("zoom", 0.4f);
         foamShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.25f) * world * view * projection);
+        foamShader.TrySetParameter("dissolveInterpolant", DissolveInterpolant);
         foamShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
         foamShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
@@ -305,15 +331,15 @@ public class NuclearHurricane : ModProjectile
         return false;
     }
 
-    public override bool? CanDamage() => Z <= 0.05f;
+    public override bool? CanDamage() => Z <= 0.05f && DissolveInterpolant <= 0.33f;
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {
-        Rectangle top = Utils.CenteredRectangle(Projectile.Top + Vector2.UnitY * 250f, new Vector2(Projectile.width, 300f));
+        Rectangle top = Utils.CenteredRectangle(Projectile.Top + Vector2.UnitY * 300f, new Vector2(Projectile.width, 300f));
         if (targetHitbox.Intersects(top))
             return true;
 
-        Rectangle bottom = Utils.CenteredRectangle(Projectile.Bottom - Vector2.UnitY * 250f, new Vector2(Projectile.width, 300f));
+        Rectangle bottom = Utils.CenteredRectangle(Projectile.Bottom - Vector2.UnitY * 300f, new Vector2(Projectile.width, 300f));
         if (targetHitbox.Intersects(bottom))
             return true;
 
