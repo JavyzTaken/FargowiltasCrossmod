@@ -153,16 +153,15 @@ public class NuclearHurricane : ModProjectile
         float worldEdgeFluff = 2150f;
 
         // Don't force the player into a hit at the world border.
-        bool nearWorldEdge = Projectile.Left.X < worldEdgeFluff || Projectile.Right.X > Main.maxTilesX * 16f - worldEdgeFluff;
-        if (nearWorldEdge)
+        Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
+        Vector2 acceleration = Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
+        bool movingTowardsBorder = (Projectile.Left.X < worldEdgeFluff && acceleration.X < 0f) ||
+                                   (Projectile.Right.X > Main.maxTilesX * 16f - worldEdgeFluff && acceleration.X > 0f);
+        if (movingTowardsBorder)
             Projectile.velocity *= 0.993f;
 
         else
-        {
-            Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
-            Vector2 acceleration = Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
-            Projectile.velocity = (Projectile.velocity + acceleration).ClampLength(0f, 13f);
-        }
+            Projectile.velocity = (Projectile.velocity + acceleration).ClampLength(0f, 11f);
     }
 
     private void ApplyParallaxPositioning()
@@ -280,8 +279,8 @@ public class NuclearHurricane : ModProjectile
         extremesShader.TrySetParameter("localTime", time);
         extremesShader.TrySetParameter("top", false);
         extremesShader.TrySetParameter("uWorldViewProjection", bottomMatrix * world * view * projection);
-        extremesShader.TrySetParameter("color", new Vector4(0.59f, 0.84f, 0f, 1f));
-        extremesShader.TrySetParameter("glowColor", new Vector4(0.7f, 0.5f, 0.5f, 0f));
+        extremesShader.TrySetParameter("color", new Vector4(0.59f, 0.84f, 0f, 1f) * (1f - DissolveInterpolant));
+        extremesShader.TrySetParameter("glowColor", new Vector4(0.7f, 0.5f, 0.5f, 0f) * (1f - DissolveInterpolant));
         extremesShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
         extremesShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
