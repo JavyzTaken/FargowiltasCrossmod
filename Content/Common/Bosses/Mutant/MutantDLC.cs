@@ -446,6 +446,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             void Movement(Vector2 target, float speed, float maxSpeed = 24, bool fastX = true, bool obeySpeedCap = true)
             {
+                target.X = MathHelper.Clamp(target.X, 200, Main.maxTilesX * 16 - 200);
+                target.Y = MathHelper.Clamp(target.Y, 200, Main.maxTilesY * 16 - 200);
                 float turnaroundModifier = 1f;
 
                 if (WorldSavingSystem.MasochistModeReal)
