@@ -87,7 +87,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 }
 
                 float open = Math.Clamp(OpenMouth, 0, 1);
-                Vector2 offset = new(-26, 12);
+                Vector2 offset;
                 float maxOpen = MathHelper.PiOver4 * 1f;
 
                 if (npc.HasPlayerTarget && !Main.player[npc.target].Calamity().ZoneSulphur)
@@ -99,18 +99,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         // head
                         spriteBatch.Draw(head, npc.Center + afterimageOffset - screenPos, npc.frame, glowColor, npc.rotation, head.Size() / 2, 1, spriteEffects, 0);
                         // left
+                        offset = new(-26, 12);
                         spriteBatch.Draw(left, drawLocation + afterimageOffset + offset.RotatedBy(npc.rotation), null, glowColor, npc.rotation - open * maxOpen, left.Size() / 2, npc.scale, SpriteEffects.None, 0);
-                        offset.X *= -1;
+                        offset = new(26, 12);
                         // right
                         spriteBatch.Draw(right, drawLocation + afterimageOffset + offset.RotatedBy(npc.rotation), null, glowColor, npc.rotation + open * maxOpen, right.Size() / 2, npc.scale, SpriteEffects.None, 0);
-                        offset.X *= -1;
+                        
                     }
                 }
                 // head
+                offset = new(-26, 12);
                 spriteBatch.Draw(head, npc.Center - screenPos, npc.frame, color, npc.rotation, head.Size() / 2, 1, spriteEffects, 0);
                 // left
                 spriteBatch.Draw(left, drawLocation + offset.RotatedBy(npc.rotation), null, color, npc.rotation - open * maxOpen, left.Size() / 2, npc.scale, SpriteEffects.None, 0);
-                offset.X *= -1;
+                offset = new(26, 12);
                 // right
                 spriteBatch.Draw(right, drawLocation + offset.RotatedBy(npc.rotation), null, color, npc.rotation + open * maxOpen, right.Size() / 2, npc.scale, SpriteEffects.None, 0);
                 return false;
@@ -143,7 +145,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     int height = gut.Height / frames;
                     Rectangle rect = new(0, frame * height, gut.Width, height);
                     Vector2 origin = rect.Size() / 2;
-                    spriteBatch.Draw(gut, npc.Center - screenPos, rect, drawColor, npc.rotation, origin, 1, SpriteEffects.None, 0);
+                    spriteBatch.Draw(gut, npc.Center - screenPos, rect, npc.GetAlpha(drawColor) * 0.8f, npc.rotation, origin, 1, SpriteEffects.None, 0);
                 }
 
 
