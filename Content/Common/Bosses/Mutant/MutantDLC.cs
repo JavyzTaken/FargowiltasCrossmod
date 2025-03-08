@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
     public class MutantDLC : CalDLCEmodeExtraGlobalNPC
     {
         public override bool InstancePerEntity => true;
-        public override NPCMatcher CreateMatcher() => Matcher.MatchType(ModContent.NPCType<MutantBoss>());
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<MutantBoss>());
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
             return WorldSavingSystem.EternityMode && ExtraRequirements() ? base.NewInstance(target) : null;
