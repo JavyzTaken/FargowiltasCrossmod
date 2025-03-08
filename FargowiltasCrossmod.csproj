@@ -26,7 +26,7 @@
     <None Remove="Content\Calamity\Bosses\AquaticScourge\ASJawRight.png" />
     <None Remove="Content\Calamity\Bosses\Perforators\PerforatorRubble.png" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
-    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Config.hjson" />
+    <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Configs.CalDLCConfig.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.EModeBalance.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Items.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.NPCs.hjson" />
@@ -34,7 +34,7 @@
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.Toggler.hjson" />
     <None Remove="Localization\en-US\Mods.FargowiltasCrossmod.WizardEffect.hjson" />
     <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.ActiveSkills.hjson" />
-    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.Config.hjson" />
+    <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.Configs.CalDLCConfig.hjson" />
     <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.EModeBalance.hjson" />
     <None Remove="localization\ru-ru\Mods.FargowiltasCrossmod.Items.hjson" />
     <None Remove="Localization\ru-RU\Mods.FargowiltasCrossmod.NPCs.hjson" />

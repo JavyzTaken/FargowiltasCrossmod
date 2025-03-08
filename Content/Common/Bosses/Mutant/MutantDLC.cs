@@ -359,7 +359,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 case DLCAttack.SpawnDoG: SpawnDoG(); break;
                 case DLCAttack.Polterghast: Polterghast(); break;
             }
-            return base.PreAI(npc);
+            return base.SafePreAI(npc);
 
             #region Checks and Commons
             bool AliveCheck(Player p, bool forceDespawn = false)

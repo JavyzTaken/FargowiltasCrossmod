@@ -20,7 +20,7 @@ namespace FargowiltasCrossmod.Core.Calamity
         [DefaultValue(true)]
         public bool ConsumableSummons;
 
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         public bool VoiceActingEnabled;
 
         [ReloadRequired]

@@ -1,4 +1,5 @@
 ﻿using CalamityMod;
+using CalamityMod.Events;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Projectiles;
@@ -85,7 +86,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon
                 HologramOverlayInterpolant = Utilities.Saturate(HologramOverlayInterpolant + 0.02f);
                 MaxSkyOpacity = 1f - HologramOverlayInterpolant;
                 if (HologramOverlayInterpolant >= 1f)
+                {
                     NPC.active = false;
+                    if (BossRushEvent.BossRushActive)
+                        BossRushEvent.BossRushStage++;
+                }
+                    
             }
             else
                 HologramOverlayInterpolant = 0f;
