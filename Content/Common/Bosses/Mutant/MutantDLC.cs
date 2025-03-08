@@ -172,7 +172,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
 
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => DLCAttackChoice == DLCAttack.PrepareAresNuke ? false : base.CanHitPlayer(npc, target, ref cooldownSlot);
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             ref float attackChoice = ref npc.ai[0];
 
@@ -1530,7 +1530,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
         }
 
-        public override void PostAI(NPC npc)
+        public override void SafePostAI(NPC npc)
         {
             ManageMusicAndSky(npc);
             if (DLCAttackChoice < DLCAttack.None) //p1, negate "while dashing" code that makes him face his velocity
