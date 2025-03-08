@@ -201,6 +201,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
         {
             binaryWriter.Write(Hittable);
+            binaryWriter.Write(HasDoneSpinny);
             binaryWriter.Write7BitEncodedInt(SuckCooldown);
             binaryWriter.Write7BitEncodedInt(Hittable1);
             binaryWriter.Write7BitEncodedInt(Hittable2);
@@ -227,6 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
         {
             Hittable = binaryReader.ReadBoolean();
+            HasDoneSpinny = binaryReader.ReadBoolean();
 
             SuckCooldown = binaryReader.Read7BitEncodedInt();
             Hittable1 = binaryReader.Read7BitEncodedInt();
@@ -279,6 +281,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 
         public int[] LastFewAttacks = [-1, -1];
         public int SuckCooldown = 0;
+        public bool HasDoneSpinny = false;
 
         public float Phase2Percent = 0.75f;
         public float Phase3Percent = 0.4f;
@@ -753,6 +756,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             break;
                         case Attacks.CircleSpikes:
                             //Main.NewText(AttackPart);
+                            if (!HasDoneSpinny)
+                            {
+                                HasDoneSpinny = true;
+                                npc.netUpdate = true;
+                            }
                             if (AttackPart == 0)
                             {
                                 
@@ -858,11 +866,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 AttackChain = LastFewAttacks[0];
                                 if (FargoSoulsUtil.HostCheck)
                                 {
-                                    while (LastFewAttacks[0] == AttackChain)
+                                    if (npc.GetLifePercent() < 0.15f && !HasDoneSpinny)
                                     {
-                                        AttackChain = Main.rand.Next(1, 4);
-                                        if (npc.GetLifePercent() <= Phase2Percent) AttackChain = Main.rand.Next(5, 8);
-                                        if (npc.GetLifePercent() <= Phase3Percent) AttackChain = Main.rand.Next(5, 9);
+                                        AttackChain = (int)Attacks.CircleSpikes;
+                                    }
+                                    else
+                                    {
+                                        while (LastFewAttacks[0] == AttackChain)
+                                        {
+                                            AttackChain = Main.rand.Next(1, 4);
+                                            if (npc.GetLifePercent() <= Phase2Percent) AttackChain = Main.rand.Next(5, 8);
+                                            if (npc.GetLifePercent() <= Phase3Percent) AttackChain = Main.rand.Next(5, 9);
+                                        }
+                                        
                                     }
                                     LastFewAttacks[1] = LastFewAttacks[0];
                                     LastFewAttacks[0] = AttackChain;
