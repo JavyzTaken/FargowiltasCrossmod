@@ -115,6 +115,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 spriteBatch.Draw(right, drawLocation + offset.RotatedBy(npc.rotation), null, color, npc.rotation + open * maxOpen, right.Size() / 2, npc.scale, SpriteEffects.None, 0);
                 return false;
             }
+            else
+            {
+                if (npc.ai[2] < 0)
+                    return false;
+            }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -382,7 +387,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             if (Main.projectile[i].active && Main.projectile[i].type == ModContent.ProjectileType<AquaticSuck>() && Main.projectile[i].ai[0] == head.whoAmI)
                             {
                                 Main.projectile[i].Kill();
-                                Main.projectile[i].active = false;
                                 NetMessage.SendData(MessageID.SyncProjectile, number: i);
                                 break;
                             }
@@ -399,10 +403,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     {
                         if (Main.npc[thing].type != ModContent.NPCType<AquaticScourgeTail>())
                         {
-                            Main.npc[thing].realLife = -1;
-                            Main.npc[thing].ai[2] = -1;
-                            thing = (int)Main.npc[thing].ai[0];
-
+                            var segment = Main.npc[thing];
+                            segment.realLife = -1;
+                            segment.ai[2] = -1;
+                            thing = (int)segment.ai[0];
                         }
                         else
                         {
@@ -955,15 +959,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     void Dash(float speed, float time, int epicExtraFlag = 0)
                     {
                         DashAttackTimer++;
-                        if (npc.GetLifePercent() < Phase2Percent && DashAttackTimer < 7)
-                            DashAttackTimer = 7;
 
                         float accel = 1.06f;
                         float turnBonus = 1f;
                         if (npc.GetLifePercent() < Phase2Percent)
+                        {
                             accel += 0.015f;
+                            time *= 0.9f;
+                        }
+                            
                         if (npc.GetLifePercent() < Phase3Percent)
+                        {
                             accel += 0.015f;
+                            time *= 0.9f;
+                        }
 
                         if (npc.HasPlayerTarget && !target.Calamity().ZoneSulphur)
                         {
