@@ -1238,7 +1238,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         ];
         public override bool PreAI(NPC npc)
         {
-            #region SummonDrops
+            #region Summon Drops and Presence Debuffs
             if (CalDLCWorldSavingSystem.R_EternityRev)
             {
                 if (npc.type == NPCID.KingSlime)
@@ -1446,7 +1446,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                         Main.LocalPlayer.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
                 }
             }
-            #endregion SummonDrops
+            #endregion Summon Drops and Presence Debuffs
             if (ImmuneToAllDebuffs)
             {
                 for (int i = NPC.maxBuffs - 1; i >= 0; i--)

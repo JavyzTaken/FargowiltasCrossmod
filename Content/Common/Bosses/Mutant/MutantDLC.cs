@@ -12,10 +12,13 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Common.Projectiles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -28,16 +31,25 @@ using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
-    public class MutantDLC : GlobalNPC
+    public class MutantDLC : CalDLCEmodeExtraGlobalNPC
     {
         public override bool InstancePerEntity => true;
+        public override NPCMatcher CreateMatcher() => Matcher.MatchType(ModContent.NPCType<MutantBoss>());
+        public override GlobalNPC NewInstance(NPC target) //the cursed beast
+        {
+            return WorldSavingSystem.EternityMode && ExtraRequirements() ? base.NewInstance(target) : null;
+        }
+        public override bool ExtraRequirements()
+        {
+            return ShouldDoDLC;
+        }
+
         private static bool Thorium => ModCompatibility.ThoriumMod.Loaded;
         private static bool Calamity => ModCompatibility.Calamity.Loaded;
         public static bool ShouldDoDLC
         {
             get => Calamity;
         }
-        public override bool AppliesToEntity(NPC npc, bool lateInstantiation) => npc.type == ModContent.NPCType<MutantBoss>() && ShouldDoDLC;
 
         private bool PlayStoria = false;
         public void ManageMusicAndSky(NPC npc)
