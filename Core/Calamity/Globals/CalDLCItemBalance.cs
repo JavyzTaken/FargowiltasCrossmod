@@ -85,7 +85,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
-            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
+            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.6f;
             if (item.type == ItemType<GuardianTome>()) return 0.2f;
             if (item.type == ItemType<SlimeRain>()) return 0.08f;
             if (item.type == ItemType<TheBiggestSting>()) return 0.3f;
