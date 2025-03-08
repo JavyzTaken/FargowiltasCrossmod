@@ -337,6 +337,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 ContactDamage = 1;
                 NPC.velocity *= 0.93f;
             }
+            if (Timer > windupTime + windbackTime + 20 && Timer < windupTime + windbackTime + chargeTime + 10)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 dir = -NPC.velocity.SafeNormalize(Vector2.UnitY);
+                    dir = dir.RotatedByRandom(MathHelper.PiOver2 * 0.2f);
+                    Vector2 velocity = dir * 32;
+                    PointParticle spark2 = new(Main.rand.NextVector2FromRectangle(NPC.Hitbox) + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                    GeneralParticleHandler.SpawnParticle(spark2);
+
+                    Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                    failShotDust.noGravity = true;
+                    failShotDust.velocity = dir * 38 * Main.rand.NextFloat(0.5f, 1.3f);
+                    failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                }
+            }
             if (Timer >= CycleTime)
             {
                 GoToNeutral();
@@ -520,7 +536,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             int windupTime = 40;
             int windbackTime = 15;
-            int chargeTime = 38;
+            int chargeTime = 40;
             int endTime = 3;
             int cycle = windupTime + windbackTime + chargeTime + endTime;
             float cycleTimer = Timer % cycle;
@@ -566,6 +582,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 NPC.velocity *= 0.93f;
                 ContactDamage = 1;
+            }
+            if (cycleTimer > windupTime + windbackTime + 20 && cycleTimer < windupTime + windbackTime + chargeTime + 10)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Vector2 dir = -NPC.velocity.SafeNormalize(Vector2.UnitY);
+                    dir = dir.RotatedByRandom(MathHelper.PiOver2 * 0.2f);
+                    Vector2 velocity = dir * 32;
+                    PointParticle spark2 = new(Main.rand.NextVector2FromRectangle(NPC.Hitbox) + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                    GeneralParticleHandler.SpawnParticle(spark2);
+
+                    Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                    failShotDust.noGravity = true;
+                    failShotDust.velocity = dir * 38 * Main.rand.NextFloat(0.5f, 1.3f);
+                    failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                }
             }
             if (Timer >= totalTime)
             {
