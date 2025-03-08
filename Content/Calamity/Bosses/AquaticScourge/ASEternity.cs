@@ -964,14 +964,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         float turnBonus = 1f;
                         if (npc.GetLifePercent() < Phase2Percent)
                         {
-                            accel += 0.015f;
-                            time *= 0.9f;
+                            accel += 0.011f;
+                            time *= 0.93f;
                         }
                             
                         if (npc.GetLifePercent() < Phase3Percent)
                         {
-                            accel += 0.015f;
-                            time *= 0.9f;
+                            accel += 0.011f;
+                            time *= 0.93f;
                         }
 
                         if (npc.HasPlayerTarget && !target.Calamity().ZoneSulphur)
