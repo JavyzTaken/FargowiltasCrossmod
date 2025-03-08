@@ -13,6 +13,7 @@ using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core;
+using CalamityMod.NPCs.SupremeCalamitas;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
@@ -66,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (Projectile.localAI[0] == 0f)
             {
                 Projectile.localAI[0] = 1f;
-                SoundEngine.PlaySound(SoundID.Item20, Projectile.Center);
+                SoundEngine.PlaySound(SupremeCalamitas.BrimstoneBigShotSound, Projectile.Center);
             }
 
             int target = (int)Projectile.ai[2];

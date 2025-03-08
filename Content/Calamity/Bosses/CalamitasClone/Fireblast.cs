@@ -69,7 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (Projectile.localAI[0] == 0f)
             {
                 Projectile.localAI[0] = 1f;
-                SoundEngine.PlaySound(SoundID.Item20, Projectile.Center);
+                SoundEngine.PlaySound(SupremeCalamitas.BrimstoneShotSound, Projectile.Center);
             }
 
             int target = (int)Projectile.ai[0];

@@ -8,6 +8,7 @@
   <ItemGroup>
     <None Remove="Assets\AutoloadedEffects\Shaders\GlobalOverlays\CalcloneBackgroundShader.fx" />
     <None Remove="Assets\AutoloadedEffects\Shaders\GlobalOverlays\CalcloneWaveShader.fx" />
+    <None Remove="Assets\AutoloadedEffects\Shaders\GlobalOverlays\FireTrail.fx" />
     <None Remove="Assets\ExtraTextures\AquaticScourge\ASGut.png" />
     <None Remove="Assets\ExtraTextures\AquaticScourge\ASHead.png" />
     <None Remove="Assets\ExtraTextures\PerfLegs\PerfLeg1.png" />

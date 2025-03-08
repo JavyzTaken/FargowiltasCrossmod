@@ -357,12 +357,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (Timer > shot)
             {
                 Timer = 0;
+                ScreenShakeSystem.StartShake(8f);
+                Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
                 if (DLCUtils.HostCheck)
                 {
                     Vector2 projPos = NPC.Center;
-                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                    
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<ChargedGigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
                 }
+                NPC.velocity -= dir * 10;
             }
             NeutralMovement(distance);
         }
@@ -522,12 +525,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 }
                 else if (volleyTimer == ballTelegraph)
                 {
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                    ScreenShakeSystem.StartShake(8f);
                     if (DLCUtils.HostCheck)
                     {
                         Vector2 projPos = NPC.Center;
-                        Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<Gigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
                     }
+                    NPC.velocity -= dir * 10;
                 }
                 else
                 {

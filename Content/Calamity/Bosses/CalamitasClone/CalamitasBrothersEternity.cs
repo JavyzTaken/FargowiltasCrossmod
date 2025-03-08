@@ -325,7 +325,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 Movement(desiredPos, 0.75f);
 
                 if (Timer == windupTime + windbackTime - 1)
+                {
                     SoundEngine.PlaySound(SoundID.DD2_GoblinBomberThrow, NPC.Center);
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime);
+                }
+                    
             }
             else if (Timer < windupTime + windbackTime + chargeTime)
             {
@@ -339,13 +344,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             if (Timer > windupTime + windbackTime + 20 && Timer < windupTime + windbackTime + chargeTime + 10)
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Vector2 dir = -NPC.velocity.SafeNormalize(Vector2.UnitY);
                     dir = dir.RotatedByRandom(MathHelper.PiOver2 * 0.2f);
-                    Vector2 velocity = dir * 32;
-                    PointParticle spark2 = new(Main.rand.NextVector2FromRectangle(NPC.Hitbox) + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
-                    GeneralParticleHandler.SpawnParticle(spark2);
 
                     Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
                     failShotDust.noGravity = true;
@@ -571,7 +573,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 Movement(desiredPos, 1f);
 
                 if (cycleTimer == windupTime + windbackTime - 1)
+                {
                     SoundEngine.PlaySound(SoundID.DD2_GoblinBomberThrow, NPC.Center);
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime - 30);
+                }
             }
             else if (cycleTimer < windupTime + windbackTime + chargeTime)
             {
@@ -585,13 +591,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             if (cycleTimer > windupTime + windbackTime + 20 && cycleTimer < windupTime + windbackTime + chargeTime + 10)
             {
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Vector2 dir = -NPC.velocity.SafeNormalize(Vector2.UnitY);
                     dir = dir.RotatedByRandom(MathHelper.PiOver2 * 0.2f);
-                    Vector2 velocity = dir * 32;
-                    PointParticle spark2 = new(Main.rand.NextVector2FromRectangle(NPC.Hitbox) + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
-                    GeneralParticleHandler.SpawnParticle(spark2);
 
                     Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
                     failShotDust.noGravity = true;
@@ -719,6 +722,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             StunTimer = 0;
             State = (int)States.Stunned;
             SoundEngine.PlaySound(new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f });
+            ScreenShakeSystem.StartShake(8f);
             NPC.netUpdate = true;
         }
         public void RepulseOtherBrother(ref Vector2 desiredPos)

@@ -92,6 +92,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             var diagonalNoise = FargosTextureRegistry.WavyNoise;
             var maxOpacity = Projectile.Opacity * 0.15f;
 
+            if (!blackTile.IsLoaded || !diagonalNoise.IsLoaded)
+                return false;
+
             ManagedShader shader = ShaderManager.GetShader("FargowiltasCrossmod.CalcloneBackgroundShader");
             shader.TrySetParameter("colorMult", 7.35f);
             shader.TrySetParameter("time", Main.GlobalTimeWrappedHourly);
