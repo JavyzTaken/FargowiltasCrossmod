@@ -34,6 +34,7 @@ using System.IO;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core.Calamity;
+using static log4net.Appender.RollingFileAppender;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -46,68 +47,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeHead>();
 
     }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ASBodyAltEternity : ASBodyEternity
-    {
-        public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeBodyAlt>();
-    }
-    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ASBodyEternity : CalDLCEmodeBehavior
-    {
-        public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
-        public override int NPCOverrideID => ModContent.NPCType<AquaticScourgeBody>();
-        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
-        {
-            DestroyerSegment.PierceResistance(projectile, ref modifiers);
-        }
-        public override void UpdateLifeRegen(ref int damage)
-        {
-            /*
-            if (NPC.lifeRegen < 0)
-            {
-                NPC.lifeRegen = (int)Math.Round(NPC.lifeRegen / 4f);
-            }
-            */
-        }
-        /*
-
-        public bool SpikeAttackSprite = false;
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (!SpikeAttackSprite)
-                return true;
-
-            if (npc.IsABestiaryIconDummy)
-                return true;
-
-            SpriteEffects spriteEffects = SpriteEffects.None;
-            if (npc.spriteDirection == 1)
-                spriteEffects = SpriteEffects.FlipHorizontally;
-
-            Texture2D texture2D15 = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/AquaticScourge/SpikelessASBody").Value;
-            Vector2 vector11 = new Vector2(texture2D15.Width / 2, texture2D15.Height / 2);
-
-            Vector2 vector43 = npc.Center - screenPos;
-            vector43 -= new Vector2(texture2D15.Width, texture2D15.Height) * npc.scale / 2f;
-            vector43 += vector11 * npc.scale + new Vector2(0f, npc.gfxOffY);
-            Color color = npc.GetAlpha(drawColor);
-
-            if (CalamityWorld.revenge || BossRushEvent.BossRushActive || Main.zenithWorld)
-            {
-                if (Main.npc[(int)npc.ai[2]].Calamity().newAI[3] > 300f)
-                    color = Color.Lerp(color, Color.SandyBrown, MathHelper.Clamp((Main.npc[(int)npc.ai[2]].Calamity().newAI[3] - 300f) / 180f, 0f, 1f));
-                else if (Main.npc[(int)npc.ai[2]].localAI[3] > 0f)
-                    color = Color.Lerp(color, Color.SandyBrown, MathHelper.Clamp(Main.npc[(int)npc.ai[2]].localAI[3] / 90f, 0f, 1f));
-            }
-
-            spriteBatch.Draw(texture2D15, vector43, npc.frame, color, npc.rotation, vector11, npc.scale, spriteEffects, 0f);
-
-            return false;
-        }
-        */
-    }
     public class ASPartsEternity : CalDLCEmodeExtraGlobalNPC
     {
         public override bool IsLoadingEnabled(Mod mod) => ASEternity.Enabled;
@@ -117,29 +56,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             ModContent.NPCType<AquaticScourgeBodyAlt>(), 
             ModContent.NPCType<AquaticScourgeTail>());
 
-
+        public static readonly string TexturePath = "FargowiltasCrossmod/Assets/ExtraTextures/AquaticScourge/";
+        int drawTimer = 0;
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
-            {
-                if (npc.ai[2] == -1)
-                {
-                    return false;
-                }
-                NPC head = Main.npc[(int)npc.ai[2]];
-                ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
-
-                if ((head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
-                    (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
-                    ( ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent))
-                {
-                    Main.instance.LoadItem(ItemID.FloatingTube);
-                    Asset<Texture2D> t = TextureAssets.Item[ItemID.FloatingTube];
-                    spriteBatch.Draw(t.Value, npc.Center - screenPos, null, drawColor, npc.rotation, t.Size() / 2, 4, SpriteEffects.None, 0);
-                }
-
-
-            }
 
             if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
             {
@@ -147,10 +67,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 if (npc.spriteDirection == 1)
                     spriteEffects = SpriteEffects.FlipHorizontally;
 
-                string path = "FargowiltasCrossmod/Assets/ExtraTextures/AquaticScourge/";
-                Texture2D head = ModContent.Request<Texture2D>(path + "ASHead", AssetRequestMode.ImmediateLoad).Value;
-                Texture2D left = ModContent.Request<Texture2D>(path + "ASJawLeft", AssetRequestMode.ImmediateLoad).Value;
-                Texture2D right = ModContent.Request<Texture2D>(path + "ASJawRight", AssetRequestMode.ImmediateLoad).Value;
+                
+                Texture2D head = ModContent.Request<Texture2D>(TexturePath + "ASHead", AssetRequestMode.ImmediateLoad).Value;
+                Texture2D left = ModContent.Request<Texture2D>(TexturePath + "ASJawLeft", AssetRequestMode.ImmediateLoad).Value;
+                Texture2D right = ModContent.Request<Texture2D>(TexturePath + "ASJawRight", AssetRequestMode.ImmediateLoad).Value;
                 Vector2 scaledDraw = new Vector2(TextureAssets.Npc[npc.type].Value.Width / 2, TextureAssets.Npc[npc.type].Value.Height / 2);
 
                 Vector2 drawLocation = npc.Center - screenPos;
@@ -170,6 +90,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 Vector2 offset = new(-26, 12);
                 float maxOpen = MathHelper.PiOver4 * 1f;
 
+                if (npc.HasPlayerTarget && !Main.player[npc.target].Calamity().ZoneSulphur)
+                {
+                    for (int j = 0; j < 12; j++)
+                    {
+                        Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 2f * npc.scale;
+                        Color glowColor = npc.GetAlpha(Color.Red with { A = 0 } * 0.9f);
+                        // head
+                        spriteBatch.Draw(head, npc.Center + afterimageOffset - screenPos, npc.frame, glowColor, npc.rotation, head.Size() / 2, 1, spriteEffects, 0);
+                        // left
+                        spriteBatch.Draw(left, drawLocation + afterimageOffset + offset.RotatedBy(npc.rotation), null, glowColor, npc.rotation - open * maxOpen, left.Size() / 2, npc.scale, SpriteEffects.None, 0);
+                        offset.X *= -1;
+                        // right
+                        spriteBatch.Draw(right, drawLocation + afterimageOffset + offset.RotatedBy(npc.rotation), null, glowColor, npc.rotation + open * maxOpen, right.Size() / 2, npc.scale, SpriteEffects.None, 0);
+                        offset.X *= -1;
+                    }
+                }
                 // head
                 spriteBatch.Draw(head, npc.Center - screenPos, npc.frame, color, npc.rotation, head.Size() / 2, 1, spriteEffects, 0);
                 // left
@@ -180,6 +116,51 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 return false;
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+        }
+        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
+            {
+                if (npc.ai[2] == -1)
+                {
+                    return;
+                }
+                NPC head = Main.npc[(int)npc.ai[2]];
+                
+
+                if (CurrentHittable(npc))
+                {
+                    Texture2D gut = ModContent.Request<Texture2D>(TexturePath + "ASGut", AssetRequestMode.ImmediateLoad).Value;
+                    int frames = 9;
+                    int framePeriod = (int)(5 + 5f * head.GetLifePercent());
+                    int frame = ++drawTimer / framePeriod;
+                    frame %= frames;
+                    int height = gut.Height / frames;
+                    Rectangle rect = new(0, frame * height, gut.Width, height);
+                    Vector2 origin = rect.Size() / 2;
+                    spriteBatch.Draw(gut, npc.Center - screenPos, rect, drawColor, npc.rotation, origin, 1, SpriteEffects.None, 0);
+                }
+
+
+            }
+        }
+        public bool CurrentHittable(NPC npc)
+        {
+            if (npc.ai[2] < 0)
+                return false;
+            NPC head = Main.npc[(int)npc.ai[2]];
+            ASPartsEternity ashead = head.GetGlobalNPC<ASPartsEternity>();
+            return (head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
+                    (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
+                    (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent);
+        }
+        public override bool? CanBeHitByProjectile(NPC npc, Projectile projectile)
+        {
+            return base.CanBeHitByProjectile(npc, projectile);
+        }
+        public override bool? CanCollideWithPlayerMeleeAttack(NPC npc, Player player, Item item, Rectangle meleeAttackHitbox)
+        {
+            return base.CanCollideWithPlayerMeleeAttack(npc, player, item, meleeAttackHitbox);
         }
         public override bool? DrawHealthBar(NPC npc, byte hbPosition, ref float scale, ref Vector2 position)
         {
@@ -202,7 +183,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.3f);
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.56f);
             entity.defense = 20;
             entity.Calamity().DR = 0;
             entity.buffImmune[BuffID.Darkness] = true;
@@ -280,7 +261,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public int Hittable3 = 0;
 
         public float FollowTurnSpeed = 0.4f;
-        public static float FollowTurnSpeedMax => 0.4f;
+        public static float FollowTurnSpeedMax => 0.5f;
         public int FollowTimer;
 
 
@@ -299,7 +280,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public int[] LastFewAttacks = [-1, -1];
         public int SuckCooldown = 0;
 
-        public float Phase2Percent = 0.8f;
+        public float Phase2Percent = 0.75f;
         public float Phase3Percent = 0.4f;
         public int ProjectileDamage = 120;
 
@@ -332,6 +313,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             //npc.ai[0] = 3;
             if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
             {
+                if (npc.width > 32)
+                {
+                    npc.position = npc.Center;
+                    npc.width = 32;
+                    npc.height = 32;
+                    npc.Center = npc.position;
+                }
                 if (npc.ai[2] == -1)
                 {
                     npc.StrikeInstantKill();
@@ -342,14 +330,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 npc.dontTakeDamage = true;
                 npc.CalamityDLC().ImmuneToAllDebuffs = true;
 
-                if ((head.GetLifePercent() > Phase2Percent && ashead.Hittable1 == npc.whoAmI) ||
-                    (head.GetLifePercent() > Phase3Percent && ashead.Hittable2 == npc.whoAmI && head.GetLifePercent() <= Phase2Percent) ||
-                    (ashead.Hittable3 == npc.whoAmI && head.GetLifePercent() <= Phase3Percent))
+                if (CurrentHittable(npc))
                 {
                     npc.dontTakeDamage = false;
                     npc.CalamityDLC().ImmuneToAllDebuffs = false;
                 }
                 //take damage if near a segment that can
+                /*
                 NPC prev = Main.npc[(int)npc.ai[1]];
                 NPC next = Main.npc[(int)npc.ai[0]];
                 NPC prevprev = Main.npc[(int)Main.npc[(int)npc.ai[1]].ai[1]];
@@ -359,9 +346,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     (nextnext != null && nextnext.active && !nextnext.dontTakeDamage && (ashead.Hittable1 == nextnext.whoAmI || ashead.Hittable2 == nextnext.whoAmI || ashead.Hittable3 == nextnext.whoAmI)) ||
                     (prevprev != null && prevprev.active && !prevprev.dontTakeDamage && (ashead.Hittable1 == prevprev.whoAmI || ashead.Hittable2 == prevprev.whoAmI || ashead.Hittable3 == prevprev.whoAmI)))
                 {
-                    npc.dontTakeDamage = false;
-                    npc.CalamityDLC().ImmuneToAllDebuffs = true; // still immune to debuffs!!
+                    //npc.dontTakeDamage = false;
+                    //npc.CalamityDLC().ImmuneToAllDebuffs = true; // still immune to debuffs!!
                 }
+                */
                 //take damage if in non hostile phase
                 if (!(head.justHit || head.life <= head.lifeMax * 0.999 || BossRushEvent.BossRushActive || Main.getGoodWorld))
                 {
@@ -391,6 +379,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             if (Main.projectile[i].active && Main.projectile[i].type == ModContent.ProjectileType<AquaticSuck>() && Main.projectile[i].ai[0] == head.whoAmI)
                             {
                                 Main.projectile[i].Kill();
+                                Main.projectile[i].active = false;
                                 NetMessage.SendData(MessageID.SyncProjectile, number: i);
                                 break;
                             }
@@ -526,7 +515,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     float angleDiff = MathHelper.ToDegrees(FargoSoulsUtil.RotationDifference(npc.velocity, npc.AngleTo(targetPos).ToRotationVector2()));
                     if (Math.Abs(angleDiff) > 10)
                     {
-                        FollowTurnSpeed += 0.005f;
+                        FollowTurnSpeed += 0.0065f;
                     }else if (FollowTurnSpeed > FollowTurnSpeedMax)
                     {
                         FollowTurnSpeed -= 0.01f;
@@ -860,6 +849,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             if (npc.GetLifePercent() < Phase3Percent)
                                 idleTime -= 40;
 
+                            if (npc.HasPlayerTarget && !target.Calamity().ZoneSulphur)
+                                idleTime = 0;
+
                             if (FollowTimer > idleTime && npc.Distance(targetPos) < 800)
                             {
                                 FollowTimer = 0;
@@ -947,7 +939,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                     void Dash(float speed, float time, int epicExtraFlag = 0)
                     {
                         DashAttackTimer++;
-                        
+                        if (npc.GetLifePercent() < Phase2Percent && DashAttackTimer < 7)
+                            DashAttackTimer = 7;
+
+                        float accel = 1.06f;
+                        float turnBonus = 1f;
+                        if (npc.GetLifePercent() < Phase2Percent)
+                            accel += 0.015f;
+                        if (npc.GetLifePercent() < Phase3Percent)
+                            accel += 0.015f;
+
+                        if (npc.HasPlayerTarget && !target.Calamity().ZoneSulphur)
+                        {
+                            time *= 0.8f;
+                            accel += 0.06f;
+                            turnBonus = 1.5f;
+                        }
+                            
+
                         if (DashAttackTimer == (int)(time * 0.8f) && epicExtraFlag == 1)
                         {
                             SoundEngine.PlaySound(SoundID.NPCDeath13, npc.Center);
@@ -967,7 +976,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             float open = MathHelper.SmoothStep(0, 1, DashAttackTimer / (time * 0.3f));
                             if (OpenMouth < open)
                                 OpenMouth = open;
-                            Follow(3, 9, 1.05f);
+                            Follow(3, 9 * turnBonus, 1.05f);
                         }
                         else if (DashAttackTimer == (int)(time * 0.3f)+1)
                         {
@@ -983,7 +992,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 Particle p = new TimedSmokeParticle(npc.Center + vel.SafeNormalize(Vector2.UnitY) * npc.width / 3, vel.RotatedByRandom(MathHelper.PiOver4 * 0.4f) * Main.rand.NextFloat(0.5f, 0.7f), Color.Gray, color, Main.rand.NextFloat(0.7f, 1.3f), 0.7f, 26);
                                 GeneralParticleHandler.SpawnParticle(p);
                             }
-                            Follow(speed, 0.8f, 1.06f);
+                            Follow(speed, 0.8f * turnBonus, accel);
                         }
 
                         float mouthClose = 0.88f;
@@ -1100,6 +1109,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             }
             return base.SafePreAI(npc);
         }
-        
+
+        public override void SafePostAI(NPC npc)
+        {
+            if (npc.type == ModContent.NPCType<AquaticScourgeBody>() || npc.type == ModContent.NPCType<AquaticScourgeBodyAlt>())
+            {
+                if (CurrentHittable(npc))
+                {
+                    npc.position = npc.Center;
+                    npc.width = 110;
+                    npc.height = 110;
+                    npc.Center = npc.position;
+                }
+            }
+        }
+
     }
 }

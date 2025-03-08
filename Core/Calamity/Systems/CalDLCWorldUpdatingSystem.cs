@@ -40,6 +40,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                     if (Main.netMode != NetmodeID.SinglePlayer)
                         PacketManager.SendPacket<EternityRevPacket>();
                 }
+                bool infernum = false;
+                if (ModCompatibility.InfernumMode.Loaded)
+                    if (ModCompatibility.InfernumMode.InfernumDifficulty && CalDLCConfig.Instance.InfernumDisablesEternity)
+                        infernum = true;
+                if (CalDLCWorldSavingSystem.EternityRev && !WorldSavingSystem.EternityMode && !infernum)
+                {
+                    WorldSavingSystem.ShouldBeEternityMode = true;
+                    WorldSavingSystem.EternityMode = true;
+                    if (Main.netMode != NetmodeID.SinglePlayer)
+                        PacketManager.SendPacket<EternityRevPacket>();
+                }
                 if (WorldSavingSystem.EternityMode && !WorldSavingSystem.SpawnedDevi && DLCUtils.HostCheck)
                 {
                     int devi = NPC.NewNPC(new EntitySource_SpawnNPC(), Main.spawnTileX * 16, Main.spawnTileY * 16 - 400, ModContent.NPCType<Deviantt>());

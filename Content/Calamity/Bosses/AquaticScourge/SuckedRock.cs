@@ -32,6 +32,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 1000;
+            Projectile.light = 1f;
 
             base.SetDefaults();
         }

@@ -28,6 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.timeLeft = 450;
             Projectile.ai[1] = 200;
             Projectile.ai[2] = 200;
+            Projectile.light = 1f;
         }
         public override bool PreDraw(ref Color lightColor)
         {

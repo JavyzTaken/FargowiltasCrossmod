@@ -27,6 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 200;
+            Projectile.light = 1;
             base.SetDefaults();
         }
         public override bool PreDraw(ref Color lightColor)
