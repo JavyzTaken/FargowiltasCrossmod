@@ -179,7 +179,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// <summary>
         /// The life ratio at which the Old Duke transitions to his second phase.
         /// </summary>
-        public static float Phase2LifeRatio => 0.9999f;
+        public static float Phase2LifeRatio => 0.55f;
 
         /// <summary>
         /// The set of attacks the Old Duke should perform in his first phase.
@@ -237,8 +237,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             // Necessary for NPC.oldRot to be used.
             NPCID.Sets.TrailingMode[NPC.type] = 3;
 
-            // TODO -- Improve for multiplayer.
-            NPC.TargetClosest();
+            // Choose a new target if the current one has died.
+            if (NPC.target <= -1 || NPC.target >= Main.maxPlayers || !Target.active || Target.dead)
+                NPC.TargetClosest();
 
             bool everyoneIsDead = true;
             foreach (Player player in Main.ActivePlayers)
@@ -594,6 +595,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 dashCounter++;
                 NPC.netUpdate = true;
                 AITimer = 0;
+                NPC.TargetClosest();
 
                 if (dashCounter >= dashCount && !hurricaneAttack)
                     SwitchState();
@@ -1254,6 +1256,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void SwitchState()
         {
+            NPC.TargetClosest();
+
             OldDukeAIState[] attackCycle = Phase1AttackCycle;
             if (Phase >= 2)
                 attackCycle = Phase2AttackCycle;
