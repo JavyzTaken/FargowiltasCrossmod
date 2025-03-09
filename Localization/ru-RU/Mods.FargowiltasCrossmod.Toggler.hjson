@@ -23,23 +23,22 @@ NebulousCoreEffect: Ядро туманности
 YharimsGiftEffect: Дар Ярима
 DraedonsHeartEffect: Сердце Дрэйдона
 CalamityEffect: Бедствие
-SplendorJamEffect: Splendor Jam
 // gale
-GaleHeader: Артефакт бури
+GaleHeader: Артефакт Бури
 SnowRuffianEffect: Улучшенное планирование
 GaleSlowfallEffect: Медленное падение
-StatigelEffect: Ускорение и урон статигеля
+StatigelEffect: Ускорение статигеля
 SulphurEffect: Прыжок с пузырём
 VictideEffect: Морские иглы
 GaleSpineEffect: Позвонки
-DesertProwlerEffect: Заряжающийся прыжок
+DesertProwlerEffect: Заряжаемый прыжок
 GaleJumpEffect: Бесконечные прыжки
 // elements
-// ElementsHeader: Force of the Elements
-DaedalusEffect: Ограниченный полёт Дедала
+ElementsHeader: Артефакт Элементов
+DaedalusEffect: Стрелы Дедала
 ReaverEffect: Характеристики разорителя
 HydrothermicEffect: Перегрев
-AerospecJumpEffect: Крит прыжки
+AerospecJumpEffect: Эффект аэрофаза
 // world shaper
 MarniteRepulsionEffect: Мранитовая репульсия
 MarniteLasersEffect: Мранитовые лазеры
