@@ -457,6 +457,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 npc.TargetClosest();
                 npc.dontTakeDamage = true;
                 npc.CalamityDLC().ImmuneToAllDebuffs = true;
+                CalamityGlobalNPC.aquaticScourge = npc.whoAmI;
                 //increases when angle is too different. increases turn rate when gets high enough. decreases over time when angle isnt too different
 
                 //Main.NewText(npc.GetLifePercent());

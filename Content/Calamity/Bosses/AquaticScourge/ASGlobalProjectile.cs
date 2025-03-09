@@ -1,4 +1,5 @@
 ﻿using CalamityMod.Dusts;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.Projectiles.Enemy;
@@ -32,8 +33,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         }
         public override void SetDefaults(Projectile proj)
         {
+            
             base.SetDefaults(proj);
-            if (Main.npc.Any(n => n.TypeAlive<AquaticScourgeHead>() && n.TryGetDLCBehavior(out ASEternity emode) && emode != null))
+            if (CalamityGlobalNPC.aquaticScourge >= 0 && Main.npc[CalamityGlobalNPC.aquaticScourge] is NPC n && n.type == ModContent.NPCType<AquaticScourgeHead>() && n.TryGetDLCBehavior(out ASEternity emode) && emode != null)
             {
                 if (proj.light < 1f)
                     proj.light = 1f;

@@ -30,7 +30,7 @@ float4 PixelShaderFunction(float4 sampleColor : COLOR0, float2 uv : TEXCOORD0) :
     pixelatedUV.x -= worldUV.x % (1 / screenSize.x);
     pixelatedUV.y -= worldUV.y % (1 / (screenSize.y / 2) * 2);
     
-    float2 noiseUV = pixelatedUV - (anchorPoint / screenSize);
+    float2 noiseUV = pixelatedUV - 0.5 * (anchorPoint / screenSize);
     float2 vec1 = float2(0.56, 1.2);
     float2 vec2 = float2(-0.3, -0.9);
     float2 vec3 = float2(0.8, 0.3);
