@@ -137,26 +137,26 @@ PulseBlast.DisplayName: Pulse Blast
 HadesLineTelegraph.DisplayName: Hades Line Telegraph
 ApolloMissile2.DisplayName: Apollo Missile
 BatMode.DisplayName: Bat Mode
-PerfExplosion.DisplayName: Perf Explosion
-PerforatorSpike.DisplayName: Perforator Spike
-PerforatorLegHitbox.DisplayName: Perforator Leg Hitbox
-PerforatorRubble.DisplayName: Perforator Rubble
+PerfExplosion.DisplayName: Perforating Explosion
+PerforatorSpike.DisplayName: Perforating Spike
+PerforatorLegHitbox.DisplayName: Perforator Leg
+PerforatorRubble.DisplayName: Perforating Rubble
 DaedalusArrow.DisplayName: Daedalus Arrow
-ExplorationFeather.DisplayName: Exploration Feather
+ExplorationFeather.DisplayName: Feather
 SulphurParticulate.DisplayName: Sulphur Particulate
 GaleSpine.DisplayName: Gale Spine
-HydrothermicVentShot.DisplayName: Hydrothermic Vent Shot
-ChargedGigablast.DisplayName: Charged Gigablast
+HydrothermicVentShot.DisplayName: Hydrothermic Flare
+ChargedGigablast.DisplayName: Brimstone Gigablast
 SuckedRock.DisplayName: Sucked Rock
-CalcloneWave.DisplayName: Calclone Wave
+CalcloneWave.DisplayName: Fire Wave
 EmpyreanStar.DisplayName: Empyrean Star
-BrimstoneArtillery.DisplayName: Brimstone Artillery
+BrimstoneArtillery.DisplayName: Brimstone Hellblast
 BrimstoneFireball.DisplayName: Brimstone Fireball
-Gigablast.DisplayName: Gigablast
-Fireblast.DisplayName: Fireblast
-BrimstoneBall.DisplayName: Brimstone Ball
-BrothersEyeFlash.DisplayName: Brothers Eye Flash
-BrimstoneBarrageGravitating.DisplayName: Brimstone Barrage Gravitating
-MutantFrostMist.DisplayName: Mutant Frost Mist
-CalcloneFireBackground.DisplayName: Calclone Fire Background
-BrothersDashTrail.DisplayName: Brothers Dash Trail
+Gigablast.DisplayName: Brimstone Gigablast
+Fireblast.DisplayName: Brimstone Fireblast
+BrimstoneBall.DisplayName: Brimstone Fireball
+BrothersEyeFlash.DisplayName: Eye Flash
+BrimstoneBarrageGravitating.DisplayName: Brimstone Dart
+MutantFrostMist.DisplayName: Frost Mist
+CalcloneFireBackground.DisplayName: Fire Background
+BrothersDashTrail.DisplayName: Dash Trail
