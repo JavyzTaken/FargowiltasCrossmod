@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override int NPCOverrideID => ModContent.NPCType<DesertScourgeHead>();
         public override void SetDefaults()
         {
-            //NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 2f);
+            NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.25f);
         }
         public float[] drawInfo = [0, 200, 200, 0];
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -958,6 +958,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 NPC.lifeMax = 25000000;
             }
+            else
+                NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.25f);
         }
         public static List<int> PierceResistExclude =
         [
@@ -982,6 +984,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
+            if (projectile.maxPenetrate > 1 || projectile.maxPenetrate < 0)
+                modifiers.FinalDamage *= 0.5f;
             DestroyerSegment.PierceResistance(projectile, ref modifiers);
         }
         public override bool PreAI()
