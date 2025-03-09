@@ -137,26 +137,26 @@ PulseBlast.DisplayName: Взрывной пульс
 HadesLineTelegraph.DisplayName: Телеграф Линии Аида
 ApolloMissile2.DisplayName: Аполлонова ракета
 BatMode.DisplayName: Режим летучей мыши
-PerfExplosion.DisplayName: Взрыв Перфораторов
-PerforatorSpike.DisplayName: Шипы Перфораторов
-PerforatorLegHitbox.DisplayName: Хитбокс ноги Улья
-PerforatorRubble.DisplayName: Валуны Перфораторов
+PerfExplosion.DisplayName: Взрыв перфораторов
+PerforatorSpike.DisplayName: Шипы перфораторов
+PerforatorLegHitbox.DisplayName: Нога перфораторов
+PerforatorRubble.DisplayName: Валуны перфораторов
 DaedalusArrow.DisplayName: Стрела Дедала
-ExplorationFeather.DisplayName: Exploration Feather
+ExplorationFeather.DisplayName: Перо
 SulphurParticulate.DisplayName: Сернистые газы
 GaleSpine.DisplayName: Позвонок Бури
 HydrothermicVentShot.DisplayName: Гидротермический выстрел перегрева
 ChargedGigablast.DisplayName: Заряженный гигавзрыв
 SuckedRock.DisplayName: Булыжник
-CalcloneWave.DisplayName: Калклон волна
+CalcloneWave.DisplayName: Огненная волна
 EmpyreanStar.DisplayName: Возвышенная звезда
-BrimstoneArtillery.DisplayName: Серная артиллерия
+BrimstoneArtillery.DisplayName: Серный адский взрыв
 BrimstoneFireball.DisplayName: Шар серного огня
-Gigablast.DisplayName: Гигавзрыв
-Fireblast.DisplayName: Огненный взрыв
+Gigablast.DisplayName: Серный гигавзрыв
+Fireblast.DisplayName: Серный огненный взрыв
 BrimstoneBall.DisplayName: Серный шар
-BrothersEyeFlash.DisplayName: Вспышка глаза братьев
-// BrimstoneBarrageGravitating.DisplayName: Brimstone Barrage Gravitating
-// MutantFrostMist.DisplayName: Mutant Frost Mist
-// CalcloneFireBackground.DisplayName: Calclone Fire Background
-// BrothersDashTrail.DisplayName: Brothers Dash Trail
+BrothersEyeFlash.DisplayName: Вспышка глаза
+BrimstoneBarrageGravitating.DisplayName: Серный дротик
+MutantFrostMist.DisplayName: Морозный туман
+CalcloneFireBackground.DisplayName: Фоновый огонь
+BrothersDashTrail.DisplayName: Хвост рывка
