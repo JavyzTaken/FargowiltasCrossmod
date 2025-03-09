@@ -1,0 +1,192 @@
+{
+  "BasicLaserDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "BodySegmentCount": {
+    "EternityRevValue": 50.0,
+    "EternityDeathValue": 50.0,
+    "MasochistValue": 50.0
+  },
+  "ContinuousLaserBarrage_BarrageCount": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "ContinuousLaserBarrage_LaserShootSpeed": {
+    "EternityRevValue": 17.3,
+    "EternityDeathValue": 17.3,
+    "MasochistValue": 17.3
+  },
+  "ContinuousLaserBarrage_ShootProximityRequirement": {
+    "EternityRevValue": 3985.0,
+    "EternityDeathValue": 3985.0,
+    "MasochistValue": 3985.0
+  },
+  "ContinuousLaserBarrage_ShootTime": {
+    "EternityRevValue": 132.0,
+    "EternityDeathValue": 132.0,
+    "MasochistValue": 132.0
+  },
+  "ContinuousLaserBarrage_StandardFlySpeed": {
+    "EternityRevValue": 31.0,
+    "EternityDeathValue": 31.0,
+    "MasochistValue": 31.0
+  },
+  "ContinuousLaserBarrage_TelegraphTime": {
+    "EternityRevValue": 96.0,
+    "EternityDeathValue": 96.0,
+    "MasochistValue": 96.0
+  },
+  "DeathAnimation_BecomeUnstableTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "DeathAnimation_BigExplosionDelay": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "DeathAnimation_HomeInTime": {
+    "EternityRevValue": 45.0,
+    "EternityDeathValue": 45.0,
+    "MasochistValue": 45.0
+  },
+  "DeathAnimation_SmallExplosionsTime": {
+    "EternityRevValue": 180.0,
+    "EternityDeathValue": 180.0,
+    "MasochistValue": 180.0
+  },
+  "DefaultSegmentDamage": {
+    "EternityRevValue": 375.0,
+    "EternityDeathValue": 375.0,
+    "MasochistValue": 375.0
+  },
+  "ExoEnergyBlast_BlastDelay": {
+    "EternityRevValue": 222.0,
+    "EternityDeathValue": 222.0,
+    "MasochistValue": 222.0
+  },
+  "ExoEnergyBlast_InitialRedirectTime": {
+    "EternityRevValue": 360.0,
+    "EternityDeathValue": 360.0,
+    "MasochistValue": 360.0
+  },
+  "ExoEnergyBlast_JawOpenTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "ExoEnergyBlast_LaserTurnSpeedDegrees": {
+    "EternityRevValue": 0.7,
+    "EternityDeathValue": 0.7,
+    "MasochistValue": 0.7
+  },
+  "ExoEnergyBlast_PostBeamAccelerationTime": {
+    "EternityRevValue": 72.0,
+    "EternityDeathValue": 72.0,
+    "MasochistValue": 72.0
+  },
+  "ExoEnergyBlast_ProjectileBurstReleaseRate": {
+    "EternityRevValue": 600.0,
+    "EternityDeathValue": 600.0,
+    "MasochistValue": 600.0
+  },
+  "ExoEnergyBlastDamage": {
+    "EternityRevValue": 540.0,
+    "EternityDeathValue": 540.0,
+    "MasochistValue": 540.0
+  },
+  "MineBarrages_BarrageCount": {
+    "EternityRevValue": 1.0,
+    "EternityDeathValue": 1.0,
+    "MasochistValue": 1.0
+  },
+  "MineBarrages_MineReleaseTime": {
+    "EternityRevValue": 126.0,
+    "EternityDeathValue": 126.0,
+    "MasochistValue": 126.0
+  },
+  "MineBarrages_RedirectTime": {
+    "EternityRevValue": 120.0,
+    "EternityDeathValue": 120.0,
+    "MasochistValue": 120.0
+  },
+  "MineDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "MissileDamage": {
+    "EternityRevValue": 300.0,
+    "EternityDeathValue": 300.0,
+    "MasochistValue": 300.0
+  },
+  "MissileLunges_LungeCount": {
+    "EternityRevValue": 3.0,
+    "EternityDeathValue": 3.0,
+    "MasochistValue": 3.0
+  },
+  "MissileLunges_LungeDuration": {
+    "EternityRevValue": 105.0,
+    "EternityDeathValue": 105.0,
+    "MasochistValue": 105.0
+  },
+  "MissileLunges_RedirectMaxTime": {
+    "EternityRevValue": 240.0,
+    "EternityDeathValue": 240.0,
+    "MasochistValue": 240.0
+  },
+  "MissileTailSnaps_ReorientTime": {
+    "EternityRevValue": 75.0,
+    "EternityDeathValue": 75.0,
+    "MasochistValue": 75.0
+  },
+  "PerpendicularBodyLaserBlasts_BlastCount": {
+    "EternityRevValue": 2.0,
+    "EternityDeathValue": 2.0,
+    "MasochistValue": 2.0
+  },
+  "PerpendicularBodyLaserBlasts_BlastTelegraphTime": {
+    "EternityRevValue": 90.0,
+    "EternityDeathValue": 90.0,
+    "MasochistValue": 90.0
+  },
+  "PerpendicularBodyLaserBlasts_BurstShootCompletionRatio": {
+    "EternityRevValue": 0.79,
+    "EternityDeathValue": 0.79,
+    "MasochistValue": 0.79
+  },
+  "PerpendicularBodyLaserBlasts_ForwardDestinationOffset": {
+    "EternityRevValue": 1600.0,
+    "EternityDeathValue": 1600.0,
+    "MasochistValue": 1600.0
+  },
+  "PerpendicularBodyLaserBlasts_LaserShootSpeed": {
+    "EternityRevValue": 27.0,
+    "EternityDeathValue": 27.0,
+    "MasochistValue": 27.0
+  },
+  "PerpendicularBodyLaserBlasts_RedirectTime": {
+    "EternityRevValue": 138.0,
+    "EternityDeathValue": 138.0,
+    "MasochistValue": 138.0
+  },
+  "PerpendicularBodyLaserBlasts_SegmentUsageCycle": {
+    "EternityRevValue": 3.0,
+    "EternityDeathValue": 3.0,
+    "MasochistValue": 3.0
+  },
+  "PerpendicularBodyLaserBlasts_SideDestinationOffset": {
+    "EternityRevValue": 450.0,
+    "EternityDeathValue": 450.0,
+    "MasochistValue": 450.0
+  },
+  "StandardOpenSegmentDR": {
+    "EternityRevValue": 0.375,
+    "EternityDeathValue": 0.375,
+    "MasochistValue": 0.375
+  }
+}

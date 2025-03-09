@@ -1,0 +1,28 @@
+Aerospec: Бонус к шансу крит. удара и урону призываемых существ удвоен
+Marnite: Урон и дальность лазеров увеличены, бонусы к размещению удвоены
+DesertProwler: Более сильные прыжки
+Wulfrum: Просканированные враги получают ещё больше доп. урона от дебаффов
+Hydrothermic: Перегрев длится дольше, сопротивление урону увеличено до 45%, урон вспышек увеличен
+Daedalus: Урон, кол-во и скорость стрел увеличены
+SnowRuffian: Даёт немного полёта
+Reaver:
+	'''
+	Защита и сопротивление урону увеличены до 30 и 30%, увеличены регенерация здоровья
+	и скорость передвижения, увеличены урон шипов и длительность баффа
+	'''
+// Plaguebringer: Plague cloud deals more damage and charges from longer away
+/* PlagueReaper:
+	'''
+	Debuffs spread from farther 
+	Enemies spread debuffs for a longer amount of time
+	''' */
+Umbraphile: етучие мыши наносят больше урона и воруют больше здоровья
+Sulphur: Прыжки создают 3 пузыря, которые наносят больше урона
+Victide: Иглы игнорируют гравитацию и накладывают дебафф Кислотный яд
+Statigel: Максимальная скорость увеличена, бонус к урону удвоен
+TitanHeart: Сопротивлению урону удвоени, скорость заряда на земле удвоена
+// FathomSwarmer: Larger Light, Faster Fish
+// Astral: Longer trail, more damage
+// Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
+// Mollusk: More damage, More immunity frames
+Empyrean: Увеличивает урон, исцеление и заряд ярости

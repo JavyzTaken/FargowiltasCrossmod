@@ -1,0 +1,507 @@
+AddedEffects: {
+	AngelTreads: Эффекты ангельских ботфортов
+	AeolusBoots: Эффекты ботинок Эола
+	CalamitySupersonic: Эффекты пустотного кушака Статиса
+	ThoriumSuperSonic: Эффекты воздушных бегунов, ботинок выживальщика и утяжелённых летунов
+	CalamityColossus: Эффекты слияния, асгардской эгиды и оплота божества
+	ThoriumColossus:
+		'''
+		Эффекты сладкой мести, обсидиановой чешуи, террариевого защитника,
+		филактерии, сердца из камня и колючего панцыря
+		'''
+	CalamityBerserker: Эффекты знака храбрости и элементальной рукавицы
+	ThoriumBerserker: Эффекты эмблемы рапиры
+	CalamityWizard: Эффекты эфирного талисмана
+	ThoriumWizard: Эффекты мутного катализатора
+	CalamitySniper: Эффекты элементального колчана и колчана небытия
+	Vagabond: Эффекты нанотехнологии и зеркала затмения
+	ThoriumSniper: Эффекты сотрясающей боеголовки
+	CalamityConjurist: Эффект нуклеосинтеза
+	ThoriumConjurist: Эффекты подвески Юмы и кристаллического скорпиона
+	CalamityTrawler: Эффекты глубоководного водолазного костюма
+	CalamityWorldShaper: Эффекты зачарования мранитового архитектора
+	ThoriumUniverse:
+		'''
+		Увеличивает метательную скорость атаки на 15%
+		Эффекты «Руководства по умелому метанию: том III»,
+		русалочьей фляги и глазной повязки мертвеца
+		'''
+}
+
+OutlawsEssence: {
+	DisplayName: Эссенция бандита
+	Tooltip:
+		'''
+		Увеличивает разбойный урон на 18%
+		Увеличивает скорость разбойных снарядов на 5%
+		Увеличивает разбойный шанс критической атаки на 5%
+		'''
+}
+
+VagabondsSoul: {
+	DisplayName: Душа Беглеца
+	Tooltip:
+		'''
+		Увеличивает разбойный урон на 22%
+		Увеличивает скорость разбойных снарядов на 20%
+		Увеличивает разбойный шанс критической атаки на 10%
+		Эффекты нанотехнологии и зеркала затмения
+		'''
+}
+
+ABombInMyNation: {
+	DisplayName: Взрыв на мерзости
+	Tooltip: Призывает Разносчицу чумы Голиаф
+}
+
+AstrumCor: {
+	DisplayName: Ядро Аструма
+	Tooltip: Призывает Аструм Деуса
+}
+
+BirbPheromones: {
+	DisplayName: Феромоны птичбки
+	Tooltip: Призывает Псевдодракона
+}
+
+BlightedEye: {
+	DisplayName: Гибельный глаз
+	Tooltip: Призывает Клон Каламитас
+}
+
+BloodyWorm: {
+	DisplayName: Кровяной червь
+	Tooltip: Призывает Старого Герцога
+}
+
+ChunkyStardust: {
+	DisplayName: Звёздная пыль с комочками
+	Tooltip: Призывает Аструм Ауреса
+}
+
+CryingKey: {
+	DisplayName: Кривоключ
+	Tooltip: Призывает Криогена
+}
+
+DefiledCore: {
+	DisplayName: Нечистое ядро
+	Tooltip: Призывает Провиденс
+}
+
+DefiledShard: {
+	DisplayName: Нечистый осколок
+	Tooltip: Призывает Осквернённых стражей
+}
+
+DragonEgg: {
+	DisplayName: Яйцо пламенного дракона
+	Tooltip: Призывает Ярона
+}
+
+PortableCodebreaker: {
+	DisplayName: Карманный дешифратор
+	Tooltip: Призывает Дрэйдона
+}
+
+EyeofExtinction: {
+	DisplayName: Глаз вымирания
+	Tooltip: Призывает Высшую Каламитас
+}
+
+FriedDoll: {
+	DisplayName: Жареная кукла
+	Tooltip: Призывает Серного элементаля
+}
+
+HiveTumor: {
+	DisplayName: Опухоль улья
+	Tooltip: Призывает Разум улья
+}
+
+LetterofKos: {
+	DisplayName: Письмо Кос
+	Tooltip: Призывает Сигнуса
+}
+
+MedallionoftheDesert: {
+	DisplayName: Медальон пустыни
+	Tooltip: Призывает Пустынного бича
+}
+
+MurkySludge: {
+	DisplayName: Мутная слякоть
+	Tooltip: Призывает Бога слизней
+}
+
+NoisyWhistle: {
+	DisplayName: Шумный свисток
+	Tooltip: Призывает Разрушителя
+}
+
+OphiocordycipitaceaeSprout: {
+	DisplayName: Кордицепсовидный росток
+	Tooltip: Призывает Крабулона
+}
+
+PolterplasmicBeacon: {
+	DisplayName: Полтерплазмический маяк
+	Tooltip: Призывает Полтергаста
+}
+
+RedStainedWormFood: {
+	DisplayName: Запятнанный кровью корм для червя
+	Tooltip: Призывает Улей Перфораторов
+}
+
+RiftofKos: {
+	DisplayName: Раскол Кос
+	Tooltip: Призывает Нескончаемую пустоту
+}
+
+SeeFood: {
+	DisplayName: Горепродукт
+	Tooltip: Призывает Акватического бича
+}
+
+SirensPearl: {
+	DisplayName: Жемчуг сирены
+	Tooltip: Призывает Анахиту
+}
+
+SomeKindofSpaceWorm: {
+	DisplayName: Какой-то космический червь
+	Tooltip: Призывает Пожирателя Богов
+}
+
+WormFoodofKos: {
+	DisplayName: Корм для червя Кос
+	Tooltip: Призывает Штормового ткача
+}
+
+AbandonedRemote: {
+	DisplayName: Затерянный пульт управления
+	Tooltip:
+		'''
+		Призывает бронированного копателя
+		Можно использовать только под землёй
+		'''
+}
+
+ClamPearl: {
+	DisplayName: Жемчуг моллюска
+	Tooltip:
+		'''
+		Призывает гигантского моллюска
+		Можно использовать только в затерянном море
+		'''
+}
+
+ColossalTentacle: {
+	DisplayName: Громадное щупальце
+	Tooltip:
+		'''
+		Призывает громадного кальмара
+		Можно использовать только в бездне
+		'''
+}
+
+DeepseaProteinShake: {
+	DisplayName: Глубоководный протеиновый коктейль
+	Tooltip:
+		'''
+		Призывает акулу-жнеца
+		Можно использовать только в бездне
+		'''
+}
+
+MaulerSkull: {
+	DisplayName: Череп мучителя
+	Tooltip:
+		'''
+		Призывает мучителя
+		Можно использовать только в сернистом море
+		'''
+}
+
+NuclearChunk: {
+	DisplayName: Ядерный комок
+	Tooltip:
+		'''
+		Призывает ядерный террор
+		Можно использовать только в сернистом море
+		'''
+}
+
+PlaguedWalkieTalkie: {
+	DisplayName: Чумная рация
+	Tooltip:
+		'''
+		Призывает разносчика чумы
+		Можно использовать только в джунглях
+		'''
+}
+
+QuakeIdol: {
+	DisplayName: Идол землетрясения
+	Tooltip:
+		'''
+		Призывает земляного элементаля
+		Можно использовать только под землёй
+		'''
+}
+
+StormIdol: {
+	DisplayName: Идол шторма
+	Tooltip: Призывает облачного элементаля
+}
+
+SulphurBearTrap: {
+	DisplayName: Сернистый капкан
+	Tooltip:
+		'''
+		Призывает болотистого скалозева
+		Можно использовать только в сернистом море
+		'''
+}
+
+WyrmTablet: {
+	DisplayName: Скрижаль змия
+	Tooltip:
+		'''
+		Призывает эйдолонского змия
+		Можно использовать только в бездне
+		'''
+}
+
+BrandoftheBrimstoneWitch: {
+	DisplayName: Клеймо серной ведьмы
+	Tooltip:
+		'''
+		Эффекты сердца элементов, оккультной короны-черепа, сияния, губки и кубка кровавого божества
+		Эффекты ядра туманности, дара Ярима, сердца Дрэйдона и бедствия
+		'''
+}
+
+AerospecEnchant: {
+	DisplayName: Зачарование аэрофаза
+	Tooltip:
+		'''
+		Даёт +5% шанса критического урона и урона призывателя после
+		прыжка и каждого использования двойного прыжка
+		Бонус пропадает при восстанавлении прыжков или использовании наездного питомца
+		'''
+	CritUp: +{0}% крит.
+	CritReset: -{0}% крит.
+}
+
+MarniteEnchant: {
+	DisplayName: Зачарование мранитового архитектора
+	Tooltip:
+		'''
+		Увеличивает скорость размещения блоков на 10% и дальность размещения блоков на 5
+		Пока вы не атакуете или используете инструменты, вы выпускаете лазеры в ближайших врагов
+		Эффекты [i:CalamityMod/MarniteRepulsionShield] мранитового репульсионного щита
+		'''
+}
+
+DesertProwlerEnchant: {
+	DisplayName: Зачарование пустынного мародёра
+	Tooltip:
+		'''
+		Удерживайте ВВЕРХ, чтобы зарядить мощный прыжок, который также увеличивает вашу горизонтальную скорость
+		Прыжок можно заряжать только на блоках
+		'''
+}
+
+WulfrumEnchant: {
+	DisplayName: Зачарование вульфрума
+	Tooltip:
+		'''
+		Призывает вульфрумового дрона, следующего за вашим курсором
+		Дрон сканирует врагов, с которыми сталкивается
+		Сканирование врагов показывает их слабости и устойчивости к дебаффам
+		Зелёный цвет означает слабость, красный - устойчивость
+		Просканированные враги также получают дополнительный постепенный урон от дебаффов с уроном
+		'''
+}
+
+GaleForce: {
+	DisplayName: Артефакт Бури
+	Tooltip:
+		'''
+		Даёт бесконечные двойные прыжки
+		Отключает крылья, если этот эффект включён
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте W во время прыжка, чтобы запустить себя вверх
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы устремиться вниз
+		[i:FargowiltasCrossmod/SnowRuffianEnchant] Удерживайте W, чтобы замедлить падение
+		[i:FargowiltasCrossmod/VictideEnchant] Прыжки также прикрепляют к вашей спине острые позвонки
+		[i:FargowiltasCrossmod/VictideEnchant] Когда из вас торчит 6 позвонков, следующий прыжок выпускает их
+		[i:FargowiltasCrossmod/SulphurEnchant] Позвонки самонаводятся на врагов и накладывают дебафф «Сернистое отравление»
+		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до 40%
+		'''
+}
+
+SnowRuffianEnchant: {
+	DisplayName: Зачарование снежного бандита
+	Tooltip:
+		'''
+		Позволяет парить в воздухе, даже если на вас нет крыльев
+		При медленном падении на крыльях, вы ускоряетесь
+		Нажмите ВВЕРХ в медленном падении, чтобы перенаправить движение вверх
+		Нажмите ВНИЗ в медленном падении, чтобы сильнее ускоряться
+		'''
+}
+
+DaedalusEnchant: {
+	DisplayName: Зачарование Дедала
+	Tooltip:
+		'''
+		Увеличивает время полёта на 25%
+		Если вы находитесь в воздухе больше секунды, ваши атаки сопровождаются мощными стрелами с неба
+		Получение урона или приземление убирают этот бонус и срезают половину времени полёта
+		'''
+}
+
+PlagueReaperEnchant: {
+	// DisplayName: Plague Reaper Enchantment
+	// Tooltip: All debuffs spread between enemies
+}
+
+PlaguebringerEnchant: {
+	// DisplayName: Plaguebringer Enchantment
+	/* Tooltip:
+		'''
+		All attacks inflict plague for a short time
+		A plague cloud follows you, growing when nearby plagued enemies.
+		At maximum size, the cloud expands rapidly and stops following you,
+		lingering in place for a while.
+		''' */
+}
+
+ReaverEnchant: {
+	DisplayName: Зачарование разорителя
+	Tooltip: ""
+}
+
+HydrothermicEnchant: {
+	DisplayName: Зачарование гидротермов
+	Tooltip:
+		'''
+		Атаки заряжают жар
+		При полном заряде жара, прекратите атаковать, чтобы выпустить его, увеличивая сопротивление урону до 30%
+		и заставляя вас выпускать вспышки хаоса в сторону курсора до 3 секунд
+		Получение урона так же выпускает ваш жар, независимо от его уровня
+		'''
+}
+
+ElementsForce: {
+	DisplayName: Артефакт Элементов
+	Tooltip:
+		'''
+		[c/E03131:Режим магмы:]
+		[i:FargowiltasCrossmod/ReaverEnchant] Увеличивает сопротивление урону на 30% и защиту на 30
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Атаки заряжают жар, прекратите атаковать при полном заряде или получите урон, чтобы выпустить его
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Выпуск жара даёт бафф «Ярость разорителя» и выпускает сильные вспышки хаоса до 3 секунд
+		[c/45A8EF:Режим метели:]
+		[i:FargowiltasCrossmod/ReaverEnchant] Увеличивает время и скорость полёта, регенерацию здоровья, скорость крюков и частоту использования рывков
+		[i:FargowiltasCrossmod/AerospecEnchant] Даёт до +50% к урону в зависимости от того, сколько вы времени провели в воздухе
+		[i:FargowiltasCrossmod/DaedalusEnchant] Если вы находитесь в воздухе больше секунды, ваши атаки сопровождаются мощными стрелами с неба
+		'''
+}
+
+UmbraphileEnchant: {
+	DisplayName: Зачарование фанатика тени
+	Tooltip: ""
+}
+
+TitanHeartEnchant: {
+	DisplayName: Зачарование сердца титана
+	Tooltip:
+		'''
+		Адреналин заряжается быстрее, пока вы на земле
+		Пока адреналин частично заряжен, вы получаете до +15% к сопротивлению урону
+		'''
+}
+
+StatigelEnchant: {
+	DisplayName: Зачарование статигеля
+	Tooltip:
+		'''
+		Увеличивает максимальную скорость передвижения
+		Значительно уменьшает ускорение и замедление
+		Чем быстрее вы двигаетесь, тем больше урона наносите, до +35%
+		'''
+}
+
+SulphurEnchant: {
+	DisplayName: Зачарование сернистости
+	Tooltip:
+		'''
+		Дарует сернистый прыжок, который оставляет за собой сернистый пузырь
+		Если атаковать пузырь, то он начнёт выпускать газ, наносящий урон врагам
+		'''
+}
+
+VictideEnchant: {
+	DisplayName: Зачарование прилива
+	Tooltip:
+		'''
+		Дарует морские иглы, которые торчат из вашего тела
+		Защита увеличена на 4 пока иглы в вашем теле
+		Иглы заряжаются, пока вы атакуете, и вылетают наружу, когда вы перестаёте
+		'''
+}
+
+Lore.LoreDraedon.DisplayName: Дрэйдон
+
+FathomSwarmerEnchant: {
+	// DisplayName: Fathom Swarmer Enchantment
+	/* Tooltip:
+		'''
+		Summons an Anglerfish familiar that follows your mouse
+		The anglerfish's light slows down enemies and their projectiles
+		''' */
+}
+
+AstralEnchant: {
+	// DisplayName: Astral Enchantment
+	// Tooltip: You are followed by a trail of damaging astral stars
+}
+
+BrimflameEnchant: {
+	// DisplayName: Brimflame Enchantment
+	/* Tooltip:
+		'''
+		Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+		Becomes stronger the more defense is consumed
+		Your defense will regenerate over time
+		Can only be used when at maximum defense
+		''' */
+	// DefenseDown: -{0} defense
+	// DefenseUp: +{0} defense
+}
+
+MolluskEnchant: {
+	// DisplayName: Mollusk Enchantment
+	/* Tooltip:
+		'''
+		Press Special Dash key to quickly slam downwards
+		Hitting an enemy with the slam deals massive damage and gives you immunity frames
+		Only goes on cooldown on enemy hits
+		''' */
+}
+
+# This is used to detect and remove lines, not displayed. Must match Cal's localization.
+// NotConsumable: Not consumable
+
+EmpyreanEnchant: {
+	DisplayName: Зачарование возвышения
+	Tooltip:
+		'''
+		Если вы медленно двигаетесь или стоите 2 секунды, следующая ваша атака будет усилена
+		Усиленные атаки наносят двойной урон, исцеляют вас на 20 ОЗ, заполняют шкалу ярости
+		и создают самонаводящиеся возвышенные звёзды при попадании
+		У этого эффекта есть перезарядка от 12 до 4 секунд, зависящая от вашего уровня заряда ярости
+		'''
+}

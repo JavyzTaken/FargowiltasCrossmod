@@ -35,8 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
-            //return true;
+            //return FargowiltasCrossmod.EnchantLoadingEnabled;
+            return false;
         }
         public override Color nameColor => new Color(153, 200, 193);
         public override void SetDefaults()
@@ -74,10 +74,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
-            return true;
+            return false;
         }
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<AerospecEnchant>();
+        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>(); // TODO: fix
+        public override int ToggleItemType => ModContent.ItemType<MolluskEnchant>();
         
         public static void MolluskTrigger(Player player)
         {

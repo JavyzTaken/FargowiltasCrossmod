@@ -27,6 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.hostile = true;
             Projectile.friendly = false;
             Projectile.timeLeft = 200;
+            Projectile.light = 1;
             base.SetDefaults();
         }
         public override bool PreDraw(ref Color lightColor)
@@ -34,10 +35,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Asset<Texture2D> t = TextureAssets.Projectile[Type];
             Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation + MathHelper.PiOver4, t.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
-        }
-        public override bool CanHitPlayer(Player target)
-        {
-            return base.CanHitPlayer(target);
         }
         public override void AI()
         {

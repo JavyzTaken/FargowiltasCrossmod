@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
         public static int TelegraphTime => 45;
         public static int ExtensionTime => 13;
-        public static int EndTime => 60;
+        public static int EndTime => 50;
         public static int FadeoutTime => 12;
         public ref float Timer => ref Projectile.ai[1];
         public const int TipLength = 80;
@@ -55,7 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = TelegraphTime + ExtensionTime + EndTime;
+            Projectile.timeLeft = 60 * 10;
             Projectile.tileCollide = false;
             Projectile.light = 0.75f;
             Projectile.ignoreWater = true;
@@ -104,7 +104,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 {
                     Projectile.Opacity += 1f / 8;
                 }
-                Projectile.velocity = Projectile.rotation.ToRotationVector2() * ((float)TipLength / startupTime) * 0.5f;
+                if (Timer >= 0)
+                    Projectile.velocity = Projectile.rotation.ToRotationVector2() * ((float)TipLength / startupTime) * 0.5f;
             }
             else if (Timer >= TelegraphTime && Timer < TelegraphTime + ExtensionTime)
             {
@@ -131,7 +132,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            if (!Damaging || Projectile.Opacity < 0.9f)
+            if (!Damaging || Projectile.Opacity < 1f)
                 return false;
             if (projHitbox.Intersects(targetHitbox))
             {
@@ -147,10 +148,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Texture2D tip = PerfsEternityNew.LegEndTextures[Sprites[0]].Value;
+            Texture2D tip = PerfsEternity.LegEndTextures[Sprites[0]].Value;
             Texture2D[] bodies = new Texture2D[BodyParts];
             for (int i = 0; i < BodyParts; i++)
-                bodies[i] = PerfsEternityNew.LegTextures[Sprites[i + 1]].Value;
+                bodies[i] = PerfsEternity.LegTextures[Sprites[i + 1]].Value;
 
             SpriteEffects effects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 

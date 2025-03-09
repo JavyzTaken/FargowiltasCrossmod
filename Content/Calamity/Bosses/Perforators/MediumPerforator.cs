@@ -1,9 +1,11 @@
-﻿using CalamityMod.Events;
+﻿using CalamityMod;
+using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Perforator;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
@@ -38,6 +40,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (!WorldSavingSystem.EternityMode) return;
             entity.lifeMax = 5000;
             entity.Opacity = 1f;
+            entity.CalamityDLC().ImmuneToAllDebuffs = true;
         }
         public override void SpawnNPC(int npc, int tileX, int tileY)
         {
@@ -54,7 +57,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Vector2 vel = shotDir * shotSpeed;
                 if (vel.Y < -6)
                     vel.Y *= 0.6f;
-                int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: Main.player[npc.target].Center.Y);
                 if (p.IsWithinBounds(Main.maxProjectiles))
                 {
                     Main.projectile[p].extraUpdates = 1;

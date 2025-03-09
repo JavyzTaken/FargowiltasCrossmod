@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/BloodyWormFood";
         public override int NPCType => ModContent.NPCType<PerforatorHive>();
-        public override string NPCName => "Perforator Hive";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<BloodyWormFood>().AddTile(TileID.WorkBenches).Register();

@@ -12,14 +12,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Toggles
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public class ExplorationHeader : EnchantHeader
+    public class GaleHeader : EnchantHeader
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override int Item => ModContent.ItemType<ExplorationForce>();
+        public override int Item => ModContent.ItemType<GaleForce>();
         public override float Priority => 0.91f;
     }
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]

@@ -3,6 +3,7 @@ using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -52,9 +53,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         {
             if (!NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>()))
                 return true;
-            if (projectile.type == ModContent.ProjectileType<BrimstoneBarrage>() && ++Timer > 120)
+            int timer = WorldSavingSystem.MasochistModeReal ? 30 : 70;
+            if (projectile.type == ModContent.ProjectileType<BrimstoneBarrage>() && ++Timer > timer)
             {
-                projectile.velocity *= 1.02f;
+                if (projectile.velocity.Length() < 20)
+                    projectile.velocity *= 1.02f;
             }
             if (projectile.type == ModContent.ProjectileType<BrimstoneHellfireball>())
             {

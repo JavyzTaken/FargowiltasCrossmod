@@ -30,6 +30,8 @@ using CalamityMod.Items.Armor.TitanHeart;
 using CalamityMod.Items.Fishing.AstralCatches;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.CalPlayer;
+using CalamityMod.Dusts;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -38,10 +40,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [LegacyName("TitanHeartEnchantment")]
     public class TitanHeartEnchant : BaseEnchant
     {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
-        }
 
         public override Color nameColor => new Color(102, 96, 117);
 
@@ -77,16 +75,61 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class TitanHeartEffect : AccessoryEffect
     {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
-        }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<UmbraphileEnchant>();
+        public override Header ToggleHeader => null;
+        public override int ToggleItemType => ModContent.ItemType<TitanHeartEnchant>();
         
         public override void PostUpdateEquips(Player player)
         {
-            player.GetDamage(DamageClass.Generic) += 0.15f;
+            var calPlayer = player.Calamity();
+            bool wiz = player.ForceEffect<TitanHeartEffect>();
+
+            // dr
+            float dr = wiz ? 0.3f : 0.15f;
+            if (calPlayer.adrenaline > 0 && calPlayer.adrenaline < calPlayer.adrenalineMax)
+                player.endurance += dr * calPlayer.adrenaline / calPlayer.adrenalineMax;
+            // charge speed when grounded
+            if (player.velocity.Y == 0) // grounded
+            {
+                // cal adren conditions
+                bool wofAndNotHell = Main.wofNPCIndex >= 0 && player.position.Y < (float)(Main.UnderworldLayer * 16);
+                if (CalamityPlayer.areThereAnyDamnBosses && calPlayer.AdrenalineEnabled && calPlayer.adrenalinePauseTimer == 0 && !wofAndNotHell)
+                {
+                    float defaultRate = calPlayer.adrenalineMax / calPlayer.AdrenalineChargeTime; // base cal charge rate, do not change
+                    float balanceFactor = 0.75f; // change this to tune charge speed
+                    float wizMod = wiz ? 1.6f : 1f; // change this to tune wizard buff
+
+                    calPlayer.adrenaline += defaultRate * balanceFactor * wizMod;
+
+                    // base cal "adren full" trigger
+                    if (calPlayer.adrenaline >= calPlayer.adrenalineMax)
+                    {
+                        calPlayer.adrenaline = calPlayer.adrenalineMax;
+
+                        // Play a sound when the Adrenaline Meter is full
+                        if (player.whoAmI == Main.myPlayer && calPlayer.playFullAdrenalineSound)
+                        {
+                            calPlayer.playFullAdrenalineSound = false;
+                            SoundEngine.PlaySound(CalamityPlayer.AdrenalineFilledSound);
+                        }
+                    }
+                    else
+                    {
+                        calPlayer.playFullAdrenalineSound = true;
+
+                        // dust
+                        for (int i = 0; i < 1; i++)
+                        {
+                            Vector2 pos = player.Bottom;
+                            pos.X += Main.rand.NextFloat(-50, 50);
+                            Vector2 aimPos = player.Center + Main.rand.NextVector2Circular(player.width / 2, player.width / 2);
+                            Vector2 aim = (aimPos - pos) / 10;
+                            int d = Dust.NewDust(pos, 0, 0, DustID.PurpleTorch, aim.X, aim.Y, Scale: 2);
+                            Main.dust[d].noGravity = true;
+                            Main.dust[d].velocity = aim;
+                        }
+                    }
+                }
+            }
         }
     }
 }

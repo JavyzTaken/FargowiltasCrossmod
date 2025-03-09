@@ -1,0 +1,24 @@
+ReaverEffect: {
+	DisplayName: Reaver Adaptability
+	Tooltip:
+		'''
+		Switch between Plated and Swift Mode
+		Plated Mode: Increases defense by 15 and damage reduction by 15%, taking damage grants Reaver Rage and summons a thorn spike
+		Swift Mode: Grants massive life regeneration, increases wing time and speed by 10%, reduces dash cooldown, increases hook speed
+		'''
+}
+
+UmbraphileEffect: {
+	DisplayName: Bat Swarm Transformation
+	Tooltip:
+		'''
+		Temporarily become a swarm of bats
+		While in this form, you are immune to damage, have +30% increased movement speed, and infinite flight
+		The bat swarm deals damage and steals life on hit
+		'''
+}
+
+ElementsForceEffect: {
+	DisplayName: Elemental Shift
+	Tooltip: Switch between Magma and Blizzard Mode
+}

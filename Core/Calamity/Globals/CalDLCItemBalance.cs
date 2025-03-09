@@ -1,43 +1,26 @@
-﻿using CalamityMod.Items.SummonItems.Invasion;
-using CalamityMod.Items.SummonItems;
-using CalamityMod.Items;
-using FargowiltasSouls.Content.Items.Accessories.Souls;
-using FargowiltasSouls.Content.Items.Ammos;
-using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
-using FargowiltasSouls.Content.Patreon.DemonKing;
-using FargowiltasSouls.Content.Patreon.Duck;
-using FargowiltasSouls.Content.Patreon.GreatestKraken;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+﻿using CalamityMod.Items;
 using CalamityMod.Items.Accessories;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Weapons.Summon;
-using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
-using Terraria.ID;
-using Terraria;
-using FargowiltasSouls.Content.Items.Armor;
-using CalamityMod;
-using FargowiltasSouls.Core.ModPlayers;
-using FargowiltasSouls.Core.Systems;
-using FargowiltasSouls.Core.Toggler;
-using FargowiltasSouls;
-using FargowiltasSouls.Content.Items;
-using FargowiltasSouls.Content.Items.Accessories.Enchantments;
-using Terraria.Localization;
 using FargowiltasCrossmod.Core.Common;
-using FargowiltasSouls.Content.Items.Accessories.Masomode;
-using CalamityMod.UI.CalamitasEnchants;
-using FargowiltasSouls.Core.AccessoryEffectSystem;
-using FargowiltasCrossmod.Core.Calamity.ModPlayers;
-using FargowiltasSouls.Content.Patreon.Volknet;
+using FargowiltasSouls;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Items.Accessories.Forces;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
+using FargowiltasSouls.Content.Items.Accessories.Souls;
+using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
+using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.Patreon.Volknet;
+using FargowiltasSouls.Core.Systems;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 using static Terraria.ModLoader.ModContent;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
@@ -52,7 +35,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<MechanicalLeashOfCthulhu>())
                 return 0.5f;
             if (item.type == ItemType<Blender>())
-                return 1f;
+                return 2f;
             if (item.type == ItemType<NukeFishron>() || item.type == ItemType<GolemTome2>() || item.type == ItemType<DestroyerGun2>())
                 return 2f;
 
@@ -98,11 +81,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             // Rogue
             if (item.type == ItemType<NanoblackReaper>()) return 0.4f;
             if (item.type == ItemType<ScarletDevil>()) return 0.4f;
-            if (item.type == ItemType<TheAtomSplitter>()) return 0.25f;
+            if (item.type == ItemType<TheAtomSplitter>()) return 0.75f;
             if (item.type == ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
-            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
+            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.5f;
             if (item.type == ItemType<GuardianTome>()) return 0.2f;
             if (item.type == ItemType<SlimeRain>()) return 0.08f;
             if (item.type == ItemType<TheBiggestSting>()) return 0.3f;
@@ -217,7 +200,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<SlimyShield>())
                 NerfTooltip("SlimyShield");
 
-            if (item.ModItem != null && item.ModItem is FlightMasteryWings)
+            if (item.ModItem != null && item.ModItem is FlightMasteryWings && item.ModItem is not EternitySoul)
                 NerfTooltip("FlightMastery");
 
             if (item.type == ItemType<LifeForce>())

@@ -10,9 +10,6 @@ using FargowiltasSouls.Content.Buffs;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -29,6 +26,8 @@ using CalamityMod.Items.Weapons.DraedonsArsenal;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.Typeless;
 using Fargowiltas;
 using CalamityMod.Items.Placeables.Furniture;
 using FargowiltasSouls.Content.Bosses.TrojanSquirrel;
@@ -37,6 +36,8 @@ using FargowiltasSouls.Content.Bosses.DeviBoss;
 using FargowiltasSouls.Content.Bosses.BanishedBaron;
 using FargowiltasSouls.Content.Bosses.Lifelight;
 using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.Typeless;
 
 namespace FargowiltasCrossmod.Core.Calamity
 {
@@ -55,6 +56,12 @@ namespace FargowiltasCrossmod.Core.Calamity
 
             public static bool[] AdamantiteExclude;
             public static bool[] TungstenExclude;
+            public static bool[] MarniteExclude;
+
+            /// <summary>
+            /// Items for which emode changes should be explicitly disabled. Exists to remove conflicts with Calamity item changes for the same item.
+            /// </summary>
+            public static bool[] DisabledEmodeChanges; 
         }
         public class NPCs
         {
@@ -148,6 +155,25 @@ namespace FargowiltasCrossmod.Core.Calamity
             Items.TungstenExclude = itemFactory.CreateBoolSet(false,
                 ItemType<OldLordClaymore>(),
                 ItemType<BladecrestOathsword>()
+            );
+            Items.MarniteExclude = itemFactory.CreateBoolSet(false,  // set of boss viable tools
+              //ItemID.RodofDiscord, // this is intentional
+                ItemID.Rockfish,
+                ItemID.ButchersChainsaw,
+                ItemID.LucyTheAxe,
+                ItemType<FellerofEvergreens>(),
+                ItemType<AxeofPurity>(),
+                ItemType<HydraulicVoltCrasher>(),
+                ItemType<InfernaCutter>(),
+                ItemType<Respiteblock>(),
+                ItemType<RelicOfConvergence>(),
+                ItemType<RelicOfResilience>(),
+                ItemType<Grax>(),
+                ItemType<PhotonRipper>()
+            );
+
+            Items.DisabledEmodeChanges = itemFactory.CreateBoolSet(false,
+                ItemID.StarCannon
             );
             #endregion
 

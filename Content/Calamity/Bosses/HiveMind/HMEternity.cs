@@ -145,8 +145,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
         public int LastAttack = 0;
         public bool DidRainDash = false;
 
-        public const float Subphase2HP = 0.5f;
-        public const float Subphase3HP = 0.175f;
+        public static float Subphase2HP => WorldSavingSystem.MasochistModeReal ? 0.65f : 0.5f;
+        public static float Subphase3HP => WorldSavingSystem.MasochistModeReal ? 0.25f : 0.175f;
         public static int Subphase(NPC NPC)
         {
             float life = NPC.GetLifePercent();
@@ -390,7 +390,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                 CalamityBurrow(NPC, target);
 
-                if (!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>()) && burrowTimer > 0)
+                if (((!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>())) || timer > 60 * 20) && burrowTimer > 0)
                 {
                     SoundEngine.PlaySound(roar with { Pitch = 0.5f }, NPC.Center);
                     Phase = 2;
@@ -410,7 +410,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                     if (NPC.life > NPC.lifeMax * 0.75f)
                     {
-                        NPC.SimpleStrikeNPC((int)Math.Round(NPC.life - (NPC.lifeMax * 0.75f)), 1);
+                        int aliveBlobs = NPC.CountNPCS(ModContent.NPCType<HiveBlob>()) + NPC.CountNPCS(ModContent.NPCType<HiveBlob2>());
+                        float damageMult = 1 - LumUtils.Saturate(aliveBlobs / BlobEternity.P1Blobs);
+                        NPC.SimpleStrikeNPC((int)Math.Round(damageMult * (NPC.life - (NPC.lifeMax * 0.75f))), 1);
                     }
                     foreach (NPC n in Main.npc)
                     {
@@ -475,6 +477,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         break;
                     case P2States.Idle: // idle float, spawn some shit as a shield
                         {
+                            if (WorldSavingSystem.MasochistModeReal && timer < MidwayIdleStart)
+                                timer = MidwayIdleStart;
+
                             targetAfterimages = 0;
                             NPC.damage = 0;
 
@@ -505,11 +510,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             float speed = 16 * speedMod;
                             NPC.velocity = Vector2.Lerp(NPC.velocity, Vector2.Normalize(target.Center - NPC.Center) * speed, 0.02f);
 
-                            if (timer == MidwayIdleStart + 10)
+                            if (timer == MidwayIdleStart + 10 || timer == MidwayIdleStart + 100 && WorldSavingSystem.MasochistModeReal && Subphase(NPC) > 1)
                             {
                                 if (DLCUtils.HostCheck)
                                 {
-                                    if (attackCounter > 0 && Subphase(NPC) > 1)
+                                    if ((attackCounter > 0 && Subphase(NPC) > 1) || WorldSavingSystem.MasochistModeReal)
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<ShadeLightningCloud>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                                     
                                     //SpawnCreepers(creeperCount);
@@ -700,7 +705,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             {
                                 rotation = Main.rand.NextFloat(MathF.Tau);
                                 rotationDirection = Main.rand.NextFromList(1, -1);
-                                NPC.localAI[2] = 60 + Main.rand.Next(15);
+                                int delayBase = WorldSavingSystem.MasochistModeReal ? 40 : 60;
+                                NPC.localAI[2] = delayBase + Main.rand.Next(15);
                                 NPC.netUpdate = true;
 
                                 if (Subphase(NPC) > 2)
@@ -729,8 +735,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 2 => 4,
                                 _ => 2
                             };
+                            if (WorldSavingSystem.MasochistModeReal)
+                                totalDashes += 2;
 
-                            int lungeFade = 15; // Divide 255 by this for duration of hive mind spin before slowing for lunge
+                            int lungeFade = WorldSavingSystem.MasochistModeReal ? 11 : 15; // Divide 255 by this for duration of hive mind spin before slowing for lunge
                             double lungeRots = 0.4;
                             double rotationIncrement = 0.0246399424 * lungeRots * lungeFade;
 
@@ -778,7 +786,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                         NPC.velocity *= teleportRadius / (lungeTime);
                                         NPC.velocity *= 1.2f;
                                         ai3 = 1;
-                                        NPC.localAI[2] = 60 + Main.rand.Next(15);
+                                        int delayBase = WorldSavingSystem.MasochistModeReal ? 35 : 60;
+                                        int randomBase = WorldSavingSystem.MasochistModeReal ? 35 : 15;
+                                        NPC.localAI[2] = delayBase + Main.rand.Next(randomBase);
                                         SoundEngine.PlaySound(CalamityMod.NPCs.HiveMind.HiveMind.FastRoarSound, NPC.Center);
                                         NPC.netUpdate = true;
                                     }
@@ -1057,7 +1067,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                         {
 
                             int teleportRadius = 300;
-                            float arcTime = 45f; // Ticks needed to complete movement for spawn and rain attacks (DEATH ONLY)
+                            float arcTime = 45f; // Ticks needed to complete movement for spawn and rain attacks
 
                             ref float rotationDirection = ref NPC.localAI[1];
 
@@ -1066,6 +1076,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 NPC.alpha -= 5;
                                 if (Subphase(NPC) > 2)
                                     NPC.alpha -= 3;
+                                if (WorldSavingSystem.MasochistModeReal)
+                                    NPC.alpha -= 4;
 
                                 if (Main.netMode != NetmodeID.MultiplayerClient)
                                 {
@@ -1155,6 +1167,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 NPC.velocity = NPC.DirectionTo(target.Center) * 20f;
                                 int spread = 10;
                                 float totalSpread = MathF.PI * 0.875f;
+                                if (WorldSavingSystem.MasochistModeReal)
+                                    totalSpread *= 0.8f;
                                 if (FargoSoulsUtil.HostCheck)
                                 {
                                     for (int i = 0; i < spread; i++)

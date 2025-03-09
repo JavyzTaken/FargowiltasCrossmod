@@ -1,20 +1,14 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasSouls.Core.Systems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
-using Terraria;
-using FargowiltasCrossmod.Core.Calamity.Systems;
-using Microsoft.Xna.Framework;
-using CalamityMod.NPCs.HiveMind;
-using Mono.Cecil;
-using FargowiltasSouls.Core.Systems;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Core.Calamity.Globals
 {
@@ -87,6 +81,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return;
 
             DLCBehaviour?.FindFrame(frameHeight);
+        }
+
+        public override void BossHeadSlot(NPC npc, ref int index)
+        {
+            if (!ShouldBeActive)
+                return;
+
+            DLCBehaviour?.BossHeadSlot(ref index);
         }
 
         public override void ModifyTypeName(NPC npc, ref string typeName)
@@ -173,6 +175,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 return;
 
             DLCBehaviour?.HitEffect(hit);
+        }
+
+        public override bool CheckDead(NPC npc)
+        {
+            if (!ShouldBeActive)
+                return true;
+
+            return DLCBehaviour?.CheckDead() ?? true;
         }
 
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

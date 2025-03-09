@@ -17,15 +17,22 @@ namespace FargowiltasCrossmod.Assets
 
         #region Noise Textures
 
+        public static readonly LazyAsset<Texture2D> BinaryPoem = LoadDeferred($"{ExtraTexturesPath}/BinaryPoem");
+
         public static readonly LazyAsset<Texture2D> BubblyNoise = LoadDeferred($"{ExtraTexturesPath}/BubblyNoise");
 
+        public static readonly LazyAsset<Texture2D> CloudDensityMap = LoadDeferred($"{ExtraTexturesPath}/CloudDensityMap");
+
         public static readonly LazyAsset<Texture2D> CrackedNoiseA = LoadDeferred($"{ExtraTexturesPath}/CrackedNoiseA");
+
+        public static readonly LazyAsset<Texture2D> ElectricNoise = LoadDeferred($"{ExtraTexturesPath}/ElectricNoise");
 
         public static readonly LazyAsset<Texture2D> FireParticleA = LoadDeferred($"{ExtraTexturesPath}/FireParticleA");
 
         public static readonly LazyAsset<Texture2D> FireParticleB = LoadDeferred($"{ExtraTexturesPath}/FireParticleA");
 
         public static readonly LazyAsset<Texture2D> PerlinNoise = LoadDeferred($"{ExtraTexturesPath}/PerlinNoise");
+
 
         #endregion Noise Textures
 

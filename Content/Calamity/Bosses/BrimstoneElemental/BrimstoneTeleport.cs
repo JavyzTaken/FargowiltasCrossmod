@@ -14,6 +14,9 @@ using Terraria;
 using FargowiltasCrossmod.Core.Common;
 using Terraria.Audio;
 using CalamityMod.Projectiles.Boss;
+using FargowiltasSouls.Core.Systems;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.SolarEclipse;
+using FargowiltasSouls;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
 {
@@ -70,6 +73,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 }
                 owner.Center = Projectile.Center;
                 NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, owner.whoAmI);
+
+                if (WorldSavingSystem.MasochistModeReal)
+                {
+                    float projs = 17;
+                    for (int i = 0; i < projs; i++)
+                    {
+                        float rot = MathF.Tau * i / projs;
+                        Vector2 vel = rot.ToRotationVector2() * 3;
+                        Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, vel, ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(owner.defDamage), 0);
+                    }
+                }
             }
         }
         public override void AI()

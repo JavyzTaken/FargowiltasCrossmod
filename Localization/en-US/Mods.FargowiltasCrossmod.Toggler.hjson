@@ -1,0 +1,54 @@
+CalamitySoulHeader: Soul of Calamity
+VagabondsSoulHeader: Vagabond's Soul
+NanotechEffect: Nanotech
+EclipseMirrorEffect: Eclipse Mirror
+AmalgamEffect: The Amalgam
+AsgardianAegisEffect: Asgardian Aegis
+RampartofDeitiesEffect: Rampart of Deities
+ElementalGauntletEffect: Elemental Gauntlet
+EtherealTalismanEffect: Ethereal Talisman
+CalamitySniperHeader: Calamity Sniper's Soul
+ElementalQuiverEffect: Elemental Quiver
+QuiverofNihilityEffect: Quiver of Nihility
+NucleogenesisEffect: Nucleogenesis
+StatisVoidSashEffect: Statis' Void Sash
+AbyssalDivingSuitEffect: Abyssal Diving Suit
+BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
+HeartoftheElementsEffect: Heart of the Elements
+OccultSkullCrownEffect: Occult Skull Crown
+PurityEffect: Radiance
+TheSpongeEffect: The Sponge
+ChaliceOfTheBloodGodEffect: Chalice of the Blood God
+NebulousCoreEffect: Nebulous Core
+YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
+DraedonsHeartEffect: Draedons Heart
+CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
+// gale
+GaleHeader: Force of the Gale
+SnowRuffianEffect: Better Gliding
+GaleSlowfallEffect: Slowfall
+StatigelEffect: Statigel Movement
+SulphurEffect: Bubble Jump
+VictideEffect: Urchin Spikes
+GaleSpineEffect: Spines
+DesertProwlerEffect: Charge Jump
+GaleJumpEffect: Infinite Jumps
+// elements
+ElementsHeader: Force of the Elements
+DaedalusEffect: Daedalus Arrows
+ReaverEffect: Reaver Stats
+HydrothermicEffect: Overheat
+AerospecJumpEffect: Aerospec Effect
+// world shaper
+MarniteRepulsionEffect: Marnite Repulsion
+MarniteLasersEffect: Marnite Lasers
+// others
+WulfrumEffect: Wulfrum Drone
+PlaguebringerEffect: Plague Cloud
+PlagueReaperEffect: Debuff Spread
+TitanHeartEffect: Titan Size
+UmbraphileEffect: Bat Mode
+FathomSwarmerEffect: Angler Fish
+BrimflameEffect: Brimflame Burst
+MolluskEffect: Mollusk Slam
+EmpyreanEffect: Empowered Hits

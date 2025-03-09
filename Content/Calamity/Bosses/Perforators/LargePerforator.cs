@@ -1,9 +1,11 @@
 ﻿using CalamityMod.Events;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Perforator;
+using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using CalamityMod.World;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
@@ -35,10 +37,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         );
         public Vector2 VelocityReal = Vector2.UnitY * 16;
         public int Timer = 0;
+        public bool Emerged = false;
         public override void SetDefaults(NPC entity)
         {
             if (!WorldSavingSystem.EternityMode) return;
             entity.Opacity = 1f;
+            entity.CalamityDLC().ImmuneToAllDebuffs = true;
         }
         public override void SpawnNPC(int npc, int tileX, int tileY)
         {
@@ -100,13 +104,35 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             else
             {
                 int hiveID = NPC.FindFirstNPC(ModContent.NPCType<PerforatorHive>());
-                if (hiveID.IsWithinBounds(Main.maxNPCs) && (Timer == 0 || npc.Distance(Main.npc[hiveID].Center) < 80))
+                int distance = Timer < 10 ? 80 : 75;
+                bool hiveActive = hiveID.IsWithinBounds(Main.maxNPCs);
+                if (hiveActive && (Timer == 0 || npc.Distance(Main.npc[hiveID].Center) < distance))
                 {
                     npc.Center = Main.npc[hiveID].Center;
                     npc.Opacity = 0f;
+                    Emerged = false;
                 }
                 else
+                {
+                    if (!Emerged)
+                    {
+                        Emerged = true;
+                        if (hiveActive)
+                        {
+                            for (int i = 0; i < 20; i++)
+                            {
+                                NPC hive = Main.npc[hiveID];
+                                Vector2 center = hive.Center;
+                                Vector2 offset = (npc.Center - center).SafeNormalize(-Vector2.UnitY) * hive.width / 2.4f;
+                                offset = offset.RotatedByRandom(MathHelper.PiOver2 * 0.4f);
+                                Particle p = new BloodParticle(hive.Center + offset, offset.SafeNormalize(-Vector2.UnitY) * Main.rand.NextFloat(3, 17), Main.rand.Next(12, 20), Main.rand.NextFloat(0.7f, 1.3f), Color.Red);
+                                GeneralParticleHandler.SpawnParticle(p);
+                            }
+                        }
+                    }
                     npc.Opacity = 1f;
+                }
+                    
             }
             Timer++;
 

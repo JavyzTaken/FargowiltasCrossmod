@@ -15,7 +15,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class PlaguedWalkieTalkie : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<PlaguebringerMiniboss>();
-        public override string NPCName => "Plaguebringer";
         public override void AddRecipes()
         {
         }

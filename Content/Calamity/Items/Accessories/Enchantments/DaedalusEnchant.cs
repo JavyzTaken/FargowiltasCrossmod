@@ -21,6 +21,12 @@ using rail;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
 using Terraria.GameContent.ItemDropRules;
+using FargowiltasSouls.Content.UI.Elements;
+using FargowiltasSouls.Content.Items.Accessories.Forces;
+using Microsoft.Xna.Framework.Graphics;
+using CalamityMod.Projectiles.Ranged;
+using Mono.Cecil;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -29,11 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [LegacyName("DaedalusEnchantment")]
     public class DaedalusEnchant : BaseEnchant
     {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
-        }
-        public override Color nameColor => new(132, 212, 246);
+        public static readonly Color NameColor = new(132, 212, 246);
+        public override Color nameColor => NameColor;
         public override void SetStaticDefaults()
         {
 
@@ -45,8 +48,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.AddEffect<DaedalusEffect>(Item);
-            player.AddEffect<SnowRuffianEffect>(Item);
+            AddEffects(player, Item);
+        }
+        public static void AddEffects(Player player, Item item)
+        {
+            player.FargoSouls().WingTimeModifier += 0.25f;
+            player.AddEffect<DaedalusEffect>(item);
         }
         public override void AddRecipes()
         {
@@ -55,7 +62,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyDaedalusHelms", 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusBreastplate>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusLeggings>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<SnowRuffianEnchant>(), 1);
             recipe.AddIngredient(ItemID.IceRod, 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.Wings.StarlightWings>(), 1);
             recipe.AddTile(TileID.CrystalBall);
@@ -66,41 +72,74 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class DaedalusEffect : AccessoryEffect
     {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
-        }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<ElementsHeader>();
         public override int ToggleItemType => ModContent.ItemType<DaedalusEnchant>();
-        public override void PreUpdate(Player player)
-        {
-            
-        }
+        public const float WindupTime = 60f;
         public override void PostUpdateEquips(Player player)
         {
-            int heightMult = 6;
-            int forceWingTime = 120;
-
-            if (player.ForceEffect<DaedalusEffect>())
+            var addonPlayer = player.CalamityAddon();
+            if (player.HasEffect<ElementsForceEffect>() && !addonPlayer.ReaverToggle)
+                return;
+            if (player.velocity.Y != 0)
             {
-                heightMult = 10;
-                if (player.wingTimeMax == 0)
+                addonPlayer.DaedalusTimer++;
+                if (addonPlayer.DaedalusTimer == WindupTime)
+                    addonPlayer.DaedalusTimer += 60;
+                if (player.whoAmI == Main.myPlayer)
+                    CooldownBarManager.Activate("DaedalusEnchantWings", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/DaedalusEnchant").Value, DaedalusEnchant.NameColor,
+                        () => LumUtils.Saturate(Main.LocalPlayer.CalamityAddon().DaedalusTimer / WindupTime), true, activeFunction: player.HasEffect<DaedalusEffect>);
+            }
+            else
+            {
+                addonPlayer.DaedalusTimer = 0;
+            }
+        }
+        public override void TryAdditionalAttacks(Player player, int damage, DamageClass damageType)
+        {
+            var addonPlayer = player.CalamityAddon();
+            if (addonPlayer.DaedalusTimer > WindupTime + 40)
+            {
+                addonPlayer.DaedalusTimer = (int)WindupTime;
+                bool forceEffect = player.ForceEffect<DaedalusEffect>();
+                float arrowSpeed = forceEffect ? 16f : 12f;
+                int projDamage = forceEffect ? 100 : 65;
+                if (player.HasEffect<ElementsForceEffect>())
+                    projDamage = 600;
+                projDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, projDamage);
+
+                int amt = forceEffect ? 6 : 4;
+                float knockback = 1f;
+                // ignore all this shit
+                for (int i = 0; i < amt; i++)
                 {
-                    int starlightWings = EquipLoader.GetEquipSlot(ModCompatibility.Calamity.Mod, "StarlightWings", EquipType.Wings);
-                    player.wings = starlightWings;
-                    player.wingsLogic = starlightWings;
-                    player.wingTimeMax = forceWingTime;
-                    player.wingAccRunSpeed = player.GetWingStats(starlightWings).AccRunAccelerationMult;
-                    player.noFallDmg = true;
+                    Vector2 realPlayerPos = new Vector2(player.position.X + player.width * 0.5f + (Main.rand.Next(300) * -(float)player.direction) + (Main.mouseX + Main.screenPosition.X - player.position.X), player.MountedCenter.Y - 600f);
+                    realPlayerPos.X = (realPlayerPos.X + player.Center.X) / 2f + Main.rand.Next(-300, 300);
+                    realPlayerPos.Y -= 100f;
+                    float mouseXDist = Main.mouseX + Main.screenPosition.X - realPlayerPos.X;
+                    float mouseYDist = Main.mouseY + Main.screenPosition.Y - realPlayerPos.Y;
+                    if (mouseYDist < 0f)
+                        mouseYDist *= -1f;
+                    if (mouseYDist < 20f)
+                        mouseYDist = 20f;
+                    float mouseDistance = (float)Math.Sqrt(mouseXDist * mouseXDist + mouseYDist * mouseYDist);
+                    mouseDistance = arrowSpeed / mouseDistance;
+                    mouseXDist *= mouseDistance;
+                    mouseYDist *= mouseDistance;
+
+
+                    float speedX4 = mouseXDist + Main.rand.Next(-40, 41) * 0.02f;
+                    float speedY5 = mouseYDist + Main.rand.Next(-40, 41) * 0.02f;
+                    Projectile.NewProjectile(this.GetSource_EffectItem(player), realPlayerPos.X, realPlayerPos.Y, speedX4, speedY5, ModContent.ProjectileType<DaedalusArrow>(), projDamage, knockback, player.whoAmI);
                 }
             }
-            if (player.wingTime == player.wingTimeMax)
+        }
+        public override void OnHitByEither(Player player, NPC npc, Projectile proj)
+        {
+            var addonPlayer = player.CalamityAddon();
+            if (addonPlayer.DaedalusTimer > WindupTime && !player.HasEffect<ElementsForceEffect>())
             {
-                player.CalamityAddon().DaedalusHeight = (int)player.Center.Y - player.wingTimeMax * heightMult;
-            }
-            if (player.wingTime > 0)
-            {
-                player.wingTime = (player.Center.Y - player.CalamityAddon().DaedalusHeight)/heightMult;
+                addonPlayer.DaedalusTimer = 0;
+                player.wingTime /= 2;
             }
         }
     }

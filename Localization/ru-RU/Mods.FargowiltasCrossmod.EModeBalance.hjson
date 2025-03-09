@@ -1,0 +1,16 @@
+CrossBalanceGeneric: "Баланс кросс-моддинга: "
+DamageUpGeneric: Урон увеличен на {0}%
+DamageDownGeneric: Урон уменьшен на {0}%
+MagicDagger: Урон уменьшен на 50% в пре-хардмоде
+ProfanedCrystal: Значительно уменьшает урон с любым призванным существом
+MythrilEnch: Менее эффективно на оружиях разбойника
+OrichalcumEnch: Эффективность уменьшена
+Daawnlight: Эффект выключен, пока активно зачарование олова
+SlimyShield: Не накладывает «В масле» на врагов
+FlightMastery: Полёт ослаблен при битвах с боссами не из мода «Fargo's Souls»
+LifeForce: Полёт ослаблен и время полёта уменьшено при битвах с боссами не из мода «Fargo's Souls»
+OnionPackUpgrade: Теперь является улучшением [i:FargowiltasSouls/MutantsPact]Договора Мутанта, позволяющим поместить в новый слот любой аксессуар
+Laudanum: Положительные эффекты дебаффов ослаблены вдвое
+HardmodeSwords: Улучшения характеристик ослаблены
+// truth be told I have absolutely no idea what this enchantment is so the key name is just that
+CalEnch: Накапливаемый урон не может быть выше 500000

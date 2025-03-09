@@ -2,6 +2,7 @@
 using CalamityMod;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -100,8 +101,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             {
                 SoundEngine.PlaySound(SoundID.Item109, Projectile.Center);
                 int dir = Projectile.ai[2] < 0 ? -1 : 1;
-                
-                Projectile.velocity *= 35 * dir;
+
+                float vel = WorldSavingSystem.MasochistModeReal ? 35 : 32;
+                Projectile.velocity *= vel * dir;
             }
             if (Projectile.localAI[0] > 100) //leave a lingering trail
             {

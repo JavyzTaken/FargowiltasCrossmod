@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.Localization;
 
 namespace FargowiltasCrossmod.Content.Common
 {
@@ -93,7 +94,7 @@ namespace FargowiltasCrossmod.Content.Common
                 int currentShop = DevianttGlobalNPC.currentShop;
                 if (currentShop == 0)
                 {
-                    (listeningElement as UITextPanel<string>).SetText("Vanilla");
+                    (listeningElement as UITextPanel<string>).SetText(Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.ShopModSwapper.Vanilla"));
                 }
                 else
                 {

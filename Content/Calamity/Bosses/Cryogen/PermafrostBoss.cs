@@ -27,6 +27,7 @@ using System.IO;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using CalamityMod.Events;
+using FargowiltasSouls.Content.Buffs.Masomode;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -227,6 +228,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void AI()
         {
             Main.LocalPlayer.ZoneSnow = true;
+            Main.LocalPlayer.buffImmune[ModContent.BuffType<HypothermiaBuff>()] = true;
 
             int n = NPC.FindFirstNPC(ModContent.NPCType<DILF>());
             if (n != -1 && n != Main.maxNPCs)
@@ -665,7 +667,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedByRandom(MathHelper.Pi / 8.5f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedByRandom(MathHelper.Pi / 8.5f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                         }
                         if (WorldSavingSystem.MasochistModeReal)
                         {
@@ -673,7 +675,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                             {
                                 for (int i = 0; i < 5; i++)
                                 {
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(MathHelper.Pi * 0.25f * dir).RotatedByRandom(MathHelper.Pi / 16f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<IceShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toTarget.RotatedBy(MathHelper.Pi * 0.25f * dir).RotatedByRandom(MathHelper.Pi / 16f) * Main.rand.NextFloat(15, 20), ModContent.ProjectileType<FrostShard>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                                 }
                             }
                         }
@@ -800,14 +802,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             void FrostFlares()
             {
-                const int StartTime = 20;
+                const int StartTime = 30;
                 const int AttackTime = 20;
                 int side = Math.Sign(toTarget.Y);
                 Vector2 desiredPos = target.Center - (side * Vector2.UnitY * 400);
-                Movement(desiredPos, accel: 0.1f, decel: 0.1f, maxSpeed: 50);
-                if (Math.Abs(toTarget.X) > 100 && Timer < 5)
+                desiredPos.X += target.velocity.X * 25;
+                if (Math.Abs(desiredPos.X - NPC.Center.X) > 100 && Timer < 5)
                     Timer--;
                 Timer++;
+                if (Timer < StartTime)
+                    Movement(desiredPos, accel: 0.1f, decel: 0.1f, maxSpeed: 50);
+                else
+                    NPC.velocity *= 0.92f;
                 if (Timer % 10 == 0 && Timer <= StartTime + AttackTime && Timer > StartTime)
                 {
                     SoundEngine.PlaySound(SoundID.Item92, NPC.Center);
