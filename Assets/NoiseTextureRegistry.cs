@@ -33,7 +33,6 @@ namespace FargowiltasCrossmod.Assets
 
         public static readonly LazyAsset<Texture2D> PerlinNoise = LoadDeferred($"{ExtraTexturesPath}/PerlinNoise");
 
-
         #endregion Noise Textures
 
         #region Loader Utility
