@@ -51,7 +51,6 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 
     }
         
-
     float opacity = 1;
     // Fade out at the top and bottom of the streak.
     float y = 0.5 - abs(coords.y - 0.5);

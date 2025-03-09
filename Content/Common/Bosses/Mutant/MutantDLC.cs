@@ -1434,7 +1434,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 if (++npc.ai[1] > 60)
                 {
                     npc.netUpdate = true;
-                    npc.ai[1] = 30;
                     if (WorldSavingSystem.MasochistModeReal)
                     {
                         npc.ai[1] += 15; //faster
@@ -1443,10 +1442,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     if (Counter > 0)
                     {
                         //npc.TargetClosest();
-                        npc.ai[0] = 25; //spear throw direct
-                        npc.ai[1] = 0;
-                        npc.ai[2] = 0;
-                        Reset();
+                        if (npc.ai[1] > 100)
+                        {
+                            npc.ai[0] = 25; //spear throw direct
+                            npc.ai[1] = 0;
+                            npc.ai[2] = 0;
+                            Reset();
+                        }
                     }
                     else
                     {

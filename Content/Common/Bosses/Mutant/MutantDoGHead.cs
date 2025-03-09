@@ -131,8 +131,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 Player p = Main.player[foundTarget];
                 Projectile.velocity.Y *= 0.96f;
                 int signToPlayer = Math.Sign(p.Center.Y - Projectile.Center.Y);
-                if (timer < StartupTime + DashWindup + 10 || Projectile.velocity.Y.NonZeroSign() == signToPlayer)
-                    Projectile.velocity.Y += signToPlayer * 2f;
+                if (timer < StartupTime + DashWindup + 7 || Projectile.velocity.Y.NonZeroSign() == signToPlayer)
+                    Projectile.velocity.Y += signToPlayer * 3f;
 
                 Projectile.velocity.X *= 0.9f;
                 /*
