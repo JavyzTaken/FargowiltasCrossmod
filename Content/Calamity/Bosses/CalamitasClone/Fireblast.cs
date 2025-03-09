@@ -16,6 +16,7 @@ using CalamityMod;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasSouls;
 using Luminance.Common.Utilities;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
@@ -184,11 +185,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 if (Projectile.owner == Main.myPlayer)
                 {
-                    int spread = 4;
+                    int spread = 3;
                     int type = ModContent.ProjectileType<BrimstoneBarrageGravitating>();
                     float velocity = 24f;
                     Vector2 baseVel = Projectile.velocity.SafeNormalize(Vector2.UnitY);
-                    float spreadRot = MathHelper.PiOver2 * 0.2f;
+                    float spreadRot = MathHelper.PiOver2 * 0.25f;
+                    if (WorldSavingSystem.MasochistModeReal)
+                    {
+                        spread = 4;
+                        spreadRot = MathHelper.PiOver2 * 0.2f;
+                    }
                     Vector2 aimPos = Projectile.Center - baseVel * 50;
                     for (int k = -spread; k < spread; k++)
                     {

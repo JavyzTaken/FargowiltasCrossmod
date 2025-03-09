@@ -463,14 +463,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             int startup = 40;
             int frequency = 11;
+            if (WorldSavingSystem.MasochistModeReal)
+                frequency = 9;
             int totalTime = 60 * 6;
             int endTime = 20;
             Timer++;
+            if (Timer > startup)
+            {
+                ScreenShakeSystem.SetUniversalRumble(2.4f, 6.28f, null, 0.2f);
+            }
             if (Timer > startup && Timer % frequency == 0 && Timer < totalTime)
             {
                 if (DLCUtils.HostCheck)
                 {
                     float maxRandom = 550;
+                    if (WorldSavingSystem.MasochistModeReal)
+                        maxRandom = 610;
                     float random = Main.rand.NextFloat(-maxRandom, maxRandom);
                     Vector2 randomDir = CalculateAngle(targetX + random);
 
@@ -569,7 +577,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 startup = 30f;
                 ballTelegraph = 50f;
-                shotTime = 60 * 0.5f;
+                shotTime = 60 * 0.65f;
                 volleys = 6;
                 volleyTime = shotTime + ballTelegraph;
             }
