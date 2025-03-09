@@ -6,6 +6,7 @@ using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -63,14 +64,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 Projectile.Kill();
                 return;
             }
-            if (++Timer > Duration)
+            Timer++;
+            if (Timer > Duration - 40)
             {
-                Projectile.Opacity -= 0.02f;
-                if (Projectile.Opacity < 0.0f)
-                {
-                    Projectile.Kill();
-                    return;
-                }
+                Projectile.Opacity -= (1f / 20);
+            }
+            if (Timer > Duration - 20)
+            {
+                Projectile.Kill();
+                return;
             }
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -78,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (Projectile.hide)
                 behindNPCs.Add(index);
         }
-        public static Vector2 Offset(NPC npc) => (npc.rotation + MathHelper.PiOver2).ToRotationVector2() * -0;
+        public static Vector2 Offset(NPC npc) => (npc.rotation + MathHelper.PiOver2).ToRotationVector2() * -20;
         public override bool PreDraw(ref Color lightColor)
         {
             return false;
@@ -92,7 +94,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
         public Color ColorFunction(float completionRatio)
         {
-            return Color.Lerp(Color.Red, Color.Transparent, completionRatio) * 0.4f * Projectile.Opacity;
+            float threshold = 0.08f;
+            float opacity = 1f;
+            if (completionRatio < threshold)
+                opacity *= MathF.Pow(completionRatio / threshold, 2);
+            return Color.Lerp(Color.Red, Color.Transparent, completionRatio) * 0.4f * opacity * Projectile.Opacity;
         }
 
         public void RenderPixelatedPrimitives(SpriteBatch spriteBatch)
