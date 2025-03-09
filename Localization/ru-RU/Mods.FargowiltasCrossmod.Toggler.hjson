@@ -24,25 +24,29 @@ YharimsGiftEffect: Дар Ярима
 DraedonsHeartEffect: Сердце Дрэйдона
 CalamityEffect: Бедствие
 SplendorJamEffect: Splendor Jam
+// gale
 GaleHeader: Артефакт бури
-GaleSlowfallEffect: Медленное падение
-GaleStatigelEffect: Урон от скорости
-GaleJumpEffect: Бесконечные прыжки
-GaleSpineEffect: Позвонки
-AerospecJumpEffect: Крит прыжки
-MarniteRepulsionEffect: Мранитовая репульсия
-MarniteLasersEffect: Мранитовые лазеры
-DesertProwlerEffect: Заряжающийся прыжок
-WulfrumEffect: Вульфрумовый дрон
 SnowRuffianEffect: Улучшенное планирование
-DaedalusEffect: Ограниченный полёт Дедала
-ReaverEffect: Характеристики разорителя
-HydrothermicEffect: Перегрев
-// PlaguebringerEffect: Plague Cloud
-// PlagueReaperEffect: Debuff Spread
+GaleSlowfallEffect: Медленное падение
 StatigelEffect: Ускорение и урон статигеля
 SulphurEffect: Прыжок с пузырём
 VictideEffect: Морские иглы
+GaleSpineEffect: Позвонки
+DesertProwlerEffect: Заряжающийся прыжок
+GaleJumpEffect: Бесконечные прыжки
+// elements
+// ElementsHeader: Force of the Elements
+DaedalusEffect: Ограниченный полёт Дедала
+ReaverEffect: Характеристики разорителя
+HydrothermicEffect: Перегрев
+AerospecJumpEffect: Крит прыжки
+// world shaper
+MarniteRepulsionEffect: Мранитовая репульсия
+MarniteLasersEffect: Мранитовые лазеры
+// others
+WulfrumEffect: Вульфрумовый дрон
+// PlaguebringerEffect: Plague Cloud
+// PlagueReaperEffect: Debuff Spread
 // TitanHeartEffect: Titan Size
 UmbraphileEffect: Режим летучей мыши
 // FathomSwarmerEffect: Angler Fish

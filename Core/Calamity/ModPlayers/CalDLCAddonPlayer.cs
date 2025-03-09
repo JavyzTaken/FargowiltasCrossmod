@@ -157,6 +157,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            /*
             FieldInfo installKey = typeof(FargowiltasSouls.FargowiltasSouls).GetField("DebuffInstallKey", BindingFlags.NonPublic | BindingFlags.Static);
             FieldInfo sDashKey = typeof(FargowiltasSouls.FargowiltasSouls).GetField("SpecialDashKey", BindingFlags.NonPublic | BindingFlags.Static);
             if (installKey != null && installKey.GetValue(installKey) != null) {
@@ -180,6 +181,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     }
                 }
             }
+            */
             base.ProcessTriggers(triggersSet);
         }
         public override void PreUpdate()
