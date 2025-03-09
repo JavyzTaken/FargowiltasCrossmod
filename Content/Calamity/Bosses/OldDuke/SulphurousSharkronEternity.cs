@@ -4,10 +4,13 @@ using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using CalamityOD = CalamityMod.NPCs.OldDuke.OldDuke;
@@ -23,6 +26,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public ref float Time => ref NPC.ai[0];
 
+        /// <summary>
+        /// The opacity of this sharkron's afterimages.
+        /// </summary>
+        public ref float AfterimageOpacity => ref NPC.localAI[0];
+
         public override int NPCOverrideID => ModContent.NPCType<SulphurousSharkron>();
 
         public override bool PreAI()
@@ -30,12 +38,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int oldDukeIndex = NPC.FindFirstNPC(ModContent.NPCType<CalamityOD>());
             if (oldDukeIndex == -1)
             {
-                Die();
+                Die(false);
                 return false;
             }
             if (!Main.npc[oldDukeIndex].TryGetDLCBehavior(out OldDukeEternity oldDuke))
             {
-                Die();
+                Die(false);
                 return false;
             }
 
@@ -44,13 +52,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             oldDuke.SharkronPuppeteerAction?.Invoke(this);
             Time++;
 
+            AfterimageOpacity = MathHelper.Lerp(AfterimageOpacity, 1f, 0.02f);
+
             return false;
         }
 
         /// <summary>
         /// Makes this sharkron die and violently explode, all lowtiergod-like.
         /// </summary>
-        public void Die()
+        public void Die(bool createGore)
         {
             SoundEngine.PlaySound(SoundID.NPCDeath1, NPC.Center);
 
@@ -60,7 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 ModContent.GetInstance<BileMetaball>().CreateParticle(NPC.Center, vomitVelocity, Main.rand.NextFloat(32f, 44f), Main.rand.NextFloat());
             }
 
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (Main.netMode != NetmodeID.MultiplayerClient && createGore)
             {
                 Vector2 goreDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
                 goreDirection.Y = -MathF.Abs(goreDirection.Y);
@@ -82,7 +92,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 }
             }
 
-            if (Main.netMode != NetmodeID.Server)
+            if (Main.netMode != NetmodeID.Server && createGore)
             {
                 Mod calamity = ModContent.GetInstance<CalamityMod.CalamityMod>();
                 Gore.NewGore(NPC.GetSource_Death(), NPC.position, NPC.velocity * 0.2f, calamity.Find<ModGore>("SulphurousSharkronGore").Type, NPC.scale);
@@ -90,6 +100,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             }
 
             NPC.active = false;
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor)
+        {
+            Texture2D texture = TextureAssets.Npc[NPC.type].Value;
+
+            float rotation = NPC.rotation;
+            SpriteEffects direction = SpriteEffects.None;
+
+            for (int i = 8; i >= 0; i--)
+            {
+                float afterimageOpacity = (1f - i / 9f).Squared() * AfterimageOpacity;
+                Vector2 afterimageDrawPosition = NPC.oldPos[i] + NPC.Size * 0.5f - Main.screenPosition;
+                Main.EntitySpriteDraw(texture, afterimageDrawPosition, NPC.frame, NPC.GetAlpha(lightColor) * afterimageOpacity, rotation, NPC.frame.Size() * 0.5f, NPC.scale, direction);
+            }
+
+            Vector2 drawPosition = NPC.Center - screenPos;
+            Main.EntitySpriteDraw(texture, drawPosition, NPC.frame, NPC.GetAlpha(lightColor), rotation, NPC.frame.Size() * 0.5f, NPC.scale, direction);
+            return false;
         }
     }
 }

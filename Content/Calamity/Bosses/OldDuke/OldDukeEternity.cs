@@ -2,6 +2,7 @@
 using FargowiltasCrossmod.Assets;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
@@ -38,6 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             Phase2Transition_Roar,
             Phase2Transition_ConsumeFuelContainers,
 
+            SharkWaveLaunch,
             VomitRadioactiveCinders,
             ConjureNuclearHurricane,
 
@@ -205,6 +207,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             OldDukeAIState.BubbleSpin,
             OldDukeAIState.PredictiveDashes,
             OldDukeAIState.NormalDashes,
+            OldDukeAIState.SharkWaveLaunch
         ];
 
         public override int NPCOverrideID => ModContent.NPCType<CalamityOD>();
@@ -291,6 +294,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                     break;
                 case OldDukeAIState.Phase2Transition_ConsumeFuelContainers:
                     DoBehavior_Phase2Transition_ConsumeFuelContainers();
+                    break;
+                case OldDukeAIState.SharkWaveLaunch:
+                    DoBehavior_SharkWaveLaunch();
                     break;
                 case OldDukeAIState.VomitRadioactiveCinders:
                     DoBehavior_VomitRadioactiveCinders();
@@ -779,6 +785,147 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         }
 
         /// <summary>
+        /// Performs the Old Duke's Shark Wave Launch state.
+        /// </summary>
+        public void DoBehavior_SharkWaveLaunch()
+        {
+            int dashCount = 2;
+            int repositionTime = 30;
+            int sharkFormationTime = 54;
+            int dashTime = 60;
+            int sharksOnEachSide = 8;
+            float baseSpacing = 132f;
+            float spacingPerShark = 122f;
+            float reelBackPerShark = 81f;
+            float sharkDashSpeed = 21.5f;
+            float oldDukeDashSpeed = 132f;
+            float oldDukeReelBackDistance = 400f; // This HEAVILY affects the difficulty of this attack since more distance from the player = less ability to enter the empty space in time.
+            ref float hoverOffsetAngle = ref NPC.ai[0];
+            ref float dashCounter = ref NPC.ai[1];
+
+            if (Main.netMode != NetmodeID.MultiplayerClient && AITimer == 1)
+            {
+                // Initialize the hover offset angle and bias it to the side because vertical movement in this game sucks.
+                hoverOffsetAngle = Main.rand.NextFloat(MathHelper.TwoPi);
+                hoverOffsetAngle = (hoverOffsetAngle.ToRotationVector2() * new Vector2(1f, 0.5f)).ToRotation();
+
+                NPC.netUpdate = true;
+            }
+
+            if (Main.netMode != NetmodeID.MultiplayerClient && AITimer == repositionTime)
+            {
+                // Create sharks.
+                for (int i = 1; i <= sharksOnEachSide; i++)
+                {
+                    float angle = i * -0.06f;
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, 0f, -i, -angle);
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, 0f, i, angle);
+                }
+            }
+
+            // Hover near the player as the sharks create a perpendicular formation.
+            if (AITimer <= repositionTime + sharkFormationTime)
+            {
+                float reelBackDistance = LumUtils.InverseLerp(sharkFormationTime * 0.3f, sharkFormationTime, AITimer - repositionTime).Squared() * oldDukeReelBackDistance;
+                Vector2 reelBackOffset = NPC.SafeDirectionTo(Target.Center) * -reelBackDistance;
+                Vector2 hoverDestination = Target.Center + hoverOffsetAngle.ToRotationVector2() * new Vector2(500f, 300f) + reelBackOffset;
+                NPC.SmoothFlyNear(hoverDestination, 0.17f, 0.9f);
+                NPC.damage = 0;
+
+                float aimInterpolant = LumUtils.InverseLerp(sharkFormationTime * 0.5f, 0f, AITimer - repositionTime).Squared();
+                RotateTowards(Target.Center + Target.velocity * 4f, aimInterpolant * 0.2f);
+
+                Animation = OldDukeAnimation.IdleAnimation;
+            }
+
+            // Dash.
+            else if (AITimer <= repositionTime + sharkFormationTime + dashTime)
+            {
+                NPC.damage = NPC.defDamage;
+                AfterimageOpacity = 1f;
+                BreatheFire();
+                Animation = OldDukeAnimation.OpenMouth;
+
+                // No ramdash cheese for you!
+                if (NPC.WithinRange(Target.Center, 210f))
+                    NPC.dontTakeDamage = true;
+
+                if (AITimer == repositionTime + sharkFormationTime + 1)
+                {
+                    OldDukeSky.CreateLightningFlash(new Vector2(Main.rand.NextFloat(), -0.1f));
+                    NPC.oldPos = new Vector2[NPC.oldPos.Length];
+                    RadioactiveGlowInterpolant = 1f;
+
+                    SoundEngine.PlaySound(CalamityOD.RoarSound, NPC.Center);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyFlameBreath);
+                    NPC.velocity = NPC.rotation.ToRotationVector2() * oldDukeDashSpeed;
+                    NPC.netUpdate = true;
+                }
+            }
+
+            else
+            {
+                int sharkID = ModContent.NPCType<SulphurousSharkron>();
+                foreach (NPC shark in Main.ActiveNPCs)
+                {
+                    if (shark.type == sharkID && shark.TryGetDLCBehavior(out SulphurousSharkronEternity s))
+                        s.Die(false);
+                }
+
+                // Do a loop-around teleport.
+                if (!NPC.WithinRange(Target.Center, 1200f))
+                {
+                    NPC.velocity = NPC.velocity.ClampLength(0f, 40f);
+                    NPC.Center = Target.Center - Target.SafeDirectionTo(NPC.Center) * 900f;
+                    NPC.netUpdate = true;
+                }
+
+                dashCounter++;
+                if (dashCounter >= dashCount)
+                    SwitchState();
+                else
+                {
+                    AITimer = 0;
+                    NPC.netUpdate = true;
+                }
+            }
+
+            // Handle shark motion.
+            SharkronPuppeteerAction = sharkModNPC =>
+            {
+                NPC shark = sharkModNPC.NPC;
+
+                // Stay perpendicular to the Old Duke.
+                if (AITimer <= repositionTime + sharkFormationTime)
+                {
+                    int spacingIndex = (int)shark.ai[1];
+                    float rotationalOffset = shark.ai[2];
+                    float spacingInterpolant = MathF.Pow(LumUtils.InverseLerp(0f, sharkFormationTime, AITimer - repositionTime), 0.67f);
+                    float spacingOffset = MathHelper.SmoothStep(0f, spacingIndex * spacingPerShark, spacingInterpolant) + baseSpacing * MathF.Sign(spacingIndex);
+                    float reelBack = MathF.Abs(shark.ai[1]) * reelBackPerShark * MathF.Pow(spacingInterpolant, 2.3f);
+                    Vector2 oldDukeDirection = NPC.rotation.ToRotationVector2();
+                    Vector2 perpendicular = oldDukeDirection.RotatedBy(MathHelper.PiOver2);
+                    shark.Center = Vector2.Lerp(shark.Center, NPC.Center + perpendicular * spacingOffset - oldDukeDirection * reelBack, 0.3f);
+                    shark.rotation = oldDukeDirection.ToRotation() + MathHelper.Pi + rotationalOffset;
+                    shark.damage = 0;
+
+                    sharkModNPC.AfterimageOpacity = 0f;
+                }
+                else
+                {
+                    shark.damage = shark.defDamage;
+                    shark.velocity *= 1.024f;
+                }
+
+                if (AITimer == repositionTime + sharkFormationTime + 1)
+                {
+                    shark.velocity = shark.rotation.ToRotationVector2() * -sharkDashSpeed * Main.rand.NextFloat(0.85f, 1f);
+                    shark.netUpdate = true;
+                }
+            };
+        }
+
+        /// <summary>
         /// Performs the Old Duke's Vomit Radioactive Cinders state.
         /// </summary>
         public void DoBehavior_VomitRadioactiveCinders()
@@ -911,10 +1058,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 shark.Center = Vector2.Lerp(shark.Center, hoverDestination, hoverSharpness * 0.34f + 0.03f);
                 shark.SmoothFlyNear(hoverDestination, hoverSharpness * 0.27f, 1f - hoverSharpness * 0.33f);
 
-                shark.rotation = shark.AngleTo(Target.Center);
-                shark.spriteDirection = MathF.Cos(shark.rotation).NonZeroSign();
-                if (shark.spriteDirection == -1)
-                    shark.rotation += MathHelper.Pi;
+                shark.rotation = shark.AngleTo(Target.Center) + MathHelper.Pi;
             }
 
             // Recoil.
@@ -927,11 +1071,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             // Fly forward.
             else
             {
-                shark.velocity = Vector2.Lerp(shark.velocity, shark.rotation.ToRotationVector2() * shark.spriteDirection * 100f, 0.1f);
+                shark.velocity = Vector2.Lerp(shark.velocity, shark.rotation.ToRotationVector2() * -100f, 0.1f);
                 shark.damage = shark.defDamage;
 
                 if (sharkBehavior.Time >= sideHoverTime + recoilTime + dashTime)
-                    sharkBehavior.Die();
+                    sharkBehavior.Die(true);
             }
         }
 
