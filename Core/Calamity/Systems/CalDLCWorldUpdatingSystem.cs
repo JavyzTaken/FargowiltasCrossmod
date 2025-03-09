@@ -44,7 +44,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 if (ModCompatibility.InfernumMode.Loaded)
                     if (ModCompatibility.InfernumMode.InfernumDifficulty && CalDLCConfig.Instance.InfernumDisablesEternity)
                         infernum = true;
-                if (CalDLCWorldSavingSystem.EternityRev && !WorldSavingSystem.EternityMode && !infernum)
+                if (CalDLCWorldSavingSystem.EternityRev && !WorldSavingSystem.EternityMode && !infernum && Main.expertMode)
                 {
                     WorldSavingSystem.ShouldBeEternityMode = true;
                     WorldSavingSystem.EternityMode = true;
