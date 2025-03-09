@@ -31,7 +31,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             if (CalamityGlobalNPC.calamitas >= 0 && Main.npc[CalamityGlobalNPC.calamitas] is NPC n && n.type == ModContent.NPCType<CalamityMod.NPCs.CalClone.CalamitasClone>() && n.TryGetDLCBehavior(out CalamitasCloneEternity emode) && emode != null && 
                 source is EntitySource_Parent parent && parent.Entity is NPC npc)
-            {d
+            {
                 if (npc.type == ModContent.NPCType<CalamityMod.NPCs.CalClone.CalamitasClone>())
                 {
                     Applies = true;
