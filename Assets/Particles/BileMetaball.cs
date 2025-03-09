@@ -26,7 +26,7 @@ public class BileMetaball : MetaballType
         bool inWater = Collision.WetCollision(particle.Center - Vector2.One * 8f, 16, 16);
 
         // Have the vomit linger in the water.
-        // It's completely disgusting. Like, actually terrible. An extremely gross this to imagine.
+        // It's completely disgusting. Like, actually terrible. An extremely gross thing to imagine.
         // But it's a wonderful detail and thematically aligned.
         // And that's what counts.
         bool wasInWaterBefore = particle.ExtraInfo[1] == 1f;
