@@ -52,16 +52,6 @@ Buffs: {
 		Description: Защита, сопротивление урону и восстановление здоровья снижены; эффект «Лунного укуса»; радиус грэйза уменьшен
 		DisplayName: Бедственное присутствие
 	}
-
-	ArcticPaw.DisplayName: Арктическая лапа
-	Blizzard.DisplayName: Метель
-	CrystalShard.DisplayName: Осколок кристалла
-	DarkIceCrystal.DisplayName: Кристал Тёмного Льда
-	IceShot.DisplayName: Ледяной Выстрел
-	FrostShard.DisplayName: Морозный Осколок
-	FrostFlare.DisplayName: Морозная Сигнальная Ракета
-	IceArrow.DisplayName: Ледяная Стрела
-	IceStar.DisplayName: Ледяная Звезда
 }
 
 // Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
@@ -88,9 +78,9 @@ RecipeGroups: {
 }
 
 BossRushDialogue: {
-	// Start: Let's get started.
-	// EndP1_1: This is boring.
-	// EndP1_2: Let's cut to the chase.
+	Start: Начнём же.
+	EndP1_1: Становится скучно.
+	EndP1_2: Приступим сразу к делу.
 }
 
-// EmodeBannedByInfernum: "[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode]."
+EmodeBannedByInfernum: "[c/00ffee:Режим Вечность] был выключен [c/9c0000:режимом Инфернум]."

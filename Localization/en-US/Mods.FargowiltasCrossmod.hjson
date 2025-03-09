@@ -48,16 +48,6 @@ Buffs: {
 		Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
 		DisplayName: Calamitous Presence
 	}
-
-	ArcticPaw.DisplayName: Arctic Paw
-	Blizzard.DisplayName: Blizzard
-	CrystalShard.DisplayName: Crystal Shard
-	DarkIceCrystal.DisplayName: Dark Ice Crystal
-	IceShot.DisplayName: Ice Shot
-	FrostShard.DisplayName: Frost Shard
-	FrostFlare.DisplayName: Frost Flare
-	IceArrow.DisplayName: Ice Arrow
-	IceStar.DisplayName: Ice Star
 }
 
 Cooldowns.DaedalusPlatformCooldown: Daedalus Platform

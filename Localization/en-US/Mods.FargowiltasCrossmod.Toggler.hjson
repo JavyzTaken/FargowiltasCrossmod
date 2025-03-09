@@ -23,7 +23,6 @@ NebulousCoreEffect: Nebulous Core
 YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
 DraedonsHeartEffect: Draedons Heart
 CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
-SplendorJamEffect: Splendor Jam
 // gale
 GaleHeader: Force of the Gale
 SnowRuffianEffect: Better Gliding
