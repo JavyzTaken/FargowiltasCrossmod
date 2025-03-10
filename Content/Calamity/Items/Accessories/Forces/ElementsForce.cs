@@ -50,7 +50,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.AddIngredient<DaedalusEnchant>();
             recipe.AddIngredient<ReaverEnchant>();
             recipe.AddIngredient<HydrothermicEnchant>();
-            recipe.AddIngredient<GalacticaSingularity>(5);
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }
