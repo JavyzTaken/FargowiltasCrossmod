@@ -292,7 +292,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                 // draw leg brace
                 Vector2 dir = LegBraces[i].SafeNormalize(Vector2.Zero);
-                Vector2 start = NPC.Center - screenPos;
+                Vector2 start = NPC.Center - screenPos + Vector2.UnitY * NPC.gfxOffY;
                 Vector2 end = start + dir * 80;
                 SpriteEffects direction = (LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
                 DrawLeg(Main.spriteBatch, LegTextures[0].Value, start, end, lightColor, 1f, direction, glow: false);
@@ -390,15 +390,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             for (int i = 0; i < NPC.localAI.Length; i++)
                 binaryWriter.Write(NPC.localAI[i]);
+            binaryWriter.Write7BitEncodedInt(RecentAttacks.Count);
             for (int i = 0; i < RecentAttacks.Count; i++)
                 binaryWriter.Write7BitEncodedInt((int)RecentAttacks[i]);
+            for (int i = 0; i < LegBraces.Length; i++)
+                binaryWriter.WriteVector2(LegBraces[i]);
+            for (int i = 0; i < Legs.Length; i++)
+                binaryWriter.WriteVector2(Legs[i].Leg.StartingPoint);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             for (int i = 0; i < NPC.localAI.Length; i++)
                 NPC.localAI[i] = binaryReader.ReadSingle();
-            for (int i = 0; i < RecentAttacks.Count; i++)
+            int count = binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < count; i++)
                 RecentAttacks[i] = (States)binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < LegBraces.Length; i++)
+                LegBraces[i] = binaryReader.ReadVector2();
+            for (int i = 0; i < Legs.Length; i++)
+                Legs[i].Leg.StartingPoint = binaryReader.ReadVector2();
         }
         #region AI
         public override bool PreAI()
@@ -434,13 +444,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         Vector2 shotVel = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.5f);
                         int p = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + shotVel * NPC.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, 
                             ai0: NPC.whoAmI, ai1: Target.Top.Y - 20);
-                        /*
-                        if (p != Main.maxProjectiles)
-                        {
-                            Main.projectile[p].extraUpdates = 1;
-                            Main.projectile[p].netUpdate = true;
-                        }
-                        */
                     }
 
                 }
@@ -793,10 +796,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         {
                             Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * MathHelper.Lerp(0.2f, 1f, (float)i / rubbleCount);
                             Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: endPoint.Y - 50);
-                            if (p != null)
-                            {
-                                p.extraUpdates = 1;
-                            }
                         }
                     }
                 });

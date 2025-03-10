@@ -23,6 +23,7 @@ Boss: {
 	SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
 	SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
 	MutantYharonVortex.DisplayName: The Sun
+	IchorShotFast.DisplayName: Ichor Shot Fast
 }
 
 SlamTelegraph.DisplayName: Slam Telegraph

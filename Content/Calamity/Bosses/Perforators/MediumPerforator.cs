@@ -17,11 +17,13 @@ using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -42,6 +44,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             entity.Opacity = 1f;
             entity.CalamityDLC().ImmuneToAllDebuffs = true;
         }
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            binaryWriter.WriteVector2(VelocityReal);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            VelocityReal = binaryReader.ReadVector2();
+        }
         public override void SpawnNPC(int npc, int tileX, int tileY)
         {
             base.SpawnNPC(npc, tileX, tileY);
@@ -57,12 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Vector2 vel = shotDir * shotSpeed;
                 if (vel.Y < -6)
                     vel.Y *= 0.6f;
-                int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: Main.player[npc.target].Center.Y);
-                if (p.IsWithinBounds(Main.maxProjectiles))
-                {
-                    Main.projectile[p].extraUpdates = 1;
-                    Main.projectile[p].netUpdate = true;
-                }
+                int p = Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, vel, ModContent.ProjectileType<IchorShotFast>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai1: Main.player[npc.target].Center.Y);
             }
                 
         }

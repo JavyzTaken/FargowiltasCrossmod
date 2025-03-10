@@ -104,7 +104,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Leg.Update(DefaultPosition(hive));
                 return;
             }
-
             float spawnProgress = hive.SpawnProgress;
 
             // Calculate how many legs are on the ground.

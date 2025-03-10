@@ -83,7 +83,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (!WorldSavingSystem.EternityMode) 
                 return true;
-            npc.netUpdate = true; //fuck you worm mp code
             if (npc.type == ModContent.NPCType<PerforatorBodySmall>() || npc.type == ModContent.NPCType<PerforatorTailSmall>())
             {
                 NPC owner = null;
@@ -125,6 +124,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         Player target = Main.player[npc.target];
                         npc.Center = perf.Center + (target.Center - perf.Center).SafeNormalize(Vector2.Zero) * 40;
+                        npc.netUpdate = true;
                         return false;
                     }
                 }
@@ -161,11 +161,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             Vector2 offsetDir = (target.Center - perf.Center).SafeNormalize(Vector2.Zero);
                             npc.Center = perf.Center + offsetDir * 80;
                             npc.rotation = npc.AngleTo(target.Center) + MathHelper.PiOver2;
+                            npc.netUpdate = true;
 
                             int count = Main.rand.NextBool(3) ? 1 : 0;
                             if (npc.ai[3] == 10) // right when spawning ish
                             {
                                 count = 25;
+                                npc.netUpdate = true;
                             }
                             for (int i = 0; i < count; i++)
                             {
@@ -187,6 +189,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20;
 
                         }
+                        npc.netUpdate = true;
                         NetSync(npc);
                     }
                     if (npc.ai[3] >= 120 && npc.ai[2] == 0)
@@ -206,6 +209,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;
+                                npc.netUpdate = true;
                             }
                         }
 
@@ -227,6 +231,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;
+                                npc.netUpdate = true;
                                 NetSync(npc);
                             }
                         }
