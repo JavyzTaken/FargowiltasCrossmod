@@ -34,9 +34,7 @@ using System.IO;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core.Calamity;
-using static log4net.Appender.RollingFileAppender;
 using FargowiltasCrossmod.Core.Common;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
