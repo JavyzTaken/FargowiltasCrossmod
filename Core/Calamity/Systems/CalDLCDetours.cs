@@ -94,6 +94,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BRDialogueTick_Method = typeof(BossRushDialogueSystem).GetMethod("Tick", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo EModePlayerPreUpdate_Method = typeof(EModePlayer).GetMethod("PreUpdate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
@@ -136,6 +137,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MinimalEffects(ToggleBackend self);
         public delegate void Orig_BRDialogueTick();
         public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+        public delegate void Orig_EModePlayerPreUpdate(EModePlayer self);
         public delegate bool Orig_CanToggleEternity();
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
         public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
@@ -185,6 +187,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(BRDialogueTick_Method, DialogueReplacement);
             //HookHelper.ModifyMethodWithDetour(BRSceneWeight_Method, );
             HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
+            HookHelper.ModifyMethodWithDetour(EModePlayerPreUpdate_Method, EModePlayerPreUpdate_Detour);
             HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
             HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
@@ -683,6 +686,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 calPlayer.chaliceHitOriginalDamage = 0;
             }
             return retval;
+        }
+
+        internal static void EModePlayerPreUpdate_Detour(Orig_EModePlayerPreUpdate orig, EModePlayer self)
+        {
+            FargoSoulsPlayer soulsPlayer = self.Player.FargoSouls();
+            bool antibodies = soulsPlayer.MutantAntibodies;
+            if (self.Player.Calamity().oceanCrest || self.Player.Calamity().aquaticEmblem)
+            {
+                soulsPlayer.MutantAntibodies = true;
+            }
+            orig(self);
+            soulsPlayer.MutantAntibodies = antibodies;
         }
 
         internal static bool CanToggleEternity_Detour(Orig_CanToggleEternity orig)
