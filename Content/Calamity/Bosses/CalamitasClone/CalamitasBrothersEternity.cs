@@ -560,7 +560,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             int cycle = windupTime + windbackTime + chargeTime + endTime;
             float cycleTimer = Timer % cycle;
 
-            int totalTime = cycle * 5;
+            int totalTime = cycle * 3;
 
             if (cycleTimer == windupTime + (int)(windbackTime / 2))
             {
@@ -707,8 +707,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void GoToNeutral()
         {
             Reset();
-            State = (int)States.Dash;
-            return;
             if (PhaseTwo)
             {
                 int index;
