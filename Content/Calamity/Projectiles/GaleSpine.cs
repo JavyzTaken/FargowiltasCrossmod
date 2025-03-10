@@ -66,6 +66,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
         {
             base.OnKill(timeLeft);
         }
+        public override bool? CanHitNPC(NPC target)
+        {
+            if (Projectile.ai[2] == 0)
+                return false;
+            return base.CanHitNPC(target);
+        }
         public override void AI()
         {
             Player owner = Main.player[Projectile.owner];
