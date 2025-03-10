@@ -41,6 +41,5 @@ namespace FargowiltasCrossmod.Content.Calamity.EnemyBehavior
                 }
             }
         }
-
     }
 }
