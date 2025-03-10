@@ -1,4 +1,5 @@
-﻿using CalamityMod.NPCs.OldDuke;
+﻿using CalamityMod;
+using CalamityMod.NPCs.OldDuke;
 using FargowiltasCrossmod.Assets;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Core;
@@ -211,6 +212,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         ];
 
         public override int NPCOverrideID => ModContent.NPCType<CalamityOD>();
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            NPC.DR_NERD(0.1f, null, null, null, true);
+        }
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
