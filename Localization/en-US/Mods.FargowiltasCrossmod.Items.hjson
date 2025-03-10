@@ -404,7 +404,7 @@ ElementsForce: {
 		[c/45A8EF:Blizzard Mode:]
 		[i:FargowiltasCrossmod/ReaverEnchant] Increased flight time and speed, life regen, hook velocity and reduced dash cooldown
 		[i:FargowiltasCrossmod/AerospecEnchant] Grants up to +50% damage the longer you've stayed in the air
-		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air, attacks are accompanied by powerful arrows from the sky
+		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air without getting hit, attacks are accompanied by powerful arrows from the sky
 		'''
 }
 

@@ -39,8 +39,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.timeLeft = Lifetime;
             Projectile.MaxUpdates = 3;
             Projectile.penetrate = 1;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
     }
 
         public override bool? CanDamage() => Projectile.timeLeft < Lifetime - 4 ? null : false;

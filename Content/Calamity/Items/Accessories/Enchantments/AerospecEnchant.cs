@@ -90,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     {
                         mplayer.ElementsAirTime++;
                         static float DamageFormula(float x) => x / MathF.Sqrt(x * x + 1);
-                        float x = mplayer.ElementsAirTime / 240f;
+                        float x = mplayer.ElementsAirTime / 420f;
                         float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
                         float bonusDamage = bonusMultiplier * 0.5f;
                         player.GetDamage(DamageClass.Generic) += bonusDamage;
