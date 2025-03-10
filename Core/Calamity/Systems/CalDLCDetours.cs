@@ -54,6 +54,7 @@ using Terraria.Graphics.Effects;
 using FargowiltasSouls.Content.UI;
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
+using FargowiltasSouls.Content.Buffs.Masomode;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -87,6 +88,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TerraChampAIMethod = typeof(TerraChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MoonLordCanBeHitByProjectile_Method = typeof(MoonLord).GetMethod("CanBeHitByProjectile", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenIncreaseWeaponSizeMethod = typeof(TungstenEffect).GetMethod("TungstenIncreaseWeaponSize", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNerfedProjMetod = typeof(TungstenEffect).GetMethod("TungstenNerfedProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
@@ -130,6 +132,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_TerraChampAI(TerraChampion self);
         public delegate bool Orig_CheckTempleWalls(Vector2 pos);
         public delegate bool Orig_DukeFishronPreAI(DukeFishron self, NPC npc);
+        public delegate bool? Orig_MoonLordCanBeHitByProjectile(MoonLord self, NPC npc, Projectile projectile);
         public delegate float Orig_TungstenIncreaseWeaponSize(FargoSoulsPlayer modPlayer);
         public delegate bool Orig_TungstenNerfedProj(Projectile projectile);
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
@@ -179,6 +182,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TerraChampAIMethod, TerraChampAI_Detour);
             HookHelper.ModifyMethodWithDetour(CheckTempleWallsMethod, CheckTempleWalls_Detour);
             HookHelper.ModifyMethodWithDetour(DukeFishronPreAIMethod, DukeFishronPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(MoonLordCanBeHitByProjectile_Method, MoonLordCanBeHitByProjectile_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenIncreaseWeaponSizeMethod, TungstenIncreaseWeaponSize_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNerfedProjMetod, TungstenNerfedProj_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
@@ -520,6 +524,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 Main.player[npc.target].ZoneBeach = false;
             }
             return result;
+        }
+        internal static bool? MoonLordCanBeHitByProjectile_Detour(Orig_MoonLordCanBeHitByProjectile orig, MoonLord self, NPC npc, Projectile projectile)
+        {
+            bool? ret = orig(self, npc, projectile);
+            if (!Main.player[projectile.owner].buffImmune[ModContent.BuffType<NullificationCurseBuff>()])
+            {
+
+                switch (self.GetVulnerabilityState(npc))
+                {
+                    case 0: //if (!projectile.CountsAsClass(DamageClass.Melee)) return false; break; melee
+                        if (projectile.CountsAsClass<RogueDamageClass>())
+                            ret = null;
+                        break;
+                    //case 1: if (!projectile.CountsAsClass(DamageClass.Ranged)) return false; break;
+                    //case 2: if (!projectile.CountsAsClass(DamageClass.Magic)) return false; break;
+                    //case 3: if (!FargoSoulsUtil.IsSummonDamage(projectile)) return false; break;
+                    default: break;
+                }
+            }
+            return ret;
         }
         internal static float TungstenIncreaseWeaponSize_Detour(Orig_TungstenIncreaseWeaponSize orig, FargoSoulsPlayer modPlayer)
         {
