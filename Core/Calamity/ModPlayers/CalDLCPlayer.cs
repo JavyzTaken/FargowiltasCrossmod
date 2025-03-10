@@ -107,7 +107,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             {
                 Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
             }
-            Player.AddBuff(BuffType<CalamitousPresenceBuff>(), 2);
             if (NPC.AnyNPCs(NPCType<MutantBoss>()))
             {
                 Player.ClearBuff(BuffType<Enraged>());
