@@ -32,7 +32,9 @@ using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -156,7 +158,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.netUpdate = true;
                 return false;
             }
-
             if (Cataclysm)
                 CalamityGlobalNPC.cataclysm = NPC.whoAmI;
             else
@@ -164,7 +165,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             // Emit light
             Lighting.AddLight((int)((NPC.position.X + (NPC.width / 2)) / 16f), (int)((NPC.position.Y + (NPC.height / 2)) / 16f), 1f, 0f, 0f);
-
+            NPC.dontTakeDamage = false;
 
             // Get a target
             if (NPC.target < 0 || NPC.target == Main.maxPlayers || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
@@ -601,7 +602,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 if (cycleTimer == windupTime + windbackTime + 4)
                 {
                     if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime + 40);
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime + 32);
                 }
                 NPC.velocity += NPC.DirectionTo(Target.Center) * 1.5f;
                 Vector2 dir = NPC.velocity;
@@ -647,6 +648,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             float stunTime = 90;
             NPC.velocity *= 0.95f;
 
+            if (StunTimer == 5)
+            {
+                NPC.netUpdate = true;
+                SoundEngine.PlaySound(new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f });
+                ScreenShakeSystem.StartShake(8f);
+            }
             StunTimer++;
             if (StunTimer < 60)
                 NPC.rotation += Main.rand.NextFloat(-1, 1) * MathHelper.PiOver4 * 0.75f * (1f - (StunTimer / 60f));
@@ -674,8 +681,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.velocity *= 0.92f;
             if (Timer < transTime)
                 NPC.dontTakeDamage = true;
-            else
-                NPC.dontTakeDamage = false;
             if (Timer == transTime)
             {
                 PhaseTwo = true;
@@ -761,8 +766,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             AI3 = 0;
             StunTimer = 0;
             State = (int)States.Stunned;
-            SoundEngine.PlaySound(new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f });
-            ScreenShakeSystem.StartShake(8f);
             NPC.netUpdate = true;
         }
         public void RepulseOtherBrother(ref Vector2 desiredPos)
@@ -770,6 +773,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             NPC otherBrother = OtherBrother;
             if (otherBrother != null)
             {
+                if (Main.netMode == NetmodeID.Server)
+                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(otherBrother.whoAmI.ToString()), Color.White);
+                else
+                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(otherBrother.whoAmI.ToString()), Color.Red);
                 int minDistance = 400;
                 if (desiredPos.Distance(otherBrother.Center) < minDistance)
                     desiredPos = otherBrother.Center + otherBrother.DirectionTo(desiredPos) * minDistance;
