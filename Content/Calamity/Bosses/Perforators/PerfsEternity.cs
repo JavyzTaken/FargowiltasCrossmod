@@ -422,12 +422,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
 
             // maso passive
-            if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget)
+            if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget && State != (int)States.Opening)
             {
                 if (++PassiveRainTimer >= 25)
                 {
                     PassiveRainTimer = 0;
-                    SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
+                    //SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         float shotSpeed = 6f;
@@ -1107,7 +1107,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                     Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2 * 0.23f);
 
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: -12);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 0);
                 }
             }
             else // endlag

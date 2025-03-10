@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         // Thus hitbox extends backwards from it
         public override string Texture => FargoSoulsUtil.EmptyTexture;
 
-        public static int TelegraphTime => 45;
+        public static int TelegraphTime => 60;
         public static int ExtensionTime => 13;
         public static int EndTime => 50;
         public static int FadeoutTime => 12;
