@@ -17,12 +17,14 @@ using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -48,7 +50,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             base.SpawnNPC(npc, tileX, tileY);
         }
-
+        public override void SendExtraAI(NPC npc, BitWriter bitWriter, BinaryWriter binaryWriter)
+        {
+            binaryWriter.Write(Emerged);
+            binaryWriter.Write7BitEncodedInt(Timer);
+            binaryWriter.WriteVector2(VelocityReal);
+        }
+        public override void ReceiveExtraAI(NPC npc, BitReader bitReader, BinaryReader binaryReader)
+        {
+            Emerged = binaryReader.ReadBoolean();
+            Timer = binaryReader.Read7BitEncodedInt();
+            VelocityReal = binaryReader.ReadVector2();
+        }
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (npc.type == ModContent.NPCType<PerforatorBodyLarge>())

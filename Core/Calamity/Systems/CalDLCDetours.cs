@@ -54,6 +54,7 @@ using Terraria.Graphics.Effects;
 using FargowiltasSouls.Content.UI;
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
+using FargowiltasSouls.Content.Buffs.Masomode;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -87,6 +88,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TerraChampAIMethod = typeof(TerraChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MoonLordCanBeHitByProjectile_Method = typeof(MoonLord).GetMethod("CanBeHitByProjectile", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenIncreaseWeaponSizeMethod = typeof(TungstenEffect).GetMethod("TungstenIncreaseWeaponSize", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNerfedProjMetod = typeof(TungstenEffect).GetMethod("TungstenNerfedProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
@@ -94,6 +96,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BRDialogueTick_Method = typeof(BossRushDialogueSystem).GetMethod("Tick", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo EModePlayerPreUpdate_Method = typeof(EModePlayer).GetMethod("PreUpdate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
@@ -129,6 +132,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_TerraChampAI(TerraChampion self);
         public delegate bool Orig_CheckTempleWalls(Vector2 pos);
         public delegate bool Orig_DukeFishronPreAI(DukeFishron self, NPC npc);
+        public delegate bool? Orig_MoonLordCanBeHitByProjectile(MoonLord self, NPC npc, Projectile projectile);
         public delegate float Orig_TungstenIncreaseWeaponSize(FargoSoulsPlayer modPlayer);
         public delegate bool Orig_TungstenNerfedProj(Projectile projectile);
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
@@ -136,6 +140,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MinimalEffects(ToggleBackend self);
         public delegate void Orig_BRDialogueTick();
         public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+        public delegate void Orig_EModePlayerPreUpdate(EModePlayer self);
         public delegate bool Orig_CanToggleEternity();
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
         public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
@@ -177,6 +182,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TerraChampAIMethod, TerraChampAI_Detour);
             HookHelper.ModifyMethodWithDetour(CheckTempleWallsMethod, CheckTempleWalls_Detour);
             HookHelper.ModifyMethodWithDetour(DukeFishronPreAIMethod, DukeFishronPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(MoonLordCanBeHitByProjectile_Method, MoonLordCanBeHitByProjectile_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenIncreaseWeaponSizeMethod, TungstenIncreaseWeaponSize_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNerfedProjMetod, TungstenNerfedProj_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
@@ -185,6 +191,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(BRDialogueTick_Method, DialogueReplacement);
             //HookHelper.ModifyMethodWithDetour(BRSceneWeight_Method, );
             HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
+            HookHelper.ModifyMethodWithDetour(EModePlayerPreUpdate_Method, EModePlayerPreUpdate_Detour);
             HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
             HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
@@ -518,6 +525,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             }
             return result;
         }
+        internal static bool? MoonLordCanBeHitByProjectile_Detour(Orig_MoonLordCanBeHitByProjectile orig, MoonLord self, NPC npc, Projectile projectile)
+        {
+            bool? ret = orig(self, npc, projectile);
+            if (!Main.player[projectile.owner].buffImmune[ModContent.BuffType<NullificationCurseBuff>()])
+            {
+
+                switch (self.GetVulnerabilityState(npc))
+                {
+                    case 0: //if (!projectile.CountsAsClass(DamageClass.Melee)) return false; break; melee
+                        if (projectile.CountsAsClass<RogueDamageClass>())
+                            ret = null;
+                        break;
+                    //case 1: if (!projectile.CountsAsClass(DamageClass.Ranged)) return false; break;
+                    //case 2: if (!projectile.CountsAsClass(DamageClass.Magic)) return false; break;
+                    //case 3: if (!FargoSoulsUtil.IsSummonDamage(projectile)) return false; break;
+                    default: break;
+                }
+            }
+            return ret;
+        }
         internal static float TungstenIncreaseWeaponSize_Detour(Orig_TungstenIncreaseWeaponSize orig, FargoSoulsPlayer modPlayer)
         {
             float value = orig(modPlayer);
@@ -683,6 +710,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 calPlayer.chaliceHitOriginalDamage = 0;
             }
             return retval;
+        }
+
+        internal static void EModePlayerPreUpdate_Detour(Orig_EModePlayerPreUpdate orig, EModePlayer self)
+        {
+            FargoSoulsPlayer soulsPlayer = self.Player.FargoSouls();
+            bool antibodies = soulsPlayer.MutantAntibodies;
+            if (self.Player.Calamity().oceanCrest || self.Player.Calamity().aquaticEmblem)
+            {
+                soulsPlayer.MutantAntibodies = true;
+            }
+            orig(self);
+            soulsPlayer.MutantAntibodies = antibodies;
         }
 
         internal static bool CanToggleEternity_Detour(Orig_CanToggleEternity orig)

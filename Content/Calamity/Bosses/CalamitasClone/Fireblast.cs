@@ -42,6 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Projectile.timeLeft = 60;
             Projectile.tileCollide = false;
             CooldownSlot = ImmunityCooldownID.Bosses;
+            Projectile.scale = 1.5f;
         }
 
         public override void AI()
@@ -70,7 +71,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (Projectile.localAI[0] == 0f)
             {
                 Projectile.localAI[0] = 1f;
-                SoundEngine.PlaySound(SupremeCalamitas.BrimstoneShotSound, Projectile.Center);
+                SoundEngine.PlaySound(SupremeCalamitas.BrimstoneBigShotSound with { Pitch = -0.25f }, Projectile.Center);
             }
 
             int target = (int)Projectile.ai[0];
@@ -83,7 +84,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 {
                     Vector2 toPlayer = Projectile.DirectionTo(Main.player[target].Center);
 
-                    Projectile.velocity = Projectile.velocity.RotateTowards(toPlayer.ToRotation(), 0.02f);
+                    Projectile.velocity = Projectile.velocity.RotateTowards(toPlayer.ToRotation(), 0.016f);
 
                     float diff = FargoSoulsUtil.RotationDifference(Projectile.velocity, toPlayer);
                     if (Math.Abs(diff) > MathHelper.PiOver2 && Projectile.timeLeft > 10)
@@ -202,35 +203,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                         float aim = (Projectile.Center + dir * 80).DirectionTo(aimPos).ToRotation();
                         Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, dir * velocity, type, (int)Math.Round(Projectile.damage * 0.75), 0f, Projectile.owner, 0f, Projectile.ai[1], ai2: aim);
                     }
-                    /*
-                    int totalProjectiles = 13;
-                    float radians = MathHelper.TwoPi / totalProjectiles;
-                    int type = ModContent.ProjectileType<BrimstoneBarrage>();
-                    float velocity = 8f;
-                    Vector2 spinningPoint = new Vector2(0f, -velocity);
-                    for (int k = 0; k < totalProjectiles; k++)
-                    {
-                        Vector2 velocity2 = spinningPoint.RotatedBy(radians * k);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity2, type, (int)Math.Round(Projectile.damage * 0.75), 0f, Projectile.owner, 0f, Projectile.ai[1], velocity * 1.5f);
-                    }
-                    */
                 }
-
-                if (Projectile.ai[1] == 2f)
+                for (int i = 0; i < 18; i++)
                 {
-                    for (int i = 0; i < 18; i++)
-                    {
-                        Vector2 velocity = new Vector2(12, 12).RotatedByRandom(100);
-                        PointParticle spark2 = new PointParticle(Projectile.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.1f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
-                        GeneralParticleHandler.SpawnParticle(spark2);
-                    }
-                    for (int i = 0; i < 18; i++)
-                    {
-                        Dust failShotDust = Dust.NewDustPerfect(Projectile.Center, Main.rand.NextBool(3) ? 60 : 114);
-                        failShotDust.noGravity = true;
-                        failShotDust.velocity = new Vector2(16, 16).RotatedByRandom(100) * Main.rand.NextFloat(0.5f, 1.3f);
-                        failShotDust.scale = Main.rand.NextFloat(0.75f, 1.3f);
-                    }
+                    Vector2 velocity = new Vector2(12, 12).RotatedByRandom(100);
+                    PointParticle spark2 = new PointParticle(Projectile.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.1f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                    GeneralParticleHandler.SpawnParticle(spark2);
+                }
+                for (int i = 0; i < 18; i++)
+                {
+                    Dust failShotDust = Dust.NewDustPerfect(Projectile.Center, Main.rand.NextBool(3) ? 60 : 114);
+                    failShotDust.noGravity = true;
+                    failShotDust.velocity = new Vector2(16, 16).RotatedByRandom(100) * Main.rand.NextFloat(0.5f, 1.3f);
+                    failShotDust.scale = Main.rand.NextFloat(0.75f, 1.3f);
                 }
             }
         }

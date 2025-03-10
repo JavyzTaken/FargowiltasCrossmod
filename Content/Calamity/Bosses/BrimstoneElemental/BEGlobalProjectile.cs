@@ -1,7 +1,11 @@
 ﻿using CalamityMod.Dusts;
+using CalamityMod.NPCs.AquaticScourge;
+using CalamityMod.NPCs;
 using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
@@ -26,10 +30,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         {
             return (entity.type == ModContent.ProjectileType<BrimstoneBarrage>() || entity.type == ModContent.ProjectileType<BrimstoneHellfireball>() || entity.type == ModContent.ProjectileType<BrimstoneFireblast>() || entity.type == ModContent.ProjectileType<HellfireExplosion>());
         }
+        public static bool EternityBrimmy => CalamityGlobalNPC.brimstoneElemental >= 0 && Main.npc[CalamityGlobalNPC.brimstoneElemental] is NPC n && n.type == ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>() && n.TryGetDLCBehavior(out BrimstoneEternity emode) && emode != null;
+        public override void SetDefaults(Projectile proj)
+        {
+            if (EternityBrimmy)
+            {
+                if (proj.light < 1f)
+                    proj.light = 1f;
+            }
+        }
         public override bool PreDraw(Projectile projectile, ref Color lightColor)
         {
             Asset<Texture2D> t = TextureAssets.Projectile[projectile.type];
-            if (NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>())) 
+            if (EternityBrimmy) 
             {
                 Vector2 frameSize = Vector2.Zero;
                 if (projectile.type == ModContent.ProjectileType<BrimstoneBarrage>()) 
@@ -51,7 +64,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         }
         public override bool PreAI(Projectile projectile)
         {
-            if (!NPC.AnyNPCs(ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.BrimstoneElemental>()))
+            if (!EternityBrimmy)
                 return true;
             int timer = WorldSavingSystem.MasochistModeReal ? 30 : 70;
             if (projectile.type == ModContent.ProjectileType<BrimstoneBarrage>() && ++Timer > timer)

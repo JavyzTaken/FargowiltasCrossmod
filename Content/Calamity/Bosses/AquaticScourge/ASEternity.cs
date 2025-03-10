@@ -34,7 +34,7 @@ using System.IO;
 using CalamityMod.Particles;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasCrossmod.Core.Calamity;
-using static log4net.Appender.RollingFileAppender;
+using FargowiltasCrossmod.Core.Common;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 {
@@ -332,7 +332,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 }
                 if (npc.ai[2] == -1)
                 {
-                    npc.StrikeInstantKill();
+                    if (DLCUtils.HostCheck)
+                        npc.StrikeInstantKill();
+                    //else
+                    //    npc.active = false;
                     return false;
                 }
                 NPC head = Main.npc[(int)npc.ai[2]];
@@ -408,13 +411,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             var segment = Main.npc[thing];
                             segment.realLife = -1;
                             segment.ai[2] = -1;
+                            segment.netUpdate = true;
                             thing = (int)segment.ai[0];
                         }
                         else
                         {
                             reachedTail = true;
                             Main.npc[thing].ai[1] = npc.ai[1];
+                            Main.npc[thing].netUpdate = true;
                         }
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, thing);
                     }
                 }
             }
@@ -441,6 +447,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         Main.npc[next].ai[2] = npc.whoAmI;
                         Main.npc[next].ai[1] = Previous;
                         Main.npc[Previous].ai[0] = next;
+                        Main.npc[next].netUpdate = true;
                         NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, next);
                         Previous = next;
                     }

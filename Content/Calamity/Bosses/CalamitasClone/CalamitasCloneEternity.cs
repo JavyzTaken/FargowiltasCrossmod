@@ -308,34 +308,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             int shot = 60 * 8;
             if (Phase >= 2)
             {
-                telegraphStart += 60 * 16;
-                shot += 60 * 16;
-            }
-            if (Timer > telegraphStart)
-            {
-                distance = 350f;
-                // particle telegraph
-                float progress = (Timer - telegraphStart) / (shot - telegraphStart);
-                float freq = 10f - 8f * progress;
-                float rand = MathHelper.PiOver4 * 0.4f;
-                Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + Main.rand.NextFloat(-rand, rand)).ToRotationVector2();
-                if (Main.rand.NextBool((int)freq))
-                {
-                    Vector2 velocity = dir * 20;
-                    PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
-                    GeneralParticleHandler.SpawnParticle(spark2);
-                }
-                if (Main.rand.NextBool((int)freq))
-                {
-                    Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
-                    failShotDust.noGravity = true;
-                    failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);
-                    failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
-                }
-            }
-            else
-            {
-                if (Phase >= 2 && Timer > 60)
+                distance = 660f;
+                if (Timer > 60)
                 {
                     int freq = WorldSavingSystem.MasochistModeReal ? 40 : 55;
                     if (Phase == 3)
@@ -344,7 +318,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     {
                         if (DLCUtils.HostCheck)
                         {
-                            float projectileVelocity = 14f;
+                            float projectileVelocity = WorldSavingSystem.MasochistModeReal ? 14 : 12f;
                             int type = ModContent.ProjectileType<BrimstoneFireball>();
                             Vector2 fireballVelocity = Vector2.Normalize(Target.Center - NPC.Center) * projectileVelocity;
                             Vector2 balloffset = Vector2.Normalize(fireballVelocity) * 40f;
@@ -354,18 +328,43 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     }
                 }
             }
-            if (Timer > shot)
+            else
             {
-                Timer = 0;
-                ScreenShakeSystem.StartShake(8f);
-                Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
-                if (DLCUtils.HostCheck)
+                if (Timer > telegraphStart)
                 {
-                    Vector2 projPos = NPC.Center;
-                    
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<ChargedGigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
+                    distance = 350f;
+                    // particle telegraph
+                    float progress = (Timer - telegraphStart) / (shot - telegraphStart);
+                    float freq = 10f - 8f * progress;
+                    float rand = MathHelper.PiOver4 * 0.4f;
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2 + Main.rand.NextFloat(-rand, rand)).ToRotationVector2();
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Vector2 velocity = dir * 20;
+                        PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                        GeneralParticleHandler.SpawnParticle(spark2);
+                    }
+                    if (Main.rand.NextBool((int)freq))
+                    {
+                        Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                        failShotDust.noGravity = true;
+                        failShotDust.velocity = dir * 22 * Main.rand.NextFloat(0.5f, 1.3f);
+                        failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                    }
                 }
-                NPC.velocity -= dir * 10;
+                if (Timer > shot)
+                {
+                    Timer = 0;
+                    ScreenShakeSystem.StartShake(8f);
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                    if (DLCUtils.HostCheck)
+                    {
+                        Vector2 projPos = NPC.Center;
+
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<ChargedGigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
+                    }
+                    NPC.velocity -= dir * 10;
+                }
             }
             NeutralMovement(distance);
         }
@@ -454,7 +453,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 float velX = xDif / t;
                 return velX * Vector2.UnitX + velY * Vector2.UnitY;
             }
-            float targetX = Target.Center.X + Target.velocity.X * 42;
+            float targetX = Target.Center.X + Target.velocity.X * 58;
             Vector2 dir = CalculateAngle(targetX);
 
             CustomRotation = 1;
@@ -480,6 +479,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     if (WorldSavingSystem.MasochistModeReal)
                         maxRandom = 610;
                     float random = Main.rand.NextFloat(-maxRandom, maxRandom);
+                    if (Timer % (frequency * 3) == 0)
+                        random = 0;
                     Vector2 randomDir = CalculateAngle(targetX + random);
 
                     Vector2 balloffset = dir.SafeNormalize(-Vector2.UnitY) * 40f;
@@ -538,7 +539,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     if (DLCUtils.HostCheck)
                     {
                         Vector2 projPos = NPC.Center;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<Gigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1.25f), 1f, Main.myPlayer, ai2: Target.whoAmI);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 2f, ModContent.ProjectileType<Gigablast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer, ai2: Target.whoAmI);
                     }
                     NPC.velocity -= dir * 10;
                 }
@@ -613,12 +614,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 }
                 else if (volleyTimer == ballTelegraph)
                 {
+                    Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
+                    ScreenShakeSystem.StartShake(8f);
                     if (DLCUtils.HostCheck)
                     {
                         Vector2 projPos = NPC.Center;
-                        Vector2 dir = (NPC.rotation + MathHelper.PiOver2).ToRotationVector2();
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), projPos, dir * 7f, ModContent.ProjectileType<Fireblast>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
                     }
+                    for (int i = 0; i < 50; i++)
+                    {
+                        Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                        failShotDust.noGravity = true;
+                        failShotDust.velocity = dir.RotatedByRandom(MathHelper.PiOver2 * 0.5f) * 30 * Main.rand.NextFloat(0.5f, 1.3f);
+                        failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                        Vector2 velocity = dir.RotatedByRandom(MathHelper.PiOver2 * 0.5f) * 26;
+                        PointParticle spark2 = new(NPC.Center + velocity, velocity * Main.rand.NextFloat(0.3f, 1f), false, 15, 1.25f, (Main.rand.NextBool() ? Color.Lerp(Color.Red, Color.Magenta, 0.5f) : Color.Red) * 0.6f);
+                        GeneralParticleHandler.SpawnParticle(spark2);
+                    }
+                    NPC.velocity -= dir * 10;
                     /*
                     for (int i = -1; i <= 1; i++)
                     {
@@ -687,6 +700,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             float speed = 0.6f;
             if (Target.Distance(NPC.Center) < distance)
                 speed /= 3;
+            if (Phase == 2)
+                speed *= 1.5f;
             Movement(pos, speed);
         }
         public void Movement(Vector2 desiredPos, float speedMod)

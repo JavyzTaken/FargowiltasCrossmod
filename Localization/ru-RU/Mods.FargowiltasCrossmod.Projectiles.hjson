@@ -23,6 +23,7 @@ Boss: {
 	SlimeHomingEbonianGlob.DisplayName: Эбонитовый сгусток
 	SlimeHomingCrimuleanGlob.DisplayName: Багротановый сгусток
 	MutantYharonVortex.DisplayName: Солнце
+	// IchorShotFast.DisplayName: Ichor Shot Fast
 }
 
 SlamTelegraph.DisplayName: Удар Телеграф
@@ -172,3 +173,4 @@ BrothersDashTrail.DisplayName: Хвост рывка
 // TastyFuelContainer.DisplayName: Fuel Container
 // TrasherProjectile.DisplayName: Trasher
 // VortexFormingAcidDroplet.DisplayName: Acid Droplet
+// AbomMauler.DisplayName: Abom Mauler

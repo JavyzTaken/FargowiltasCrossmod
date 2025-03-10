@@ -104,7 +104,8 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 Player.autoJump = false;
 
             }
-            if (!Player.HasEffect<SnowRuffianEffect>() && RuffianModifiedRotation)
+            bool ruffianFlight = Player.jump == 0 && Player.wingTime <= 0 && Player.controlJump && Player.velocity.X != 0;
+            if ((!Player.HasEffect<SnowRuffianEffect>() || !ruffianFlight) && RuffianModifiedRotation)
             {
                 Player.fullRotation = 0;
                 RuffianModifiedRotation = false;
@@ -154,6 +155,14 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         {
             if (!Player.HasEffect<DaedalusEffect>() && DaedalusTimer > 0)
                 DaedalusTimer--;
+        }
+        public override void PostUpdateRunSpeeds()
+        {
+            if (RuffianModifiedRotation)
+            {
+                Player.runAcceleration = 0.1264f;
+                Player.runSlowdown = 0.2f;
+            }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {

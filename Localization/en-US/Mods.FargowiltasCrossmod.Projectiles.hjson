@@ -23,6 +23,7 @@ Boss: {
 	SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
 	SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
 	MutantYharonVortex.DisplayName: The Sun
+	IchorShotFast.DisplayName: Ichor Shot Fast
 }
 
 SlamTelegraph.DisplayName: Slam Telegraph
@@ -172,3 +173,4 @@ SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
 TastyFuelContainer.DisplayName: Fuel Container
 TrasherProjectile.DisplayName: Trasher
 VortexFormingAcidDroplet.DisplayName: Acid Droplet
+AbomMauler.DisplayName: Abom Mauler

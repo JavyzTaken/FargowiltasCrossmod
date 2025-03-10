@@ -11,6 +11,7 @@ using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Materials;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
+using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
@@ -350,7 +351,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             //abom
             if (npc.type == ModContent.NPCType<AbomBoss>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 3.5f);
+                npc.lifeMax = (int)(npc.lifeMax * 3.4f);
                 npc.damage = (int)(npc.damage * 1.25f);
 
                 calNPC.VulnerableToCold = false;
@@ -365,19 +366,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 || npc.type == ModContent.NPCType<AresLaserCannon>() || npc.type == ModContent.NPCType<AresPlasmaFlamethrower>() || npc.type == ModContent.NPCType<AresTeslaCannon>()
                 || npc.type == ModContent.NPCType<Apollo>() || npc.type == ModContent.NPCType<Artemis>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.7f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.5f);
                 if (CalDLCWorldSavingSystem.E_EternityRev)
-                    npc.lifeMax = (int)(npc.lifeMax * 1.3f);
+                    npc.lifeMax = (int)(npc.lifeMax * 1.2f);
             }
             if (npc.type == ModContent.NPCType<SupremeCalamitas>() || npc.type == ModContent.NPCType<BrimstoneHeart>() ||
                 npc.type == ModContent.NPCType<SoulSeekerSupreme>() || npc.type == ModContent.NPCType<SupremeCataclysm>() || npc.type == ModContent.NPCType<SupremeCatastrophe>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 1.7f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.5f);
             }
             //mutant
             if (npc.type == ModContent.NPCType<MutantBoss>())
             {
-                npc.lifeMax = (int)(npc.lifeMax * 2f);
+                npc.lifeMax = (int)(npc.lifeMax * 1.5f);
                 npc.damage = (int)(npc.damage * 1.5f);
 
                 calNPC.VulnerableToCold = false;
@@ -1665,14 +1666,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         }
         public override void ModifyShop(NPCShop shop)
         {
-
-
             Condition killedCragmaw = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedCragmaw);
             Condition killedMauler = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedMauler);
             Condition killedNuclear = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedNuclear);
             Condition killedGSS = new Condition("Mods.FargowiltasCrossmod.Conditions.CragmawMireDowned", () => CalDLCCompatibilityMisc.DownedGSS);
             if (shop.NpcType == ModContent.NPCType<Abominationn>())
             {
+                shop.Add(new Item(ModContent.ItemType<CausticTear>()) { shopCustomPrice = Item.buyPrice(copper: 50000) }, CalamityMod.CalamityConditions.DownedAcidRainT1);
                 shop.Add(new Item(ModContent.ItemType<SulphurBearTrap>()) { shopCustomPrice = Item.buyPrice(gold: 10) }, killedCragmaw);
                 shop.Add(new Item(ModContent.ItemType<MaulerSkull>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedMauler);
                 shop.Add(new Item(ModContent.ItemType<NuclearChunk>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedNuclear);

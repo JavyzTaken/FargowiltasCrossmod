@@ -41,7 +41,16 @@ float4 PixelShaderFunction(VertexShaderOutput input) : COLOR0
 	float fadeMapBrightness = tex2D(uImage1, float2(frac(coords.x * 0.7 - globalTime * 4), coords.y)).r;
     
     float bloomOpacity = lerp(pow(abs(sin(coords.y * 3.141)), lerp(2, 6, coords.x)), 0.7, coords.x);
+    
+    if (coords.x < 0.3)
+    {
+        float mult = (1 - (coords.x / 0.3)) * pow((0.5 - abs(coords.y - 0.5)), 4);
+        fadeMapBrightness += 20 * mult;
+        float4 lightColor = float4(1, 1, 1, 1);
+        color = lerp(color, lightColor, mult);
 
+    }
+        
     float opacity = 1;
     // Fade out at the top and bottom of the streak.
     float y = 0.5 - abs(coords.y - 0.5);

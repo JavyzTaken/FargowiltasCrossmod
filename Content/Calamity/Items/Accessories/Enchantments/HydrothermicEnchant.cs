@@ -97,8 +97,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     () => Main.LocalPlayer.CalamityAddon().HydrothermicHeat / MaxHeat, true, 60 * 10, activeFunction: player.HasEffect<HydrothermicEffect>);
 
             float heatLevel = dlc.HydrothermicHeat / MaxHeat;
-            if (!player.HasEffectEnchant<HydrothermicEffect>())
+            if (player.HasEffectEnchant<HydrothermicEffect>())
+            {
                 player.endurance += (force ? 0.45f : 0.3f) * heatLevel;
+            }
+                
             if (dlc.HydrothermicOverheat)
             {
                 player.Calamity().ProvidenceBurnEffectDrawer.ParticleSpawnRate = 1;
@@ -112,7 +115,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     {
                         int flareDamage = force ? 350 : 200;
                         if (player.HasEffect<ElementsForceEffect>())
-                            flareDamage = 2400;
+                            flareDamage = 1000;
                         flareDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, flareDamage);
                         Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, player.DirectionTo(Main.MouseWorld).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(13f, 17f), 
                             ModContent.ProjectileType<HydrothermicVentShot>(), flareDamage, 2f, player.whoAmI);
@@ -154,7 +157,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         }
         public override void OnHitByEither(Player player, NPC npc, Projectile proj)
         {
-            Overheat(player);
+            var dlc = player.CalamityAddon();
+            if (dlc.HydrothermicHeat > MaxHeat / 3)
+                Overheat(player);
         }
         public static void Overheat(Player player)
         {

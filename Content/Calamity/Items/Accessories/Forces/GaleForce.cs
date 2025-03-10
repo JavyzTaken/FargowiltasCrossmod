@@ -117,7 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
                     }
                     else if (boost <= 6)
                     {
-                        Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 350), 5, player.whoAmI, rotation, player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
+                        Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 800), 5, player.whoAmI, rotation, player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
                     }
                     SpineSpawnTimer = 0;
                     SpawnedAlready = true;
