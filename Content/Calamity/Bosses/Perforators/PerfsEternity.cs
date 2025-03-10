@@ -1201,6 +1201,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         #region Walking Methods
         public void WalkToPositionAI(Vector2 pos, float speedMod = 1f, int heightAboveGround = HeightAboveGround)
         {
+            if (pos.HasNaNs() || pos.X < 0 || pos.Y < 0)
+                return;
             bool canWalkToPlayer = CheckIfCanWalk(pos, out Point groundAtPlayer);
             groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
 
