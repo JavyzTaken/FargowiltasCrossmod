@@ -28,6 +28,7 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using CalamityMod.Events;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using Luminance.Common.Utilities;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -230,8 +231,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void OnKill()
         {
             SpawnTownNPC(true);
-            var cryo = new CalamityMod.NPCs.Cryogen.Cryogen();
-            cryo.OnKill();
+            int n = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>());
+            Main.npc[n].As<CalamityMod.NPCs.Cryogen.Cryogen>().OnKill();
+            Main.npc[n].active = false;
         }
         public override void AI()
         {
