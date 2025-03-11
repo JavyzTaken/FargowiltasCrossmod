@@ -3,6 +3,7 @@
 using CalamityMod;
 using CalamityMod.Particles;
 using FargowiltasCrossmod.Core;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -67,8 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.Default, Main.Rasterizer, null, Main.GameViewMatrix.TransformationMatrix);
+            Main.spriteBatch.SetBlendState(BlendState.Additive);
 
             const int Spokes = 3;
             Vector2 Position = Projectile.Center;
@@ -83,19 +83,29 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Texture2D bloomTexture = ModContent.Request<Texture2D>("CalamityMod/Particles/BloomCircle").Value;
             // Ajust the bloom's texture to be the same size as the star's.
             float properBloomSize = (float)spokesTexture.Height / (float)bloomTexture.Height;
-            float halvedOpacity = opacity * 0.5f;
+            float halvedOpacity = opacity * 1f;
 
             Main.EntitySpriteDraw(bloomTexture, Position - Main.screenPosition, null, Bloom * halvedOpacity, 0, bloomTexture.Size() / 2f, Scale * BloomScale * properBloomSize, SpriteEffects.None, 0);
 
             Color spokeColor = Color * halvedOpacity;
             Vector2 origin = spokesTexture.Size() / 2f;
+            for (int j = 0; j < 12; j++)
+            {
+                for (int i = 0; i < Spokes; i++)
+                {
+                    Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 7f * Projectile.scale;
+                    Color glowColor = Color.Blue * 0.9f * halvedOpacity * 0.4f;
+
+                    float rotation = Rotation + MathHelper.Lerp(0f, MathHelper.Pi, i / (float)Spokes);
+                    Main.EntitySpriteDraw(spokesTexture, Position + afterimageOffset - Main.screenPosition, null, glowColor, Rotation + rotation, origin, Scale, SpriteEffects.None, 0);
+                }
+            }
             for (int i = 0; i < Spokes; i++)
             {
                 float rotation = Rotation + MathHelper.Lerp(0f, MathHelper.Pi, i / (float)Spokes);
                 Main.EntitySpriteDraw(spokesTexture, Position - Main.screenPosition, null, spokeColor, Rotation + rotation, origin, Scale, SpriteEffects.None, 0);
             }
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
+            Main.spriteBatch.ResetToDefault();
             return false;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
