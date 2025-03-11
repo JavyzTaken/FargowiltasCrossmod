@@ -23,7 +23,7 @@ Boss: {
 	SlimeHomingEbonianGlob.DisplayName: Эбонитовый сгусток
 	SlimeHomingCrimuleanGlob.DisplayName: Багротановый сгусток
 	MutantYharonVortex.DisplayName: Солнце
-	// IchorShotFast.DisplayName: Ichor Shot Fast
+	IchorShotFast.DisplayName: Быстрый ихорный выстрел
 }
 
 SlamTelegraph.DisplayName: Удар Телеграф
@@ -161,16 +161,16 @@ BrimstoneBarrageGravitating.DisplayName: Серный дротик
 MutantFrostMist.DisplayName: Морозный туман
 CalcloneFireBackground.DisplayName: Фоновый огонь
 BrothersDashTrail.DisplayName: Хвост рывка
-// AquaticUrchinProjectile.DisplayName: Aquatic Urchin
-// ArsenalCrate.DisplayName: Explosive Crate
-// ExplosiveCrate.DisplayName: Explosive Crate
-// FallingVomitGore.DisplayName: Gore
-// FuelSpark.DisplayName: Fuel Spark
-// LingeringAcidBubble.DisplayName: Acid Bubble
-// NuclearHurricane.DisplayName: Nuclear Hurricane
-// NuclearVortex.DisplayName: Nuclear Vortex
-// SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
-// TastyFuelContainer.DisplayName: Fuel Container
-// TrasherProjectile.DisplayName: Trasher
-// VortexFormingAcidDroplet.DisplayName: Acid Droplet
-// AbomMauler.DisplayName: Mauler
+AquaticUrchinProjectile.DisplayName: Морской ёж
+ArsenalCrate.DisplayName: Взрывной ящик
+ExplosiveCrate.DisplayName: Взрывной ящик
+FallingVomitGore.DisplayName: Gore
+FuelSpark.DisplayName: Топливная искра
+LingeringAcidBubble.DisplayName: Кислотный пузырь
+NuclearHurricane.DisplayName: Ядерный ураган
+NuclearVortex.DisplayName: Ядерный вихрь
+SwervingRadioactiveCinder.DisplayName: Радиоактивная зола
+TastyFuelContainer.DisplayName: Топливный контейнер
+TrasherProjectile.DisplayName: Мусорщик
+VortexFormingAcidDroplet.DisplayName: Кислотная капля
+AbomMauler.DisplayName: Мучитель

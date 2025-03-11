@@ -335,10 +335,10 @@ GaleForce: {
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте W во время прыжка, чтобы запустить себя вверх
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы устремиться вниз
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Удерживайте W, чтобы замедлить падение
-		[i:FargowiltasCrossmod/VictideEnchant] Прыжки также прикрепляют к вашей спине острые позвонки
+		[i:FargowiltasCrossmod/VictideEnchant] Прыжки периодически прикрепляют к вашей спине острые позвонки
 		[i:FargowiltasCrossmod/VictideEnchant] Когда из вас торчит 6 позвонков, следующий прыжок выпускает их
 		[i:FargowiltasCrossmod/SulphurEnchant] Позвонки самонаводятся на врагов и накладывают дебафф «Сернистое отравление»
-		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до 40%
+		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до +40%
 		'''
 }
 
@@ -406,7 +406,7 @@ ElementsForce: {
 		[c/45A8EF:Режим метели:]
 		[i:FargowiltasCrossmod/ReaverEnchant] Увеличивает время и скорость полёта, регенерацию здоровья, скорость крюков и частоту использования рывков
 		[i:FargowiltasCrossmod/AerospecEnchant] Даёт до +50% к урону в зависимости от того, сколько вы времени провели в воздухе
-		[i:FargowiltasCrossmod/DaedalusEnchant] Если вы находитесь в воздухе больше секунды, ваши атаки сопровождаются мощными стрелами с неба
+		[i:FargowiltasCrossmod/DaedalusEnchant] Если вы находитесь в воздухе больше секунды не получая урона, ваши атаки сопровождаются мощными стрелами с неба
 		'''
 }
 
