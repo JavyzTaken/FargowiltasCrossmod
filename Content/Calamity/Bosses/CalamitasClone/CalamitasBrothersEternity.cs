@@ -773,10 +773,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             NPC otherBrother = OtherBrother;
             if (otherBrother != null)
             {
-                if (Main.netMode == NetmodeID.Server)
-                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(otherBrother.whoAmI.ToString()), Color.White);
-                else
-                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(otherBrother.whoAmI.ToString()), Color.Red);
                 int minDistance = 400;
                 if (desiredPos.Distance(otherBrother.Center) < minDistance)
                     desiredPos = otherBrother.Center + otherBrother.DirectionTo(desiredPos) * minDistance;
