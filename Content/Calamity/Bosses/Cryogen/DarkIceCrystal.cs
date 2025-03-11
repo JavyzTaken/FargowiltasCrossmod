@@ -107,7 +107,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             if (Projectile.localAI[0] > 100) //leave a lingering trail
             {
-                if (DLCUtils.HostCheck)
+                if (DLCUtils.HostCheck && Projectile.localAI[0] % 2 == 0)
                 {
                     Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ModContent.ProjectileType<IceCloud>(), Projectile.damage, Projectile.knockBack, Main.myPlayer);
                 }
