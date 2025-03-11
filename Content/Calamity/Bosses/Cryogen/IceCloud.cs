@@ -89,12 +89,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 
             Color spokeColor = Color * halvedOpacity;
             Vector2 origin = spokesTexture.Size() / 2f;
-            for (int j = 0; j < 12; j++)
+            for (int j = 0; j < 3; j++)
             {
                 for (int i = 0; i < Spokes; i++)
                 {
-                    Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 7f * Projectile.scale;
-                    Color glowColor = Color.Blue * 0.9f * halvedOpacity * 0.4f;
+                    Vector2 afterimageOffset = (MathHelper.TwoPi * j / 3f).ToRotationVector2() * 7f * Projectile.scale;
+                    Color glowColor = Color.Blue * 0.9f * halvedOpacity * 1.2f;
 
                     float rotation = Rotation + MathHelper.Lerp(0f, MathHelper.Pi, i / (float)Spokes);
                     Main.EntitySpriteDraw(spokesTexture, Position + afterimageOffset - Main.screenPosition, null, glowColor, Rotation + rotation, origin, Scale, SpriteEffects.None, 0);
