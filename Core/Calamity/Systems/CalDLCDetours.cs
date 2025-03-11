@@ -55,6 +55,7 @@ using FargowiltasSouls.Content.UI;
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Core.Globals;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -105,6 +106,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MediumPerforatorBodyOnKill_Method = typeof(PerforatorBodyMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MediumPerforatorTailOnKill_Method = typeof(PerforatorTailMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo EmodeBalance_Method = typeof(EmodeItemBalance).GetMethod("EmodeBalance", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo EmodeEditSpawnPool_Method = typeof(EModeGlobalNPC).GetMethod("EditSpawnPool", LumUtils.UniversalBindingFlags);
 
         // AI override
         // GlobalNPC
@@ -149,6 +151,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MediumPerforatorBodyOnKill(PerforatorBodyMedium self);
         public delegate void Orig_MediumPerforatorTailOnKill(PerforatorTailMedium self);
         public delegate EmodeItemBalance.EModeChange Orig_EmodeBalance(ref Item item, ref float balanceNumber, ref string[] balanceTextKeys, ref string extra);
+        public delegate void Orig_EmodeEditSpawnPool(EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo);
 
         public override void Load()
         {
@@ -200,6 +203,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(MediumPerforatorBodyOnKill_Method, MediumPerforatorBodyOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(MediumPerforatorTailOnKill_Method, MediumPerforatorTailOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(EmodeBalance_Method, EmodeBalance_Detour);
+            HookHelper.ModifyMethodWithDetour(EmodeEditSpawnPool_Method, EmodeEditSpawnPool_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -788,6 +792,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (CalDLCSets.GetValue(CalDLCSets.Items.DisabledEmodeChanges, item.type))
                 return EmodeItemBalance.EModeChange.None;
             return orig(ref item, ref balanceNumber, ref balanceTextKeys, ref extra);
+        }
+
+        internal static void EmodeEditSpawnPool_Detour(Orig_EmodeEditSpawnPool orig, EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+        {
+            var cal = spawnInfo.Player.Calamity();
+            if (cal.ZoneAbyss || cal.ZoneAstral || cal.ZoneCalamity || cal.ZoneSulphur || cal.ZoneSunkenSea)
+                return;
+            orig(self, pool, spawnInfo);
         }
 
         #endregion
