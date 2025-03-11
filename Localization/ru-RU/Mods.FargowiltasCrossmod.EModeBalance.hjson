@@ -12,6 +12,6 @@ LifeForce: Полёт ослаблен и время полёта уменьше
 OnionPackUpgrade: Теперь является улучшением [i:FargowiltasSouls/MutantsPact]Договора Мутанта, позволяющим поместить в новый слот любой аксессуар
 Laudanum: Положительные эффекты дебаффов ослаблены вдвое
 HardmodeSwords: Улучшения характеристик ослаблены
-// OceanCrest: Grants immunity to Eternity debuffs caused by entering water
+OceanCrest: Даёт иммунитет к водным дебаффам режима Вечность
 // truth be told I have absolutely no idea what this enchantment is so the key name is just that
 CalEnch: Накапливаемый урон не может быть выше 500000
