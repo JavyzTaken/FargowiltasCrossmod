@@ -205,6 +205,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             
         }
+        public override void BossLoot(ref string name, ref int potionType)
+        {
+            potionType = ItemID.GreaterHealingPotion;
+        }
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             var cryo = new CalamityMod.NPCs.Cryogen.Cryogen();
@@ -226,6 +230,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void OnKill()
         {
             SpawnTownNPC(true);
+            var cryo = new CalamityMod.NPCs.Cryogen.Cryogen();
+            cryo.OnKill();
         }
         public override void AI()
         {
