@@ -190,7 +190,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
         public override void SetDefaults(NPC entity)
         {
             base.SetDefaults(entity);
-            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.56f);
+            entity.lifeMax = (int)Math.Round(entity.lifeMax * 0.46f);
             entity.defense = 20;
             entity.Calamity().DR = 0;
             entity.buffImmune[BuffID.Darkness] = true;
@@ -461,10 +461,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 npc.boss = true;
                 npc.damage = npc.GetAttackDamage_ScaledByStrength(60);
                 if (BossRushEvent.BossRushActive) npc.damage = npc.GetAttackDamage_ScaledByStrength(300);
-                npc.TargetClosest();
                 npc.dontTakeDamage = true;
                 npc.CalamityDLC().ImmuneToAllDebuffs = true;
                 CalamityGlobalNPC.aquaticScourge = npc.whoAmI;
+
+                //Targeting
+                if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+                {
+                    npc.TargetClosest();
+                    NetSync(npc);
+                }
+                if (npc.target < 0 || Main.player[npc.target] == null || Main.player[npc.target].dead || !Main.player[npc.target].active)
+                {
+                    if (npc.timeLeft > 60)
+                        npc.timeLeft = 60;
+                    npc.velocity.Y += 1f;
+                    return false;
+                }
+
                 //increases when angle is too different. increases turn rate when gets high enough. decreases over time when angle isnt too different
 
                 //Main.NewText(npc.GetLifePercent());
@@ -523,8 +537,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                 Player target = null;
                 if (npc.HasValidTarget)
                 {
-                    
-
                     target = Main.player[npc.target];
                     Vector2 targetPos = target.Center;
 
@@ -560,6 +572,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackChain = (int)Attacks.Follow;
                                 AttackPart = 0;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.GasGasGasRockDash:
@@ -579,6 +592,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackChain = (int)Attacks.Follow;
                                 AttackPart = 0;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.LittleDashes:
@@ -594,6 +608,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackChain = (int)Attacks.Follow;
                                 AttackPart = 0;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.LittleDashesHomingSpikes:
@@ -613,6 +628,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackChain = (int)Attacks.Follow;
                                 AttackPart = 0;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.SpikesThenGas:
@@ -632,6 +648,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackChain = (int)Attacks.Follow;
                                 AttackPart = 0;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.GasThenSpikes:
@@ -652,6 +669,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackChain = (int)Attacks.Follow;
                                 AttackPart = 0;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.BigSuck:
@@ -766,6 +784,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                                 AttackChain = (int)Attacks.Follow;
                                 SuckCooldown = 60 * 55;
                                 npc.netUpdate = true;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.CircleSpikes:
@@ -817,6 +836,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 AttackPart = 0;
                                 AttackChain = (int)Attacks.Follow;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.Transition1:
@@ -838,6 +858,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 FollowTimer = 200;
                                 AttackChain = (int)Attacks.Follow;
+                                npc.TargetClosest();
                             }
                             
                             break;
@@ -860,6 +881,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             {
                                 FollowTimer = 200;
                                 AttackChain = (int)Attacks.Follow;
+                                npc.TargetClosest();
                             }
                             break;
                         case Attacks.Follow:
@@ -876,6 +898,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
 
                             if (FollowTimer > idleTime && npc.Distance(targetPos) < 800)
                             {
+                                npc.TargetClosest();
                                 FollowTimer = 0;
                                 AttackChain = LastFewAttacks[0];
                                 if (FargoSoulsUtil.HostCheck)
@@ -971,17 +994,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                         DashAttackTimer++;
 
                         float accel = 1.06f;
-                        float turnBonus = 1f;
+                        float turnBonus = WorldSavingSystem.MasochistModeReal ? 1f : 0.9f;
                         if (npc.GetLifePercent() < Phase2Percent)
                         {
                             accel += 0.011f;
                             time *= 0.93f;
+                            turnBonus = 1f;
                         }
                             
                         if (npc.GetLifePercent() < Phase3Percent)
                         {
                             accel += 0.011f;
                             time *= 0.93f;
+                            turnBonus = 1f;
                         }
 
                         if (npc.HasPlayerTarget && !target.Calamity().ZoneSulphur)
