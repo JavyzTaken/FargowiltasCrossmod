@@ -134,20 +134,23 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     typeof(RipperUI).GetField("adrenBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/AdrenalineBar", AssetRequestMode.ImmediateLoad).Value);
                 }
             }
-            if (Player.HasEffect<EmpyreanEffect>())
+            if (false) // remove when adding empyrean
             {
-                if (!EmpyreanRage)
+                if (Player.HasEffect<EmpyreanEffect>())
                 {
-                    EmpyreanRage = true;
-                    typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("FargowiltasCrossmod/Assets/ExtraTextures/EmpyreanRageBar", AssetRequestMode.ImmediateLoad).Value);
+                    if (!EmpyreanRage)
+                    {
+                        EmpyreanRage = true;
+                        typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("FargowiltasCrossmod/Assets/ExtraTextures/EmpyreanRageBar", AssetRequestMode.ImmediateLoad).Value);
+                    }
                 }
-            }
-            else
-            {
-                if (EmpyreanRage)
+                else
                 {
-                    EmpyreanRage = false;
-                    typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/RageBar", AssetRequestMode.ImmediateLoad).Value);
+                    if (EmpyreanRage)
+                    {
+                        EmpyreanRage = false;
+                        typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/RageBar", AssetRequestMode.ImmediateLoad).Value);
+                    }
                 }
             }
         }
@@ -219,14 +222,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (EmpyreanEmpowered)
-            {
-                modifiers.ScalingBonusDamage += 1f;
-                if (Player.ForceEffect<EmpyreanEffect>())
-                {
-                    modifiers.ScalingBonusDamage += 1f;
-                }
-            }
             base.ModifyHitNPC(target, ref modifiers);
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)

@@ -132,6 +132,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
 
         }
+        public override void ModifyHitNPCBoth(Player player, NPC target, ref NPC.HitModifiers modifiers, DamageClass damageClass)
+        {
+            if (player.CalamityAddon().EmpyreanEmpowered)
+            {
+                modifiers.ScalingBonusDamage += 1f;
+                if (player.ForceEffect<EmpyreanEffect>())
+                {
+                    modifiers.ScalingBonusDamage += 1f;
+                }
+            }
+        }
         public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
             if (player.CalamityAddon().EmpyreanEmpowered)
