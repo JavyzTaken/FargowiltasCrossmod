@@ -229,20 +229,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             }
             base.ModifyHitNPC(target, ref modifiers);
         }
-        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            EmpyreanEffect.EmpyreanProjectileEffect(Player, item.GetSource_OnHit(target), target.Center, damageDone);
-            base.OnHitNPCWithItem(item, target, hit, damageDone);
-        }
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            EmpyreanEffect.EmpyreanProjectileEffect(Player, proj.GetSource_OnHit(target), proj.Center, damageDone);
-            base.OnHitNPCWithProj(proj, target, hit, damageDone);
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            EmpyreanEffect.EmpyreanHitEffect(Player);
-        }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {
             //titan heart

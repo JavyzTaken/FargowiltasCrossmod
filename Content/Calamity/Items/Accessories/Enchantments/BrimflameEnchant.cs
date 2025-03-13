@@ -42,6 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
             //return true;
         }
@@ -80,6 +81,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }

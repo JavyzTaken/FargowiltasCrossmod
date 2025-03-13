@@ -40,6 +40,8 @@ using CalamityMod.Projectiles.Rogue;
 using FargowiltasSouls.Content.UI.Elements;
 using Microsoft.Xna.Framework.Graphics;
 using CalamityMod.Projectiles.Typeless;
+using Mono.Cecil;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -47,7 +49,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     public class EmpyreanEnchant : BaseEnchant
     {
-
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return false;
+        }
         public override Color nameColor => new Color(20, 20, 100);
 
         public override void SetStaticDefaults()
@@ -82,6 +87,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class EmpyreanEffect : AccessoryEffect
     {
+        public override bool IsLoadingEnabled(Mod mod)
+        {
+            return false;
+        }
         public override Header ToggleHeader => null;
         public override int ToggleItemType => ModContent.ItemType<EmpyreanEnchant>();
 
@@ -123,34 +132,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
 
         }
-        public static void EmpyreanProjectileEffect(Player player, IEntitySource source, Vector2 pos, int damage)
-        {
-            if (player.CalamityAddon().EmpyreanEmpowered && player.whoAmI == Main.myPlayer)
-            {
-                Vector2 vel = new Vector2(10, 0).RotatedBy(Main.rand.NextFloat(0, MathF.PI));
-                if (source is EntitySource_OnHit hit)
-                {
-                    if (hit.Entity is Projectile pr)
-                    vel = pr.velocity.SafeNormalize(Vector2.Zero) * 30;
-                    else if (hit.Entity is Item i)
-                    {
-                        vel = player.AngleTo(hit.Victim.Center).ToRotationVector2() * 30;
-                    }
-                    for (int i = -2; i < 2; i++)
-                    {
-
-                        Projectile p = Projectile.NewProjectileDirect(source, pos, vel.RotatedBy(MathHelper.ToRadians(i * 10 + 5)), ModContent.ProjectileType<EmpyreanStar>(), damage, 1, player.whoAmI, ai0: hit.Victim.whoAmI);
-                        NetMessage.SendData(MessageID.SyncProjectile, number: p.whoAmI);
-                    }
-                }
-                    
-                player.CalamityAddon().EmpyreanEmpowered = false;
-                player.CalamityAddon().EmpyreanCooldown = (int)MathHelper.Lerp(12f, 4f, player.Calamity().rage / 100) * 60;
-                player.CalamityAddon().EmpyreanSlowTimer = 0;
-                player.CalamityAddon().EmpyreanCooldownMax = player.CalamityAddon().EmpyreanCooldown;
-            }
-        }
-        public static void EmpyreanHitEffect(Player player)
+        public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)
         {
             if (player.CalamityAddon().EmpyreanEmpowered)
             {
@@ -164,7 +146,32 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     player.Heal(40);
                     player.Calamity().rage += 25f;
                 }
-                
+
+            }
+
+            if (player.CalamityAddon().EmpyreanEmpowered && player.whoAmI == Main.myPlayer)
+            {
+                Vector2 pos = target.Center;
+                Vector2 vel = new Vector2(10, 0).RotatedBy(Main.rand.NextFloat(0, MathF.PI));
+                if (projectile != null)
+                {
+                    pos = projectile.Center;
+                    vel = projectile.velocity.SafeNormalize(Vector2.Zero) * 30;
+                }
+                else if (item != null)
+                {
+                    vel = player.AngleTo(target.Center).ToRotationVector2() * 30;
+                }
+                for (int i = -2; i < 2; i++)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(GetSource_EffectItem(player), pos, vel.RotatedBy(MathHelper.ToRadians(i * 10 + 5)), ModContent.ProjectileType<EmpyreanStar>(), baseDamage, 1, player.whoAmI, ai0: target.whoAmI);
+                    NetMessage.SendData(MessageID.SyncProjectile, number: p.whoAmI);
+                }
+
+                player.CalamityAddon().EmpyreanEmpowered = false;
+                player.CalamityAddon().EmpyreanCooldown = (int)MathHelper.Lerp(12f, 4f, player.Calamity().rage / 100) * 60;
+                player.CalamityAddon().EmpyreanSlowTimer = 0;
+                player.CalamityAddon().EmpyreanCooldownMax = player.CalamityAddon().EmpyreanCooldown;
             }
         }
     }

@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Color nameColor => new Color(128, 188, 67);
@@ -75,6 +76,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Header ToggleHeader => null;
