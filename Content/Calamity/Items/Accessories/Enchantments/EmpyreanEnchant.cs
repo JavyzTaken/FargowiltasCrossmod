@@ -136,6 +136,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             if (player.CalamityAddon().EmpyreanEmpowered)
             {
+                var addonPlayer = player.CalamityAddon();
+                addonPlayer.EmpyreanEmpowered = false;
+                addonPlayer.EmpyreanCooldown = (int)MathHelper.Lerp(12f, 4f, player.Calamity().rage / 100) * 60;
+                addonPlayer.EmpyreanSlowTimer = 0;
+                addonPlayer.EmpyreanCooldownMax = addonPlayer.EmpyreanCooldown;
+
                 if (player.ForceEffect<EmpyreanEffect>())
                 {
                     player.Heal(80);
@@ -166,11 +172,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                         NetMessage.SendData(MessageID.SyncProjectile, number: p.whoAmI);
                     }
                 }
-                var addonPlayer = player.CalamityAddon();
-                addonPlayer.EmpyreanEmpowered = false;
-                addonPlayer.EmpyreanCooldown = (int)MathHelper.Lerp(12f, 4f, player.Calamity().rage / 100) * 60;
-                addonPlayer.EmpyreanSlowTimer = 0;
-                addonPlayer.EmpyreanCooldownMax = addonPlayer.EmpyreanCooldown;
             }
             
         }
