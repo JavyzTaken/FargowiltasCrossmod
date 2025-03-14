@@ -5,7 +5,11 @@ EternityRevDifficulty: {
 		'''
 		Enables [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
 
-		Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses.  [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
+		Reworks the [c/00FFFF:Eternity Mode] behaviour for several Calamity bosses. Current reworks:
+		-All bosses up to Calamitas Clone
+		-Old Duke
+		-Exo Mechs
+		The remaining bosses are still being worked on!
 
 		By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 		{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
@@ -18,14 +22,18 @@ EternityRevDifficulty: {
 
 EternityDeathDifficulty: {
 	Name: Eternity-Death
-	ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes and extra Vanilla boss AI.]"
+	ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes and extra Vanilla boss behavior.]"
 	ExpandedDescription:
 		'''
 		Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
 		[c/00FFFF:This is the main intended experience.] 
 
-		Adds new [c/00FFFF:Eternity Mode] behaviour for some Calamity bosses. [c/00FFFF:Currently all bosses up to Cryogen and Brimstone Elemental.]
-		Eternity-Death only: Expands AI for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity AI or new Calamity-inspired AI.
+		AReworks the [c/00FFFF:Eternity Mode] behaviour for several Calamity bosses. Current reworks:
+		-All bosses up to Calamitas Clone
+		-Old Duke
+		-Exo Mechs
+		The remaining bosses are still being worked on!
+		Eternity-Death only: Expands behavior for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity behavior or new Calamity-inspired behavior.
 
 		By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
 		{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
