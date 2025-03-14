@@ -288,7 +288,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 drawInfo = [0, 200, 200, 0]; 
             }
 
-            ManageMusicFade(attack == 22);
+            ManageMusicFade(attack == 22 && ai[3] > 0);
 
             ai[1]++;
             if (ai[1] >= 300)
@@ -430,14 +430,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                         const float MaxSpeed = 25;
                         float inertia = 15f;
 
-                        float horizontalDist = MathF.Abs(NPC.Center.X - player.Center.X);
+                        //float horizontalDist = MathF.Abs(NPC.Center.X - player.Center.X);
                         if (timer <= 0)
                         {
-                            Vector2 startpos = new(player.Center.X + player.HorizontalDirectionTo(NPC.Center) * MathF.Max(horizontalDist, 400), player.Center.Y);
+                            Vector2 startpos = new(player.Center.X + player.HorizontalDirectionTo(NPC.Center) * 450, player.Center.Y);
                             startpos = LumUtils.FindGroundVertical(startpos.ToTileCoordinates()).ToWorldCoordinates();
                             startpos.Y += 150;
                             if (Math.Abs(startpos.Y - player.Center.Y) > 750)
-                                startpos.Y = player.Center.Y - 750;
+                                startpos.Y = player.Center.Y + 750;
                             if (NPC.Distance(startpos) > 50)
                             {
                                 timer = -1;
