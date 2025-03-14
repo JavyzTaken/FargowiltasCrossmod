@@ -56,6 +56,7 @@ using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Common.Utilities;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -107,6 +108,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MediumPerforatorTailOnKill_Method = typeof(PerforatorTailMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo EmodeBalance_Method = typeof(EmodeItemBalance).GetMethod("EmodeBalance", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo EmodeEditSpawnPool_Method = typeof(EModeGlobalNPC).GetMethod("EditSpawnPool", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo DropSummon_Int_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(int), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
+        private static readonly MethodInfo DropSummon_String_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(string), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
 
         // AI override
         // GlobalNPC
@@ -152,6 +155,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MediumPerforatorTailOnKill(PerforatorTailMedium self);
         public delegate EmodeItemBalance.EModeChange Orig_EmodeBalance(ref Item item, ref float balanceNumber, ref string[] balanceTextKeys, ref string extra);
         public delegate void Orig_EmodeEditSpawnPool(EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo);
+        public delegate void Orig_DropSummon_Int_Method(NPC npc, int itemType, bool downed, ref bool droppedSummon, bool prerequisite = true);
+        public delegate void Orig_DropSummon_String_Method(NPC npc, string itemName, bool downed, ref bool droppedSummon, bool prerequisite = true);
 
         public override void Load()
         {
@@ -204,6 +209,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(MediumPerforatorTailOnKill_Method, MediumPerforatorTailOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(EmodeBalance_Method, EmodeBalance_Detour);
             HookHelper.ModifyMethodWithDetour(EmodeEditSpawnPool_Method, EmodeEditSpawnPool_Detour);
+            HookHelper.ModifyMethodWithDetour(DropSummon_Int_Method, DropSummon_Int_Detour);
+            HookHelper.ModifyMethodWithDetour(DropSummon_String_Method, DropSummon_String_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -801,7 +808,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 return;
             orig(self, pool, spawnInfo);
         }
-
+        internal static void DropSummon_Int_Detour(Orig_DropSummon_Int_Method orig, NPC npc, int itemType, bool downed, ref bool dropped, bool prerequisite = true)
+        {
+            return;
+        }
+        internal static void DropSummon_String_Detour(Orig_DropSummon_String_Method orig, NPC npc, string itemType, bool downed, ref bool dropped, bool prerequisite = true)
+        {
+            return;
+        }
         #endregion
         #region Vanilla Detours
         internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)

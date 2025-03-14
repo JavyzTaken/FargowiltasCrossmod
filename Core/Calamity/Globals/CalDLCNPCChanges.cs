@@ -1217,7 +1217,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
             }
         }
-        public bool droppedSummon = false;
+        //public bool droppedSummon = false;
         public static List<int> HyperNPCs =
         [
             ModContent.NPCType<TrojanSquirrelHead>(), ModContent.NPCType<TrojanSquirrelArms>(), ModContent.NPCType<TrojanSquirrel>(),
@@ -1233,203 +1233,203 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override bool PreAI(NPC npc)
         {
             #region Summon Drops and Presence Debuffs
-            if (CalDLCWorldSavingSystem.R_EternityRev)
-            {
-                if (npc.type == NPCID.KingSlime)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "SlimyCrown", NPC.downedSlimeKing, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.EyeofCthulhu)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "SuspiciousEye", NPC.downedBoss1, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.EaterofWorldsHead && npc.HasPlayerTarget)
-                {
-                    Player player = Main.player[npc.target];
+            //if (CalDLCWorldSavingSystem.R_EternityRev)
+            //{
+            //    if (npc.type == NPCID.KingSlime)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "SlimyCrown", NPC.downedSlimeKing, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.EyeofCthulhu)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "SuspiciousEye", NPC.downedBoss1, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.EaterofWorldsHead && npc.HasPlayerTarget)
+            //    {
+            //        Player player = Main.player[npc.target];
 
-                    if (!player.dead && player.FargoSouls().FreeEaterSummon)
-                    {
-                        player.FargoSouls().FreeEaterSummon = false;
-                        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "WormyFood", NPC.downedBoss2, ref droppedSummon);
-                    }
-                }
-                else if (npc.type == NPCID.BrainofCthulhu)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "GoreySpine", NPC.downedBoss2, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.Deerclops)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "DeerThing2", NPC.downedDeerclops, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.QueenBee)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "Abeemination2", NPC.downedQueenBee, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.SkeletronHead)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "SuspiciousSkull", NPC.downedBoss3, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.WallofFlesh)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "FleshyDoll", Main.hardMode, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.QueenSlimeBoss)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "JellyCrystal", NPC.downedQueenSlime, ref droppedSummon, Main.hardMode);
-                }
-                else if (npc.type == NPCID.Retinazer)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "MechEye", NPC.downedMechBoss2, ref droppedSummon, Main.hardMode);
-                }
-                else if (npc.type == NPCID.TheDestroyer)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "MechWorm", NPC.downedMechBoss1, ref droppedSummon, Main.hardMode);
-                }
-                else if (npc.type == NPCID.SkeletronPrime)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "MechSkull", NPC.downedMechBoss3, ref droppedSummon, Main.hardMode);
-                }
-                else if (npc.type == NPCID.Plantera)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "PlanterasFruit", NPC.downedPlantBoss, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.Golem)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "LihzahrdPowerCell2", NPC.downedGolemBoss, ref droppedSummon, NPC.downedPlantBoss);
-                }
-                else if (npc.type == NPCID.HallowBoss)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "PrismaticPrimrose", NPC.downedEmpressOfLight, ref droppedSummon, Main.hardMode);
-                }
-                else if (npc.type == NPCID.DukeFishron)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "TruffleWorm2", NPC.downedFishron, ref droppedSummon);
-                }
-                else if (npc.type == NPCID.CultistBoss)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "CultistSummon", NPC.downedAncientCultist, ref droppedSummon, NPC.downedGolemBoss);
-                }
-                else if (npc.type == NPCID.MoonLordCore)
-                {
-                    DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "CelestialSigil2", NPC.downedMoonlord, ref droppedSummon, NPC.downedAncientCultist);
-                }
-            }
+            //        if (!player.dead && player.FargoSouls().FreeEaterSummon)
+            //        {
+            //            player.FargoSouls().FreeEaterSummon = false;
+            //            DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "WormyFood", NPC.downedBoss2, ref droppedSummon);
+            //        }
+            //    }
+            //    else if (npc.type == NPCID.BrainofCthulhu)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "GoreySpine", NPC.downedBoss2, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.Deerclops)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "DeerThing2", NPC.downedDeerclops, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.QueenBee)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "Abeemination2", NPC.downedQueenBee, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.SkeletronHead)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "SuspiciousSkull", NPC.downedBoss3, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.WallofFlesh)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "FleshyDoll", Main.hardMode, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.QueenSlimeBoss)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "JellyCrystal", NPC.downedQueenSlime, ref droppedSummon, Main.hardMode);
+            //    }
+            //    else if (npc.type == NPCID.Retinazer)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "MechEye", NPC.downedMechBoss2, ref droppedSummon, Main.hardMode);
+            //    }
+            //    else if (npc.type == NPCID.TheDestroyer)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "MechWorm", NPC.downedMechBoss1, ref droppedSummon, Main.hardMode);
+            //    }
+            //    else if (npc.type == NPCID.SkeletronPrime)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "MechSkull", NPC.downedMechBoss3, ref droppedSummon, Main.hardMode);
+            //    }
+            //    else if (npc.type == NPCID.Plantera)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "PlanterasFruit", NPC.downedPlantBoss, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.Golem)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "LihzahrdPowerCell2", NPC.downedGolemBoss, ref droppedSummon, NPC.downedPlantBoss);
+            //    }
+            //    else if (npc.type == NPCID.HallowBoss)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "PrismaticPrimrose", NPC.downedEmpressOfLight, ref droppedSummon, Main.hardMode);
+            //    }
+            //    else if (npc.type == NPCID.DukeFishron)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "TruffleWorm2", NPC.downedFishron, ref droppedSummon);
+            //    }
+            //    else if (npc.type == NPCID.CultistBoss)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "CultistSummon", NPC.downedAncientCultist, ref droppedSummon, NPC.downedGolemBoss);
+            //    }
+            //    else if (npc.type == NPCID.MoonLordCore)
+            //    {
+            //        DLCUtils.DropSummon(npc, ModCompatibility.MutantMod.Name, "CelestialSigil2", NPC.downedMoonlord, ref droppedSummon, NPC.downedAncientCultist);
+            //    }
+            //}
 
-            if (npc.type == ModContent.NPCType<DesertScourgeHead>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "MedallionoftheDesert", DownedBossSystem.downedDesertScourge, ref droppedSummon);
-            }
-            else if (npc.type == ModContent.NPCType<Crabulon>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "OphiocordycipitaceaeSprout", DownedBossSystem.downedCrabulon, ref droppedSummon);
+            //if (npc.type == ModContent.NPCType<DesertScourgeHead>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "MedallionoftheDesert", DownedBossSystem.downedDesertScourge, ref droppedSummon);
+            //}
+            //else if (npc.type == ModContent.NPCType<Crabulon>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "OphiocordycipitaceaeSprout", DownedBossSystem.downedCrabulon, ref droppedSummon);
 
-            }
-            else if (npc.type == ModContent.NPCType<HiveMind>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "HiveTumor", DownedBossSystem.downedHiveMind, ref droppedSummon);
-            }
-            else if (npc.type == ModContent.NPCType<PerforatorHive>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "RedStainedWormFood", DownedBossSystem.downedPerforator, ref droppedSummon);
-            }
-            else if (npc.type == ModContent.NPCType<SlimeGodCore>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "MurkySludge", DownedBossSystem.downedSlimeGod, ref droppedSummon);
-            }
-            else if (npc.type == ModContent.NPCType<Cryogen>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "CryingKey", DownedBossSystem.downedCryogen, ref droppedSummon, Main.hardMode);
-            }
-            else if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SeeFood", DownedBossSystem.downedAquaticScourge, ref droppedSummon);
-            }
-            else if (npc.type == ModContent.NPCType<BrimstoneElemental>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "FriedDoll", DownedBossSystem.downedBrimstoneElemental, ref droppedSummon, Main.hardMode);
-            }
-            else if (npc.type == ModContent.NPCType<CalamitasClone>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BlightedEye", DownedBossSystem.downedCalamitasClone, ref droppedSummon, Main.hardMode);
-            }
-            else if (npc.type == ModContent.NPCType<Anahita>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SirensPearl", DownedBossSystem.downedLeviathan, ref droppedSummon);
-            }
-            else if (npc.type == ModContent.NPCType<AstrumAureus>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ChunkyStardust", DownedBossSystem.downedAstrumAureus, ref droppedSummon, Main.hardMode);
-            }
-            else if (npc.type == ModContent.NPCType<PlaguebringerGoliath>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ABombInMyNation", DownedBossSystem.downedPlaguebringer, ref droppedSummon, NPC.downedGolemBoss);
-            }
-            else if (npc.type == ModContent.NPCType<RavagerBody>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "NoisyWhistle", DownedBossSystem.downedRavager, ref droppedSummon, Main.hardMode);
-            }
-            else if (npc.type == ModContent.NPCType<AstrumDeusHead>())
-            {
-                if (npc.Calamity().newAI[0] == 0)
-                    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
-            }
-            else if (npc.type == ModContent.NPCType<Bumblefuck>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BirbPheromones", DownedBossSystem.downedDragonfolly, ref droppedSummon, NPC.downedAncientCultist);
-            }
-            else if (npc.type == ModContent.NPCType<ProfanedGuardianCommander>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DefiledShard", DownedBossSystem.downedGuardians, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<Providence>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DefiledCore", DownedBossSystem.downedProvidence, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<CeaselessVoid>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "RiftofKos", DownedBossSystem.downedCeaselessVoid, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<StormWeaverHead>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "WormFoodofKos", DownedBossSystem.downedStormWeaver, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<Signus>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "LetterofKos", DownedBossSystem.downedSignus, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<Polterghast>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PolterplasmicBeacon", DownedBossSystem.downedPolterghast, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<OldDuke>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BloodyWorm", DownedBossSystem.downedBoomerDuke, ref droppedSummon, DownedBossSystem.downedPolterghast);
-            }
-            else if (npc.type == ModContent.NPCType<DevourerofGodsHead>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SomeKindofSpaceWorm", DownedBossSystem.downedDoG, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<Yharon>())
-            {
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DragonEgg", DownedBossSystem.downedYharon, ref droppedSummon, NPC.downedMoonlord);
-            }
-            else if (npc.type == ModContent.NPCType<Draedon>())
-            {
-                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
-                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PortableCodebreaker", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
-            }
-            else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
-            {
-                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
-                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
-                DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
-            }
-            else if (npc.type == ModContent.NPCType<PrimordialWyrmHead>())
-            {
-                if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
-                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
-            }
+            //}
+            //else if (npc.type == ModContent.NPCType<HiveMind>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "HiveTumor", DownedBossSystem.downedHiveMind, ref droppedSummon);
+            //}
+            //else if (npc.type == ModContent.NPCType<PerforatorHive>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "RedStainedWormFood", DownedBossSystem.downedPerforator, ref droppedSummon);
+            //}
+            //else if (npc.type == ModContent.NPCType<SlimeGodCore>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "MurkySludge", DownedBossSystem.downedSlimeGod, ref droppedSummon);
+            //}
+            //else if (npc.type == ModContent.NPCType<Cryogen>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "CryingKey", DownedBossSystem.downedCryogen, ref droppedSummon, Main.hardMode);
+            //}
+            //else if (npc.type == ModContent.NPCType<AquaticScourgeHead>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SeeFood", DownedBossSystem.downedAquaticScourge, ref droppedSummon);
+            //}
+            //else if (npc.type == ModContent.NPCType<BrimstoneElemental>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "FriedDoll", DownedBossSystem.downedBrimstoneElemental, ref droppedSummon, Main.hardMode);
+            //}
+            //else if (npc.type == ModContent.NPCType<CalamitasClone>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BlightedEye", DownedBossSystem.downedCalamitasClone, ref droppedSummon, Main.hardMode);
+            //}
+            //else if (npc.type == ModContent.NPCType<Anahita>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SirensPearl", DownedBossSystem.downedLeviathan, ref droppedSummon);
+            //}
+            //else if (npc.type == ModContent.NPCType<AstrumAureus>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ChunkyStardust", DownedBossSystem.downedAstrumAureus, ref droppedSummon, Main.hardMode);
+            //}
+            //else if (npc.type == ModContent.NPCType<PlaguebringerGoliath>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "ABombInMyNation", DownedBossSystem.downedPlaguebringer, ref droppedSummon, NPC.downedGolemBoss);
+            //}
+            //else if (npc.type == ModContent.NPCType<RavagerBody>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "NoisyWhistle", DownedBossSystem.downedRavager, ref droppedSummon, Main.hardMode);
+            //}
+            //else if (npc.type == ModContent.NPCType<AstrumDeusHead>())
+            //{
+            //    if (npc.Calamity().newAI[0] == 0)
+            //        DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "AstrumCor", DownedBossSystem.downedAstrumDeus, ref droppedSummon, Main.hardMode);
+            //}
+            //else if (npc.type == ModContent.NPCType<Bumblefuck>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BirbPheromones", DownedBossSystem.downedDragonfolly, ref droppedSummon, NPC.downedAncientCultist);
+            //}
+            //else if (npc.type == ModContent.NPCType<ProfanedGuardianCommander>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DefiledShard", DownedBossSystem.downedGuardians, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<Providence>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DefiledCore", DownedBossSystem.downedProvidence, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<CeaselessVoid>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "RiftofKos", DownedBossSystem.downedCeaselessVoid, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<StormWeaverHead>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "WormFoodofKos", DownedBossSystem.downedStormWeaver, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<Signus>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "LetterofKos", DownedBossSystem.downedSignus, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<Polterghast>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PolterplasmicBeacon", DownedBossSystem.downedPolterghast, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<OldDuke>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "BloodyWorm", DownedBossSystem.downedBoomerDuke, ref droppedSummon, DownedBossSystem.downedPolterghast);
+            //}
+            //else if (npc.type == ModContent.NPCType<DevourerofGodsHead>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "SomeKindofSpaceWorm", DownedBossSystem.downedDoG, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<Yharon>())
+            //{
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "DragonEgg", DownedBossSystem.downedYharon, ref droppedSummon, NPC.downedMoonlord);
+            //}
+            //else if (npc.type == ModContent.NPCType<Draedon>())
+            //{
+            //    if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+            //        Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "PortableCodebreaker", DownedBossSystem.downedExoMechs, ref droppedSummon, DownedBossSystem.downedYharon);
+            //}
+            //else if (npc.type == ModContent.NPCType<SupremeCalamitas>())
+            //{
+            //    if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+            //        Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
+            //    DLCUtils.DropSummon(npc, FargowiltasCrossmod.Instance.Name, "EyeofExtinction", DownedBossSystem.downedCalamitas, ref droppedSummon, DownedBossSystem.downedYharon);
+            //}
+            //else if (npc.type == ModContent.NPCType<PrimordialWyrmHead>())
+            //{
+            //    if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
+            //        Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
+            //}
             if (ModCompatibility.WrathoftheGods.Loaded)
             {
                 if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type ||

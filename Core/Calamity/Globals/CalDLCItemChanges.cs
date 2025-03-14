@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatBuffs;
 using CalamityMod.CalPlayer;
@@ -21,6 +22,9 @@ using CalamityMod.Tiles.Furniture;
 using Fargowiltas;
 using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
+using Fargowiltas.Items.Summons;
+using Fargowiltas.Items.Summons.SwarmSummons;
+using Fargowiltas.Items.Summons.VanillaCopy;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
@@ -36,6 +40,7 @@ using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Misc;
+using FargowiltasSouls.Content.Items.Summons;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
@@ -248,24 +253,37 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             return true;
         }
-
-        //this is cloned from cal because lazy
-        public static bool VanillaSummonItem(Item item) =>
-            item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil;
+        public static bool isFargSummon(Item item) {
+            ModItem modI = item.ModItem;
+            if (Main.gameMenu)
+            {
+                return false;
+            }
+            if (FargoOnlyBossSummons.Contains(item.type))
+            {
+                return true;
+            }
+            if (modI != null && (modI is SwarmSummonBase || (modI is BaseSummon summon && (ContentSamples.NpcsByNetId[summon.NPCType].boss || summon.NPCType == NPCID.EaterofWorldsHead))))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static int[] FargoOnlyBossSummons = [ModContent.ItemType<FragilePixieLamp>(), ModContent.ItemType<MechLure>(), ModContent.ItemType<CoffinSummon>(), ModContent.ItemType<DevisCurse>(), ModContent.ItemType<AbomsCurse>(), ModContent.ItemType<MutantsCurse>()];
         public override void SetDefaults(Item item)
         {
-            if (CalDLCConfig.Instance.ConsumableSummons && CalDLCSets.GetValue(CalDLCSets.Items.CalBossSummon, item.type) || VanillaSummonItem(item))
+            if (isFargSummon(item))
             {
-                item.consumable = WorldSavingSystem.EternityMode;
-                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
+                item.maxStack = 1;
+                item.consumable = false;
             }
         }
         public override void UpdateInventory(Item item, Player player)
         {
-            if (CalDLCConfig.Instance.ConsumableSummons && CalDLCSets.Items.CalBossSummon[item.type] || VanillaSummonItem(item))
+            if (isFargSummon(item))
             {
-                item.consumable = WorldSavingSystem.EternityMode;
-                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
+                item.maxStack = 1;
+                item.consumable = false;
             }
         }
         // Copied from Mutant Mod
@@ -275,15 +293,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             var mutantServerConfig = FargoServerConfig.Instance;
 
-            if (WorldSavingSystem.EternityMode)
-            {
-                string notConsumable = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.NotConsumable");
-                for (int i = 0; i < tooltips.Count; i++)
-                {
-                    tooltips[i].Text = tooltips[i].Text.Replace("\n" + notConsumable, "");
-                    tooltips[i].Text = tooltips[i].Text.Replace(notConsumable, "");
-                }
-            }
+            //if (WorldSavingSystem.EternityMode)
+            //{
+            //    string notConsumable = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.NotConsumable");
+            //    for (int i = 0; i < tooltips.Count; i++)
+            //    {
+            //        tooltips[i].Text = tooltips[i].Text.Replace("\n" + notConsumable, "");
+            //        tooltips[i].Text = tooltips[i].Text.Replace(notConsumable, "");
+            //    }
+            //}
             for (int i = 0; i < tooltips.Count; i++)
             {
                 if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
