@@ -43,9 +43,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                 telePos = target.Center + (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
                 timer = 120;
             }
+            timer--;
             if (timer > 0)
             {
-                timer--;
                 for (int i = 0; i < 2; i++)
                     Dust.NewDustDirect(telePos, NPC.width, NPC.height, DustID.Shadowflame, Scale: 2);
                 if (timer == 0)
@@ -122,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
             }
             if (NPC.ai[1] == 2)
             {
-                if (timer <= 0)
+                if (timer <= -120)
                 {
                     telePos = target.Center + (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
                     timer = 120;
