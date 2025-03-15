@@ -1184,17 +1184,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public static Point FindGround(Point p, Vector2 direction, string num)
         {
-            //Main.NewText($"illegal position is {p} and dir is {direction}");
-            if (p.X > 0 && p.Y > 0 && WorldGen.InWorld(p.X, p.Y, 2))
-            {
-                return LumUtils.FindGround(p, direction);
-            }
-            else
-            {
-                //Main.NewText("what? how? " + num);
-                //Main.NewText($"illegal position is {p} and dir is {direction}");
-                return p;
-            }
+            Point result = LumUtils.FindGround(p, direction);
+            if (result.X > 0 && result.Y > 0 && WorldGen.InWorld(result.X, result.Y, 2))
+                return result;
+            return p;
         }
         #endregion
         #region Walking Methods
