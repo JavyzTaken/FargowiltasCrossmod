@@ -57,6 +57,17 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Common.Utilities;
+using CalamityMod.Items.TreasureBags.MiscGrabBags;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Weapons.Summon;
+using Terraria.GameContent.ItemDropRules;
+using CalamityMod.Items.Accessories.Vanity;
+using CalamityMod.Items.LoreItems;
+using CalamityMod.Items.Pets;
+using FargowiltasSouls.Content.Items.Misc;
+using Fargowiltas.Items.Explosives;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
+using Fargowiltas.Items.Tiles;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -110,7 +121,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo EmodeEditSpawnPool_Method = typeof(EModeGlobalNPC).GetMethod("EditSpawnPool", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DropSummon_Int_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(int), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
         private static readonly MethodInfo DropSummon_String_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(string), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
-
+        private static readonly MethodInfo StarterBag_ModifyItemLoot_Method = typeof(StarterBag).GetMethod("ModifyItemLoot", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo FargosSouls_DropDevianttsGift_Method = typeof(FargowiltasSouls.FargowiltasSouls).GetMethod("DropDevianttsGift", LumUtils.UniversalBindingFlags);
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
@@ -157,6 +169,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_EmodeEditSpawnPool(EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo);
         public delegate void Orig_DropSummon_Int_Method(NPC npc, int itemType, bool downed, ref bool droppedSummon, bool prerequisite = true);
         public delegate void Orig_DropSummon_String_Method(NPC npc, string itemName, bool downed, ref bool droppedSummon, bool prerequisite = true);
+        public delegate void Orig_StarterBag_ModifyItemLoot(StarterBag self, ItemLoot itemLoot);
+        public delegate void Orig_FargosSouls_DropDevianttsGift(Player player);
 
         public override void Load()
         {
@@ -211,6 +225,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(EmodeEditSpawnPool_Method, EmodeEditSpawnPool_Detour);
             HookHelper.ModifyMethodWithDetour(DropSummon_Int_Method, DropSummon_Int_Detour);
             HookHelper.ModifyMethodWithDetour(DropSummon_String_Method, DropSummon_String_Detour);
+            HookHelper.ModifyMethodWithDetour(StarterBag_ModifyItemLoot_Method, StarterBag_ModifyItemLoot_Detour);
+            HookHelper.ModifyMethodWithDetour(FargosSouls_DropDevianttsGift_Method, FargosSouls_DropDevianttsGift_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -813,6 +829,149 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             return;
         }
         internal static void DropSummon_String_Detour(Orig_DropSummon_String_Method orig, NPC npc, string itemType, bool downed, ref bool dropped, bool prerequisite = true)
+        {
+            return;
+        }
+        internal static void StarterBag_ModifyItemLoot_Detour(Orig_StarterBag_ModifyItemLoot orig, StarterBag self, ItemLoot itemLoot)
+        {
+            itemLoot.Add(ItemID.SilverPickaxe);
+            itemLoot.Add(ItemID.SilverAxe);
+            itemLoot.Add(ItemID.SilverHammer);
+            
+
+
+            LeadingConditionRule tin = itemLoot.DefineConditionalDropSet(() => WorldGen.SavedOreTiers.Copper == TileID.Tin);
+            tin.Add(ItemID.TinBroadsword);
+            tin.Add(ItemID.TinBow);
+            tin.Add(ItemID.TopazStaff);
+            tin.OnFailedConditions(new CommonDrop(ItemID.CopperBroadsword, 1));
+            tin.OnFailedConditions(new CommonDrop(ItemID.CopperBow, 1));
+            tin.OnFailedConditions(new CommonDrop(ItemID.AmethystStaff, 1));
+            itemLoot.Add(ItemID.WoodenArrow, 1, 100, 100);
+            itemLoot.Add(ModContent.ItemType<SquirrelSquireStaff>());
+            itemLoot.Add(ModContent.ItemType<ThrowingBrick>(), 1, 150, 150);
+
+            itemLoot.Add(ItemID.BugNet);
+            itemLoot.Add(ItemID.WaterCandle);
+            itemLoot.Add(ItemID.Torch, 1, 200, 200);
+            itemLoot.Add(ItemID.LesserHealingPotion, 1, 15, 15);
+            itemLoot.Add(ItemID.RecallPotion, 1, 15, 15);
+            LeadingConditionRule mp = itemLoot.DefineConditionalDropSet(() => Main.netMode != NetmodeID.SinglePlayer);
+            mp.Add(ItemID.WormholePotion, 1, 15, 15);
+            LeadingConditionRule dontDigUp = itemLoot.DefineConditionalDropSet(() => Main.remixWorld || Main.zenithWorld);
+            dontDigUp.Add(ItemID.ObsidianSkinPotion, 1, 5, 5);
+            itemLoot.Add(ModContent.ItemType<EternityAdvisor>());
+            itemLoot.Add(ModContent.ItemType<AutoHouse>(), 1, 2, 2);
+            itemLoot.Add(ModContent.ItemType<MiniInstaBridge>(), 1, 2, 2);
+            itemLoot.Add(ModContent.ItemType<EurusSock>());
+            itemLoot.Add(ModContent.ItemType<PuffInABottle>());
+            itemLoot.Add(ItemID.Squirrel);
+
+            static bool isTerry(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName.ToLower().Contains("terry");
+            }
+            itemLoot.AddIf(isTerry, ModContent.ItemType<HalfInstavator>());
+            itemLoot.AddIf(isTerry, ModContent.ItemType<RegalStatue>());
+            itemLoot.AddIf(isTerry, ItemID.PlatinumCoin);
+            itemLoot.AddIf(isTerry, ItemID.GrapplingHook);
+            itemLoot.AddIf(isTerry, ItemID.LifeCrystal, new Fraction(1, 1), 4, 4);
+            itemLoot.AddIf(isTerry, ItemID.ManaCrystal, new Fraction(1, 1), 2, 2);
+            itemLoot.AddIf(isTerry, ModContent.ItemType<SandsofTime>());
+            
+            //fuck you terry
+            static bool notreceivedStorage(DropAttemptInfo info)
+            {
+                return !WorldSavingSystem.ReceivedTerraStorage;
+            }
+            static bool TerryAndNotReceived(DropAttemptInfo info)
+            {
+                return notreceivedStorage(info) && isTerry(info);
+            }
+            static bool notTerryAndNotReceived(DropAttemptInfo info)
+            {
+                return notreceivedStorage(info) && !isTerry(info);
+            }
+            IItemDropRule notrecievedStorage = itemLoot.DefineConditionalDropSet(() => !WorldSavingSystem.ReceivedTerraStorage);
+            if (ModLoader.HasMod("MagicStorage"))
+            {
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorage", "StorageHeart").Type);
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorage", "CraftingAccess").Type);
+                itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
+                itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
+                WorldSavingSystem.ReceivedTerraStorage = true;
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                    NetMessage.SendData(MessageID.WorldData);
+            }
+            else if (ModLoader.HasMod("MagicStorageExtra"))
+            {
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorageExtra", "StorageHeart").Type);
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorageExtra", "CraftingAccess").Type);
+                itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
+                itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
+                WorldSavingSystem.ReceivedTerraStorage = true;
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                    NetMessage.SendData(MessageID.WorldData);
+            }
+            //itemLoot.Add(isTerry);
+            if (ModLoader.TryGetMod("CalamityModMusic", out Mod musicMod))
+                itemLoot.Add(musicMod.Find<ModItem>("CalamityMusicbox").Type);
+
+            // Awakening lore item
+            itemLoot.Add(ModContent.ItemType<LoreAwakening>());
+
+            // Aleksh donator item
+            // Name specific: "Aleksh" or "Shark Lad"
+            static bool getsLadPet(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName == "Aleksh" || playerName == "Shark Lad";
+            }
+            ;
+            itemLoot.AddIf(getsLadPet, ModContent.ItemType<JoyfulHeart>());
+
+            // HPU dev item
+            // Name specific: "Heart Plus Up"
+            static bool getsHapuFruit(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName == "Heart Plus Up";
+            }
+            ;
+            itemLoot.AddIf(getsHapuFruit, ModContent.ItemType<HapuFruit>());
+
+            // Apelusa dev item
+            // Name specific: "Pelusa"
+            static bool getsRedBow(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName == "Pelusa";
+            }
+
+            itemLoot.AddIf(getsRedBow, ModContent.ItemType<RedBow>());
+
+            // Mishiro dev vanity
+            // Name specific: "Amber" or "Mishiro"
+            static bool getsOracleHeadphones(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName is "Amber" or "Mishiro";
+            }
+
+            itemLoot.AddIf(getsOracleHeadphones, ModContent.ItemType<OracleHeadphones>());
+
+            // Fabsol dev item
+            // Name specific: "Fabsol" or "Cirrus"
+            static bool getsCrystalHeartVodka(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName is "Fabsol" or "Cirrus";
+            }
+
+            itemLoot.AddIf(getsCrystalHeartVodka, ModContent.ItemType<CrystalHeartVodka>());
+        }
+        internal static void FargosSouls_DropDevianttsGift_Detour(Orig_FargosSouls_DropDevianttsGift orig, Player player)
         {
             return;
         }
