@@ -69,6 +69,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
+
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
                 if (ModCompatibility.Calamity.Loaded) // Necessary here to sync in multiplayer
