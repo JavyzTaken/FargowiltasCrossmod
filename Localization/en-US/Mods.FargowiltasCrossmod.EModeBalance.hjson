@@ -1,6 +1,7 @@
 CrossBalanceGeneric: "Cross-mod Balance: "
 DamageUpGeneric: Damage increased by {0}%
 DamageDownGeneric: Damage decreased by {0}%
+PickPowerDownGeneric: Pickaxe power decreased by {0}%
 MagicDagger: Damage decreased by 50% in Pre-Hardmode
 ProfanedCrystal: Massively reduced damage with any minions active
 MythrilEnch: Less effective on rogue weapons
