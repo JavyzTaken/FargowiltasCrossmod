@@ -807,6 +807,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             float reelBackPerShark = 81f;
             float sharkDashSpeed = 21.5f;
             float oldDukeDashSpeed = 132f;
+            float dashPredictiveness = 0f;
             float oldDukeReelBackDistance = 400f; // This HEAVILY affects the difficulty of this attack since more distance from the player = less ability to enter the empty space in time.
             ref float hoverOffsetAngle = ref NPC.ai[0];
             ref float dashCounter = ref NPC.ai[1];
@@ -841,7 +842,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 NPC.damage = 0;
 
                 float aimInterpolant = LumUtils.InverseLerp(sharkFormationTime * 0.5f, 0f, AITimer - repositionTime).Squared();
-                RotateTowards(Target.Center + Target.velocity * 4f, aimInterpolant * 0.2f);
+                RotateTowards(Target.Center + Target.velocity * dashPredictiveness, aimInterpolant * 0.2f);
 
                 Animation = OldDukeAnimation.IdleAnimation;
             }
