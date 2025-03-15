@@ -104,7 +104,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 float arrowSpeed = forceEffect ? 16f : 12f;
                 int projDamage = forceEffect ? 100 : 65;
                 if (player.HasEffect<ElementsForceEffect>())
-                    projDamage = 600;
+                {
+                    projDamage = 120;
+                    arrowSpeed = 22;
+                }
                 projDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, projDamage);
 
                 int amt = forceEffect ? 6 : 4;
@@ -136,10 +139,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void OnHitByEither(Player player, NPC npc, Projectile proj)
         {
             var addonPlayer = player.CalamityAddon();
-            if (addonPlayer.DaedalusTimer > WindupTime && !player.HasEffect<ElementsForceEffect>())
+            if (addonPlayer.DaedalusTimer > WindupTime)
             {
                 addonPlayer.DaedalusTimer = 0;
-                player.wingTime /= 2;
+                if (!player.HasEffect<ElementsForceEffect>())
+                    player.wingTime /= 2;
             }
         }
     }

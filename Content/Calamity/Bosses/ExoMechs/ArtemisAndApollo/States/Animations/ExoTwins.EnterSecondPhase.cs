@@ -5,6 +5,7 @@ using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
+using FargowiltasSouls;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -249,7 +250,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.ArtemisAndApollo
                 foreach (Projectile projectile in Main.ActiveProjectiles)
                 {
                     bool canBeReflected = projectile.CanBeReflected() || (projectile.aiStyle == 0 && projectile.penetrate != -1 && !projectile.reflected);
-                    if (projectile.hostile || !canBeReflected)
+                    if (projectile.hostile || !canBeReflected || !FargoSoulsUtil.CanDeleteProjectile(projectile))
                         continue;
 
                     bool movingTowardsForcefield = Vector2.Dot(projectile.velocity, apollo.rotation.ToRotationVector2()) < 0f;

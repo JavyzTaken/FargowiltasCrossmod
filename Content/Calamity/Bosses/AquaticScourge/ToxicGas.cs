@@ -28,6 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
             Projectile.timeLeft = 1500;
             Projectile.width = Projectile.height = 30;
             Main.projFrames[Type] = 10;
+            Projectile.light = 1f;
             
         }
         public override bool PreDraw(ref Color lightColor)

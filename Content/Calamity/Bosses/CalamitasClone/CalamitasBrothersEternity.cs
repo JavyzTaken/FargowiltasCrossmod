@@ -15,7 +15,10 @@ using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Content.Patreon.DanielTheRobot;
+using FargowiltasSouls.Content.Projectiles.Masomode;
+using FargowiltasSouls.Content.Projectiles.Souls;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
@@ -29,7 +32,9 @@ using System.IO;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -53,7 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
     {
         #region Fields
         public Player Target => Main.player[NPC.target];
-        public static float Acceleration => 0.5f;
+        public static float Acceleration => 0.7f;
         public static float MaxMovementSpeed => 30f;
 
         public bool PhaseTwo = false;
@@ -64,6 +69,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public ref float CustomRotation => ref NPC.localAI[0];
         public ref float PreviousState => ref NPC.localAI[1];
         public ref float StunTimer => ref NPC.localAI[2];
+        public ref float ContactDamage => ref NPC.localAI[3];
         public const int CycleTime = 60 * 3;
 
         public bool Cataclysm => NPC.type == ModContent.NPCType<Cataclysm>();
@@ -85,6 +91,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Dash,
             Flamethrower,
             Fireballs,
+            SpinDashes,
             Stunned,
             Transition
         }
@@ -97,9 +104,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     States.Flamethrower, 
                     States.Fireballs
                     ];
+                if (PhaseTwo)
+                    attacks.Add(States.SpinDashes);
                 return attacks;
             }
         }
+        public List<int> AvailableStates = [];
         #endregion
         public override bool IsLoadingEnabled(Mod mod) => CalamitasCloneEternity.Enabled;
         public override void SetStaticDefaults()
@@ -112,7 +122,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             NPC.defense = 15;
             NPC.DR_NERD(0.225f);
-            int hp = 30000;
+            int hp = 16000;
             NPC.LifeMaxNERB(hp, hp, 80000);
             double HPBoost = CalamityConfig.Instance.BossHealthBoost * 0.01;
             NPC.lifeMax += (int)(NPC.lifeMax * HPBoost);
@@ -133,6 +143,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.localAI[i] = binaryReader.ReadSingle();
             }
         }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            if (ContactDamage == 1)
+                return base.CanHitPlayer(target, ref cooldownSlot);
+            return false;
+        }
         public override bool PreAI()
         {
             #region Standard
@@ -142,7 +158,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.netUpdate = true;
                 return false;
             }
-
             if (Cataclysm)
                 CalamityGlobalNPC.cataclysm = NPC.whoAmI;
             else
@@ -150,7 +165,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             // Emit light
             Lighting.AddLight((int)((NPC.position.X + (NPC.width / 2)) / 16f), (int)((NPC.position.Y + (NPC.height / 2)) / 16f), 1f, 0f, 0f);
-
+            NPC.dontTakeDamage = false;
 
             // Get a target
             if (NPC.target < 0 || NPC.target == Main.maxPlayers || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
@@ -223,6 +238,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     NPC.rotation = calCloneBroRotation;
             }
             CustomRotation = 0;
+            ContactDamage = 0;
             #endregion
 
             if (!NPC.HasPlayerTarget) // just in case
@@ -240,6 +256,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     break;
                 case States.Fireballs:
                     Fireballs();
+                    break;
+                case States.SpinDashes:
+                    SpinDashes();
                     break;
                 case States.Stunned:
                     Stunned();
@@ -284,52 +303,95 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             int windupTime = 80;
             int windbackTime = 20;
-            int chargeTime = 38;
+            int chargeTime = 40;
             if (PhaseTwo)
             {
                 if (Timer < 30)
                     Timer = 30;
             }
+            if (Timer == windupTime + (int)(windbackTime / 2))
+            {
+                if (DLCUtils.HostCheck)
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + ForwardRotation.ToRotationVector2() * 40, Vector2.Zero, ModContent.ProjectileType<BrothersEyeFlash>(), 0, 0, Main.myPlayer, NPC.whoAmI);
+            }
             if (Timer < windupTime)
             {
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * 400;
+                RotateTowards(NPC.DirectionTo(Target.Center), 40f);
                 RepulseOtherBrother(ref desiredPos);
                 Movement(desiredPos, 1f);
             }
             else if (Timer < windupTime + windbackTime)
             {
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * 550;
+                RotateTowards(NPC.DirectionTo(Target.Center), 40f);
                 Movement(desiredPos, 0.75f);
 
                 if (Timer == windupTime + windbackTime - 1)
+                {
                     SoundEngine.PlaySound(SoundID.DD2_GoblinBomberThrow, NPC.Center);
+                }
+                    
             }
             else if (Timer < windupTime + windbackTime + chargeTime)
             {
+                if (Timer == windupTime + windbackTime + 4)
+                {
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime + 40);
+                }
                 NPC.velocity += NPC.DirectionTo(Target.Center) * 1.2f;
+                Vector2 dir = NPC.velocity;
+                if (Timer < windupTime + windbackTime + 8)
+                {
+                    dir = NPC.DirectionTo(Target.Center);
+
+                }
+                RotateTowards(dir, 40f);
+                ContactDamage = 1;
             }
             else
             {
+                if (Timer <= CycleTime - 10)
+                {
+                    Vector2 dir = NPC.velocity;
+                    RotateTowards(dir, 40f);
+                }
+                ContactDamage = 1;
                 NPC.velocity *= 0.93f;
+            }
+            if (Timer > windupTime + windbackTime + 20 && Timer < windupTime + windbackTime + chargeTime + 10)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    Vector2 dir = -NPC.velocity.SafeNormalize(Vector2.UnitY);
+                    dir = dir.RotatedByRandom(MathHelper.PiOver2 * 0.2f);
+
+                    Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                    failShotDust.noGravity = true;
+                    failShotDust.velocity = dir * 38 * Main.rand.NextFloat(0.5f, 1.3f);
+                    failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                }
             }
             if (Timer >= CycleTime)
             {
                 GoToNeutral();
             }
         }
-        public int Flamethrower_WindupTime => 50;
-        public int Flamethrower_PullbackTime => 45;
-        public int Flamethrower_SweepTime => PhaseTwo ? 60 : 80;
+        public int Flamethrower_WindupTime => 50;  
+        public int Flamethrower_PullbackTime => WorldSavingSystem.MasochistModeReal ? 50 : 60;
+        public int Flamethrower_SweepTime => (PhaseTwo ? 70 : 80) + (WorldSavingSystem.MasochistModeReal ? 0 : 10);
         public void Flamethrower()
         {
             ref float sweepDir = ref AI2;
 
 
-            int firePreStartup = 10;
+            int firePreStartup = 30;
             int idealDistance = 280;
 
-            void Flames(float speed = 6f)
+            void Flames(float speed = 10f)
             {
+                ContactDamage = 1;
                 if (Timer % 22 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item34 with { Volume = 5 }, NPC.Center);
@@ -347,6 +409,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * idealDistance;
                 RepulseOtherBrother(ref desiredPos);
+                // don't go too close to ground
+                Vector2 floor = LumUtils.FindGround(desiredPos.ToTileCoordinates(), Vector2.UnitY).ToWorldCoordinates();
+                if (Math.Abs(floor.Y - desiredPos.Y) < 500)
+                    desiredPos.Y = floor.Y - 500;
+
                 Movement(desiredPos, 1f);
             }
             else if (Timer < Flamethrower_WindupTime + Flamethrower_PullbackTime)
@@ -372,11 +439,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
                 // movement
                 Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * idealDistance;
+                // don't go too close to ground
+                Vector2 floor = LumUtils.FindGround(desiredPos.ToTileCoordinates(), Vector2.UnitY).ToWorldCoordinates();
+                if (Math.Abs(floor.Y - desiredPos.Y) < 500)
+                    desiredPos.Y = floor.Y - 500;
                 Movement(desiredPos, 0.75f);
 
-                if (Timer > Flamethrower_WindupTime + Flamethrower_PullbackTime - firePreStartup)
+                float startFire = Flamethrower_WindupTime + Flamethrower_PullbackTime - firePreStartup;
+                if (Timer > startFire)
                 {
-                    Flames();
+                    float speed = LumUtils.Saturate((Timer - startFire) / 25f);
+                    speed *= 10;
+                    speed = MathHelper.Clamp(speed, 2, 10);
+                    Flames(speed);
                 }
             }
             else if (Timer < Flamethrower_WindupTime + Flamethrower_PullbackTime + Flamethrower_SweepTime)
@@ -386,7 +461,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 NPC.velocity *= 0.94f;
 
                 float progress = (Timer - Flamethrower_WindupTime - Flamethrower_PullbackTime) / Flamethrower_SweepTime;
-                Flames(6f + progress * 8f);
+                Flames(10f + progress * 12f);
             }
             else
             {
@@ -446,12 +521,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             {
                 CustomRotation = 1;
                 float diff = FargoSoulsUtil.RotationDifference(ForwardRotation.ToRotationVector2(), NPC.DirectionTo(Target.Center));
-                NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / 140f);
+                NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / 120f);
 
                 int shotTimer = (int)Timer - startup;
 
-                int shotCount = 6;
-                int freq = 12;
+                int shotCount = 5;
+                int freq = 15;
+                if (WorldSavingSystem.MasochistModeReal)
+                {
+                    shotCount = 6;
+                    freq = 12;
+                }
                 float sinePeriod = (shotCount * freq) - freq * 0.35f; // assymetric
                 if (shotTimer % freq == freq - 1 && shotTimer < freq * shotCount)
                 {
@@ -460,14 +540,104 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     {
                         float rot = MathF.Sin(MathF.Tau * shotTimer / sinePeriod);
                         rot *= ballDir;
-                        rot *= MathHelper.PiOver2 * 0.32f;
+                        rot *= MathHelper.PiOver2 * 0.4f;
                         Vector2 dir = (ForwardRotation + rot).ToRotationVector2();
-                        float speed = 17f;
+                        float speed = 3.5f;
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, ModContent.ProjectileType<BrimstoneBall>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
                     }
                 }
             }
             if (Timer >= CycleTime)
+            {
+                GoToNeutral();
+            }
+        }
+        public void SpinDashes()
+        {
+            int windupTime = 40;
+            int windbackTime = 15;
+            int chargeTime = 40;
+            int endTime = 3;
+            int cycle = windupTime + windbackTime + chargeTime + endTime;
+            float cycleTimer = Timer % cycle;
+
+            int totalTime = cycle * 3;
+
+            if (cycleTimer == windupTime + (int)(windbackTime / 2))
+            {
+                if (DLCUtils.HostCheck)
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + ForwardRotation.ToRotationVector2() * 40, Vector2.Zero, ModContent.ProjectileType<BrothersEyeFlash>(), 0, 0, Main.myPlayer, NPC.whoAmI);
+            }
+
+            if (cycleTimer < windupTime)
+            {
+                if (cycleTimer == 1)
+                {
+                    AI2 = Target.DirectionTo(NPC.Center).ToRotation() + MathHelper.PiOver2 * Main.rand.NextFloat(0.4f, 0.9f) * (Main.rand.NextBool() ? 1 : -1);
+                    NPC.netUpdate = true;
+                }
+
+                Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * 400;
+                RotateTowards(NPC.DirectionTo(Target.Center), 40f);
+                if (cycleTimer > 4)
+                {
+                    desiredPos = Target.Center + AI2.ToRotationVector2() * 400;
+                }
+                RepulseOtherBrother(ref desiredPos);
+                Movement(desiredPos, 2f);
+            }
+            else if (cycleTimer < windupTime + windbackTime)
+            {
+                Vector2 desiredPos = Target.Center + Target.DirectionTo(NPC.Center) * 550;
+                Movement(desiredPos, 1f);
+                RotateTowards(NPC.DirectionTo(Target.Center), 40f);
+
+                if (cycleTimer == windupTime + windbackTime - 1)
+                {
+                    SoundEngine.PlaySound(SoundID.DD2_GoblinBomberThrow, NPC.Center);
+                }
+            }
+            else if (cycleTimer < windupTime + windbackTime + chargeTime)
+            {
+                if (cycleTimer == windupTime + windbackTime + 4)
+                {
+                    if (DLCUtils.HostCheck)
+                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime + 32);
+                }
+                NPC.velocity += NPC.DirectionTo(Target.Center) * 1.5f;
+                Vector2 dir = NPC.velocity;
+                if (cycleTimer < windupTime + windbackTime + 8)
+                    dir = NPC.DirectionTo(Target.Center);
+                RotateTowards(dir, 40f);
+                CustomRotation = 1;
+                float diff = FargoSoulsUtil.RotationDifference(ForwardRotation.ToRotationVector2(), NPC.velocity);
+                NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / 40f);
+                ContactDamage = 1;
+            }
+            else
+            {
+                if (Timer <= totalTime - 10)
+                {
+                    Vector2 dir = NPC.velocity;
+                    RotateTowards(dir, 40f);
+                }
+                NPC.velocity *= 0.93f;
+                ContactDamage = 1;
+            }
+            if (cycleTimer > windupTime + windbackTime + 20 && cycleTimer < windupTime + windbackTime + chargeTime + 10)
+            {
+                for (int i = 0; i < 1; i++)
+                {
+                    Vector2 dir = -NPC.velocity.SafeNormalize(Vector2.UnitY);
+                    dir = dir.RotatedByRandom(MathHelper.PiOver2 * 0.2f);
+
+                    Dust failShotDust = Dust.NewDustPerfect(NPC.Center, Main.rand.NextBool(3) ? 60 : 114);
+                    failShotDust.noGravity = true;
+                    failShotDust.velocity = dir * 38 * Main.rand.NextFloat(0.5f, 1.3f);
+                    failShotDust.scale = Main.rand.NextFloat(0.9f, 1.8f);
+                }
+            }
+            if (Timer >= totalTime)
             {
                 GoToNeutral();
             }
@@ -478,6 +648,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             float stunTime = 90;
             NPC.velocity *= 0.95f;
 
+            if (StunTimer == 5)
+            {
+                NPC.netUpdate = true;
+                SoundEngine.PlaySound(new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f });
+                ScreenShakeSystem.StartShake(8f);
+            }
             StunTimer++;
             if (StunTimer < 60)
                 NPC.rotation += Main.rand.NextFloat(-1, 1) * MathHelper.PiOver4 * 0.75f * (1f - (StunTimer / 60f));
@@ -503,6 +679,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
             else
                 NPC.velocity *= 0.92f;
+            if (Timer < transTime)
+                NPC.dontTakeDamage = true;
             if (Timer == transTime)
             {
                 PhaseTwo = true;
@@ -516,7 +694,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 ScreenShakeSystem.StartShake(20f);
                 if (DLCUtils.HostCheck)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CalcloneWave>(), 0, 0f);
+                    float speed = 36;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CalcloneWave>(), 0, 0, Main.myPlayer, ai2: speed);
 
                     for (int i = 0; i < 6; i++)
                     {
@@ -533,11 +712,37 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         public void GoToNeutral()
         {
             Reset();
-            if (State != (int)States.Stunned)
-                PreviousState = State;
-            var attacks = Attacks;
-            attacks.Remove((States)PreviousState);
-            State = (int)Main.rand.NextFromCollection(attacks);
+            if (PhaseTwo)
+            {
+                int index;
+                if (AvailableStates.Count < 1)
+                {
+                    AvailableStates.Clear();
+                    foreach (var attack in Attacks)
+                        AvailableStates.Add((int)attack);
+                    AvailableStates.Remove((int)PreviousState); //avoid possible repeat after refilling list
+                }
+                if (FargoSoulsUtil.HostCheck) //only run for host in mp, will sync to others
+                {
+                    index = Main.rand.Next(AvailableStates.Count);
+                    State = AvailableStates[index];
+                    AvailableStates.RemoveAt(index);
+                }
+                PreviousState = (int)State;
+                NPC.netUpdate = true;
+            }
+            else
+            {
+                if (FargoSoulsUtil.HostCheck)
+                {
+                    if (State != (int)States.Stunned)
+                        PreviousState = State;
+                    var attacks = Attacks;
+                    attacks.Remove((States)PreviousState);
+                    State = (int)Main.rand.NextFromCollection(attacks);
+                    NPC.netUpdate = true;
+                }
+            }
         }
         public void Reset()
         {
@@ -547,6 +752,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             StunTimer = 0;
             NPC.netUpdate = true;
         }
+        public void RotateTowards(Vector2 angle, float divisor)
+        {
+            CustomRotation = 1;
+            float diff = FargoSoulsUtil.RotationDifference(ForwardRotation.ToRotationVector2(), angle);
+            NPC.rotation += diff.NonZeroSign() * Math.Min(Math.Abs(diff), MathHelper.Pi / divisor);
+        }
         public void GetStunned()
         {
             if (WorldSavingSystem.MasochistModeReal)
@@ -555,7 +766,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             AI3 = 0;
             StunTimer = 0;
             State = (int)States.Stunned;
-            SoundEngine.PlaySound(new SoundStyle("FargowiltasSouls/Assets/Sounds/Debuffs/DizzyBird") with { Pitch = -0.2f });
             NPC.netUpdate = true;
         }
         public void RepulseOtherBrother(ref Vector2 desiredPos)

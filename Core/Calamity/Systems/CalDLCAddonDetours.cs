@@ -28,6 +28,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public override void Load()
         {
             On_Player.RefreshDoubleJumps += RefreshDoubleJumps_Detour;
+            On_Player.RefreshMovementAbilities += RefreshMovementAbilities_Detour;
+            On_Player.GrappleMovement += GrappleMovement_Detour;
         }
 
         void ICustomDetourProvider.ModifyMethods()
@@ -40,17 +42,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             AerospecJumpEffect.ResetAeroCrit(self);
             orig(self);
         }
-        /*
-         * for some reason, this Kind of works but doesn't have the intended effect at all, 
-         * and i don't know exactly how to fix that,
-         * so instead i'll just wait for Calamity to update and make this easy to modify
-        private bool AdrenalineEnabled_Detour(Orig_AdrenalineEnabled orig, CalamityPlayer self)
+        private void RefreshMovementAbilities_Detour(On_Player.orig_RefreshMovementAbilities orig, Player self, bool doubleJumps = true)
         {
-            bool value = orig(self);
-            if (self.Player.HasEffect<TitanHeartEffect>())
-                value = true;
-            return value;
+            AerospecJumpEffect.ResetAeroCrit(self);
+            orig(self, doubleJumps);
         }
-        */
+        private void GrappleMovement_Detour(On_Player.orig_GrappleMovement orig, Player self)
+        {
+            orig(self);
+            if (self.grappling[0] < 0)
+                return;
+            AerospecJumpEffect.ResetAeroCrit(self);
+        }
     }
 }

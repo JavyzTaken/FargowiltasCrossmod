@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override int NPCOverrideID => ModContent.NPCType<DesertScourgeHead>();
         public override void SetDefaults()
         {
-            //NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 2f);
+            NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.25f);
         }
         public float[] drawInfo = [0, 200, 200, 0];
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -288,7 +288,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 drawInfo = [0, 200, 200, 0]; 
             }
 
-            ManageMusicFade(attack == 22);
+            ManageMusicFade(attack == 22 && ai[3] > 0);
 
             ai[1]++;
             if (ai[1] >= 300)
@@ -427,12 +427,36 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 case 0: //fly straight towards player until close enough
                     {
+                        const float MaxSpeed = 25;
+                        float inertia = 15f;
+
+                        //float horizontalDist = MathF.Abs(NPC.Center.X - player.Center.X);
+                        if (timer <= 0)
+                        {
+                            Vector2 startpos = new(player.Center.X + player.HorizontalDirectionTo(NPC.Center) * 450, player.Center.Y);
+                            startpos = LumUtils.FindGroundVertical(startpos.ToTileCoordinates()).ToWorldCoordinates();
+                            startpos.Y += 150;
+                            if (Math.Abs(startpos.Y - player.Center.Y) > 750)
+                                startpos.Y = player.Center.Y + 750;
+                            if (NPC.Distance(startpos) > 50)
+                            {
+                                timer = -1;
+                                if (NPC.velocity == Vector2.Zero)
+                                {
+                                    NPC.velocity.X = -0.15f;
+                                    NPC.velocity.Y = -0.05f;
+                                }
+                                Vector2 toPos = startpos - NPC.Center;
+                                toPos.Normalize();
+                                toPos *= MaxSpeed;
+                                NPC.velocity = (NPC.velocity * (inertia - 1f) + toPos) / inertia;
+                                return;
+                            }
+                        }
                         if (timer == 0)
                         {
                             SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/DesertScourgeRoar") with { Volume = 0.5f, Pitch = -0.3f });
                         }
-                        const float MaxSpeed = 25;
-                        float inertia = 15f;
                         const float CloseEnough = 300;
 
                         Vector2 toPlayer = targetPos - NPC.Center;
@@ -958,6 +982,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 NPC.lifeMax = 25000000;
             }
+            else
+                NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.25f);
         }
         public static List<int> PierceResistExclude =
         [
@@ -982,6 +1008,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
+            if (projectile.maxPenetrate > 1 || projectile.maxPenetrate < 0)
+                modifiers.FinalDamage *= 0.5f;
             DestroyerSegment.PierceResistance(projectile, ref modifiers);
         }
         public override bool PreAI()

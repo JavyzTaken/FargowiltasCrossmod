@@ -1,0 +1,43 @@
+DisplayName: Calamity Config
+
+Headers: {
+	Modes: Modes
+	Balance: Balance
+}
+
+ConsumableSummons: {
+	Label: Summon Items are Consumable in Eternity Mode
+	Tooltip:
+		'''
+		Changes vanilla and Calamity summon items to be consumable, overriding the Calamity non-consumable change.
+		This change exists purely for consistency with the following features:
+		- Summon items being refunded on boss attempts in Eternity Mode (effectively the same as being non-consumable)
+		- The Mutant NPC
+		- The Mutant Mod summon item variants
+		'''
+}
+
+EternityPriorityOverRev: {
+	Label: Eternity Priority over Calamity Modes
+	Tooltip:
+		'''
+		Enabled: Eternity Mode behaviour takes priority over Calamity boss changes. Some Calamity bosses have new Eternity Mode behavior.
+		Disabled: Calamity boss changes take priority over Eternity. 
+		'''
+}
+
+InfernumDisablesEternity: {
+	Label: Infernum Mode Disables Eternity Mode
+	Tooltip:
+		'''
+		Only relevant with the Infernum Mode mod enabled.
+		Keep in mind, INFERNUM IS NOT COMPATIBLE. Regardless of this config, expect issues to occur.
+		Enabled: Infernum Mode difficulty fully disables Eternity Mode.
+		Disabled: Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
+		'''
+}
+
+VoiceActingEnabled: {
+	Label: Voice Acting Enabled
+	Tooltip: Whether voice acting is enabled in the mod
+}

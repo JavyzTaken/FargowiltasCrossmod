@@ -30,6 +30,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.timeLeft = 120;
+            Projectile.light = 1;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {

@@ -12,10 +12,13 @@ using FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
 using FargowiltasCrossmod.Content.Common.Projectiles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasCrossmod.Core.Calamity.Systems;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Bosses.MutantBoss;
+using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
@@ -28,16 +31,25 @@ using Terraria.ModLoader.IO;
 
 namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 {
-    public class MutantDLC : GlobalNPC
+    public class MutantDLC : CalDLCEmodeExtraGlobalNPC
     {
         public override bool InstancePerEntity => true;
+        public override NPCMatcher CreateMatcher() => new NPCMatcher().MatchType(ModContent.NPCType<MutantBoss>());
+        public override GlobalNPC NewInstance(NPC target) //the cursed beast
+        {
+            return WorldSavingSystem.EternityMode && ExtraRequirements() ? base.NewInstance(target) : null;
+        }
+        public override bool ExtraRequirements()
+        {
+            return ShouldDoDLC;
+        }
+
         private static bool Thorium => ModCompatibility.ThoriumMod.Loaded;
         private static bool Calamity => ModCompatibility.Calamity.Loaded;
         public static bool ShouldDoDLC
         {
             get => Calamity;
         }
-        public override bool AppliesToEntity(NPC npc, bool lateInstantiation) => npc.type == ModContent.NPCType<MutantBoss>() && ShouldDoDLC;
 
         private bool PlayStoria = false;
         public void ManageMusicAndSky(NPC npc)
@@ -160,7 +172,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
         }
 
         public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot) => DLCAttackChoice == DLCAttack.PrepareAresNuke ? false : base.CanHitPlayer(npc, target, ref cooldownSlot);
-        public override bool PreAI(NPC npc)
+        public override bool SafePreAI(NPC npc)
         {
             ref float attackChoice = ref npc.ai[0];
 
@@ -347,7 +359,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 case DLCAttack.SpawnDoG: SpawnDoG(); break;
                 case DLCAttack.Polterghast: Polterghast(); break;
             }
-            return base.PreAI(npc);
+            return base.SafePreAI(npc);
 
             #region Checks and Commons
             bool AliveCheck(Player p, bool forceDespawn = false)
@@ -434,6 +446,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             }
             void Movement(Vector2 target, float speed, float maxSpeed = 24, bool fastX = true, bool obeySpeedCap = true)
             {
+                target.X = MathHelper.Clamp(target.X, 200, Main.maxTilesX * 16 - 200);
+                target.Y = MathHelper.Clamp(target.Y, 200, Main.maxTilesY * 16 - 200);
                 float turnaroundModifier = 1f;
 
                 if (WorldSavingSystem.MasochistModeReal)
@@ -1420,7 +1434,6 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 if (++npc.ai[1] > 60)
                 {
                     npc.netUpdate = true;
-                    npc.ai[1] = 30;
                     if (WorldSavingSystem.MasochistModeReal)
                     {
                         npc.ai[1] += 15; //faster
@@ -1429,10 +1442,13 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                     if (Counter > 0)
                     {
                         //npc.TargetClosest();
-                        npc.ai[0] = 25; //spear throw direct
-                        npc.ai[1] = 0;
-                        npc.ai[2] = 0;
-                        Reset();
+                        if (npc.ai[1] > 100)
+                        {
+                            npc.ai[0] = 25; //spear throw direct
+                            npc.ai[1] = 0;
+                            npc.ai[2] = 0;
+                            Reset();
+                        }
                     }
                     else
                     {
@@ -1518,7 +1534,7 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
         }
 
-        public override void PostAI(NPC npc)
+        public override void SafePostAI(NPC npc)
         {
             ManageMusicAndSky(npc);
             if (DLCAttackChoice < DLCAttack.None) //p1, negate "while dashing" code that makes him face his velocity

@@ -1,4 +1,4 @@
-FungusBall.DisplayName: Грибной шар
+FungusBall.DisplayName: Грибной клубок
 MushroomSpear.DisplayName: Грибное копьё
 ShroomGas.DisplayName: Грибной газ
 SandChunk.DisplayName: Песчаный кусок
@@ -23,6 +23,7 @@ Boss: {
 	SlimeHomingEbonianGlob.DisplayName: Эбонитовый сгусток
 	SlimeHomingCrimuleanGlob.DisplayName: Багротановый сгусток
 	MutantYharonVortex.DisplayName: Солнце
+	IchorShotFast.DisplayName: Ихорный выстрел
 }
 
 SlamTelegraph.DisplayName: Удар Телеграф
@@ -137,16 +138,39 @@ PulseBlast.DisplayName: Взрывной пульс
 HadesLineTelegraph.DisplayName: Телеграф Линии Аида
 ApolloMissile2.DisplayName: Аполлонова ракета
 BatMode.DisplayName: Режим летучей мыши
-PerfExplosion.DisplayName: Взрыв Перфораторов
-PerforatorSpike.DisplayName: Шипы Перфораторов
-PerforatorLegHitbox.DisplayName: Хитбокс ноги Улья
-PerforatorRubble.DisplayName: Валуны Перфораторов
+PerfExplosion.DisplayName: Взрыв перфораторов
+PerforatorSpike.DisplayName: Шипы перфораторов
+PerforatorLegHitbox.DisplayName: Нога перфораторов
+PerforatorRubble.DisplayName: Валуны перфораторов
 DaedalusArrow.DisplayName: Стрела Дедала
-ExplorationFeather.DisplayName: Exploration Feather
+ExplorationFeather.DisplayName: Перо
 SulphurParticulate.DisplayName: Сернистые газы
 GaleSpine.DisplayName: Позвонок Бури
 HydrothermicVentShot.DisplayName: Гидротермический выстрел перегрева
 ChargedGigablast.DisplayName: Заряженный гигавзрыв
 SuckedRock.DisplayName: Булыжник
-// CalcloneWave.DisplayName: Calclone Wave
-// EmpyreanStar.DisplayName: Empyrean Star
+CalcloneWave.DisplayName: Огненная волна
+EmpyreanStar.DisplayName: Возвышенная звезда
+BrimstoneArtillery.DisplayName: Серный адский взрыв
+BrimstoneFireball.DisplayName: Шар серного огня
+Gigablast.DisplayName: Серный гигавзрыв
+Fireblast.DisplayName: Серный огненный взрыв
+BrimstoneBall.DisplayName: Серный шар
+BrothersEyeFlash.DisplayName: Вспышка глаза
+BrimstoneBarrageGravitating.DisplayName: Серный дротик
+MutantFrostMist.DisplayName: Морозный туман
+CalcloneFireBackground.DisplayName: Фоновый огонь
+BrothersDashTrail.DisplayName: Хвост рывка
+AquaticUrchinProjectile.DisplayName: Морской ёж
+ArsenalCrate.DisplayName: Взрывной ящик
+ExplosiveCrate.DisplayName: Взрывной ящик
+FallingVomitGore.DisplayName: Gore
+FuelSpark.DisplayName: Топливная искра
+LingeringAcidBubble.DisplayName: Кислотный пузырь
+NuclearHurricane.DisplayName: Ядерный ураган
+NuclearVortex.DisplayName: Ядерный вихрь
+SwervingRadioactiveCinder.DisplayName: Радиоактивная зола
+TastyFuelContainer.DisplayName: Топливный контейнер
+TrasherProjectile.DisplayName: Мусорщик
+VortexFormingAcidDroplet.DisplayName: Кислотная капля
+AbomMauler.DisplayName: Мучитель

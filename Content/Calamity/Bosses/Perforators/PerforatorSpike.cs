@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         // Thus hitbox extends backwards from it
         public override string Texture => FargoSoulsUtil.EmptyTexture;
 
-        public static int TelegraphTime => 45;
+        public static int TelegraphTime => 60;
         public static int ExtensionTime => 13;
         public static int EndTime => 50;
         public static int FadeoutTime => 12;
@@ -164,6 +164,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             for (int i = 1; i <  bodyCenters.Length; i++)
                 bodyCenters[i] = bodyCenters[i - 1] - bodyOffset;
 
+            Color color = Lighting.GetColor(Projectile.Center.ToTileCoordinates());
             Color[] colors = new Color[BodyParts];
             for (int i = 0; i < BodyParts; i++)
                 colors[i] = Projectile.GetAlpha(Lighting.GetColor(bodyCenters[i].ToTileCoordinates()));
@@ -172,7 +173,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             for (int j = 0; j < 12; j++)
             {
                 Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 2f;
-                Main.EntitySpriteDraw(tip, tipCenter + afterimageOffset - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
+                Main.EntitySpriteDraw(tip, tipCenter + afterimageOffset - Main.screenPosition, null, Projectile.GetAlpha(color), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
                 if (Damaging)
                 {
                     for (int i = 0; i < BodyParts; i++)
@@ -181,7 +182,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             Main.spriteBatch.ResetToDefault();
 
-            Main.EntitySpriteDraw(tip, tipCenter - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
+            Main.EntitySpriteDraw(tip, tipCenter - Main.screenPosition, null, Projectile.GetAlpha(color), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
             for (int i = 0; i < BodyParts; i++)
                 Main.EntitySpriteDraw(bodies[i], bodyCenters[i] - Main.screenPosition, null, colors[i], Projectile.rotation, bodies[i].Size() / 2, Projectile.scale, effects);
             return false;

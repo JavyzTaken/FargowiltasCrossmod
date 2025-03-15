@@ -42,9 +42,9 @@ VagabondsSoul: {
 	DisplayName: Vagabond's Soul
 	Tooltip:
 		'''
-		30% increased rogue damage
-		15% increased rogue projectile velocity
-		15% increased rogue critical chance
+		22% increased rogue damage
+		20% increased rogue projectile velocity
+		10% increased rogue critical chance
 		Effects of Nanotech and Eclipse Mirror
 		'''
 }
@@ -310,6 +310,9 @@ DesertProwlerEnchant: {
 		'''
 		Hold UP to charge a powerful charge jump that also boosts your horizontal speed
 		Charge jump can only be performed while grounded
+		Pressing Jump while holding DOWN in the air does a quick dive downwards
+		Both the charged jump and dive push nearby enemies away
+		Hitting the ground shortly after a dive pushes away and damages enemies
 		'''
 }
 
@@ -334,10 +337,10 @@ GaleForce: {
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold S while jumping to dive downwards
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
-		[i:FargowiltasCrossmod/VictideEnchant] Using a jump spawns a sharp spine attatched to you
+		[i:FargowiltasCrossmod/VictideEnchant] The jumnps sometimes spawn sharp spines attached to you
 		[i:FargowiltasCrossmod/VictideEnchant] Once 6 spines are spawned, the next jump launches them out to home onto targets
 		[i:FargowiltasCrossmod/SulphurEnchant] Spines inflict Sulphuric Poisoning
-		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to 40%
+		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to +40%
 		'''
 }
 
@@ -404,7 +407,7 @@ ElementsForce: {
 		[c/45A8EF:Blizzard Mode:]
 		[i:FargowiltasCrossmod/ReaverEnchant] Increased flight time and speed, life regen, hook velocity and reduced dash cooldown
 		[i:FargowiltasCrossmod/AerospecEnchant] Grants up to +50% damage the longer you've stayed in the air
-		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air, attacks are accompanied by powerful arrows from the sky
+		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air without getting hit, attacks are accompanied by powerful arrows from the sky
 		'''
 }
 
@@ -501,4 +504,29 @@ EmpyreanEnchant: {
 		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
 		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
 		'''
+}
+
+Permafrost: {
+	DisplayName: Permafrost
+	Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
+}
+
+SeaKing: {
+	DisplayName: Sea King
+	Tooltip: "'My home may have been destroyed and my people lost... But I will assist you to honor their memory.'"
+}
+
+Bandit: {
+	DisplayName: Bandit
+	Tooltip: "'Anything is a weapon if you throw it hard enough.'"
+}
+
+DrunkPrincess: {
+	DisplayName: Drunk Princess
+	Tooltip: "'Not gonna copy paste any of these quotes man what the hell'"
+}
+
+Calamitas: {
+	DisplayName: Calamitas
+	Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
 }

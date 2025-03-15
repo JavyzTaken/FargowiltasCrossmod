@@ -47,7 +47,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             player.AddEffect<GaleJumpEffect>(Item);
             player.AddEffect<GaleSpineEffect>(Item);
             player.AddEffect<GaleSlowfallEffect>(Item);
-            player.AddEffect<GaleStatigelEffect>(Item);
+            player.AddEffect<StatigelEffect>(Item);
             //player.AddEffect<AerospecJumpEffect>(Item);
             //MarniteEnchant.AddEffects(player, Item);
             //player.AddEffect<DesertProwlerEffect>(Item);
@@ -69,6 +69,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         }
         
     }
+    public class GaleEffect : AccessoryEffect
+    {
+        public override Header ToggleHeader => null;
+        public override int ToggleItemType => ModContent.ItemType<GaleForce>();
+    }
     public class GaleSlowfallEffect : AccessoryEffect
     {
         public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
@@ -81,24 +86,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             }
             base.PostUpdateEquips(player);
         }
-    }
-    public class GaleStatigelEffect : AccessoryEffect
-    {
-        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
-        public override int ToggleItemType => ModContent.ItemType<StatigelEnchant>();
-        public override void PostUpdateEquips(Player player)
-        {
-            float DamageFormula(float x) => x / MathF.Sqrt(x * x + 1);
-            float x = player.velocity.Length() / 25f;
-            float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
-            float bonusDamage = bonusMultiplier * 0.4f;
-            player.GetDamage(DamageClass.Generic) += bonusDamage;
-
-            CooldownBarManager.Activate("StatigelDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/StatigelEnchant").Value, new Color(89, 170, 204),
-                () => DamageFormula(Main.LocalPlayer.velocity.Length() / 25f), true, 60, () => player.HasEffect<GaleStatigelEffect>());
-            base.PostUpdateEquips(player);
-        }
-        
     }
     public class GaleSpineEffect : AccessoryEffect
     {
@@ -130,7 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
                     }
                     else if (boost <= 6)
                     {
-                        Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 350), 5, player.whoAmI, rotation, player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
+                        Projectile.NewProjectileDirect(player.GetSource_EffectItem<GaleSpineEffect>(), player.Center, Vector2.Zero, ModContent.ProjectileType<GaleSpine>(), FargoSoulsUtil.HighestDamageTypeScaling(player, 800), 5, player.whoAmI, rotation, player.CalamityAddon().ExploFeatherCount % 2 == 0 ? 1 : -1);
                     }
                     SpineSpawnTimer = 0;
                     SpawnedAlready = true;
@@ -245,7 +232,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void UpdateHorizontalSpeeds(Player player)
         {
             player.runAcceleration *= 4;
-            player.maxRunSpeed *= 2.2f;
+            player.maxRunSpeed *= 1.75f;
             base.UpdateHorizontalSpeeds(player);
         }
         public override void OnStarted(Player player, ref bool playSound)

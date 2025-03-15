@@ -85,7 +85,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<Sacrifice>()) return 0.75f;
 
             //Post-Mutant items
-            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.2f;
+            if (item.type == ItemType<PhantasmalLeashOfCthulhu>()) return 0.5f;
             if (item.type == ItemType<GuardianTome>()) return 0.2f;
             if (item.type == ItemType<SlimeRain>()) return 0.08f;
             if (item.type == ItemType<TheBiggestSting>()) return 0.3f;
@@ -167,6 +167,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     ItemBalance(tooltips, EModeChange.Nerf, "RodofDiscord");
                 if (item.type == ItemType<Laudanum>())
                     ItemBalance(tooltips, EModeChange.Nerf, "Laudanum", mod: "FargowiltasCrossmod");
+                if (item.type == ItemType<OceanCrest>() || item.type == ItemType<AquaticEmblem>())
+                    ItemBalance(tooltips, EModeChange.Buff, "OceanCrest", mod: "FargowiltasCrossmod");
             }
 
             float balance = BalanceChange(item);
@@ -208,6 +210,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (item.type is ItemID.CobaltSword or ItemID.PalladiumSword or ItemID.OrichalcumSword or ItemID.MythrilSword or ItemID.OrichalcumHalberd)
                 NerfTooltip("HardmodeSwords");
+            if (item.type == ItemID.ReaverShark)
+                tooltips.Add(new TooltipLine(Mod, "PPDown", $"{BalanceDownLine}" + Language.GetText($"Mods.FargowiltasCrossmod.EModeBalance.PickPowerDownGeneric").Format(41)));
 
             CalamityGlobalItem calItem = item.GetGlobalItem<CalamityGlobalItem>();
             if (!item.IsAir && calItem.AppliedEnchantment.HasValue)

@@ -38,6 +38,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int usedWeaponTimer;
         public float ProwlerCharge;
         public bool AutoProwler = false;
+        public int ProwlerDiveTimer = 0;
         public int PlagueCharge;
         public int DaedalusTimer;
         public bool ReaverToggle;
@@ -69,6 +70,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 
         public override void ResetEffects()
         {
+            if (ProwlerDiveTimer > 0)
+            {
+                ProwlerDiveTimer--;
+            }
             if (BrimflameDefenseTimer > 0)
                 BrimflameDefenseTimer--;
             if (BrimflameShootingTimer > 0)
@@ -104,7 +109,8 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 Player.autoJump = false;
 
             }
-            if (!Player.HasEffect<SnowRuffianEffect>() && RuffianModifiedRotation)
+            bool ruffianFlight = Player.jump == 0 && Player.wingTime <= 0 && Player.controlJump && Player.velocity.X != 0;
+            if ((!Player.HasEffect<SnowRuffianEffect>() || !ruffianFlight) && RuffianModifiedRotation)
             {
                 Player.fullRotation = 0;
                 RuffianModifiedRotation = false;
@@ -133,20 +139,23 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     typeof(RipperUI).GetField("adrenBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/AdrenalineBar", AssetRequestMode.ImmediateLoad).Value);
                 }
             }
-            if (Player.HasEffect<EmpyreanEffect>())
+            if (false) // remove when adding empyrean
             {
-                if (!EmpyreanRage)
+                if (Player.HasEffect<EmpyreanEffect>())
                 {
-                    EmpyreanRage = true;
-                    typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("FargowiltasCrossmod/Assets/ExtraTextures/EmpyreanRageBar", AssetRequestMode.ImmediateLoad).Value);
+                    if (!EmpyreanRage)
+                    {
+                        EmpyreanRage = true;
+                        typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("FargowiltasCrossmod/Assets/ExtraTextures/EmpyreanRageBar", AssetRequestMode.ImmediateLoad).Value);
+                    }
                 }
-            }
-            else
-            {
-                if (EmpyreanRage)
+                else
                 {
-                    EmpyreanRage = false;
-                    typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/RageBar", AssetRequestMode.ImmediateLoad).Value);
+                    if (EmpyreanRage)
+                    {
+                        EmpyreanRage = false;
+                        typeof(RipperUI).GetField("rageBarTex", LumUtils.UniversalBindingFlags).SetValue(null, ModContent.Request<Texture2D>("CalamityMod/UI/Rippers/RageBar", AssetRequestMode.ImmediateLoad).Value);
+                    }
                 }
             }
         }
@@ -155,8 +164,17 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
             if (!Player.HasEffect<DaedalusEffect>() && DaedalusTimer > 0)
                 DaedalusTimer--;
         }
+        public override void PostUpdateRunSpeeds()
+        {
+            if (RuffianModifiedRotation)
+            {
+                Player.runAcceleration = 0.1264f;
+                Player.runSlowdown = 0.2f;
+            }
+        }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            /*
             FieldInfo installKey = typeof(FargowiltasSouls.FargowiltasSouls).GetField("DebuffInstallKey", BindingFlags.NonPublic | BindingFlags.Static);
             FieldInfo sDashKey = typeof(FargowiltasSouls.FargowiltasSouls).GetField("SpecialDashKey", BindingFlags.NonPublic | BindingFlags.Static);
             if (installKey != null && installKey.GetValue(installKey) != null) {
@@ -180,6 +198,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     }
                 }
             }
+            */
             base.ProcessTriggers(triggersSet);
         }
         public override void PreUpdate()
@@ -208,29 +227,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            if (EmpyreanEmpowered)
-            {
-                modifiers.ScalingBonusDamage += 1f;
-                if (Player.ForceEffect<EmpyreanEffect>())
-                {
-                    modifiers.ScalingBonusDamage += 1f;
-                }
-            }
             base.ModifyHitNPC(target, ref modifiers);
-        }
-        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            EmpyreanEffect.EmpyreanProjectileEffect(Player, item.GetSource_OnHit(target), target.Center, damageDone);
-            base.OnHitNPCWithItem(item, target, hit, damageDone);
-        }
-        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            EmpyreanEffect.EmpyreanProjectileEffect(Player, proj.GetSource_OnHit(target), proj.Center, damageDone);
-            base.OnHitNPCWithProj(proj, target, hit, damageDone);
-        }
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            EmpyreanEffect.EmpyreanHitEffect(Player);
         }
         public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
         {

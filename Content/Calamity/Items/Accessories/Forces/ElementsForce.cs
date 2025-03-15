@@ -36,7 +36,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<ElementsForceEffect>(Item);
-
+            player.AddEffect<AerospecJumpEffect>(Item);
             player.AddEffect<HydrothermicEffect>(Item);
             player.AddEffect<AerospecJumpEffect>(Item);
             player.AddEffect<DaedalusEffect>(Item);
@@ -50,7 +50,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             recipe.AddIngredient<DaedalusEnchant>();
             recipe.AddIngredient<ReaverEnchant>();
             recipe.AddIngredient<HydrothermicEnchant>();
-            recipe.AddIngredient<GalacticaSingularity>(5);
             recipe.AddTile(ModContent.TileType<Fargowiltas.Items.Tiles.CrucibleCosmosSheet>());
             recipe.Register();
         }

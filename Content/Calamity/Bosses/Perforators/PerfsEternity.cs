@@ -292,7 +292,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                 // draw leg brace
                 Vector2 dir = LegBraces[i].SafeNormalize(Vector2.Zero);
-                Vector2 start = NPC.Center - screenPos;
+                Vector2 start = NPC.Center - screenPos + Vector2.UnitY * NPC.gfxOffY;
                 Vector2 end = start + dir * 80;
                 SpriteEffects direction = (LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
                 DrawLeg(Main.spriteBatch, LegTextures[0].Value, start, end, lightColor, 1f, direction, glow: false);
@@ -390,15 +390,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             for (int i = 0; i < NPC.localAI.Length; i++)
                 binaryWriter.Write(NPC.localAI[i]);
+            binaryWriter.Write7BitEncodedInt(RecentAttacks.Count);
             for (int i = 0; i < RecentAttacks.Count; i++)
                 binaryWriter.Write7BitEncodedInt((int)RecentAttacks[i]);
+            for (int i = 0; i < LegBraces.Length; i++)
+                binaryWriter.WriteVector2(LegBraces[i]);
+            for (int i = 0; i < Legs.Length; i++)
+                binaryWriter.WriteVector2(Legs[i].Leg.StartingPoint);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             for (int i = 0; i < NPC.localAI.Length; i++)
                 NPC.localAI[i] = binaryReader.ReadSingle();
-            for (int i = 0; i < RecentAttacks.Count; i++)
+            int count = binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < count; i++)
                 RecentAttacks[i] = (States)binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < LegBraces.Length; i++)
+                LegBraces[i] = binaryReader.ReadVector2();
+            for (int i = 0; i < Legs.Length; i++)
+                Legs[i].Leg.StartingPoint = binaryReader.ReadVector2();
         }
         #region AI
         public override bool PreAI()
@@ -422,25 +432,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
 
             // maso passive
-            if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget)
+            if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget && State != (int)States.Opening)
             {
                 if (++PassiveRainTimer >= 25)
                 {
                     PassiveRainTimer = 0;
-                    SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
+                    //SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         float shotSpeed = 6f;
                         Vector2 shotVel = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.5f);
                         int p = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + shotVel * NPC.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, 
                             ai0: NPC.whoAmI, ai1: Target.Top.Y - 20);
-                        /*
-                        if (p != Main.maxProjectiles)
-                        {
-                            Main.projectile[p].extraUpdates = 1;
-                            Main.projectile[p].netUpdate = true;
-                        }
-                        */
                     }
 
                 }
@@ -793,10 +796,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         {
                             Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * MathHelper.Lerp(0.2f, 1f, (float)i / rubbleCount);
                             Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: endPoint.Y - 50);
-                            if (p != null)
-                            {
-                                p.extraUpdates = 1;
-                            }
                         }
                     }
                 });
@@ -1107,7 +1106,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                     Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2 * 0.23f);
 
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: -12);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 0);
                 }
             }
             else // endlag
@@ -1185,22 +1184,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public static Point FindGround(Point p, Vector2 direction, string num)
         {
-            //Main.NewText($"illegal position is {p} and dir is {direction}");
             if (p.X > 0 && p.Y > 0 && WorldGen.InWorld(p.X, p.Y, 2))
             {
-                return LumUtils.FindGround(p, direction);
+                Point result = LumUtils.FindGround(p, direction);
+                if (result.X > 0 && result.Y > 0 && WorldGen.InWorld(result.X, result.Y, 2))
+                    return result;
             }
-            else
-            {
-                //Main.NewText("what? how? " + num);
-                //Main.NewText($"illegal position is {p} and dir is {direction}");
-                return p;
-            }
+            return p;
         }
         #endregion
         #region Walking Methods
         public void WalkToPositionAI(Vector2 pos, float speedMod = 1f, int heightAboveGround = HeightAboveGround)
         {
+            if (pos.HasNaNs() || pos.X < 0 || pos.Y < 0)
+                return;
             bool canWalkToPlayer = CheckIfCanWalk(pos, out Point groundAtPlayer);
             groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
 
@@ -1260,7 +1257,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (max > Target.velocity.Length() + MaxMovementSpeed)
                 max = Target.velocity.Length() + MaxMovementSpeed;
             float resistance = NPC.velocity.Length() * accel / max;
-            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel - resistance, decel + resistance);
+            accel -= resistance;
+            if (accel < 0)
+                accel = 0;
+            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel, decel + resistance);
         }
         // if there's a reasonable ground path to player's X position from the spider
         // does not guarantee player to be at a reasonable spot above that ground position

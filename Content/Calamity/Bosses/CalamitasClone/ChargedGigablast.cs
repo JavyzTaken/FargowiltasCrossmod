@@ -41,6 +41,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Projectile.tileCollide = false;
 
             Projectile.scale = 1.5f;
+            CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
         public override void AI()
@@ -75,8 +76,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 return;
             }
 
+            
+
             if (!withinRange && Main.player[target].Alive())
             {
+                if (Projectile.Distance(Main.player[target].Center) < 400 && Projectile.localAI[2] == 0)
+                {
+                    Projectile.velocity.Normalize();
+                    Projectile.localAI[2] = 1;
+                }
+                    
                 Vector2 vectorToIdlePosition = Main.player[target].Center - Projectile.Center;
                 float speed = 14f;
                 float inertia = 45f;
@@ -133,7 +142,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-            modifiers.FlatBonusDamage += 1000;
+            modifiers.FlatBonusDamage += 1400;
         }
         public override bool CanHitPlayer(Player target) => Projectile.Opacity == 1f;
 

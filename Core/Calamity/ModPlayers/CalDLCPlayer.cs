@@ -69,6 +69,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
+
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
                 if (ModCompatibility.Calamity.Loaded) // Necessary here to sync in multiplayer
@@ -118,6 +119,14 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calamityPlayer = Player.Calamity();
+
+            if (soulsPlayer.MutantPresence)
+            {
+                Player.ClearBuff(BuffType<CalamitousPresenceBuff>());
+                Player.buffImmune[BuffType<CalamitousPresenceBuff>()] = true;
+                CalamitousPresence = false;
+            }
+
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
@@ -167,6 +176,12 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public override void PreUpdateBuffs()
         {
             PreUpdateBuffImmune = Player.buffImmune;
+            if (Player.FargoSouls().MutantPresence)
+            {
+                Player.ClearBuff(BuffType<CalamitousPresenceBuff>());
+                Player.buffImmune[BuffType<CalamitousPresenceBuff>()] = true;
+                CalamitousPresence = false;
+            }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {

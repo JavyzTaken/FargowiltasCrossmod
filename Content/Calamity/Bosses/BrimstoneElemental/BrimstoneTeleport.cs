@@ -38,6 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 200;
+            Projectile.light = 1;
         }
         public override bool PreDraw(ref Color lightColor)
         {

@@ -28,6 +28,7 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using CalamityMod.Events;
 using FargowiltasSouls.Content.Buffs.Masomode;
+using Luminance.Common.Utilities;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
 {
@@ -205,6 +206,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             }
             
         }
+        public override void BossLoot(ref string name, ref int potionType)
+        {
+            potionType = ItemID.GreaterHealingPotion;
+        }
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            var cryo = new CalamityMod.NPCs.Cryogen.Cryogen();
+            cryo.ModifyNPCLoot(npcLoot);
+        }
         public override void OnSpawn(IEntitySource source)
         {
             int n = NPC.FindFirstNPC(ModContent.NPCType<DILF>());
@@ -221,13 +231,15 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
         public override void OnKill()
         {
             SpawnTownNPC(true);
-            NPC cryogen = NPC.NewNPCDirect(NPC.GetSource_FromThis(), NPC.Center, ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>());
-            cryogen.NPCLoot();
-            cryogen.active = false;
+            int n = NPC.NewNPC(NPC.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<CalamityMod.NPCs.Cryogen.Cryogen>());
+            Main.npc[n].As<CalamityMod.NPCs.Cryogen.Cryogen>().OnKill();
+            Main.npc[n].active = false;
         }
         public override void AI()
         {
             Main.LocalPlayer.ZoneSnow = true;
+            if (Main.IsItRaining && DLCUtils.HostCheck)
+                Main.StopRain();
             Main.LocalPlayer.buffImmune[ModContent.BuffType<HypothermiaBuff>()] = true;
 
             int n = NPC.FindFirstNPC(ModContent.NPCType<DILF>());

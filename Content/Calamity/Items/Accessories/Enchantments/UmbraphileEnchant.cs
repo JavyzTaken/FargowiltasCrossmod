@@ -43,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             [AccessoryEffectLoader.GetEffect<UmbraphileEffect>()];
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return true;
         }
         public override Color nameColor => new Color(117, 69, 87);
@@ -82,6 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return true;
         }
         public override Header ToggleHeader => null; // Header.GetHeader<DevastationHeader>();

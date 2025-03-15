@@ -80,7 +80,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<SnowRuffianEnchant>();
         public override void DrawEffects(Player player, PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {

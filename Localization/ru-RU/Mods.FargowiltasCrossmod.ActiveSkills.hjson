@@ -11,13 +11,13 @@ ReaverEffect: {
 }
 
 UmbraphileEffect: {
-	// DisplayName: Bat Swarm Transformation
-	/* Tooltip:
+	DisplayName: Трансформация в стаю летучих мышей
+	Tooltip:
 		'''
-		Temporarily become a swarm of bats
-		While in this form, you are immune to damage, have +30% increased movement speed, and infinite flight
-		The bat swarm deals damage and steals life on hit
-		''' */
+		Ненадолго превращает вас в стаю летучих мышей
+		Пока вы находитесь в этой форме, вы получаете неуязвимость, бесконечный полёт, а ваша скорость увеличивается на 30%
+		Стая летучих мышей наносит врагам урон и ворует здоровье
+		'''
 }
 
 ElementsForceEffect: {

@@ -66,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
+        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
         public override int ToggleItemType => ModContent.ItemType<WulfrumEnchant>();
         public override bool MinionEffect => true;
         public override void PostUpdateEquips(Player player)

@@ -34,6 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Projectile.tileCollide = false;
             Projectile.timeLeft = 600;
             Projectile.penetrate = 1;
+            Projectile.extraUpdates = 1;
         }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
             => Projectile.Distance(FargoSoulsUtil.ClosestPointInHitbox(targetHitbox, Projectile.Center)) < projHitbox.Width / 2;
