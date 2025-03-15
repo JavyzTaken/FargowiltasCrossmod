@@ -506,32 +506,27 @@ EmpyreanEnchant: {
 		'''
 }
 
-DILF: {
-	DisplayName: D I L F
-	Tooltip: ""
-}
-
 Permafrost: {
 	DisplayName: Permafrost
-	Tooltip: ""
+	Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
 }
 
 SeaKing: {
 	DisplayName: Sea King
-	Tooltip: ""
+	Tooltip: "'My home may have been destroyed and my people lost... But I will assist you to honor their memory.'"
 }
 
 Bandit: {
 	DisplayName: Bandit
-	Tooltip: ""
+	Tooltip: "'Anything is a weapon if you throw it hard enough.'"
 }
 
 DrunkPrincess: {
 	DisplayName: Drunk Princess
-	Tooltip: ""
+	Tooltip: "'Not gonna copy paste any of these quotes man what the hell'"
 }
 
 Calamitas: {
 	DisplayName: Calamitas
-	Tooltip: ""
+	Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
 }

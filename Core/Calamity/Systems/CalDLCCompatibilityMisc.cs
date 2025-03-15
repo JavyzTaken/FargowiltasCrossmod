@@ -130,19 +130,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         #endregion summonloadingbullshit
         public override void Load()
         {
-            Add("Permafrost", ModContent.NPCType<DILF>(), "hey buddy");
-            Add("SeaKing", ModContent.NPCType<SEAHOE>(), "hey blubby");
-            Add("Bandit", ModContent.NPCType<THIEF>(), "hey buddy");
-            Add("DrunkPrincess", ModContent.NPCType<FAP>(), "hey buddy");
-            Add("Calamitas", ModContent.NPCType<WITCH>(), "hey buddy");
+            Add("Permafrost", ModContent.NPCType<DILF>());
+            Add("SeaKing", ModContent.NPCType<SEAHOE>());
+            Add("Bandit", ModContent.NPCType<THIEF>());
+            Add("DrunkPrincess", ModContent.NPCType<FAP>());
+            Add("Calamitas", ModContent.NPCType<WITCH>());
         }
-        public static void Add(string internalName, int id, string quote)
+        public static void Add(string internalName, int id)
         {
             if (FargowiltasCrossmod.Instance == null)
             {
                 FargowiltasCrossmod.Instance = ModContent.GetInstance<FargowiltasCrossmod>();
             }
-            CaughtNPCItem item = new(internalName, id, quote);
+            CaughtNPCItem item = new(internalName, id);
             FargowiltasCrossmod.Instance.AddContent(item);
             FieldInfo info = typeof(CaughtNPCItem).GetField("CaughtTownies", LumUtils.UniversalBindingFlags);
             Dictionary<int, int> list = (Dictionary<int, int>)info.GetValue(info);
