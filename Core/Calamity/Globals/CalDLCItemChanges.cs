@@ -274,7 +274,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (isFargSummon(item))
             {
-                item.maxStack = 1;
+                //item.maxStack = 999;
                 item.consumable = false;
             }
             if (item.type == ItemID.ReaverShark)
@@ -286,7 +286,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (isFargSummon(item))
             {
-                item.maxStack = 1;
+                //item.maxStack = 1;
                 item.consumable = false;
             }
         }
