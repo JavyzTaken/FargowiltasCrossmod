@@ -9,6 +9,7 @@ using CalamityMod.Items.Fishing.BrimstoneCragCatches;
 using CalamityMod.Items.Fishing.SulphurCatches;
 using CalamityMod.Items.Fishing.SunkenSeaCatches;
 using CalamityMod.Items.Materials;
+using CalamityMod.Items.Placeables;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
@@ -1677,6 +1678,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 shop.Add(new Item(ModContent.ItemType<MaulerSkull>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedMauler);
                 shop.Add(new Item(ModContent.ItemType<NuclearChunk>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedNuclear);
                 shop.Add(new Item(ModContent.ItemType<SandstormsCore>()) { shopCustomPrice = Item.buyPrice(gold: 30) }, killedGSS);
+            }
+            if (shop.NpcType == ModContent.NPCType<LumberJack>())
+            {
+                shop.Add(new Item(ModContent.ItemType<Acidwood>()) { shopCustomPrice = Item.buyPrice(copper: 20) });
+                shop.Add(new Item(ModContent.ItemType<ScorchedBone>()) { shopCustomPrice = Item.buyPrice(copper: 25) }, Condition.DownedSkeletron);
+                shop.Add(new Item(ModContent.ItemType<AstralMonolith>()) { shopCustomPrice = Item.buyPrice(copper: 30) }, Condition.Hardmode);
             }
             base.ModifyShop(shop);
         }
