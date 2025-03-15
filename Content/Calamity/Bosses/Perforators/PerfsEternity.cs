@@ -1184,9 +1184,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public static Point FindGround(Point p, Vector2 direction, string num)
         {
-            Point result = LumUtils.FindGround(p, direction);
-            if (result.X > 0 && result.Y > 0 && WorldGen.InWorld(result.X, result.Y, 2))
-                return result;
+            if (p.X > 0 && p.Y > 0 && WorldGen.InWorld(p.X, p.Y, 2))
+            {
+                Point result = LumUtils.FindGround(p, direction);
+                if (result.X > 0 && result.Y > 0 && WorldGen.InWorld(result.X, result.Y, 2))
+                    return result;
+            }
             return p;
         }
         #endregion
@@ -1254,7 +1257,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (max > Target.velocity.Length() + MaxMovementSpeed)
                 max = Target.velocity.Length() + MaxMovementSpeed;
             float resistance = NPC.velocity.Length() * accel / max;
-            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel - resistance, decel + resistance);
+            accel -= resistance;
+            if (accel < 0)
+                accel = 0;
+            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel, decel + resistance);
         }
         // if there's a reasonable ground path to player's X position from the spider
         // does not guarantee player to be at a reasonable spot above that ground position

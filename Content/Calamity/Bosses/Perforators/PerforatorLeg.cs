@@ -208,7 +208,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public void UpdateMovementAnimation(Vector2 gravityDirection, NPC owner)
         {
             // Increment the animation interpolant.
-            StepAnimationInterpolant += InterpolationSpeed; //0.064f;
+            float interpolationSpeed = InterpolationSpeed;
+            float velSq = owner.velocity.LengthSquared();
+            float velocityNorm = 10 * 10;
+            if (velSq > velocityNorm)
+                interpolationSpeed *= velSq / velocityNorm;
+            StepAnimationInterpolant += interpolationSpeed;
 
 
             // Calculate the current movement destination based on the animation's completion.
