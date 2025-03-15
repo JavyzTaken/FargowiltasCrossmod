@@ -89,6 +89,7 @@ using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -1688,6 +1689,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 shop.Add(new Item(ModContent.ItemType<Acidwood>()) { shopCustomPrice = Item.buyPrice(copper: 20) });
                 shop.Add(new Item(ModContent.ItemType<ScorchedBone>()) { shopCustomPrice = Item.buyPrice(copper: 25) }, Condition.DownedSkeletron);
                 shop.Add(new Item(ModContent.ItemType<AstralMonolith>()) { shopCustomPrice = Item.buyPrice(copper: 30) }, Condition.Hardmode);
+            }
+            if (shop.NpcType == NPCID.Dryad)
+            {
+                for (int i = 0; i < shop.Entries.Count; i++)
+                {
+                    if ((shop.Entries[i].Item.type == ItemID.JungleRose || shop.Entries[i].Item.type == ItemID.NaturesGift) && shop.Entries[i].Conditions.Contains(Condition.Hardmode))
+                    {
+                        shop.Entries[i].Disable();
+                    }
+                }
+
             }
             base.ModifyShop(shop);
         }
