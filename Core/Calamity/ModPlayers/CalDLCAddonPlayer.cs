@@ -38,6 +38,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public int usedWeaponTimer;
         public float ProwlerCharge;
         public bool AutoProwler = false;
+        public int ProwlerDiveTimer = 0;
         public int PlagueCharge;
         public int DaedalusTimer;
         public bool ReaverToggle;
@@ -69,6 +70,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
 
         public override void ResetEffects()
         {
+            if (ProwlerDiveTimer > 0)
+            {
+                ProwlerDiveTimer--;
+            }
             if (BrimflameDefenseTimer > 0)
                 BrimflameDefenseTimer--;
             if (BrimflameShootingTimer > 0)
