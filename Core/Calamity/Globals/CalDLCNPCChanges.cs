@@ -1168,6 +1168,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 pool[NPCID.DuneSplicerHead] = 0f;
                 pool[NPCID.RockGolem] = 0f;
             }
+            if (!Main.hardMode && spawnInfo.Player.ZoneUnderworldHeight && !spawnInfo.Player.Calamity().ZoneCalamity)
+            {
+                pool[NPCID.VoodooDemon] = 0.02f;
+            }
         }
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
