@@ -232,7 +232,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
         public override void UpdateHorizontalSpeeds(Player player)
         {
             player.runAcceleration *= 4;
-            player.maxRunSpeed *= 2.2f;
+            player.maxRunSpeed *= 1.75f;
             base.UpdateHorizontalSpeeds(player);
         }
         public override void OnStarted(Player player, ref bool playSound)
