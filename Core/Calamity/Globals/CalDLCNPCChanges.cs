@@ -16,6 +16,7 @@ using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
+using CalamityMod.NPCs.AcidRain;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.Astral;
 using CalamityMod.NPCs.AstrumAureus;
@@ -159,6 +160,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (CalDLCSets.GetValue(CalDLCSets.NPCs.AcidRainEnemy, npc.type) && DownedBossSystem.downedPolterghast)
             {
                 npc.lifeMax = (int)(npc.lifeMax * 2.5f);
+                if (npc.type == ModContent.NPCType<NuclearTerror>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 0.7f);
+                }
             }
             if ((npc.type == ModContent.NPCType<ReaperShark>() || npc.type == ModContent.NPCType<EidolonWyrmHead>()
                 || npc.type == ModContent.NPCType<ColossalSquid>() || npc.type == ModContent.NPCType<BobbitWormHead>()
