@@ -505,3 +505,33 @@ EmpyreanEnchant: {
 		У этого эффекта есть перезарядка от 12 до 4 секунд, зависящая от вашего уровня заряда ярости
 		'''
 }
+
+DILF: {
+	// DisplayName: D I L F
+	// Tooltip: ""
+}
+
+Permafrost: {
+	// DisplayName: Permafrost
+	// Tooltip: ""
+}
+
+SeaKing: {
+	// DisplayName: Sea King
+	// Tooltip: ""
+}
+
+Bandit: {
+	// DisplayName: Bandit
+	// Tooltip: ""
+}
+
+DrunkPrincess: {
+	// DisplayName: Drunk Princess
+	// Tooltip: ""
+}
+
+Calamitas: {
+	// DisplayName: Calamitas
+	// Tooltip: ""
+}

@@ -505,3 +505,33 @@ EmpyreanEnchant: {
 		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
 		'''
 }
+
+DILF: {
+	DisplayName: D I L F
+	Tooltip: ""
+}
+
+Permafrost: {
+	DisplayName: Permafrost
+	Tooltip: ""
+}
+
+SeaKing: {
+	DisplayName: Sea King
+	Tooltip: ""
+}
+
+Bandit: {
+	DisplayName: Bandit
+	Tooltip: ""
+}
+
+DrunkPrincess: {
+	DisplayName: Drunk Princess
+	Tooltip: ""
+}
+
+Calamitas: {
+	DisplayName: Calamitas
+	Tooltip: ""
+}
