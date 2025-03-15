@@ -310,6 +310,9 @@ DesertProwlerEnchant: {
 		'''
 		Hold UP to charge a powerful charge jump that also boosts your horizontal speed
 		Charge jump can only be performed while grounded
+		Pressing Jump while holding DOWN in the air does a quick dive downwards
+		Both the charged jump and dive push nearby enemies away
+		Hitting the ground shortly after a dive pushes away and damages enemies
 		'''
 }
 
