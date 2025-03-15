@@ -785,7 +785,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             float value = orig(mp);
             if (WorldSavingSystem.EternityMode)
-                value = value * 0.5f + 0.5f;
+                value *= 0.5f;
             return value;
         }
 
