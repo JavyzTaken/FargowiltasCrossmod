@@ -487,7 +487,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             else
                 NPC.velocity *= 0.91f;
 
-            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime || Main.mouseRight)
+            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime)
                 SwitchState();
         }
 
