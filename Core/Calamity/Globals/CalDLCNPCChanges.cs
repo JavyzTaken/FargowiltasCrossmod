@@ -57,6 +57,7 @@ using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.World;
+using Fargowiltas;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
@@ -91,6 +92,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -483,7 +485,21 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
 
+            #region SwarmBalance
+            //Main.NewText(npc.GetGlobalNPC<EnergizedGlobalNPC>() != null);
+            if (Fargowiltas.Fargowiltas.SwarmActive && Fargowiltas.Fargowiltas.SwarmItemsUsed >= 1)
+            {
+                FieldInfo bossList = typeof(EnergizedGlobalNPC).GetField("Bosses", LumUtils.UniversalBindingFlags);
+                if (FargoSets.NPCs.SwarmHealth[npc.type] > 0 || ((int[])bossList.GetValue(bossList)).Contains(npc.type))
+                {
+                    npc.lifeMax =  (int)(npc.lifeMax * 0.5f);
+                    npc.damage = (int)(npc.damage * 0.2f);
+                }
+            }
+            #endregion
+
         }
+
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
             Player player = Main.player[Main.myPlayer];
