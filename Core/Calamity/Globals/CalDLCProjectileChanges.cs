@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using CalamityMod;
 using CalamityMod.Events;
 using CalamityMod.NPCs.CeaselessVoid;
@@ -12,6 +13,8 @@ using CalamityMod.Projectiles.Ranged;
 using CalamityMod.Projectiles.Summon;
 using CalamityMod.Projectiles.Typeless;
 using CalamityMod.World;
+using Fargowiltas.NPCs;
+using Fargowiltas;
 using FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Core;
@@ -78,8 +81,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 entity.extraUpdates += 1;
 
             }
-
-            
         }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
@@ -134,7 +135,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     }
                 }
             }
-            
+            if (Fargowiltas.Fargowiltas.SwarmActive && Fargowiltas.Fargowiltas.SwarmItemsUsed >= 1 && projectile.hostile && projectile.damage > 200)
+            {
+                projectile.damage = FargoSoulsUtil.ScaledProjectileDamage(400);
+            }
             #region Balance Changes
             //add defense damage to fargo enemies. setting this in SetDefaults crashes the game for some reason
             if (projectile.ModProjectile != null)
