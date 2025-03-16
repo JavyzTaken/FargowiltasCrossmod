@@ -80,6 +80,7 @@ using CalamityMod.Tiles.Crags;
 using CalamityMod.Tiles.FurnitureAshen;
 using CalamityMod.Tiles.FurnitureEutrophic;
 using CalamityMod.Tiles.SunkenSea;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -1075,7 +1076,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         #region Vanilla Detours
         internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)
         {
-            if (self.CalamityDLC().ImmuneToAllDebuffs)
+            if (self.TryGetGlobalNPC<CalDLCNPCChanges>(out CalDLCNPCChanges n) && self.CalamityDLC().ImmuneToAllDebuffs)
                 return;
             orig(self, type, time, quiet);
         }
