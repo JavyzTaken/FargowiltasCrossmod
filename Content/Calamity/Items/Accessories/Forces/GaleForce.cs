@@ -48,12 +48,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
             player.AddEffect<GaleSpineEffect>(Item);
             player.AddEffect<GaleSlowfallEffect>(Item);
             player.AddEffect<StatigelEffect>(Item);
-            //player.AddEffect<AerospecJumpEffect>(Item);
-            //MarniteEnchant.AddEffects(player, Item);
-            //player.AddEffect<DesertProwlerEffect>(Item);
-            //player.AddEffect<WulfrumEffect>(Item);
-            //SulphurEnchant.AddEffects(player, Item);
-            //VictideEnchant.AddEffects(player, Item);
         }
         public override void AddRecipes()
         {
