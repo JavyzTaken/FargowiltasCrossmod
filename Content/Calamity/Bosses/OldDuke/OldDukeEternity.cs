@@ -1014,11 +1014,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void DoBehavior_ConjureNuclearHurricane()
         {
-            int hurricaneLifetime = 480;
+            int hurricaneLifetime = 540;
             ref float actualTimer = ref NPC.ai[0];
 
             if (AITimer == 1 && !LumUtils.AnyProjectiles(ModContent.ProjectileType<NuclearHurricane>()))
-                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f, hurricaneLifetime);
+            {
+                Vector2 hurricaneSpawnPosition = Target.Center;
+
+                // Bias the hurricane towards the world border position.
+                bool left = Target.Center.X < Main.maxTilesX * 8f;
+                hurricaneSpawnPosition.X -= left.ToDirectionInt() * 1100f;
+
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), hurricaneSpawnPosition, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 0.02f, hurricaneLifetime);
+            }
 
             actualTimer++;
             if (actualTimer >= hurricaneLifetime)
@@ -1270,6 +1278,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 attackCycle = Phase2AttackCycle;
 
             CurrentState = attackCycle[AttackCycleIndex % attackCycle.Length];
+            CurrentState = OldDukeAIState.ConjureNuclearHurricane;
             AttackCycleIndex++;
 
             float lifeRatio = NPC.GetLifePercent();
