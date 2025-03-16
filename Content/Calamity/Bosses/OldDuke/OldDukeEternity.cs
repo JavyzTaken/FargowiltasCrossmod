@@ -923,6 +923,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 else
                 {
                     shark.damage = shark.defDamage;
+                    shark.dontTakeDamage = true; // No ram dash cheese.
                     shark.velocity *= 1.024f;
                 }
 
@@ -1090,6 +1091,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             {
                 shark.velocity = Vector2.Lerp(shark.velocity, shark.rotation.ToRotationVector2() * -100f, 0.1f);
                 shark.damage = shark.defDamage;
+                shark.dontTakeDamage = true; // No ram dash cheese.
 
                 if (sharkBehavior.Time >= sideHoverTime + recoilTime + dashTime)
                     sharkBehavior.Die(true);
