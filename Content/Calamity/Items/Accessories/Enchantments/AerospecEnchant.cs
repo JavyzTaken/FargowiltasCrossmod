@@ -137,6 +137,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public static void ResetAeroCrit(Player player)
         {
             CalDLCAddonPlayer addonPlayer = player.CalamityAddon();
+            addonPlayer.ElementsAirTime = 0;
             if (addonPlayer.NumJumpsUsed > 0)
             {
                 int critPerJump = player.ForceEffect<AerospecJumpEffect>() ? 10 : 5;
