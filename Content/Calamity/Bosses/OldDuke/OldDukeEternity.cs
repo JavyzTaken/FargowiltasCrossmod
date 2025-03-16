@@ -419,7 +419,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int postSpinGraceTime = 36;
             float spinRevolutions = 2f;
             float maxSpinArc = MathHelper.TwoPi / baseSpinDuration;
-            float desiredSpinRadius = 320f;
+            float desiredSpinRadius = 350f;
             float bubbleSpeed = 5.4f;
             ref float spinAngle = ref NPC.ai[0];
             ref float spinDirection = ref NPC.ai[1];
@@ -430,7 +430,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 baseSpinDuration = 29;
                 spinRevolutions = 3f;
                 bubbleSpeed = 4f;
-                desiredSpinRadius = 350f;
+                desiredSpinRadius = 380f;
                 postSpinGraceTime = 25;
             }
 
