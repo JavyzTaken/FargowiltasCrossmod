@@ -438,6 +438,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (Phase >= 2)
             {
                 NPC.damage = NPC.defDamage;
+                Main.NewText(currentAttack);
+                Main.NewText(timer);
                 switch ((P2States)currentAttack)
                 {
                     case P2States.Reset: // go to idle
@@ -471,7 +473,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 DidRainDash = false;
                             if (Subphase(NPC) > 2)
                             {
-                                currentAttack = currentAttack = (float)P2States.I_SpindashStart;
+                                currentAttack = (float)P2States.I_SpindashStart;
+                                timer = 0;
                             }
                         }
                         break;
@@ -534,7 +537,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 NPC.netSpam = 0;
 
                                 if (attackCounter == 3 || Subphase(NPC) >= 3)
+                                {
                                     currentAttack = (float)P2States.I_SpindashStart;
+                                }
                                 else
                                 {
                                     List<P2States> attacks = [P2States.I_OffscreenDash1, P2States.I_WormDrop, P2States.I_DiagonalDashes];
@@ -715,6 +720,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                 timer = 0;
                                 currentAttack = (float)P2States.Spindash;
                             }
+                            if (timer > startTime)
+                                timer = 0;
                         }
                         break;
                     case P2States.Spindash: // multi-cal spin
@@ -1132,6 +1139,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                                             {
                                                 currentAttack = (float)P2States.I_SpindashStart;
                                                 ai3 = 0;
+                                                timer = 0;
                                             }
                                         }
                                     }
