@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
+using CalamityMod.Buffs.StatBuffs;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.Buffs.Summon;
 using CalamityMod.CalPlayer;
@@ -332,6 +333,11 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
+            if (proj.type == ProjectileType<MutantGiantDeathray2>() && Main.player[Main.myPlayer].HasBuff(BuffType<SilvaRevival>()))
+            {
+                Main.player[Main.myPlayer].Calamity().silvaCountdown = 0;
+                Main.player[Main.myPlayer].ClearBuff(BuffType<SilvaRevival>());
+            }
             if (ModCompatibility.WrathoftheGods.Loaded && WorldSavingSystem.EternityMode)
             {
                 if (Main.npc.Any(n => n.Alive() && 
@@ -343,15 +349,6 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     Player.AddBuff(BuffType<CurseoftheMoonBuff>(), 600);
                 }
             }
-        }
-        public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
-        {
-            if (projectile.type == ModContent.ProjectileType<MutantGiantDeathray2>() && target.HasBuff(ModContent.BuffType<SilvaRevival>()))
-            {
-                target.Calamity().silvaCountdown = 0;
-                target.ClearBuff(ModContent.BuffType<SilvaRevival>());
-            }
-            base.ModifyHitPlayer(projectile, target, ref modifiers);
         }
         public override void UpdateBadLifeRegen()
         {
