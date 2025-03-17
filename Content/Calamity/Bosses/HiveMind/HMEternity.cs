@@ -438,8 +438,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
             if (Phase >= 2)
             {
                 NPC.damage = NPC.defDamage;
-                Main.NewText(currentAttack);
-                Main.NewText(timer);
                 switch ((P2States)currentAttack)
                 {
                     case P2States.Reset: // go to idle
