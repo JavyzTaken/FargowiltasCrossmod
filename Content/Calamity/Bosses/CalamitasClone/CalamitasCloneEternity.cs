@@ -496,14 +496,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         {
             Timer++;
             float startup = 30f;
-            float ballTelegraph = 30f;
+            float ballTelegraph = WorldSavingSystem.MasochistModeReal ? 30f : 60f;
             float shotTime = 60 * 3f;
             float volleys = 3;
             float volleyTime = shotTime + ballTelegraph;
             float shotFrequency = 19f;
+            float endlag = WorldSavingSystem.MasochistModeReal ? 0f : 20f;
+            float timeToEndlag = startup + volleys * volleyTime;
 
             float distance = 660f;
-            if (Timer < startup)
+            if (Timer < startup || Timer > timeToEndlag)
             {
                 distance = 200f;
             }
@@ -559,7 +561,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     }
                 }
             }
-            if (Timer > startup + volleys * volleyTime)
+            if (Timer > timeToEndlag + endlag)
             {
                 GoToNeutral();
                 return;
