@@ -1199,10 +1199,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (pos.HasNaNs() || pos.X < 0 || pos.Y < 0)
                 return;
             bool canWalkToPlayer = CheckIfCanWalk(pos, out Point groundAtPlayer);
-            groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
 
             if (canWalkToPlayer)
             {
+                groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
                 // check if player is reasonably above ground
                 Vector2 groundAtPlayerV = groundAtPlayer.ToWorldCoordinates();
                 bool validAboveGround = true;
@@ -1281,7 +1281,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 groundAtPlayer = new();
                 return false;
             }
-            if (tiles == 0)
+            if (tiles == 0 || tiles <= int.MinValue)
             {
                 groundAtPlayer = point;
                 return true;
@@ -1301,12 +1301,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 // abs is the height difference between this block and previous block
                 // if it's too great, we can't simply walk to the player
                 //Main.NewText(ground.Y + " " + point.Y);
-                if (ground.X < 0 || ground.Y < 0)
+                int diff = ground.Y - point.Y;
+                if (ground.X < 0 || ground.Y < 0 || point.X < 0 || point.Y < 0 || diff <= int.MinValue)
                 {
                     groundAtPlayer = new();
                     return false;
                 }
-                if (Math.Abs(ground.Y - point.Y) < maxHeight) // height difference small enough
+                if (Math.Abs(diff) < maxHeight) // height difference small enough
                 {
                     continue;
                 }
