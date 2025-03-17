@@ -509,7 +509,7 @@ EmpyreanEnchant: {
 		'''
 }
 
-Permafrost: {
+Archmage: {
 	DisplayName: Архимаг
 	Tooltip: «У тебя определённо есть задатки способного мага. Скажи-ка, что думаешь о магии льда?»
 }
@@ -529,17 +529,7 @@ DrunkPrincess: {
 	Tooltip: Я не собираюсь вставлять сюда ни одну из её фраз.
 }
 
-Calamitas: {
+BrimstoneWitch: {
 	DisplayName: Серная ведьма
 	Tooltip: «Если ты проклят и хочешь это развеять... тогда я не та, кто не нужен.»
-}
-
-Archmage: {
-	// DisplayName: Archmage
-	// Tooltip: ""
-}
-
-BrimstoneWitch: {
-	// DisplayName: Brimstone Witch
-	// Tooltip: ""
 }
