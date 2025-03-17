@@ -1,8 +1,11 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
+﻿using CalamityMod;
+using CalamityMod.Buffs.StatBuffs;
+using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Projectiles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Projectiles.BossWeapons;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.Xna.Framework;
@@ -56,6 +59,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             
             return base.PreAI(projectile);
+        }
+        public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
+        {
+            if (projectile.type == ModContent.ProjectileType<MutantGiantDeathray2>() && target.HasBuff(ModContent.BuffType<SilvaRevival>()))
+            {
+                target.Calamity().silvaCountdown = 0;
+                target.ClearBuff(ModContent.BuffType<SilvaRevival>());
+            }
+            base.ModifyHitPlayer(projectile, target, ref modifiers);
         }
 
     }
