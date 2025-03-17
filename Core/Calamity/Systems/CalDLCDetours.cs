@@ -138,6 +138,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo FargosSouls_DropDevianttsGift_Method = typeof(FargowiltasSouls.FargowiltasSouls).GetMethod("DropDevianttsGift", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo Instahouse_GetTiles_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetTiles", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo Instahouse_GetFurniture_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetFurniture", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityPlayer_CatchFish_Method = typeof(CalamityPlayer).GetMethod("CatchFish", LumUtils.UniversalBindingFlags);
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
@@ -188,6 +189,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_FargosSouls_DropDevianttsGift(Player player);
         public delegate void Orig_Instahouse_GetTiles(Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform);
         public delegate void Orig_Instahouse_GetFurniture(Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle);
+        public delegate void Orig_CalamityPlayer_CatchFish(CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 
         public override void Load()
         {
@@ -246,6 +248,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(FargosSouls_DropDevianttsGift_Method, FargosSouls_DropDevianttsGift_Detour);
             HookHelper.ModifyMethodWithDetour(Instahouse_GetTiles_Method, Instahouse_GetTiles_Detour);
             HookHelper.ModifyMethodWithDetour(Instahouse_GetFurniture_Method, Instahouse_GetFurniture_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityPlayer_CatchFish_Method, CalamityPlayer_CatchFish_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -1071,6 +1074,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 tableStyle = ModContent.TileType<EutrophicTable>();
                 torchStyle = ModContent.TileType<NavyPrismTorch>();
             }
+        }
+        internal static void CalamityPlayer_CatchFish_Detour(Orig_CalamityPlayer_CatchFish orig, CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+            int index = self.Player.FindBuffIndex(BuffID.Gills);
+            if (index >= 0) self.Player.buffType[index] = 0;
+            orig(self, attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
+            if (index >= 0) self.Player.buffType[index] = BuffID.Gills;
+
         }
         #endregion
         #region Vanilla Detours
