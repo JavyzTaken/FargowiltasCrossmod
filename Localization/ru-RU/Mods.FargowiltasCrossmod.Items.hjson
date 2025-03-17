@@ -311,6 +311,9 @@ DesertProwlerEnchant: {
 		'''
 		Удерживайте ВВЕРХ, чтобы зарядить мощный прыжок, который также увеличивает вашу горизонтальную скорость
 		Прыжок можно заряжать только на блоках
+		Пока держите ВНИЗ, нажмите прыжок, чтобы сделать рывок вниз
+		И заряжаемый прыжок, и рывок отталкивают врагов
+		Приземление сразу после рывка отталкивает врагов и наносит им урон
 		'''
 }
 
@@ -321,7 +324,7 @@ WulfrumEnchant: {
 		Призывает вульфрумового дрона, следующего за вашим курсором
 		Дрон сканирует врагов, с которыми сталкивается
 		Сканирование врагов показывает их слабости и устойчивости к дебаффам
-		Зелёный цвет означает слабость, красный - устойчивость
+		Зелёный цвет означает слабость, красный — устойчивость
 		Просканированные враги также получают дополнительный постепенный урон от дебаффов с уроном
 		'''
 }
@@ -333,9 +336,9 @@ GaleForce: {
 		Даёт бесконечные двойные прыжки
 		Отключает крылья, если этот эффект включён
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте W во время прыжка, чтобы запустить себя вверх
-		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы устремиться вниз
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Удерживайте S во время прыжка, чтобы сделать рывок вниз
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Удерживайте W, чтобы замедлить падение
-		[i:FargowiltasCrossmod/VictideEnchant] Прыжки периодически прикрепляют к вашей спине острые позвонки
+		[i:FargowiltasCrossmod/VictideEnchant] Удерживайте прыжок, чтобы прикреплять к своей спине острые позвонки
 		[i:FargowiltasCrossmod/VictideEnchant] Когда из вас торчит 6 позвонков, следующий прыжок выпускает их
 		[i:FargowiltasCrossmod/SulphurEnchant] Позвонки самонаводятся на врагов и накладывают дебафф «Сернистое отравление»
 		[i:FargowiltasCrossmod/StatigelEnchant] Увеличивает урон в зависимости от вашей скорости, макс. до +40%
@@ -506,27 +509,27 @@ EmpyreanEnchant: {
 		'''
 }
 
-Permafrost: {
-	// DisplayName: Permafrost
-	// Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
+Archmage: {
+	DisplayName: Архимаг
+	Tooltip: «У тебя определённо есть задатки способного мага. Скажи-ка, что думаешь о магии льда?»
 }
 
 SeaKing: {
-	// DisplayName: Sea King
-	// Tooltip: "'My home may have been destroyed and my people lost... But I will assist you to honor their memory.'"
+	DisplayName: Морской король
+	Tooltip: «Пусть мой дом разрушен, а народ сгинул... но в их память я буду поддерживать тебя.»
 }
 
 Bandit: {
-	// DisplayName: Bandit
-	// Tooltip: "'Anything is a weapon if you throw it hard enough.'"
+	DisplayName: Бандит
+	Tooltip: «Всё является оружием. Если швырнёшь достаточно сильно.»
 }
 
 DrunkPrincess: {
-	// DisplayName: Drunk Princess
-	// Tooltip: "'Not gonna copy paste any of these quotes man what the hell'"
+	DisplayName: Пьяная принцесса
+	Tooltip: Я не собираюсь вставлять сюда ни одну из её фраз.
 }
 
-Calamitas: {
-	// DisplayName: Calamitas
-	// Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
+BrimstoneWitch: {
+	DisplayName: Серная ведьма
+	Tooltip: «Если ты проклят и хочешь это развеять... тогда я не та, кто не нужен.»
 }
