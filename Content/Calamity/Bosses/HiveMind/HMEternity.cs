@@ -390,7 +390,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
 
                 CalamityBurrow(NPC, target);
 
-                if (((!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>())) || timer > 60 * 20) && burrowTimer > 0)
+                if (((!NPC.AnyNPCs(ModContent.NPCType<HiveBlob>()) && !NPC.AnyNPCs(ModContent.NPCType<HiveBlob2>())) || timer > 60 * 21) && burrowTimer > 0)
                 {
                     SoundEngine.PlaySound(roar with { Pitch = 0.5f }, NPC.Center);
                     Phase = 2;
@@ -680,7 +680,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.HiveMind
                             }
                             if (timer > dashTime + decelTime)
                             {
-                                currentAttack = (float)P2States.Reset;
+                                NPC.velocity *= 0.9f;
+                                NPC.Opacity = 1f;
+                                if (timer > dashTime + decelTime + 10)
+                                    currentAttack = (float)P2States.Reset;
                             }
                         }
                         break;
