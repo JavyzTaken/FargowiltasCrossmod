@@ -1039,7 +1039,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (player.Calamity().ZoneSulphur)
             {
                 doorStyle = ModContent.TileType<AcidwoodDoorClosed>();
-                chairStyle = ModContent.TileType<AcidwoodChairTile>();
+                chairStyle = 29; //palm wood chair because acidwood chair is 2 tiles wide 
                 tableStyle = ModContent.TileType<AcidwoodTableTile>();
                 torchStyle = ModContent.TileType<SulphurousTorch>();
             }
