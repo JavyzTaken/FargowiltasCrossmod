@@ -14,6 +14,7 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core;
 using CalamityMod.NPCs.SupremeCalamitas;
+using FargowiltasSouls.Core.Systems;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 {
@@ -79,10 +80,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             if (!withinRange && Main.player[target].Alive())
             {
-                Vector2 targetPos = Main.player[target].Center + Main.player[target].velocity * 5;
+                Vector2 targetPos = Main.player[target].Center + Main.player[target].velocity * (WorldSavingSystem.MasochistModeReal ? 5 : 3);
                 Vector2 vectorToIdlePosition = targetPos - Projectile.Center;
                 float speed = 33f;
-                float inertia = 45f;
+                float inertia = WorldSavingSystem.MasochistModeReal ? 45f : 48f;
                 vectorToIdlePosition.Normalize();
                 vectorToIdlePosition *= speed;
                 Projectile.velocity = (Projectile.velocity * (inertia - 1f) + vectorToIdlePosition) / inertia;
