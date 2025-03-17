@@ -344,6 +344,15 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                 }
             }
         }
+        public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
+        {
+            if (projectile.type == ModContent.ProjectileType<MutantGiantDeathray2>() && target.HasBuff(ModContent.BuffType<SilvaRevival>()))
+            {
+                target.Calamity().silvaCountdown = 0;
+                target.ClearBuff(ModContent.BuffType<SilvaRevival>());
+            }
+            base.ModifyHitPlayer(projectile, target, ref modifiers);
+        }
         public override void UpdateBadLifeRegen()
         {
 
