@@ -479,13 +479,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
         }
         public void Fireballs()
         {
-            ref float ballDir = ref AI2;
-            if (ballDir == 0)
-            {
-                ballDir = Main.rand.NextBool() ? 1 : -1;
-                NPC.netUpdate = true;
-            }
-
             int startup = 60;
             // movement
             int idealDistance = 420;
@@ -525,25 +518,30 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
                 int shotTimer = (int)Timer - startup;
 
-                int shotCount = 5;
-                int freq = 15;
+                int shotCount = 3;
+                int freq = 22;
                 if (WorldSavingSystem.MasochistModeReal)
                 {
-                    shotCount = 6;
-                    freq = 12;
+                    shotCount = 4;
+                    freq = 16;
                 }
-                float sinePeriod = (shotCount * freq) - freq * 0.35f; // assymetric
                 if (shotTimer % freq == freq - 1 && shotTimer < freq * shotCount)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
-                        float rot = MathF.Sin(MathF.Tau * shotTimer / sinePeriod);
-                        rot *= ballDir;
-                        rot *= MathHelper.PiOver2 * 0.4f;
-                        Vector2 dir = (ForwardRotation + rot).ToRotationVector2();
-                        float speed = 3.5f;
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, ModContent.ProjectileType<BrimstoneBall>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
+                        float mult = (shotTimer + 1f) / freq;
+                        mult -= 1;
+                        mult /= shotCount - 1;
+                        for (int i = -1; i <= 1; i += 2)
+                        {
+                            float rot = mult;
+                            rot *= i;
+                            rot *= MathHelper.PiOver2 * 0.4f;
+                            Vector2 dir = (ForwardRotation + rot).ToRotationVector2();
+                            float speed = 3.5f;
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + dir * NPC.width / 3, dir * speed, ModContent.ProjectileType<BrimstoneBall>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage, 1f), 1f, Main.myPlayer);
+                        }
                     }
                 }
             }
