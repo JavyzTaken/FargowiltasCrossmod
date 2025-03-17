@@ -32,7 +32,7 @@ public class LingeringAcidBubble : ModProjectile
 
     public override void AI()
     {
-        Projectile.velocity *= 1.01f;
+        Projectile.velocity *= 1.009f;
         Projectile.frame = (int)Time / 5 % Main.projFrames[Type];
 
         Time++;

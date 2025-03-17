@@ -140,7 +140,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     BossRushDialogueSystem.StartDialogue(CalamityMod.Enums.BossRushDialoguePhase.TierOneComplete);
                 if (BossRushDialogueSystem.currentSequenceIndex == 2 && BossRushDialogueSystem.Phase == CalamityMod.Enums.BossRushDialoguePhase.TierOneComplete)
                 {
-                    Projectile.NewProjectileDirect(npc.GetSource_Death(), npc.Center + new Vector2(0, -800), new Vector2(0, 20), ModContent.ProjectileType<HentaiSpearThrown>(), 20000, 1, 0);
+                    Projectile.NewProjectileDirect(npc.GetSource_Death(), npc.Center + new Vector2(0, -800), new Vector2(0, 20), ModContent.ProjectileType<PenetratorThrown>(), 20000, 1, 0);
                     npc.StrikeInstantKill();
                 }
             }

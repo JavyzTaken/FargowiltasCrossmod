@@ -16,6 +16,7 @@ using CalamityMod.Items.SummonItems.Invasion;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.Abyss;
+using CalamityMod.NPCs.AcidRain;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.Astral;
 using CalamityMod.NPCs.AstrumAureus;
@@ -56,6 +57,7 @@ using CalamityMod.NPCs.SupremeCalamitas;
 using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.World;
+using Fargowiltas;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.FightManagers;
 using FargowiltasCrossmod.Content.Calamity.Buffs;
@@ -89,6 +91,8 @@ using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -158,6 +162,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (CalDLCSets.GetValue(CalDLCSets.NPCs.AcidRainEnemy, npc.type) && DownedBossSystem.downedPolterghast)
             {
                 npc.lifeMax = (int)(npc.lifeMax * 2.5f);
+                if (npc.type == ModContent.NPCType<NuclearTerror>())
+                {
+                    npc.lifeMax = (int)(npc.lifeMax * 0.7f);
+                }
             }
             if ((npc.type == ModContent.NPCType<ReaperShark>() || npc.type == ModContent.NPCType<EidolonWyrmHead>()
                 || npc.type == ModContent.NPCType<ColossalSquid>() || npc.type == ModContent.NPCType<BobbitWormHead>()
@@ -477,7 +485,21 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             #endregion
 
+            #region SwarmBalance
+            //Main.NewText(npc.GetGlobalNPC<EnergizedGlobalNPC>() != null);
+            if (Fargowiltas.Fargowiltas.SwarmActive && Fargowiltas.Fargowiltas.SwarmItemsUsed >= 1)
+            {
+                FieldInfo bossList = typeof(EnergizedGlobalNPC).GetField("Bosses", LumUtils.UniversalBindingFlags);
+                if (FargoSets.NPCs.SwarmHealth[npc.type] > 0 || ((int[])bossList.GetValue(bossList)).Contains(npc.type))
+                {
+                    npc.lifeMax =  (int)(npc.lifeMax * 0.5f);
+                    npc.damage = (int)(npc.damage * 0.2f);
+                }
+            }
+            #endregion
+
         }
+
         public override void UpdateLifeRegen(NPC npc, ref int damage)
         {
             Player player = Main.player[Main.myPlayer];
@@ -1168,6 +1190,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 pool[NPCID.DuneSplicerHead] = 0f;
                 pool[NPCID.RockGolem] = 0f;
             }
+            if (!Main.hardMode && spawnInfo.Player.ZoneUnderworldHeight && !spawnInfo.Player.Calamity().ZoneCalamity)
+            {
+                pool[NPCID.VoodooDemon] = 0.02f;
+            }
         }
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
         {
@@ -1684,6 +1710,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 shop.Add(new Item(ModContent.ItemType<Acidwood>()) { shopCustomPrice = Item.buyPrice(copper: 20) });
                 shop.Add(new Item(ModContent.ItemType<ScorchedBone>()) { shopCustomPrice = Item.buyPrice(copper: 25) }, Condition.DownedSkeletron);
                 shop.Add(new Item(ModContent.ItemType<AstralMonolith>()) { shopCustomPrice = Item.buyPrice(copper: 30) }, Condition.Hardmode);
+            }
+            if (shop.NpcType == NPCID.Dryad)
+            {
+                for (int i = 0; i < shop.Entries.Count; i++)
+                {
+                    if ((shop.Entries[i].Item.type == ItemID.JungleRose || shop.Entries[i].Item.type == ItemID.NaturesGift) && shop.Entries[i].Conditions.Contains(Condition.Hardmode))
+                    {
+                        shop.Entries[i].Disable();
+                    }
+                }
+
             }
             base.ModifyShop(shop);
         }

@@ -68,6 +68,19 @@ using FargowiltasSouls.Content.Items.Misc;
 using Fargowiltas.Items.Explosives;
 using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using Fargowiltas.Items.Tiles;
+using CalamityMod.Walls;
+using CalamityMod.Tiles.Abyss;
+using CalamityMod.Items.Placeables.FurnitureAcidwood;
+using CalamityMod.Tiles.FurnitureAcidwood;
+using CalamityMod.Tiles.FurnitureVoid;
+using CalamityMod.Tiles.FurnitureAbyss;
+using CalamityMod.Tiles.Astral;
+using CalamityMod.Tiles.FurnitureMonolith;
+using CalamityMod.Tiles.Crags;
+using CalamityMod.Tiles.FurnitureAshen;
+using CalamityMod.Tiles.FurnitureEutrophic;
+using CalamityMod.Tiles.SunkenSea;
+using FargowiltasCrossmod.Core.Calamity.Globals;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -123,6 +136,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo DropSummon_String_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(string), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
         private static readonly MethodInfo StarterBag_ModifyItemLoot_Method = typeof(StarterBag).GetMethod("ModifyItemLoot", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargosSouls_DropDevianttsGift_Method = typeof(FargowiltasSouls.FargowiltasSouls).GetMethod("DropDevianttsGift", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo Instahouse_GetTiles_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetTiles", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo Instahouse_GetFurniture_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetFurniture", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityPlayer_CatchFish_Method = typeof(CalamityPlayer).GetMethod("CatchFish", LumUtils.UniversalBindingFlags);
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
@@ -171,6 +187,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_DropSummon_String_Method(NPC npc, string itemName, bool downed, ref bool droppedSummon, bool prerequisite = true);
         public delegate void Orig_StarterBag_ModifyItemLoot(StarterBag self, ItemLoot itemLoot);
         public delegate void Orig_FargosSouls_DropDevianttsGift(Player player);
+        public delegate void Orig_Instahouse_GetTiles(Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform);
+        public delegate void Orig_Instahouse_GetFurniture(Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle);
+        public delegate void Orig_CalamityPlayer_CatchFish(CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 
         public override void Load()
         {
@@ -227,6 +246,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(DropSummon_String_Method, DropSummon_String_Detour);
             HookHelper.ModifyMethodWithDetour(StarterBag_ModifyItemLoot_Method, StarterBag_ModifyItemLoot_Detour);
             HookHelper.ModifyMethodWithDetour(FargosSouls_DropDevianttsGift_Method, FargosSouls_DropDevianttsGift_Detour);
+            HookHelper.ModifyMethodWithDetour(Instahouse_GetTiles_Method, Instahouse_GetTiles_Detour);
+            HookHelper.ModifyMethodWithDetour(Instahouse_GetFurniture_Method, Instahouse_GetFurniture_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityPlayer_CatchFish_Method, CalamityPlayer_CatchFish_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -767,7 +789,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             float value = orig(mp);
             if (WorldSavingSystem.EternityMode)
-                value = value * 0.5f + 0.5f;
+                value *= 0.5f;
             return value;
         }
 
@@ -975,11 +997,97 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             return;
         }
+        internal static void Instahouse_GetTiles_Detour(Orig_Instahouse_GetTiles orig, Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform)
+        {
+            orig(player, out wallType, out tileType, out platformStyle, out moddedPlatform);
+            if (player.Calamity().ZoneSulphur)
+            {
+                wallType = ModContent.WallType<AcidwoodWall>();
+                tileType = ModContent.TileType<AcidwoodTile>();
+                platformStyle = ModContent.TileType<AcidwoodPlatformTile>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneAbyss)
+            {
+                wallType = ModContent.WallType<SmoothAbyssGravelWall>();
+                tileType = ModContent.TileType<SmoothAbyssGravel>();
+                platformStyle = ModContent.TileType<SmoothAbyssGravelPlatform>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneAstral)
+            {
+                wallType = ModContent.WallType<AstralMonolithWall>();
+                tileType = ModContent.TileType<AstralMonolith>();
+                platformStyle = ModContent.TileType<MonolithPlatform>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneCalamity)
+            {
+                wallType = ModContent.WallType<BrimstoneSlabWall>();
+                tileType = ModContent.TileType<BrimstoneSlab>();
+                platformStyle = ModContent.TileType<AshenPlatform>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneSunkenSea)
+            {
+                wallType = ModContent.WallType<SmoothNavystoneWall>();
+                tileType = ModContent.TileType<SmoothNavystone>();
+                platformStyle = ModContent.TileType<EutrophicPlatform>();
+                moddedPlatform = true;
+            }
+        }
+        internal static void Instahouse_GetFurniture_Detour(Orig_Instahouse_GetFurniture orig, Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle)
+        {
+            orig(player, out doorStyle, out chairStyle, out tableStyle, out torchStyle);
+            if (player.Calamity().ZoneSulphur)
+            {
+                doorStyle = ModContent.TileType<AcidwoodDoorClosed>();
+                chairStyle = 29; //palm wood chair because acidwood chair is 2 tiles wide 
+                tableStyle = ModContent.TileType<AcidwoodTableTile>();
+                torchStyle = ModContent.TileType<SulphurousTorch>();
+            }
+            if (player.Calamity().ZoneAbyss)
+            {
+                doorStyle = ModContent.TileType<AbyssDoorClosed>();
+                chairStyle = ModContent.TileType<AbyssChair>();
+                tableStyle = ModContent.TileType<AbyssTable>();
+                torchStyle = ModContent.TileType<AbyssTorch>();
+            }
+            if (player.Calamity().ZoneAstral)
+            {
+                doorStyle = ModContent.TileType<MonolithDoorClosed>();
+                chairStyle = ModContent.TileType<MonolithChair>();
+                tableStyle = ModContent.TileType<MonolithTable>();
+                torchStyle = ModContent.TileType<AstralTorch>();
+            }
+            if (player.Calamity().ZoneCalamity)
+            {
+                doorStyle = ModContent.TileType<AshenDoorClosed>();
+                chairStyle = ModContent.TileType<AshenChair>();
+                tableStyle = ModContent.TileType<AshenTable>();
+                torchStyle = ModContent.TileType<GloomTorch>();
+            }
+            if (player.Calamity().ZoneSunkenSea)
+            {
+                doorStyle = ModContent.TileType<EutrophicDoorClosed>();
+                chairStyle = ModContent.TileType<EutrophicChair>();
+                tableStyle = ModContent.TileType<EutrophicTable>();
+                torchStyle = ModContent.TileType<NavyPrismTorch>();
+            }
+        }
+        internal static void CalamityPlayer_CatchFish_Detour(Orig_CalamityPlayer_CatchFish orig, CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+            int index = self.Player.FindBuffIndex(BuffID.Gills);
+            if (index >= 0) self.Player.buffType[index] = 0;
+            orig(self, attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
+            if (index >= 0) self.Player.buffType[index] = BuffID.Gills;
+
+        }
         #endregion
         #region Vanilla Detours
         internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)
         {
-            if (self.CalamityDLC().ImmuneToAllDebuffs)
+            if (self.TryGetGlobalNPC<CalDLCNPCChanges>(out CalDLCNPCChanges n) && self.CalamityDLC().ImmuneToAllDebuffs)
                 return;
             orig(self, type, time, quiet);
         }

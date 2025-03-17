@@ -337,7 +337,7 @@ GaleForce: {
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
 		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold S while jumping to dive downwards
 		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
-		[i:FargowiltasCrossmod/VictideEnchant] The jumnps sometimes spawn sharp spines attached to you
+		[i:FargowiltasCrossmod/VictideEnchant] Holding jump generates sharp spines attached to you
 		[i:FargowiltasCrossmod/VictideEnchant] Once 6 spines are spawned, the next jump launches them out to home onto targets
 		[i:FargowiltasCrossmod/SulphurEnchant] Spines inflict Sulphuric Poisoning
 		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to +40%
@@ -504,4 +504,29 @@ EmpyreanEnchant: {
 		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
 		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
 		'''
+}
+
+Archmage: {
+	DisplayName: Archmage
+	Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
+}
+
+SeaKing: {
+	DisplayName: Sea King
+	Tooltip: "'My home may have been destroyed and my people lost... But I will assist you to honor their memory.'"
+}
+
+Bandit: {
+	DisplayName: Bandit
+	Tooltip: "'Anything is a weapon if you throw it hard enough.'"
+}
+
+DrunkPrincess: {
+	DisplayName: Drunk Princess
+	Tooltip: Not gonna copy paste any of these quotes man what the hell
+}
+
+BrimstoneWitch: {
+	DisplayName: Brimstone Witch
+	Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
 }

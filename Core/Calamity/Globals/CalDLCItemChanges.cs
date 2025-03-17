@@ -23,6 +23,7 @@ using Fargowiltas;
 using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using Fargowiltas.Items.Summons;
+using Fargowiltas.Items.Summons.Mutant;
 using Fargowiltas.Items.Summons.SwarmSummons;
 using Fargowiltas.Items.Summons.VanillaCopy;
 using FargowiltasCrossmod.Content.Calamity;
@@ -30,6 +31,7 @@ using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -259,7 +261,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 return false;
             }
-            if (FargoOnlyBossSummons.Contains(item.type))
+            if (SummonsThatDontMeetConditionsButShould.Contains(item.type))
             {
                 return true;
             }
@@ -269,12 +271,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             return false;
         }
-        public static int[] FargoOnlyBossSummons = [ModContent.ItemType<FragilePixieLamp>(), ModContent.ItemType<MechLure>(), ModContent.ItemType<CoffinSummon>(), ModContent.ItemType<DevisCurse>(), ModContent.ItemType<AbomsCurse>(), ModContent.ItemType<MutantsCurse>()];
+        public static int[] SummonsThatDontMeetConditionsButShould = [ModContent.ItemType<SeeFood>(), ModContent.ItemType<FleshyDoll>(), ModContent.ItemType<MechanicalAmalgam>(), ModContent.ItemType<MechEye>(), ModContent.ItemType<PortableCodebreaker>(), ModContent.ItemType<FragilePixieLamp>(), ModContent.ItemType<MechLure>(), ModContent.ItemType<CoffinSummon>(), ModContent.ItemType<DevisCurse>(), ModContent.ItemType<AbomsCurse>(), ModContent.ItemType<MutantsCurse>()];
         public override void SetDefaults(Item item)
         {
             if (isFargSummon(item))
             {
-                item.maxStack = 1;
+                //item.maxStack = 999;
                 item.consumable = false;
             }
             if (item.type == ItemID.ReaverShark)
@@ -286,7 +288,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             if (isFargSummon(item))
             {
-                item.maxStack = 1;
+                //item.maxStack = 1;
                 item.consumable = false;
             }
         }

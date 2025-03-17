@@ -932,11 +932,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.AquaticScourge
                             float speed = 10;
                             float dist = target.Distance(npc.Center);
                             float minDist = 200;
+                            float turnSpeed = FollowTurnSpeed;
                             if (dist < minDist)
                             {
                                 speed = 3f + 7f * (dist / minDist);
                             }
-                            Follow(speed, FollowTurnSpeed);
+                            if (dist > 300)
+                            {
+                                speed = 10 + (dist - 300) / 100;
+                                turnSpeed = 0.4f + (dist - 300) / 200;
+                            }
+                            Follow(speed, turnSpeed);
                             break;
                     }
 

@@ -147,6 +147,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
         public override bool PreAI()
         {
             NPC head = FargoSoulsUtil.NPCExists(NPC.ai[1], NPCID.SkeletronPrime);
+            if (head == null)
+            {
+                NPC.active = false;
+                return true;
+                
+            }
             var headDLC = head.GetDLCBehavior<EDeathSPrime>();
             var emode = NPC.GetGlobalNPC<PrimeLimb>();
             emode.RunEmodeAI = true;
