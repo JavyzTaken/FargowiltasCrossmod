@@ -507,7 +507,7 @@ EmpyreanEnchant: {
 }
 
 Permafrost: {
-	DisplayName: Permafrost
+	DisplayName: Archmage
 	Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
 }
 
@@ -523,10 +523,20 @@ Bandit: {
 
 DrunkPrincess: {
 	DisplayName: Drunk Princess
-	Tooltip: "'Not gonna copy paste any of these quotes man what the hell'"
+	Tooltip: Not gonna copy paste any of these quotes man what the hell
 }
 
 Calamitas: {
-	DisplayName: Calamitas
+	DisplayName: Brimstone Witch
 	Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
+}
+
+Archmage: {
+	DisplayName: Archmage
+	Tooltip: ""
+}
+
+BrimstoneWitch: {
+	DisplayName: Brimstone Witch
+	Tooltip: ""
 }

@@ -130,11 +130,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         #endregion summonloadingbullshit
         public override void Load()
         {
-            Add("Permafrost", ModContent.NPCType<DILF>());
+            Add("Archmage", ModContent.NPCType<DILF>());
             Add("SeaKing", ModContent.NPCType<SEAHOE>());
             Add("Bandit", ModContent.NPCType<THIEF>());
             Add("DrunkPrincess", ModContent.NPCType<FAP>());
-            Add("Calamitas", ModContent.NPCType<WITCH>());
+            Add("BrimstoneWitch", ModContent.NPCType<WITCH>());
         }
         public static void Add(string internalName, int id)
         {
