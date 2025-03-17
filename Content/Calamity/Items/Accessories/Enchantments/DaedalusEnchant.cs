@@ -85,9 +85,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 addonPlayer.DaedalusTimer++;
                 if (addonPlayer.DaedalusTimer == WindupTime)
                     addonPlayer.DaedalusTimer += 60;
-                if (player.whoAmI == Main.myPlayer)
-                    CooldownBarManager.Activate("DaedalusEnchantWings", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/DaedalusEnchant").Value, DaedalusEnchant.NameColor,
-                        () => LumUtils.Saturate(Main.LocalPlayer.CalamityAddon().DaedalusTimer / WindupTime), true, activeFunction: player.HasEffect<DaedalusEffect>);
+                //if (player.whoAmI == Main.myPlayer)
+                //    CooldownBarManager.Activate("DaedalusEnchantWings", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/DaedalusEnchant").Value, DaedalusEnchant.NameColor,
+                //        () => LumUtils.Saturate(Main.LocalPlayer.CalamityAddon().DaedalusTimer / WindupTime), true, activeFunction: player.HasEffect<DaedalusEffect>);
             }
             else
             {

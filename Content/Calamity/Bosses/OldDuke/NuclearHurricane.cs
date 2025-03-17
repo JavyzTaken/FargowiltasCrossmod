@@ -34,6 +34,11 @@ public class NuclearHurricane : ModProjectile
     private static float WavinessFactor => 0.16f;
 
     /// <summary>
+    /// The amount by which this hurricane has begun appearing.
+    /// </summary>
+    public float AppearanceInterpolant => LumUtils.InverseLerp(0f, 120f, Time).Squared();
+
+    /// <summary>
     /// The dissolve interpolant of this hurricane.
     /// </summary>
     public float DissolveInterpolant => LumUtils.InverseLerp(Lifetime - 60f, Lifetime, Time);
@@ -157,11 +162,13 @@ public class NuclearHurricane : ModProjectile
         Vector2 acceleration = Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
         bool movingTowardsBorder = (Projectile.Left.X < worldEdgeFluff && acceleration.X < 0f) ||
                                    (Projectile.Right.X > Main.maxTilesX * 16f - worldEdgeFluff && acceleration.X > 0f);
+        float maxSpeed = AppearanceInterpolant * 11f;
+
         if (movingTowardsBorder)
             Projectile.velocity *= 0.993f;
 
         else
-            Projectile.velocity = (Projectile.velocity + acceleration).ClampLength(0f, 11f);
+            Projectile.velocity = (Projectile.velocity + acceleration).ClampLength(0f, maxSpeed);
     }
 
     private void ApplyParallaxPositioning()
@@ -220,13 +227,14 @@ public class NuclearHurricane : ModProjectile
         gd.RasterizerState = RasterizerState.CullNone;
 
         float time = VisualsTime;
+        float effectiveDissolveInterpolant = (1f - AppearanceInterpolant) + DissolveInterpolant;
 
         // Render the backglow.
         ManagedShader glowShader = ShaderManager.GetShader("FargowiltasCrossmod.NuclearHurricaneGlowShader");
         glowShader.TrySetParameter("localTime", time);
         glowShader.TrySetParameter("maxBumpSquish", MaxVisualBumpSquish);
         glowShader.TrySetParameter("wavinessFactor", WavinessFactor);
-        glowShader.TrySetParameter("glowColor", new Vector4(0.81f, 0.9f, 0.1f, 1f) * Projectile.Opacity * (1f - DissolveInterpolant) * 1.5f);
+        glowShader.TrySetParameter("glowColor", new Vector4(0.81f, 0.9f, 0.1f, 1f) * Projectile.Opacity * (1f - effectiveDissolveInterpolant) * 1.5f);
         glowShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.85f) * world * view * projection);
         glowShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
         glowShader.Apply();
@@ -243,7 +251,7 @@ public class NuclearHurricane : ModProjectile
         coreShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1f) * world * view * projection);
         coreShader.TrySetParameter("baseColor", new Vector3(0.7f, 0.95f, 0f));
         coreShader.TrySetParameter("additiveAccentColor", new Vector3(0.7f, 1f, 0f));
-        coreShader.TrySetParameter("dissolveInterpolant", DissolveInterpolant);
+        coreShader.TrySetParameter("dissolveInterpolant", effectiveDissolveInterpolant);
         coreShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
         coreShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
@@ -257,7 +265,7 @@ public class NuclearHurricane : ModProjectile
         foamShader.TrySetParameter("wavinessFactor", WavinessFactor);
         foamShader.TrySetParameter("zoom", 0.4f);
         foamShader.TrySetParameter("uWorldViewProjection", CreateScaleMatrix(1.25f) * world * view * projection);
-        foamShader.TrySetParameter("dissolveInterpolant", DissolveInterpolant);
+        foamShader.TrySetParameter("dissolveInterpolant", effectiveDissolveInterpolant);
         foamShader.SetTexture(NoiseTexturesRegistry.PerlinNoise.Value, 1, SamplerState.LinearWrap);
         foamShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
@@ -279,8 +287,8 @@ public class NuclearHurricane : ModProjectile
         extremesShader.TrySetParameter("localTime", time);
         extremesShader.TrySetParameter("top", false);
         extremesShader.TrySetParameter("uWorldViewProjection", bottomMatrix * world * view * projection);
-        extremesShader.TrySetParameter("color", new Vector4(0.59f, 0.84f, 0f, 1f) * (1f - DissolveInterpolant));
-        extremesShader.TrySetParameter("glowColor", new Vector4(0.7f, 0.5f, 0.5f, 0f) * (1f - DissolveInterpolant));
+        extremesShader.TrySetParameter("color", new Vector4(0.59f, 0.84f, 0f, 1f) * (1f - effectiveDissolveInterpolant));
+        extremesShader.TrySetParameter("glowColor", new Vector4(0.7f, 0.5f, 0.5f, 0f) * (1f - effectiveDissolveInterpolant));
         extremesShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
         extremesShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);
@@ -330,7 +338,7 @@ public class NuclearHurricane : ModProjectile
         return false;
     }
 
-    public override bool? CanDamage() => Z <= 0.05f && DissolveInterpolant <= 0.33f;
+    public override bool? CanDamage() => Z <= 0.05f && DissolveInterpolant <= 0.33f && AppearanceInterpolant >= 0.85f;
 
     public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
     {

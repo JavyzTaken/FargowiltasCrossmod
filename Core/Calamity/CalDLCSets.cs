@@ -92,7 +92,7 @@ namespace FargowiltasCrossmod.Core.Calamity
             Items.RockItem = itemFactory.CreateBoolSet(false,
                 ItemType<Rock>(),
                 ItemType<EternitySoul>(),
-                ItemType<HentaiSpear>(),
+                ItemType<Penetrator>(),
                 ItemType<StyxGazer>(),
                 ItemType<SparklingLove>(),
                 //ItemType<GuardianTome>(),

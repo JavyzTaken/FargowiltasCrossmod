@@ -94,6 +94,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                         float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
                         float bonusDamage = bonusMultiplier * 0.5f;
                         player.GetDamage(DamageClass.Generic) += bonusDamage;
+
+                        CooldownBarManager.Activate("AerospecDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/AerospecEnchant").Value, new Color(153, 200, 193),
+                        () => LumUtils.Saturate(DamageFormula(Main.LocalPlayer.CalamityAddon().ElementsAirTime / 420f)), true, activeFunction: player.HasEffect<ElementsForceEffect>);
                     }
                     else
                         mplayer.ElementsAirTime = 0;
@@ -134,6 +137,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public static void ResetAeroCrit(Player player)
         {
             CalDLCAddonPlayer addonPlayer = player.CalamityAddon();
+            addonPlayer.ElementsAirTime = 0;
             if (addonPlayer.NumJumpsUsed > 0)
             {
                 int critPerJump = player.ForceEffect<AerospecJumpEffect>() ? 10 : 5;

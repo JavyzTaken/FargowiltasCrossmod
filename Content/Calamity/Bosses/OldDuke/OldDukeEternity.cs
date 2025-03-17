@@ -419,8 +419,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             int postSpinGraceTime = 36;
             float spinRevolutions = 2f;
             float maxSpinArc = MathHelper.TwoPi / baseSpinDuration;
-            float desiredSpinRadius = 320f;
-            float bubbleSpeed = 5.85f;
+            float desiredSpinRadius = 350f;
+            float bubbleSpeed = 5.4f;
             ref float spinAngle = ref NPC.ai[0];
             ref float spinDirection = ref NPC.ai[1];
 
@@ -430,7 +430,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 baseSpinDuration = 29;
                 spinRevolutions = 3f;
                 bubbleSpeed = 4f;
-                desiredSpinRadius = 350f;
+                desiredSpinRadius = 380f;
                 postSpinGraceTime = 25;
             }
 
@@ -487,7 +487,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             else
                 NPC.velocity *= 0.91f;
 
-            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime || Main.mouseRight)
+            if (AITimer >= spinWindupTime + spinTime + postSpinGraceTime)
                 SwitchState();
         }
 
@@ -807,6 +807,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             float reelBackPerShark = 81f;
             float sharkDashSpeed = 21.5f;
             float oldDukeDashSpeed = 132f;
+            float dashPredictiveness = 0f;
             float oldDukeReelBackDistance = 400f; // This HEAVILY affects the difficulty of this attack since more distance from the player = less ability to enter the empty space in time.
             ref float hoverOffsetAngle = ref NPC.ai[0];
             ref float dashCounter = ref NPC.ai[1];
@@ -841,7 +842,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 NPC.damage = 0;
 
                 float aimInterpolant = LumUtils.InverseLerp(sharkFormationTime * 0.5f, 0f, AITimer - repositionTime).Squared();
-                RotateTowards(Target.Center + Target.velocity * 4f, aimInterpolant * 0.2f);
+                RotateTowards(Target.Center + Target.velocity * dashPredictiveness, aimInterpolant * 0.2f);
 
                 Animation = OldDukeAnimation.IdleAnimation;
             }
@@ -922,6 +923,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 else
                 {
                     shark.damage = shark.defDamage;
+                    shark.dontTakeDamage = true; // No ram dash cheese.
                     shark.velocity *= 1.024f;
                 }
 
@@ -1013,11 +1015,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void DoBehavior_ConjureNuclearHurricane()
         {
-            int hurricaneLifetime = 480;
+            int hurricaneLifetime = 540;
             ref float actualTimer = ref NPC.ai[0];
 
             if (AITimer == 1 && !LumUtils.AnyProjectiles(ModContent.ProjectileType<NuclearHurricane>()))
-                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), Target.Center, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f, hurricaneLifetime);
+            {
+                Vector2 hurricaneSpawnPosition = Target.Center;
+
+                // Bias the hurricane towards the world border position.
+                bool left = Target.Center.X < Main.maxTilesX * 8f;
+                hurricaneSpawnPosition.X -= left.ToDirectionInt() * 1100f;
+
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), hurricaneSpawnPosition, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 0.02f, hurricaneLifetime);
+            }
 
             actualTimer++;
             if (actualTimer >= hurricaneLifetime)
@@ -1081,6 +1091,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             {
                 shark.velocity = Vector2.Lerp(shark.velocity, shark.rotation.ToRotationVector2() * -100f, 0.1f);
                 shark.damage = shark.defDamage;
+                shark.dontTakeDamage = true; // No ram dash cheese.
 
                 if (sharkBehavior.Time >= sideHoverTime + recoilTime + dashTime)
                     sharkBehavior.Die(true);
