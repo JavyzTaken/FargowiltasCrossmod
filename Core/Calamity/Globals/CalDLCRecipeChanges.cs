@@ -257,6 +257,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<CryoStone>(),
                 ItemType<FrostFlare>()
             ]);
+            CreateCalBagRecipes(ItemType<CryogenTrophy>(), [ItemType<GlacialEmbrace>()]);
             CreateCalBagRecipes(ItemID.SpazmatismTrophy, [ItemType<Arbalest>()]);
             CreateCalBagRecipes(ItemID.RetinazerTrophy, [ItemType<Arbalest>()]);
             CreateCalBagRecipes(ItemType<AquaticScourgeBag>(),
@@ -268,6 +269,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<ScourgeoftheSeas>(),
                 ItemType<CorrosiveSpine>()
             ]);
+            CreateCalBagRecipes(ItemType<AquaticScourgeTrophy>(), [ItemType<SeasSearing>()]);
             CreateCalBagRecipes(ItemType<BrimstoneWaifuBag>(),
             [
                 ItemType<Brimlance>(),
@@ -275,6 +277,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<DormantBrimseeker>(),
                 ItemType<RoseStone>()
             ]);
+            CreateCalBagRecipes(ItemType<BrimstoneElementalTrophy>(), [ItemType<Hellborn>()]);
             CreateCalBagRecipes(ItemType<CalamitasCloneBag>(),
             [
                 ItemType<Oblivion>(),
@@ -310,7 +313,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<BorealisBomber>(),
                 ItemType<AuroradicalThrow>()
             ]);
-            CreateCalBagRecipes(ItemType<AstrumAureusTrophy>(), [ItemType<HeavenfallenStardisk>()]); 
+            CreateCalBagRecipes(ItemType<AstrumAureusTrophy>(),
+            [
+                ItemType<HeavenfallenStardisk>(),
+                ItemType<LeonidProgenitor>()
+            ]); 
             CreateCalBagRecipes(ItemID.GolemTrophy, [ItemType<AegisBlade>()]);
             CreateCalBagRecipes(ItemType<PlaguebringerGoliathBag>(),
             [
@@ -329,6 +336,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             CreateCalBagRecipes(ItemType<PlaguebringerGoliathTrophy>(),
             [
                 ItemType<PlagueCaller>(),
+                ItemType<Malachite>()
             ]);
             CreateCalBagRecipes(ItemID.FishronBossBag, [ItemType<DukesDecapitator>()]);
             CreateCalBagRecipes(ItemID.DukeFishronTrophy, [ItemType<BrinyBaron>()]);
@@ -344,7 +352,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ]);
             CreateCalBagRecipes(ItemType<RavagerTrophy>(),
             [
-                ItemType<CorpusAvertor>()
+                ItemType<CorpusAvertor>(),
+                ItemType<Vesuvius>()
             ]);
             CreateCalBagRecipes(ItemType<AstrumDeusBag>(),
             [
@@ -370,6 +379,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<RougeSlash>(),
                 ItemType<FollyFeed>()
             ]);
+            CreateCalBagRecipes(ItemType<DragonfollyTrophy>(), [ItemType<Swordsplosion>()]);
             CreateCalBagRecipes(ItemType<ProvidenceBag>(),
             [
                 ItemType<HolyCollider>(),
@@ -380,12 +390,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<DazzlingStabberStaff>(),
                 ItemType<MoltenAmputator>(),
             ]);
+            CreateCalBagRecipes(ItemType<ProvidenceTrophy>(), [ItemType<PristineFury>()]);
             CreateCalBagRecipes(ItemType<StormWeaverBag>(),
             [
                 ItemType<TheStorm>(),
                 ItemType<StormDragoon>(),
                 ItemType<LittleLight>()
             ]);
+            CreateCalBagRecipes(ItemType<WeaverTrophy>(), [ItemType<Thunderstorm>()]);
             CreateCalBagRecipes(ItemType<CeaselessVoidBag>(),
             [
                 ItemType<MirrorBlade>(),
@@ -416,6 +428,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<ToxicantTwister>(),
                 ItemType<MutatedTruffle>()
             ]);
+            CreateCalBagRecipes(ItemType<OldDukeTrophy>(), [ItemType<TheOldReaper>()]);
             CreateCalBagRecipes(ItemType<DevourerofGodsBag>(),
             [
                 ItemType<Excelsus>(),
@@ -427,7 +440,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             ]);
             CreateCalBagRecipes(ItemType<DevourerofGodsTrophy>(),
             [
-                ItemType<Norfleet>()
+                ItemType<Norfleet>(),
+                ItemType<CosmicDischarge>()
             ]);
             CreateCalBagRecipes(ItemType<YharonBag>(),
             [
@@ -444,7 +458,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             CreateCalBagRecipes(ItemType<YharonTrophy>(),
             [
                 ItemType<ForgottenDragonEgg>(),
-                ItemType<McNuggets>()
+                ItemType<McNuggets>(),
+                ItemType<YharimsCrystal>()
             ]);
             CreateCalBagRecipes(ItemType<DraedonBag>(),
             [
@@ -455,7 +470,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<AresExoskeleton>(),
                 ItemType<AtlasMunitionsBeacon>(),
                 ItemType<TheAtomSplitter>(),
-                ItemType<RefractionRotor>(),
+                ItemType<RefractionRotor>()
             ]);
             CreateCalBagRecipes(ItemType<CalamitasCoffer>(),
             [
@@ -468,6 +483,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 ItemType<Sacrifice>(),
 
             ]);
+            CreateCalBagRecipes(ItemType<SupremeCalamitasTrophy>(), [ItemType<GaelsGreatsword>()]);
             CreateCalBagRecipes(ItemID.MartianSaucerTrophy,
             [
                 ItemType<NullificationPistol>() // TODO CAL UPDATE: change to NullificationPistol
