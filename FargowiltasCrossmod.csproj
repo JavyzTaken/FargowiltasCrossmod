@@ -6,6 +6,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Content\Calamity\Bosses\Perforators\PerforatorSpike.png" />
+  </ItemGroup>
+  <ItemGroup>
 	<Reference Include="CalamityMod">
 		<HintPath>Libraries/CalamityMod.dll</HintPath>
 	</Reference>

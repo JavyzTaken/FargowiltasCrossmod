@@ -6,8 +6,6 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
-using Humanizer;
-using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +16,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 {
@@ -27,7 +26,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     {
         // Projectile.Center is tip of spike
         // Thus hitbox extends backwards from it
-        public override string Texture => FargoSoulsUtil.EmptyTexture;
+        //public override string Texture => FargoSoulsUtil.EmptyTexture;
 
         public static int TelegraphTime => 60;
         public static int ExtensionTime => 13;
@@ -41,11 +40,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public static float Width => 22;
         public bool Damaging => Timer > TelegraphTime;
 
-        public int[] Sprites = new int[BodyParts + 1];
+        //public int[] Sprites = new int[BodyParts + 1];
 
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+            Main.projFrames[Type] = 6;
         }
         public override void SetDefaults()
         {
@@ -92,10 +92,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
 
                 Projectile.spriteDirection = Main.rand.NextBool() ? 1 : -1;
                 Projectile.localAI[0] = 1;
+                Projectile.frame = Main.rand.Next(Main.projFrames[Type]);
+                /*
                 for (int i = 0; i < Sprites.Length; i++)
                 {
                     Sprites[i] = Main.rand.Next(4);
                 }
+                */
             }
             int startupTime = 15;
             if (Timer < startupTime)
@@ -147,7 +150,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            Texture2D tex = TextureAssets.Projectile[Type].Value;
+            int segments = 20;
 
+            int frameHeight = tex.Height / Main.projFrames[Type];
+            int frameWidth = tex.Width / segments;
+            Vector2 scale = new(Length * 1.03f / tex.Width, 1);
+            SpriteEffects effects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
+            Vector2 dir = Projectile.rotation.ToRotationVector2();
+            Vector2 offset = -dir * (Length - 30);
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
+            for (int i = 0; i < segments; i++)
+            {
+                Vector2 segmentOffset = offset + dir * Length * i / segments;
+                Rectangle frame = new(frameWidth * i, frameHeight * Projectile.frame, frameWidth, frameHeight);
+                Vector2 drawPos = Projectile.Center + segmentOffset;
+                Color color = Lighting.GetColor(drawPos.ToTileCoordinates());
+                for (int j = 0; j < 12; j++)
+                {
+                    Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 2f;
+                    Main.EntitySpriteDraw(tex, drawPos + afterimageOffset - Main.screenPosition, frame, Projectile.GetAlpha(color) * 0.5f, Projectile.rotation, frame.Size() / 2, scale, effects);
+                }
+
+            }
+            Main.spriteBatch.ResetToDefault();
+            for (int i = 0; i < segments; i++)
+            {
+                Vector2 segmentOffset = offset + dir * Length * i / segments;
+                Rectangle frame = new(frameWidth * i, frameHeight * Projectile.frame, frameWidth, frameHeight);
+                Vector2 drawPos = Projectile.Center + segmentOffset;
+                Color color = Lighting.GetColor(drawPos.ToTileCoordinates());
+                Main.EntitySpriteDraw(tex, drawPos - Main.screenPosition, frame, Projectile.GetAlpha(color), Projectile.rotation, frame.Size() / 2, scale, effects);
+            }
+
+
+
+            /*
             Texture2D tip = PerfsEternity.LegEndTextures[Sprites[0]].Value;
             Texture2D[] bodies = new Texture2D[BodyParts];
             for (int i = 0; i < BodyParts; i++)
@@ -185,6 +223,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Main.EntitySpriteDraw(tip, tipCenter - Main.screenPosition, null, Projectile.GetAlpha(color), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
             for (int i = 0; i < BodyParts; i++)
                 Main.EntitySpriteDraw(bodies[i], bodyCenters[i] - Main.screenPosition, null, colors[i], Projectile.rotation, bodies[i].Size() / 2, Projectile.scale, effects);
+            */
             return false;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
