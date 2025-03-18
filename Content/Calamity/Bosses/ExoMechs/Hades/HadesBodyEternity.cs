@@ -451,8 +451,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Hades
             Texture2D rightPlating2 = RightPlatingTextures[textureIndex][1].Value;
             Texture2D leftPlating3 = LeftPlatingTextures[textureIndex][2].Value;
             Texture2D rightPlating3 = RightPlatingTextures[textureIndex][2].Value;
+            Vector2 positionScale = HadesPostProcessingSystem.ScaleCorrection;
 
-            Vector2 Transform(Vector2 offset) => (offset * new Vector2(NPC.spriteDirection, 1f)).RotatedBy(NPC.rotation);
+            drawPosition *= positionScale;
+
+            Vector2 Transform(Vector2 offset) => (offset * new Vector2(NPC.spriteDirection, 1f)).RotatedBy(NPC.rotation) * positionScale;
 
             if (!IsSecondaryBodySegment)
             {
