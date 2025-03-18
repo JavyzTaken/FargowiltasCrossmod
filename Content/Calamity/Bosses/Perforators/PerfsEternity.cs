@@ -676,7 +676,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         }
         public void BigWorm()
         {
-            int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 85;
+            int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 100;
             int endTime = 150;
             NPC.velocity.Y *= 0.91f;
             if (NPC.velocity.X.NonZeroSign() == NPC.HorizontalDirectionTo(Target.Center))
@@ -1199,10 +1199,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (pos.HasNaNs() || pos.X < 0 || pos.Y < 0)
                 return;
             bool canWalkToPlayer = CheckIfCanWalk(pos, out Point groundAtPlayer);
-            groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
 
             if (canWalkToPlayer)
             {
+                groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
                 // check if player is reasonably above ground
                 Vector2 groundAtPlayerV = groundAtPlayer.ToWorldCoordinates();
                 bool validAboveGround = true;
@@ -1272,15 +1272,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 return false;
             }
                 
-            int maxHeight = HeightAboveGround * 2 / 16; 
-
+            int maxHeight = HeightAboveGround * 2 / 16;
+            Point point = FindGround(NPC.Center.ToTileCoordinates(), GravityDirection, "I") - new Point(0, 1);
             float targetX = pos.X;
             int tiles = (int)((targetX - NPC.Center.X) / 16);
+            if (point.X < 0 || point.Y < 0)
+            {
+                groundAtPlayer = new();
+                return false;
+            }
+            if (tiles == 0 || tiles <= int.MinValue)
+            {
+                groundAtPlayer = point;
+                return true;
+            }
             int dir = Math.Sign(tiles);
             if (dir == 0)
                 dir = 1;
             tiles = Math.Abs(tiles);
-            Point point = FindGround(NPC.Center.ToTileCoordinates(), GravityDirection, "I") - new Point(0, 1);
             for (int i = 0; i < tiles; i++)
             {
                 point.X += dir;
@@ -1292,7 +1301,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 // abs is the height difference between this block and previous block
                 // if it's too great, we can't simply walk to the player
                 //Main.NewText(ground.Y + " " + point.Y);
-                if (Math.Abs(ground.Y - point.Y) < maxHeight) // height difference small enough
+                int diff = ground.Y - point.Y;
+                if (ground.X < 0 || ground.Y < 0 || point.X < 0 || point.Y < 0 || diff <= int.MinValue)
+                {
+                    groundAtPlayer = new();
+                    return false;
+                }
+                if (Math.Abs(diff) < maxHeight) // height difference small enough
                 {
                     continue;
                 }

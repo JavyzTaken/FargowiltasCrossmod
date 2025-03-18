@@ -197,6 +197,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                             npc.damage = 36;
                         }
                         break;
+                    case NPCID.DungeonGuardian:
+                        {
+                            npc.lifeMax *= 10;
+                        }
+                        break;
                     case NPCID.BrainofCthulhu:
                         npc.lifeMax = (int)(npc.lifeMax * 0.65f);
                         break;
