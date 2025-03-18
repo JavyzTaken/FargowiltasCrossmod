@@ -985,7 +985,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             RecipeGroup ReaverHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("ReaverHelmet")}",
                 ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadExplore>(),
                 ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>(),
-                ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadMobility>());
+                ItemType<CalamityMod.Items.Armor.Reaver.ReaverHeadTank>());
             RecipeGroup.RegisterGroup("FargowiltasCrossmod:AnyReaverHelms", ReaverHelmsGroup);
             //daedalus head group
             RecipeGroup DeadalusHelmsGroup = new(() => $"{Language.GetTextValue("LegacyMisc.37")} {RecipeGroups("DaedalusHelmet")}",
