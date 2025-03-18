@@ -5,6 +5,7 @@ using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Assets;
 using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
@@ -413,10 +414,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void DoBehavior_BubbleSpin()
         {
-            int bubbleReleaseRate = 6;
+            int bubbleReleaseRate = WorldSavingSystem.MasochistModeReal ? 5 : 6;
             int spinWindupTime = 35;
             int baseSpinDuration = 38;
-            int postSpinGraceTime = 36;
+            int postSpinGraceTime = WorldSavingSystem.MasochistModeReal ? 25 : 36;
             float spinRevolutions = 2f;
             float maxSpinArc = MathHelper.TwoPi / baseSpinDuration;
             float desiredSpinRadius = 350f;
@@ -426,12 +427,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
 
             if (Phase >= 2)
             {
-                bubbleReleaseRate = 5;
+                bubbleReleaseRate = WorldSavingSystem.MasochistModeReal ? 4 : 5;
                 baseSpinDuration = 29;
                 spinRevolutions = 3f;
                 bubbleSpeed = 4f;
                 desiredSpinRadius = 380f;
-                postSpinGraceTime = 25;
+                postSpinGraceTime = WorldSavingSystem.MasochistModeReal ? 20 : 25;
             }
 
             int spinTime = (int)(baseSpinDuration * spinRevolutions);
@@ -510,7 +511,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             if (predictive)
             {
                 dashDestination += Target.velocity * 20f;
-                hoverTelegraphTime = 32;
+                hoverTelegraphTime = WorldSavingSystem.MasochistModeReal ? 32 : 40;
                 recoilTime = 13;
                 dashSpeed = 106f;
             }
@@ -526,7 +527,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 hoverTelegraphTime += 5;
                 recoilTime += 2;
             }
-
             if (AITimer < hoverTelegraphTime)
             {
                 float aimInterpolant = AITimer / (float)hoverTelegraphTime;
@@ -726,8 +726,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// </summary>
         public void DoBehavior_KamikazeSharks()
         {
-            int vomitDelay = 90;
-            int sharksPerSide = 5;
+            int vomitDelay = WorldSavingSystem.MasochistModeReal ? 45 : 90;
+            int sharksPerSide = WorldSavingSystem.MasochistModeReal ? 6 : 5;
             int sharkVomitRate = 2;
             ref float sharkHoverOffsetAngle = ref NPC.ai[0];
 
@@ -826,7 +826,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 // Create sharks.
                 for (int i = 1; i <= sharksOnEachSide; i++)
                 {
-                    float angle = i * -0.06f;
+                    float curveinStrength = WorldSavingSystem.MasochistModeReal ? 0.01f : 0.06f;
+                    float angle = i * -curveinStrength;
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, 0f, -i, -angle);
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, 0f, i, angle);
                 }
@@ -903,11 +904,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             SharkronPuppeteerAction = sharkModNPC =>
             {
                 NPC shark = sharkModNPC.NPC;
-
+                int spacingIndex = (int)shark.ai[1];
                 // Stay perpendicular to the Old Duke.
                 if (AITimer <= repositionTime + sharkFormationTime)
                 {
-                    int spacingIndex = (int)shark.ai[1];
                     float rotationalOffset = shark.ai[2];
                     float spacingInterpolant = MathF.Pow(LumUtils.InverseLerp(0f, sharkFormationTime, AITimer - repositionTime), 0.67f);
                     float spacingOffset = MathHelper.SmoothStep(0f, spacingIndex * spacingPerShark, spacingInterpolant) + baseSpacing * MathF.Sign(spacingIndex);
