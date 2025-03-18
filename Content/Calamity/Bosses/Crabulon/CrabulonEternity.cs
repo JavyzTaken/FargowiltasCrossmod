@@ -8,6 +8,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Assets.Sounds;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -59,11 +60,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             Asset<Texture2D> idleGlow = ModContent.Request<Texture2D>("CalamityMod/NPCs/Crabulon/CrabulonGlow");
             Asset<Texture2D> walkGlow = ModContent.Request<Texture2D>("CalamityMod/NPCs/Crabulon/CrabulonAltGlow");
             Asset<Texture2D> attackGlow = ModContent.Request<Texture2D>("CalamityMod/NPCs/Crabulon/CrabulonAttackGlow");
-            //make him put his arm up when "guarding" while fungal clump is alive
-            if (attackCycle[(int)ai_attackCycleIndex] == -1)
+            Asset<Texture2D> dizzy = ModContent.Request<Texture2D>("FargowiltasSouls/Content/PlayerDrawLayers/DizzyStars");
+            //manually draw the frame during the spin because crabulon is not centered by default
+            if (attackCycle[(int)ai_attackCycleIndex] == 6)
             {
-                spriteBatch.Draw(attack.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), drawColor, NPC.rotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(attackGlow.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), new Color(255, 255, 255), NPC.rotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
+                float addRotation = 0;
+                if (NPC.ai[2] < 1000 && NPC.ai[2] > 60)
+                {
+                    addRotation = MathF.Sin(NPC.ai[2] / 5) / 5;
+                }
+                else
+                {
+                    NPC.frame.Y = 0;
+                }
+
+                    spriteBatch.Draw(attack.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), drawColor, NPC.rotation + addRotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(attackGlow.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), new Color(255, 255, 255), NPC.rotation + addRotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
+                int dizzyFrameHeight = dizzy.Height() / 6;
+                if (NPC.ai[2] > 1000 && NPC.ai[2] < 1060)
+                {
+                    spriteBatch.Draw(dizzy.Value, NPC.Center - Main.screenPosition + new Vector2(0, -100).RotatedBy(NPC.rotation), new Rectangle(0, (int)(dizzyFrameHeight * (int)(NPC.localAI[0] / 5)), dizzy.Width(), dizzyFrameHeight), Color.White, NPC.rotation, new Vector2(dizzy.Width(), dizzy.Height() / 6) / 2, NPC.scale*2, SpriteEffects.None, 0);
+                }
                 return false;
             }
             return true;
@@ -165,22 +182,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 attackCycle = [1, 6, 1, 4, 3, 1, 1, 4, 2, 3];
             }
             Player target = Main.player[NPC.target];
-            //high defense and stand still for a while (only does when fungal clump is alive)
-            if (attackCycle[(int)ai_attackCycleIndex] == -1)
-            {
-
-                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0, 0.05f);
-                if (Math.Abs(NPC.velocity.X) < 0.1f)
-                {
-                    NPC.velocity.X = 0;
-                }
-                ai_Timer++;
-                if (ai_Timer == 180)
-                {
-                    IncrementCycle();
-                    ai_Timer = 0;
-                }
-            }
+            
             //Making sure crabulon isnt stuck in blocks/above the player. does not apply the same during all attacks so StayLevel is called inside those attacks when necessary instead
             if (attackCycle[(int)ai_attackCycleIndex] != 2 && attackCycle[(int)ai_attackCycleIndex] != 3 && attackCycle[(int)ai_attackCycleIndex] != 4 && attackCycle[(int)ai_attackCycleIndex] != 6)
             {
@@ -256,6 +258,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             ref float ai_Timer = ref NPC.ai[2];
             ai_Timer++;
             NPC.ai[0] = 0;
+            NPC.localAI[0]++;
             if (ai_Timer == 1)
             {
                 for (int i = 0; i < 10; i++)
@@ -270,6 +273,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             else
             {
+                NPC.frame.Y = 0;
                 StayLevel();
             }
             if (ai_Timer > 80 && ai_Timer < 1000)
@@ -295,6 +299,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (ai_Timer == 1000)
             {
                 SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("FargowiltasSouls/Assets/Sounds/Debuffs/DizzyBird"), NPC.Center);
                 for (int i = 0; i < Main.maxProjectiles; i++)
                 {
                     Projectile p = Main.projectile[i];
@@ -305,15 +310,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 }
                 NPC.velocity.X = 0;
             }
-            if (ai_Timer > 1000)
+            if (ai_Timer > 1000 && ai_Timer < 1060)
             {
+                NPC.frame.Y = 0;
+                StayLevel();
+                if (NPC.localAI[0] > 6 * 5)
+                {
+                    NPC.localAI[0] = 0;
+                }
+                
+            }
+            if (ai_Timer >= 1060)
+            {
+                NPC.frame.Y = 0;
                 NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.08f);
                 StayLevel();
             }
-            if (ai_Timer >= 1030)
+            if (ai_Timer >= 1080)
             {
                 ai_Timer = 0;
                 NPC.rotation = 0;
+                NPC.localAI[0] = 0;
                 IncrementCycle();
             }
         }
