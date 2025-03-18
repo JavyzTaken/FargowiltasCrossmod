@@ -83,8 +83,6 @@ using CalamityMod.Tiles.SunkenSea;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using Terraria.GameContent;
 using CalamityMod.Items.Accessories;
-using FargowiltasCrossmod.Core.Common;
-using FargowiltasSouls.Content.Bosses.Champions.Cosmos;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -143,7 +141,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo Instahouse_GetTiles_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetTiles", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo Instahouse_GetFurniture_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetFurniture", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPlayer_CatchFish_Method = typeof(CalamityPlayer).GetMethod("CatchFish", LumUtils.UniversalBindingFlags);
-        private static readonly MethodInfo BossLoot_Method = typeof(NPCLoader).GetMethod("BossLoot", LumUtils.UniversalBindingFlags);
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
@@ -195,12 +192,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_Instahouse_GetTiles(Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform);
         public delegate void Orig_Instahouse_GetFurniture(Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle);
         public delegate void Orig_CalamityPlayer_CatchFish(CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
-        public delegate void Orig_BossLoot(NPC npc, ref string name, ref int potionType);
 
         public override void Load()
         {
             On_NPC.AddBuff += NPCAddBuff_Detour;
-            On_ShimmerTransforms.IsItemTransformLocked += IsItemTransformLocked_Detour;
+            On_ShimmerTransforms.IsItemTransformLocked += IsItemTransformLocked;
         }
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -256,7 +252,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(Instahouse_GetTiles_Method, Instahouse_GetTiles_Detour);
             HookHelper.ModifyMethodWithDetour(Instahouse_GetFurniture_Method, Instahouse_GetFurniture_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPlayer_CatchFish_Method, CalamityPlayer_CatchFish_Detour);
-            HookHelper.ModifyMethodWithDetour(BossLoot_Method, BossLoot_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -1091,17 +1086,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (index >= 0) self.Player.buffType[index] = BuffID.Gills;
 
         }
-        internal static void BossLoot_Detour(Orig_BossLoot orig, NPC npc, ref string name, ref int potionType)
-        {
-            orig(npc, ref name, ref potionType);
-            if (DLCSets.NPCs.Champion != null && DLCSets.NPCs.Champion[npc.type])
-            {
-                potionType = ModContent.ItemType<SupremeHealingPotion>();
-                
-                if (npc.type == ModContent.NPCType<CosmosChampion>())
-                    potionType = ModContent.ItemType<OmegaHealingPotion>();
-            }
-        }
         #endregion
         #region Vanilla Detours
         internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)
@@ -1110,7 +1094,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 return;
             orig(self, type, time, quiet);
         }
-        internal static bool IsItemTransformLocked_Detour(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
+        internal static bool IsItemTransformLocked(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
         {
             if (type == ModContent.ItemType<ProfanedSoulCrystal>())
                 return !WorldSavingSystem.DownedMutant;
