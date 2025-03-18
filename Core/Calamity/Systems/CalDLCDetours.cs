@@ -81,6 +81,8 @@ using CalamityMod.Tiles.FurnitureAshen;
 using CalamityMod.Tiles.FurnitureEutrophic;
 using CalamityMod.Tiles.SunkenSea;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using Terraria.GameContent;
+using CalamityMod.Items.Accessories;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -194,6 +196,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public override void Load()
         {
             On_NPC.AddBuff += NPCAddBuff_Detour;
+            On_ShimmerTransforms.IsItemTransformLocked += IsItemTransformLocked;
         }
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -1090,6 +1093,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (self.TryGetGlobalNPC<CalDLCNPCChanges>(out CalDLCNPCChanges n) && self.CalamityDLC().ImmuneToAllDebuffs)
                 return;
             orig(self, type, time, quiet);
+        }
+        internal static bool IsItemTransformLocked(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
+        {
+            if (type == ModContent.ItemType<ProfanedSoulCrystal>())
+                return !WorldSavingSystem.DownedMutant;
+            return orig(type);
         }
         #endregion
     }

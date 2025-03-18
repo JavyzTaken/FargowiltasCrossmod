@@ -333,10 +333,10 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
-            if (proj.type == ProjectileType<MutantGiantDeathray2>() && Main.player[Main.myPlayer].HasBuff(BuffType<SilvaRevival>()))
+            if (proj.type == ProjectileType<MutantGiantDeathray2>() && Player.HasBuff(BuffType<SilvaRevival>()))
             {
-                Main.player[Main.myPlayer].Calamity().silvaCountdown = 0;
-                Main.player[Main.myPlayer].ClearBuff(BuffType<SilvaRevival>());
+                Player.Calamity().silvaCountdown = 0;
+                Player.ClearBuff(BuffType<SilvaRevival>());
             }
             if (ModCompatibility.WrathoftheGods.Loaded && WorldSavingSystem.EternityMode)
             {
