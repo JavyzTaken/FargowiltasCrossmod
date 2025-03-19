@@ -91,6 +91,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             if (Projectile.localAI[0] == 0)
             {
+                SoundEngine.PlaySound(Main.rand.NextFromList(PerfsEternity.RockCrunch) with { Volume = 0.75f }, Projectile.Center);
                 Projectile.netUpdate = true;
                 Projectile.rotation = Projectile.velocity.ToRotation(); // initialize starting rotation from velocity set in NewProjectile
 
@@ -116,6 +117,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             }
             else if (Timer >= TelegraphTime && Timer < TelegraphTime + ExtensionTime)
             {
+
+                if (Timer == TelegraphTime)
+                {
+                    SoundEngine.PlaySound(Main.rand.NextFromList(PerfsEternity.SpikeSound) with { Volume = 0.75f }, Projectile.Center);
+                }
                 Projectile.light = 0;
                 float totalExtension = Length - TipSegmentLength / 2.5f;
                 float extensionPerFrame = totalExtension / ExtensionTime;
