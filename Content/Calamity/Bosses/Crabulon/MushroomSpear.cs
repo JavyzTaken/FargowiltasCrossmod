@@ -1,5 +1,6 @@
 ﻿using FargowiltasCrossmod.Core;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -41,6 +42,24 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             Asset<Texture2D> head = TextureAssets.Projectile[Type];
             Asset<Texture2D> stick = ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Bosses/Crabulon/MushroomSpearStick");
 
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
+            if (Projectile.Opacity > 0.75f)
+            {
+                for (int j = 0; j < 12; j++)
+                {
+                    Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 2f * Projectile.scale;
+                    Color glowColor = Color.Cyan * 0.9f;
+
+                    /*
+                    for (int i = 0; i < Projectile.Center.Distance(new Vector2(Projectile.Center.X, Projectile.ai[2])) / 12 + 1; i++)
+                    {
+                        Main.EntitySpriteDraw(stick.Value, Projectile.Center + afterimageOffset - Main.screenPosition + new Vector2(0, i * 12), null, glowColor * Projectile.Opacity, Projectile.rotation, stick.Size() / 2, Projectile.scale, SpriteEffects.None);
+                    }
+                    */
+                    Main.EntitySpriteDraw(head.Value, Projectile.Center + afterimageOffset - Main.screenPosition, null, glowColor * Projectile.Opacity, Projectile.rotation + MathHelper.PiOver4, head.Size() / 2, Projectile.scale, SpriteEffects.None);
+                }
+            }
+            Main.spriteBatch.ResetToDefault();
             for (int i = 0; i < Projectile.Center.Distance(new Vector2(Projectile.Center.X, Projectile.ai[2])) / 12 + 1; i++)
             {
                 Main.EntitySpriteDraw(stick.Value, Projectile.Center - Main.screenPosition + new Vector2(0, i * 12), null, lightColor * Projectile.Opacity, Projectile.rotation, stick.Size() / 2, Projectile.scale, SpriteEffects.None);
@@ -73,9 +92,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             Projectile.Center = new Vector2(Projectile.Center.X, FindGround(Projectile.Center));
             Projectile.ai[2] = Projectile.Center.Y;
+            Projectile.Opacity = 0;
         }
         public override void AI()
         {
+            if (Projectile.Opacity < 1)
+                Projectile.Opacity += 0.05f;
             int vel = WorldSavingSystem.MasochistModeReal ? 40 : 25;
             Projectile.ai[1]++;
             if (Projectile.ai[1] == 60)
