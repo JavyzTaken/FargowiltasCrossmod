@@ -851,10 +851,35 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         internal static void DropSummon_Int_Detour(Orig_DropSummon_Int_Method orig, NPC npc, int itemType, bool downed, ref bool dropped, bool prerequisite = true)
         {
+            /*
+            if (!CalDLCWorldSavingSystem.DroppedSummon.Contains(npc.type))
+            {
+                if (!Main.LocalPlayer.InventoryHas(itemType))
+                {
+                    orig(npc, itemType, downed, ref dropped, prerequisite);
+                    CalDLCWorldSavingSystem.DroppedSummon.Add(npc.type);
+                }
+            }
+            */
             return;
         }
         internal static void DropSummon_String_Detour(Orig_DropSummon_String_Method orig, NPC npc, string itemType, bool downed, ref bool dropped, bool prerequisite = true)
         {
+            /*
+            if (!CalDLCWorldSavingSystem.DroppedSummon.Contains(npc.type))
+            {
+                if (ModContent.TryFind("Fargowiltas", itemType, out ModItem modItem))
+                {
+                    if (!Main.LocalPlayer.InventoryHas(modItem.Type))
+                    {
+                        orig(npc, itemType, downed, ref dropped, prerequisite);
+                        CalDLCWorldSavingSystem.DroppedSummon.Add(npc.type);
+                    }
+                }
+
+
+            }
+            */
             return;
         }
         internal static void StarterBag_ModifyItemLoot_Detour(Orig_StarterBag_ModifyItemLoot orig, StarterBag self, ItemLoot itemLoot)
