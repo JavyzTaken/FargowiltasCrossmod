@@ -6,6 +6,7 @@ using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.Cavern;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -26,6 +27,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     {
         // Projectile.Center is tip of spike
         // Thus hitbox extends backwards from it
+
         //public override string Texture => FargoSoulsUtil.EmptyTexture;
 
         public static int TelegraphTime => 60;
@@ -33,10 +35,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public static int EndTime => 50;
         public static int FadeoutTime => 12;
         public ref float Timer => ref Projectile.ai[1];
-        public const int TipLength = 80;
+        public const int TipLength = 28;
+        public const int BodySegmentLength = 72;
+        public const int TipSegmentLength = BodySegmentLength + TipLength;
         public const int BodyParts = 6;
-        public const int BodyLength = 80 * BodyParts;
-        public const int Length = TipLength + BodyLength;
+        public const int BodyLength = BodySegmentLength * BodyParts;
+        public const int Length = TipSegmentLength + BodyLength;
         public static float Width => 22;
         public bool Damaging => Timer > TelegraphTime;
 
@@ -45,7 +49,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-            Main.projFrames[Type] = 6;
+            Main.projFrames[Type] = 2;
         }
         public override void SetDefaults()
         {
@@ -108,11 +112,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     Projectile.Opacity += 1f / 8;
                 }
                 if (Timer >= 0)
-                    Projectile.velocity = Projectile.rotation.ToRotationVector2() * ((float)TipLength / startupTime) * 0.5f;
+                    Projectile.velocity = Projectile.rotation.ToRotationVector2() * ((float)TipSegmentLength / startupTime) * 0.5f;
             }
             else if (Timer >= TelegraphTime && Timer < TelegraphTime + ExtensionTime)
             {
-                float totalExtension = Length - TipLength;
+                Projectile.light = 0;
+                float totalExtension = Length - TipSegmentLength;
                 float extensionPerFrame = totalExtension / ExtensionTime;
 
                 // acceleration logic
@@ -151,79 +156,57 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D tex = TextureAssets.Projectile[Type].Value;
-            int segments = 20;
+            int x = Projectile.frame;
+            int y = 0; // tip = 0, unused = 1, middle = 2, bottom = 3
+            int framesY = 4;
 
-            int frameHeight = tex.Height / Main.projFrames[Type];
-            int frameWidth = tex.Width / segments;
-            Vector2 scale = new(Length * 1.03f / tex.Width, 1);
             SpriteEffects effects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
+
             Vector2 dir = Projectile.rotation.ToRotationVector2();
-            Vector2 offset = -dir * (Length - 30);
-            Main.spriteBatch.UseBlendState(BlendState.Additive);
-            for (int i = 0; i < segments; i++)
+            Vector2 tipCenter = Projectile.Center - dir * TipSegmentLength / 2;
+            int tipWidth = tex.Width / Main.projFrames[Type];
+            int ySize = tex.Height / framesY;
+
+            Rectangle tipFrame = new(tipWidth * x, ySize * y, tipWidth, ySize);
+            Rectangle[] bodyFrames = new Rectangle[BodyParts];
+            Vector2[] bodyCenters = new Vector2[BodyParts];
+            Color color = Projectile.GetAlpha(Lighting.GetColor(Projectile.Center.ToTileCoordinates()));
+            Color[] colors = new Color[BodyParts];
+
+            int bodyWidth = tipWidth - TipLength;
+            bodyCenters[0] = Projectile.Center - dir * (tipWidth + (bodyWidth / 2));
+            Vector2 bodyOffset = dir * bodyWidth;
+            for (int i = 0; i < BodyParts; i++)
             {
-                Vector2 segmentOffset = offset + dir * Length * i / segments;
-                Rectangle frame = new(frameWidth * i, frameHeight * Projectile.frame, frameWidth, frameHeight);
-                Vector2 drawPos = Projectile.Center + segmentOffset;
-                Color color = Lighting.GetColor(drawPos.ToTileCoordinates());
+                if (i > 0)
+                    bodyCenters[i] = bodyCenters[i - 1] - bodyOffset;
+                y = 2;
+                if (i == BodyParts - 1) // end part
+                    y = 3;
+
+                bodyFrames[i] = new(tipWidth * x, ySize * y, bodyWidth, ySize);
+                colors[i] = Projectile.GetAlpha(Lighting.GetColor(bodyCenters[i].ToTileCoordinates()));
+            }
+            if (Projectile.Opacity >= 0.99f)
+            {
+                Main.spriteBatch.UseBlendState(BlendState.Additive);
                 for (int j = 0; j < 12; j++)
                 {
                     Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 2f;
-                    Main.EntitySpriteDraw(tex, drawPos + afterimageOffset - Main.screenPosition, frame, Projectile.GetAlpha(color) * 0.5f, Projectile.rotation, frame.Size() / 2, scale, effects);
+                    Main.EntitySpriteDraw(tex, tipCenter + afterimageOffset - Main.screenPosition, tipFrame, color * 0.5f, Projectile.rotation, tipFrame.Size() / 2, Projectile.scale, effects);
+                    if (Damaging)
+                    {
+                        for (int i = 0; i < BodyParts; i++)
+                            Main.EntitySpriteDraw(tex, bodyCenters[i] + afterimageOffset - Main.screenPosition, bodyFrames[i], colors[i] * 0.5f, Projectile.rotation, bodyFrames[i].Size() / 2, Projectile.scale, effects);
+                    }
                 }
-
-            }
-            Main.spriteBatch.ResetToDefault();
-            for (int i = 0; i < segments; i++)
-            {
-                Vector2 segmentOffset = offset + dir * Length * i / segments;
-                Rectangle frame = new(frameWidth * i, frameHeight * Projectile.frame, frameWidth, frameHeight);
-                Vector2 drawPos = Projectile.Center + segmentOffset;
-                Color color = Lighting.GetColor(drawPos.ToTileCoordinates());
-                Main.EntitySpriteDraw(tex, drawPos - Main.screenPosition, frame, Projectile.GetAlpha(color), Projectile.rotation, frame.Size() / 2, scale, effects);
+                Main.spriteBatch.ResetToDefault();
             }
 
-
-
-            /*
-            Texture2D tip = PerfsEternity.LegEndTextures[Sprites[0]].Value;
-            Texture2D[] bodies = new Texture2D[BodyParts];
+            Main.EntitySpriteDraw(tex, tipCenter - Main.screenPosition, tipFrame, color, Projectile.rotation, tipFrame.Size() / 2, Projectile.scale, effects);
             for (int i = 0; i < BodyParts; i++)
-                bodies[i] = PerfsEternity.LegTextures[Sprites[i + 1]].Value;
-
-            SpriteEffects effects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
-
-            Vector2 dir = Projectile.rotation.ToRotationVector2();
-            Vector2 tipCenter = Projectile.Center - dir * tip.Width / 2;
-
-            Vector2[] bodyCenters = new Vector2[BodyParts];
-            bodyCenters[0] = Projectile.Center - dir * (tip.Width + (bodies[0].Width / 2));
-            Vector2 bodyOffset = dir * bodies[0].Width;
-            for (int i = 1; i <  bodyCenters.Length; i++)
-                bodyCenters[i] = bodyCenters[i - 1] - bodyOffset;
-
-            Color color = Lighting.GetColor(Projectile.Center.ToTileCoordinates());
-            Color[] colors = new Color[BodyParts];
-            for (int i = 0; i < BodyParts; i++)
-                colors[i] = Projectile.GetAlpha(Lighting.GetColor(bodyCenters[i].ToTileCoordinates()));
-
-            Main.spriteBatch.UseBlendState(BlendState.Additive);
-            for (int j = 0; j < 12; j++)
-            {
-                Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 2f;
-                Main.EntitySpriteDraw(tip, tipCenter + afterimageOffset - Main.screenPosition, null, Projectile.GetAlpha(color), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
-                if (Damaging)
-                {
-                    for (int i = 0; i < BodyParts; i++)
-                        Main.EntitySpriteDraw(bodies[i], bodyCenters[i] + afterimageOffset - Main.screenPosition, null, colors[i], Projectile.rotation, bodies[i].Size() / 2, Projectile.scale, effects);
-                }
-            }
-            Main.spriteBatch.ResetToDefault();
-
-            Main.EntitySpriteDraw(tip, tipCenter - Main.screenPosition, null, Projectile.GetAlpha(color), Projectile.rotation, tip.Size() / 2, Projectile.scale, effects);
-            for (int i = 0; i < BodyParts; i++)
-                Main.EntitySpriteDraw(bodies[i], bodyCenters[i] - Main.screenPosition, null, colors[i], Projectile.rotation, bodies[i].Size() / 2, Projectile.scale, effects);
-            */
+                Main.EntitySpriteDraw(tex, bodyCenters[i] - Main.screenPosition, bodyFrames[i], colors[i], Projectile.rotation, bodyFrames[i].Size() / 2, Projectile.scale, effects);
+            
             return false;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
