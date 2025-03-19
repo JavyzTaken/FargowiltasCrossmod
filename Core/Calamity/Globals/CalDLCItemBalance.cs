@@ -13,6 +13,7 @@ using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Weapons.FinalUpgrades;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
+using FargowiltasSouls.Content.Patreon.DemonKing;
 using FargowiltasSouls.Content.Patreon.Volknet;
 using FargowiltasSouls.Core.Systems;
 using System;
@@ -32,19 +33,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public static float BalanceChange(Item item)
         {
 
-            if (item.type == ItemType<MechanicalLeashOfCthulhu>())
-                return 0.5f;
-            if (item.type == ItemType<Blender>())
-                return 2f;
-            if (item.type == ItemType<NukeFishron>() || item.type == ItemType<GolemTome2>() || item.type == ItemType<DestroyerGun2>())
-                return 2f;
-
-            if (item.type == ItemType<UmbraRegalia>())
-                return 2f;
-            if (item.type == ItemType<GeminiGlaives>())
-                return 2f;
-            if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
+            if (item.type == ItemType<TheDestroyer>() || item.type == ItemType<RefractorBlaster2>() || item.type == ItemType<StaffOfUnleashedOcean>() || item.type == ItemType<OpticStaffEX>())
                 return 1.5f;
+            if (DLCSets.GetValue(DLCSets.Items.AbomTierFargoWeapon, item.type))
+                return 2f;
             if (DLCSets.GetValue(DLCSets.Items.ChampionTierFargoWeapon, item.type))
                 return 0.8f;
 
