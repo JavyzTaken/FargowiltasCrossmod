@@ -3,6 +3,7 @@ using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.BrimstoneElemental;
 using CalamityMod.Projectiles.Boss;
+using FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
@@ -37,7 +38,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         }
         public override void SetDefaults()
         {
-            NPC.lifeMax = (int)(NPC.lifeMax * 1.4f);
+            NPC.lifeMax = (int)(NPC.lifeMax * 1f);
+            //Main.NewText(NPC.defense);
+            NPC.damage = WorldSavingSystem.MasochistModeReal ? 80 : 65;
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -243,7 +246,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                         Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), eyePos, (toTargetfromEye * 4).RotatedBy(MathHelper.ToRadians((int)data)), ModContent.ProjectileType<BrimstoneBarrage>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                     }
                     dontBasicAttack = true;
-                    if ((timer-20) % 60 == 0)
+                    if ((timer-20) % 60 == 0 && WorldSavingSystem.MasochistModeReal)
                     {
                         SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, NPC.Center);
                         if (DLCUtils.HostCheck)
