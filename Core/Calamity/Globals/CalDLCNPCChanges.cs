@@ -1039,6 +1039,12 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     npcLoot.Add(ModContent.ItemType<Rock>());
                 }
+                if (npc.type == ModContent.Find<ModNPC>(ModCompatibility.WrathoftheGods.Name, "AvatarOfEmptiness").Type)
+                {
+                    LeadingConditionRule mutantRule = new(DropHelper.If(() => WorldSavingSystem.DownedMutant, true, Language.GetTextValue("Mods.FargowiltasCrossmod.Conditions.MutantDefeated")));
+                    mutantRule.Add(new CommonDrop(ModContent.ItemType<ShadowspecBar>(), 1, 10, 20));
+                    npcLoot.Add(mutantRule);
+                }
             }
             #endregion
 
