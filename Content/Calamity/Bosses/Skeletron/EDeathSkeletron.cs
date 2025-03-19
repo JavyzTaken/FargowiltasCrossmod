@@ -38,7 +38,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Skeletron
                 return true;
             }
             Player target = Main.player[NPC.target];
-            Main.NewText(timer);
             if (NPC.ai[1] == 1 && NPC.ai[2] == 280)
             {
                 telePos = target.Center + (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 300 + new Vector2(0, -300);
