@@ -117,7 +117,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             else if (Timer >= TelegraphTime && Timer < TelegraphTime + ExtensionTime)
             {
                 Projectile.light = 0;
-                float totalExtension = Length - TipSegmentLength;
+                float totalExtension = Length - TipSegmentLength / 2.5f;
                 float extensionPerFrame = totalExtension / ExtensionTime;
 
                 // acceleration logic
