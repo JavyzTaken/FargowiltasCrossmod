@@ -405,7 +405,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 if (npc.type == ModCompatibility.WrathoftheGods.NoxusBoss1.Type ||
                     npc.type == ModCompatibility.WrathoftheGods.NoxusBoss2.Type ||
-                    npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type)
+                    npc.type == ModCompatibility.WrathoftheGods.NamelessDeityBoss.Type ||
+                    npc.type == ModContent.Find<ModNPC>(ModCompatibility.WrathoftheGods.Name, "MarsBody").Type)
                 {
                     npc.lifeMax = (int)(npc.lifeMax * 1.9f);
                 }
@@ -1033,6 +1034,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     break;
             }
 
+            if (ModCompatibility.WrathoftheGods.Loaded)
+            {
+                if (npc.type == ModContent.Find<ModNPC>(ModCompatibility.WrathoftheGods.Name, "NamelessDeityBoss").Type)
+                {
+                    npcLoot.Add(ModContent.ItemType<Rock>());
+                }
+                if (npc.type == ModContent.Find<ModNPC>(ModCompatibility.WrathoftheGods.Name, "AvatarOfEmptiness").Type)
+                {
+                    LeadingConditionRule mutantRule = new(DropHelper.If(() => WorldSavingSystem.DownedMutant, true, Language.GetTextValue("Mods.FargowiltasCrossmod.Conditions.MutantDefeated")));
+                    mutantRule.Add(new CommonDrop(ModContent.ItemType<ShadowspecBar>(), 1, 10, 20));
+                    npcLoot.Add(mutantRule);
+                }
+            }
             #endregion
 
             npcLoot.Add(emodeRule);
@@ -1467,6 +1481,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 {
                     if (Main.expertMode && Main.LocalPlayer.active && !Main.LocalPlayer.dead && !Main.LocalPlayer.ghost)
                         Main.LocalPlayer.AddBuff(ModContent.BuffType<MutantPresenceBuff>(), 2);
+                }
+                
+                if (npc.type == ModContent.Find<ModNPC>(ModCompatibility.WrathoftheGods.Name, "MarsBody").Type)
+                {
+                    Main.LocalPlayer.AddBuff(ModContent.BuffType<CalamitousPresenceBuff>(), 2);
                 }
             }
             #endregion Summon Drops and Presence Debuffs

@@ -59,7 +59,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces
     public class ElementsHeader : EnchantHeader
     {
         public override int Item => ModContent.ItemType<ElementsForce>();
-        public override float Priority => 0.15f;
+        public override float Priority => 0.91f;
     }
     public class ElementsForceEffect : AccessoryEffect
     {
