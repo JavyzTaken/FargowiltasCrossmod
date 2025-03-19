@@ -1033,6 +1033,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     break;
             }
 
+            if (ModCompatibility.WrathoftheGods.Loaded)
+            {
+                if (npc.type == ModContent.Find<ModNPC>(ModCompatibility.WrathoftheGods.Name, "NamelessDeityBoss").Type)
+                {
+                    npcLoot.Add(ModContent.ItemType<Rock>());
+                }
+            }
             #endregion
 
             npcLoot.Add(emodeRule);
