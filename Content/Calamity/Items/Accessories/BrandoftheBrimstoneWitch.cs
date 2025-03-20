@@ -53,8 +53,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
             if (player.AddEffect<HeartoftheElementsEffect>(Item))
                 ModContent.GetInstance<HeartoftheElements>().UpdateAccessory(player, hideVisual);
 
-            if (player.AddEffect<OccultSkullCrownEffect>(Item))
-                ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
+            //if (player.AddEffect<OccultSkullCrownEffect>(Item))
+            //    ModContent.GetInstance<OccultSkullCrown>().UpdateAccessory(player, hideVisual);
 
             if (player.AddEffect<PurityEffect>(Item))
                 ModContent.GetInstance<Radiance>().UpdateAccessory(player, hideVisual);
@@ -82,7 +82,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
         {
             CreateRecipe()
                 .AddIngredient<HeartoftheElements>()
-                .AddIngredient<OccultSkullCrown>()
+                //.AddIngredient<OccultSkullCrown>()
                 .AddIngredient<Radiance>()
                 .AddIngredient<TheSponge>()
                 .AddIngredient<ChaliceOfTheBloodGod>()
@@ -109,12 +109,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories
 
         public override bool MinionEffect => true;
     }
+    /*
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class OccultSkullCrownEffect : BotBWEffect
     {
         public override int ToggleItemType => ModContent.ItemType<OccultSkullCrown>();
     }
+    */
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PurityEffect : BotBWEffect
