@@ -83,6 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void PostUpdateEquips(Player player)
         {
             var calPlayer = player.Calamity();
+            calPlayer.stressPills = true;
             bool wiz = player.ForceEffect<TitanHeartEffect>();
 
             // dr
@@ -98,9 +99,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 {
                     float defaultRate = calPlayer.adrenalineMax / calPlayer.AdrenalineChargeTime; // base cal charge rate, do not change
                     float balanceFactor = 0.75f; // change this to tune charge speed
-                    float wizMod = wiz ? 1.6f : 1f; // change this to tune wizard buff
+                    if (wiz)
+                        balanceFactor = 1f;
 
-                    calPlayer.adrenaline += defaultRate * balanceFactor * wizMod;
+                    calPlayer.adrenaline += defaultRate * balanceFactor;
 
                     // base cal "adren full" trigger
                     if (calPlayer.adrenaline >= calPlayer.adrenalineMax)

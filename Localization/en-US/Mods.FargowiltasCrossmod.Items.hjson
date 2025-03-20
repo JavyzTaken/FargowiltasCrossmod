@@ -420,8 +420,9 @@ TitanHeartEnchant: {
 	DisplayName: Titan Heart Enchantment
 	Tooltip:
 		'''
-		Adrenaline builds up faster while grounded
+		Adrenaline charges 20% faster, increased to 75% while grounded
 		While adrenaline is partially charged, receive up to 15% damage reduction
+		Increases your max movement speed and acceleration by 5%
 		'''
 }
 
