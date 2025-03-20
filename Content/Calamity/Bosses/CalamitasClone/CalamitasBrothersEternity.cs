@@ -110,6 +110,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             }
         }
         public List<int> AvailableStates = [];
+
+        public static readonly SoundStyle StaggerSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f };
+        public static readonly SoundStyle DashSound = new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherDash");
         #endregion
         public override bool IsLoadingEnabled(Mod mod) => CalamitasCloneEternity.Enabled;
         public override void SetStaticDefaults()
@@ -340,6 +343,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime + 40);
                 }
+                if (Timer == windupTime + windbackTime + 12)
+                {
+                    SoundEngine.PlaySound(DashSound, NPC.Center);
+                }
+
                 NPC.velocity += NPC.DirectionTo(Target.Center) * 1.2f;
                 Vector2 dir = NPC.velocity;
                 if (Timer < windupTime + windbackTime + 8)
@@ -602,6 +610,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                     if (DLCUtils.HostCheck)
                         Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center + BrothersDashTrail.Offset(NPC), Vector2.Zero, ModContent.ProjectileType<BrothersDashTrail>(), 0, 0, Main.myPlayer, NPC.whoAmI, chargeTime + 32);
                 }
+                if (cycleTimer == windupTime + windbackTime + 12)
+                {
+                    SoundEngine.PlaySound(DashSound, NPC.Center);
+                }
+                    
+
                 NPC.velocity += NPC.DirectionTo(Target.Center) * 1.5f;
                 Vector2 dir = NPC.velocity;
                 if (cycleTimer < windupTime + windbackTime + 8)
@@ -649,7 +663,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             if (StunTimer == 5)
             {
                 NPC.netUpdate = true;
-                SoundEngine.PlaySound(new SoundStyle("FargowiltasCrossmod/Assets/Sounds/BrotherStagger") with { Volume = 0.5f });
+                SoundEngine.PlaySound(StaggerSound, NPC.Center);
                 ScreenShakeSystem.StartShake(8f);
             }
             StunTimer++;

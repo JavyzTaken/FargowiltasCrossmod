@@ -33,6 +33,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         public const bool Enabled = true;
         public override bool IsLoadingEnabled(Mod mod) => BrimstoneEternity.Enabled;
         public override int NPCOverrideID => ModContent.NPCType<CalamityMod.NPCs.BrimstoneElemental.Brimling>();
+        public override void SetDefaults()
+        {
+            NPC.damage = WorldSavingSystem.MasochistModeReal ? 80 : 65;
+            base.SetDefaults();
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Asset<Texture2D> fire = ModContent.Request<Texture2D>("CalamityMod/Projectiles/Boss/BrimstoneHellfireball");
@@ -53,6 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
         Vector2 Aim = Vector2.Zero;
         public override bool PreAI()
         {
+            
             NPC.TargetClosest();
             if (!NPC.HasValidTarget || !CalDLCConfig.Instance.EternityPriorityOverRev || !CalDLCWorldSavingSystem.EternityRev)
                 return false;

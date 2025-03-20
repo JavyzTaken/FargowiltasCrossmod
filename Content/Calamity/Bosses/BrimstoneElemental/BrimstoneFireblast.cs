@@ -29,7 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
             Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 100;
             Projectile.light = 1;
         }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -72,7 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 {
                     Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.LifeDrain, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1));
                 }
-                int numDarts = 17;
+                int numDarts = 14;
                 if (DLCUtils.HostCheck)
                 {
                     for (int i = 0; i < numDarts; i++)

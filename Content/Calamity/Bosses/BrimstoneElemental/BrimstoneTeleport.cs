@@ -75,7 +75,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.BrimstoneElemental
                 owner.Center = Projectile.Center;
                 NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, owner.whoAmI);
 
-                if (WorldSavingSystem.MasochistModeReal)
+                if (WorldSavingSystem.MasochistModeReal && owner.GetLifePercent() > 0.33f)
                 {
                     float projs = 17;
                     for (int i = 0; i < projs; i++)
