@@ -188,6 +188,9 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ItemType<OrichalcumEnchant>())
                 NerfTooltip("OrichalcumEnch");
 
+            if (item.type == ItemType<EarthForce>())
+                NerfTooltip("EarthForce");
+
             if (item.type == ItemType<DaawnlightSpiritOrigin>())
                 NerfTooltip("Daawnlight");
 
