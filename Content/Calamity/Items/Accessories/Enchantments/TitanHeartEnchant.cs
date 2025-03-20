@@ -32,6 +32,7 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.CalPlayer;
 using CalamityMod.Dusts;
+using CalamityMod.Items.Accessories;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -65,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<TitanHeartMask>(1);
             recipe.AddIngredient<TitanHeartMantle>(1);
             recipe.AddIngredient<TitanHeartBoots>(1);
-            recipe.AddIngredient<TitanArm>(1);
+            recipe.AddIngredient<StressPills>(1);
             recipe.AddIngredient<GacruxianMollusk>(1);
             recipe.AddIngredient<UrsaSergeant>(1);
             recipe.AddTile(TileID.CrystalBall);

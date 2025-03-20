@@ -68,11 +68,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             Recipe recipe = CreateRecipe();
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyStatisHelms");
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelArmor>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelGreaves>());
-            recipe.AddIngredient(ItemID.GolfBallDyedPurple);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.OverloadedBlaster>());
-            recipe.AddIngredient(ModContent.ItemType<BouncySpikyBall>(), 300);
+            recipe.AddIngredient<CalamityMod.Items.Armor.Statigel.StatigelArmor>();
+            recipe.AddIngredient<CalamityMod.Items.Armor.Statigel.StatigelGreaves>();
+            recipe.AddIngredient<ShinobiBlade>();
+            recipe.AddIngredient<CalamityMod.Items.Weapons.Ranged.OverloadedBlaster>();
+            recipe.AddIngredient<BouncySpikyBall>(300);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

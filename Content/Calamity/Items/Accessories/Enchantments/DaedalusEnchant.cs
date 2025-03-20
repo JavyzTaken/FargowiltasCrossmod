@@ -27,6 +27,7 @@ using Microsoft.Xna.Framework.Graphics;
 using CalamityMod.Projectiles.Ranged;
 using Mono.Cecil;
 using static System.Net.Mime.MediaTypeNames;
+using CalamityMod.Items.Weapons.Summon;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -61,10 +62,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //recipe
             Recipe recipe = CreateRecipe();
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyDaedalusHelms", 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusBreastplate>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Daedalus.DaedalusLeggings>(), 1);
-            recipe.AddIngredient(ItemID.IceRod, 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.Wings.SoulofCryogen>(), 1);
+            recipe.AddIngredient<CalamityMod.Items.Armor.Daedalus.DaedalusBreastplate>(1);
+            recipe.AddIngredient<CalamityMod.Items.Armor.Daedalus.DaedalusLeggings>(1);
+            recipe.AddIngredient(ItemID.FrozenCandle, 20);
+            recipe.AddIngredient<CalamityMod.Items.Accessories.Wings.SoulofCryogen>(1);
+            recipe.AddIngredient<AncientIceChunk>(1);
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
         }
