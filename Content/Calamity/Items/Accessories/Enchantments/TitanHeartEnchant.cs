@@ -98,9 +98,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 if (CalamityPlayer.areThereAnyDamnBosses && calPlayer.AdrenalineEnabled && calPlayer.adrenalinePauseTimer == 0 && !wofAndNotHell)
                 {
                     float defaultRate = calPlayer.adrenalineMax / calPlayer.AdrenalineChargeTime; // base cal charge rate, do not change
-                    float balanceFactor = 0.75f; // change this to tune charge speed
+                    float balanceFactor = 0.5f; // change this to tune charge speed
                     if (wiz)
-                        balanceFactor = 1f;
+                        balanceFactor = 0.8f;
 
                     calPlayer.adrenaline += defaultRate * balanceFactor;
 
