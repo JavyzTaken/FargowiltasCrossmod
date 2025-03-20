@@ -14,7 +14,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
 {
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
-    public sealed class AresSilhouetteRenderingSystem : ModSystem
+    public sealed class AresPostProcessingSystem : ModSystem
     {
         public override void OnModLoad() => On_Main.DrawProjectiles += DrawAresSilhouetteWrapper;
 
@@ -29,7 +29,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Ares
             if (!ares.TryGetDLCBehavior(out AresBodyEternity aresBehavior))
                 return;
 
-            // TODO -- Move this elsewhere.
             if (aresBehavior.MotionBlurInterpolant > 0f)
             {
                 Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Matrix.Identity);
