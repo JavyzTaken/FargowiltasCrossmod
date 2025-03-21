@@ -80,16 +80,13 @@ namespace FargowiltasCrossmod.Content.Common
             base.Update(gameTime);
             //start at center and subtract because diff resolutions
             Left.Set(-260 - MinWidth.Pixels, 0.5f);
-            //wacky math taken from vanilla source to emulate the size of the npc chat box
-            //vanilla uses a protected field to get the amount of text lines and reflection wasnt working so im guestimating
-            //text length / 57 seems to be working in all cases ive seen
-            Top.Set(100 + (Main.npcChatText.Length / 57 + 2) * 30 - 10, 0);
-
-            //reflection attempts that dont work
-            //FieldInfo type = typeof(Main).GetNestedType("TextDisplayCache", LumUtils.UniversalBindingFlags).GetField("AmountOfLines", LumUtils.UniversalBindingFlags);
-            //FieldInfo info = typeof(Main).GetField("_textDisplayCache", LumUtils.UniversalBindingFlags);
-            //Main.NewText(type.GetValue(info));
-            //typeof(Main).get
+            
+            //replicate math vanilla uses to find textbox height
+            var cache = typeof(Main).GetField("_textDisplayCache", LumUtils.UniversalBindingFlags).GetValue(Main.instance);
+            var type = cache.GetType();
+            var amountOfLinesField = type.GetProperty("AmountOfLines", LumUtils.UniversalBindingFlags);
+            var amountOfLines = amountOfLinesField.GetValue(cache);
+            Top.Set(100 + ((int)amountOfLines + 1) * 30 - 10, 0);
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
