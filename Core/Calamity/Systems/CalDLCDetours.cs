@@ -643,7 +643,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             orig(self);
             Player player = Main.LocalPlayer;
-            player.SetToggleValue<OccultSkullCrownEffect>(true);
+            //player.SetToggleValue<OccultSkullCrownEffect>(true);
             player.SetToggleValue<PurityEffect>(true);
             player.SetToggleValue<TheSpongeEffect>(true);
             player.SetToggleValue<ChaliceOfTheBloodGodEffect>(true);

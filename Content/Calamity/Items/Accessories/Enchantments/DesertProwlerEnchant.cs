@@ -58,6 +58,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<DesertProwlerPants>();
             recipe.AddIngredient(ItemID.ThunderSpear);
             recipe.AddIngredient<SunSpiritStaff>();
+            recipe.AddIngredient<StormjawStaff>();
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

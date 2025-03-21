@@ -32,6 +32,7 @@ using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.CalPlayer;
 using CalamityMod.Dusts;
+using CalamityMod.Items.Accessories;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -50,7 +51,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.rare = ItemRarityID.Lime;
+            Item.rare = ItemRarityID.Pink;
+            Item.value = 100000;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -64,7 +66,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<TitanHeartMask>(1);
             recipe.AddIngredient<TitanHeartMantle>(1);
             recipe.AddIngredient<TitanHeartBoots>(1);
-            recipe.AddIngredient<TitanArm>(1);
+            recipe.AddIngredient<StressPills>(1);
             recipe.AddIngredient<GacruxianMollusk>(1);
             recipe.AddIngredient<UrsaSergeant>(1);
             recipe.AddTile(TileID.CrystalBall);
@@ -81,6 +83,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void PostUpdateEquips(Player player)
         {
             var calPlayer = player.Calamity();
+            calPlayer.stressPills = true;
             bool wiz = player.ForceEffect<TitanHeartEffect>();
 
             // dr
@@ -95,10 +98,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                 if (CalamityPlayer.areThereAnyDamnBosses && calPlayer.AdrenalineEnabled && calPlayer.adrenalinePauseTimer == 0 && !wofAndNotHell)
                 {
                     float defaultRate = calPlayer.adrenalineMax / calPlayer.AdrenalineChargeTime; // base cal charge rate, do not change
-                    float balanceFactor = 0.75f; // change this to tune charge speed
-                    float wizMod = wiz ? 1.6f : 1f; // change this to tune wizard buff
+                    float balanceFactor = 0.5f; // change this to tune charge speed
+                    if (wiz)
+                        balanceFactor = 0.8f;
 
-                    calPlayer.adrenaline += defaultRate * balanceFactor * wizMod;
+                    calPlayer.adrenaline += defaultRate * balanceFactor;
 
                     // base cal "adren full" trigger
                     if (calPlayer.adrenaline >= calPlayer.adrenalineMax)
