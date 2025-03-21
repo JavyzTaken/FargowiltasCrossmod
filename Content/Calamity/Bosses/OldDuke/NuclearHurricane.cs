@@ -36,7 +36,7 @@ public class NuclearHurricane : ModProjectile
     /// <summary>
     /// The amount by which this hurricane has begun appearing.
     /// </summary>
-    public float AppearanceInterpolant => LumUtils.InverseLerp(0f, 120f, Time).Squared();
+    public float AppearanceInterpolant => 1f; // LumUtils.InverseLerp(0f, 120f, Time).Squared();
 
     /// <summary>
     /// The dissolve interpolant of this hurricane.
@@ -159,12 +159,29 @@ public class NuclearHurricane : ModProjectile
 
         // Don't force the player into a hit at the world border.
         Player target = Main.player[Player.FindClosest(Projectile.Center, 1, 1)];
-        Vector2 acceleration = Projectile.SafeDirectionTo(target.Center) * new Vector2(0.2f, 0.125f);
+        Vector2 targetPos = target.Center;
+        float spawnTime = 20f;
+        float spawnLerp = Time / spawnTime;
+        float speedX = 0.2f;
+        float maxSpeed = AppearanceInterpolant * 11f;
+        if (spawnLerp < 1)
+        {
+            Vector2 hurricaneSpawnPosition = target.Center;
+
+            // Bias the hurricane towards the world border position.
+            bool left = target.Center.X < Main.maxTilesX * 8f;
+            hurricaneSpawnPosition.X -= left.ToDirectionInt() * 1100f;
+            targetPos = hurricaneSpawnPosition;
+            speedX = 2f;
+            maxSpeed = 20f;
+            Projectile.Opacity = LumUtils.InverseLerp(0, 0.3f, spawnLerp);
+        }
+        Vector2 acceleration = Projectile.SafeDirectionTo(targetPos) * new Vector2(speedX, 0.125f);
         bool movingTowardsBorder = (Projectile.Left.X < worldEdgeFluff && acceleration.X < 0f) ||
                                    (Projectile.Right.X > Main.maxTilesX * 16f - worldEdgeFluff && acceleration.X > 0f);
-        float maxSpeed = AppearanceInterpolant * 11f;
 
-        if (movingTowardsBorder)
+
+        if (movingTowardsBorder && spawnLerp >= 1)
             Projectile.velocity *= 0.993f;
 
         else
@@ -288,7 +305,7 @@ public class NuclearHurricane : ModProjectile
         extremesShader.TrySetParameter("top", false);
         extremesShader.TrySetParameter("uWorldViewProjection", bottomMatrix * world * view * projection);
         extremesShader.TrySetParameter("color", new Vector4(0.59f, 0.84f, 0f, 1f) * (1f - effectiveDissolveInterpolant));
-        extremesShader.TrySetParameter("glowColor", new Vector4(0.7f, 0.5f, 0.5f, 0f) * (1f - effectiveDissolveInterpolant));
+        extremesShader.TrySetParameter("glowColor", new Vector4(0.7f, 0.5f, 0.5f, 0f) * (1f - effectiveDissolveInterpolant) * Projectile.Opacity);
         extremesShader.SetTexture(MiscTexturesRegistry.DendriticNoiseZoomedOut.Value, 1, SamplerState.LinearWrap);
         extremesShader.Apply();
         gd.SetVertexBuffer(MeshRegistry.CylinderVertices);

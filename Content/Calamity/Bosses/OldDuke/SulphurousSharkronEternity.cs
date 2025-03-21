@@ -75,12 +75,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             {
                 Vector2 goreDirection = NPC.velocity.SafeNormalize(Vector2.Zero);
                 goreDirection.Y = -MathF.Abs(goreDirection.Y);
-                goreDirection = Vector2.Lerp(goreDirection, -Vector2.UnitY, 0.5f);
-                if (WorldSavingSystem.MasochistModeReal)
-                    goreDirection.X *= 6f / 5f; // increased amount of sharks; thus gore density remains the same
+                goreDirection = Vector2.Lerp(goreDirection, -Vector2.UnitY, 0.4f);
 
                 for (int i = 0; i < 5; i++)
-                    LumUtils.NewProjectileBetter(NPC.GetSource_Death(), NPC.Center, goreDirection * Main.rand.NextFloat(16f, 40f) * new Vector2(Main.rand.NextFloat(1f, 2f), 1f), ModContent.ProjectileType<FallingVomitGore>(), 270, 0f);
+                {
+                    Vector2 goreVelocity = goreDirection * Main.rand.NextFloat(16f, 40f);
+                    goreVelocity.X *= 1.2f;
+                    LumUtils.NewProjectileBetter(NPC.GetSource_Death(), NPC.Center, goreVelocity * new Vector2(Main.rand.NextFloat(0.8f, 2f), 1f), ModContent.ProjectileType<FallingVomitGore>(), 270, 0f);
+                }
             }
 
             for (int i = 0; i < 15; i++)

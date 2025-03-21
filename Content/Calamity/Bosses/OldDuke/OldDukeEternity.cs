@@ -216,7 +216,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         public override void SetDefaults()
         {
             base.SetDefaults();
-            NPC.DR_NERD(0.1f, null, null, null, true);
+            NPC.DR_NERD(0.0f, null, null, null, true);
         }
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
@@ -498,7 +498,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
         /// <param name="predictive">Whether the dashes are predictive or not.</param>
         public void DoBehavior_Dashes(bool predictive)
         {
-            int hoverTelegraphTime = 28;
+            int hoverTelegraphTime = WorldSavingSystem.MasochistModeReal ? 28 : 35;
             int recoilTime = 16;
             int dashTime = 13;
             int dashCount = 4;
@@ -511,7 +511,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             if (predictive)
             {
                 dashDestination += Target.velocity * 20f;
-                hoverTelegraphTime = WorldSavingSystem.MasochistModeReal ? 32 : 40;
+                hoverTelegraphTime = WorldSavingSystem.MasochistModeReal ? 40 : 50;
                 recoilTime = 13;
                 dashSpeed = 106f;
             }
@@ -805,7 +805,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             float baseSpacing = 132f;
             float spacingPerShark = 122f;
             float reelBackPerShark = 81f;
-            float sharkDashSpeed = 21.5f;
+            float sharkDashSpeed = WorldSavingSystem.MasochistModeReal ? 21f : 18f; // 21.5f;
             float oldDukeDashSpeed = 132f;
             float dashPredictiveness = 0f;
             float oldDukeReelBackDistance = 400f; // This HEAVILY affects the difficulty of this attack since more distance from the player = less ability to enter the empty space in time.
@@ -826,7 +826,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
                 // Create sharks.
                 for (int i = 1; i <= sharksOnEachSide; i++)
                 {
-                    float curveinStrength = WorldSavingSystem.MasochistModeReal ? 0.01f : 0.06f;
+                    float curveinStrength = 0.01f;
                     float angle = i * -curveinStrength;
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, 0f, -i, -angle);
                     NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<SulphurousSharkron>(), NPC.whoAmI, 0f, i, angle);
@@ -1022,11 +1022,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.OldDuke
             {
                 Vector2 hurricaneSpawnPosition = Target.Center;
 
-                // Bias the hurricane towards the world border position.
-                bool left = Target.Center.X < Main.maxTilesX * 8f;
-                hurricaneSpawnPosition.X -= left.ToDirectionInt() * 1100f;
-
-                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), hurricaneSpawnPosition, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 0.02f, hurricaneLifetime);
+                LumUtils.NewProjectileBetter(NPC.GetSource_FromAI(), hurricaneSpawnPosition, Vector2.Zero, ModContent.ProjectileType<NuclearHurricane>(), 500, 0f, -1, 10f, hurricaneLifetime);
             }
 
             actualTimer++;

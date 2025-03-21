@@ -1,7 +1,11 @@
-﻿using Luminance.Common.Utilities;
+﻿using CalamityMod;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -76,6 +80,18 @@ public class FallingVomitGore : ModProjectile
 
     public override bool PreDraw(ref Color lightColor)
     {
-        return true;
+        Asset<Texture2D> t = TextureAssets.Projectile[Type];
+        Main.spriteBatch.SetBlendState(BlendState.Additive);
+        for (int j = 0; j < 12; j++)
+        {
+            Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 3f * Projectile.scale;
+            Color glowColor = Color.YellowGreen * 0.9f;
+
+
+            Main.EntitySpriteDraw(t.Value, Projectile.Center + afterimageOffset - Main.screenPosition, null, Projectile.GetAlpha(glowColor), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+        }
+        Main.spriteBatch.ResetToDefault();
+        Main.EntitySpriteDraw(t.Value, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, t.Size() / 2, Projectile.scale, SpriteEffects.None);
+        return false;
     }
 }
