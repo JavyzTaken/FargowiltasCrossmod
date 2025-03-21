@@ -35,7 +35,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public static int EndTime => 50;
         public static int FadeoutTime => 12;
         public ref float Timer => ref Projectile.ai[1];
-        public const int TipLength = 28;
+        public const int TipLength = 30;
         public const int BodySegmentLength = 72;
         public const int TipSegmentLength = BodySegmentLength + TipLength;
         public const int BodyParts = 6;
@@ -43,6 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public const int Length = TipSegmentLength + BodyLength;
         public static float Width => 22;
         public bool Damaging => Timer > TelegraphTime;
+        public int SpikeVariant;
 
         //public int[] Sprites = new int[BodyParts + 1];
 
@@ -98,6 +99,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Projectile.spriteDirection = Main.rand.NextBool() ? 1 : -1;
                 Projectile.localAI[0] = 1;
                 Projectile.frame = Main.rand.Next(Main.projFrames[Type]);
+                SpikeVariant = Main.rand.Next(3);
                 /*
                 for (int i = 0; i < Sprites.Length; i++)
                 {
@@ -163,14 +165,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             Texture2D tex = TextureAssets.Projectile[Type].Value;
             int x = Projectile.frame;
-            int y = 0; // tip = 0, unused = 1, middle = 2, bottom = 3
-            int framesY = 4;
+            int y = SpikeVariant; // tip = 0, 1, 2, unused = 3, middle = 4, bottom = 5
+            int framesY = 6;
 
             SpriteEffects effects = ((Projectile.spriteDirection <= 0) ? SpriteEffects.FlipVertically : SpriteEffects.None);
 
             Vector2 dir = Projectile.rotation.ToRotationVector2();
             Vector2 tipCenter = Projectile.Center - dir * TipSegmentLength / 2;
-            int tipWidth = tex.Width / Main.projFrames[Type];
+            int tipWidth = TipSegmentLength;
             int ySize = tex.Height / framesY;
 
             Rectangle tipFrame = new(tipWidth * x, ySize * y, tipWidth, ySize);
@@ -179,16 +181,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Color color = Projectile.GetAlpha(Lighting.GetColor(Projectile.Center.ToTileCoordinates()));
             Color[] colors = new Color[BodyParts];
 
-            int bodyWidth = tipWidth - TipLength;
+            int bodyWidth = BodySegmentLength;
             bodyCenters[0] = Projectile.Center - dir * (tipWidth + (bodyWidth / 2));
             Vector2 bodyOffset = dir * bodyWidth;
             for (int i = 0; i < BodyParts; i++)
             {
                 if (i > 0)
                     bodyCenters[i] = bodyCenters[i - 1] - bodyOffset;
-                y = 2;
+                y = 4;
                 if (i == BodyParts - 1) // end part
-                    y = 3;
+                    y = 5;
 
                 bodyFrames[i] = new(tipWidth * x, ySize * y, bodyWidth, ySize);
                 colors[i] = Projectile.GetAlpha(Lighting.GetColor(bodyCenters[i].ToTileCoordinates()));

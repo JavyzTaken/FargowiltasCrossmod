@@ -67,6 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<SnowRuffianGreaves>();
             recipe.AddIngredient<IcicleStaff>();
             recipe.AddIngredient<FrostBlossomStaff>();
+            recipe.AddIngredient(ItemID.Leather, 5);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }

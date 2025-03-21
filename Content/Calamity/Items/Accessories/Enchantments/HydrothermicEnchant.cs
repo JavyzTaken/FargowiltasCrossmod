@@ -56,7 +56,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.rare = ItemRarityID.Yellow;
+            Item.rare = ItemRarityID.Lime;
+            Item.value = 250000;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -71,7 +72,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Hydrothermic.HydrothermicSubligar>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.Helstorm>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.HavocsBreath>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.SlagsplitterPauldron>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Placeables.PyreMantleMolten>(), 100);
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
         }

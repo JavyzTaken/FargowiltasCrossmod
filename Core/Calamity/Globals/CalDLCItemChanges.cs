@@ -13,6 +13,7 @@ using CalamityMod.Items.Placeables.Furniture.Fountains;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
+using CalamityMod.Items.TreasureBags.MiscGrabBags;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
@@ -23,6 +24,7 @@ using Fargowiltas;
 using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using Fargowiltas.Items.Summons;
+using Fargowiltas.Items.Summons.Deviantt;
 using Fargowiltas.Items.Summons.Mutant;
 using Fargowiltas.Items.Summons.SwarmSummons;
 using Fargowiltas.Items.Summons.VanillaCopy;
@@ -49,6 +51,7 @@ using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -253,6 +256,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<CelestialOnion>() && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
+            if (item.type == ModContent.ItemType<SuspiciousLookingChest>())
+            {
+                //BaseSummon summon = (BaseSummon)item.ModItem;
+                if (!Main.hardMode && player.ZoneSnow) return false;
+            }
             return true;
         }
         public static bool isFargSummon(Item item) {
@@ -292,6 +300,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 item.consumable = false;
             }
         }
+        public override void RightClick(Item item, Player player)
+        {
+            if (item.type == ModContent.ItemType<StarterBag>())
+            {
+                WorldSavingSystem.ReceivedTerraStorage = true;
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                    NetMessage.SendData(MessageID.WorldData);
+            }
+            base.RightClick(item, player);
+        }
         // Copied from Mutant Mod
         static string ExpandedTooltipLoc(string line) => Language.GetTextValue($"Mods.FargowiltasCrossmod.ExpandedTooltips.{line}");
         TooltipLine FountainTooltip(string biome) => new TooltipLine(Mod, "Tooltip0", $"[i:909] [c/AAAAAA:{ExpandedTooltipLoc($"Fountain{biome}")}]");
@@ -313,6 +331,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
                 {
                     tooltips[i].Text = "";
+                }
+                if (item.type == ModContent.ItemType<SuspiciousLookingChest>() && tooltips[i].Name == "Tooltip1")
+                {
+                    tooltips[i].Text += " " + Language.GetTextValue("Conditions.InHardmode");
                 }
             }
             if (item.type == ModContent.ItemType<Rock>())

@@ -5,7 +5,9 @@ using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
+using NoxusBoss.Core.World.WorldSaving;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -22,24 +24,38 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
         {
             binaryWriter.Write(wallAttack);
             binaryWriter.Write7BitEncodedInt(timer);
+            binaryWriter.Write7BitEncodedInt(numBefore);
+            binaryWriter.Write7BitEncodedInt(lastTimeUsed);
+            binaryWriter.Write7BitEncodedInt(useInNext);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
             wallAttack = binaryReader.ReadBoolean();
             timer = binaryReader.Read7BitEncodedInt();
+            numBefore = binaryReader.Read7BitEncodedInt();
+            lastTimeUsed = binaryReader.Read7BitEncodedInt();
+            useInNext = binaryReader.Read7BitEncodedInt();
         }
         public bool wallAttack = false;
-        public int timer = 0;
+        public int timer = 25;
+        public int numBefore = 0;
+        public int lastTimeUsed = 0;
+        public int useInNext = 8;
         public override bool PreAI()
         {
             if (!NPC.HasValidTarget) return true;
             Player target = Main.player[NPC.target];
+            //Main.NewText(wallAttack);
             if (wallAttack && NPC.ai[2] % 10 != 0)
             {
-                NPC.velocity = (target.Center + new Vector2(0, -300) - NPC.Center).SafeNormalize(Vector2.Zero) * 3;
+                    NPC.velocity = (target.Center + new Vector2(0, -300) - NPC.Center).SafeNormalize(Vector2.Zero) * 3;
                 NPC.localAI[0]++;
                 Lighting.AddLight(NPC.Center, TorchID.White);
-
+                if (WorldSavingSystem.MasochistModeReal)
+                {
+                    NPC.ai[0] = 7;
+                    NPC.ai[2] = 5;
+                }
                 timer++;
                 if (NPC.localAI[0] >= 45)
                 {
@@ -54,6 +70,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                 {
                     SoundEngine.PlaySound(SoundID.Item163, target.Center);
                     float angle = Main.rand.NextFloat(0, MathHelper.TwoPi);
+                    
                     if (DLCUtils.HostCheck)
                         for (int i = -10; i < 11; i++)
                         {
@@ -62,8 +79,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                 }
                 if (timer >= 550 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    timer = 0;
+                    timer = 25;
                     wallAttack = false;
+                    NPC.ai[2] = numBefore + 1;
+                    if (WorldSavingSystem.MasochistModeReal)
+                    {
+                        NPC.ai[0] = 1;
+                    }
                     if (Main.netMode == NetmodeID.Server)
                     {
                         NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, NPC.whoAmI);
@@ -72,9 +94,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                 return false;
 
             }
-            if (NPC.ai[3] == 1 && NPC.ai[2] % 10 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
+            //wallAttack = true;
+            if (NPC.ai[3] == 1  && Main.netMode != NetmodeID.MultiplayerClient && ((WorldSavingSystem.MasochistModeReal && NPC.ai[2] >= lastTimeUsed + useInNext) || (!WorldSavingSystem.MasochistModeReal && NPC.ai[2] % 10 == 0)))
             {
                 wallAttack = true;
+                numBefore = (int)NPC.ai[2];
+                lastTimeUsed = (int)NPC.ai[2];
+                useInNext = Main.rand.Next(8, 14);
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, NPC.whoAmI);
