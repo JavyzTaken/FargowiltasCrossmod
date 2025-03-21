@@ -24,6 +24,7 @@ using Fargowiltas;
 using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
 using Fargowiltas.Items.Summons;
+using Fargowiltas.Items.Summons.Deviantt;
 using Fargowiltas.Items.Summons.Mutant;
 using Fargowiltas.Items.Summons.SwarmSummons;
 using Fargowiltas.Items.Summons.VanillaCopy;
@@ -50,6 +51,7 @@ using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -254,6 +256,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<CelestialOnion>() && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
+            if (item.type == ModContent.ItemType<SuspiciousLookingChest>())
+            {
+                //BaseSummon summon = (BaseSummon)item.ModItem;
+                if (!Main.hardMode && player.ZoneSnow) return false;
+            }
             return true;
         }
         public static bool isFargSummon(Item item) {
@@ -324,6 +331,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
                 {
                     tooltips[i].Text = "";
+                }
+                if (item.type == ModContent.ItemType<SuspiciousLookingChest>() && tooltips[i].Name == "Tooltip1")
+                {
+                    tooltips[i].Text += " " + Language.GetTextValue("Conditions.InHardmode");
                 }
             }
             if (item.type == ModContent.ItemType<Rock>())
