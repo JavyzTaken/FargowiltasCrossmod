@@ -492,15 +492,13 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             #endregion
 
             #region SwarmBalance
-            //Main.NewText(npc.GetGlobalNPC<EnergizedGlobalNPC>() != null);
             if (Fargowiltas.Fargowiltas.SwarmActive && Fargowiltas.Fargowiltas.SwarmItemsUsed >= 1)
             {
-                FieldInfo bossList = typeof(EnergizedGlobalNPC).GetField("Bosses", LumUtils.UniversalBindingFlags);
-                if (FargoSets.NPCs.SwarmHealth[npc.type] > 0 || ((int[])bossList.GetValue(bossList)).Contains(npc.type))
-                {
-                    npc.lifeMax =  (int)(npc.lifeMax * 0.5f);
+                // matching mutant mod conditions for nerfs
+                if (npc.GetGlobalNPC<EnergizedGlobalNPC>().SwarmHealth)
+                    npc.lifeMax = (int)(npc.lifeMax * 0.5f);
+                if (!npc.townNPC && npc.lifeMax > 10 && npc.damage > 0)
                     npc.damage = (int)(npc.damage * 0.2f);
-                }
             }
             #endregion
 
