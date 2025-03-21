@@ -266,7 +266,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.QueenBee
 
                     Vector2 projectileVelocity = (Main.player[NPC.target].Center - NPC.Center).SafeNormalize(Vector2.UnitY) * stingerSpeed;
                     int type = Main.zenithWorld ? ModContent.ProjectileType<PlagueStingerGoliathV2>() : ProjectileID.QueenBeeStinger;
-                    int numProj = 11;
+                    int numProj = 7;
                     int spread = 50;
 
                     if (WorldSavingSystem.MasochistModeReal)

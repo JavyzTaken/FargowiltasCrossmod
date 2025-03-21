@@ -93,6 +93,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         // AI override
         // GlobalNPC
         private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityAIMethod = typeof(CalamityGlobalNPC).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityOtherStatChangesMethod = typeof(CalamityGlobalNPC).GetMethod("OtherStatChanges", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
@@ -144,6 +145,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
+        public delegate void Orig_CalamityAI(CalamityGlobalNPC self, NPC npc);
         public delegate void Orig_CalamityOtherStatChanges(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
@@ -203,6 +205,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             // AI override
             // GlobalNPC
             HookHelper.ModifyMethodWithDetour(CalamityPreAIMethod, CalamityPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityAIMethod, CalamityAI_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
@@ -278,6 +281,30 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 npc.defDamage = defDamage; // do not fuck with defDamage please
             }
             return result;
+        }
+        internal static void CalamityAI_Detour(Orig_CalamityAI orig, CalamityGlobalNPC self, NPC npc)
+        {
+            bool wasRevenge = CalamityWorld.revenge;
+            bool wasDeath = CalamityWorld.death;
+            bool wasBossRush = BossRushEvent.BossRushActive;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
+
+            int defDamage = npc.defDamage; // do not fuck with defDamage please
+
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = false;
+                CalamityWorld.death = false;
+                BossRushEvent.BossRushActive = false;
+            }
+            orig(self, npc);
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = wasRevenge;
+                CalamityWorld.death = wasDeath;
+                BossRushEvent.BossRushActive = wasBossRush;
+                npc.defDamage = defDamage; // do not fuck with defDamage please
+            }
         }
 
         internal static void CalamityOtherStatChanges_Detour(Orig_CalamityOtherStatChanges orig, CalamityGlobalNPC self, NPC npc)
@@ -950,9 +977,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorage", "CraftingAccess").Type);
                 itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
                 itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
-                WorldSavingSystem.ReceivedTerraStorage = true;
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                    NetMessage.SendData(MessageID.WorldData);
+                
             }
             else if (ModLoader.HasMod("MagicStorageExtra"))
             {
@@ -960,9 +985,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorageExtra", "CraftingAccess").Type);
                 itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
                 itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
-                WorldSavingSystem.ReceivedTerraStorage = true;
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                    NetMessage.SendData(MessageID.WorldData);
             }
             //itemLoot.Add(isTerry);
             if (ModLoader.TryGetMod("CalamityModMusic", out Mod musicMod))
