@@ -114,9 +114,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
                     dlc.HydrothermicFlareCooldown = 1;
                     if (player.whoAmI == Main.myPlayer)
                     {
-                        int flareDamage = force ? 350 : 200;
+                        int flareDamage = force ? 300 : 200;
                         if (player.HasEffect<ElementsForceEffect>())
-                            flareDamage = 1000;
+                            flareDamage = 600;
                         flareDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, flareDamage);
                         Projectile.NewProjectile(GetSource_EffectItem(player), player.Center, player.DirectionTo(Main.MouseWorld).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * Main.rand.NextFloat(13f, 17f), 
                             ModContent.ProjectileType<HydrothermicVentShot>(), flareDamage, 2f, player.whoAmI);
@@ -135,7 +135,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
             else
             {
-                if (modPlayer.WeaponUseTimer > 0 && !disabled)
+                if (player.HeldItem != null && player.HeldItem.damage > 0 && player.controlUseItem && !disabled)
                 {
                     if (dlc.HydrothermicHeat < MaxHeat)
                         dlc.HydrothermicHeat += 1;

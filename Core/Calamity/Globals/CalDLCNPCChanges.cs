@@ -518,7 +518,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 }
                 if (player.FargoSouls().ForceEffect<OrichalcumEnchant>())
                 {
-                    modifier -= 0.1f;
+                    modifier -= 0.0285f; //roughly makes it 2x but might not be exact
                 }
 
                 npc.lifeRegen = (int)(npc.lifeRegen * modifier);
