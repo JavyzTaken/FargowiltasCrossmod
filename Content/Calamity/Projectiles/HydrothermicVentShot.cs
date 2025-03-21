@@ -28,6 +28,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Projectiles
             Projectile.width = 16;
             Projectile.height = 16;
             Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.Generic;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 120;
             Projectile.penetrate = 1;
