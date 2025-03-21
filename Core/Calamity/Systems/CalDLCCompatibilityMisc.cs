@@ -6,6 +6,9 @@ using CalamityMod;
 using CalamityMod.CalPlayer;
 using CalamityMod.Enums;
 using CalamityMod.Events;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.DraedonsArsenal;
+using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.AstrumAureus;
@@ -70,6 +73,7 @@ using FargowiltasSouls.Content.Buffs;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Buffs.Souls;
+using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
@@ -357,7 +361,36 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             newDebuffIDs.AddRange(calamityDebuffs);
             debuffIDs.SetValue(null, newDebuffIDs);
             #endregion CalDebuffListCompat
-            
+            #region SwordRework
+            int[] CalSwordsToApplyRework = [ModContent.ItemType<GaussDagger>(), ModContent.ItemType<AbsoluteZero>(), ModContent.ItemType<AegisBlade>(),
+            ModContent.ItemType<Aftershock>(), ModContent.ItemType<AnarchyBlade>(), ModContent.ItemType<AstralBlade>(),
+            ModContent.ItemType<AstralScythe>(),ModContent.ItemType<Ataraxia>(),ModContent.ItemType<Avalanche>(),
+            ModContent.ItemType<BalefulHarvester>(),ModContent.ItemType<Basher>(),
+            ModContent.ItemType<BlightedCleaver>(),ModContent.ItemType<Brimlash>(),ModContent.ItemType<BrimstoneSword>(),
+            ModContent.ItemType<BrinyBaron>(),ModContent.ItemType<BurntSienna>(),ModContent.ItemType<Carnage>(),
+            ModContent.ItemType<CatastropheClaymore>(),ModContent.ItemType<TrueCausticEdge>(),ModContent.ItemType<CelestialClaymore>(),
+            ModContent.ItemType<CometQuasher>(),ModContent.ItemType<DarklightGreatsword>(),ModContent.ItemType<DefiledGreatsword>(),
+            ModContent.ItemType<DevilsDevastation>(),ModContent.ItemType<DraconicDestruction>(),
+            ModContent.ItemType<Earth>(),ModContent.ItemType<EntropicClaymore>(),ModContent.ItemType<EssenceFlayer>(),
+            ModContent.ItemType<EutrophicScimitar>(),ModContent.ItemType<EvilSmasher>(),ModContent.ItemType<ExaltedOathblade>(),
+            ModContent.ItemType<Excelsus>(),ModContent.ItemType<FeralthornClaymore>(),ModContent.ItemType<FlarefrostBlade>(),
+            ModContent.ItemType<Floodtide>(),ModContent.ItemType<ForbiddenOathblade>(),ModContent.ItemType<ForsakenSaber>(),
+            ModContent.ItemType<GaelsGreatsword>(),ModContent.ItemType<GalactusBlade>(),ModContent.ItemType<GeliticBlade>(),
+            ModContent.ItemType<GrandGuardian>(),ModContent.ItemType<GreatswordofJudgement>(),
+            ModContent.ItemType<Greentide>(),ModContent.ItemType<HellfireFlamberge>(),ModContent.ItemType<Hellkite>(),
+            ModContent.ItemType<HolyCollider>(),ModContent.ItemType<IridescentExcalibur>(),
+            ModContent.ItemType<LifehuntScythe>(),ModContent.ItemType<LionHeart>(),ModContent.ItemType<MajesticGuard>(),
+            ModContent.ItemType<MirrorBlade>(),ModContent.ItemType<Orderbringer>(),ModContent.ItemType<PerfectDark>(),
+            ModContent.ItemType<PlagueKeeper>(),ModContent.ItemType<RedSun>(),
+            ModContent.ItemType<SeashineSword>(),ModContent.ItemType<SolsticeClaymore>(),ModContent.ItemType<SoulHarvester>(),
+            ModContent.ItemType<StellarStriker>(),ModContent.ItemType<StormRuler>(),ModContent.ItemType<StormSaber>(),
+            ModContent.ItemType<Swordsplosion>(),ModContent.ItemType<TaintedBlade>(),ModContent.ItemType<TeardropCleaver>(),
+            ModContent.ItemType<TerrorBlade>(),ModContent.ItemType<TheDarkMaster>(),ModContent.ItemType<TheEnforcer>(),
+            ModContent.ItemType<TheLastMourning>(),ModContent.ItemType<TheMutilator>(),ModContent.ItemType<TitanArm>(),
+            ModContent.ItemType<UltimusCleaver>(),ModContent.ItemType<VeinBurster>(),ModContent.ItemType<Virulence>(),
+            ModContent.ItemType<VoidEdge>(),ModContent.ItemType<WindBlade>(),];
+            SwordGlobalItem.AllowedModdedSwords = [.. CalSwordsToApplyRework];
+            #endregion
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it
         public ref Dictionary<int, Action<NPC>> DeathEffectsList => ref BossRushEvent.BossDeathEffects;

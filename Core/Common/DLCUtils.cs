@@ -1,4 +1,6 @@
-﻿using FargowiltasSouls.Core.Systems;
+﻿using CalamityMod;
+using FargowiltasCrossmod.Core.Calamity.Systems;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,10 +44,19 @@ namespace FargowiltasCrossmod.Core.Common
             if (WorldSavingSystem.EternityMode && prerequisite && !downed && Main.netMode != NetmodeID.MultiplayerClient && npc.HasPlayerTarget && !droppedSummonFlag)
             {
                 Player player = Main.player[npc.target];
-
                 if (ModContent.TryFind(mod, itemName, out ModItem modItem))
-                    Item.NewItem(npc.GetSource_Loot(), player.Hitbox, modItem.Type);
-                droppedSummonFlag = true;
+                {
+                    if (!CalDLCWorldSavingSystem.DroppedSummon.Contains(npc.type))
+                    {
+                        if (!Main.LocalPlayer.InventoryHas(modItem.Type))
+                        {
+                            CalDLCWorldSavingSystem.DroppedSummon.Add(npc.type);
+                            Item.NewItem(npc.GetSource_Loot(), player.Hitbox, modItem.Type);
+                            droppedSummonFlag = true;
+                        }
+                    }
+                }
+
             }
         }
         /// <summary>

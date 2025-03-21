@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasSouls.Core.Systems;
 using log4net.Core;
@@ -43,6 +44,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             get => permafrostPhaseSeen;
             set => permafrostPhaseSeen = value;
         }
+
+        public static List<int> DroppedSummon = [];
 
         public override void OnWorldLoad()
         {
@@ -126,6 +129,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             if (downedArmoredDigger)
                 downed.Add("downedArmoredDigger");
             tag["downed"] = downed;
+
+            tag["droppedSummon"] = DroppedSummon;
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -141,6 +146,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             downedCloudElemental = downed.Contains("downedCloudElemental");
             downedEarthElemental = downed.Contains("downedEarthElemental");
             downedArmoredDigger = downed.Contains("downedArmoredDigger");
+
+            DroppedSummon = tag.GetList<int>("droppedSummon").ToList();
             /*
             if (ModCompatibility.InfernumMode.Loaded)
             {

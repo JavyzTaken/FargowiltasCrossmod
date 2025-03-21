@@ -42,6 +42,22 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public const int HeightAboveGround = 275;
         public float Acceleration => State == (int)States.MoveToPlayer ? 0.4f : 0.2f;
         public static float MaxMovementSpeed => 12f;
+
+        // Sounds
+        public const string SoundPath = "FargowiltasCrossmod/Assets/Sounds/Perforators/";
+        public static readonly SoundStyle[] RockCrunch = [ 
+            new SoundStyle(SoundPath + "RockCrunch1"), 
+            new SoundStyle(SoundPath + "RockCrunch2"), 
+            new SoundStyle(SoundPath + "RockCrunch3"), 
+            new SoundStyle(SoundPath + "RockCrunch4") 
+        ];
+
+        public static readonly SoundStyle[] SpikeSound = [
+            new SoundStyle(SoundPath + "SpikeSound1"),
+            new SoundStyle(SoundPath + "SpikeSound2"),
+            new SoundStyle(SoundPath + "SpikeSound3"),
+            new SoundStyle(SoundPath + "SpikeSound4")
+        ];
         #region Fight Related
 
         public float SpawnProgress;
@@ -788,6 +804,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
                 {
                     Vector2 endPoint = leg.GetEndPoint();
+                    SoundEngine.PlaySound(Main.rand.NextFromList(RockCrunch), endPoint);
                     if (DLCUtils.HostCheck)
                     {
                         int dir = Math.Sign(endPoint.X - npc.Center.X);
