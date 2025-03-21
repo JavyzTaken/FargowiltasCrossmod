@@ -45,7 +45,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
         {
             if (!NPC.HasValidTarget) return true;
             Player target = Main.player[NPC.target];
-            Main.NewText(wallAttack);
+            //Main.NewText(wallAttack);
             if (wallAttack && NPC.ai[2] % 10 != 0)
             {
                     NPC.velocity = (target.Center + new Vector2(0, -300) - NPC.Center).SafeNormalize(Vector2.Zero) * 3;

@@ -9,6 +9,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.Localization;
+using System.Reflection;
 
 namespace FargowiltasCrossmod.Content.Common
 {
@@ -73,6 +74,22 @@ namespace FargowiltasCrossmod.Content.Common
     {
         public SwitchModButton(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
         {
+        }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            //start at center and subtract because diff resolutions
+            Left.Set(-260 - MinWidth.Pixels, 0.5f);
+            //wacky math taken from vanilla source to emulate the size of the npc chat box
+            //vanilla uses a protected field to get the amount of text lines and reflection wasnt working so im guestimating
+            //text length / 57 seems to be working in all cases ive seen
+            Top.Set(100 + (Main.npcChatText.Length / 57 + 2) * 30 - 10, 0);
+
+            //reflection attempts that dont work
+            //FieldInfo type = typeof(Main).GetNestedType("TextDisplayCache", LumUtils.UniversalBindingFlags).GetField("AmountOfLines", LumUtils.UniversalBindingFlags);
+            //FieldInfo info = typeof(Main).GetField("_textDisplayCache", LumUtils.UniversalBindingFlags);
+            //Main.NewText(type.GetValue(info));
+            //typeof(Main).get
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
