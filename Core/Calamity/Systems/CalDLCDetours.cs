@@ -950,9 +950,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorage", "CraftingAccess").Type);
                 itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
                 itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
-                WorldSavingSystem.ReceivedTerraStorage = true;
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                    NetMessage.SendData(MessageID.WorldData);
+                
             }
             else if (ModLoader.HasMod("MagicStorageExtra"))
             {
@@ -960,9 +958,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorageExtra", "CraftingAccess").Type);
                 itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
                 itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
-                WorldSavingSystem.ReceivedTerraStorage = true;
-                if (Main.netMode != NetmodeID.SinglePlayer)
-                    NetMessage.SendData(MessageID.WorldData);
             }
             //itemLoot.Add(isTerry);
             if (ModLoader.TryGetMod("CalamityModMusic", out Mod musicMod))

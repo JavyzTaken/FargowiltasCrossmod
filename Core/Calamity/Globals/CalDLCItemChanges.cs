@@ -13,6 +13,7 @@ using CalamityMod.Items.Placeables.Furniture.Fountains;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
+using CalamityMod.Items.TreasureBags.MiscGrabBags;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
@@ -291,6 +292,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 //item.maxStack = 1;
                 item.consumable = false;
             }
+        }
+        public override void RightClick(Item item, Player player)
+        {
+            if (item.type == ModContent.ItemType<StarterBag>())
+            {
+                WorldSavingSystem.ReceivedTerraStorage = true;
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                    NetMessage.SendData(MessageID.WorldData);
+            }
+            base.RightClick(item, player);
         }
         // Copied from Mutant Mod
         static string ExpandedTooltipLoc(string line) => Language.GetTextValue($"Mods.FargowiltasCrossmod.ExpandedTooltips.{line}");
