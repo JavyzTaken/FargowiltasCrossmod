@@ -1,0 +1,669 @@
+EternityRevDifficulty: {
+	Name: Eternity-Revengeance
+	ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
+	ExpandedDescription:
+		'''
+		Enables [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
+
+		Reworks the [c/00FFFF:Eternity Mode] behaviour for several Calamity bosses. Current reworks:
+		-All bosses up to Calamitas Clone
+		-Old Duke
+		-Exo Mechs
+		The remaining bosses are still being worked on!
+
+		By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+		{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
+		[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+		'''
+	Activation: Eternity-Revengeance Mode has activated!
+	Deactivation: Eternity-Revengeance Mode has deactivated.
+}
+
+EternityDeathDifficulty: {
+	Name: Eternity-Death
+	ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes and extra Vanilla boss behavior.]"
+	ExpandedDescription:
+		'''
+		Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
+		[c/00FFFF:This is the main intended experience.] 
+
+		AReworks the [c/00FFFF:Eternity Mode] behaviour for several Calamity bosses. Current reworks:
+		-All bosses up to Calamitas Clone
+		-Old Duke
+		-Exo Mechs
+		The remaining bosses are still being worked on!
+		Eternity-Death only: Expands behavior for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity behavior or new Calamity-inspired behavior.
+
+		By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+		{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
+		[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+		'''
+	Activation: Eternity-Death Mode has activated!
+	Deactivation: Eternity-Death Mode has deactivated.
+}
+
+UI: {
+	ToggledWithCal: Toggled with Calamity's difficulty selector
+	HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
+	AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
+	ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+}
+
+Buffs: {
+	CalamitousPresenceBuff: {
+		Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
+		DisplayName: Calamitous Presence
+	}
+}
+
+Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
+
+ExpandedTooltips: {
+	FountainAstral: Forces surrounding biome state to Astral Infection (in hardmode only) upon activation
+	FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
+	FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
+	FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
+	MasoModeDisabled: "[c/FF0000:Calamity Crossmod Support:] Activate Eternity with Calamity's difficulty selector instead!"
+	UsablePostMutant: "[c/FF0000:Calamity Crossmod Support:] Can only be used after defeating the Mutant"
+	DisabledByDefault: "[c/FF0000:Calamity Crossmod Support:] Toggle disabled by default"
+}
+
+RecipeGroups: {
+	GildedDagger: Gilded Dagger
+	EvilBar: Evil Bar
+	VictideHelmet: Victide Headpiece
+	AerospecHelmet: Aerospec Headpiece
+	StatigelHelmet: Statigel Headpiece
+	ReaverHelmet: Reaver Headpiece
+	DaedalusHelmet: Daedalus Headpiece
+	HydrothermicHelmet: Hydrothermic Headpiece
+}
+
+BossRushDialogue: {
+	Start: Let's get started.
+	EndP1_1: This is boring.
+	EndP1_2: Let's cut to the chase.
+}
+
+EmodeBannedByInfernum: "[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode]."
+
+WizardEffect: ｛
+    Aerospec: Crit and damage bonus doubled
+    Marnite: Increased damage and range of lasers, placement bonuses doubled
+    DesertProwler: Stronger jumps, Stronger knockback and damage
+    Wulfrum: Scanned enemies take even more extra damage from debuffs
+    Hydrothermic: Overheat lasts for longer, damage reduction increased to 45%, flare damage increased
+    Daedalus: Increased arrow damage, amount and speed
+    SnowRuffian: Increased wing strength
+    Reaver: Defense and damage reduction increased to 30 and 30%, increased life regen and movement speed, increased thorn damage and buff duration
+    Plaguebringer: Plague cloud deals more damage and charges from longer away
+    PlagueReaper:
+    	'''
+    	Debuffs spread from farther 
+    	Enemies spread debuffs for a longer amount of time
+    	'''
+    Umbraphile: Bats deal more damage and heal for more
+    Sulphur: Jumps create 3 bubbles
+    Victide: Spikes are no longer affected by gravity and inflict venom
+    Statigel: Higher maximum speed, damage bonus doubled
+    TitanHeart: Doubled damage reduction, increased grounded charge rate to 100% total
+    FathomSwarmer: Larger Light, Faster Fish
+    Astral: Longer trail, more damage
+    Brimflame: Consumes only half of your defense, but still retains effect of all of your defense
+    Mollusk: More damage, More immunity frames
+    Empyrean: Increases damage, healing, and rage generation
+}
+
+Toggler: ｛
+    CalamitySoulHeader: Soul of Calamity
+    VagabondsSoulHeader: Vagabond's Soul
+    NanotechEffect: Nanotech
+    EclipseMirrorEffect: Eclipse Mirror
+    AmalgamEffect: The Amalgam
+    AsgardianAegisEffect: Asgardian Aegis
+    RampartofDeitiesEffect: Rampart of Deities
+    ElementalGauntletEffect: Elemental Gauntlet
+    EtherealTalismanEffect: Ethereal Talisman
+    CalamitySniperHeader: Calamity Sniper's Soul
+    ElementalQuiverEffect: Elemental Quiver
+    QuiverofNihilityEffect: Quiver of Nihility
+    NucleogenesisEffect: Nucleogenesis
+    StatisVoidSashEffect: Statis' Void Sash
+    AbyssalDivingSuitEffect: Abyssal Diving Suit
+    BrandoftheBrimstoneWitchHeader: "{$Mods.FargowiltasCrossmod.Items.BrandoftheBrimstoneWitch.DisplayName}"
+    HeartoftheElementsEffect: Heart of the Elements
+    OccultSkullCrownEffect: Occult Skull Crown
+    PurityEffect: Radiance
+    TheSpongeEffect: The Sponge
+    ChaliceOfTheBloodGodEffect: Chalice of the Blood God
+    NebulousCoreEffect: Nebulous Core
+    YharimsGiftEffect: "{$Mods.CalamityMod.Items.Accessories.YharimsGift.DisplayName}"
+    DraedonsHeartEffect: Draedons Heart
+    CalamityEffect: "{$Mods.CalamityMod.Items.Accessories.Calamity.DisplayName}"
+    # gale
+    GaleHeader: Force of the Gale
+    SnowRuffianEffect: Better Gliding
+    GaleSlowfallEffect: Slowfall
+    StatigelEffect: Statigel Movement
+    SulphurEffect: Bubble Jump
+    VictideEffect: Urchin Spikes
+    GaleSpineEffect: Spines
+    DesertProwlerEffect: Charge Jump
+    GaleJumpEffect: Infinite Jumps
+    # elements
+    ElementsHeader: Force of the Elements
+    DaedalusEffect: Daedalus Arrows
+    ReaverEffect: Reaver Stats
+    HydrothermicEffect: Overheat
+    AerospecJumpEffect: Aerospec Effect
+    # world shaper
+    MarniteRepulsionEffect: Marnite Repulsion
+    MarniteLasersEffect: Marnite Lasers
+    # others
+    WulfrumEffect: Wulfrum Drone
+    PlaguebringerEffect: Plague Cloud
+    PlagueReaperEffect: Debuff Spread
+    TitanHeartEffect: Titan Size
+    UmbraphileEffect: Bat Mode
+    FathomSwarmerEffect: Angler Fish
+    BrimflameEffect: Brimflame Burst
+    MolluskEffect: Mollusk Slam
+    EmpyreanEffect: Empowered Hits
+}
+
+Projectiles: ｛
+    FungusBall.DisplayName: Fungus Ball
+    MushroomSpear.DisplayName: Mushroom Spear
+    ShroomGas.DisplayName: Shroom Gas
+    SandChunk.DisplayName: Sand Chunk
+    SuckedSandBlast.DisplayName: Sand Blast
+    CursedLightning.DisplayName: Cursed Lightning
+    CurvingCursedFlames.DisplayName: Curving Cursed Flames
+    MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
+    ShadeLightningCloud.DisplayName: Shade Lightning Cloud
+    ToothBall.DisplayName: Tooth Ball
+    Tooth.DisplayName: Tooth
+    HomingRocket.DisplayName: Homing Rocket
+    HomingSickle.DisplayName: Homing Sickle
+    HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
+    BouncingFireball.DisplayName: Bouncing Fireball
+    BigLight.DisplayName: Big Light
+    DestructionBolt.DisplayName: Destruction Bolt
+    StarofDestruction.DisplayName: Star of Destruction
+
+    Boss: {
+    	AcceleratingEbonianGlob.DisplayName: Ebonian Glob
+    	AcceleratingCrimulanGlob.DisplayName: Crimulan Glob
+    	SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
+    	SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
+    	MutantYharonVortex.DisplayName: The Sun
+    	IchorShotFast.DisplayName: Ichor Shot
+    }
+
+    SlamTelegraph.DisplayName: Slam Telegraph
+    IceBomb.DisplayName: Ice Bomb
+    IceCrystal.DisplayName: Ice Crystal
+    IceChain.DisplayName: Ice Chain
+    IceTrident.DisplayName: Ice Trident
+    CrimsonPaladinSpike.DisplayName: Crimson Spike
+    PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
+    MutantOldDuke.DisplayName: Old Duke
+    DLCMutantSpearSpin.DisplayName: Mutant's Atlantis
+    DLCMutantSpearDash.DisplayName: Mutant's Atlantis
+    MutantAresNuke.DisplayName: Mutant's Gauss Nuke
+    MutantAresBomb.DisplayName: Mutant's Gauss Nuke
+    DLCMutantFishronRitual.DisplayName: Mutant Gauss Ritual
+    MutantSlimeGod.DisplayName: Slime God
+    DLCBloomLine.DisplayName: Telegraph Line
+    MutantSCal.DisplayName: Calamitas' Skullshield
+    MutantPBG.DisplayName: Plaguebringer Goliath
+    MutantAureusSpawn.DisplayName: Aureus Spawn
+    MutantHolyRay.DisplayName: Holy Ray
+    MutantDoGBody.DisplayName: The Devourer of Gods
+    MutantDoGHead.DisplayName: The Devourer of Gods
+    MutantDoGTail.DisplayName: The Devourer of Gods
+    MutantPolter.DisplayName: Necroplasm
+    ArcticPaw.DisplayName: Arctic Paw
+    Blizzard.DisplayName: Blizzard
+    DarkIceCrystal.DisplayName: Dark Ice Crystal
+    FrostFlare.DisplayName: Frost Flare
+    FrostShard.DisplayName: Frost Shard
+    IceArrow.DisplayName: Ice Arrow
+    IceShot.DisplayName: Ice Shot
+    IceStar.DisplayName: Ice Star
+    CryogenRitual.DisplayName: Cryogen Ritual
+    PermafrostRitual.DisplayName: Permafrost Ritual
+    IceCloud.DisplayName: Chilling Snow
+    BrimstoneDebris.DisplayName: Brimstone Debris
+    BrimstonePulse.DisplayName: Brimstone Pulse
+    BrimstoneClone.DisplayName: Brimstone Clone
+    BrimBeam.DisplayName: Brim Beam
+    BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
+    BrimstoneTeleport.DisplayName: Brimstone Teleport
+    BrimstoneFireblast.DisplayName: Brimstone Fireblast
+    FeatherJumpFeather.DisplayName: Feather
+    MarniteDagger.DisplayName: Marnite Dagger
+    MarniteLaser.DisplayName: Marnite Laser
+    ProwlerTornado.DisplayName: Prowler Tornado
+    WulfrumCollector.DisplayName: Wulfrum Collector
+    WulfrumScanner.DisplayName: Wulfrum Scanner
+    CrystalPlatform.DisplayName: Crystal Platform
+    PlagueCloud.DisplayName: Plague Cloud
+    Eruption.DisplayName: Eruption
+    VampireBat.DisplayName: Vampire Bat
+    SulphurBubble.DisplayName: Sulphur Bubble
+    VictideSpike.DisplayName: Victide Spike
+    GoldenShowerShot.DisplayName: Golden Shower Shot
+    HiveMindFiretrail.DisplayName: Cursed Fire
+    BrainMassProjectile.DisplayName: Rotten Brainmass
+    GravityVileClot.DisplayName: Vile Clot
+    VileClotDrop.DisplayName: Vile Clot
+    SulphurCloud.DisplayName: Sulphur Cloud
+    PureGel.DisplayName: Pure Gel
+    HiveMindPulse.DisplayName: Hive Mind Pulse
+    ApolloLineTelegraph.DisplayName: Telegraph
+    ApolloMissile.DisplayName: Plasma Missile
+    AresMissile.DisplayName: Thermal Missile
+    AresMissileBackground.DisplayName: Thermal Missile
+    ArtemisLaserImproved.DisplayName: Thermal Laser
+    ArtemisLaserSmall.DisplayName: Small Thermal Laser
+    CannonLaserbeam.DisplayName: Energized Thermal Deathray
+    DraedonLootCrate.DisplayName: Draedon Loot Crate
+    ExoelectricBlast.DisplayName: Exoelectric Blast
+    ExoOverloadDeathray.DisplayName: Exo Overload Deathray
+    GaussNuke.DisplayName: Gauss Nuke
+    GaussNukeBoom.DisplayName: Thermonuclear Explosion
+    HadesExoEnergyOrb.DisplayName: Exoelectric Energy Orb
+    HadesLaserBurst.DisplayName: Laser Burst
+    HadesMine.DisplayName: Hades Mine
+    HadesSuperLaserbeam.DisplayName: Exo Energy Blast
+    HomingTeslaBurst.DisplayName: Tesla Burst
+    LargeTeslaSphere.DisplayName: Tesla Sphere
+    LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
+    LingeringPlasmaFireball.DisplayName: Plasma Fireball
+    SmallTeslaArc.DisplayName: Tesla Arc
+    ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
+    ScourgeSandstream.DisplayName: Scourge Sandstream
+    SmallTeslaSphere.DisplayName: Tesla Sphere
+    PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
+    BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
+    AresDeathAnimationExplosion.DisplayName: Explosion
+    SmallHadesSegmentExplosion.DisplayName: Explosion
+    BigHadesSegmentExplosion.DisplayName: Explosion
+    AresCoreLaserSmall.DisplayName: Energized Spark
+    AresSwingingKatanas.DisplayName: XF-09 Ares Energy Katana
+    ApolloPlasmaFireball.DisplayName: Plasma Fireball
+    AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+    ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+    HadesMissile.DisplayName: Fortified Missile
+    CodebreakerDataStream.DisplayName: Codebreaker Data Stream
+    CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
+    BigBubble.DisplayName: Big Bubble
+    Bubble.DisplayName: Bubble
+    AquaticSuck.DisplayName: Aquatic Suck
+    FlamableGas.DisplayName: Flamable Gas
+    ToxicGas.DisplayName: Toxic Gas
+    FathomAngler.DisplayName: Fathom Angler
+    AstralTrailStar.DisplayName: Astral Trail Star
+    BrimflameBurst.DisplayName: Brimflame Burst
+    ClamSlam.DisplayName: Clam Slam
+    SmallCannonLaser.DisplayName: Laser
+    PulseBlast.DisplayName: Pulse Blast
+    HadesLineTelegraph.DisplayName: Hades Line Telegraph
+    ApolloMissile2.DisplayName: Apollo Missile
+    BatMode.DisplayName: Bat Mode
+    PerfExplosion.DisplayName: Perforating Explosion
+    PerforatorSpike.DisplayName: Perforating Spike
+    PerforatorLegHitbox.DisplayName: Perforator Leg
+    PerforatorRubble.DisplayName: Perforating Rubble
+    DaedalusArrow.DisplayName: Daedalus Arrow
+    ExplorationFeather.DisplayName: Feather
+    SulphurParticulate.DisplayName: Sulphur Particulate
+    GaleSpine.DisplayName: Gale Spine
+    HydrothermicVentShot.DisplayName: Hydrothermic Flare
+    ChargedGigablast.DisplayName: Brimstone Gigablast
+    SuckedRock.DisplayName: Sucked Rock
+    CalcloneWave.DisplayName: Fire Wave
+    EmpyreanStar.DisplayName: Empyrean Star
+    BrimstoneArtillery.DisplayName: Brimstone Hellblast
+    BrimstoneFireball.DisplayName: Brimstone Fireball
+    Gigablast.DisplayName: Brimstone Gigablast
+    Fireblast.DisplayName: Brimstone Fireblast
+    BrimstoneBall.DisplayName: Brimstone Fireball
+    BrothersEyeFlash.DisplayName: Eye Flash
+    BrimstoneBarrageGravitating.DisplayName: Brimstone Dart
+    MutantFrostMist.DisplayName: Frost Mist
+    CalcloneFireBackground.DisplayName: Fire Background
+    BrothersDashTrail.DisplayName: Dash Trail
+    AquaticUrchinProjectile.DisplayName: Aquatic Urchin
+    ArsenalCrate.DisplayName: Explosive Crate
+    ExplosiveCrate.DisplayName: Explosive Crate
+    FallingVomitGore.DisplayName: Gore
+    FuelSpark.DisplayName: Fuel Spark
+    LingeringAcidBubble.DisplayName: Acid Bubble
+    NuclearHurricane.DisplayName: Nuclear Hurricane
+    NuclearVortex.DisplayName: Nuclear Vortex
+    SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
+    TastyFuelContainer.DisplayName: Fuel Container
+    TrasherProjectile.DisplayName: Trasher
+    VortexFormingAcidDroplet.DisplayName: Acid Droplet
+    AbomMauler.DisplayName: Mauler
+    MushroomSpear2.DisplayName: Mushroom Spear
+}
+
+NPCs: ｛
+    FungalClump.DisplayName: Fungal Clump
+    LargePerforatorBody.DisplayName: Large Perforator
+    LargePerforatorBody2.DisplayName: Large Perforator
+    LargePerforatorHead.DisplayName: Large Perforator
+    LargePerforatorTail.DisplayName: Large Perforator
+    PermafrostBoss.DisplayName: Permafrost
+    
+    AresHand: {
+    	DisplayName: Ares Hand
+        	EnergyKatanaDisplayName: XF-09 Ares Energy Katana
+    	PulseCannonDisplayName: XF-09 Ares Pulse Cannon
+    }
+
+    Draedon: {
+    	IntroductionMonologue1: I have waited long for this moment.
+    	IntroductionMonologue2: Your nature fascinates me, for I do not understand it.
+    	IntroductionMonologue3: You will face my creations, which have surpassed even gods.
+    	IntroductionMonologue4: And you will show me your disposition through battle.
+    	IntroductionMonologue5: Now, choose.
+    	IntroductionMonologueBrief: Make your choice.
+    	ExoMechChoiceResponse1: Excellent. Your flight abilities will be enhanced as the experiment begins.
+    	ExoMechChoiceResponse2: They will arrive shortly.
+    	Interjection1: Hmm...
+    	Interjection2_Thermal_Minor: It appears that you have thus far sustained minor thermal burns.
+    	Interjection2_Thermal_Major: It appears that you have thus far sustained major thermal burns.
+    	Interjection2_Thermal_NearLethal: It appears that you have thus far sustained near-lethal thermal burns.
+    	Interjection2_Plasma_Minor: It appears that you have thus far sustained minor plasma burns.
+    	Interjection2_Plasma_Major: It appears that you have thus far sustained major plasma burns.
+    	Interjection2_Plasma_NearLethal: It appears that you have thus far sustained near-lethal plasma burns.
+    	Interjection2_Electricity_Minor: It appears that you have sustained minor nerve damage from electric shocks.
+    	Interjection2_Electricity_Major: It appears that you have sustained major nerve damage from electric shocks.
+    	Interjection2_Electricity_NearLethal: It appears that you have sustained near-lethal nerve damage from electric shocks.
+    	Interjection2_Internal_Minor: It appears that you are currently suffering from minor internal organ damage.
+    	Interjection2_Internal_Major: It appears that you are currently suffering from major internal organ damage.
+    	Interjection2_Internal_NearLethal: It appears that you are currently suffering from near-lethal internal organ damage.
+    	Interjection2_BluntForceTrauma_Minor: It appears that you have been struck by minor blunt force trauma.
+    	Interjection2_BluntForceTrauma_Major: It appears that you have been struck by major blunt force trauma.
+    	Interjection2_BluntForceTrauma_NearLethal: It appears that you have been struck by near-lethal blunt force trauma.
+    	Interjection2_Undamaged: It appears that you have not sustained any damage. Fascinating.
+    	Interjection3: These results are excellent.
+	    Interjection4: We shall now reset the variables to their controls for the next phase of testing.
+    	Interjection5: Now, prepare yourself.
+    	Interjection6: My remaining machines shall return shortly.
+    	Interjection7: Marvelous.
+    	Interjection8: Your abilities up to this point have captured my interest.
+    	Interjection9: Now, it is time for the final phase of testing.
+    	Interjection10: I have instructed my last machine to operate at maximum firepower.
+    	Interjection10_Plural: I have instructed my last machines to operate at maximum firepower.
+    	Interjection11: Good luck.
+    	EndOfBattle_FirstDefeat1: Extraordinary!
+    	EndOfBattle_FirstDefeat2: This outcome has fallen far outside the expectations of my hypotheses.
+	    EndOfBattle_FirstDefeat3: I shall soon depart. There is much to be examined from this encounter. Before that, however...
+    	EndOfBattle_FirstDefeat4: Take this, as an extension of gratitude for your time.
+    	EndOfBattle_FirstDefeat5: If you wish to do combat with my machines again, you know how to operate the Codebreaker.
+    	EndOfBattle_FirstDefeat6: Farewell.
+    	EndOfBattle_SuccessiveDefeat1: Another completed experiment.
+    	EndOfBattle_SuccessiveDefeat2: Allow me a moment to analyze the results...
+    	EndOfBattle_SuccessiveDefeat3_Perfect: Extraordinary! Your combat engagement, patience, precision, and skill have not gone unnoticed.
+    	EndOfBattle_SuccessiveDefeat3_Excellent: Your aptitude is excellent. With a bit more precision, a perfect outcome may be within reach.
+    	EndOfBattle_SuccessiveDefeat3_Good: This outcome is useful.
+    	EndOfBattle_SuccessiveDefeat3_Acceptable: This outcome is unremarkable, yet serviceable.
+    	EndOfBattle_SuccessiveDefeat3_Bad: This data is of little use to me.
+    	EndOfBattle_SuccessiveDefeat3_WhyDidYouMeltTheBoss: This data is of no use to me.
+    	EndOfBattle_SuccessiveDefeat4_Perfect: This data is of sublime quality.
+    	EndOfBattle_SuccessiveDefeat4_Excellent: Perhaps soon a revolutionary insight shall be discovered?
+    	EndOfBattle_SuccessiveDefeat4_ImproveFightTime: Should you desire to engage my machines again, I would suggest a more drawn out fight.
+    	EndOfBattle_SuccessiveDefeat4_ImproveAggression: Should you desire to engage my machines again, I would suggest a more risky combat approach.
+    	EndOfBattle_SuccessiveDefeat4_ImproveBuffs: Should you desire to engage my machines again, I would suggest a reduction in consumable enhancements.
+    	EndOfBattle_SuccessiveDefeat4_ImproveHitCounter: Should you desire to engage my machines again, I would suggest greater dodging precision.
+    	EndOfBattle_SuccessiveDefeat4_Bad: A more refined combat approach would be more conducive to insightful analysis.
+    	EndOfBattle_SuccessiveDefeat4_WhyDidYouMeltTheBoss: That was far, far too short for me to draw any insightful conclusions.
+    	EndOfBattle_SuccessiveDefeat5: I await the next battle.
+    	EndOfBattle_FirstDefeatReconBodyKill1: Intriguing...
+    	EndOfBattle_FirstDefeatReconBodyKill2: A temperamental disposition was not a data point I had considered.
+    	EndOfBattle_FirstDefeatReconBodyKill3: Regardless, as I was saying...
+    	Death: Precisely within the margins of my calculations.
+    	PlayerDeathAtAmusingTime: That was rather inopportune, but still within the margins of my calculations.
+    	Error: The fabric of this reality rips at the seams.
+    }
+
+    MutantGFBText: {
+    	QuoteP2: Time to stop playing around.
+    	QuoteDoG: The world is trembling..
+    }
+
+    ShopModSwapper: {
+    	Default: Switch Mod
+    	Vanilla: Vanilla
+    	Calamity: Calamity Mod
+    }
+
+    PermafrostChat: {
+    	Defeat1: You clearly possess great skill! My thanks to you for freeing me, and providing an opportunity to defrost my fighting abilities.
+    	Defeat2: Aah, a good round of sparring. I need the exercise, so thanks for that.
+    }
+
+    ThanatosRename: XM-04 Hades
+    ApolloRename: XS-11 Apollo
+    ExoTwinsRenameNormal: XS-01 Artemis and XS-11 Apollo
+    MutantBR.DisplayName: Mutant B R
+    MediumWormBodySegment.DisplayName: Medium Worm Body Segment
+    MediumWormHeadSegment.DisplayName: Medium Worm Head Segment
+    MediumWormTailSegment.DisplayName: Medium Worm Tail Segment
+}
+
+Items: ｛   
+    SulphurEnchant: {
+    	DisplayName: Sulphurous Enchantment
+    	Tooltip:
+    		'''
+    		Grants a sulphur jump that spawns a sulphur bubble on use
+    		The bubble releases damaging gas when hit by you
+    		'''
+    }
+
+    VictideEnchant: {
+    	DisplayName: Victide Enchantment
+    	Tooltip:
+    		'''
+    		Grants urchin spikes that protrude from your body
+    		You gain 4 defense while the spikes are attached to you
+    		Attacking charges the spikes, which launch outward when you stop attacking
+		'''
+    }
+
+    Lore.LoreDraedon.DisplayName: Draedon
+
+    FathomSwarmerEnchant: {
+    	DisplayName: Fathom Swarmer Enchantment
+    	Tooltip:
+    		'''
+    		Summons an Anglerfish familiar that follows your mouse
+    		The anglerfish's light slows down enemies and their projectiles
+    		'''
+    }
+
+    AstralEnchant: {
+    	DisplayName: Astral Enchantment
+    	Tooltip: You are followed by a trail of damaging astral stars
+    }
+
+    BrimflameEnchant: {
+    	DisplayName: Brimflame Enchantment
+    	Tooltip:
+    		'''
+    		Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+    		Becomes stronger the more defense is consumed
+    		Your defense will regenerate over time
+    		Can only be used when at maximum defense
+    		'''
+    	DefenseDown: -{0} defense
+    	DefenseUp: +{0} defense
+    }
+
+    MolluskEnchant: {
+    	DisplayName: Mollusk Enchantment
+    	Tooltip:
+    		'''
+    		Press Special Dash key to quickly slam downwards
+    		Hitting an enemy with the slam deals massive damage and gives you immunity frames
+    		Only goes on cooldown on enemy hits
+    		'''
+    }
+
+    # This is used to detect and remove lines, not displayed. Must match Cal's localization.
+    NotConsumable: Not consumable
+
+    EmpyreanEnchant: {
+    	DisplayName: Empyrean Enchantment
+    	Tooltip:
+    		'''
+    		Moving slowly or standing still for 2 seconds empowers your next hit
+    		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
+		    This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
+    		'''
+    }
+
+    Archmage: {
+    	DisplayName: Archmage
+    	Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
+    }
+
+    SeaKing: {
+    	DisplayName: Sea King
+    	Tooltip: "'My home may have been destroyed and my people lost... But I will assist you to honor their memory.'"
+    }
+    
+    Bandit: {
+    	DisplayName: Bandit
+    	Tooltip: "'Anything is a weapon if you throw it hard enough.'"
+    }
+
+    DrunkPrincess: {
+    	DisplayName: Drunk Princess
+    	Tooltip: Not gonna copy paste any of these quotes man what the hell
+    }
+
+    BrimstoneWitch: {
+    	DisplayName: Brimstone Witch
+    	Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
+    }
+}
+
+EModeBalance: ｛
+    CrossBalanceGeneric: "Cross-mod Balance: "
+    DamageUpGeneric: Damage increased by {0}%
+    DamageDownGeneric: Damage decreased by {0}%
+    PickPowerDownGeneric: Pickaxe power decreased by {0}%
+    MagicDagger: Damage decreased by 50% in Pre-Hardmode
+    ProfanedCrystal: Massively reduced damage with any minions active
+    MythrilEnch: Less effective on rogue weapons
+    OrichalcumEnch: Reduced effectiveness
+    Daawnlight: Effect disabled while Tin Enchantment effect is active
+    SlimyShield: Does not inflict Oiled
+    FlightMastery: Flight stats decreased when fighting non-Souls Mod bosses
+    LifeForce: Flight stats and wing time decreased when fighting non-Souls Mod bosses
+    OnionPackUpgrade: Is now an upgrade to [i:FargowiltasSouls/MutantsPact]Mutant's Pact, that allows any accessory in the extra slot
+    Laudanum: Halved strength of most positive debuff effects
+    HardmodeSwords: Stat buffs decreased
+    OceanCrest: Grants immunity to Eternity debuffs caused by entering water
+    # truth be told I have absolutely no idea what this enchantment is so the key name is just that
+    CalEnch: Accumulated damage capped at 500.000
+}
+
+CalDLCConfig: ｛
+    DisplayName: Calamity Config
+
+    Headers: {
+    	Modes: Modes
+    	Balance: Balance
+    }
+
+    ConsumableSummons: {
+    	Label: Summon Items are Consumable in Eternity Mode
+    	Tooltip:
+    		'''
+    		Changes vanilla and Calamity summon items to be consumable, overriding the Calamity non-consumable change.
+    		This change exists purely for consistency with the following features:
+    		- Summon items being refunded on boss attempts in Eternity Mode (effectively the same as being non-consumable)
+    		- The Mutant NPC
+	    	- The Mutant Mod summon item variants
+    		'''
+    }
+
+    EternityPriorityOverRev: {
+    	Label: Eternity Priority over Calamity Modes
+    	Tooltip:
+    		'''
+    		Enabled: Eternity Mode behaviour takes priority over Calamity boss changes. Some Calamity bosses have new Eternity Mode behavior.
+    		Disabled: Calamity boss changes take priority over Eternity. 
+    		'''
+    }
+
+    InfernumDisablesEternity: {
+    	Label: Infernum Mode Disables Eternity Mode
+    	Tooltip:
+    		'''
+    		Only relevant with the Infernum Mode mod enabled.
+    		Keep in mind, INFERNUM IS NOT COMPATIBLE. Regardless of this config, expect issues to occur.
+    		Enabled: Infernum Mode difficulty fully disables Eternity Mode.
+    		Disabled: Eternity will be enabled in Infernum Mode, but Infernum boss AI will take priority unless "Eternity Priority over Calamity Modes" is enabled.
+    		'''
+    }
+
+    VoiceActingEnabled: {
+    	Label: Voice Acting Enabled
+    	Tooltip: Whether voice acting is enabled in the mod
+    }
+}
+
+Conditions: ｛
+    GiantClamDowned: After killing a Giant Clam
+    PlaguebringerDowned: After killing a Plaguebringer
+    ReaperSharkDowned: After killing a Reaper Shark
+    ColossalSquidDowned: After killing a Colossal Squid
+    EidolonWyrmDowned: After killing an Eidolon Wyrm
+    CloudElementalDowned: After killing a Cloud Elemental
+    EarthElementalDowned: After killing an Earth Elemental
+    ArmoredDiggerDowned: After killing an Armored Digger
+    CragmawMireDowned: After killing a Cragmaw Mire
+    MaulerDowned: After killing a Mauler
+    NuclearTerrorDowned: After killing a Nuclear Terror
+    GreatSandSharkDowned: After killing a Great Sand Shark
+    InDeathMode: In Death Mode
+    MutantDefeated: After defeating Mutant
+}
+
+ActiveSkills: ｛
+    ReaverEffect: {
+    	DisplayName: Reaver Adaptability
+    	Tooltip:
+    		'''
+    		Switch between Plated and Swift Mode
+    		Plated Mode: Increases defense by 15 and damage reduction by 15%, taking damage grants Reaver Rage and summons a thorn spike
+    		Swift Mode: Grants massive life regeneration, increases wing time and speed by 10%, reduces dash cooldown, increases hook speed
+    		'''
+    }
+
+    UmbraphileEffect: {
+    	DisplayName: Bat Swarm Transformation
+    	Tooltip:
+    		'''
+	    	Temporarily become a swarm of bats
+    		While in this form, you are immune to damage, have +30% increased movement speed, and infinite flight
+    		The bat swarm deals damage and steals life on hit
+    		'''
+    }
+
+    ElementsForceEffect: {
+    	DisplayName: Elemental Shift
+    	Tooltip: Switch between Magma and Blizzard Mode
+    }
+}
