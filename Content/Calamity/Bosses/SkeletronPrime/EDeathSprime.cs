@@ -55,7 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
                 Spinning = false;
                 SpecialAttack = true;
             }
-            if (SpecialAttack)
+            if (SpecialAttack && !dgPhase)
             {
                 sPrimeEternity.RunEmodeAI = false;
                 AttackTimer++;
