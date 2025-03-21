@@ -37,7 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
             useInNext = binaryReader.Read7BitEncodedInt();
         }
         public bool wallAttack = false;
-        public int timer = 0;
+        public int timer = 25;
         public int numBefore = 0;
         public int lastTimeUsed = 0;
         public int useInNext = 8;
@@ -79,7 +79,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EmpressofLight
                 }
                 if (timer >= 550 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    timer = 0;
+                    timer = 25;
                     wallAttack = false;
                     NPC.ai[2] = numBefore + 1;
                     if (WorldSavingSystem.MasochistModeReal)
