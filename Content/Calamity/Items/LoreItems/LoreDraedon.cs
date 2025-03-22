@@ -2,6 +2,7 @@
 using CalamityMod.Items.Placeables.Furniture.Trophies;
 using CalamityMod.Rarities;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using Luminance.Core.Hooking;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,6 +37,13 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
         {
             DrawExoMechLore(new(x, y));
             return true;
+        }
+        public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
+        {
+            // Move tooltips down to compensate for special draw
+            if (line.Name != "ItemName")
+                line.Y += 608;
+            return base.PreDrawTooltipLine(line, ref yOffset);
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
