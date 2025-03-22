@@ -98,7 +98,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     [
                     States.SmallWorm,
                     States.MediumWorm,
-                    States.BigWorm,
+                    //States.BigWorm,
                     States.RubbleStomp,
                     States.LegAssault,
                     ];
