@@ -1,3 +1,8 @@
-New Update: v1.1.1.05
+New Update: v1.2
 
--Updated to Calamity Mod v2.0.4.006
+Added Titan Heart Enchantment
+Added Daedalus Enchantment
+Added Reaver Enchantment
+Added Hydrothermic Enchantment
+Added Force of the Elements
+Renamed and reworked Force of Exploration into Force of the Gale with new effects and components

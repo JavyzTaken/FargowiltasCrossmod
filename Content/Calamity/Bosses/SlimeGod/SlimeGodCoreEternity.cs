@@ -405,7 +405,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SlimeGod
                 ref float attack = ref NPC.ai[2];
                 Player player = Main.player[NPC.target];
 
-                int partialAttackTime = WorldSavingSystem.MasochistModeReal ? 80 : 100;
+                int partialAttackTime = WorldSavingSystem.MasochistModeReal ? 100 : 120;
                 const int partialAttacks = 3;
                 if (partialTimer <= 0)
                 {
