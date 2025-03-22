@@ -389,7 +389,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             ModContent.ItemType<TheLastMourning>(),ModContent.ItemType<TheMutilator>(),ModContent.ItemType<TitanArm>(),
             ModContent.ItemType<UltimusCleaver>(),ModContent.ItemType<VeinBurster>(),ModContent.ItemType<Virulence>(),
             ModContent.ItemType<VoidEdge>(),ModContent.ItemType<WindBlade>(),];
-            SwordGlobalItem.AllowedModdedSwords = [.. CalSwordsToApplyRework];
+            SwordGlobalItem.AllowedModdedSwords = SwordGlobalItem.AllowedModdedSwords.Union(CalSwordsToApplyRework).ToArray();
             #endregion
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it
