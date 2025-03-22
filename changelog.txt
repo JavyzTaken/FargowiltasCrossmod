@@ -1,4 +1,3 @@
-Patch 1.2.0.2
-Removed Eternity Perforators big worm attack until issues are resolved
-Cynosure item cannot be shimmered until Mutant is defeated
-Fixed external tooltips overlapping with Draedon lore item's special code tooltip
+Patch 1.2.0.3
+Tweaked conditions for removing Eternity spawns
+Fixed DLC overriding base Souls modded sword rework list
