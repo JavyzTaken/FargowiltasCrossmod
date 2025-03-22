@@ -16,10 +16,8 @@ namespace FargowiltasCrossmod.Core.Calamity
         [DefaultValue(true)]
         public bool EternityPriorityOverRev;
 
-
-
-        [DefaultValue(false)]
-        public bool VoiceActingEnabled;
+        //[DefaultValue(false)]
+        //public bool VoiceActingEnabled;
 
         [ReloadRequired]
         [DefaultValue(true)]

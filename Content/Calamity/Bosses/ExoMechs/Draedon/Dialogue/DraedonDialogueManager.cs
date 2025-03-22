@@ -15,7 +15,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs.Draedon.Dialogue
         /// <summary>
         /// Whether subtitles should be used over chat-based text.
         /// </summary>
-        public static bool UseSubtitles => CalDLCConfig.Instance.VoiceActingEnabled;
+        public static bool UseSubtitles => false; // CalDLCConfig.Instance.VoiceActingEnabled;
 
         public override void PostSetupContent()
         {
