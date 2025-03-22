@@ -872,9 +872,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void EmodeEditSpawnPool_Detour(Orig_EmodeEditSpawnPool orig, EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
         {
             var cal = spawnInfo.Player.Calamity();
-            if (cal.ZoneAbyss || cal.ZoneAstral || cal.ZoneCalamity || cal.ZoneSulphur || cal.ZoneSunkenSea)
+
+            bool calamityBiomeZone = cal.ZoneAbyss ||
+                cal.ZoneCalamity ||
+                cal.ZoneSulphur ||
+                cal.ZoneSunkenSea ||
+                (cal.ZoneAstral && !spawnInfo.Player.PillarZone());
+            if (calamityBiomeZone || pool[0] == 0)
                 return;
             orig(self, pool, spawnInfo);
+
         }
         internal static void DropSummon_Int_Detour(Orig_DropSummon_Int_Method orig, NPC npc, int itemType, bool downed, ref bool dropped, bool prerequisite = true)
         {
