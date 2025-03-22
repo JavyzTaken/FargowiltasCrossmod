@@ -1143,7 +1143,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         internal static bool IsItemTransformLocked(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
         {
-            if (type == ModContent.ItemType<ProfanedSoulCrystal>())
+            if (type == ModContent.ItemType<ProfanedSoulCrystal>() || type == ModContent.ItemType<LoreCynosure>())
                 return !WorldSavingSystem.DownedMutant;
             return orig(type);
         }
