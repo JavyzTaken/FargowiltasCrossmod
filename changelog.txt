@@ -1,8 +1,193 @@
 New Update: v1.2
 
+NEW: Eternity Aquatic Scourge
+NEW: Eternity Calamitas Clone
+NEW: Eternity Old Duke (by Lucille Karma)
+NEW: Eternity Exo Mechs (by Lucille Karma)
+Reworked Eternity Perforators
+
 Added Titan Heart Enchantment
 Added Daedalus Enchantment
 Added Reaver Enchantment
 Added Hydrothermic Enchantment
 Added Force of the Elements
 Renamed and reworked Force of Exploration into Force of the Gale with new effects and components
+
+Renamed Marnite Enchant to Marnite Architect Enchant, Sulphur Enchant to Sulphurous Enchant
+Reworked Marnite Architect Enchant: Now fires lasers while not attacking, or while using tools, increased placement speed boost
+Marnite Enchantment is now a part of World Shaper Soul
+Victide Enchant spikes now use static iframes
+
+Sulphurous Enchant:
+-Now has a minimum damage of 20
+-Jump is now prioritized over Jungle Enchant and Calamity jumps
+-Fixed wizard bubbles immediately exploding upon spawning
+-Removed incorrect damage increase stated in wizard tootlip
+
+Snow Ruffian Enchant:
+-Slightly increased the amount of height you get from boosting upwards
+-Wizard now grants wings with strength identical to Starlight Wings
+-Fixed negative interaction with acceleration-changing effects
+
+Desert Prowler Enchant mini-rework:
+-Hold UP to charge a powerful charge jump that also boosts your horizontal speed
+-Charge jump can only be performed while grounded
+-Pressing Jump while holding DOWN in the air does a quick dive downwards
+-Both the charged jump and dive push nearby enemies away
+-Hitting the ground shortly after a dive pushes away and damages enemies
+
+RECIPES:
+Brand of the Brimstone Witch: Removed Occult Skull Crown from recipe and effects
+Added trophy recipes for Glacial Embrace, Seas Searing, Hellborn, Leonid Progenitor, Malachite, Vesuvius, Swordsplosion, Pristine Fury, Thunderstorm, The Old Reaper, Cosmic Discharge, Yharim's Crystal
+Bionomic Cluster recipe 5 hallowed bars -> 5 mythril bars
+esert Prowler Crackshot Colt -> Thunder Spear
+Desert Prowler +Stormjaw Staff
+Wulfrum +5 Draedon Power Cell
+Snow Ruffian +5 Leather
+Statigel Purple Golf Ball -> Shinobi Blade
+
+ETERNITY MODE:
+Desert Scourge:
+-Increased health and pierce resistance
+-Tumbleweed bombs explode earlier
+-Suck attack fan is wider
+-Sucked in projectiles are sometimes sand chunks
+-Improved turn speed during spit
+-Goes underground before slam attack
+-Changed pattern of projectiles in slam attack
+-Halved nuisance HP
+-Masochist Mode:
+--Much less time between attacks, faster suck attack
+
+Crabulon:
+-Removed minion phase, replaced with new attack
+-Made the spore cloud jump a bit more threatening
+-Added blue outline to ground spears
+-Masochist Mode:
+--Increased charge speed
+--Spawns mushroom spear waves during certain normal jumps
+--Mushroom spears are longer
+--Decreased jump telegraph time
+
+Hive Mind:
+-Phase 1 lasts a maximum of 20 seconds, reduces boss health the more blobs were killed
+-Masochist Mode:
+--Phases transition earlier
+--Always spawns lightning clouds in idle attack, spawns 2 in Phase 2
+--Has no extended idle windows
+--Spin dashes chain an additional 2 per attack, and are harder
+--Dash projectile arc has tighter spread
+--Rain dash is faster
+
+Slime God:
+-Increased breakout flat damage from 12.5% to 15%, final phase threshold from 15% to 20%
+-Decreased damage reduction for active slime
+-Nonactive slime is invincible
+-Tweaked core phase speed
+-Masochist Mode:
+--Decreased attack delays during core phase, sped up attacks
+
+Permafrost (boss):
+-Disables Rain and Blizzard while alive
+-Tweaked movement during frost flare startup to make zoning more consistent
+-Slightly decreased velocity of predictive sword swing projectile below Masochist Mode
+-Improved visibility of blizzard and shotgun projectiles
+-Improved visibility of flare snow
+-Increased base and final size of arctic paw projectile a bit
+-Reduced particle amount of Permafrost snow attacks, improved performance
+
+-Fixed not dropping a Treasure Bag in multiplayer
+
+Brimstone Elemental:
+-Reduced health and damage
+-Moved wall of darts during p3 wavy attack to Masochist
+-Fireblasts have lower duration and explode into less darts
+-All projectiles are now well-lit
+-Decreased time before projectiles accelerate
+-Fixed not being targeted by minions in multiplayer sometimes
+-Masochist Mode:
+--Changed projectile patterns, increased some projectile speeds
+--Fires a projectile ring on teleport (not in phase 3)
+
+DLC Mutant: 
+-Changes now only take effect in Eternity Mode
+-Reworked Devourer of Gods attack's movement
+-Anahita projectiles now have dark blue outline
+-Cannot go too close to world border during DLC attacks
+
+DLC Abominationn: Added new attack
+
+Eternity-Death:
+-King Slime: Jewel stops firing during death animation
+-Eye of Cthulhu: Reduced Masochist-Death servant spam a bit (not in ftw)
+-Queen Bee: -Now fires a Calamity stinger spread during bee swarm attack if no subjects are alive
+-Skeletron: Teleports during final phase are less frequent
+-Skeletron Prime: Added new attack
+-Plantera: Added telegraph to Calamity dash attack
+-Duke Fishron: Added delays to final attack
+-Empress of Light: Tweaked attack startup, Fixed Masochist-Death sometimes repeating attacks incorrectly
+
+Made sure Moon Lord can be hit by Rogue during Solar phase
+Dungeon Guardian no longer shoots evil calamity skulls
+
+All boss summons are now non-consumable; still drops one time if you don't already have it
+Now enables Eternity-Rev if Eternity is somehow enabled on its own
+Removed Eternity balance changes for several items that conflict with Calamity balance changes for the same item
+Disabled all Eternity Mode special spawns in Calamity biomes
+Reduced Voodoo Demon spawns
+Mimic Spawner doesnt work in ice biome in pre hardmode (prevent getting ice mimic loot early)
+Ocean Crest and Aquatic Emblem now grant immunity to most Eternity debuffs caused by entering water
+Mutant's Presence now visually supercedes Calamitous Presence (cannot have both, Calamitous Presence already had no effect if you have Mutant's Presence)
+Fixed Eternity Plantera dropping 1 extra Living Shard on first kill instead of 30
+Removed Calamity's un-nerf for Reaver Shark
+Gills Potion no longer forces you to always catch Floodtide for some reason
+Reduced Nuclear Terror health
+Fixed Adrenaline nerf not working as intended
+Cnidirons explode into Jellyfish on death
+
+Boss health:
+-Exos (non-emode): 1.7x -> 1.5x
+-Scal: 1.7x -> 1.5x
+-Mutant: 2x -> 1.5x
+-(Wrath of the Gods) Mars 1.9x and inflicts Mutant's Presence
+Reduced health and damage of Energized bosses
+Fixed Dungeon Guardian having too little health
+
+Boss Rush balance:
+Moon Lord +23% health
+Providence and minions +23% health
+Polterghast +100% health
+Old Duke +50% health
+Storm Weaver +100% health
+Devourer of Gods +50% health
+Massively buffed Exo Mechs health
+SCal brothers health -40%
+SCal health +25%
+Reduced Mutant health to default
+
+OTHER CHANGES:
+Added Lucille as listed developer
+Combined the Calamity Starter Bag and Deviantt's Gift
+Abominationn now sells Caustic Tear
+Lumberjack now sells Calamity wood
+Insta-houses now have styling for Calamity biomes
+Eternity Mode sword swing rework applies selectively to Calamity weapons that it works for
+Tweaked Orichalcum Enchantment nerf, clarified tooltip
+Calamity NPCs can now be caught with Bug Nets like others
+Champions now drop Calamity healing potions
+Avatar of Emptiness drops Shadowspec Bars after Mutant is defeated
+Nameless Deity drops the Rock again
+Rebalanced several post-Moon Lord souls mod weapons
+
+Fixed Universe Soul and Soul of Eternity not having Elemental Gauntlet's effect
+Soul of Eternity no longer has non-Souls flight nerf
+Adjusted Deviantt mod swapper UI button position
+Tweaked sell value and rarity for several enchants
+Mutant's desparation deathrays now ignore Silva Immunity
+Prevented Profaned Soul Crystal from shimmering before Mutant
+Fixed Dryad selling multiple Jungle Rose/Nature's Gift
+Prevented WotG from killing Old Duke in Eternity Mode
+Tweaked placement of DLC tooltips for Souls
+Updated description for Eternity-Rev and Eternity-Death
+Fixed other small tooltip issues, and tweaks
+Fixed Aerospec Enchant sometimes not resetting crit correctly
