@@ -42,7 +42,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.LoreItems
         {
             // Move tooltips down to compensate for special draw
             if (line.Name != "ItemName")
-                line.Y += 608;
+                line.Y += 604;
             return base.PreDrawTooltipLine(line, ref yOffset);
         }
 
