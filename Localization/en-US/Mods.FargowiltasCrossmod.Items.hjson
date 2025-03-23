@@ -324,7 +324,7 @@ WulfrumEnchant: {
 		The drone scans enemies it collides with
 		Scanning enemies tells you their debuff weaknesses and resistances
 		Green means weakness, red means resistance
-		Scanned enemies also take extra damage over time when afflicted with any debuff
+		Scanned enemies also take extra flat damage over time when afflicted with any debuff
 		'''
 }
 
