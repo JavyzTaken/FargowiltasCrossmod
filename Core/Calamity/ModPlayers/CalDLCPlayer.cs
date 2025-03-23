@@ -29,6 +29,7 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
@@ -131,7 +132,13 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calamityPlayer = Player.Calamity();
-
+            SinisterIconDropsEffect sinisterEffect = GetInstance<SinisterIconDropsEffect>();
+            if (Player.HasEffect<SinisterIconEffect>() && BossRushEvent.BossRushActive)
+            {
+                Player.AccessoryEffects().ActiveEffects[sinisterEffect.Index] = false;
+                Player.AccessoryEffects().EffectItems[sinisterEffect.Index] = null;
+            }
+            //Main.NewText(Player.HasEffect<SinisterIconEffect>());
             if (soulsPlayer.MutantPresence)
             {
                 Player.ClearBuff(BuffType<CalamitousPresenceBuff>());
