@@ -2,7 +2,7 @@
 using FargowiltasSouls.Core.Systems;
 using Newtonsoft.Json;
 
-namespace NoxusBoss.Common.Tools.DataStructures
+namespace FargowiltasCrossmod.Core.Common.DataStructures
 {
     // I would ordinarily make this all readonly, but that causes problems with JSON deserialization.
 
