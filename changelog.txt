@@ -1,3 +1,2 @@
-Patch 1.2.0.3
-Tweaked conditions for removing Eternity spawns
-Fixed DLC overriding base Souls modded sword rework list
+Patch 1.2.0.4
+Fixed multiplayer desync issue caused by using Wrath of the Gods and Magic Storage
