@@ -1,5 +1,5 @@
-﻿using FargowiltasCrossmod.Core.Data;
-using NoxusBoss.Common.Tools.DataStructures;
+﻿using FargowiltasCrossmod.Core.Common.DataStructures;
+using FargowiltasCrossmod.Core.Data;
 using System;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.ExoMechs
