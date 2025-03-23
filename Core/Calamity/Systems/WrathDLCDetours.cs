@@ -2,7 +2,6 @@
 using Terraria;
 using Terraria.ModLoader;
 using Luminance.Core.Hooking;
-using NoxusBoss.Core.World.GameScenes.OldDukeDeath;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
@@ -10,7 +9,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
     [JITWhenModsEnabled(ModCompatibility.WrathoftheGods.Name)]
     public class WrathDLCDetours : ModSystem, ICustomDetourProvider
     {
-        private static readonly MethodInfo KillOldDukeWrapper_Method = typeof(FUCKYOUOLDDUKESystem).GetMethod("KillOldDukeWrapper", LumUtils.UniversalBindingFlags);
 
         public delegate bool Orig_KillOldDukeWrapper(object self, NPC npc);
 
@@ -20,7 +18,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         }
         void ICustomDetourProvider.ModifyMethods()
         {
-            HookHelper.ModifyMethodWithDetour(KillOldDukeWrapper_Method, KillOldDukeWrapper_Detour);
+            MethodInfo killOldDukeWrapper_Method = ModCompatibility.WrathoftheGods.Mod.Code.GetType("FUCKYOUOLDDUKESystem").GetMethod("KillOldDukeWrapper", LumUtils.UniversalBindingFlags);
+            HookHelper.ModifyMethodWithDetour(killOldDukeWrapper_Method, KillOldDukeWrapper_Detour);
         }
         internal static bool KillOldDukeWrapper_Detour(Orig_KillOldDukeWrapper orig, object self, NPC npc)
         {

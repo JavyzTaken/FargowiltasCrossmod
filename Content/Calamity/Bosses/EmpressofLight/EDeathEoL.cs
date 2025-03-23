@@ -7,7 +7,6 @@ using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
-using NoxusBoss.Core.World.WorldSaving;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

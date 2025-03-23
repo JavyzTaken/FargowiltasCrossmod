@@ -52,6 +52,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
     public class CalDLCPlayer : ModPlayer
     {
         public bool CalamitousPresence;
+        public bool CheckedWrathOldDuke;
         //Unique accessories fields
 
         public override void ResetEffects()
@@ -78,6 +79,16 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", CalDLCConfig.Instance.EternityPriorityOverRev);
                     if (CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
                         CalamityMod.CalamityMod.ExternalFlag_DisableNonRevBossAI = true;
+                }
+            }
+            if (ModCompatibility.WrathoftheGods.Loaded)
+            {
+                if (!CheckedWrathOldDuke)
+                {
+                    CheckedWrathOldDuke = true;
+                    var system = ModCompatibility.WrathoftheGods.Mod.Find<ModSystem>("WorldSaveSystem");
+                    var property = system.GetType().GetProperty("AvatarHasKilledOldDuke", LumUtils.UniversalBindingFlags);
+                    property.SetValue(null, true);
                 }
             }
             //Main.NewText(BossRushEvent.BossRushStage);

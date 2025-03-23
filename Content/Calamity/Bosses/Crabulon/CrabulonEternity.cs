@@ -16,7 +16,6 @@ using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using NoxusBoss.Core.AdvancedProjectileOwnership;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
