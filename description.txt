@@ -57,7 +57,3 @@ Will the Eternity Advisor give advice for other mods' bosses?
 No, way too much effort to maintain. Also, things like Class Setups wiki pages already exist for those mods, concerning their content.
 
 Fargo Discord: https://discord.gg/Rgen4Vv
-
-Newest Update: v1.1.1
-Ported to Fargo's Souls 1.7 and Fargo's Mutant 3.3.5
-Tons of changes and fixes
