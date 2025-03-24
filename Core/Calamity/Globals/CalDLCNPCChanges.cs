@@ -187,6 +187,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 switch (npc.type)
                 {
+                    case NPCID.EyeofCthulhu:
+                        if (npc.damage < 26)
+                            npc.damage = 26;
+                        break;
                     case NPCID.SkeletronHead:
                         npc.lifeMax = (int)Math.Round(npc.lifeMax * 0.8f);
                         break;
