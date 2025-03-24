@@ -39,7 +39,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             Projectile.ignoreWater = true;
             Projectile.penetrate = 1;
             Projectile.Opacity = 0f;
-            Projectile.timeLeft = 60;
+            Projectile.timeLeft = 100;
             Projectile.tileCollide = false;
             CooldownSlot = ImmunityCooldownID.Bosses;
             Projectile.scale = 1.5f;
@@ -78,13 +78,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             if (!withinRange)
             {
-                if (Projectile.velocity.Length() < 25f)
+                float max = 25f;
+                if (Projectile.timeLeft < 40)
+                    max = 40f;
+                if (Projectile.velocity.Length() < max)
                     Projectile.velocity *= 1.05f;
                 if (Main.player[target] != null && Main.player[target].Alive())
                 {
                     Vector2 toPlayer = Projectile.DirectionTo(Main.player[target].Center);
 
-                    Projectile.velocity = Projectile.velocity.RotateTowards(toPlayer.ToRotation(), 0.016f);
+                    Projectile.velocity = Projectile.velocity.RotateTowards(toPlayer.ToRotation(), 0.008f);
 
                     float diff = FargoSoulsUtil.RotationDifference(Projectile.velocity, toPlayer);
                     if (Math.Abs(diff) > MathHelper.PiOver2 && Projectile.timeLeft > 10)
