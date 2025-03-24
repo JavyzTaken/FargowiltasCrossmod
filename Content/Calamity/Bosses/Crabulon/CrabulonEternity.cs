@@ -299,12 +299,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             {
                 SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
                 SoundEngine.PlaySound(new SoundStyle("FargowiltasSouls/Assets/Sounds/Debuffs/DizzyBird"), NPC.Center);
-                for (int i = 0; i < Main.maxProjectiles; i++)
+                foreach (var proj in Main.ActiveProjectiles)
                 {
-                    Projectile p = Main.projectile[i];
-                    if (p != null && p.active && p.type == ModContent.ProjectileType<MushroomSpear2>() && p.ai[0] == NPC.whoAmI)
+                    if (proj.TypeAlive<MushroomSpear2>() && proj.ai[0] == NPC.whoAmI)
                     {
-                        p.Kill();
+                        proj.Kill();
                     }
                 }
                 NPC.velocity.X = 0;
@@ -327,6 +326,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             }
             if (ai_Timer >= 1080)
             {
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.TypeAlive<MushroomSpear2>() && proj.ai[0] == NPC.whoAmI)
+                    {
+                        proj.Kill();
+                    }
+                }
+
                 ai_Timer = 0;
                 NPC.rotation = 0;
                 NPC.localAI[0] = 0;

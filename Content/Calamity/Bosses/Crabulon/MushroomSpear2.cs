@@ -1,5 +1,6 @@
 ﻿using CalamityMod.NPCs.Crabulon;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,6 +37,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             Projectile.Opacity = 1;
             Projectile.scale = 2.5f;
             Projectile.hide = true;
+
+            Projectile.FargoSouls().DeletionImmuneRank = 2;
         }
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {

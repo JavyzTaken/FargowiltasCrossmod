@@ -22,8 +22,5 @@
 	<Reference Include="Luminance">
 	  <HintPath>Libraries\Luminance.dll</HintPath>
 	</Reference>
-	<Reference Include="NoxusBoss">
-	  <HintPath>Libraries\NoxusBoss.dll</HintPath>
-	</Reference>
   </ItemGroup>
 </Project>
