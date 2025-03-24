@@ -311,14 +311,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
                 distance = 660f;
                 if (Timer > 60)
                 {
-                    int freq = WorldSavingSystem.MasochistModeReal ? 40 : 55;
-                    if (Phase == 3)
-                        freq = 20;
+                    int freq = WorldSavingSystem.MasochistModeReal ? 55 : 70;
                     if (Timer % freq == freq - 1)
                     {
                         if (DLCUtils.HostCheck)
                         {
-                            float projectileVelocity = WorldSavingSystem.MasochistModeReal ? 14 : 12f;
+                            float projectileVelocity = WorldSavingSystem.MasochistModeReal ? 12f : 9f;
                             int type = ModContent.ProjectileType<BrimstoneFireball>();
                             Vector2 fireballVelocity = Vector2.Normalize(Target.Center - NPC.Center) * projectileVelocity;
                             Vector2 balloffset = Vector2.Normalize(fireballVelocity) * 40f;
@@ -409,9 +407,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
 
             offset = offset.RotateTowards(-Vector2.UnitY.ToRotation(), 0.15f);
             pos += offset;
-            float speed = 0.5f;
+            float speed = 0.65f;
             if (Target.Center.Y < NPC.Center.Y - 50)
-                speed = 1.2f;
+                speed = 1.4f;
             else if (Target.Distance(NPC.Center) < distance)
                 NPC.velocity.Y *= 0.92f;
             Movement(pos, speed);
@@ -460,7 +458,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.CalamitasClone
             NPC.rotation = NPC.rotation.ToRotationVector2().RotateTowards(dir.ToRotation() - MathHelper.PiOver2, 0.05f).ToRotation();
             //NPC.rotation = Vector2.Lerp(NPC.rotation.ToRotationVector2(), dir.RotatedBy(-MathHelper.PiOver2), 0.001f).ToRotation();
 
-            int startup = 40;
+            int startup = 60;
             int frequency = 11;
             if (WorldSavingSystem.MasochistModeReal)
                 frequency = 9;
