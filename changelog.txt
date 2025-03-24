@@ -1,18 +1,5 @@
-Patch 1.2.0.5
-
-Fixed Sinister Icon skipping Boss Rush bosses
-Tweaked Wulfrum Enchant tooltip
-Desert Prowler Enchant: Dive slam now cancels current double jump if active
-
-Eternity Desert Scourge:
--Tweaked and normalized damage values of both contact and projectiles
--Base health 10000 -> 9000
--Increased cooldown for slam attack
--Tweaked movement during slam attack startup
--Masochist Mode: Increased attack delay
-
-Eternity Crabulon:
--Wheel spears now have deletion protection (from things such as Rain Enchant)
--Fixed wheel spears lingering in rare cases
-
-Eye of Cthulhu: Increased damage a bit
+Patch 1.2.0.6
+Eternity Calclone:
+-Decreased frequency and movement speed of phase 2 calclone fireballs
+-Increased startup of phase 3 artillery attack and increased boss repositioning speed
+-Reduced phase 3 fireblast tracking, increased maximum explosion time and speed when close to reaching their maximum time
