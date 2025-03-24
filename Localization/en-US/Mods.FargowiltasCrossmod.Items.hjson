@@ -300,7 +300,7 @@ MarniteEnchant: {
 		'''
 		10% increased placement speed and +5 tile placement range
 		Lasers strike nearby enemies while not attacking, or while using tools
-		Effects of [i:CalamityMod/MarniteRepulsionShield] Marnite Repulsion Shield
+		[i:CalamityMod/MarniteRepulsionShield] Effects of Marnite Repulsion Shield
 		'''
 }
 
