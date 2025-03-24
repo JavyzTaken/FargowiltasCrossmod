@@ -1,0 +1,533 @@
+AddedEffects: {
+	AngelTreads: Effects of Angel Treads
+	AeolusBoots: Effects of Aeolus Boots
+	CalamitySupersonic: Effects of Statis' Void Sash
+	ThoriumSuperSonic: Effects of Air Walkers, Survivalist Boots, and Weighted Winglets
+	CalamityColossus: Effects of The Amalgam, Asgardian Aegis and Rampart of Deities
+	ThoriumColossus:
+		'''
+		Effects of Sweet Vengeance, Obsidian Scale, Terrarium Defender,
+		Phylactery, Heart of Stone, and Spiny Shell
+		'''
+	CalamityBerserker: Effects of Badge of Bravery and Elemental Gauntlet
+	ThoriumBerserker: Effects of Rapier Badge
+	CalamityWizard: Effects of Ethereal Talisman
+	ThoriumWizard: Effects of Murky Catalyst
+	CalamitySniper: Effects of Elemental Quiver and Quiver of Nihility
+	Vagabond: Effects of Nanotech and Eclipse Mirror
+	ThoriumSniper: Effects of Concussive Warhead
+	CalamityConjurist: Effects of Nucleogenesis
+	ThoriumConjurist: Effects of Yuma's Pendant and Crystal Scorpion
+	CalamityTrawler: Effects of Abyssal Diving Suit
+	CalamityWorldShaper: Effects of Marnite Architect Enchantment
+	ThoriumUniverse:
+		'''
+		15% increased throwing velocity
+		Effects of Guide to Expert Throwing Volume III,
+		Mermaid Canteen, and Deadman's Patch
+		'''
+}
+
+OutlawsEssence: {
+	DisplayName: Outlaw's Essence
+	Tooltip:
+		'''
+		18% increased rogue damage
+		5% increased rogue projectile velocity
+		5% increased rogue critical chance
+		'''
+}
+
+VagabondsSoul: {
+	DisplayName: Vagabond's Soul
+	Tooltip:
+		'''
+		22% increased rogue damage
+		20% increased rogue projectile velocity
+		10% increased rogue critical chance
+		Effects of Nanotech and Eclipse Mirror
+		'''
+}
+
+ABombInMyNation: {
+	DisplayName: A Bomb In My Nation
+	Tooltip: Summons the Plaguebringer Goliath
+}
+
+AstrumCor: {
+	DisplayName: Astrum Core
+	Tooltip: Summons Astrum Deus
+}
+
+BirbPheromones: {
+	DisplayName: Birb Pheromones
+	Tooltip: Summons the Dragonfolly
+}
+
+BlightedEye: {
+	DisplayName: Blighted Eye
+	Tooltip: Summons the Calamitas Clone
+}
+
+BloodyWorm: {
+	DisplayName: Bloody Worm
+	Tooltip: Summons the Old Duke
+}
+
+ChunkyStardust: {
+	DisplayName: Chunky Stardust
+	Tooltip: Summons Astrum Aureus
+}
+
+CryingKey: {
+	DisplayName: Crying Key
+	Tooltip: Summons Cryogen
+}
+
+DefiledCore: {
+	DisplayName: Defiled Core
+	Tooltip: Summons Providence
+}
+
+DefiledShard: {
+	DisplayName: Defiled Shard
+	Tooltip: Summons the Profaned Guardians
+}
+
+DragonEgg: {
+	DisplayName: Fiery Dragon Egg
+	Tooltip: Summons Yharon
+}
+
+PortableCodebreaker: {
+	DisplayName: Portable Codebreaker
+	Tooltip: Summons Draedon
+}
+
+EyeofExtinction: {
+	DisplayName: Eye of Extinction
+	Tooltip: Summons Supreme Calamitas
+}
+
+FriedDoll: {
+	DisplayName: Fried Doll
+	Tooltip: Summons Brimstone Elemental
+}
+
+HiveTumor: {
+	DisplayName: Hive Tumor
+	Tooltip: Summons Hive Mind
+}
+
+LetterofKos: {
+	DisplayName: Letter of Kos
+	Tooltip: Summons Signus
+}
+
+MedallionoftheDesert: {
+	DisplayName: Medallion of the Desert
+	Tooltip: Summons Desert Scourge
+}
+
+MurkySludge: {
+	DisplayName: Murky Sludge
+	Tooltip: Summons the Slime God
+}
+
+NoisyWhistle: {
+	DisplayName: Noisy Whistle
+	Tooltip: Summons Ravager
+}
+
+OphiocordycipitaceaeSprout: {
+	DisplayName: Ophiocordycipitaceae Sprout
+	Tooltip: Summons Crabulon
+}
+
+PolterplasmicBeacon: {
+	DisplayName: Polterplasmic Beacon
+	Tooltip: Summons Polterghast
+}
+
+RedStainedWormFood: {
+	DisplayName: Red Stained Worm Food
+	Tooltip: Summons the Perforator Hive
+}
+
+RiftofKos: {
+	DisplayName: Rift of Kos
+	Tooltip: Summons Ceaseless Void
+}
+
+SeeFood: {
+	DisplayName: See Food
+	Tooltip: Summons Aquatic Scourge
+}
+
+SirensPearl: {
+	DisplayName: Siren's Pearl
+	Tooltip: Summons Anahita
+}
+
+SomeKindofSpaceWorm: {
+	DisplayName: Some Kind of Space Worm
+	Tooltip: Summons the Devourer of Gods
+}
+
+WormFoodofKos: {
+	DisplayName: Worm Food of Kos
+	Tooltip: Summons Storm Weaver
+}
+
+AbandonedRemote: {
+	DisplayName: Abandoned Remote
+	Tooltip:
+		'''
+		Summons Armored Digger
+		Can only be used underground
+		'''
+}
+
+ClamPearl: {
+	DisplayName: Clam Pearl
+	Tooltip:
+		'''
+		Summons Giant Clam
+		Can only be used in the Sunken Sea
+		'''
+}
+
+ColossalTentacle: {
+	DisplayName: Colossal Tentacle
+	Tooltip:
+		'''
+		Summons Colossal Squid
+		Can only be used in the Abyss
+		'''
+}
+
+DeepseaProteinShake: {
+	DisplayName: Deepsea Protein Shake
+	Tooltip:
+		'''
+		Summons Reaper Shark
+		Can only be used in the Abyss
+		'''
+}
+
+MaulerSkull: {
+	DisplayName: Mauler Skull
+	Tooltip:
+		'''
+		Summons Mauler
+		Can only be used in the Sulphuric Sea
+		'''
+}
+
+NuclearChunk: {
+	DisplayName: Nuclear Chunk
+	Tooltip:
+		'''
+		Summons Nuclear Terror
+		Can only be used in the Sulphuric Sea
+		'''
+}
+
+PlaguedWalkieTalkie: {
+	DisplayName: Plagued Walkie Talkie
+	Tooltip:
+		'''
+		Summons Plaguebringer
+		Can only be used in the Jungle
+		'''
+}
+
+QuakeIdol: {
+	DisplayName: Quake Idol
+	Tooltip:
+		'''
+		Summons Earth Elemental
+		Can only be used underground
+		'''
+}
+
+StormIdol: {
+	DisplayName: Storm Idol
+	Tooltip: Summons Cloud Elemental
+}
+
+SulphurBearTrap: {
+	DisplayName: Sulphur Bear Trap
+	Tooltip:
+		'''
+		Summons Cragmaw Mire
+		Can only be used in the Sulphuric Sea
+		'''
+}
+
+WyrmTablet: {
+	DisplayName: Wyrm Tablet
+	Tooltip:
+		'''
+		Summons Eidolon Wyrm
+		Can only be used in the abyss
+		'''
+}
+
+BrandoftheBrimstoneWitch: {
+	DisplayName: Brand of the Brimstone Witch
+	Tooltip:
+		'''
+		Effects of Heart of the Elements, Radiance, The Sponge, Chalice of the Blood God
+		Effects of Nebulous Core, Yharim's Gift, Draedon's Heart and Calamity
+		'''
+}
+
+AerospecEnchant: {
+	DisplayName: Aerospec Enchantment
+	Tooltip:
+		'''
+		Gain +5% critical strike chance and summon damage whenever you use a jump or double jump
+		This bonus lasts until your jumps are reset or a mount is used
+		'''
+	CritUp: +{0}% crit
+	CritReset: -{0}% crit
+}
+
+MarniteEnchant: {
+	DisplayName: Marnite Architect Enchantment
+	Tooltip:
+		'''
+		10% increased placement speed and +5 tile placement range
+		Lasers strike nearby enemies while not attacking, or while using tools
+		[i:CalamityMod/MarniteRepulsionShield] Effects of Marnite Repulsion Shield
+		'''
+}
+
+DesertProwlerEnchant: {
+	DisplayName: Desert Prowler Enchantment
+	Tooltip:
+		'''
+		Hold UP to charge a powerful charge jump that also boosts your horizontal speed
+		Charge jump can only be performed while grounded
+		Pressing Jump while holding DOWN in the air does a quick dive downwards
+		Both the charged jump and dive push nearby enemies away
+		Hitting the ground shortly after a dive pushes away and damages enemies
+		'''
+}
+
+WulfrumEnchant: {
+	DisplayName: Wulfrum Enchantment
+	Tooltip:
+		'''
+		Summons a wulfrum drone that follows your cursor
+		The drone scans enemies it collides with
+		Scanning enemies tells you their debuff weaknesses and resistances
+		Green means weakness, red means resistance
+		Scanned enemies also take extra flat damage over time when afflicted with any debuff
+		'''
+}
+
+GaleForce: {
+	DisplayName: Force of the Gale
+	Tooltip:
+		'''
+		Grants unlimited jumps in the air
+		Disables wings if this effect is enabled
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold W while jumping to launch upward quickly
+		[i:FargowiltasCrossmod/DesertProwlerEnchant] Hold S while jumping to dive downwards
+		[i:FargowiltasCrossmod/SnowRuffianEnchant] Hold W to slow fall
+		[i:FargowiltasCrossmod/VictideEnchant] Holding jump generates sharp spines attached to you
+		[i:FargowiltasCrossmod/VictideEnchant] Once 6 spines are spawned, the next jump launches them out to home onto targets
+		[i:FargowiltasCrossmod/SulphurEnchant] Spines inflict Sulphuric Poisoning
+		[i:FargowiltasCrossmod/StatigelEnchant] Increased damage based on how fast you move, up to +40%
+		'''
+}
+
+SnowRuffianEnchant: {
+	DisplayName: Snow Ruffian Enchantment
+	Tooltip:
+		'''
+		Grants the ability to glide if you do not have wings already
+		While slow falling with wings, you accelerate
+		Press UP while slow falling to direct your momentum upward
+		Press DOWN while slow falling to accelerate faster
+		'''
+}
+
+DaedalusEnchant: {
+	DisplayName: Daedalus Enchantment
+	Tooltip:
+		'''
+		Increases flight time by 25%
+		After a second in the air, attacks are accompanied by powerful arrows from the sky
+		Getting hit or landing removes this bonus and cuts your wing time in half 
+		'''
+}
+
+PlagueReaperEnchant: {
+	DisplayName: Plague Reaper Enchantment
+	Tooltip: All debuffs spread between enemies
+}
+
+PlaguebringerEnchant: {
+	DisplayName: Plaguebringer Enchantment
+	Tooltip:
+		'''
+		All attacks inflict plague for a short time
+		A plague cloud follows you, growing when nearby plagued enemies.
+		At maximum size, the cloud expands rapidly and stops following you,
+		lingering in place for a while.
+		'''
+}
+
+ReaverEnchant: {
+	DisplayName: Reaver Enchantment
+	Tooltip: ""
+}
+
+HydrothermicEnchant: {
+	DisplayName: Hydrothermic Enchantment
+	Tooltip:
+		'''
+		Attacking builds up heat
+		At full heat, stop attacking to vent it, increasing damage reduction by up to 30% and firing chaos flares towards your cursor for up to 3 seconds
+		Getting hit also vents heat, regardless of heat level
+		'''
+}
+
+ElementsForce: {
+	DisplayName: Force of the Elements
+	Tooltip:
+		'''
+		[c/E03131:Magma Mode:]
+		[i:FargowiltasCrossmod/ReaverEnchant] Increased damage reduction by 30% and defense by 30
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Attacking builds up heat, stop attacking at full heat or get hit to vent it
+		[i:FargowiltasCrossmod/HydrothermicEnchant] Venting heat grants Reaver Rage and summons powerful chaos flares for up to 3 seconds
+		[c/45A8EF:Blizzard Mode:]
+		[i:FargowiltasCrossmod/ReaverEnchant] Increased flight time and speed, life regen, hook velocity and reduced dash cooldown
+		[i:FargowiltasCrossmod/AerospecEnchant] Grants up to +50% damage the longer you've stayed in the air
+		[i:FargowiltasCrossmod/DaedalusEnchant] After a second in the air without getting hit, attacks are accompanied by powerful arrows from the sky
+		'''
+}
+
+UmbraphileEnchant: {
+	DisplayName: Umbraphile Enchantment
+	Tooltip: ""
+}
+
+TitanHeartEnchant: {
+	DisplayName: Titan Heart Enchantment
+	Tooltip:
+		'''
+		Adrenaline charges 20% faster, increased to 70% while grounded
+		While adrenaline is partially charged, receive up to 15% damage reduction
+		Increases your max movement speed and acceleration by 5%
+		'''
+}
+
+StatigelEnchant: {
+	DisplayName: Statigel Enchantment
+	Tooltip:
+		'''
+		Increases your maximum speed
+		Massively decreases your acceleration and deceleration
+		Gain up to +35% increased damage, depending on how fast you're moving
+		'''
+}
+
+SulphurEnchant: {
+	DisplayName: Sulphurous Enchantment
+	Tooltip:
+		'''
+		Grants a sulphur jump that spawns a sulphur bubble on use
+		The bubble releases damaging gas when hit by you
+		'''
+}
+
+VictideEnchant: {
+	DisplayName: Victide Enchantment
+	Tooltip:
+		'''
+		Grants urchin spikes that protrude from your body
+		You gain 4 defense while the spikes are attached to you
+		Attacking charges the spikes, which launch outward when you stop attacking
+		'''
+}
+
+Lore.LoreDraedon.DisplayName: Draedon
+
+FathomSwarmerEnchant: {
+	DisplayName: Fathom Swarmer Enchantment
+	Tooltip:
+		'''
+		Summons an Anglerfish familiar that follows your mouse
+		The anglerfish's light slows down enemies and their projectiles
+		'''
+}
+
+AstralEnchant: {
+	DisplayName: Astral Enchantment
+	Tooltip: You are followed by a trail of damaging astral stars
+}
+
+BrimflameEnchant: {
+	DisplayName: Brimflame Enchantment
+	Tooltip:
+		'''
+		Press Debuff Install key to consume all of your defense and release a wave of brimstone flames in all directions
+		Becomes stronger the more defense is consumed
+		Your defense will regenerate over time
+		Can only be used when at maximum defense
+		'''
+	DefenseDown: -{0} defense
+	DefenseUp: +{0} defense
+}
+
+MolluskEnchant: {
+	DisplayName: Mollusk Enchantment
+	Tooltip:
+		'''
+		Press Special Dash key to quickly slam downwards
+		Hitting an enemy with the slam deals massive damage and gives you immunity frames
+		Only goes on cooldown on enemy hits
+		'''
+}
+
+# This is used to detect and remove lines, not displayed. Must match Cal's localization.
+NotConsumable: Not consumable
+
+EmpyreanEnchant: {
+	DisplayName: Empyrean Enchantment
+	Tooltip:
+		'''
+		Moving slowly or standing still for 2 seconds empowers your next hit
+		Empowered hits deal double damage, heal 20 HP, fills up rage, and create homing empyrean stars on collision
+		This effect has a 12 to 4 second cooldown, becoming shorter the more rage you have
+		'''
+}
+
+Archmage: {
+	DisplayName: Archmage
+	Tooltip: "'You have the makings of a gifted mage. Tell me, what do you think of ice magic?'"
+}
+
+SeaKing: {
+	DisplayName: Sea King
+	Tooltip: "'My home may have been destroyed and my people lost... But I will assist you to honor their memory.'"
+}
+
+Bandit: {
+	DisplayName: Bandit
+	Tooltip: "'Anything is a weapon if you throw it hard enough.'"
+}
+
+DrunkPrincess: {
+	DisplayName: Drunk Princess
+	Tooltip: Not gonna copy paste any of these quotes man
+}
+
+BrimstoneWitch: {
+	DisplayName: Brimstone Witch
+	Tooltip: "'If you've got any curses you want dispelled... well I'm not your person.'"
+}

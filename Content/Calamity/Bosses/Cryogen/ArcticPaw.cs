@@ -34,7 +34,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             Projectile.friendly = false;
             Projectile.timeLeft = 200;
             Projectile.light = 0.5f;
-            Projectile.scale = 0.3f;
+            Projectile.scale = 0.7f;
 
             Projectile.tileCollide = false;
             //Projectile.coldDamage = true;
@@ -95,7 +95,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
                 {
                     lerper = n1 * (x -= 2.625f / d1) * x + 0.984375f;
                 }
-                Projectile.scale = MathHelper.Lerp(0.3f, 2, lerper);
+                Projectile.scale = MathHelper.Lerp(0.7f, 2.4f, lerper);
                 Projectile.Resize((int)(30 * Projectile.scale),(int)( 30 * Projectile.scale));
             }
             

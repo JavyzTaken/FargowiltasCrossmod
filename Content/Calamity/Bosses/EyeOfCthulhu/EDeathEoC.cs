@@ -123,7 +123,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.EyeOfCthulhu
                 NPC.SimpleFlyMovement(val13, num44);
 
                 ai_Timer += 1;
-                int eyeDelay = FargowiltasSouls.Core.Systems.WorldSavingSystem.MasochistModeReal ? 2 : 45; //funny old gigavomit crossmod bug on maso
+                int eyeDelay = FargowiltasSouls.Core.Systems.WorldSavingSystem.MasochistModeReal ? 4 : 45; //funny old gigavomit crossmod bug on maso
+                if (Main.getGoodWorld) eyeDelay = 2;
                 if (ai_Timer % eyeDelay == 0f)
                 {
                     Vector2 val14 = Vector2.Normalize(Main.player[NPC.target].Center - NPC.Center) * 5f;

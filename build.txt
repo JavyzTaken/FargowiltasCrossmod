@@ -1,4 +1,6 @@
 displayName = Calamity - Fargo's Souls DLC
-author = Javyz, Shipmans Agla, Zavarski, Fargowilta
-version = 1.1.1.05
-modReferences = Fargowiltas@3.3.5, FargowiltasSouls@1.7.1.4, Luminance, CalamityMod@2.0.4.1
+author = Javyz, Lucille Karma, Shipmans Agla, Zavarski, Fargowilta
+version = 1.2.0.6
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, .git\*, *.dll
+modReferences = Fargowiltas@3.3.6, FargowiltasSouls@1.7.2, Luminance, CalamityMod@2.0.4.1
+weakReferences = NoxusBoss

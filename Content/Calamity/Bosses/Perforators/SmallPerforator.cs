@@ -1,14 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CalamityMod.NPCs.Perforator;
+using CalamityMod.Particles;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
+using FargowiltasSouls;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -23,10 +29,60 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         ModContent.NPCType<PerforatorBodySmall>(),
         ModContent.NPCType<PerforatorTailSmall>()
         );
+        public override void SetDefaults(NPC entity)
+        {
+            if (!WorldSavingSystem.EternityMode)
+                return;
+            entity.CalamityDLC().ImmuneToAllDebuffs = true;
+        }
+        public override bool CanHitPlayer(NPC npc, Player target, ref int cooldownSlot)
+        {
+            if (!WorldSavingSystem.EternityMode) 
+                return base.CanHitPlayer(npc, target, ref cooldownSlot);
+
+            if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
+            {
+                if (npc.ai[3] < 60)
+                    return false;
+            }
+            else
+            {
+                NPC owner = npc.realLife >= 0 ? Main.npc[npc.realLife] : null;
+                if (owner == null || owner.ai[3] < 60)
+                    return false;
+            }
+            return base.CanHitPlayer(npc, target, ref cooldownSlot);
+        }
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (!WorldSavingSystem.EternityMode)
+                return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+            if (npc.type == ModContent.NPCType<PerforatorHeadSmall>())
+            {
+                if (npc.ai[3] < 60)
+                {
+                    Main.spriteBatch.UseBlendState(BlendState.Additive);
+
+                    Texture2D tex = TextureAssets.Npc[npc.type].Value;
+                    Color glowColor = Color.Red;
+                    SpriteEffects spriteEffects = SpriteEffects.None;
+                    if (npc.spriteDirection == 1)
+                        spriteEffects = SpriteEffects.FlipHorizontally;
+                    for (int j = 0; j < 12; j++)
+                    {
+                        Vector2 afterimageOffset = (MathHelper.TwoPi * j / 12f).ToRotationVector2() * 4f;
+                        Main.EntitySpriteDraw(tex, npc.Center + afterimageOffset - Main.screenPosition, null, glowColor, npc.rotation, tex.Size() * 0.5f, npc.scale, spriteEffects, 0f);
+                    }
+
+                    Main.spriteBatch.ResetToDefault();
+                }
+            }
+            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+        }
         public override bool SafePreAI(NPC npc)
         {
-            if (!WorldSavingSystem.EternityMode) return true;
-            npc.netUpdate = true; //fuck you worm mp code
+            if (!WorldSavingSystem.EternityMode) 
+                return true;
             if (npc.type == ModContent.NPCType<PerforatorBodySmall>() || npc.type == ModContent.NPCType<PerforatorTailSmall>())
             {
                 NPC owner = null;
@@ -68,6 +124,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                     {
                         Player target = Main.player[npc.target];
                         npc.Center = perf.Center + (target.Center - perf.Center).SafeNormalize(Vector2.Zero) * 40;
+                        npc.netUpdate = true;
                         return false;
                     }
                 }
@@ -101,8 +158,25 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                         }
                         if (perf != null && target != null)
                         {
-                            npc.Center = perf.Center + (target.Center - perf.Center).SafeNormalize(Vector2.Zero) * 80;
+                            Vector2 offsetDir = (target.Center - perf.Center).SafeNormalize(Vector2.Zero);
+                            npc.Center = perf.Center + offsetDir * 80;
                             npc.rotation = npc.AngleTo(target.Center) + MathHelper.PiOver2;
+                            npc.netUpdate = true;
+
+                            int count = Main.rand.NextBool(3) ? 1 : 0;
+                            if (npc.ai[3] == 10) // right when spawning ish
+                            {
+                                count = 25;
+                                npc.netUpdate = true;
+                            }
+                            for (int i = 0; i < count; i++)
+                            {
+                                Color color = Main.rand.NextBool(10)  ? Color.Gold : Color.Red;
+                                float distance = 80;
+                                Vector2 offset = offsetDir.RotatedByRandom(MathHelper.PiOver2 * 0.3f);
+                                Particle p = new BloodParticle(perf.Center + offset * distance, offset.SafeNormalize(-Vector2.UnitY) * Main.rand.NextFloat(7, 14), Main.rand.Next(15, 25), Main.rand.NextFloat(0.7f, 1.3f), color);
+                                GeneralParticleHandler.SpawnParticle(p);
+                            }
                         }
                     }
                     if (npc.ai[3] == 60)
@@ -115,6 +189,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             npc.velocity = (target.Center - npc.Center).SafeNormalize(Vector2.Zero) * 20;
 
                         }
+                        npc.netUpdate = true;
                         NetSync(npc);
                     }
                     if (npc.ai[3] >= 120 && npc.ai[2] == 0)
@@ -134,6 +209,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;
+                                npc.netUpdate = true;
                             }
                         }
 
@@ -155,6 +231,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                             if (npc.Distance(perf.Center) <= 20)
                             {
                                 npc.ai[2] = 1;
+                                npc.netUpdate = true;
                                 NetSync(npc);
                             }
                         }

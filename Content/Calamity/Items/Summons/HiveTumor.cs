@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/Teratoma";
         public override int NPCType => ModContent.NPCType<HiveMind>();
-        public override string NPCName => "Hive Mind";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<Teratoma>().AddTile(TileID.WorkBenches).Register();

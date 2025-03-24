@@ -1,16 +1,20 @@
 ﻿using System.IO;
 using FargowiltasCrossmod.Core;
+using FargowiltasCrossmod.Core.Calamity;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using SPrimeEternity = FargowiltasSouls.Content.Bosses.VanillaEternity.SkeletronPrime;
 
 namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
 {
@@ -19,22 +23,71 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
     public class EDeathSPrime : CalDLCEDeathBehavior
     {
         public override int NPCOverrideID => NPCID.SkeletronPrime;
+        public bool Spinning;
+        public bool SpecialAttack;
+        public int AttackTimer = 0;
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            binaryWriter.WriteVector2(rotationPoint);
+            binaryWriter.Write(Spinning);
+            binaryWriter.Write(SpecialAttack);
+            binaryWriter.Write7BitEncodedInt(AttackTimer);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
-            rotationPoint = binaryReader.ReadVector2();
+            Spinning = binaryReader.ReadBoolean();
+            SpecialAttack = binaryReader.ReadBoolean();
+            AttackTimer = binaryReader.Read7BitEncodedInt();
         }
-        public Vector2 rotationPoint = Vector2.Zero;
         public override bool PreAI()
         {
             if (!NPC.HasValidTarget)
             {
                 return true;
             }
-            NPC.GetGlobalNPC<FargowiltasSouls.Content.Bosses.VanillaEternity.SkeletronPrime>().RunEmodeAI = true;
+            var sPrimeEternity = NPC.GetGlobalNPC<SPrimeEternity>();
+            sPrimeEternity.RunEmodeAI = true;
+            bool spinning = NPC.ai[1] == 1f && NPC.ai[2] > 2;
+            bool dgPhase = NPC.ai[1] == 2f;
+            if (spinning)
+                Spinning = true;
+            if (!spinning & !dgPhase && Spinning)
+            {
+                Spinning = false;
+                SpecialAttack = true;
+            }
+            if (SpecialAttack && !dgPhase)
+            {
+                sPrimeEternity.RunEmodeAI = false;
+                AttackTimer++;
+                Player player = Main.player[NPC.target];
+                if (AttackTimer == 5)
+                    SoundEngine.PlaySound(SoundID.ForceRoarPitched, NPC.Center);
+                if (AttackTimer < 60)
+                {
+                    NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, player.Center + player.DirectionTo(NPC.Center) * 450, NPC.velocity, 1f, 1f);
+                }
+                if (AttackTimer > 60 && AttackTimer < 90)
+                {
+                    NPC.velocity += NPC.DirectionTo(player.Center) * 0.8f;
+
+                    if (AttackTimer % 4 == 0)
+                    {
+                        if (DLCUtils.HostCheck)
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, -4).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<HomingRocket>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                    }
+                }
+                if (AttackTimer > 90)
+                {
+                    NPC.velocity *= 0.95f;
+                }
+                if (AttackTimer > 120)
+                {
+                    AttackTimer = 0;
+                    SpecialAttack = false;
+                }
+                return false;
+            }
+
 
             /*
             if (NPC.ai[0] == 1 && NPC.ai[1] == 1 && NPC.ai[2] % 120 == 0 && NPC.ai[2] > 0)
@@ -85,5 +138,80 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.SkeletronPrime
             return true;
         }
 
+    }
+    [ExtendsFromMod(ModCompatibility.Calamity.Name)]
+    [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
+    public abstract class EDeathPrimeLimb : CalDLCEDeathBehavior
+    {
+        public float dir = 0;
+        public override bool PreAI()
+        {
+            NPC head = FargoSoulsUtil.NPCExists(NPC.ai[1], NPCID.SkeletronPrime);
+            if (head == null)
+            {
+                NPC.active = false;
+                return true;
+                
+            }
+            var headDLC = head.GetDLCBehavior<EDeathSPrime>();
+            var emode = NPC.GetGlobalNPC<PrimeLimb>();
+            emode.RunEmodeAI = true;
+            if (headDLC.SpecialAttack && !emode.IsSwipeLimb)
+            {
+                if (headDLC.AttackTimer < 40)
+                {
+                    if (head.HasPlayerTarget)
+                        dir = head.DirectionTo(Main.player[head.target].Center).ToRotation();
+                }
+                else if (headDLC.AttackTimer < 90)
+                {
+                    if (head.HasPlayerTarget)
+                        dir = dir.ToRotationVector2().RotateTowards(head.DirectionTo(Main.player[head.target].Center).ToRotation(), 0.05f).ToRotation();
+                }
+                float offset = NPC.type switch
+                {
+                    NPCID.PrimeCannon => -2,
+                    NPCID.PrimeLaser => -1,
+                    NPCID.PrimeSaw => 1,
+                    NPCID.PrimeVice => 2,
+                    _ => 0
+                };
+                float rot = dir + offset * MathHelper.PiOver2 * 0.2f;
+                Vector2 desiredPos = head.Center - rot.ToRotationVector2() * 340;
+                if (headDLC.AttackTimer < 60)
+                    NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, 1f, 1f);
+                else if (head.HasPlayerTarget)
+                {
+                    Vector2 toPlayer = NPC.DirectionTo(Main.player[head.target].Center);
+                    if (headDLC.AttackTimer == 60)
+                        NPC.velocity = toPlayer * 3;
+                    if (headDLC.AttackTimer < 90)
+                        NPC.velocity += toPlayer * 2f;
+                    else
+                        NPC.velocity *= 0.95f;
+                }
+                    
+                emode.RunEmodeAI = false;
+                return false;
+            }
+            return true;
+        }
+
+    }
+    public class EDeathPrimeCannon : EDeathPrimeLimb
+    {
+        public override int NPCOverrideID => NPCID.PrimeCannon;
+    }
+    public class EDeathPrimeLaser : EDeathPrimeLimb
+    {
+        public override int NPCOverrideID => NPCID.PrimeLaser;
+    }
+    public class EDeathPrimeSaw : EDeathPrimeLimb
+    {
+        public override int NPCOverrideID => NPCID.PrimeSaw;
+    }
+    public class EDeathPrimeVice : EDeathPrimeLimb
+    {
+        public override int NPCOverrideID => NPCID.PrimeVice;
     }
 }

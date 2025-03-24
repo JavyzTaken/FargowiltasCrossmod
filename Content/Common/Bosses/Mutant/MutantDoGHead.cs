@@ -5,9 +5,11 @@ using CalamityMod.Buffs.DamageOverTime;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.NPCs.DevourerofGods;
 using FargowiltasCrossmod.Core;
+using FargowiltasSouls;
 using FargowiltasSouls.Common.Graphics.Particles;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Common.Utilities;
 using Luminance.Core.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -83,8 +85,8 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
             float amountOfFramesToLerpBy = 25 / Projectile.ai[1]; // minimum of 1, please keep in full numbers even though it's a float!
 
             const int StartupTime = 30;
-            const int DashWindup = 100;
-            const int DashTime = 20;
+            const int DashWindup = 60;
+            const int DashTime = 35;
 
 
             if (timer == StartupTime && Projectile.timeLeft > StartupTime)
@@ -101,21 +103,19 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
                 int foundTarget = (int)Projectile.ai[0];
 
                 Player p = Main.player[foundTarget];
-                Vector2 targetPos = p.Center + Vector2.UnitY * Math.Sign(Projectile.Center.Y - p.Center.Y) * 450;
-                if (Projectile.Distance(targetPos) > 700)
-                {
-                    desiredFlySpeedInPixelsPerFrame *= 2;
-                    amountOfFramesToLerpBy /= 2;
-                }
-                Vector2 desiredVelocity = Projectile.DirectionTo(targetPos) * desiredFlySpeedInPixelsPerFrame;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 1f / amountOfFramesToLerpBy);
+                
+                double s = p.Center.X - Projectile.Center.X;
+                Vector2 desiredPos = p.Center + Vector2.UnitY * Math.Sign(Projectile.Center.Y - p.Center.Y) * 450;
+                Projectile.velocity = FargoSoulsUtil.SmartAccel(Projectile.Center, desiredPos, Projectile.velocity, 2f, 2f);
             }
             if (timer == StartupTime + DashWindup && Projectile.timeLeft > DashTime)
             {
                 int foundTarget = (int)Projectile.ai[0];
                 Player p = Main.player[foundTarget];
-                float speed = 40f;
-                Projectile.velocity = Projectile.DirectionTo(p.Center) * speed;
+                //float speed = 40f;
+                //Projectile.velocity = Projectile.DirectionTo(p.Center) * speed;
+                Projectile.velocity *= 0.25f;
+                Projectile.ai[2] = -Math.Sign(Projectile.Center.Y - p.Center.Y);
 
                 SoundEngine.PlaySound(DevourerofGodsHead.AttackSound, Projectile.Center);
                 /*
@@ -126,10 +126,21 @@ namespace FargowiltasCrossmod.Content.Common.Bosses.Mutant
 
             if (timer > StartupTime + DashWindup)
             {
+                int foundTarget = (int)Projectile.ai[0];
+
+                Player p = Main.player[foundTarget];
+                Projectile.velocity.Y *= 0.96f;
+                int signToPlayer = Math.Sign(p.Center.Y - Projectile.Center.Y);
+                if (timer < StartupTime + DashWindup + 7 || Projectile.velocity.Y.NonZeroSign() == signToPlayer)
+                    Projectile.velocity.Y += signToPlayer * 3f;
+
+                Projectile.velocity.X *= 0.9f;
+                /*
                 if (Projectile.velocity.Length() > desiredFlySpeedInPixelsPerFrame)
                 {
                     Projectile.velocity *= 0.97f;
                 }
+                */
             }
             if (timer > StartupTime + DashWindup + DashTime)
             {

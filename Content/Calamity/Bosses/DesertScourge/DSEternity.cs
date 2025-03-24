@@ -15,6 +15,7 @@ using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
+using FargowiltasSouls.Core.Systems;
 using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,7 +35,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
         public override int NPCOverrideID => ModContent.NPCType<DesertScourgeHead>();
         public override void SetDefaults()
         {
-            //NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 2f);
+            NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.125f);
+            NPC.damage = 30;
         }
         public float[] drawInfo = [0, 200, 200, 0];
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -178,7 +180,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (NPC.ai[2] < 20)
             {
                 NPC.ai[2]++;
-
                 return true;
             }
 
@@ -242,16 +243,17 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 TooFarCheck(NPC, ref collision);
                 WormMovement(NPC, collision);
 
+                int idleTime = WorldSavingSystem.MasochistModeReal ? 300 : 500;
                 ai[0]++;
-                if (ai[0] == 250 && phase > 0 && CanDoSlam && SlamCooldown <= 0) //initiate slam, only after first phase (nuisances)
+                if (ai[0] == idleTime / 2 && phase > 0 && CanDoSlam && SlamCooldown <= 0) //initiate slam, only after first phase (nuisances)
                 {
                     CanDoSlam = false;
-                    SlamCooldown = 60 * 10;
+                    SlamCooldown = 60 * 14;
                     DoSlam = true;
                     NPC.netUpdate = true;
                     NetSync(NPC);
                 }
-                if (ai[0] == 500)
+                if (ai[0] >= idleTime)
                 {
                     ai[0] = 0;
                     IncrementCycle(NPC);
@@ -287,7 +289,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 drawInfo = [0, 200, 200, 0]; 
             }
 
-            ManageMusicFade(attack == 22);
+            ManageMusicFade(attack == 22 && ai[3] > 0);
 
             ai[1]++;
             if (ai[1] >= 300)
@@ -337,6 +339,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             if (ai[3] >= 0) // sucking
             {
                 ai[3]++;
+                if (WorldSavingSystem.MasochistModeReal)
+                    ai[3]++;
                 NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center) / 50, 0.03f);
 
                 // open mouth
@@ -346,7 +350,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             else // not sucking
             {
                 ai[3]--;
-                NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center) / 80, 0.03f);
+                NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center) / 80, 0.05f);
             }
             Vector2 toplayer = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
 
@@ -371,9 +375,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                 if (DLCUtils.HostCheck)
                 {
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2) * 20, ModContent.ProjectileType<SandChunk>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                    float spread = 14f;
                     for (int i = -2; i < 3; i++)
                     {
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.rotation.ToRotationVector2().RotatedBy(-MathHelper.PiOver2 + MathHelper.ToRadians(i * 10)) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                        float dir = -MathHelper.PiOver2 + MathHelper.ToRadians(i * spread);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.rotation.ToRotationVector2().RotatedBy(dir) * 15, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
                     }
                 }
                 SoundEngine.PlaySound(SoundID.NPCDeath13, NPC.Center);
@@ -386,17 +392,18 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             }
             if (ai[3] >= 0)
             {
+                int increment = WorldSavingSystem.MasochistModeReal ? 2 : 1;
                 if (drawInfo[1] > 0)
                 {
-                    drawInfo[1]--;
+                    drawInfo[1] -= increment;
                 }
                 if (drawInfo[1] <= 0)
                 {
-                    ai[2]++;
+                    ai[2] += increment;
                     if (ai[2] > 200)
                     {
                         if (drawInfo[2] > 0)
-                            drawInfo[2]--;
+                            drawInfo[2] -= increment;
                         if (drawInfo[2] <= 0)
                         {
                             drawInfo[2] = 200;
@@ -421,16 +428,40 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 case 0: //fly straight towards player until close enough
                     {
-                        if (timer == 0)
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/DesertScourgeRoar") with { Volume = 0.5f, Pitch = -0.3f });
-                        }
                         const float MaxSpeed = 25;
                         float inertia = 15f;
-                        const float CloseEnough = 300;
+                        //float horizontalDist = MathF.Abs(NPC.Center.X - player.Center.X);
+                        if (timer <= 0)
+                        {
+                            Vector2 startpos = new(player.Center.X + player.HorizontalDirectionTo(NPC.Center) * 500, player.Center.Y);
+                            startpos = LumUtils.FindGroundVertical(startpos.ToTileCoordinates()).ToWorldCoordinates();
+                            startpos.Y += 170;
+                            if (Math.Abs(startpos.Y - player.Center.Y) > 850)
+                                startpos.Y = player.Center.Y + 850;
+                            if (NPC.Distance(startpos) > 50)
+                            {
+                                timer = -1;
+                                if (NPC.velocity == Vector2.Zero)
+                                {
+                                    NPC.velocity.X = -0.15f;
+                                    NPC.velocity.Y = -0.05f;
+                                }
+                                Vector2 toPos = startpos - NPC.Center;
+                                toPos.Normalize();
+                                toPos *= MaxSpeed;
+                                NPC.velocity = (NPC.velocity * (inertia - 1f) + toPos) / inertia;
+                                return;
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("CalamityMod/Sounds/Custom/DesertScourgeRoar") with { Volume = 0.5f, Pitch = -0.3f });
+                                timer = 1;
+                            }
+                        }
+                        const float CloseEnough = 430;
 
                         Vector2 toPlayer = targetPos - NPC.Center;
-                        float distance = toPlayer.Length();
+                        float distance = toPlayer.X;
                         if (NPC.velocity == Vector2.Zero)
                         {
                             NPC.velocity.X = -0.15f;
@@ -472,36 +503,44 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
                         const float xTracking = 0.25f;
                         NPC.velocity.Y += gravity;
                         NPC.velocity.X += Math.Sign(player.Center.X - NPC.Center.X) * xTracking;
-                        if (Collision.SolidCollision(NPC.position, NPC.width, NPC.height) || timer > 60 * 5) //end attack on collision or after safety max time
+                        if ((timer < 60 * 5 && Collision.SolidCollision(NPC.position, NPC.width, NPC.height)) || (timer > 60 * 5 && timer < 60 * 6)) //end attack on collision or after safety max time
                         {
                             NPC.velocity /= 4;
                             SoundEngine.PlaySound(SoundID.Item62, NPC.Center);
                             Main.LocalPlayer.Calamity().GeneralScreenShakePower = 20f;
-                            const int ShotCount = 10; //per side
-                            const int MaxShotSpeed = 16;
-                            for (int i = 0; i < ShotCount; i++)
+                            timer = 60 * 6;
+                        }
+                        if (timer >= 60 * 6)
+                        {
+                            const int ShotCount = 10;
+                            const int MaxShotSpeed = 14;
+                            for (int side = -1; side < 2; side += 2)
                             {
-                                for (int side = -1; side < 2; side += 2)
+                                for (int c = 0; c < 3; c++)
                                 {
-
+                                    float i = Main.rand.NextFloat(0, 12f);
+                                    float j = Main.rand.NextFloat(1, 3f);
                                     float speed = MaxShotSpeed * (float)(i + 1) / ShotCount;
                                     Vector2 dir = (-Vector2.UnitY).RotatedBy(side * MathHelper.Pi / 9.85f);
-                                    float randfac = MathHelper.Pi / 18f;
+                                    float randfac = MathHelper.Pi / 12f;
                                     float randrot = Main.rand.NextFloat(-randfac, randfac);
-                                    for (int j = -1; j < 2; j += 2)
-                                    {
-                                        float offset = randfac * NPC.width / 5f;
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX * side * (offset + (NPC.width / 3))), speed * dir.RotatedBy(randfac * j), ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 2f);
-                                    }
+                                    float offset = randfac * NPC.width / 5f;
+                                    Vector2 vel = speed * dir.RotatedBy(randrot * j);
 
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + (Vector2.UnitX * side * (offset + (NPC.width / 3))), vel, ModContent.ProjectileType<GreatSandBlast>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 2f);
                                 }
                             }
-                            timer = 0;
-                            attackStep = 0;
-                            DoSlam = false;
-                            CanDoSlam = false;
-                            //IncrementCycle(NPC);
-                            return;
+
+                            
+                            if (timer >= 60 * 6 + 8)
+                            {
+                                timer = 0;
+                                attackStep = 0;
+                                DoSlam = false;
+                                CanDoSlam = false;
+                                //IncrementCycle(NPC);
+                                return;
+                            }
                         }
                     }
                     break;
@@ -551,7 +590,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             Player target = Main.player[NPC.target];
             Vector2 offset = lungePos;
             if (target.Center.X > NPC.Center.X) offset.X = -offset.X;
-            NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center + offset - NPC.Center).SafeNormalize(Vector2.Zero) * 15, 0.05f);
+            int speed = WorldSavingSystem.MasochistModeReal ? 17 : 15;
+            float lerp = WorldSavingSystem.MasochistModeReal ? 0.07f : 0.05f;
+            NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center + offset - NPC.Center).SafeNormalize(Vector2.Zero) * speed, lerp);
             if (NPC.Distance(target.Center + offset) <= 50)
                 lungeInfo[0]++;
             if (lungeInfo[0] == 10)
@@ -942,6 +983,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 NPC.lifeMax = 25000000;
             }
+            else
+                NPC.lifeMax = (int)Math.Round(NPC.lifeMax * 1.125f);
+            NPC.damage = 30;
         }
         public static List<int> PierceResistExclude =
         [
@@ -966,6 +1010,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             {
                 modifiers.FinalDamage.Base = 1;
             }
+            if (projectile.maxPenetrate > 1 || projectile.maxPenetrate < 0)
+                modifiers.FinalDamage *= 0.5f;
             DestroyerSegment.PierceResistance(projectile, ref modifiers);
         }
         public override bool PreAI()

@@ -29,6 +29,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
             //return true;
         }
@@ -37,7 +38,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             base.SetDefaults();
 
-            Item.rare = ItemRarityID.Orange;
+            Item.rare = ItemRarityID.LightPurple;
             Item.value = 40000;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -67,6 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
             //return true;
         }

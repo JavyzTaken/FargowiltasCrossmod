@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CalamityMod;
+using CalamityMod.Buffs.StatBuffs;
 using CalamityMod.Buffs.StatDebuffs;
 using CalamityMod.Buffs.Summon;
 using CalamityMod.CalPlayer;
@@ -28,6 +29,7 @@ using FargowiltasSouls.Content.Bosses.MutantBoss;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
@@ -51,6 +53,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
     public class CalDLCPlayer : ModPlayer
     {
         public bool CalamitousPresence;
+        public bool CheckedWrathOldDuke;
         //Unique accessories fields
 
         public override void ResetEffects()
@@ -69,6 +72,7 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void PreUpdate()
         {
+
             if (Main.netMode != NetmodeID.SinglePlayer)
             {
                 if (ModCompatibility.Calamity.Loaded) // Necessary here to sync in multiplayer
@@ -76,6 +80,16 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
                     ModCompatibility.SoulsMod.Mod.Call("EternityVanillaBossBehaviour", CalDLCConfig.Instance.EternityPriorityOverRev);
                     if (CalDLCConfig.Instance.EternityPriorityOverRev && WorldSavingSystem.EternityMode)
                         CalamityMod.CalamityMod.ExternalFlag_DisableNonRevBossAI = true;
+                }
+            }
+            if (ModCompatibility.WrathoftheGods.Loaded)
+            {
+                if (!CheckedWrathOldDuke)
+                {
+                    CheckedWrathOldDuke = true;
+                    var system = ModCompatibility.WrathoftheGods.Mod.Find<ModSystem>("WorldSaveSystem");
+                    var property = system.GetType().GetProperty("AvatarHasKilledOldDuke", LumUtils.UniversalBindingFlags);
+                    property.SetValue(null, true);
                 }
             }
             //Main.NewText(BossRushEvent.BossRushStage);
@@ -118,6 +132,20 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         {
             FargoSoulsPlayer soulsPlayer = Player.FargoSouls();
             CalamityPlayer calamityPlayer = Player.Calamity();
+            SinisterIconDropsEffect sinisterEffect = GetInstance<SinisterIconDropsEffect>();
+            if (Player.HasEffect<SinisterIconEffect>() && BossRushEvent.BossRushActive)
+            {
+                Player.AccessoryEffects().ActiveEffects[sinisterEffect.Index] = false;
+                Player.AccessoryEffects().EffectItems[sinisterEffect.Index] = null;
+            }
+            //Main.NewText(Player.HasEffect<SinisterIconEffect>());
+            if (soulsPlayer.MutantPresence)
+            {
+                Player.ClearBuff(BuffType<CalamitousPresenceBuff>());
+                Player.buffImmune[BuffType<CalamitousPresenceBuff>()] = true;
+                CalamitousPresence = false;
+            }
+
             calamityPlayer.profanedCrystalStatePrevious = 0;
             calamityPlayer.pscState = 0;
 
@@ -167,6 +195,12 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         public override void PreUpdateBuffs()
         {
             PreUpdateBuffImmune = Player.buffImmune;
+            if (Player.FargoSouls().MutantPresence)
+            {
+                Player.ClearBuff(BuffType<CalamitousPresenceBuff>());
+                Player.buffImmune[BuffType<CalamitousPresenceBuff>()] = true;
+                CalamitousPresence = false;
+            }
         }
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
@@ -317,6 +351,11 @@ namespace FargowiltasCrossmod.Core.Calamity.ModPlayers
         }
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
+            if (proj.type == ProjectileType<MutantGiantDeathray2>() && Player.HasBuff(BuffType<SilvaRevival>()))
+            {
+                Player.Calamity().silvaCountdown = 0;
+                Player.ClearBuff(BuffType<SilvaRevival>());
+            }
             if (ModCompatibility.WrathoftheGods.Loaded && WorldSavingSystem.EternityMode)
             {
                 if (Main.npc.Any(n => n.Alive() && 

@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/DecapoditaSprout";
         public override int NPCType => ModContent.NPCType<Crabulon>();
-        public override string NPCName => "Crabulon";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<DecapoditaSprout>().AddTile(TileID.WorkBenches).Register();

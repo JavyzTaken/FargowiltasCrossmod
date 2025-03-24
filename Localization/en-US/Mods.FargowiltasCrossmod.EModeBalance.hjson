@@ -1,0 +1,19 @@
+CrossBalanceGeneric: "Cross-mod Balance: "
+DamageUpGeneric: Damage increased by {0}%
+DamageDownGeneric: Damage decreased by {0}%
+PickPowerDownGeneric: Pickaxe power decreased by {0}%
+MagicDagger: Damage decreased by 50% in Pre-Hardmode
+ProfanedCrystal: Massively reduced damage with any minions active
+MythrilEnch: Less effective on rogue weapons
+OrichalcumEnch: Debuff damage increase reduced to 1.5x
+Daawnlight: Effect disabled while Tin Enchantment effect is active
+SlimyShield: Does not inflict Oiled
+FlightMastery: Flight stats decreased when fighting non-Souls Mod bosses
+EarthForce: Debuff damage increase reduced to 2x
+LifeForce: Flight stats and wing time decreased when fighting non-Souls Mod bosses
+OnionPackUpgrade: Is now an upgrade to [i:FargowiltasSouls/MutantsPact]Mutant's Pact, that allows any accessory in the extra slot
+Laudanum: Halved strength of most positive debuff effects
+HardmodeSwords: Stat buffs decreased
+OceanCrest: Grants immunity to Eternity debuffs caused by entering water
+// truth be told I have absolutely no idea what this enchantment is so the key name is just that
+CalEnch: Accumulated damage capped at 500.000

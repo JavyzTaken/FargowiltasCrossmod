@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/YharonEgg";
         public override int NPCType => ModContent.NPCType<Yharon>();
-        public override string NPCName => "Yharon";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<YharonEgg>().AddTile(TileID.WorkBenches).Register();

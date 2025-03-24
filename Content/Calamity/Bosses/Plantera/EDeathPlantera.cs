@@ -5,6 +5,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.Projectiles;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
 using Microsoft.Xna.Framework;
@@ -75,6 +76,19 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                 {
                     if (dashTimer == 0)
                     {
+                        SoundEngine.PlaySound(SoundID.Zombie21, NPC.Center);
+                        if (FargoSoulsUtil.HostCheck)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<GlowRing>(), 0, 0, -1, NPC.whoAmI, -11);
+                        }
+                    }
+                    if (dashTimer < 0)
+                    {
+                        NPC.rotation = NPC.AngleTo(target.Center);
+
+                    }
+                    if (dashTimer == 30)
+                    {
                         SoundEngine.PlaySound(SoundID.Roar, NPC.Center);
                         NPC.velocity = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 15;
                         if (DLCUtils.HostCheck)
@@ -86,7 +100,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Plantera
                         }
                     }
                     dashTimer++;
-                    if (dashTimer >= 60)
+                    if (dashTimer >= 90)
                     {
                         dashing = false;
                         dashTimer = 0;

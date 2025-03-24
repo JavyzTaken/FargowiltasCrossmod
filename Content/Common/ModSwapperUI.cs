@@ -8,6 +8,8 @@ using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
+using Terraria.Localization;
+using System.Reflection;
 
 namespace FargowiltasCrossmod.Content.Common
 {
@@ -73,6 +75,19 @@ namespace FargowiltasCrossmod.Content.Common
         public SwitchModButton(string text, float textScale = 1, bool large = false) : base(text, textScale, large)
         {
         }
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            //start at center and subtract because diff resolutions
+            Left.Set(-260 - MinWidth.Pixels, 0.5f);
+            
+            //replicate math vanilla uses to find textbox height
+            var cache = typeof(Main).GetField("_textDisplayCache", LumUtils.UniversalBindingFlags).GetValue(Main.instance);
+            var type = cache.GetType();
+            var amountOfLinesField = type.GetProperty("AmountOfLines", LumUtils.UniversalBindingFlags);
+            var amountOfLines = amountOfLinesField.GetValue(cache);
+            Top.Set(100 + ((int)amountOfLines + 1) * 30 - 10, 0);
+        }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
@@ -93,7 +108,7 @@ namespace FargowiltasCrossmod.Content.Common
                 int currentShop = DevianttGlobalNPC.currentShop;
                 if (currentShop == 0)
                 {
-                    (listeningElement as UITextPanel<string>).SetText("Vanilla");
+                    (listeningElement as UITextPanel<string>).SetText(Language.GetTextValue("Mods.FargowiltasCrossmod.NPCs.ShopModSwapper.Vanilla"));
                 }
                 else
                 {

@@ -6,6 +6,9 @@ using CalamityMod;
 using CalamityMod.CalPlayer;
 using CalamityMod.Enums;
 using CalamityMod.Events;
+using CalamityMod.Items.Tools;
+using CalamityMod.Items.Weapons.DraedonsArsenal;
+using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.NPCs;
 using CalamityMod.NPCs.AquaticScourge;
 using CalamityMod.NPCs.AstrumAureus;
@@ -37,15 +40,18 @@ using CalamityMod.NPCs.Signus;
 using CalamityMod.NPCs.SlimeGod;
 using CalamityMod.NPCs.StormWeaver;
 using CalamityMod.NPCs.SupremeCalamitas;
+using CalamityMod.NPCs.TownNPCs;
 using CalamityMod.NPCs.Yharon;
 using CalamityMod.Projectiles;
 using CalamityMod.Systems;
 using CalamityMod.UI.DraedonSummoning;
 using CalamityMod.World;
+using Fargowiltas.Items.CaughtNPCs;
 using Fargowiltas.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
+using FargowiltasCrossmod.Content.Calamity.NPCs;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Bosses.AbomBoss;
@@ -67,6 +73,7 @@ using FargowiltasSouls.Content.Buffs;
 using FargowiltasSouls.Content.Buffs.Boss;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Content.Buffs.Souls;
+using FargowiltasSouls.Content.Items;
 using FargowiltasSouls.Content.NPCs.EternityModeNPCs;
 using FargowiltasSouls.Content.Projectiles.Masomode;
 using FargowiltasSouls.Core.Systems;
@@ -80,6 +87,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using static CalamityMod.Events.BossRushEvent;
 using static FargowiltasCrossmod.Core.Common.Globals.DevianttGlobalNPC;
@@ -124,6 +132,27 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public static bool DownedGSS => DownedBossSystem.downedGSS;
         public static bool DownedClam => DownedBossSystem.downedCLAM;
         #endregion summonloadingbullshit
+        public override void Load()
+        {
+            Add("Archmage", ModContent.NPCType<DILF>());
+            Add("SeaKing", ModContent.NPCType<SEAHOE>());
+            Add("Bandit", ModContent.NPCType<THIEF>());
+            Add("DrunkPrincess", ModContent.NPCType<FAP>());
+            Add("BrimstoneWitch", ModContent.NPCType<WITCH>());
+        }
+        public static void Add(string internalName, int id)
+        {
+            if (FargowiltasCrossmod.Instance == null)
+            {
+                FargowiltasCrossmod.Instance = ModContent.GetInstance<FargowiltasCrossmod>();
+            }
+            CaughtNPCItem item = new(internalName, id);
+            FargowiltasCrossmod.Instance.AddContent(item);
+            FieldInfo info = typeof(CaughtNPCItem).GetField("CaughtTownies", LumUtils.UniversalBindingFlags);
+            Dictionary<int, int> list = (Dictionary<int, int>)info.GetValue(info);
+            list.Add(id, item.Type);
+            info.SetValue(info, list);
+        }
         public override void PostSetupContent()
         {
             if (!ModCompatibility.Calamity.Loaded)
@@ -322,7 +351,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             CalamityLists.debuffList.Add(ModContent.BuffType<RushJobBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<TwinsInstallBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<SnowstormCDBuff>());
-            CalamityLists.debuffList.Add(ModContent.BuffType<CorruptingBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<HellFireBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<LeadPoisonBuff>());
             CalamityLists.debuffList.Add(ModContent.BuffType<OriPoisonBuff>());
@@ -333,6 +361,36 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             newDebuffIDs.AddRange(calamityDebuffs);
             debuffIDs.SetValue(null, newDebuffIDs);
             #endregion CalDebuffListCompat
+            #region SwordRework
+            int[] CalSwordsToApplyRework = [ModContent.ItemType<GaussDagger>(), ModContent.ItemType<AbsoluteZero>(), ModContent.ItemType<AegisBlade>(),
+            ModContent.ItemType<Aftershock>(), ModContent.ItemType<AnarchyBlade>(), ModContent.ItemType<AstralBlade>(),
+            ModContent.ItemType<AstralScythe>(),ModContent.ItemType<Ataraxia>(),ModContent.ItemType<Avalanche>(),
+            ModContent.ItemType<BalefulHarvester>(),ModContent.ItemType<Basher>(),
+            ModContent.ItemType<BlightedCleaver>(),ModContent.ItemType<Brimlash>(),ModContent.ItemType<BrimstoneSword>(),
+            ModContent.ItemType<BrinyBaron>(),ModContent.ItemType<BurntSienna>(),ModContent.ItemType<Carnage>(),
+            ModContent.ItemType<CatastropheClaymore>(),ModContent.ItemType<TrueCausticEdge>(),ModContent.ItemType<CelestialClaymore>(),
+            ModContent.ItemType<CometQuasher>(),ModContent.ItemType<DarklightGreatsword>(),ModContent.ItemType<DefiledGreatsword>(),
+            ModContent.ItemType<DevilsDevastation>(),ModContent.ItemType<DraconicDestruction>(),
+            ModContent.ItemType<Earth>(),ModContent.ItemType<EntropicClaymore>(),ModContent.ItemType<EssenceFlayer>(),
+            ModContent.ItemType<EutrophicScimitar>(),ModContent.ItemType<EvilSmasher>(),ModContent.ItemType<ExaltedOathblade>(),
+            ModContent.ItemType<Excelsus>(),ModContent.ItemType<FeralthornClaymore>(),ModContent.ItemType<FlarefrostBlade>(),
+            ModContent.ItemType<Floodtide>(),ModContent.ItemType<ForbiddenOathblade>(),ModContent.ItemType<ForsakenSaber>(),
+            ModContent.ItemType<GaelsGreatsword>(),ModContent.ItemType<GalactusBlade>(),ModContent.ItemType<GeliticBlade>(),
+            ModContent.ItemType<GrandGuardian>(),ModContent.ItemType<GreatswordofJudgement>(),
+            ModContent.ItemType<Greentide>(),ModContent.ItemType<HellfireFlamberge>(),ModContent.ItemType<Hellkite>(),
+            ModContent.ItemType<HolyCollider>(),ModContent.ItemType<IridescentExcalibur>(),
+            ModContent.ItemType<LifehuntScythe>(),ModContent.ItemType<LionHeart>(),ModContent.ItemType<MajesticGuard>(),
+            ModContent.ItemType<MirrorBlade>(),ModContent.ItemType<Orderbringer>(),ModContent.ItemType<PerfectDark>(),
+            ModContent.ItemType<PlagueKeeper>(),ModContent.ItemType<RedSun>(),
+            ModContent.ItemType<SeashineSword>(),ModContent.ItemType<SolsticeClaymore>(),ModContent.ItemType<SoulHarvester>(),
+            ModContent.ItemType<StellarStriker>(),ModContent.ItemType<StormRuler>(),ModContent.ItemType<StormSaber>(),
+            ModContent.ItemType<Swordsplosion>(),ModContent.ItemType<TaintedBlade>(),ModContent.ItemType<TeardropCleaver>(),
+            ModContent.ItemType<TerrorBlade>(),ModContent.ItemType<TheDarkMaster>(),ModContent.ItemType<TheEnforcer>(),
+            ModContent.ItemType<TheLastMourning>(),ModContent.ItemType<TheMutilator>(),ModContent.ItemType<TitanArm>(),
+            ModContent.ItemType<UltimusCleaver>(),ModContent.ItemType<VeinBurster>(),ModContent.ItemType<Virulence>(),
+            ModContent.ItemType<VoidEdge>(),ModContent.ItemType<WindBlade>(),];
+            SwordGlobalItem.AllowedModdedSwords = SwordGlobalItem.AllowedModdedSwords.Union(CalSwordsToApplyRework).ToArray();
+            #endregion
         }
         //make this a property instead of directly using it so tml doesnt shit itself trying to load it
         public ref Dictionary<int, Action<NPC>> DeathEffectsList => ref BossRushEvent.BossDeathEffects;

@@ -15,7 +15,16 @@ public static class ModCompatibility
     {
         public const string Name = "FargowiltasSouls";
         public static bool Loaded => ModLoader.HasMod(Name);
-        public static FargowiltasSouls.FargowiltasSouls Mod => ModLoader.GetMod(Name) as FargowiltasSouls.FargowiltasSouls;
+        private static FargowiltasSouls.FargowiltasSouls mod = null;
+        public static FargowiltasSouls.FargowiltasSouls Mod
+        {
+            get
+            {
+                mod ??= ModLoader.GetMod(Name) as FargowiltasSouls.FargowiltasSouls;
+                return mod;
+            }
+        }
+       
     }
     public static class Calamity
     {
@@ -24,27 +33,59 @@ public static class ModCompatibility
 
         // TODO: cache, lazy property
         public static bool Loaded => ModLoader.HasMod(Name);
+        private static Mod mod = null;
+        public static Mod Mod
+        {
+            get
+            {
+                mod ??= ModLoader.GetMod(Name);
+                return mod;
+            }
+        }
 
-        public static Mod Mod => ModLoader.GetMod(Name);
     }
     public static class ThoriumMod
     {
         public const string Name = "ThoriumMod";
         public static bool Loaded => ModLoader.HasMod(Name);
-        public static Mod Mod => ModLoader.GetMod(Name);
+        private static Mod mod = null;
+        public static Mod Mod
+        {
+            get
+            {
+                mod ??= ModLoader.GetMod(Name);
+                return mod;
+            }
+        }
     }
     public static class InfernumMode
     {
         public const string Name = "InfernumMode";
         public static bool Loaded => ModLoader.HasMod(Name);
-        public static Mod Mod => ModLoader.GetMod(Name);
+        private static Mod mod = null;
+        public static Mod Mod
+        {
+            get
+            {
+                mod ??= ModLoader.GetMod(Name);
+                return mod;
+            }
+        }
         public static bool InfernumDifficulty => Loaded && (bool)Mod.Call("GetInfernumActive");
     }
     public static class WrathoftheGods
     {
         public const string Name = "NoxusBoss";
         public static bool Loaded => ModLoader.HasMod(Name);
-        public static Mod Mod => ModLoader.GetMod(Name);
+        private static Mod mod = null;
+        public static Mod Mod
+        {
+            get
+            {
+                mod ??= ModLoader.GetMod(Name);
+                return mod;
+            }
+        }
 
         public static ModNPC NoxusBoss1 = Mod.Find<ModNPC>(Mod.Version >= new Version(1, 2, 0) ? "AvatarRift" : "NoxusEgg");
         public static ModNPC NoxusBoss2 = Mod.Find<ModNPC>(Mod.Version >= new Version(1, 2, 0) ? "AvatarOfEmptiness" : "EntropicGod");

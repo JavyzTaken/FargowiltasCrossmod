@@ -55,7 +55,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Item.rare = ItemRarityID.Pink;
+            Item.rare = ItemRarityID.LightRed;
             Item.value = 50000;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -68,11 +68,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             Recipe recipe = CreateRecipe();
             recipe.AddRecipeGroup("FargowiltasCrossmod:AnyStatisHelms");
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelArmor>());
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Statigel.StatigelGreaves>());
-            recipe.AddIngredient(ItemID.GolfBallDyedPurple);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Weapons.Ranged.OverloadedBlaster>());
-            recipe.AddIngredient(ModContent.ItemType<BouncySpikyBall>(), 300);
+            recipe.AddIngredient<CalamityMod.Items.Armor.Statigel.StatigelArmor>();
+            recipe.AddIngredient<CalamityMod.Items.Armor.Statigel.StatigelGreaves>();
+            recipe.AddIngredient<ShinobiBlade>();
+            recipe.AddIngredient<CalamityMod.Items.Weapons.Ranged.OverloadedBlaster>();
+            recipe.AddIngredient<BouncySpikyBall>(300);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -86,36 +86,50 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
+        public override Header ToggleHeader => Header.GetHeader<GaleHeader>();
         public override int ToggleItemType => ModContent.ItemType<StatigelEnchant>();
         
         public override void PostUpdateEquips(Player player)
         {
-            float DamageFormula(float x) => x / MathF.Sqrt(x * x + 1);
-            float x = player.velocity.Length() / 8f;
-            float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
-            float bonusDamage = bonusMultiplier * 0.35f;
-            if (player.ForceEffect<StatigelEffect>())
-                bonusDamage *= 2;
-            player.GetDamage(DamageClass.Generic) += bonusDamage;
-
-            CooldownBarManager.Activate("StatigelDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/StatigelEnchant").Value, new Color(89, 170, 204), 
-                () => DamageFormula(Main.LocalPlayer.velocity.Length() / 8f), true, 60, () => player.HasEffect<StatigelEffect>());
-
-            if (player.ForceEffect<StatigelEffect>())
+            if (player.HasEffect<GaleEffect>())
             {
-                player.runAcceleration *= 0.9f;
-                //player.maxRunSpeed *= 1.3f;
-                player.accRunSpeed *= 1.2f;
-                player.runSlowdown *= 0.5f;
+                float DamageFormula(float x) => x / MathF.Sqrt(x * x + 1);
+                float x = player.velocity.Length() / 25f;
+                float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
+                float bonusDamage = bonusMultiplier * 0.4f;
+                player.GetDamage(DamageClass.Generic) += bonusDamage;
+
+                CooldownBarManager.Activate("StatigelGaleDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/StatigelEnchant").Value, new Color(89, 170, 204),
+                    () => DamageFormula(Main.LocalPlayer.velocity.Length() / 25f), true, 60, () => player.HasEffect<StatigelEffect>() && player.HasEffect<GaleEffect>());
+                base.PostUpdateEquips(player);
             }
             else
             {
-                player.runAcceleration *= 0.8f;
-                player.accRunSpeed *= 1.12f;
-                player.runSlowdown *= 0.5f;
+                float DamageFormula(float x) => x / MathF.Sqrt(x * x + 1);
+                float x = player.velocity.Length() / 8f;
+                float bonusMultiplier = DamageFormula(x); // This function approaches y = 1 as x approaches infinity.
+                float bonusDamage = bonusMultiplier * 0.35f;
+                if (player.ForceEffect<StatigelEffect>())
+                    bonusDamage *= 2;
+                player.GetDamage(DamageClass.Generic) += bonusDamage;
+
+                CooldownBarManager.Activate("StatigelDamage", ModContent.Request<Texture2D>("FargowiltasCrossmod/Content/Calamity/Items/Accessories/Enchantments/StatigelEnchant").Value, new Color(89, 170, 204),
+                    () => DamageFormula(Main.LocalPlayer.velocity.Length() / 8f), true, 60, player.HasEffect<StatigelEffect>);
+
+                if (player.ForceEffect<StatigelEffect>())
+                {
+                    player.runAcceleration *= 0.9f;
+                    //player.maxRunSpeed *= 1.3f;
+                    player.accRunSpeed *= 1.2f;
+                    player.runSlowdown *= 0.5f;
+                }
+                else
+                {
+                    player.runAcceleration *= 0.8f;
+                    player.accRunSpeed *= 1.12f;
+                    player.runSlowdown *= 0.5f;
+                }
             }
-            
         }
        
     }

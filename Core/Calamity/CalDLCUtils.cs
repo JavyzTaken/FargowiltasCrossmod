@@ -1,5 +1,4 @@
-﻿using FargowiltasCrossmod.Content.Calamity.Items;
-using FargowiltasCrossmod.Core.Calamity.Globals;
+﻿using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Calamity.ModPlayers;
 using Terraria;
 
@@ -11,6 +10,9 @@ namespace FargowiltasCrossmod.Core.Calamity
             => player.GetModPlayer<CalDLCPlayer>();
         public static CalDLCAddonPlayer CalamityAddon(this Player player)
             => player.GetModPlayer<CalDLCAddonPlayer>();
+
+        public static CalDLCNPCChanges CalamityDLC(this NPC npc)
+            => npc.GetGlobalNPC<CalDLCNPCChanges>();
         /// <summary>
         /// Gets the NPC'S CalDLCEmodeBehavior override if it has one. Returns null if override is missing.
         /// </summary>

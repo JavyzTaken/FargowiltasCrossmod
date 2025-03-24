@@ -1,0 +1,177 @@
+FungusBall.DisplayName: Fungus Ball
+MushroomSpear.DisplayName: Mushroom Spear
+ShroomGas.DisplayName: Shroom Gas
+SandChunk.DisplayName: Sand Chunk
+SuckedSandBlast.DisplayName: Sand Blast
+CursedLightning.DisplayName: Cursed Lightning
+CurvingCursedFlames.DisplayName: Curving Cursed Flames
+MovingCorruptCloud.DisplayName: Moving Corrupt Cloud
+ShadeLightningCloud.DisplayName: Shade Lightning Cloud
+ToothBall.DisplayName: Tooth Ball
+Tooth.DisplayName: Tooth
+HomingRocket.DisplayName: Homing Rocket
+HomingSickle.DisplayName: Homing Sickle
+HallowedSlimeSpike.DisplayName: Hallowed Slime Spike
+BouncingFireball.DisplayName: Bouncing Fireball
+BigLight.DisplayName: Big Light
+DestructionBolt.DisplayName: Destruction Bolt
+StarofDestruction.DisplayName: Star of Destruction
+
+Boss: {
+	AcceleratingEbonianGlob.DisplayName: Ebonian Glob
+	AcceleratingCrimulanGlob.DisplayName: Crimulan Glob
+	SlimeHomingEbonianGlob.DisplayName: Ebonian Glob
+	SlimeHomingCrimuleanGlob.DisplayName: Crimulean Glob
+	MutantYharonVortex.DisplayName: The Sun
+	IchorShotFast.DisplayName: Ichor Shot
+}
+
+SlamTelegraph.DisplayName: Slam Telegraph
+IceBomb.DisplayName: Ice Bomb
+IceCrystal.DisplayName: Ice Crystal
+IceChain.DisplayName: Ice Chain
+IceTrident.DisplayName: Ice Trident
+CrimsonPaladinSpike.DisplayName: Crimson Spike
+PermafrostHeldWeapon.DisplayName: Permafrost Held Weapon
+MutantOldDuke.DisplayName: Old Duke
+DLCMutantSpearSpin.DisplayName: Mutant's Atlantis
+DLCMutantSpearDash.DisplayName: Mutant's Atlantis
+MutantAresNuke.DisplayName: Mutant's Gauss Nuke
+MutantAresBomb.DisplayName: Mutant's Gauss Nuke
+DLCMutantFishronRitual.DisplayName: Mutant Gauss Ritual
+MutantSlimeGod.DisplayName: Slime God
+DLCBloomLine.DisplayName: Telegraph Line
+MutantSCal.DisplayName: Calamitas' Skullshield
+MutantPBG.DisplayName: Plaguebringer Goliath
+MutantAureusSpawn.DisplayName: Aureus Spawn
+MutantHolyRay.DisplayName: Holy Ray
+MutantDoGBody.DisplayName: The Devourer of Gods
+MutantDoGHead.DisplayName: The Devourer of Gods
+MutantDoGTail.DisplayName: The Devourer of Gods
+MutantPolter.DisplayName: Necroplasm
+ArcticPaw.DisplayName: Arctic Paw
+Blizzard.DisplayName: Blizzard
+DarkIceCrystal.DisplayName: Dark Ice Crystal
+FrostFlare.DisplayName: Frost Flare
+FrostShard.DisplayName: Frost Shard
+IceArrow.DisplayName: Ice Arrow
+IceShot.DisplayName: Ice Shot
+IceStar.DisplayName: Ice Star
+CryogenRitual.DisplayName: Cryogen Ritual
+PermafrostRitual.DisplayName: Permafrost Ritual
+IceCloud.DisplayName: Chilling Snow
+BrimstoneDebris.DisplayName: Brimstone Debris
+BrimstonePulse.DisplayName: Brimstone Pulse
+BrimstoneClone.DisplayName: Brimstone Clone
+BrimBeam.DisplayName: Brim Beam
+BrimstoneChainExplosion.DisplayName: Brimstone Chain Explosion
+BrimstoneTeleport.DisplayName: Brimstone Teleport
+BrimstoneFireblast.DisplayName: Brimstone Fireblast
+FeatherJumpFeather.DisplayName: Feather
+MarniteDagger.DisplayName: Marnite Dagger
+MarniteLaser.DisplayName: Marnite Laser
+ProwlerTornado.DisplayName: Prowler Tornado
+WulfrumCollector.DisplayName: Wulfrum Collector
+WulfrumScanner.DisplayName: Wulfrum Scanner
+CrystalPlatform.DisplayName: Crystal Platform
+PlagueCloud.DisplayName: Plague Cloud
+Eruption.DisplayName: Eruption
+VampireBat.DisplayName: Vampire Bat
+SulphurBubble.DisplayName: Sulphur Bubble
+VictideSpike.DisplayName: Victide Spike
+GoldenShowerShot.DisplayName: Golden Shower Shot
+HiveMindFiretrail.DisplayName: Cursed Fire
+BrainMassProjectile.DisplayName: Rotten Brainmass
+GravityVileClot.DisplayName: Vile Clot
+VileClotDrop.DisplayName: Vile Clot
+SulphurCloud.DisplayName: Sulphur Cloud
+PureGel.DisplayName: Pure Gel
+HiveMindPulse.DisplayName: Hive Mind Pulse
+ApolloLineTelegraph.DisplayName: Telegraph
+ApolloMissile.DisplayName: Plasma Missile
+AresMissile.DisplayName: Thermal Missile
+AresMissileBackground.DisplayName: Thermal Missile
+ArtemisLaserImproved.DisplayName: Thermal Laser
+ArtemisLaserSmall.DisplayName: Small Thermal Laser
+CannonLaserbeam.DisplayName: Energized Thermal Deathray
+DraedonLootCrate.DisplayName: Draedon Loot Crate
+ExoelectricBlast.DisplayName: Exoelectric Blast
+ExoOverloadDeathray.DisplayName: Exo Overload Deathray
+GaussNuke.DisplayName: Gauss Nuke
+GaussNukeBoom.DisplayName: Thermonuclear Explosion
+HadesExoEnergyOrb.DisplayName: Exoelectric Energy Orb
+HadesLaserBurst.DisplayName: Laser Burst
+HadesMine.DisplayName: Hades Mine
+HadesSuperLaserbeam.DisplayName: Exo Energy Blast
+HomingTeslaBurst.DisplayName: Tesla Burst
+LargeTeslaSphere.DisplayName: Tesla Sphere
+LargeTeslaSphereExplosion.DisplayName: Tesla Explosion
+LingeringPlasmaFireball.DisplayName: Plasma Fireball
+SmallTeslaArc.DisplayName: Tesla Arc
+ExothermalDisintegrationRay.DisplayName: Exothermal Disintegration Ray
+ScourgeSandstream.DisplayName: Scourge Sandstream
+SmallTeslaSphere.DisplayName: Tesla Sphere
+PlasmaFlameJet.DisplayName: Exoplasma Flame Jet
+BlazingExoLaserbeam.DisplayName: Blazing Exo Laserbeam
+AresDeathAnimationExplosion.DisplayName: Explosion
+SmallHadesSegmentExplosion.DisplayName: Explosion
+BigHadesSegmentExplosion.DisplayName: Explosion
+AresCoreLaserSmall.DisplayName: Energized Spark
+AresSwingingKatanas.DisplayName: XF-09 Ares Energy Katana
+ApolloPlasmaFireball.DisplayName: Plasma Fireball
+AresHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+ExoTwinHyperfuturisticPortal.DisplayName: Hyperfuturistic Portal
+HadesMissile.DisplayName: Fortified Missile
+CodebreakerDataStream.DisplayName: Codebreaker Data Stream
+CrabulonJumpTelegraph.DisplayName: Crabulon Jump Telegraph
+BigBubble.DisplayName: Big Bubble
+Bubble.DisplayName: Bubble
+AquaticSuck.DisplayName: Aquatic Suck
+FlamableGas.DisplayName: Flamable Gas
+ToxicGas.DisplayName: Toxic Gas
+FathomAngler.DisplayName: Fathom Angler
+AstralTrailStar.DisplayName: Astral Trail Star
+BrimflameBurst.DisplayName: Brimflame Burst
+ClamSlam.DisplayName: Clam Slam
+SmallCannonLaser.DisplayName: Laser
+PulseBlast.DisplayName: Pulse Blast
+HadesLineTelegraph.DisplayName: Hades Line Telegraph
+ApolloMissile2.DisplayName: Apollo Missile
+BatMode.DisplayName: Bat Mode
+PerfExplosion.DisplayName: Perforating Explosion
+PerforatorSpike.DisplayName: Perforating Spike
+PerforatorLegHitbox.DisplayName: Perforator Leg
+PerforatorRubble.DisplayName: Perforating Rubble
+DaedalusArrow.DisplayName: Daedalus Arrow
+ExplorationFeather.DisplayName: Feather
+SulphurParticulate.DisplayName: Sulphur Particulate
+GaleSpine.DisplayName: Gale Spine
+HydrothermicVentShot.DisplayName: Hydrothermic Flare
+ChargedGigablast.DisplayName: Brimstone Gigablast
+SuckedRock.DisplayName: Sucked Rock
+CalcloneWave.DisplayName: Fire Wave
+EmpyreanStar.DisplayName: Empyrean Star
+BrimstoneArtillery.DisplayName: Brimstone Hellblast
+BrimstoneFireball.DisplayName: Brimstone Fireball
+Gigablast.DisplayName: Brimstone Gigablast
+Fireblast.DisplayName: Brimstone Fireblast
+BrimstoneBall.DisplayName: Brimstone Fireball
+BrothersEyeFlash.DisplayName: Eye Flash
+BrimstoneBarrageGravitating.DisplayName: Brimstone Dart
+MutantFrostMist.DisplayName: Frost Mist
+CalcloneFireBackground.DisplayName: Fire Background
+BrothersDashTrail.DisplayName: Dash Trail
+AquaticUrchinProjectile.DisplayName: Aquatic Urchin
+ArsenalCrate.DisplayName: Explosive Crate
+ExplosiveCrate.DisplayName: Explosive Crate
+FallingVomitGore.DisplayName: Gore
+FuelSpark.DisplayName: Fuel Spark
+LingeringAcidBubble.DisplayName: Acid Bubble
+NuclearHurricane.DisplayName: Nuclear Hurricane
+NuclearVortex.DisplayName: Nuclear Vortex
+SwervingRadioactiveCinder.DisplayName: Radioactive Cinder
+TastyFuelContainer.DisplayName: Fuel Container
+TrasherProjectile.DisplayName: Trasher
+VortexFormingAcidDroplet.DisplayName: Acid Droplet
+AbomMauler.DisplayName: Mauler
+MushroomSpear2.DisplayName: Mushroom Spear

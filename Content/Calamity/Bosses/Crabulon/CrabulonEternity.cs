@@ -8,6 +8,7 @@ using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
 using FargowiltasSouls;
+using FargowiltasSouls.Assets.Sounds;
 using FargowiltasSouls.Content.Buffs.Masomode;
 using FargowiltasSouls.Core.Globals;
 using FargowiltasSouls.Core.NPCMatching;
@@ -42,7 +43,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
         public override void OnSpawn(IEntitySource source)
         {
             if (!WorldSavingSystem.EternityMode) return;
-            attackCycle = [0, 1, 1, 2];
+            attackCycle = [0, 1, 1, 2, 4, 1];
 
         }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -58,11 +59,27 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             Asset<Texture2D> idleGlow = ModContent.Request<Texture2D>("CalamityMod/NPCs/Crabulon/CrabulonGlow");
             Asset<Texture2D> walkGlow = ModContent.Request<Texture2D>("CalamityMod/NPCs/Crabulon/CrabulonAltGlow");
             Asset<Texture2D> attackGlow = ModContent.Request<Texture2D>("CalamityMod/NPCs/Crabulon/CrabulonAttackGlow");
-            //make him put his arm up when "guarding" while fungal clump is alive
-            if (attackCycle[(int)ai_attackCycleIndex] == -1)
+            Asset<Texture2D> dizzy = ModContent.Request<Texture2D>("FargowiltasSouls/Content/PlayerDrawLayers/DizzyStars");
+            //manually draw the frame during the spin because crabulon is not centered by default
+            if (attackCycle[(int)ai_attackCycleIndex] == 6)
             {
-                spriteBatch.Draw(attack.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), drawColor, NPC.rotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
-                spriteBatch.Draw(attackGlow.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), new Color(255, 255, 255), NPC.rotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
+                float addRotation = 0;
+                if (NPC.ai[2] < 1000 && NPC.ai[2] > 60)
+                {
+                    addRotation = MathF.Sin(NPC.ai[2] / 5) / 5;
+                }
+                else
+                {
+                    NPC.frame.Y = 0;
+                }
+
+                    spriteBatch.Draw(attack.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), drawColor, NPC.rotation + addRotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(attackGlow.Value, NPC.Center - Main.screenPosition, new Rectangle(NPC.frame.X, NPC.frame.Y, NPC.frame.Width, NPC.frame.Height), new Color(255, 255, 255), NPC.rotation + addRotation, new Vector2(attack.Width() / 2, (NPC.height / 2)), NPC.scale, SpriteEffects.None, 0);
+                int dizzyFrameHeight = dizzy.Height() / 6;
+                if (NPC.ai[2] > 1000 && NPC.ai[2] < 1060)
+                {
+                    spriteBatch.Draw(dizzy.Value, NPC.Center - Main.screenPosition + new Vector2(0, -100).RotatedBy(NPC.rotation), new Rectangle(0, (int)(dizzyFrameHeight * (int)(NPC.localAI[0] / 5)), dizzy.Width(), dizzyFrameHeight), Color.White, NPC.rotation, new Vector2(dizzy.Width(), dizzy.Height() / 6) / 2, NPC.scale*2, SpriteEffects.None, 0);
+                }
                 return false;
             }
             return true;
@@ -133,104 +150,42 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.velocity.Y += 1;
+                NPC.EncourageDespawn(30);
                 return false;
             }
 
-            
-            //Fungal clump phase 1
-            if (ai_Phase == 0)
+            //phase changing
+            if ((ai_Phase == 0 && NPC.GetLifePercent() < 0.6f) || (ai_Phase == 1 && NPC.GetLifePercent() < 0.3f))
             {
                 ai_Phase++;
-                //if (DLCUtils.HostCheck)
-                    //NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
                 ai_attackCycleIndex = 0;
-                //NPC.HealEffect(-50);
-                attackCycle = [-1, 1];
                 ai_Timer = 0;
-                NPC.defense = 40;
-                NPC.HitSound = SoundID.NPCHit4;
-                NPC.chaseable = false;
                 NetSync(NPC);
             }
-            //fungal clump phase 2
-            if (ai_Phase == 2 && NPC.GetLifePercent() < 0.5f)
-            {
-                ai_Phase++;
-                if (DLCUtils.HostCheck)
-                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
-                ai_attackCycleIndex = 0;
-                NPC.HealEffect(-50);
-                attackCycle = [-1, 1, -1, 2];
-                ai_Timer = 0;
-                NPC.defense = 40;
-                NPC.HitSound = SoundID.NPCHit4;
-                NPC.chaseable = false;
-                NetSync(NPC);
 
-            }
-            
-            //fungal clump phase
-            if (ai_Phase == 4 && NPC.GetLifePercent() < 0.2f)
-            {
-                ai_Phase++;
-                //if (DLCUtils.HostCheck)
-                    //NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<FungalClump>(), ai1: NPC.whoAmI);
-                ai_attackCycleIndex = 0;
-                //NPC.HealEffect(-50);
-                attackCycle = [-1, 1, -1, 2, 1];
-                ai_Timer = 0;
-                NPC.defense = 40;
-                NPC.HitSound = SoundID.NPCHit4;
-                NPC.chaseable = false;
-                NetSync(NPC);
-            }
-            //exit fungal clump phases
-            if ((ai_Phase == 1 || ai_Phase == 3 || ai_Phase == 5) && !NPC.AnyNPCs(ModContent.NPCType<FungalClump>()))
-            {
-                ai_Phase++;
-                ai_attackCycleIndex = 0;
-                ai_Timer = 0;
-                NPC.defense = 8;
-                NPC.HitSound = SoundID.NPCHit45;
-                NPC.chaseable = true;
-                NetSync(NPC);
-            }
-            //Attack phase 2
-            if (ai_Phase == 2)
+            //setting attack cycles
+            //Attack phase 1
+            if (ai_Phase == 0)
             {
                 attackCycle = [0, 1, 1, 2, 4, 1];
             }
-            //attack phase 3
-            if (ai_Phase == 4)
+            //attack phase 2
+            if (ai_Phase == 1)
             {
-                attackCycle = [0, 2, 1, 4, 5, 2, 3, 1, 1];
+                //attackCycle = [6, 1, 6, 1, 6, 1, 6, 1, 6];
+                attackCycle = [1, 6, 2, 1, 4, 5, 2, 3, 1];
             }
-            //attack phase 4
-            if (ai_Phase == 6)
+            //attack phase 3
+            if (ai_Phase == 2)
             {
-                attackCycle = [5, 1, 4, 3, 1, 1, 4, 2, 3, 1];
+                attackCycle = [1, 6, 1, 4, 3, 1, 1, 4, 2, 3];
             }
             Player target = Main.player[NPC.target];
-            //high defense and stand still for a while (only does when fungal clump is alive)
-            if (attackCycle[(int)ai_attackCycleIndex] == -1)
+            
+            //Making sure crabulon isnt stuck in blocks/above the player. does not apply the same during all attacks so StayLevel is called inside those attacks when necessary instead
+            if (attackCycle[(int)ai_attackCycleIndex] != 2 && attackCycle[(int)ai_attackCycleIndex] != 3 && attackCycle[(int)ai_attackCycleIndex] != 4 && attackCycle[(int)ai_attackCycleIndex] != 6)
             {
-
-                NPC.velocity.X = MathHelper.Lerp(NPC.velocity.X, 0, 0.05f);
-                if (Math.Abs(NPC.velocity.X) < 0.1f)
-                {
-                    NPC.velocity.X = 0;
-                }
-                ai_Timer++;
-                if (ai_Timer == 300)
-                {
-                    IncrementCycle();
-                    ai_Timer = 0;
-                }
-            }
-            //Making sure crabulon isnt stuck in blocks/above the player
-            if (attackCycle[(int)ai_attackCycleIndex] != 2 && attackCycle[(int)ai_attackCycleIndex] != 3 && attackCycle[(int)ai_attackCycleIndex] != 4)
-            {
-                StayLevel();
+                StayLevel(0);
             }
             //Crabulon falls naturally during the jump attack
             else
@@ -269,61 +224,145 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
 
                 return false;
             }
-            // jump with dust and sound when landing
-            if (attackCycle[(int)ai_attackCycleIndex] == 2)
+            switch (attackCycle[(int)ai_attackCycleIndex])
             {
-                Jump(0);
-            }
-            //jump with spears on landing
-            if (attackCycle[(int)ai_attackCycleIndex] == 3)
-            {
-                Jump(1);
-            }
-            //Jump with spore clouds on lander
-            if (attackCycle[(int)ai_attackCycleIndex] == 4)
-            {
-                Jump(2);
-            }
-            //walk towards the player
-            if (attackCycle[(int)ai_attackCycleIndex] == 0)
-            {
-                Walk(0);
-            }
-            //walk towards player and spawn crab shrooms as it walks
-            if (attackCycle[(int)ai_attackCycleIndex] == 5)
-            {
-                Walk(1);
-            }
-            //slow down quickly, then charge until hits edge of screen or wall and has passed the player
-            if (attackCycle[(int)ai_attackCycleIndex] == 1)
-            {
-                Charge();
-
-
+                case 0: //walk towards the player
+                    Walk(0);
+                    break;
+                case 1://slow down quickly, then charge until hits edge of screen or wall and has passed the player
+                    Charge();
+                    break;
+                case 2://jump with dust and sound when landing
+                    Jump(0);
+                    break;
+                case 3: //jump with spears on landing
+                    Jump(1);
+                    break;
+                case 4://Jump with spore clouds on lander
+                    Jump(2);
+                    break;
+                case 5://walk towards player and spawn crab shrooms as it walks
+                    Walk(1);
+                    //ai_attackCycleIndex = 0;
+                    break;
+                case 6:
+                    RollingSpikeBall();
+                    break;
             }
             return false;
         }
-        public void StayLevel()
+        public void RollingSpikeBall()
+        {
+            Player target = Main.player[NPC.target];
+            ref float ai_Timer = ref NPC.ai[2];
+            ai_Timer++;
+            NPC.ai[0] = 0;
+            NPC.localAI[0]++;
+            if (ai_Timer == 1)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<MushroomSpear2>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.damage), 1, -1, NPC.whoAmI, MathHelper.ToRadians(360f / 10 * i + 15));
+                }
+                NPC.velocity.X = 0;
+            }
+            if (ai_Timer > 30 && ai_Timer < 1000)
+            {
+                StayLevel(220);
+            }
+            else
+            {
+                NPC.frame.Y = 0;
+                StayLevel();
+            }
+            if (ai_Timer > 80 && ai_Timer < 1000)
+            {
+                if (NPC.velocity.X > 0 || (NPC.Center.X < target.Center.X && NPC.velocity.X >= 0) && NPC.velocity.X < 7)
+                {
+                    NPC.velocity.X += 0.1f;
+                }
+                if (NPC.velocity.X < 0 || (NPC.Center.X > target.Center.X && NPC.velocity.X <= 0) && NPC.velocity.X > -7)
+                {
+                    NPC.velocity.X -= 0.1f;
+                }
+                NPC.rotation += MathHelper.ToRadians(NPC.velocity.X / 4);
+                if (NPC.velocity.X > 0 && NPC.Center.X - target.Center.X > 300 && (Collision.SolidCollision(NPC.position, NPC.width, NPC.height) || NPC.Distance(target.Center) > 1100))
+                {
+                    ai_Timer = 1000;
+                }
+                if (NPC.velocity.X < 0 && NPC.Center.X - target.Center.X < -300 && (Collision.SolidCollision(NPC.position, NPC.width, NPC.height) || NPC.Distance(target.Center) > 1100))
+                {
+                    ai_Timer = 1000;
+                }
+            }
+            if (ai_Timer == 1000)
+            {
+                SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
+                SoundEngine.PlaySound(new SoundStyle("FargowiltasSouls/Assets/Sounds/Debuffs/DizzyBird"), NPC.Center);
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.TypeAlive<MushroomSpear2>() && proj.ai[0] == NPC.whoAmI)
+                    {
+                        proj.Kill();
+                    }
+                }
+                NPC.velocity.X = 0;
+            }
+            if (ai_Timer > 1000 && ai_Timer < 1060)
+            {
+                NPC.frame.Y = 0;
+                StayLevel();
+                if (NPC.localAI[0] > 6 * 5)
+                {
+                    NPC.localAI[0] = 0;
+                }
+                
+            }
+            if (ai_Timer >= 1060)
+            {
+                NPC.frame.Y = 0;
+                NPC.rotation = Utils.AngleLerp(NPC.rotation, 0, 0.08f);
+                StayLevel();
+            }
+            if (ai_Timer >= 1080)
+            {
+                foreach (var proj in Main.ActiveProjectiles)
+                {
+                    if (proj.TypeAlive<MushroomSpear2>() && proj.ai[0] == NPC.whoAmI)
+                    {
+                        proj.Kill();
+                    }
+                }
+
+                ai_Timer = 0;
+                NPC.rotation = 0;
+                NPC.localAI[0] = 0;
+                IncrementCycle();
+            }
+        }
+        public void StayLevel(int respectOffset = 0)
         {
             Player target = Main.player[NPC.target];
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             bool flag = false;
-            if (Collision.SolidCollision(NPC.Bottom - new Vector2(2, 2), 4, 2) && NPC.Bottom.Y > target.position.Y)
+            if (Collision.SolidCollision(NPC.Bottom - new Vector2(2, 2), 4, 2 + respectOffset) && NPC.Bottom.Y + respectOffset > target.position.Y)
             {
                 flag = true;
                 if (NPC.velocity.Y > -5)
                     NPC.velocity.Y -= 0.2f;
+                if (NPC.velocity.Y > 0) NPC.velocity.Y = 0;
             }
-            if (!flag && Collision.SolidCollision(NPC.BottomLeft, NPC.width, 6) && NPC.Bottom.Y > target.position.Y)
+            if (!flag && Collision.SolidCollision(NPC.BottomLeft, NPC.width, 6 + respectOffset) && NPC.Bottom.Y + respectOffset > target.position.Y)
             {
                 NPC.velocity.Y = 0;
             }
 
-            if (!flag && (!Collision.SolidCollision(NPC.Bottom, 2, 2) || NPC.Bottom.Y < target.position.Y))
+            if (!flag && (!Collision.SolidCollision(NPC.Bottom, 2, 2 + respectOffset) || NPC.Bottom.Y + respectOffset < target.position.Y))
             {
                 if (NPC.velocity.Y < 10)
                     NPC.velocity.Y += 0.2f;
+                if (NPC.velocity.Y < 0) NPC.velocity.Y = 0;
             }
         }
         public void Charge()
@@ -358,13 +397,14 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             if (ai_Timer == 60) NPC.velocity.X = 0;
             if (ai_Timer > 60 && ai_Timer < 120)
             {
+                float speedMod = WorldSavingSystem.MasochistModeReal ? 1.4f : 1f;
                 if ((target.Center.X > NPC.Center.X || NPC.velocity.X > 0) && NPC.velocity.X >= 0)
                 {
-                    NPC.velocity.X += 0.2f;
+                    NPC.velocity.X += 0.2f * speedMod;
                 }
                 else if ((target.Center.X < NPC.Center.X || NPC.velocity.X < 0) && NPC.velocity.X <= 0)
                 {
-                    NPC.velocity.X -= 0.2f;
+                    NPC.velocity.X -= 0.2f * speedMod;
                 }
                 ai_Animation = 1;
 
@@ -374,7 +414,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                 //if (DLCUtils.HostCheck)
                     //Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(Main.rand.NextFloat() / 2, 0).RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, Main.myPlayer);
             }
-            if (ai_Timer > 30 && ai_Timer % 20 == 0) 
+            int freq = WorldSavingSystem.MasochistModeReal ? 12 : 20;
+            if (ai_Timer > 30 && ai_Timer % freq == 0) 
             {
                 if (DLCUtils.HostCheck)
                 {
@@ -469,7 +510,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
             ref float ai_Animation = ref NPC.ai[0];
             ref float ai_Timer = ref NPC.ai[2];
 
-            float telegraphTime = 40;
+            float telegraphTime = WorldSavingSystem.MasochistModeReal ? 20 : 40;
 
             ai_Timer++;
             ai_Animation = 3;
@@ -528,12 +569,23 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Crabulon
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: -10);
                     }
                 }
-                if (type == 2)
+                else if (type == 2)
                 {
-                    for (int i = 0; i < 10; i++)
+                    for (int i = -20; i < 20; i++)
+                    {
+                        if (DLCUtils.HostCheck && (i < -1 || i > 1))
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.BottomLeft + new Vector2(NPC.width / 40 * (i + 20), -5), new Vector2(i * Main.rand.NextFloat(0.5f, 0.7f), Main.rand.NextFloat()/5), ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                    }
+                }
+                else
+                {
+                    if (WorldSavingSystem.MasochistModeReal)
                     {
                         if (DLCUtils.HostCheck)
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.BottomLeft + new Vector2(Main.rand.Next(0, NPC.width), -5), new Vector2(Main.rand.NextFloat(), Main.rand.NextFloat()) / 5, ModContent.ProjectileType<ShroomGas>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: 5);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(-150, 0), Vector2.Zero, ModContent.ProjectileType<MushroomSpear>(), FargowiltasSouls.FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: -5);
+                        }
                     }
                 }
             }

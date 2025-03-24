@@ -1,6 +1,4 @@
 ﻿using FargowiltasCrossmod.Core.Calamity.Systems;
-using FargowiltasSouls.Core.NPCMatching;
-using FargowiltasSouls.Core.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.IO;
@@ -70,6 +68,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         /// <param name="typeName">The NPC's <see cref="NPC.TypeName"/.></param>
         public virtual void ModifyTypeName(ref string typeName) { }
 
+        public virtual void BossHeadSlot(ref int index) { }
+
         /// <summary>
         /// Sends arbitrary NPC state data across the network when an NPC sync occurs.
         /// </summary>
@@ -95,7 +95,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         /// Runs after the usual AI loop for the NPC.
         /// </summary>
         public virtual void PostAI() { }
-
 
         /// <summary>
         /// Allows you to add and modify NPC loot tables to drop on death and to appear in the Bestiary.<br/>
@@ -161,6 +160,8 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         /// <param name="lightColor">The color of light at the NPC's center.</param>
         /// <returns><see langword="false"/> if base drawing should be ignored, <see langword="true"/> otherwise.</returns>
         public virtual bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color lightColor) => true;
+
+        public virtual bool CheckDead() => true;
 
         public virtual void DrawBehind(int index) { }
 

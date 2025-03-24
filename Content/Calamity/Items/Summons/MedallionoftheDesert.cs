@@ -17,7 +17,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/DesertMedallion";
         public override int NPCType => ModContent.NPCType<DesertScourgeHead>();
-        public override string NPCName => "Desert Scourge";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<DesertMedallion>().AddTile(TileID.WorkBenches).Register();
