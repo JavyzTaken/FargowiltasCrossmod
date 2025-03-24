@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CalamityMod;
 using CalamityMod.Buffs.StatBuffs;
 using CalamityMod.CalPlayer;
@@ -12,6 +13,7 @@ using CalamityMod.Items.Placeables.Furniture.Fountains;
 using CalamityMod.Items.Potions;
 using CalamityMod.Items.SummonItems;
 using CalamityMod.Items.SummonItems.Invasion;
+using CalamityMod.Items.TreasureBags.MiscGrabBags;
 using CalamityMod.Items.Weapons.Magic;
 using CalamityMod.Items.Weapons.Melee;
 using CalamityMod.Items.Weapons.Ranged;
@@ -21,11 +23,17 @@ using CalamityMod.Tiles.Furniture;
 using Fargowiltas;
 using Fargowiltas.Common.Configs;
 using Fargowiltas.Items.Misc;
+using Fargowiltas.Items.Summons;
+using Fargowiltas.Items.Summons.Deviantt;
+using Fargowiltas.Items.Summons.Mutant;
+using Fargowiltas.Items.Summons.SwarmSummons;
+using Fargowiltas.Items.Summons.VanillaCopy;
 using FargowiltasCrossmod.Content.Calamity;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls;
+using FargowiltasCrossmod.Content.Calamity.Items.Summons;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using FargowiltasCrossmod.Core;
 using FargowiltasSouls;
@@ -36,12 +44,14 @@ using FargowiltasSouls.Content.Items.Accessories.Masomode;
 using FargowiltasSouls.Content.Items.Accessories.Souls;
 using FargowiltasSouls.Content.Items.Consumables;
 using FargowiltasSouls.Content.Items.Misc;
+using FargowiltasSouls.Content.Items.Summons;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
 using FargowiltasSouls.Core.ModPlayers;
 using FargowiltasSouls.Core.Systems;
 using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -111,7 +121,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             }
             if (item.type == ModContent.ItemType<EternitySoul>() || item.type == ModContent.ItemType<TerrariaSoul>())
             {
-                ModContent.GetInstance<ExplorationForce>().UpdateAccessory(player, hideVisual);
+                //ModContent.GetInstance<GaleForce>().UpdateAccessory(player, hideVisual);
             }
             if (calPlayer.HasCustomDash || item.type == ModContent.ItemType<CounterScarf>() || item.type == ModContent.ItemType<EvasionScarf>() || item.type == ModContent.ItemType<OrnateShield>()
                 || item.type == ModContent.ItemType<AsgardianAegis>() || item.type == ModContent.ItemType<ElysianAegis>() || item.type == ModContent.ItemType<AsgardsValor>()
@@ -138,14 +148,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 player.fireWalk = true;
                 player.buffImmune[BuffID.OnFire] = true;
             }
-            if (item.type == ModContent.ItemType<SupersonicSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            bool dimSoul = item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>();
+            bool uniSoul = item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>();
+
+            if (item.type == ModContent.ItemType<SupersonicSoul>() || dimSoul)
             {
                 if (player.AddEffect<StatisVoidSashEffect>(item))
                 {
                     ModContent.GetInstance<StatisVoidSash>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<ColossusSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<ColossusSoul>() || dimSoul)
             {
                 if (player.AddEffect<AmalgamEffect>(item))
                 {
@@ -159,21 +172,33 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
                 ModContent.GetInstance<RampartofDeities>().UpdateAccessory(player, hideVisual);
             }
-            if (item.type == ModContent.ItemType<BerserkerSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<TrawlerSoul>() || dimSoul)
+            {
+                if (player.AddEffect<AbyssalDivingSuitEffect>(item))
+                {
+                    ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
+                }
+            }
+            if (item.type == ModContent.ItemType<WorldShaperSoul>() || dimSoul)
+            {
+                MarniteEnchant.AddEffects(player, item);
+            }
+
+            if (item.type == ModContent.ItemType<BerserkerSoul>() || uniSoul)
             {
                 if (player.AddEffect<ElementalGauntletEffect>(item))
                 {
                     ModContent.GetInstance<ElementalGauntlet>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<ArchWizardsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<ArchWizardsSoul>() || uniSoul)
             {
                 if (player.AddEffect<EtherealTalismanEffect>(item))
                 {
                     ModContent.GetInstance<EtherealTalisman>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<SnipersSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<SnipersSoul>() || uniSoul)
             {
                 if (player.AddEffect<ElementalQuiverEffect>(item))
                 {
@@ -184,14 +209,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                     ModContent.GetInstance<QuiverofNihility>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<ConjuristsSoul>() || item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (item.type == ModContent.ItemType<ConjuristsSoul>() || uniSoul)
             {
                 if (player.AddEffect<NucleogenesisEffect>(item))
                 {
                     ModContent.GetInstance<Nucleogenesis>().UpdateAccessory(player, hideVisual);
                 }
             }
-            if (item.type == ModContent.ItemType<UniverseSoul>() || item.type == ModContent.ItemType<EternitySoul>())
+            if (uniSoul)
             {
                 player.Calamity().rogueVelocity += 0.15f;
                 if (player.AddEffect<NanotechEffect>(item))
@@ -201,13 +226,6 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 if (player.AddEffect<EclipseMirrorEffect>(item))
                 {
                     ModContent.GetInstance<EclipseMirror>().UpdateAccessory(player, hideVisual);
-                }
-            }
-            if (item.type == ModContent.ItemType<TrawlerSoul>() || item.type == ModContent.ItemType<DimensionSoul>() || item.type == ModContent.ItemType<EternitySoul>())
-            {
-                if (player.AddEffect<AbyssalDivingSuitEffect>(item))
-                {
-                    ModContent.GetInstance<AbyssalDivingSuit>().UpdateAccessory(player, hideVisual);
                 }
             }
 
@@ -238,27 +256,59 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             if (item.type == ModContent.ItemType<CelestialOnion>() && WorldSavingSystem.EternityMode)
                 return player.FargoSouls().MutantsPactSlot;
 
+            if (item.type == ModContent.ItemType<SuspiciousLookingChest>())
+            {
+                //BaseSummon summon = (BaseSummon)item.ModItem;
+                if (!Main.hardMode && player.ZoneSnow) return false;
+            }
             return true;
         }
-
-        //this is cloned from cal because lazy
-        public static bool VanillaSummonItem(Item item) =>
-            item.type == ItemID.SlimeCrown || item.type == ItemID.SuspiciousLookingEye || item.type == ItemID.BloodMoonStarter || item.type == ItemID.GoblinBattleStandard || item.type == ItemID.WormFood || item.type == ItemID.BloodySpine || item.type == ItemID.Abeemination || item.type == ItemID.DeerThing || item.type == ItemID.QueenSlimeCrystal || item.type == ItemID.PirateMap || item.type == ItemID.SnowGlobe || item.type == ItemID.MechanicalEye || item.type == ItemID.MechanicalWorm || item.type == ItemID.MechanicalSkull || item.type == ItemID.NaughtyPresent || item.type == ItemID.PumpkinMoonMedallion || item.type == ItemID.SolarTablet || item.type == ItemID.SolarTablet || item.type == ItemID.CelestialSigil;
+        public static bool isFargSummon(Item item) {
+            ModItem modI = item.ModItem;
+            if (Main.gameMenu)
+            {
+                return false;
+            }
+            if (SummonsThatDontMeetConditionsButShould.Contains(item.type))
+            {
+                return true;
+            }
+            if (modI != null && (modI is SwarmSummonBase || (modI is BaseSummon summon && (ContentSamples.NpcsByNetId[summon.NPCType].boss || summon.NPCType == NPCID.EaterofWorldsHead))))
+            {
+                return true;
+            }
+            return false;
+        }
+        public static int[] SummonsThatDontMeetConditionsButShould = [ModContent.ItemType<SeeFood>(), ModContent.ItemType<FleshyDoll>(), ModContent.ItemType<MechanicalAmalgam>(), ModContent.ItemType<MechEye>(), ModContent.ItemType<PortableCodebreaker>(), ModContent.ItemType<FragilePixieLamp>(), ModContent.ItemType<MechLure>(), ModContent.ItemType<CoffinSummon>(), ModContent.ItemType<DevisCurse>(), ModContent.ItemType<AbomsCurse>(), ModContent.ItemType<MutantsCurse>()];
         public override void SetDefaults(Item item)
         {
-            if (CalDLCConfig.Instance.ConsumableSummons && CalDLCSets.GetValue(CalDLCSets.Items.CalBossSummon, item.type) || VanillaSummonItem(item))
+            if (isFargSummon(item))
             {
-                item.consumable = WorldSavingSystem.EternityMode;
-                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
+                //item.maxStack = 999;
+                item.consumable = false;
+            }
+            if (item.type == ItemID.ReaverShark)
+            {
+                item.pick = 59;
             }
         }
         public override void UpdateInventory(Item item, Player player)
         {
-            if (CalDLCConfig.Instance.ConsumableSummons && CalDLCSets.Items.CalBossSummon[item.type] || VanillaSummonItem(item))
+            if (isFargSummon(item))
             {
-                item.consumable = WorldSavingSystem.EternityMode;
-                item.maxStack = WorldSavingSystem.EternityMode ? 9999 : 1;
+                //item.maxStack = 1;
+                item.consumable = false;
             }
+        }
+        public override void RightClick(Item item, Player player)
+        {
+            if (item.type == ModContent.ItemType<StarterBag>())
+            {
+                WorldSavingSystem.ReceivedTerraStorage = true;
+                if (Main.netMode != NetmodeID.SinglePlayer)
+                    NetMessage.SendData(MessageID.WorldData);
+            }
+            base.RightClick(item, player);
         }
         // Copied from Mutant Mod
         static string ExpandedTooltipLoc(string line) => Language.GetTextValue($"Mods.FargowiltasCrossmod.ExpandedTooltips.{line}");
@@ -267,19 +317,24 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         {
             var mutantServerConfig = FargoServerConfig.Instance;
 
-            if (WorldSavingSystem.EternityMode)
-            {
-                for (int i = 0; i < tooltips.Count; i++)
-                {
-                    tooltips[i].Text = tooltips[i].Text.Replace("\nNot consumable", "");
-                    tooltips[i].Text = tooltips[i].Text.Replace("Not consumable", "");
-                }
-            }
+            //if (WorldSavingSystem.EternityMode)
+            //{
+            //    string notConsumable = Language.GetTextValue("Mods.FargowiltasCrossmod.Items.NotConsumable");
+            //    for (int i = 0; i < tooltips.Count; i++)
+            //    {
+            //        tooltips[i].Text = tooltips[i].Text.Replace("\n" + notConsumable, "");
+            //        tooltips[i].Text = tooltips[i].Text.Replace(notConsumable, "");
+            //    }
+            //}
             for (int i = 0; i < tooltips.Count; i++)
             {
                 if (tooltips[i].Text.Contains("30") && item.type == ModContent.ItemType<AstralInjection>())
                 {
                     tooltips[i].Text = "";
+                }
+                if (item.type == ModContent.ItemType<SuspiciousLookingChest>() && tooltips[i].Name == "Tooltip1")
+                {
+                    tooltips[i].Text += " " + Language.GetTextValue("Conditions.InHardmode");
                 }
             }
             if (item.type == ModContent.ItemType<Rock>())
@@ -322,6 +377,14 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Insert(8, new TooltipLine(Mod, "CalColossusSoul", Language.GetTextValue(key + "CalamityColossus")));
             }
+            if (item.type == ModContent.ItemType<TrawlerSoul>() && !item.social)
+            {
+                tooltips.Insert(8, new TooltipLine(Mod, "CalFishSoul", Language.GetTextValue(key + "CalamityTrawler")));
+            }
+            if (item.type == ModContent.ItemType<WorldShaperSoul>() && !item.social)
+            {
+                tooltips.Insert(tooltips.Count - 3, new TooltipLine(Mod, "CalWorldShaper", Language.GetTextValue(key + "CalamityWorldShaper")));
+            }
 
             if (item.type == ModContent.ItemType<BerserkerSoul>() && !item.social)
             {
@@ -343,14 +406,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
                 tooltips.Insert(7, new TooltipLine(Mod, "CalConjurSoul", Language.GetTextValue(key + "CalamityConjurist")));
             }
 
-            if (item.type == ModContent.ItemType<TrawlerSoul>() && !item.social)
-            {
-                tooltips.Insert(8, new TooltipLine(Mod, "CalFishSoul", Language.GetTextValue(key + "CalamityTrawler")));
-            }
-
+            int expert = tooltips.FindIndex(x => x.Name == "Expert");
             if (item.type == ModContent.ItemType<UniverseSoul>() && !item.social)
             {
-                tooltips.Insert(15, new TooltipLine(Mod, "CalUniverseSoul",
+                tooltips.Insert(expert - 1, new TooltipLine(Mod, "CalUniverseSoul",
                     Language.GetTextValue(key + "CalamityBerserker") + "\n" +
                     Language.GetTextValue(key + "CalamitySniper") + "\n" +
                     Language.GetTextValue(key + "CalamityWizard") + "\n" +
@@ -360,10 +419,11 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
             if (item.type == ModContent.ItemType<DimensionSoul>() && !item.social)
             {
-                tooltips.Insert(21, new TooltipLine(Mod, "CalDimensionSoul",
+                tooltips.Insert(expert - 1, new TooltipLine(Mod, "CalDimensionSoul",
                     Language.GetTextValue(key + "CalamityColossus") + "\n" +
                     Language.GetTextValue(key + "AngelTreads") + "\n" +
-                    Language.GetTextValue(key + "CalamityTrawler")));
+                    Language.GetTextValue(key + "CalamityTrawler") + "\n" +
+                    Language.GetTextValue(key + "CalamityWorldShaper")));
             }
 
             if (FargoClientConfig.Instance.ExpandedTooltips)

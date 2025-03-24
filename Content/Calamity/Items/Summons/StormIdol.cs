@@ -15,7 +15,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         //FUCK you fabsol for making me type this
         public override int NPCType => ModContent.NPCType<ThiccWaifu>();
-        public override string NPCName => "Cloud Elemental";
         public override void AddRecipes()
         {
         }

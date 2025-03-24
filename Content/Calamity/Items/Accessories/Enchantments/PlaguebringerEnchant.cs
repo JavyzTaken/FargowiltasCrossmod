@@ -37,6 +37,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
         public override Color nameColor => new Color(128, 188, 67);
@@ -49,6 +50,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             base.SetDefaults();
             Item.rare = ItemRarityID.Lime;
+            Item.value = 250000;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -75,9 +77,10 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     {
         public override bool IsLoadingEnabled(Mod mod)
         {
+            return false;
             return FargowiltasCrossmod.EnchantLoadingEnabled;
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
+        public override Header ToggleHeader => null;
         public override int ToggleItemType => ModContent.ItemType<PlaguebringerEnchant>();
 
         public override void OnHitNPCEither(Player player, NPC target, NPC.HitInfo hitInfo, DamageClass damageClass, int baseDamage, Projectile projectile, Item item)

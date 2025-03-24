@@ -16,16 +16,19 @@ INCOMPATIBLE mods:
 -Countless balance and progression changes to make the mods' content work well together
 -Fixes several bugs and problems normally caused by using the mods/difficulties together
 
-Planned potential future features:
+Planned features:
 -Eternity Mode reworks for the remaining Calamity bosses
 -Calamity Enchantments, Forces and Souls
--Thorium Mod compatibility (some day)
+-Thorium Mod compatibility (maybe some day)
 
 Features several configs to customize your Fargo's/Calamity cross-mod experience!
 
 **FAQ**
 Does this mod make Calamity balanced with Fargo's Souls?
 That's the main purpose of the mod, making other mods balanced with Fargo's and allowing for a good experience in a playthrough. We may not have caught every single little balance issue, but many measures have been taken to better the balance and overall experience.
+
+Is this mod complete?
+It's being actively worked on and updated. The compatibility is complete, as in that the entire game is playable, but the boss reworks and other new content is not.
 
 Does the mod support multiplayer?
 It intends to. If there's issues, report them.
@@ -54,7 +57,3 @@ Will the Eternity Advisor give advice for other mods' bosses?
 No, way too much effort to maintain. Also, things like Class Setups wiki pages already exist for those mods, concerning their content.
 
 Fargo Discord: https://discord.gg/Rgen4Vv
-
-Newest Update: v1.1.1
-Ported to Fargo's Souls 1.7 and Fargo's Mutant 3.3.5
-Tons of changes and fixes

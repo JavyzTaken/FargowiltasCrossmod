@@ -90,7 +90,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
                 Projectile.Kill();
                 return;
             }
-            PerfsEternityNew parentAI = parent.GetDLCBehavior<PerfsEternityNew>();
+            PerfsEternity parentAI = parent.GetDLCBehavior<PerfsEternity>();
             var leg = parentAI.Legs[(int)LegIndex];
             Projectile.Center = leg.GetEndPoint();
             Projectile.rotation = leg.Leg[leg.Leg.JointCount - 1].Rotation;

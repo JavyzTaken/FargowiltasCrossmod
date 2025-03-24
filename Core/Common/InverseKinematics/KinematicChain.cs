@@ -163,9 +163,11 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
             // Cache the gradient in an array outside of the loop.
             float[] gradient = new float[JointCount];
 
-            for (int i = 0; i < 200; i++)
+            int iterations = 110;
+            for (int i = 0; i < iterations; i++)
             {
-                float relaxationFactor = MathF.Sqrt(1f - i / 200f);
+                float iterProgress = (float)i / iterations;
+                float relaxationFactor = MathF.Sqrt(1f - iterProgress);
 
                 // Initialize the gradient vector based on the aforementioned definitions.
                 for (int j = 0; j < JointCount; j++)
@@ -173,7 +175,7 @@ namespace FargowiltasCrossmod.Core.Common.InverseKinematics
                     // Calculate the partial derivative and cache it in the gradient.
                     // For the sake of numerical stability, the gradient values are clamped.
                     // This practice is common in the context of machine learning tasks where exploding gradients are a concern.
-                    gradient[j] = (float)SoftClamp(CalculateLossGradient(idealEndEffectorPosition, j, i / 200f), 0.17);
+                    gradient[j] = (float)SoftClamp(CalculateLossGradient(idealEndEffectorPosition, j, iterProgress), 0.17);
                 }
 
                 // Apply the iteration step.

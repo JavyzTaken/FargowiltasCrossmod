@@ -25,7 +25,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.DesertScourge
             Projectile.height = 22;
             Projectile.hostile = true;
             Projectile.friendly = false;
-            Projectile.timeLeft = 100;
+            Projectile.timeLeft = 40;
             Projectile.scale = 1.5f;
         }
         public override bool PreDraw(ref Color lightColor)

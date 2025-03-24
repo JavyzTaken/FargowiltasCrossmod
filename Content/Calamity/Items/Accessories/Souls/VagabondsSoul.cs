@@ -21,7 +21,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Souls
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage<RogueDamageClass>() += 0.22f;
-            player.Calamity().rogueVelocity += 0.15f;
+            player.Calamity().rogueVelocity += 0.2f;
             player.GetCritChance<RogueDamageClass>() += 10;
             if (player.AddEffect<NanotechEffect>(Item))
             {

@@ -93,7 +93,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Cryogen
             if (Projectile.timeLeft == ActivationTime)
                 SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
 
-            if (Projectile.timeLeft < ActivationTime && DLCUtils.HostCheck)
+            if (Projectile.timeLeft < ActivationTime && DLCUtils.HostCheck && Projectile.timeLeft % 2 == 0)
             {
                 for (int i = -1; i < 2; i += 2)
                 {

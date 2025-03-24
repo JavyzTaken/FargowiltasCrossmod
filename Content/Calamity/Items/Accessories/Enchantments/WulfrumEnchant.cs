@@ -19,6 +19,7 @@ using CalamityMod;
 using FargowiltasCrossmod.Content.Calamity.Toggles;
 using CalamityMod.Items.Weapons.Rogue;
 using CalamityMod.Items.Tools;
+using CalamityMod.Items.DraedonMisc;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -53,6 +54,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient<CalamityMod.Items.Armor.Wulfrum.WulfrumOveralls>();
             recipe.AddIngredient<CalamityMod.Items.Weapons.Summon.WulfrumController>();
             recipe.AddIngredient<CalamityMod.Items.Tools.WulfrumTreasurePinger>();
+            recipe.AddIngredient<DraedonPowerCell>(5);
             recipe.AddTile(TileID.DemonAltar);
             recipe.Register();
         }
@@ -66,7 +68,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             //return FargowiltasCrossmod.EnchantLoadingEnabled;
             return true;
         }
-        public override Header ToggleHeader => Header.GetHeader<ExplorationHeader>();
+        public override Header ToggleHeader => Header.GetHeader<CalamitySoulHeader>();
         public override int ToggleItemType => ModContent.ItemType<WulfrumEnchant>();
         public override bool MinionEffect => true;
         public override void PostUpdateEquips(Player player)

@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/EyeofDesolation";
         public override int NPCType => ModContent.NPCType<CalamitasClone>();
-        public override string NPCName => "Calamitas Clone";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<EyeofDesolation>().AddTile(TileID.WorkBenches).Register();

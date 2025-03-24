@@ -1,0 +1,90 @@
+EternityRevDifficulty: {
+	Name: Eternity-Revengeance
+	ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/880808:Revengeance Mode] [c/00FFFF:changes.]"
+	ExpandedDescription:
+		'''
+		Enables [c/00FFFF:Eternity Mode] and [c/880808:Revengeance Mode,] and enables Master Mode drops.
+
+		Reworks the [c/00FFFF:Eternity Mode] behaviour for several Calamity bosses. Current reworks:
+		-All bosses up to Calamitas Clone
+		-Old Duke
+		-Exo Mechs
+		The remaining bosses are still being worked on!
+
+		By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+		{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
+		[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+		'''
+	Activation: Eternity-Revengeance Mode has activated!
+	Deactivation: Eternity-Revengeance Mode has deactivated.
+}
+
+EternityDeathDifficulty: {
+	Name: Eternity-Death
+	ShortDescription: "[c/00FFFF:A challenging mode from Fargo's Mods that includes] [c/800080:Death Mode] [c/00FFFF:changes and extra Vanilla boss behavior.]"
+	ExpandedDescription:
+		'''
+		Enables [c/00FFFF:Eternity Mode] and [c/800080:Death Mode,] and enables Master Mode drops.
+		[c/00FFFF:This is the main intended experience.] 
+
+		AReworks the [c/00FFFF:Eternity Mode] behaviour for several Calamity bosses. Current reworks:
+		-All bosses up to Calamitas Clone
+		-Old Duke
+		-Exo Mechs
+		The remaining bosses are still being worked on!
+		Eternity-Death only: Expands behavior for vanilla [c/00FFFF:Eternity Mode] bosses, including parts of Calamity behavior or new Calamity-inspired behavior.
+
+		By default, [c/00FFFF:Eternity Mode] behaviour takes priority. This can be changed in the configs.
+		{$Mods.FargowiltasSouls.UI.ExpandedFeatures}
+		[i:1612][c/00ff00:Recommended to use Fargo's Mutant Mod Debuff Display (in config)]
+
+		'''
+	Activation: Eternity-Death Mode has activated!
+	Deactivation: Eternity-Death Mode has deactivated.
+}
+
+UI: {
+	ToggledWithCal: Toggled with Calamity's difficulty selector
+	HadesIconMessage: Hades, a serpentine terror with impervious armor and innumerable laser turrets.
+	AresIconMessage: Ares, a heavyweight, diabolical monstrosity with four detachable Exo superweapons.
+	ArtemisAndApolloIconMessage: Artemis and Apollo, a pair of extraordinarily nimble automatons with unstable energy reserves.
+}
+
+Buffs: {
+	CalamitousPresenceBuff: {
+		Description: Defense, damage reduction, and life regen reduced; Moon Leech effect; reduced graze radius
+		DisplayName: Calamitous Presence
+	}
+}
+
+Cooldowns.DaedalusPlatformCooldown: Daedalus Platform
+
+ExpandedTooltips: {
+	FountainAstral: Forces surrounding biome state to Astral Infection (in hardmode only) upon activation
+	FountainCrags: Forces surrounding biome state to Brimstone Crags upon activation
+	FountainSulphur: Forces surrounding biome state to Sulphurous Sea upon activation
+	FountainSunken: Forces surrounding biome state to Sunken Sea upon activation
+	MasoModeDisabled: "[c/FF0000:Calamity Crossmod Support:] Activate Eternity with Calamity's difficulty selector instead!"
+	UsablePostMutant: "[c/FF0000:Calamity Crossmod Support:] Can only be used after defeating the Mutant"
+	DisabledByDefault: "[c/FF0000:Calamity Crossmod Support:] Toggle disabled by default"
+}
+
+RecipeGroups: {
+	GildedDagger: Gilded Dagger
+	EvilBar: Evil Bar
+	VictideHelmet: Victide Headpiece
+	AerospecHelmet: Aerospec Headpiece
+	StatigelHelmet: Statigel Headpiece
+	ReaverHelmet: Reaver Headpiece
+	DaedalusHelmet: Daedalus Headpiece
+	HydrothermicHelmet: Hydrothermic Headpiece
+}
+
+BossRushDialogue: {
+	Start: Let's get started.
+	EndP1_1: This is boring.
+	EndP1_2: Let's cut to the chase.
+}
+
+EmodeBannedByInfernum: "[c/00ffee:Eternity Mode] disabled by [c/9c0000:Infernum Mode]."

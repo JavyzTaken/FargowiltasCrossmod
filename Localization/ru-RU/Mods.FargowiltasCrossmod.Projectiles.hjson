@@ -1,0 +1,177 @@
+FungusBall.DisplayName: Грибной клубок
+MushroomSpear.DisplayName: Грибное копьё
+ShroomGas.DisplayName: Грибной газ
+SandChunk.DisplayName: Песчаный кусок
+SuckedSandBlast.DisplayName: Песчаный выстрел
+CursedLightning.DisplayName: Проклятая молния
+CurvingCursedFlames.DisplayName: Изгибающееся проклятое пламя
+MovingCorruptCloud.DisplayName: Движущееся искажённое облако
+ShadeLightningCloud.DisplayName: Теневое молниевое облако
+ToothBall.DisplayName: Шар зубов
+Tooth.DisplayName: Зуб
+HomingRocket.DisplayName: Самонаводящаяся ракета
+HomingSickle.DisplayName: Самонаводящаяся коса
+HallowedSlimeSpike.DisplayName: Шип освящённого слизня
+BouncingFireball.DisplayName: Прыгающий шар огня
+BigLight.DisplayName: Большой свет
+DestructionBolt.DisplayName: Снаряд разрушения
+StarofDestruction.DisplayName: Звезда разрушения
+
+Boss: {
+	AcceleratingEbonianGlob.DisplayName: Эбонитовый сгусток
+	AcceleratingCrimulanGlob.DisplayName: Багротановый сгусток
+	SlimeHomingEbonianGlob.DisplayName: Эбонитовый сгусток
+	SlimeHomingCrimuleanGlob.DisplayName: Багротановый сгусток
+	MutantYharonVortex.DisplayName: Солнце
+	IchorShotFast.DisplayName: Ихорный выстрел
+}
+
+SlamTelegraph.DisplayName: Удар Телеграф
+IceBomb.DisplayName: Ледяная бомба
+IceCrystal.DisplayName: Ледяной кристал
+IceChain.DisplayName: Ледяная цепь
+IceTrident.DisplayName: Ледяной трезубец
+CrimsonPaladinSpike.DisplayName: Багряный шип
+PermafrostHeldWeapon.DisplayName: Пермафрост Оружие в Руках
+MutantOldDuke.DisplayName: Старый Герцог
+DLCMutantSpearSpin.DisplayName: Атлантида Мутанта
+DLCMutantSpearDash.DisplayName: Атлантида Мутанта
+MutantAresNuke.DisplayName: Гаусс-бомба Мутанта
+MutantAresBomb.DisplayName: Гаусс-бомба Мутанта
+DLCMutantFishronRitual.DisplayName: Гаусс-ритуал Мутанта
+MutantSlimeGod.DisplayName: Бог слизней
+DLCBloomLine.DisplayName: Линия Телеграфа
+MutantSCal.DisplayName: Щит-череп Каламитас
+MutantPBG.DisplayName: Разносчица Голиаф
+MutantAureusSpawn.DisplayName: Порождение Ареуса
+MutantHolyRay.DisplayName: Святой Луч
+MutantDoGBody.DisplayName: Пожиратель богов
+MutantDoGHead.DisplayName: Пожиратель богов
+MutantDoGTail.DisplayName: Пожиратель богов
+MutantPolter.DisplayName: Некроплазм
+ArcticPaw.DisplayName: Арктическая лапа
+Blizzard.DisplayName: Метель
+DarkIceCrystal.DisplayName: Кристалл тёмного льда
+FrostFlare.DisplayName: Морозная сигнальная ракета
+FrostShard.DisplayName: Морозный осколок
+IceArrow.DisplayName: Ледяная стрела
+IceShot.DisplayName: Ледяной выстрел
+IceStar.DisplayName: Ледяная звезда
+CryogenRitual.DisplayName: Ритуал Криогена
+PermafrostRitual.DisplayName: Ритуал Пермафроста
+IceCloud.DisplayName: Обмораживающий снег
+BrimstoneDebris.DisplayName: Серные обломки
+BrimstonePulse.DisplayName: Серный пульс
+BrimstoneClone.DisplayName: Серный клон
+BrimBeam.DisplayName: Серолуч
+BrimstoneChainExplosion.DisplayName: Серный цепной взрыв
+BrimstoneTeleport.DisplayName: Серный телепорт
+BrimstoneFireblast.DisplayName: Шар серного огня
+FeatherJumpFeather.DisplayName: Перо
+// MarniteDagger.DisplayName: Marnite Dagger
+MarniteLaser.DisplayName: Мранитовый лазер
+// ProwlerTornado.DisplayName: Prowler Tornado
+// WulfrumCollector.DisplayName: Wulfrum Collector
+WulfrumScanner.DisplayName: Вульфрумовый сканер
+CrystalPlatform.DisplayName: Кристальная платформа
+// PlagueCloud.DisplayName: Plague Cloud
+Eruption.DisplayName: Извержение
+VampireBat.DisplayName: Vampire Bat
+SulphurBubble.DisplayName: Сернистый пкзырь
+VictideSpike.DisplayName: Приливной шип
+GoldenShowerShot.DisplayName: Выстрел золотого дождя
+HiveMindFiretrail.DisplayName: Проклятый огонь
+BrainMassProjectile.DisplayName: Гнилое мозговое вещество
+GravityVileClot.DisplayName: Мерзкий сгусток
+VileClotDrop.DisplayName: Мерзкий сгусток
+SulphurCloud.DisplayName: Сернистое облако
+PureGel.DisplayName: Чистейший гель
+HiveMindPulse.DisplayName: Разум улей пульс
+ApolloLineTelegraph.DisplayName: Телеграф
+ApolloMissile.DisplayName: Плазма-ракета
+AresMissile.DisplayName: Тепловая боеголовка
+AresMissileBackground.DisplayName: Тепловая боеголовка
+ArtemisLaserImproved.DisplayName: Тепловой лазер
+ArtemisLaserSmall.DisplayName: Маленький тепловой лазер
+CannonLaserbeam.DisplayName: Энергетический тепловой луч смерти
+DraedonLootCrate.DisplayName: Ящик с лутом Дрэйдона
+ExoelectricBlast.DisplayName: Экзо-электрический взрыв
+ExoOverloadDeathray.DisplayName: Луч смерти экзо-перегрузки
+GaussNuke.DisplayName: Гаусс-бомба
+GaussNukeBoom.DisplayName: Термоядерный взрыв
+HadesExoEnergyOrb.DisplayName: Экзо-электрическая энергетическая сфера
+HadesLaserBurst.DisplayName: Лазеры
+HadesMine.DisplayName: Аидова мина
+HadesSuperLaserbeam.DisplayName: Взрыв экзо-энергии
+HomingTeslaBurst.DisplayName: Выстрел Тесла
+LargeTeslaSphere.DisplayName: Сфера Тесла
+LargeTeslaSphereExplosion.DisplayName: Взрыв Тесла
+LingeringPlasmaFireball.DisplayName: Шар плазменного огня
+SmallTeslaArc.DisplayName: Дуга Тесла
+ExothermalDisintegrationRay.DisplayName: Экзотермальный луч дизинтеграции
+ScourgeSandstream.DisplayName: Песчаный поток бича
+SmallTeslaSphere.DisplayName: Сфера Тесла
+PlasmaFlameJet.DisplayName: Пламя экзо-плазмы
+BlazingExoLaserbeam.DisplayName: Горящий экзо-лазерный луч
+AresDeathAnimationExplosion.DisplayName: Взрыв
+SmallHadesSegmentExplosion.DisplayName: Взрыв
+BigHadesSegmentExplosion.DisplayName: Взрыв
+AresCoreLaserSmall.DisplayName: Заряженная искра
+AresSwingingKatanas.DisplayName: Энергетическая катана ВУ-09 Ареса
+ApolloPlasmaFireball.DisplayName: Шар плазменного огня
+AresHyperfuturisticPortal.DisplayName: Гиперфутуристичный портал
+ExoTwinHyperfuturisticPortal.DisplayName: Гиперфутуристичный портал
+HadesMissile.DisplayName: Укреплённая ракета
+CodebreakerDataStream.DisplayName: Поток данных дешифратора
+CrabulonJumpTelegraph.DisplayName: Телеграф Прыжка Крабулона
+BigBubble.DisplayName: Большой пузырь
+Bubble.DisplayName: Пузырь
+AquaticSuck.DisplayName: Акватическое всасывание
+FlamableGas.DisplayName: Горючий газ
+ToxicGas.DisplayName: Токсичный газ
+// FathomAngler.DisplayName: Fathom Angler
+// AstralTrailStar.DisplayName: Astral Trail Star
+// BrimflameBurst.DisplayName: Brimflame Burst
+// ClamSlam.DisplayName: Clam Slam
+SmallCannonLaser.DisplayName: Лазер
+PulseBlast.DisplayName: Взрывной пульс
+HadesLineTelegraph.DisplayName: Телеграф Линии Аида
+ApolloMissile2.DisplayName: Аполлонова ракета
+BatMode.DisplayName: Режим летучей мыши
+PerfExplosion.DisplayName: Взрыв перфораторов
+PerforatorSpike.DisplayName: Шипы перфораторов
+PerforatorLegHitbox.DisplayName: Нога перфораторов
+PerforatorRubble.DisplayName: Валуны перфораторов
+DaedalusArrow.DisplayName: Стрела Дедала
+ExplorationFeather.DisplayName: Перо
+SulphurParticulate.DisplayName: Сернистые газы
+GaleSpine.DisplayName: Позвонок Бури
+HydrothermicVentShot.DisplayName: Гидротермический выстрел перегрева
+ChargedGigablast.DisplayName: Заряженный гигавзрыв
+SuckedRock.DisplayName: Булыжник
+CalcloneWave.DisplayName: Огненная волна
+EmpyreanStar.DisplayName: Возвышенная звезда
+BrimstoneArtillery.DisplayName: Серный адский взрыв
+BrimstoneFireball.DisplayName: Шар серного огня
+Gigablast.DisplayName: Серный гигавзрыв
+Fireblast.DisplayName: Серный огненный взрыв
+BrimstoneBall.DisplayName: Серный шар
+BrothersEyeFlash.DisplayName: Вспышка глаза
+BrimstoneBarrageGravitating.DisplayName: Серный дротик
+MutantFrostMist.DisplayName: Морозный туман
+CalcloneFireBackground.DisplayName: Фоновый огонь
+BrothersDashTrail.DisplayName: Хвост рывка
+AquaticUrchinProjectile.DisplayName: Морской ёж
+ArsenalCrate.DisplayName: Взрывной ящик
+ExplosiveCrate.DisplayName: Взрывной ящик
+FallingVomitGore.DisplayName: Gore
+FuelSpark.DisplayName: Топливная искра
+LingeringAcidBubble.DisplayName: Кислотный пузырь
+NuclearHurricane.DisplayName: Ядерный ураган
+NuclearVortex.DisplayName: Ядерный вихрь
+SwervingRadioactiveCinder.DisplayName: Радиоактивная зола
+TastyFuelContainer.DisplayName: Топливный контейнер
+TrasherProjectile.DisplayName: Мусорщик
+VortexFormingAcidDroplet.DisplayName: Кислотная капля
+AbomMauler.DisplayName: Мучитель
+MushroomSpear2.DisplayName: Грибное копьё

@@ -1,21 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using CalamityMod;
+using CalamityMod.Buffs.Potions;
 using CalamityMod.Events;
-using CalamityMod.NPCs;
 using CalamityMod.NPCs.Perforator;
+using CalamityMod.Particles;
 using CalamityMod.Projectiles.Boss;
 using FargowiltasCrossmod.Core;
 using FargowiltasCrossmod.Core.Calamity.Globals;
 using FargowiltasCrossmod.Core.Common;
+using FargowiltasCrossmod.Core.Common.InverseKinematics;
 using FargowiltasSouls;
 using FargowiltasSouls.Content.Buffs.Masomode;
-using FargowiltasSouls.Core.Globals;
-using FargowiltasSouls.Core.NPCMatching;
 using FargowiltasSouls.Core.Systems;
+using Luminance.Assets;
+using Luminance.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -30,134 +34,399 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class PerfsEternity : CalDLCEmodeBehavior
     {
-        public override bool IsLoadingEnabled(Mod mod) => !PerfsEternityNew.Enabled;
         public override int NPCOverrideID => ModContent.NPCType<PerforatorHive>();
+
+        #region Fields
+        // Basic targeting and movement fields
+        public Player Target => Main.player[NPC.target];
+        public const int HeightAboveGround = 275;
+        public float Acceleration => State == (int)States.MoveToPlayer ? 0.4f : 0.2f;
+        public static float MaxMovementSpeed => 12f;
+
+        // Sounds
+        public const string SoundPath = "FargowiltasCrossmod/Assets/Sounds/Perforators/";
+        public static readonly SoundStyle[] RockCrunch = [ 
+            new SoundStyle(SoundPath + "RockCrunch1"), 
+            new SoundStyle(SoundPath + "RockCrunch2"), 
+            new SoundStyle(SoundPath + "RockCrunch3"), 
+            new SoundStyle(SoundPath + "RockCrunch4") 
+        ];
+
+        public static readonly SoundStyle[] SpikeSound = [
+            new SoundStyle(SoundPath + "SpikeSound1"),
+            new SoundStyle(SoundPath + "SpikeSound2"),
+            new SoundStyle(SoundPath + "SpikeSound3"),
+            new SoundStyle(SoundPath + "SpikeSound4")
+        ];
+        #region Fight Related
+
+        public float SpawnProgress;
+        public static int SpawnTime = 60 * 3;
+
+        public ref float State => ref NPC.ai[0];
+        public ref float Timer => ref NPC.ai[1];
+        public ref float AI2 => ref NPC.ai[2];
+        public ref float AI3 => ref NPC.ai[3];
+        public ref float AI4 => ref NPC.localAI[3];
+        public ref float NextState => ref NPC.localAI[0];
+        public ref float Phase => ref NPC.localAI[2];
+        public ref float PassiveRainTimer => ref NPC.localAI[1];
+
+        public List<States> RecentAttacks = [];
+        public bool PhaseTwo => Phase > 0;
+        public enum States
+        {
+            // misc
+            Opening = 0,
+            MoveToPlayer,
+            // attacks
+            SmallWorm,
+            MediumWorm,
+            BigWorm,
+            RubbleStomp,
+            LegAssault,
+            // phase 2
+            GroundSpikes,
+            GroundSpikesAngled,
+            GroundSpikeCharge,
+        }
+        public List<States> Attacks
+        {
+            get
+            {
+                List<States> attacks =
+                    [
+                    States.SmallWorm,
+                    States.MediumWorm,
+                    //States.BigWorm,
+                    States.RubbleStomp,
+                    States.LegAssault,
+                    ];
+                if (PhaseTwo)
+                {
+                    attacks.Add(States.GroundSpikes);
+                    attacks.Add(States.GroundSpikesAngled);
+                    attacks.Add(States.GroundSpikeCharge);
+
+                    attacks.Remove(States.SmallWorm);
+                    //attacks.Remove(States.BigWorm);
+                }
+                return attacks;
+            }
+        }
+        #endregion
+
+        #region Legs Related
+
+        public Vector2 GravityDirection => Vector2.UnitY;
+
+        public PerforatorLeg[] Legs;
+        public int[][][] LegSprites; // don't ask
+        public Vector2[] LegBraces;
+
+        public bool WasWalkingUpward
+        {
+            get => NPC.ai[2] == 1f;
+            set => NPC.ai[2] = value.ToInt();
+        }
+
+        public static LazyAsset<Texture2D>[] LegTextures = new LazyAsset<Texture2D>[4];
+        public static LazyAsset<Texture2D>[] LegEndTextures = new LazyAsset<Texture2D>[4];
+        public static LazyAsset<Texture2D>[] LegJointTextures = new LazyAsset<Texture2D>[4];
+
+        public static float LegSizeFactor => 3.5f;
+        public static int[] JointParts;
+
+        public const int LegPartLength = 80;
+        public const int JointLength = 28;
+        #endregion 
+
+        #endregion Fields and Properties
+        public override void SetStaticDefaults()
+        {
+            if (Main.netMode != NetmodeID.Server)
+            {
+                var path = "FargowiltasCrossmod/Assets/ExtraTextures/PerfLegs/";
+                for (int i = 0; i < 4; i++)
+                {
+                    int alt = Main.rand.Next(i) + 1;
+                    LegTextures[i] = LazyAsset<Texture2D>.Request($"{path}PerfLeg{alt}");
+                    LegEndTextures[i] = LazyAsset<Texture2D>.Request($"{path}PerfLegEnd{alt}");
+                    LegJointTextures[i] = LazyAsset<Texture2D>.Request($"{path}PerfLegJoint{alt}");
+                }
+            }
+        }
         public override void SetDefaults()
         {
             if (!WorldSavingSystem.EternityMode) return;
-            NPC.lifeMax = (int)(NPC.lifeMax * 1.6f);
+            NPC.lifeMax = (int)(NPC.lifeMax * 1.4f);
+            NPC.noGravity = true;
             if (BossRushEvent.BossRushActive)
             {
                 NPC.lifeMax = 5000000;
             }
+            NPC.Opacity = 0;
+            NPC.dontTakeDamage = true;
+
+            // cursed 3d array ahead
+            Legs = new PerforatorLeg[4];
+            LegSprites = new int[Legs.Length][][];
+            LegBraces = new Vector2[Legs.Length];
+            JointParts = [3, 5];
+
+            for (int i = 0; i < Legs.Length; i++)
+            {
+                float horizontalOffset;
+                float verticalOffset;
+                if (i % 2 == 0)
+                {
+                    horizontalOffset = 90 * (i == 0 ? 1 : -1);
+                    verticalOffset = 130;
+                }
+                else
+                {
+                    horizontalOffset = 70 * (i == 1 ? 1 : -1);
+                    verticalOffset = 110;
+                }
+
+                Vector2 legOffset = new(horizontalOffset, verticalOffset);
+                
+                Legs[i] = new(LegSizeFactor * legOffset, LegSizeFactor, legOffset.Length() * 0.685f * 0.45f, legOffset.Length() * 0.685f, i);
+                Legs[i].Leg[0].Rotation = legOffset.ToRotation();
+                Legs[i].Leg[1].Rotation = Vector2.UnitY.ToRotation();
+
+                LegSprites[i] = new int[2][];
+                for (int j = 0; j < 2; j++)
+                {
+                    LegSprites[i][j] = new int[JointParts[j]];
+                    for (int k = 0; k < JointParts[j]; k++)
+                    {
+                        LegSprites[i][j][k] = Main.rand.Next(4);
+                    }
+                }
+
+                float spriteLength = 80 + 22;
+                float angle = -Math.Sign(horizontalOffset);
+                float angleMult = i % 2 == 0 ? 2.4f : 0.7f;
+                angle *= MathHelper.PiOver2 * 0.22f * angleMult;
+
+                LegBraces[i] = Vector2.UnitY.RotatedBy(angle) * spriteLength * 1;
+            }
         }
+
         public override void OnSpawn(IEntitySource source)
         {
-
-            legpos = NPC.Center;
-            prevlegpos = NPC.Center;
-            legpos2 = NPC.Center;
-            prevlegpos2 = NPC.Center;
-
-            legpos3 = NPC.Center;
-            prevlegpos3 = NPC.Center;
-            legpos4 = NPC.Center;
-            prevlegpos4 = NPC.Center;
+            //NPC.Center -= Vector2.UnitY * 1000;
         }
-        Vector2 legpos = Vector2.Zero;
-        Vector2 prevlegpos = Vector2.Zero;
-        Vector2 legpos2 = Vector2.Zero;
-        Vector2 prevlegpos2 = Vector2.Zero;
 
-        Vector2 legpos3 = Vector2.Zero;
-        Vector2 prevlegpos3 = Vector2.Zero;
-        Vector2 legpos4 = Vector2.Zero;
-        Vector2 prevlegpos4 = Vector2.Zero;
-
-        int legtime = 0;
-        int legtime2 = 15;
-        float legprog = 0;
-        float legprog2 = 0;
-
-        int legtime3 = 30;
-        int legtime4 = 45;
-        float legprog3 = 0;
-        float legprog4 = 0;
-
+        #region Draw
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (!WorldSavingSystem.EternityMode) return true;
-            Asset<Texture2D> leg = TextureAssets.Chains[0];
-            spriteBatch.Draw(leg.Value, NPC.Center - Main.screenPosition, null, drawColor, MathHelper.ToRadians(120), new Vector2(leg.Width() / 2, 0), new Vector2(1, 10), SpriteEffects.None, 0);
-            spriteBatch.Draw(leg.Value, NPC.Center - Main.screenPosition, null, drawColor, MathHelper.ToRadians(-120), new Vector2(leg.Width() / 2, 0), new Vector2(1, 10), SpriteEffects.None, 0);
-            spriteBatch.Draw(leg.Value, NPC.Center - Main.screenPosition, null, new Color(drawColor.R - 120, drawColor.G - 100, drawColor.B - 100), MathHelper.ToRadians(110), new Vector2(leg.Width() / 2, 0), new Vector2(1, 10), SpriteEffects.None, 0);
-            spriteBatch.Draw(leg.Value, NPC.Center - Main.screenPosition, null, new Color(drawColor.R - 120, drawColor.G - 100, drawColor.B - 100), MathHelper.ToRadians(-110), new Vector2(leg.Width() / 2, 0), new Vector2(1, 10), SpriteEffects.None, 0);
+            if (!WorldSavingSystem.EternityMode)
+                return true;
 
-            Vector2 start3 = NPC.Center + new Vector2(260, -90);
-            Vector2 current3 = Vector2.Lerp(prevlegpos3, legpos3, 1 - (float)Math.Cos((legprog3 * Math.PI) / 2));
-            float prog3 = Math.Abs(legprog3 - 0.5f) * 2;
-            if (prevlegpos3.Distance(legpos3) < 100) prog3 = 1;
-            spriteBatch.Draw(leg.Value, start3 - Main.screenPosition, null, new Color(drawColor.R - 120, drawColor.G - 100, drawColor.B - 100),
-                (start3).AngleTo(current3) - MathHelper.PiOver2,
-                new Vector2(leg.Width() / 2, 0), new Vector2(1, MathHelper.Lerp(start3.Distance(current3) / 50, start3.Distance(current3) / 28, prog3)), SpriteEffects.None, 0);
+            // draw leg braces
+            if (Legs is not null)
+            {
+                if (NPC.IsABestiaryIconDummy)
+                {
+                    for (int j = 0; j < Legs.Length; j++)
+                        Legs[j]?.Update(NPC);
+                }
 
-            Vector2 start4 = NPC.Center + new Vector2(-260, -90);
-            Vector2 current4 = Vector2.Lerp(prevlegpos4, legpos4, 1 - (float)Math.Cos((legprog4 * Math.PI) / 2));
-            float prog4 = Math.Abs(legprog4 - 0.5f) * 2;
-            if (prevlegpos4.Distance(legpos4) < 100) prog4 = 1;
-            spriteBatch.Draw(leg.Value, start4 - Main.screenPosition, null, new Color(drawColor.R - 120, drawColor.G - 100, drawColor.B - 100),
-                (start4).AngleTo(current4) - MathHelper.PiOver2,
-                new Vector2(leg.Width() / 2, 0), new Vector2(1, MathHelper.Lerp(start4.Distance(current4) / 50, start4.Distance(current4) / 28, prog4)), SpriteEffects.None, 0);
+                DrawLegBraces(Legs, NPC.GetAlpha(drawColor), screenPos);
+            }
 
-            Vector2 start = NPC.Center + new Vector2(240, -140);
-            Vector2 current = Vector2.Lerp(prevlegpos, legpos, 1 - (float)Math.Cos((legprog * Math.PI) / 2));
-            float prog = Math.Abs(legprog - 0.5f) * 2;
-            if (prevlegpos.Distance(legpos) < 100) prog = 1;
-            spriteBatch.Draw(leg.Value, start - Main.screenPosition, null, drawColor,
-                (start).AngleTo(current) - MathHelper.PiOver2,
-                new Vector2(leg.Width() / 2, 0), new Vector2(1, MathHelper.Lerp(start.Distance(current) / 50, start.Distance(current) / 28, prog)), SpriteEffects.None, 0);
+            // draw hive
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (NPC.spriteDirection == 1)
+                spriteEffects = SpriteEffects.FlipHorizontally;
 
-            Vector2 start2 = NPC.Center + new Vector2(-240, -140);
-            Vector2 current2 = Vector2.Lerp(prevlegpos2, legpos2, 1 - (float)Math.Cos((legprog2 * Math.PI) / 2));
-            float prog2 = Math.Abs(legprog2 - 0.5f) * 2;
-            if (prevlegpos2.Distance(legpos2) < 100) prog2 = 1;
-            spriteBatch.Draw(leg.Value, start2 - Main.screenPosition, null, drawColor,
-                (start2).AngleTo(current2) - MathHelper.PiOver2,
-                new Vector2(leg.Width() / 2, 0), new Vector2(1, MathHelper.Lerp(start2.Distance(current2) / 50, start2.Distance(current2) / 28, prog2)), SpriteEffects.None, 0);
+            Texture2D texture2D15 = TextureAssets.Npc[NPC.type].Value;
+            Vector2 halfSizeTexture = new((float)(TextureAssets.Npc[NPC.type].Value.Width / 2), (float)(TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2));
 
+            Vector2 drawLocation = NPC.Center - screenPos;
+            drawLocation -= new Vector2((float)texture2D15.Width, (float)(texture2D15.Height / Main.npcFrameCount[NPC.type])) * NPC.scale / 2f;
+            drawLocation += halfSizeTexture * NPC.scale + new Vector2(0f, NPC.gfxOffY);
+            float rotation = NPC.rotation / 5;
+            spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, NPC.GetAlpha(drawColor), rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
 
+            texture2D15 = PerforatorHive.GlowTexture.Value;
+            Color glowmaskColor = Color.Lerp(Color.White, Color.Yellow, 0.5f);
+            glowmaskColor = NPC.GetAlpha(glowmaskColor);
 
-            return true;
+            spriteBatch.Draw(texture2D15, drawLocation, NPC.frame, glowmaskColor, rotation, halfSizeTexture, NPC.scale, spriteEffects, 0f);
+
+            // draw legs proper
+            if (Legs is not null)
+            {
+                if (NPC.IsABestiaryIconDummy)
+                {
+                    for (int j = 0; j < Legs.Length; j++)
+                        Legs[j]?.Update(NPC);
+                }
+
+                DrawLegSet(Legs, NPC.GetAlpha(drawColor), screenPos);
+            }
+            return false;
         }
+        public static void DrawLeg(SpriteBatch spriteBatch, Texture2D legTexture, Vector2 start, Vector2 end, Color color, float width, SpriteEffects direction, bool glow)
+        {
+            // Draw nothing if the start and end are equal, to prevent division by 0 problems.
+            if (start == end)
+                return;
+
+            float rotation = (end - start).ToRotation();
+            Vector2 scale = new(Vector2.Distance(start, end) / legTexture.Width, width);
+            start.Y += 2f;
+
+            if (glow)
+            {
+                Main.spriteBatch.UseBlendState(BlendState.Additive);
+                for (int j = 0; j < 8; j++)
+                {
+                    Vector2 afterimageOffset = (rotation + (MathHelper.Pi * (j - 4) / 8f)).ToRotationVector2() * 4f;
+                    spriteBatch.Draw(legTexture, start + afterimageOffset, null, color, rotation, legTexture.Size() * Vector2.UnitY * 0.5f, scale, direction, 0f);
+                }
+                Main.spriteBatch.ResetToDefault();
+            }
+
+            spriteBatch.Draw(legTexture, start, null, color, rotation, legTexture.Size() * Vector2.UnitY * 0.5f, scale, direction, 0f);
+        }
+        public void DrawLegBraces(PerforatorLeg[] legs, Color lightColor, Vector2 screenPos)
+        {
+            for (int i = 0; i < legs.Length; i++)
+            {
+                if (legs[i] is null)
+                    continue;
+
+                KinematicChain leg = legs[i].Leg;
+                if (leg.JointCount <= 0)
+                    continue;
+
+                bool glow = legs[i].DamageTime > 0;
+
+                // draw leg brace
+                Vector2 dir = LegBraces[i].SafeNormalize(Vector2.Zero);
+                Vector2 start = NPC.Center - screenPos + Vector2.UnitY * NPC.gfxOffY;
+                Vector2 end = start + dir * 80;
+                SpriteEffects direction = (LegBraces[i].X).NonZeroSign() == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                DrawLeg(Main.spriteBatch, LegTextures[0].Value, start, end, lightColor, 1f, direction, glow: false);
+                // leg end
+                start = end + dir * 22;
+                DrawLeg(Main.spriteBatch, LegJointTextures[0].Value, start, end, lightColor, 1f, direction, glow: false);
+            }
+        }
+        public void DrawLegSet(PerforatorLeg[] legs, Color lightColor, Vector2 screenPos)
+        {
+            for (int i = 0; i < legs.Length; i++)
+            {
+                if (legs[i] is null)
+                    continue;
+
+                KinematicChain leg = legs[i].Leg;
+                if (leg.JointCount <= 0)
+                    continue;
+
+                bool glow = legs[i].DamageTime > 0;
+
+                // draw leg
+                Vector2 previousPosition = leg.StartingPoint;
+                for (int j = 0; j < leg.JointCount; j++)
+                {
+                    int jointParts = JointParts[j];
+                    int joints = j == 0 ? 2 : 1;
+                    float jointDiv = ((float)JointLength / LegPartLength);
+                    float partLength = leg[j].Offset.Length() / ((jointParts - joints) + (jointDiv * joints));
+                    float jointLength = partLength * jointDiv;
+                    float accumulatedLength = 0;
+                    for (int k = 0; k < jointParts; k++)
+                    {
+                        bool legEnd = false;
+                        bool joint = false;
+                        int spriteIndex = LegSprites[i][j][k];
+                        Texture2D legTexture;
+                        bool flip = false;
+                        if (j == 0)
+                            flip = true;
+                        if (k == jointParts - 1)
+                        {
+                            if (j == 0)
+                            {
+                                joint = true;
+                                legTexture = LegJointTextures[spriteIndex].Value;
+                            }
+                            else
+                            {
+                                legTexture = LegEndTextures[spriteIndex].Value;
+                                legEnd = true;
+                            }
+                        }
+                        else
+                        {
+                            if (k == 0)
+                            {
+                                joint = true;
+                                legTexture = LegJointTextures[spriteIndex].Value;
+                                if (flip)
+                                    flip = false;
+                            }
+                            else
+                                legTexture = LegTextures[spriteIndex].Value;
+                        }
+                        Vector2 partOffset = leg[j].Offset.SafeNormalize(Vector2.Zero) * (joint ? jointLength : partLength);
+
+                        int spriteDir = (leg.EndEffectorPosition.X - LegBraces[i].X).NonZeroSign();
+                        if (k == 0 && j == 0)
+                            spriteDir *= -1;
+                        SpriteEffects direction = spriteDir == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+                        Vector2 start = previousPosition - screenPos;
+                        Vector2 end = previousPosition + partOffset - screenPos;
+
+                        if (flip)
+                            (start, end) = (end, start);
+
+                        DrawLeg(Main.spriteBatch, legTexture, start, end, lightColor, 1f, direction, glow: glow && legEnd);
+                        previousPosition += partOffset;
+                        accumulatedLength += partOffset.Length();
+                    }
+                }
+            }
+        }
+        #endregion
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            return HitPlayer ? base.CanHitPlayer(target, ref cooldownSlot) : false;
+            if (State == (int)States.GroundSpikeCharge && Timer > 35)
+                return base.CanHitPlayer(target, ref cooldownSlot);
+            return false;
         }
-        public int lastAttack = 0;
-        public int[] wormCycle = [5, 5, 6, 5, 7];
-        public int attackCounter = -2;
-        public bool HitPlayer = true;
-        public Vector2 LockVector1 = Vector2.Zero;
 
 
         public override void SendExtraAI(BitWriter bitWriter, BinaryWriter binaryWriter)
         {
-            for (int i = 0; i < wormCycle.Length; i++)
-            {
-                binaryWriter.Write7BitEncodedInt(wormCycle[i]);
-            }
-            binaryWriter.Write7BitEncodedInt(lastAttack);
-            binaryWriter.Write7BitEncodedInt(attackCounter);
-            binaryWriter.Write(HitPlayer);
-            binaryWriter.WriteVector2(LockVector1);
-            binaryWriter.Write7BitEncodedInt(despawnTimer);
-            binaryWriter.Write7BitEncodedInt(lineOfSiteTimer);
+            for (int i = 0; i < NPC.localAI.Length; i++)
+                binaryWriter.Write(NPC.localAI[i]);
+            binaryWriter.Write7BitEncodedInt(RecentAttacks.Count);
+            for (int i = 0; i < RecentAttacks.Count; i++)
+                binaryWriter.Write7BitEncodedInt((int)RecentAttacks[i]);
+            for (int i = 0; i < LegBraces.Length; i++)
+                binaryWriter.WriteVector2(LegBraces[i]);
+            for (int i = 0; i < Legs.Length; i++)
+                binaryWriter.WriteVector2(Legs[i].Leg.StartingPoint);
         }
         public override void ReceiveExtraAI(BitReader bitReader, BinaryReader binaryReader)
         {
-            for (int i = 0; i < wormCycle.Length; i++)
-            {
-                wormCycle[i] = binaryReader.Read7BitEncodedInt();
-            }
-            lastAttack = binaryReader.Read7BitEncodedInt();
-            attackCounter = binaryReader.Read7BitEncodedInt();
-            HitPlayer = binaryReader.ReadBoolean();
-            LockVector1 = binaryReader.ReadVector2();
-            despawnTimer = binaryReader.Read7BitEncodedInt();
-            lineOfSiteTimer = binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < NPC.localAI.Length; i++)
+                NPC.localAI[i] = binaryReader.ReadSingle();
+            int count = binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < count; i++)
+                RecentAttacks[i] = (States)binaryReader.Read7BitEncodedInt();
+            for (int i = 0; i < LegBraces.Length; i++)
+                LegBraces[i] = binaryReader.ReadVector2();
+            for (int i = 0; i < Legs.Length; i++)
+                Legs[i].Leg.StartingPoint = binaryReader.ReadVector2();
         }
-        public int despawnTimer;
-        public int lineOfSiteTimer;
+        #region AI
         public override bool PreAI()
         {
             if (!WorldSavingSystem.EternityMode) return true;
@@ -170,531 +439,906 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             if (NPC.target < 0 || Main.player[NPC.target] == null || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.velocity.Y += 1;
+                ManageLegs();
                 return false;
             }
-            Player target = Main.player[NPC.target];
-            Vector2 toTarget = (target.Center - NPC.Center).SafeNormalize(Vector2.Zero);
 
             //low ground
             if (Main.LocalPlayer.active && !Main.LocalPlayer.ghost && !Main.LocalPlayer.dead && NPC.Distance(Main.LocalPlayer.Center) < 2000)
                 Main.LocalPlayer.AddBuff(ModContent.BuffType<LowGroundBuff>(), 2);
 
-            //NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center + new Vector2(0, -300)).SafeNormalize(Vector2.Zero) * 10, 0.03f);
-            //Movement
-
-            //Dust.NewDustPerfect(legpos, DustID.TerraBlade);
-            //Right leg movement
-            legtime++;
-            if (legtime > 60)
+            // maso passive
+            if (WorldSavingSystem.MasochistModeReal && NPC.HasPlayerTarget && State != (int)States.Opening)
             {
-                prevlegpos = legpos;
-                legpos = new Vector2(NPC.Center.X + 300, FindGround((int)NPC.Center.X + 300, (int)NPC.Center.Y));
-                legprog = 0;
-                legtime = 0;
-            }
-            if (legprog < 1)
-                legprog += 0.05f;
-            legtime2++;
-            //Left leg movement
-            if (legtime2 > 60)
-            {
-                prevlegpos2 = legpos2;
-                legpos2 = new Vector2(NPC.Center.X + -300, FindGround((int)NPC.Center.X + -300, (int)NPC.Center.Y));
-                legprog2 = 0;
-                legtime2 = 0;
-            }
-            if (legprog2 < 1)
-                legprog2 += 0.05f;
-
-            //Right leg movement
-            legtime3++;
-            if (legtime3 > 60)
-            {
-                prevlegpos3 = legpos3;
-                legpos3 = new Vector2(NPC.Center.X + 400, FindGround((int)NPC.Center.X + 400, (int)NPC.Center.Y));
-                legprog3 = 0;
-                legtime3 = 0;
-            }
-            if (legprog3 < 1)
-                legprog3 += 0.05f;
-            legtime4++;
-            //Left leg movement
-            if (legtime4 > 60)
-            {
-                prevlegpos4 = legpos4;
-                legpos4 = new Vector2(NPC.Center.X + -400, FindGround((int)NPC.Center.X + -400, (int)NPC.Center.Y));
-                legprog4 = 0;
-                legtime4 = 0;
-            }
-            if (legprog4 < 1)
-                legprog4 += 0.05f;
-            if (NPC.ai[0] == 0)
-            {
-                Movement();
-                PassiveRain();
-                NPC.ai[1]++;
-                int time = 150;
-                if (NPC.GetLifePercent() <= 0.6f) time = 100;
-                if (NPC.ai[1] >= time)
+                if (++PassiveRainTimer >= 25)
                 {
-                    NPC.ai[0] = ChooseAttack();
-                    NPC.ai[1] = 0;
-                    NetSync(NPC);
-                }
-            }
-            if (!target.ZoneCrimson && !BossRushEvent.BossRushActive)
-            {
-                despawnTimer++;
-                if (despawnTimer > 600)
-                {
-                    NPC.velocity.Y += 0.1f;
-                    NPC.EncourageDespawn(30);
-                    return false;
-                }
-            }
-            else
-            {
-                despawnTimer = 0;
-            }
-            NPC.rotation = MathHelper.ToRadians(NPC.velocity.X * 2);
-            if (NPC.ai[0] == 1)
-            {
-                //Balls();
-                Spikes();
-                //Movement();
-            }
-            if (NPC.ai[0] == 2)
-            {
-                Slam();
-            }
-            if (NPC.ai[0] == 3)
-            {
-
-                //Slam();
-                Ichor();
-                Movement();
-
-            }
-            if (NPC.ai[0] == 4)
-            {
-                Balls();
-            }
-            if (NPC.ai[0] == 5)
-            {
-                SmallWorm();
-            }
-            if (NPC.ai[0] == 6)
-            {
-                MediumWorm();
-            }
-            if (NPC.ai[0] == 7)
-            {
-                LargeWorm();
-            }
-            CalamityGlobalNPC.perfHive = NPC.whoAmI;
-            int ChooseAttack()
-            {
-                attackCounter++;
-                if (attackCounter % 3 == 0)
-                {
-                    int theyworm = wormCycle[attackCounter / 3];
-                    if (attackCounter >= 12)
-                    {
-                        attackCounter = 0;
-                    }
-                    if (theyworm > 5 && NPC.GetLifePercent() > 0.7f) theyworm = 5;
-                    if (theyworm > 6 && NPC.GetLifePercent() > 0.4f) theyworm = 5;
-                    return theyworm;
-
-                }
-                List<int> possibilities = [1];
-                if (NPC.GetLifePercent() <= 0.95f)
-                {
-                    possibilities.Add(2);
-                }
-                if (NPC.GetLifePercent() <= 0.75f)
-                {
-                    possibilities.Add(3);
-                }
-                if (NPC.GetLifePercent() <= 0.5f)
-                {
-                    possibilities.Add(4);
-                }
-                int attack = possibilities[Main.rand.Next(0, possibilities.Count)];
-                int escape = 0;
-                while (attack == lastAttack && escape < 10)
-                {
-                    escape++;
-                    attack = possibilities[Main.rand.Next(0, possibilities.Count)];
-                }
-                lastAttack = attack;
-                NetSync(NPC);
-                return attack;
-
-            }
-            void Movement()
-            {
-                if (!Collision.CanHitLine(NPC.Center, 1, 1, target.Center, 1, 1))
-                {
-                    if (lineOfSiteTimer < 300)
-                        lineOfSiteTimer++;
-                    if (lineOfSiteTimer >= 300)
-                    {
-                        NPC.velocity = Vector2.Lerp(NPC.velocity, (target.Center - NPC.Center).SafeNormalize(Vector2.Zero) * 10, 0.05f);
-                        return;
-                    }
-                }
-                else
-                {
-                    if (lineOfSiteTimer > 0) lineOfSiteTimer -= 3;
-                }
-                if (target.Center.X > NPC.Center.X)
-                {
-                    NPC.velocity.X += 0.1f;
-                    if (NPC.velocity.X < 0)
-                    {
-                        NPC.velocity.X += 0.2f;
-                    }
-                }
-                else if (target.Center.X < NPC.Center.X)
-                {
-                    NPC.velocity.X -= 0.1f;
-                    if (NPC.velocity.X > 0)
-                    {
-                        NPC.velocity.X -= 0.2f;
-                    }
-                }
-                if (Math.Abs(NPC.Center.Y - FindGround((int)NPC.Center.X, (int)NPC.Center.Y)) > 350)
-                {
-                    NPC.velocity.Y += 0.2f;
-                    if (NPC.velocity.Y < 0)
-                    {
-                        NPC.velocity.Y += 0.2f;
-                    }
-                }
-                else
-                {
-                    NPC.velocity.Y -= 0.2f;
-                    if (NPC.velocity.Y > 0)
-                    {
-                        NPC.velocity.Y -= 0.2f;
-                    }
-
-                }
-                if (Math.Abs(NPC.Center.Y - FindGround((int)NPC.Center.X, (int)NPC.Center.Y)) < 75 && NPC.velocity.Y > 0)
-                {
-                    NPC.velocity.Y = 0;
-                }
-                else if (Math.Abs(NPC.Center.Y - FindGround((int)NPC.Center.X, (int)NPC.Center.Y)) > 500 && NPC.velocity.Y < 0)
-                {
-                    NPC.velocity.Y = 0;
-                }
-            }
-            void PassiveRain()
-            {
-                ref float timer = ref NPC.ai[1];
-                if (timer % 25 == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
+                    PassiveRainTimer = 0;
+                    //SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
                     if (DLCUtils.HostCheck)
                     {
                         float shotSpeed = 6f;
                         Vector2 shotVel = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 3.5f);
-                        int p = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + shotVel * NPC.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
-                        /*
-                        if (p != Main.maxProjectiles)
-                        {
-                            Main.projectile[p].extraUpdates = 1;
-                            Main.projectile[p].netUpdate = true;
-                        }
-                        */
+                        int p = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + shotVel * NPC.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, 
+                            ai0: NPC.whoAmI, ai1: Target.Top.Y - 20);
                     }
 
                 }
             }
-            void LargeWorm()
-            {
-                if (NPC.AnyNPCs(ModContent.NPCType<LargePerforatorHead>()))
-                {
-                    NPC.ai[0] = 0;
-                    NPC.ai[1] = 0;
-                    ChooseAttack();
 
+            switch ((States)State)
+            {
+                case States.Opening:
+                    Opening();
+                    break;
+                case States.MoveToPlayer:
+                    MoveToPlayerForAttack();
+                    break;
+                case States.SmallWorm:
+                    SmallWorm();
+                    break;
+                case States.MediumWorm:
+                    MediumWorm();
+                    break;
+                case States.BigWorm:
+                    BigWorm();
+                    break;
+                case States.RubbleStomp:
+                    RubbleStomp();
+                    break;
+                case States.LegAssault:
+                    LegAssault();
+                    break;
+                case States.GroundSpikes:
+                    GroundSpikes();
+                    break;
+                case States.GroundSpikesAngled:
+                    GroundSpikesAngled();
+                    break;
+                case States.GroundSpikeCharge:
+                    GroundSpikesCharge();
+                    break;
+            }
+            ManageLegs();
+
+            return false;
+        }
+        public void ManageLegs()
+        {
+            // Look forward
+            Vector2 forwardDirection = Vector2.UnitX * NPC.SafeDirectionTo(Target.Center).X.NonZeroSign();
+            //float idealRotation = NPC.velocity.X * 0.05f + NPC.velocity.Y * NPC.spriteDirection * 0.097f + forwardDirection.ToRotation();
+            if (NPC.velocity.Length() >= 4f && Math.Sign(NPC.velocity.X) == (int)forwardDirection.X)
+                NPC.spriteDirection = (int)forwardDirection.X;
+            NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.X / 10, 0.05f);
+            //NPC.rotation = NPC.rotation.AngleTowards(idealRotation, 0.09f).AngleLerp(idealRotation, 0.03f);
+
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < Legs.Length; j++)
+                    Legs[j]?.Update(NPC);
+            }
+        }
+        #region State Methods
+        public void Opening()
+        {
+            if (Timer < 1)
+            {
+                // Ensure that legs are already grounded when the Perforator has fully spawned in.
+                for (int i = 0; i < 1; i++)
+                {
+                    for (int j = 0; j < Legs.Length; j++)
+                        Legs[j]?.Update(NPC);
+                }
+
+                Timer += 1f / SpawnTime;
+                if (Timer < 0.8f)
+                    NPC.Opacity = 0f;
+                else if (Timer < 1f)
+                {
+                    if (NPC.Opacity == 0f)
+                    {
+                        SoundEngine.PlaySound(SoundID.NPCDeath23 with { Pitch = -0.3f }, NPC.Center);
+                        for (int i = 0; i < 160; i++)
+                        {
+                            Vector2 offset = Main.rand.NextVector2CircularEdge(NPC.width / 2.5f, NPC.height / 2.5f) * Main.rand.NextFloat(0.1f, 1f);
+                            Color color = Main.rand.NextBool(0.1f) ? Color.Gold : Color.Red;
+                            Particle p = new BloodParticle(NPC.Center + offset, offset.SafeNormalize(-Vector2.UnitY) * Main.rand.NextFloat(5, 30), 50, 1, color);
+                            GeneralParticleHandler.SpawnParticle(p);
+                        }
+                    }
+                    NPC.Opacity = (Timer - 0.8f) / 0.2f;
+                    NPC.dontTakeDamage = false;
                 }
                 else
                 {
-                    if (DLCUtils.HostCheck)
-                        NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<LargePerforatorHead>());
-                    SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
-                    NPC.ai[0] = 0;
-                    NPC.ai[1] = 0;
-                    NetSync(NPC);
+                    NPC.Opacity = 1f;
+                    NPC.dontTakeDamage = false;
+                    NPC.netUpdate = true;
                 }
+                WalkToPositionAI(Target.Center);
+                SpawnProgress = Timer;
             }
-            void MediumWorm()
+            else
             {
-                if (NPC.AnyNPCs(ModContent.NPCType<PerforatorHeadMedium>()))
-                {
-                    NPC.ai[0] = 0;
-                    NPC.ai[1] = 0;
-                    ChooseAttack();
+                SpawnProgress = 1;
+                GoToNeutral();
+            }
+        }
+        public void MoveToPlayerForAttack()
+        {
+            float speed = 0.5f;
+            if (Timer > 60)
+                speed += (Timer - 60) / 60f;
+            if (PhaseTwo)
+                speed *= 1.5f;
+            if (!NPC.HasPlayerTarget)
+                return;
+            Vector2 targetPos = AttackStartOffset(Target.Center, (int)NextState, out int leniency);
+            if (targetPos.HasNaNs())
+                return;
+            WalkToPositionAI(targetPos, speed);
+            Timer++;
+            int minimumWait = PhaseTwo ? 35 : 60;
+            if (Timer < minimumWait)
+                return;
+            if (Math.Abs(targetPos.X - NPC.Center.X) < leniency)
+            {
+                Reset();
+                State = NextState;
+                return;
+            }
+        }
+        public Vector2 AttackStartOffset(Vector2 target, int State, out int leniency)
+        {
+            leniency = 100;
+            switch ((States)State)
+            {
+                // far attacks
+                case States.RubbleStomp:
+                case States.GroundSpikesAngled:
+                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 770;
+                    leniency = 30;
+                    break;
 
-                }
-                else
-                {
-                    if (DLCUtils.HostCheck)
-                        NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadMedium>());
-                    SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
-                    NPC.ai[0] = 0;
-                    NPC.ai[1] = 0;
-                    NetSync(NPC);
-                }
-            }
-            void SmallWorm()
-            {
-                Movement();
-                NPC.ai[1]++;
-                int time = 30;
-                if (NPC.GetLifePercent() <= 0.7f) time += 30;
-                if (NPC.GetLifePercent() <= 0.25f) time += 30;
-                if (NPC.ai[1] % 30 == 0)
-                {
-                    if (DLCUtils.HostCheck)
-                        NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
-                }
-                if (NPC.ai[1] >= time)
-                {
-                    NPC.ai[1] = 0;
-                    NPC.ai[0] = 0;
-                    NetSync(NPC);
-                }
-            }
-            void Balls()
-            {
+                case States.LegAssault:
+                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 650;
+                    leniency = 50;
+                    break;
 
-                NPC.velocity *= 0.95f;
-                NPC.ai[1] += 1;
-                if (NPC.ai[2] == 0 && NPC.ai[1] >= 30 && NPC.ai[1] <= 90)
+                case States.GroundSpikeCharge:
+                    target += Vector2.UnitX * target.SafeDirectionTo(NPC.Center).X * 650;
+                    leniency = 30;
+                    break;
+
+                default:
+                    leniency = 200;
+                    break;
+            }
+            return target;
+        }
+        public void SmallWorm()
+        {
+            float speed = 0.2f;
+            float dist = Target.Distance(NPC.Center);
+            if (dist > 300)
+                speed += (dist - 300) / 500;
+            WalkToPositionAI(Target.Center, speed, 315);
+            int interval = 80;
+            if (Timer % interval == 0)
+            {
+                SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
+                if (DLCUtils.HostCheck)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
+            }
+            float time = 3.9f;
+            if (++Timer >= (int)(interval * time))
+            {
+                GoToNeutral();
+            }
+                
+        }
+        public void MediumWorm()
+        {
+            if (!PhaseTwo)
+            {
+                WalkToPositionAI(Target.Center, 0.6f);
+                if (Timer == 0)
                 {
-                    int i = (int)NPC.ai[1] - 60;
-                    if (NPC.ai[1] % 3f == 0)
+                    if (DLCUtils.HostCheck)
+                    {
+                        var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadMedium>());
+                        minion.GetGlobalNPC<MediumPerforator>().VelocityReal = -Vector2.UnitY * 24;
+                    }
+                    SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
+                }
+                if (++Timer > 150)
+                {
+                    GoToNeutral();
+                    //MediumWormCooldown = 60 * 25;
+                }
+            }
+            else
+            {
+                float speed = 0.2f;
+                float dist = Target.Distance(NPC.Center);
+                if (dist > 300)
+                    speed += (dist - 300) / 500;
+                WalkToPositionAI(Target.Center, speed, 315);
+                int interval = 80;
+                if (Timer % interval == 0)
+                {
+                    if (Timer == interval)
+                    {
+                        if (DLCUtils.HostCheck)
+                        {
+                            var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadMedium>());
+                            minion.GetGlobalNPC<MediumPerforator>().VelocityReal = -Vector2.UnitY * 24;
+                        }
+                        SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
+                    }
+                    else
                     {
                         SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
                         if (DLCUtils.HostCheck)
-                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center + new Vector2(0, -100).RotatedBy(MathHelper.ToRadians(i * 3)), new Vector2(0, -8).RotatedBy(MathHelper.ToRadians(i * 3)), ModContent.ProjectileType<ToothBall>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
+                            NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
                     }
+                }
+                float time = 3.9f;
+                if (++Timer >= (int)(interval * time))
+                {
+                    GoToNeutral();
+                }
+            }
+        }
+        public void BigWorm()
+        {
+            int expTelegraph = WorldSavingSystem.MasochistModeReal ? 100 : 100;
+            int endTime = 150;
+            NPC.velocity.Y *= 0.91f;
+            if (NPC.velocity.X.NonZeroSign() == NPC.HorizontalDirectionTo(Target.Center))
+                NPC.velocity *= 0.99f;
+            else
+                NPC.velocity *= 0.92f;
+            if (Timer < expTelegraph) 
+            {
+                // shake
+                float max = MathHelper.PiOver2 * 1.2f * Timer / expTelegraph;
+                NPC.rotation = max * MathF.Sin(Timer * MathHelper.Pi / (expTelegraph / 11));
+                if (Timer % 3 == 0)
+                {
+                    Vector2 offset = Main.rand.NextVector2CircularEdge(NPC.width / 2.5f, NPC.height / 2.5f);
+                    Color color = Main.rand.NextBool(0.1f) ? Color.Gold : Color.Red;
+                    Particle p = new BloodParticle(NPC.Center + offset, offset.SafeNormalize(-Vector2.UnitY) * Main.rand.NextFloat(10, 20), 50, 1, color);
+                    GeneralParticleHandler.SpawnParticle(p);
+                }
+            }
+            if (Timer == 10) // explosion telegraph
+            {
+                if (DLCUtils.HostCheck)
+                {
+                    Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PerfExplosion>(), 0, 0);
+                }
+            }
+            if (Timer == expTelegraph)
+            {
+                SoundEngine.PlaySound(SoundID.NPCDeath23 with { Pitch = -0.3f }, NPC.Center);
+                for (int i = 0; i < 80; i++)
+                {
+                    Vector2 offset = Main.rand.NextVector2CircularEdge(NPC.width / 2.5f, NPC.height / 2.5f) * Main.rand.NextFloat(0.1f, 1f);
+                    Color color = Main.rand.NextBool(0.1f) ? Color.Gold : Color.Red;
+                    Particle p = new BloodParticle(NPC.Center + offset, offset.SafeNormalize(-Vector2.UnitY) * Main.rand.NextFloat(5, 30), 50, 1, color);
+                    GeneralParticleHandler.SpawnParticle(p);
+                }
+                if (DLCUtils.HostCheck)
+                {
+                    Projectile p = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<PerfExplosion>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI);
 
+                    var minion = NPC.NewNPCDirect(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y - NPC.height / 3, ModContent.NPCType<PerforatorHeadLarge>());
+                    minion.GetGlobalNPC<LargePerforator>().VelocityReal = -Vector2.UnitY * 18 + Vector2.UnitX * NPC.HorizontalDirectionTo(Target.Center) * 3;
+
+                    for (int i = 0; i < 60; i++)
+                    {
+                        float shotSpeed = Main.rand.NextFloat(4f, 20f);
+                        Vector2 shotDir = -Vector2.UnitY.RotatedByRandom(MathHelper.Pi / 2f);
+                        Vector2 vel = shotDir * shotSpeed;
+                        if (vel.Y < -6)
+                            vel.Y *= 0.6f;
+                        Vector2 pos = NPC.Center + Main.rand.NextFloat() * shotDir * NPC.width / 2f;
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: pos.Y);
+                    }
                 }
-                if (NPC.ai[1] > 90)
+            }
+            if (PhaseTwo && (Timer == expTelegraph - 80))
+            {
+                SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
+                if (DLCUtils.HostCheck)
+                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<PerforatorHeadSmall>());
+            }
+            if (++Timer > expTelegraph + endTime)
+            {
+                GoToNeutral();
+            }
+        }
+        public void RubbleStomp()
+        {
+            NPC.velocity *= 0.8f;
+            int startTime = 5;
+            int stabTelegraphTime = 30;
+            int stabTime = 10;
+
+            float cycle = (stabTelegraphTime + stabTime);
+            float cyclicalTimer = (Timer - startTime) % cycle;
+            if ((Timer - startTime) < cycle * 2)
+            {
+                if (cyclicalTimer < stabTelegraphTime)
+                    NPC.velocity.Y -= 0.2f;
+                if (cyclicalTimer > stabTelegraphTime && cyclicalTimer < stabTelegraphTime + stabTime)
+                    NPC.velocity.Y += 0.3f;
+            }
+            
+            void TelegraphStab(int numStab)
+            {
+                ref float ChosenLeg = ref AI2;
+                if (numStab == 0)
+                    ChosenLeg = ClosestLegIndex(Target.Center);
+                else
+                    ChosenLeg = ClosestLegIndex(Legs[(int)ChosenLeg].GetEndPoint(), [(int)ChosenLeg]);
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 defaultPos = leg.DefaultPosition(this);
+                defaultPos.Y = NPC.Center.Y;
+                defaultPos = FindGround(defaultPos.ToTileCoordinates(), GravityDirection, "C").ToWorldCoordinates();
+                Vector2 pos = defaultPos + new Vector2(0, -200);
+                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTelegraphTime);
+            }
+            void Stab()
+            {
+                ref float ChosenLeg = ref AI2;
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 endPoint = leg.GetEndPoint();
+                int dir = Math.Sign(endPoint.X - NPC.Center.X);
+                Vector2 pos = endPoint + new Vector2(dir * 90, 0);
+                pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "D").ToWorldCoordinates();
+                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
+                leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
                 {
-                    NPC.velocity.Y = 10;
-                    NPC.velocity.X = 0;
-                }
-                if (NPC.ai[1] >= 120 || WorldGen.SolidTile(NPC.Center.ToTileCoordinates()))
+                    Vector2 endPoint = leg.GetEndPoint();
+                    SoundEngine.PlaySound(Main.rand.NextFromList(RockCrunch), endPoint);
+                    if (DLCUtils.HostCheck)
+                    {
+                        int dir = Math.Sign(endPoint.X - npc.Center.X);
+                        int rubbleCount = 9;
+                        for (int i = 0; i < rubbleCount; i++)
+                        {
+                            Vector2 vel = new Vector2(dir * 7, -12).RotatedByRandom(MathHelper.PiOver2 * 0.25f) * MathHelper.Lerp(0.2f, 1f, (float)i / rubbleCount);
+                            Projectile p = Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, vel, ModContent.ProjectileType<PerforatorRubble>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: endPoint.Y - 50);
+                        }
+                    }
+                });
+            }
+            if (Timer == startTime)
+                TelegraphStab(0);
+            if (Timer == startTime + stabTelegraphTime)
+                Stab();
+            if (Timer == startTime + stabTelegraphTime + stabTime)
+                TelegraphStab(1);
+            if (Timer == startTime + stabTelegraphTime + stabTime + stabTelegraphTime)
+                Stab();
+            if (++Timer > 160)
+            {
+                GoToNeutral();
+            }
+        }
+        public void LegAssault()
+        {
+            float walkbackTime = 25;
+            float windupTime = 40;
+            float stabTime = 18;
+            void TelegraphStab()
+            {
+                ref float ChosenLeg1 = ref AI2;
+                ref float ChosenLeg2 = ref AI3;
+                // inner left and right leg
+                if (Target.Center.X > NPC.Center.X) // right two
                 {
-                    NPC.ai[1] = 0;
-                    NPC.ai[0] = 0;
-                    NPC.ai[2] = 0;
-                    NetSync(NPC);
+                    ChosenLeg1 = 0;
+                    ChosenLeg2 = 1;
                 }
+                else
+                {
+                    ChosenLeg1 = 2;
+                    ChosenLeg2 = 3;
+                }
+
+                NPC.netUpdate = true;
+                for (int i = 0; i < 2; i++)
+                {
+                    int index = (int)(i == 0 ? ChosenLeg1 : ChosenLeg2);
+                    var leg = Legs[index];
+                    Vector2 defaultPos = leg.DefaultPosition(this);
+                    defaultPos.Y = NPC.Center.Y;
+                    defaultPos = FindGround(defaultPos.ToTileCoordinates(), GravityDirection, "C").ToWorldCoordinates();
+                    Vector2 pos = defaultPos + new Vector2(0, -250);
+                    pos.X += MathF.Sign(NPC.Center.X - pos.X) * -40;
+                    // remember that each leg updates 2 times per second
+                    leg.StartCustomAnimation(NPC, pos, 0.5f / windupTime);
+                    leg.DamageTime = 2 * (int)(windupTime + stabTime);
+
+                    leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
+                    {
+                        Vector2 endPoint = leg.GetEndPoint();
+                        Vector2 pos = Target.Center + Target.velocity * stabTime / 2;
+                        pos += endPoint.DirectionTo(pos) * 80;
+                        //pos = endPoint + endPoint.DirectionTo(pos) * 380;
+                        leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
+                        leg.DamageTime = 2 * (int)(stabTime);
+
+                        if (DLCUtils.HostCheck)
+                        {
+                            Projectile.NewProjectileDirect(npc.GetSource_FromAI(), endPoint, Vector2.Zero, ModContent.ProjectileType<PerforatorLegHitbox>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0, ai0: npc.whoAmI, ai1: index, ai2: stabTime);
+                        }
+                    });
+                }
+            }
+
+            if (Timer < windupTime)
+            {
 
             }
-            void Ichor()
-            {
-                ref float timer = ref NPC.ai[1];
-                NPC.velocity /= 1.05f;
-                if (NPC.ai[2] == 0 && timer == 0)
-                {
-                    timer = 10;
-                }
-                if (NPC.ai[2] % 2 == 0)
-                {
-                    timer += 1;
-                    if (timer >= 20)
-                    {
-                        NPC.ai[2]++;
-                    }
-                }
-                if (NPC.ai[2] % 2 != 0)
-                {
-                    timer -= 1;
-                    if (timer <= 0)
-                    {
-                        NPC.ai[2]++;
-                    }
-                }
-                if (NPC.ai[2] > 3 && timer % 12 == 0)
-                {
-                    Vector2 off = new Vector2(0, -70).RotatedBy(Main.rand.NextFloat(-0.9f, 0.9f));
-                    if (DLCUtils.HostCheck)
-                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + off, (NPC.Center + off).AngleFrom(NPC.Center).ToRotationVector2() * 10, ModContent.ProjectileType<IchorBlob>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
 
-                }
-                if (NPC.ai[2] > 3 && timer % 2 == 0)
+            if (Timer == 0)
+            {
+                AI4 = NPC.HorizontalDirectionTo(Target.Center);
+                TelegraphStab();
+            }
+            else if (Timer == windupTime)
+            {
+                //Stab();
+            }
+            if (Timer < walkbackTime)
+            {
+                NPC.velocity.Y -= 0.35f;
+                WalkToPositionAI(Target.Center - AI4 * 500 * Vector2.UnitX, 1.2f, 450);
+                NPC.velocity *= 0.94f;
+
+                NPC.rotation = MathHelper.PiOver2 * 2f * ((float)Timer / walkbackTime) * -AI4;
+            }
+            else if (Timer - walkbackTime < 15)
+            {
+                NPC.velocity.Y *= 0.95f;
+                NPC.velocity.Y += 0.5f;
+                NPC.velocity.X += AI4 * 0.6f;
+            }
+            else
+            {
+                NPC.velocity *= 0.94f;
+            }
+            if (++Timer > windupTime + stabTime + 10)
+                GoToNeutral();
+        }
+        public void GroundSpikes()
+        {
+            ClearGore();
+
+            NPC.velocity *= 0.8f;
+            int stabTelegraphTime = 45;
+            int stabTime = 10;
+            if (Timer < 25)
+                NPC.velocity.Y -= 0.5f;
+            if (Timer > stabTelegraphTime && Timer < stabTelegraphTime + stabTime)
+                NPC.velocity.Y += 0.7f;
+
+            void TelegraphStab()
+            {
+                ref float ChosenLeg1 = ref AI2;
+                ref float ChosenLeg2 = ref AI3;
+                // inner left and right leg
+                ChosenLeg1 = 1; 
+                ChosenLeg2 = 3;
+
+                NPC.netUpdate = true;
+                for (int i = 0; i < 2; i++)
                 {
-                    int shotSide = Main.rand.NextBool() ? 1 : -1;
-                    float shotSpeed = 10f;
-                    Vector2 shotVel = -Vector2.UnitY.RotatedBy(shotSide * MathHelper.Pi / 3f).RotatedByRandom(MathHelper.Pi / 8f);
+                    var leg = i == 0 ? Legs[(int)ChosenLeg1] : Legs[(int)ChosenLeg2];
+                    Vector2 defaultPos = leg.DefaultPosition(this);
+                    defaultPos.Y = NPC.Center.Y;
+                    defaultPos = FindGround(defaultPos.ToTileCoordinates(), GravityDirection, "C").ToWorldCoordinates();
+                    Vector2 pos = defaultPos + new Vector2(0, -200);
+                    pos.X += MathF.Sign(NPC.Center.X - pos.X) * 40;
+                    leg.StartCustomAnimation(NPC, pos, 0.5f / stabTelegraphTime);
+                }
+            }
+            void Stab()
+            {
+                ref float ChosenLeg1 = ref AI2;
+                ref float ChosenLeg2 = ref AI3;
+                NPC.netUpdate = true;
+                for (int i = 0; i < 2; i++)
+                {
+                    var leg = i == 0 ? Legs[(int)ChosenLeg1] : Legs[(int)ChosenLeg2];
+                    Vector2 endPoint = leg.GetEndPoint();
+                    int dir = Math.Sign(endPoint.X - NPC.Center.X);
+                    Vector2 pos = endPoint + new Vector2(dir * -80);
+                    pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "D").ToWorldCoordinates();
+                    pos.Y += 40;
+                    leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
+                    if (i == 0)
+                    {
+                        leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
+                        {
+                            if (!npc.HasPlayerTarget)
+                                return;
+                            int spacing = WorldSavingSystem.MasochistModeReal ? 125 : 140;
+                            int random = 20;
+                            if (DLCUtils.HostCheck)
+                            {
+                                for (int i = -5; i < 5; i++)
+                                {
+                                    Vector2 pos = Main.player[npc.target].Center + Vector2.UnitX * i * spacing;
+                                    pos.X += Main.rand.NextFloat(-random, random);
+                                    pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "E").ToWorldCoordinates();
+
+                                    Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2 * 0.23f);
+
+                                    Projectile.NewProjectile(npc.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (Timer == 0)
+                TelegraphStab();
+            if (Timer == stabTelegraphTime)
+                Stab();
+            if (++Timer > 120)
+                GoToNeutral();
+        }
+        public void GroundSpikesAngled()
+        {
+            ClearGore();
+
+            NPC.velocity *= 0.8f;
+            if (Timer < 25)
+                NPC.velocity.Y -= 0.5f;
+            int stabTelegraphTime = 45;
+            int stabTime = 10;
+
+            void TelegraphStab()
+            {
+                ref float ChosenLeg = ref AI2;
+                ChosenLeg = ClosestLegIndex(Target.Center);
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 defaultPos = leg.DefaultPosition(this);
+                defaultPos.Y = NPC.Center.Y;
+                defaultPos = FindGround(defaultPos.ToTileCoordinates(), GravityDirection, "C").ToWorldCoordinates();
+                Vector2 pos = defaultPos + new Vector2(0, -200);
+                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTelegraphTime);
+            }
+            void Stab()
+            {
+                ref float ChosenLeg = ref AI2;
+                NPC.netUpdate = true;
+                var leg = Legs[(int)ChosenLeg];
+                Vector2 endPoint = leg.GetEndPoint();
+                int dir = Math.Sign(endPoint.X - NPC.Center.X);
+                Vector2 pos = endPoint + new Vector2(dir * 90, 0);
+                pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "D").ToWorldCoordinates();
+                pos.Y += 40;
+                leg.StartCustomAnimation(NPC, pos, 0.5f / stabTime, animationMode: PerforatorLeg.Accel, stepSound: true);
+                leg.SetAnimationEndAction((PerforatorLeg leg, NPC npc) =>
+                {
+                    if (!npc.HasPlayerTarget)
+                        return;
+
+                    int spacing = WorldSavingSystem.MasochistModeReal ? 125 : 150;
+                    int random = 5;
                     if (DLCUtils.HostCheck)
                     {
-                        int p = Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + shotVel * NPC.width / 2f, shotVel * shotSpeed, ModContent.ProjectileType<IchorShot>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
-                        if (p != Main.maxProjectiles)
+                        for (int i = -3; i < 3; i++)
                         {
-                            Main.projectile[p].extraUpdates = 1;
-                            Main.projectile[p].netUpdate = true;
+                            Vector2 target = Main.player[npc.target].Center;
+                            int dir = Math.Sign(target.X - npc.Center.X);
+
+                            Vector2 pos = target + Vector2.UnitX * i * spacing * dir;
+                            pos.X += Main.rand.NextFloat(-random, random);
+                            pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "E").ToWorldCoordinates();
+
+                            float rot = MathHelper.PiOver2 * (0.17f * i + 0.4f);
+                               
+                            Vector2 vel = -Vector2.UnitY.RotatedBy(rot).RotatedByRandom(MathHelper.PiOver2 * 0.07f);
+
+                            if (dir < 0)
+                                vel.X *= -1;
+
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(npc.defDamage), 0);
+                        }
+                    }
+                });
+            }
+
+            if (Timer == 0)
+                TelegraphStab();
+            if (Timer == stabTelegraphTime)
+                Stab();
+            if (++Timer > 120)
+                GoToNeutral();
+        }
+        public void GroundSpikesCharge()
+        {
+            ClearGore();
+
+            int startTime = 35;
+            int chargeTime = 100;
+            int endlagTime = 30;
+            int height = 190;
+            if (Timer < startTime) // windup
+            {
+                if (Timer == 15)
+                {
+                    for (int index = 0; index < Legs.Length; index++)
+                    {
+                        var leg = Legs[index];
+                        int time = chargeTime + startTime - 15;
+                        leg.DamageTime = 2 * time;
+                    }
+                }
+                float dir = NPC.HorizontalDirectionTo(Target.Center);
+                Vector2 desiredPos = Target.Center + Vector2.UnitX * 700 * -dir;
+                WalkToPositionAI(desiredPos, 1.5f, height);
+                if (Timer == startTime - 5)
+                {
+                    AI4 = Target.Center.X + dir * 800;
+                    NPC.netUpdate = true;
+                }
+                if (Timer == startTime - 1)
+                {
+                    for (int index = 0; index < Legs.Length; index++)
+                    {
+                        var leg = Legs[index];
+                        int time = chargeTime + 1;
+                        if (DLCUtils.HostCheck)
+                        {
+                            Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), leg.GetEndPoint(), Vector2.Zero, ModContent.ProjectileType<PerforatorLegHitbox>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai0: NPC.whoAmI, ai1: index, ai2: time);
+                        }
+                    }
+                    
+                }
+            }
+            else if (Timer < startTime + chargeTime) // charge
+            {
+                Vector2 desiredPos = new(AI4, Target.Center.Y);
+                WalkToPositionAI(desiredPos, 1.75f, height);
+
+                int freq = WorldSavingSystem.MasochistModeReal ? 10 : 14;
+                if (Timer % freq == 0)
+                {
+                    int random = 30;
+                    Vector2 pos = NPC.Center;
+                    pos.X += Main.rand.NextFloat(-random, 0);
+                    pos = FindGround(pos.ToTileCoordinates(), GravityDirection, "E").ToWorldCoordinates();
+
+                    Vector2 vel = -Vector2.UnitY.RotatedByRandom(MathHelper.PiOver2 * 0.23f);
+
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), pos, vel, ModContent.ProjectileType<PerforatorSpike>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0, ai1: 0);
+                }
+            }
+            else // endlag
+            {
+                NPC.velocity *= 0.95f;
+            }
+            if (++Timer >= startTime + chargeTime + endlagTime)
+                GoToNeutral();
+        }
+        #endregion
+        #region Help Methods
+        public void GoToNeutral()
+        {
+            Reset();
+            var attacks = Attacks;
+            int memoryMax = PhaseTwo ? 3 : 2;
+            if (RecentAttacks.Count < memoryMax)
+                RecentAttacks.Add((States)State);
+            else
+            {
+                for (int i = 0; i < RecentAttacks.Count - 1; i++)
+                    RecentAttacks[i] = RecentAttacks[i + 1];
+                RecentAttacks[^1] = (States)State;
+            }
+            float threshold = WorldSavingSystem.MasochistModeReal ? 0.65f : 0.55f;
+            if (!PhaseTwo && NPC.GetLifePercent() < threshold) // enter p2
+            {
+                NextState = (int)States.GroundSpikes;
+                Phase = 2;
+            }
+            else
+            {
+                attacks = attacks.Except(RecentAttacks).ToList();
+                if (PhaseTwo) // prevent bad combos
+                {
+                    if (State == (int)States.MediumWorm)
+                        attacks.Remove(States.BigWorm);
+                    if (State == (int)States.BigWorm)
+                        attacks.Remove(States.MediumWorm);
+                }
+                NextState = (int)Main.rand.NextFromCollection(attacks);
+            }
+            //Main.NewText(Enum.GetName(typeof(States), (States)NextState));
+            State = (int)States.MoveToPlayer;
+
+            // debug
+            //NextState = (int)States.SmallWorm;
+        }
+        public void Reset()
+        {
+            Timer = 0;
+            AI2 = 0;
+            AI3 = 0;
+        }
+        public static void ClearGore()
+        {
+            for (int i = 0; i < Main.gore.Length; i++)
+            {
+                if (Main.gore[i].timeLeft > 5)
+                    Main.gore[i].timeLeft = 5;
+            }
+                
+        }
+        public int ClosestLegIndex(Vector2 pos, List<int> except = null)
+        {
+            int min = -1;
+            for (int i = 0; i < Legs.Length; i++)
+            {
+                if (except != null && except.Contains(i))
+                    continue;
+                if (min < 0 || Legs[i].GetEndPoint().Distance(pos) < Legs[min].GetEndPoint().Distance(pos))
+                    min = i;
+            }
+            return min;
+        }
+        public static Point FindGround(Point p, Vector2 direction, string num)
+        {
+            if (p.X > 0 && p.Y > 0 && WorldGen.InWorld(p.X, p.Y, 2))
+            {
+                Point result = LumUtils.FindGround(p, direction);
+                if (result.X > 0 && result.Y > 0 && WorldGen.InWorld(result.X, result.Y, 2))
+                    return result;
+            }
+            return p;
+        }
+        #endregion
+        #region Walking Methods
+        public void WalkToPositionAI(Vector2 pos, float speedMod = 1f, int heightAboveGround = HeightAboveGround)
+        {
+            if (pos.HasNaNs() || pos.X < 0 || pos.Y < 0)
+                return;
+            bool canWalkToPlayer = CheckIfCanWalk(pos, out Point groundAtPlayer);
+
+            if (canWalkToPlayer)
+            {
+                groundAtPlayer = FindGround(groundAtPlayer, GravityDirection, "F");
+                // check if player is reasonably above ground
+                Vector2 groundAtPlayerV = groundAtPlayer.ToWorldCoordinates();
+                bool validAboveGround = true;
+                int playerPointY = pos.ToTileCoordinates().Y;
+                int dir = Math.Sign(playerPointY - groundAtPlayer.Y); // should be negative
+                if (dir < 0)
+                {
+                    while (groundAtPlayer.Y != playerPointY)
+                    {
+                        groundAtPlayer.Y += dir;
+                        if (Main.tile[groundAtPlayer.X, groundAtPlayer.Y].IsTileSolid())
+                        {
+                            validAboveGround = false;
+                            break;
                         }
                     }
                 }
-                float rotationTimer = timer * 0.05f;
-                NPC.rotation = Utils.AngleLerp(-0.5f, 0.5f, -(float)(Math.Cos(Math.PI * rotationTimer) - 1) / 2);
-                if (NPC.ai[2] >= 8)
-                {
-                    NPC.ai[2] = 0;
-                    NPC.ai[1] = 0;
-                    NPC.ai[0] = 0;
-                    NetSync(NPC);
-                }
-            }
-            void Spikes()
-            {
-                if (NPC.ai[1] <= 0)
-                {
-                    LockVector1 = Vector2.UnitX * Math.Sign(target.Center.X - NPC.Center.X) * 400;
-                }
-                if (NPC.ai[1] < 60 && NPC.ai[1] % 10 == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.NPCHit20, NPC.Center);
-                    for (int i = 0; i < 5; i++)
-                    {
-                        Dust.NewDustDirect(NPC.Center, 0, 0, DustID.CrimsonPlants, 0, 2, Scale: 1.5f);
-                    }
+                else if (dir > 0)
+                    validAboveGround = false;
 
-                }
-                NPC.ai[1]++;
-                if (NPC.ai[1] <= 60)
+                if (validAboveGround) // position has line of sight to the ground below it
                 {
-                    SpikeMovement(target.Center - LockVector1, 2f);
-                }
-                else
-                {
-                    SpikeMovement(target.Center + LockVector1, 2.5f);
-                }
-                if (NPC.ai[1] > 60 && NPC.ai[1] % 5 == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.Item17 with { MaxInstances = 10 }, NPC.Center);
-                    if (DLCUtils.HostCheck)
-                        Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, -3).RotatedBy(Main.rand.NextFloat(-0.5f, 0.5f)), ModContent.ProjectileType<BloodGeyser>(), FargoSoulsUtil.ScaledProjectileDamage(NPC.defDamage), 0);
-                }
-                if (NPC.ai[1] > 60)
-                {
-                    if (Math.Abs(NPC.Center.X - (target.Center.X + LockVector1.X)) < 50)
+                    if (Math.Abs(groundAtPlayerV.Y - pos.Y) < heightAboveGround * 2) // position isn't too far above ground
                     {
-                        LockVector1 = -LockVector1;
-                    }
-                }
-                if (NPC.ai[1] >= 180)
-                {
-                    NPC.ai[1] = 0;
-                    NPC.ai[0] = 0;
-                    NPC.ai[2] = 0;
-                    NetSync(NPC);
-                }
-            }
-            void SpikeMovement(Vector2 targetPos, float Xmodifier = 1f)
-            {
-                if (targetPos.X > NPC.Center.X)
-                {
-                    NPC.velocity.X += 0.1f * Xmodifier;
-                    if (NPC.velocity.X < 0)
-                    {
-                        NPC.velocity.X += 0.2f * Xmodifier;
-                    }
-                }
-                else if (targetPos.X < NPC.Center.X)
-                {
-                    NPC.velocity.X -= 0.1f * Xmodifier;
-                    if (NPC.velocity.X > 0)
-                    {
-                        NPC.velocity.X -= 0.2f * Xmodifier;
-                    }
-                }
-                if (Math.Abs(NPC.Center.Y - FindGround((int)NPC.Center.X, (int)NPC.Center.Y)) > 350)
-                {
-                    NPC.velocity.Y += 0.2f;
-                    if (NPC.velocity.Y < 0)
-                    {
-                        NPC.velocity.Y += 0.2f;
-                    }
-                }
-                else
-                {
-                    NPC.velocity.Y -= 0.2f;
-                    if (NPC.velocity.Y > 0)
-                    {
-                        NPC.velocity.Y -= 0.2f;
+                        // all good! we can walk
+                        WalkTowards(pos, speedMod, heightAboveGround);
+                        return;
                     }
                 }
             }
-            void Slam()
-            {
-                NPC.ai[1]++;
-                if (NPC.ai[1] == 1 && NPC.ai[2] == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.NPCDeath23, NPC.Center);
-                    const int dustCount = 40;
-                    for (int i = 0; i < dustCount; i++)
-                    {
-                        Vector2 vel = Vector2.UnitX.RotatedBy(MathHelper.TwoPi * ((float)i / dustCount));
-                        int d = Dust.NewDust(NPC.Center + vel * NPC.width / 2, 0, 0, DustID.CrimsonTorch, vel.X, vel.Y, Scale: 2f);
-                        Main.dust[d].noGravity = true;
-                        Main.dust[d].velocity = vel * 10f;
-                    }
-
-                }
-                if (NPC.ai[1] < 30 && NPC.ai[2] == 0)
-                {
-                    NPC.velocity /= 1.1f;
-                    NPC.Center = Vector2.Lerp(NPC.Center, target.Center + new Vector2(target.velocity.X * 40, -400), 0.04f);
-                    HitPlayer = false;
-                    NetSync(NPC);
-                }
-                if (NPC.ai[2] == 0 && NPC.ai[1] > 30)
-                {
-                    NPC.velocity.Y = 15;
-                    NPC.velocity.X = 0;
-                    HitPlayer = true;
-                }
-                if (WorldGen.SolidTile((NPC.Center + new Vector2(0, 20)).ToTileCoordinates()) && NPC.ai[2] == 0)
-                {
-                    NPC.velocity.Y = 0;
-                    NPC.ai[2] = 1;
-                    NPC.ai[1] = 0;
-                }
-                if (NPC.ai[2] == 1)
-                {
-                    NPC.velocity.Y -= 0.1f;
-                    if (NPC.ai[1] >= 30)
-                    {
-                        NPC.ai[0] = 0;
-                        NPC.ai[1] = 0;
-                        NPC.ai[2] = 0;
-                        NetSync(NPC);
-                    }
-                }
-            }
-            int FindGround(int x, int y)
-            {
-                int escape = 0;
-
-                while (escape < 100 && !WorldGen.SolidTile(new Vector2(x, y).ToTileCoordinates()))
-                {
-                    y += 8;
-                    escape++;
-
-                }
-                return y;
-            }
-            return false;
+            FlyTowards(pos, speedMod, heightAboveGround);
         }
+        public void WalkTowards(Vector2 pos, float speedMod, int heightAboveGround)
+        {
+            int dir = Math.Sign(pos.X - NPC.Center.X);
+            Vector2 desiredPos = NPC.Center + dir * Vector2.UnitX * 80;
+            desiredPos = FindGround(desiredPos.ToTileCoordinates(), GravityDirection, "G").ToWorldCoordinates() - Vector2.UnitY * heightAboveGround;
+            Movement(desiredPos, speedMod);
+        }
+        public void FlyTowards(Vector2 pos, float speedMod, int heightAboveGround)
+        {
+            Vector2 desiredPos = pos;
+            desiredPos = FindGround(desiredPos.ToTileCoordinates(), GravityDirection, "H").ToWorldCoordinates() - Vector2.UnitY * heightAboveGround;
+            Movement(desiredPos, speedMod);
+        }
+        public void Movement(Vector2 desiredPos, float speedMod)
+        {
+            speedMod *= 1.6f;
+            float accel = Acceleration * speedMod;
+            float decel = Acceleration * 2 * speedMod;
+            float max = MaxMovementSpeed * speedMod;
+            if (max > Target.velocity.Length() + MaxMovementSpeed)
+                max = Target.velocity.Length() + MaxMovementSpeed;
+            float resistance = NPC.velocity.Length() * accel / max;
+            accel -= resistance;
+            if (accel < 0)
+                accel = 0;
+            NPC.velocity = FargoSoulsUtil.SmartAccel(NPC.Center, desiredPos, NPC.velocity, accel, decel + resistance);
+        }
+        // if there's a reasonable ground path to player's X position from the spider
+        // does not guarantee player to be at a reasonable spot above that ground position
+        public bool CheckIfCanWalk(Vector2 pos, out Point groundAtPlayer)
+        {
+            if (pos.HasNaNs() || pos.X < 0 || pos.Y < 0)
+            {
+                groundAtPlayer = new();
+                return false;
+            }
+                
+            int maxHeight = HeightAboveGround * 2 / 16;
+            Point point = FindGround(NPC.Center.ToTileCoordinates(), GravityDirection, "I") - new Point(0, 1);
+            float targetX = pos.X;
+            int tiles = (int)((targetX - NPC.Center.X) / 16);
+            if (point.X < 0 || point.Y < 0)
+            {
+                groundAtPlayer = new();
+                return false;
+            }
+            if (tiles == 0 || tiles <= int.MinValue)
+            {
+                groundAtPlayer = point;
+                return true;
+            }
+            int dir = Math.Sign(tiles);
+            if (dir == 0)
+                dir = 1;
+            tiles = Math.Abs(tiles);
+            for (int i = 0; i < tiles; i++)
+            {
+                point.X += dir;
+                // make sure we are along ground
+                // search for surface tile
+                // (searches up if we're at solid tile, down if we're at air)
+                Point ground = FindGround(point, GravityDirection, "J");
+
+                // abs is the height difference between this block and previous block
+                // if it's too great, we can't simply walk to the player
+                //Main.NewText(ground.Y + " " + point.Y);
+                int diff = ground.Y - point.Y;
+                if (ground.X < 0 || ground.Y < 0 || point.X < 0 || point.Y < 0 || diff <= int.MinValue)
+                {
+                    groundAtPlayer = new();
+                    return false;
+                }
+                if (Math.Abs(diff) < maxHeight) // height difference small enough
+                {
+                    continue;
+                }
+                else // height difference too big
+                {
+                    groundAtPlayer = new(); // irrelevant
+                    return false;
+                }
+            }
+            groundAtPlayer = point;
+            // we got through iteration, each step passed the height check
+            return true;
+        }
+        #endregion
+        #endregion
     }
 }

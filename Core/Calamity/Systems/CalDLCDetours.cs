@@ -54,16 +54,46 @@ using Terraria.Graphics.Effects;
 using FargowiltasSouls.Content.UI;
 using CalamityMod.NPCs.Perforator;
 using FargowiltasCrossmod.Content.Calamity.Bosses.Perforators;
+using FargowiltasSouls.Content.Buffs.Masomode;
+using FargowiltasSouls.Core.Globals;
+using FargowiltasSouls.Common.Utilities;
+using CalamityMod.Items.TreasureBags.MiscGrabBags;
+using CalamityMod.Items.Weapons.Rogue;
+using CalamityMod.Items.Weapons.Summon;
+using Terraria.GameContent.ItemDropRules;
+using CalamityMod.Items.Accessories.Vanity;
+using CalamityMod.Items.LoreItems;
+using CalamityMod.Items.Pets;
+using FargowiltasSouls.Content.Items.Misc;
+using Fargowiltas.Items.Explosives;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
+using Fargowiltas.Items.Tiles;
+using CalamityMod.Walls;
+using CalamityMod.Tiles.Abyss;
+using CalamityMod.Items.Placeables.FurnitureAcidwood;
+using CalamityMod.Tiles.FurnitureAcidwood;
+using CalamityMod.Tiles.FurnitureVoid;
+using CalamityMod.Tiles.FurnitureAbyss;
+using CalamityMod.Tiles.Astral;
+using CalamityMod.Tiles.FurnitureMonolith;
+using CalamityMod.Tiles.Crags;
+using CalamityMod.Tiles.FurnitureAshen;
+using CalamityMod.Tiles.FurnitureEutrophic;
+using CalamityMod.Tiles.SunkenSea;
+using FargowiltasCrossmod.Core.Calamity.Globals;
+using Terraria.GameContent;
+using CalamityMod.Items.Accessories;
 
 namespace FargowiltasCrossmod.Core.Calamity.Systems
 {
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     [JITWhenModsEnabled(ModCompatibility.Calamity.Name)]
-    public class CalDLCDetours : ICustomDetourProvider
+    public class CalDLCDetours : ModSystem, ICustomDetourProvider
     {
         // AI override
         // GlobalNPC
         private static readonly MethodInfo CalamityPreAIMethod = typeof(CalamityGlobalNPC).GetMethod("PreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityAIMethod = typeof(CalamityGlobalNPC).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityOtherStatChangesMethod = typeof(CalamityGlobalNPC).GetMethod("OtherStatChanges", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPreDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PreDraw", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPostDrawMethod = typeof(CalamityGlobalNPC).GetMethod("PostDraw", LumUtils.UniversalBindingFlags);
@@ -87,6 +117,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo TerraChampAIMethod = typeof(TerraChampion).GetMethod("AI", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CheckTempleWallsMethod = typeof(Golem).GetMethod("CheckTempleWalls", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo DukeFishronPreAIMethod = typeof(DukeFishron).GetMethod("SafePreAI", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo MoonLordIsProjectileValid_Method = typeof(MoonLord).GetMethod("IsProjectileValid", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenIncreaseWeaponSizeMethod = typeof(TungstenEffect).GetMethod("TungstenIncreaseWeaponSize", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNerfedProjMetod = typeof(TungstenEffect).GetMethod("TungstenNerfedProj", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo TungstenNeverAffectsProjMethod = typeof(TungstenEffect).GetMethod("TungstenNeverAffectsProj", LumUtils.UniversalBindingFlags);
@@ -94,6 +125,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MinimalEffects_Method = typeof(ToggleBackend).GetMethod("MinimalEffects", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo BRDialogueTick_Method = typeof(BossRushDialogueSystem).GetMethod("Tick", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo FargoPlayerPreKill_Method = typeof(FargoSoulsPlayer).GetMethod("PreKill", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo EModePlayerPreUpdate_Method = typeof(EModePlayer).GetMethod("PreUpdate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CanToggleEternity_Method = typeof(Masochist).GetMethod("CanToggleEternity", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo SoulTogglerOnActivate_Method = typeof(SoulTogglerButton).GetMethod("OnActivate", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo GetAdrenalineDamage_Method = typeof(CalamityUtils).GetMethod("GetAdrenalineDamage", LumUtils.UniversalBindingFlags);
@@ -101,10 +133,19 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo MediumPerforatorHeadOnKill_Method = typeof(PerforatorHeadMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MediumPerforatorBodyOnKill_Method = typeof(PerforatorBodyMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo MediumPerforatorTailOnKill_Method = typeof(PerforatorTailMedium).GetMethod("OnKill", LumUtils.UniversalBindingFlags);
-
+        private static readonly MethodInfo EmodeBalance_Method = typeof(EmodeItemBalance).GetMethod("EmodeBalance", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo EmodeEditSpawnPool_Method = typeof(EModeGlobalNPC).GetMethod("EditSpawnPool", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo DropSummon_Int_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(int), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
+        private static readonly MethodInfo DropSummon_String_Method = typeof(EModeUtils).GetMethod("DropSummon", LumUtils.UniversalBindingFlags, [typeof(NPC), typeof(string), typeof(bool), typeof(bool).MakeByRefType(), typeof(bool)]);
+        private static readonly MethodInfo StarterBag_ModifyItemLoot_Method = typeof(StarterBag).GetMethod("ModifyItemLoot", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo FargosSouls_DropDevianttsGift_Method = typeof(FargowiltasSouls.FargowiltasSouls).GetMethod("DropDevianttsGift", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo Instahouse_GetTiles_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetTiles", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo Instahouse_GetFurniture_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetFurniture", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo CalamityPlayer_CatchFish_Method = typeof(CalamityPlayer).GetMethod("CatchFish", LumUtils.UniversalBindingFlags);
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
+        public delegate void Orig_CalamityAI(CalamityGlobalNPC self, NPC npc);
         public delegate void Orig_CalamityOtherStatChanges(CalamityGlobalNPC self, NPC npc);
         public delegate bool Orig_CalamityPreDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
         public delegate void Orig_CalamityPostDraw(CalamityGlobalNPC self, NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor);
@@ -128,6 +169,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_TerraChampAI(TerraChampion self);
         public delegate bool Orig_CheckTempleWalls(Vector2 pos);
         public delegate bool Orig_DukeFishronPreAI(DukeFishron self, NPC npc);
+        public delegate bool Orig_MoonLordIsProjectileValid(MoonLord self, NPC npc, Projectile projectile);
         public delegate float Orig_TungstenIncreaseWeaponSize(FargoSoulsPlayer modPlayer);
         public delegate bool Orig_TungstenNerfedProj(Projectile projectile);
         public delegate bool Orig_TungstenNeverAffectsProj(Projectile projectile);
@@ -135,6 +177,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MinimalEffects(ToggleBackend self);
         public delegate void Orig_BRDialogueTick();
         public delegate bool Orig_FargoPlayerPreKill(FargoSoulsPlayer self, double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource);
+        public delegate void Orig_EModePlayerPreUpdate(EModePlayer self);
         public delegate bool Orig_CanToggleEternity();
         public delegate void Orig_SoulTogglerOnActivate(SoulTogglerButton self);
         public delegate float Orig_GetAdrenalineDamage(CalamityPlayer mp);
@@ -142,12 +185,27 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_MediumPerforatorHeadOnKill(PerforatorHeadMedium self);
         public delegate void Orig_MediumPerforatorBodyOnKill(PerforatorBodyMedium self);
         public delegate void Orig_MediumPerforatorTailOnKill(PerforatorTailMedium self);
+        public delegate EmodeItemBalance.EModeChange Orig_EmodeBalance(ref Item item, ref float balanceNumber, ref string[] balanceTextKeys, ref string extra);
+        public delegate void Orig_EmodeEditSpawnPool(EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo);
+        public delegate void Orig_DropSummon_Int_Method(NPC npc, int itemType, bool downed, ref bool droppedSummon, bool prerequisite = true);
+        public delegate void Orig_DropSummon_String_Method(NPC npc, string itemName, bool downed, ref bool droppedSummon, bool prerequisite = true);
+        public delegate void Orig_StarterBag_ModifyItemLoot(StarterBag self, ItemLoot itemLoot);
+        public delegate void Orig_FargosSouls_DropDevianttsGift(Player player);
+        public delegate void Orig_Instahouse_GetTiles(Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform);
+        public delegate void Orig_Instahouse_GetFurniture(Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle);
+        public delegate void Orig_CalamityPlayer_CatchFish(CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
 
+        public override void Load()
+        {
+            On_NPC.AddBuff += NPCAddBuff_Detour;
+            On_ShimmerTransforms.IsItemTransformLocked += IsItemTransformLocked;
+        }
         void ICustomDetourProvider.ModifyMethods()
         {
             // AI override
             // GlobalNPC
             HookHelper.ModifyMethodWithDetour(CalamityPreAIMethod, CalamityPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityAIMethod, CalamityAI_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityOtherStatChangesMethod, CalamityOtherStatChanges_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPreDrawMethod, CalamityPreDraw_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPostDrawMethod, CalamityPostDraw_Detour);
@@ -171,6 +229,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(TerraChampAIMethod, TerraChampAI_Detour);
             HookHelper.ModifyMethodWithDetour(CheckTempleWallsMethod, CheckTempleWalls_Detour);
             HookHelper.ModifyMethodWithDetour(DukeFishronPreAIMethod, DukeFishronPreAI_Detour);
+            HookHelper.ModifyMethodWithDetour(MoonLordIsProjectileValid_Method, MoonLordIsProjectileValid_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenIncreaseWeaponSizeMethod, TungstenIncreaseWeaponSize_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNerfedProjMetod, TungstenNerfedProj_Detour);
             HookHelper.ModifyMethodWithDetour(TungstenNeverAffectsProjMethod, TungstenNeverAffectsProj_Detour);
@@ -179,6 +238,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(BRDialogueTick_Method, DialogueReplacement);
             //HookHelper.ModifyMethodWithDetour(BRSceneWeight_Method, );
             HookHelper.ModifyMethodWithDetour(FargoPlayerPreKill_Method, FargoPlayerPreKill_Detour);
+            HookHelper.ModifyMethodWithDetour(EModePlayerPreUpdate_Method, EModePlayerPreUpdate_Detour);
             HookHelper.ModifyMethodWithDetour(CanToggleEternity_Method, CanToggleEternity_Detour);
             HookHelper.ModifyMethodWithDetour(SoulTogglerOnActivate_Method, SoulTogglerOnActivate_Detour);
             HookHelper.ModifyMethodWithDetour(GetAdrenalineDamage_Method, GetAdrenalineDamage_Detour);
@@ -186,6 +246,15 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(MediumPerforatorHeadOnKill_Method, MediumPerforatorHeadOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(MediumPerforatorBodyOnKill_Method, MediumPerforatorBodyOnKill_Detour);
             HookHelper.ModifyMethodWithDetour(MediumPerforatorTailOnKill_Method, MediumPerforatorTailOnKill_Detour);
+            HookHelper.ModifyMethodWithDetour(EmodeBalance_Method, EmodeBalance_Detour);
+            HookHelper.ModifyMethodWithDetour(EmodeEditSpawnPool_Method, EmodeEditSpawnPool_Detour);
+            HookHelper.ModifyMethodWithDetour(DropSummon_Int_Method, DropSummon_Int_Detour);
+            HookHelper.ModifyMethodWithDetour(DropSummon_String_Method, DropSummon_String_Detour);
+            HookHelper.ModifyMethodWithDetour(StarterBag_ModifyItemLoot_Method, StarterBag_ModifyItemLoot_Detour);
+            HookHelper.ModifyMethodWithDetour(FargosSouls_DropDevianttsGift_Method, FargosSouls_DropDevianttsGift_Detour);
+            HookHelper.ModifyMethodWithDetour(Instahouse_GetTiles_Method, Instahouse_GetTiles_Detour);
+            HookHelper.ModifyMethodWithDetour(Instahouse_GetFurniture_Method, Instahouse_GetFurniture_Detour);
+            HookHelper.ModifyMethodWithDetour(CalamityPlayer_CatchFish_Method, CalamityPlayer_CatchFish_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -212,6 +281,30 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 npc.defDamage = defDamage; // do not fuck with defDamage please
             }
             return result;
+        }
+        internal static void CalamityAI_Detour(Orig_CalamityAI orig, CalamityGlobalNPC self, NPC npc)
+        {
+            bool wasRevenge = CalamityWorld.revenge;
+            bool wasDeath = CalamityWorld.death;
+            bool wasBossRush = BossRushEvent.BossRushActive;
+            bool shouldDisable = CalDLCWorldSavingSystem.E_EternityRev;
+
+            int defDamage = npc.defDamage; // do not fuck with defDamage please
+
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = false;
+                CalamityWorld.death = false;
+                BossRushEvent.BossRushActive = false;
+            }
+            orig(self, npc);
+            if (shouldDisable)
+            {
+                CalamityWorld.revenge = wasRevenge;
+                CalamityWorld.death = wasDeath;
+                BossRushEvent.BossRushActive = wasBossRush;
+                npc.defDamage = defDamage; // do not fuck with defDamage please
+            }
         }
 
         internal static void CalamityOtherStatChanges_Detour(Orig_CalamityOtherStatChanges orig, CalamityGlobalNPC self, NPC npc)
@@ -339,7 +432,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void FMSVerticalSpeed_Detour(Orig_FMSVerticalSpeed orig, FlightMasteryWings self, Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
         {
             orig(self, player, ref ascentWhenFalling, ref ascentWhenRising, ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
-            if (NonFargoBossAlive())
+            if (NonFargoBossAlive() && self is not EternitySoul)
             {
                 player.wingsLogic = ArmorIDs.Wing.LongTrailRainbowWings;
                 if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
@@ -373,7 +466,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         internal static void FMSHorizontalSpeed_Detour(Orig_FMSHorizontalSpeed orig, FlightMasteryWings self, Player player, ref float speed, ref float acceleration)
         {
             orig(self, player, ref speed, ref acceleration);
-            if (NonFargoBossAlive())
+            if (NonFargoBossAlive() && self is not EternitySoul)
             {
                 if (!DownedBossSystem.downedYharon) // pre yharon, use Silva Wings stats
                 {
@@ -511,6 +604,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             }
             return result;
         }
+        internal static bool MoonLordIsProjectileValid_Detour(Orig_MoonLordIsProjectileValid orig, MoonLord self, NPC npc, Projectile projectile)
+        {
+            bool ret = orig(self, npc, projectile);
+            if (!Main.player[projectile.owner].buffImmune[ModContent.BuffType<NullificationCurseBuff>()])
+            {
+
+                switch (self.GetVulnerabilityState(npc))
+                {
+                    case 0: //if (!projectile.CountsAsClass(DamageClass.Melee)) return false; break; melee
+                        if (projectile.CountsAsClass<RogueDamageClass>())
+                            ret = true;
+                        break;
+                    //case 1: if (!projectile.CountsAsClass(DamageClass.Ranged)) return false; break;
+                    //case 2: if (!projectile.CountsAsClass(DamageClass.Magic)) return false; break;
+                    //case 3: if (!FargoSoulsUtil.IsSummonDamage(projectile)) return false; break;
+                    default: break;
+                }
+            }
+            return ret;
+        }
         internal static float TungstenIncreaseWeaponSize_Detour(Orig_TungstenIncreaseWeaponSize orig, FargoSoulsPlayer modPlayer)
         {
             float value = orig(modPlayer);
@@ -557,7 +670,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             orig(self);
             Player player = Main.LocalPlayer;
-            player.SetToggleValue<OccultSkullCrownEffect>(true);
+            //player.SetToggleValue<OccultSkullCrownEffect>(true);
             player.SetToggleValue<PurityEffect>(true);
             player.SetToggleValue<TheSpongeEffect>(true);
             player.SetToggleValue<ChaliceOfTheBloodGodEffect>(true);
@@ -628,17 +741,17 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             {
                 if (phase == BossRushDialoguePhase.StartRepeat && currLine == 0)
                 {
-                    Main.NewText("Let's get started.", Color.Teal);
+                    Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.BossRushDialogue.Start"), Color.Teal);
                     BossRushEvent.BossRushStage = 1;
                 }
                 if (phase == BossRushDialoguePhase.TierOneComplete)
                 {
                     if (currLine == 0)
-                        Main.NewText("This is boring.", Color.Teal);
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.BossRushDialogue.EndP1_1"), Color.Teal);
                     //if (currLine == 1)
                         
                     if (currLine == 2)
-                        Main.NewText("Let's cut to the chase.", Color.Teal);
+                        Main.NewText(Language.GetTextValue("Mods.FargowiltasCrossmod.BossRushDialogue.EndP1_2"), Color.Teal);
                 }
                 BossRushDialogueSystem.CurrentDialogueDelay = 60;
                 BossRushDialogueSystem.currentSequenceIndex += 1;
@@ -678,6 +791,18 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             return retval;
         }
 
+        internal static void EModePlayerPreUpdate_Detour(Orig_EModePlayerPreUpdate orig, EModePlayer self)
+        {
+            FargoSoulsPlayer soulsPlayer = self.Player.FargoSouls();
+            bool antibodies = soulsPlayer.MutantAntibodies;
+            if (self.Player.Calamity().oceanCrest || self.Player.Calamity().aquaticEmblem)
+            {
+                soulsPlayer.MutantAntibodies = true;
+            }
+            orig(self);
+            soulsPlayer.MutantAntibodies = antibodies;
+        }
+
         internal static bool CanToggleEternity_Detour(Orig_CanToggleEternity orig)
         {
             orig();
@@ -694,7 +819,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         {
             float value = orig(mp);
             if (WorldSavingSystem.EternityMode)
-                value = value * 0.5f + 0.5f;
+                value *= 0.5f;
             return value;
         }
 
@@ -719,22 +844,315 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
 
         internal static void MediumPerforatorHeadOnKill_Detour(Orig_MediumPerforatorHeadOnKill orig, PerforatorHeadMedium self)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev && PerfsEternityNew.Enabled)
+            if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
         }
 
         internal static void MediumPerforatorBodyOnKill_Detour(Orig_MediumPerforatorBodyOnKill orig, PerforatorBodyMedium self)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev && PerfsEternityNew.Enabled)
+            if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
         }
         internal static void MediumPerforatorTailOnKill_Detour(Orig_MediumPerforatorTailOnKill orig, PerforatorTailMedium self)
         {
-            if (CalDLCWorldSavingSystem.E_EternityRev && PerfsEternityNew.Enabled)
+            if (CalDLCWorldSavingSystem.E_EternityRev)
                 return;
             orig(self);
+        }
+
+        internal static EmodeItemBalance.EModeChange EmodeBalance_Detour(Orig_EmodeBalance orig, ref Item item, ref float balanceNumber, ref string[] balanceTextKeys, ref string extra)
+        {
+            if (CalDLCSets.GetValue(CalDLCSets.Items.DisabledEmodeChanges, item.type))
+                return EmodeItemBalance.EModeChange.None;
+            return orig(ref item, ref balanceNumber, ref balanceTextKeys, ref extra);
+        }
+
+        internal static void EmodeEditSpawnPool_Detour(Orig_EmodeEditSpawnPool orig, EModeGlobalNPC self, IDictionary<int, float> pool, NPCSpawnInfo spawnInfo)
+        {
+            var cal = spawnInfo.Player.Calamity();
+
+            bool calamityBiomeZone = cal.ZoneAbyss ||
+                cal.ZoneCalamity ||
+                cal.ZoneSulphur ||
+                cal.ZoneSunkenSea ||
+                (cal.ZoneAstral && !spawnInfo.Player.PillarZone());
+            if (calamityBiomeZone || pool[0] == 0)
+                return;
+            orig(self, pool, spawnInfo);
+
+        }
+        internal static void DropSummon_Int_Detour(Orig_DropSummon_Int_Method orig, NPC npc, int itemType, bool downed, ref bool dropped, bool prerequisite = true)
+        {
+            /*
+            if (!CalDLCWorldSavingSystem.DroppedSummon.Contains(npc.type))
+            {
+                if (!Main.LocalPlayer.InventoryHas(itemType))
+                {
+                    orig(npc, itemType, downed, ref dropped, prerequisite);
+                    CalDLCWorldSavingSystem.DroppedSummon.Add(npc.type);
+                }
+            }
+            */
+            return;
+        }
+        internal static void DropSummon_String_Detour(Orig_DropSummon_String_Method orig, NPC npc, string itemType, bool downed, ref bool dropped, bool prerequisite = true)
+        {
+            /*
+            if (!CalDLCWorldSavingSystem.DroppedSummon.Contains(npc.type))
+            {
+                if (ModContent.TryFind("Fargowiltas", itemType, out ModItem modItem))
+                {
+                    if (!Main.LocalPlayer.InventoryHas(modItem.Type))
+                    {
+                        orig(npc, itemType, downed, ref dropped, prerequisite);
+                        CalDLCWorldSavingSystem.DroppedSummon.Add(npc.type);
+                    }
+                }
+
+
+            }
+            */
+            return;
+        }
+        internal static void StarterBag_ModifyItemLoot_Detour(Orig_StarterBag_ModifyItemLoot orig, StarterBag self, ItemLoot itemLoot)
+        {
+            itemLoot.Add(ItemID.SilverPickaxe);
+            itemLoot.Add(ItemID.SilverAxe);
+            itemLoot.Add(ItemID.SilverHammer);
+            
+
+
+            LeadingConditionRule tin = itemLoot.DefineConditionalDropSet(() => WorldGen.SavedOreTiers.Copper == TileID.Tin);
+            tin.Add(ItemID.TinBroadsword);
+            tin.Add(ItemID.TinBow);
+            tin.Add(ItemID.TopazStaff);
+            tin.OnFailedConditions(new CommonDrop(ItemID.CopperBroadsword, 1));
+            tin.OnFailedConditions(new CommonDrop(ItemID.CopperBow, 1));
+            tin.OnFailedConditions(new CommonDrop(ItemID.AmethystStaff, 1));
+            itemLoot.Add(ItemID.WoodenArrow, 1, 100, 100);
+            itemLoot.Add(ModContent.ItemType<SquirrelSquireStaff>());
+            itemLoot.Add(ModContent.ItemType<ThrowingBrick>(), 1, 150, 150);
+
+            itemLoot.Add(ItemID.BugNet);
+            itemLoot.Add(ItemID.WaterCandle);
+            itemLoot.Add(ItemID.Torch, 1, 200, 200);
+            itemLoot.Add(ItemID.LesserHealingPotion, 1, 15, 15);
+            itemLoot.Add(ItemID.RecallPotion, 1, 15, 15);
+            LeadingConditionRule mp = itemLoot.DefineConditionalDropSet(() => Main.netMode != NetmodeID.SinglePlayer);
+            mp.Add(ItemID.WormholePotion, 1, 15, 15);
+            LeadingConditionRule dontDigUp = itemLoot.DefineConditionalDropSet(() => Main.remixWorld || Main.zenithWorld);
+            dontDigUp.Add(ItemID.ObsidianSkinPotion, 1, 5, 5);
+            itemLoot.Add(ModContent.ItemType<EternityAdvisor>());
+            itemLoot.Add(ModContent.ItemType<AutoHouse>(), 1, 2, 2);
+            itemLoot.Add(ModContent.ItemType<MiniInstaBridge>(), 1, 2, 2);
+            itemLoot.Add(ModContent.ItemType<EurusSock>());
+            itemLoot.Add(ModContent.ItemType<PuffInABottle>());
+            itemLoot.Add(ItemID.Squirrel);
+
+            static bool isTerry(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName.ToLower().Contains("terry");
+            }
+            itemLoot.AddIf(isTerry, ModContent.ItemType<HalfInstavator>());
+            itemLoot.AddIf(isTerry, ModContent.ItemType<RegalStatue>());
+            itemLoot.AddIf(isTerry, ItemID.PlatinumCoin);
+            itemLoot.AddIf(isTerry, ItemID.GrapplingHook);
+            itemLoot.AddIf(isTerry, ItemID.LifeCrystal, new Fraction(1, 1), 4, 4);
+            itemLoot.AddIf(isTerry, ItemID.ManaCrystal, new Fraction(1, 1), 2, 2);
+            itemLoot.AddIf(isTerry, ModContent.ItemType<SandsofTime>());
+            
+            //fuck you terry
+            static bool notreceivedStorage(DropAttemptInfo info)
+            {
+                return !WorldSavingSystem.ReceivedTerraStorage;
+            }
+            static bool TerryAndNotReceived(DropAttemptInfo info)
+            {
+                return notreceivedStorage(info) && isTerry(info);
+            }
+            static bool notTerryAndNotReceived(DropAttemptInfo info)
+            {
+                return notreceivedStorage(info) && !isTerry(info);
+            }
+            IItemDropRule notrecievedStorage = itemLoot.DefineConditionalDropSet(() => !WorldSavingSystem.ReceivedTerraStorage);
+            if (ModLoader.HasMod("MagicStorage"))
+            {
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorage", "StorageHeart").Type);
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorage", "CraftingAccess").Type);
+                itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
+                itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorage", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
+                
+            }
+            else if (ModLoader.HasMod("MagicStorageExtra"))
+            {
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorageExtra", "StorageHeart").Type);
+                itemLoot.AddIf(notreceivedStorage, ModContent.Find<ModItem>("MagicStorageExtra", "CraftingAccess").Type);
+                itemLoot.AddIf(TerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 16, 16);
+                itemLoot.AddIf(notTerryAndNotReceived, ModContent.Find<ModItem>("MagicStorageExtra", "StorageUnit").Type, new Fraction(1, 1), 4, 4);
+            }
+            //itemLoot.Add(isTerry);
+            if (ModLoader.TryGetMod("CalamityModMusic", out Mod musicMod))
+                itemLoot.Add(musicMod.Find<ModItem>("CalamityMusicbox").Type);
+
+            // Awakening lore item
+            itemLoot.Add(ModContent.ItemType<LoreAwakening>());
+
+            // Aleksh donator item
+            // Name specific: "Aleksh" or "Shark Lad"
+            static bool getsLadPet(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName == "Aleksh" || playerName == "Shark Lad";
+            }
+            ;
+            itemLoot.AddIf(getsLadPet, ModContent.ItemType<JoyfulHeart>());
+
+            // HPU dev item
+            // Name specific: "Heart Plus Up"
+            static bool getsHapuFruit(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName == "Heart Plus Up";
+            }
+            ;
+            itemLoot.AddIf(getsHapuFruit, ModContent.ItemType<HapuFruit>());
+
+            // Apelusa dev item
+            // Name specific: "Pelusa"
+            static bool getsRedBow(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName == "Pelusa";
+            }
+
+            itemLoot.AddIf(getsRedBow, ModContent.ItemType<RedBow>());
+
+            // Mishiro dev vanity
+            // Name specific: "Amber" or "Mishiro"
+            static bool getsOracleHeadphones(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName is "Amber" or "Mishiro";
+            }
+
+            itemLoot.AddIf(getsOracleHeadphones, ModContent.ItemType<OracleHeadphones>());
+
+            // Fabsol dev item
+            // Name specific: "Fabsol" or "Cirrus"
+            static bool getsCrystalHeartVodka(DropAttemptInfo info)
+            {
+                string playerName = info.player.name;
+                return playerName is "Fabsol" or "Cirrus";
+            }
+
+            itemLoot.AddIf(getsCrystalHeartVodka, ModContent.ItemType<CrystalHeartVodka>());
+        }
+        internal static void FargosSouls_DropDevianttsGift_Detour(Orig_FargosSouls_DropDevianttsGift orig, Player player)
+        {
+            return;
+        }
+        internal static void Instahouse_GetTiles_Detour(Orig_Instahouse_GetTiles orig, Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform)
+        {
+            orig(player, out wallType, out tileType, out platformStyle, out moddedPlatform);
+            if (player.Calamity().ZoneSulphur)
+            {
+                wallType = ModContent.WallType<AcidwoodWall>();
+                tileType = ModContent.TileType<AcidwoodTile>();
+                platformStyle = ModContent.TileType<AcidwoodPlatformTile>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneAbyss)
+            {
+                wallType = ModContent.WallType<SmoothAbyssGravelWall>();
+                tileType = ModContent.TileType<SmoothAbyssGravel>();
+                platformStyle = ModContent.TileType<SmoothAbyssGravelPlatform>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneAstral)
+            {
+                wallType = ModContent.WallType<AstralMonolithWall>();
+                tileType = ModContent.TileType<AstralMonolith>();
+                platformStyle = ModContent.TileType<MonolithPlatform>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneCalamity)
+            {
+                wallType = ModContent.WallType<BrimstoneSlabWall>();
+                tileType = ModContent.TileType<BrimstoneSlab>();
+                platformStyle = ModContent.TileType<AshenPlatform>();
+                moddedPlatform = true;
+            }
+            if (player.Calamity().ZoneSunkenSea)
+            {
+                wallType = ModContent.WallType<SmoothNavystoneWall>();
+                tileType = ModContent.TileType<SmoothNavystone>();
+                platformStyle = ModContent.TileType<EutrophicPlatform>();
+                moddedPlatform = true;
+            }
+        }
+        internal static void Instahouse_GetFurniture_Detour(Orig_Instahouse_GetFurniture orig, Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle)
+        {
+            orig(player, out doorStyle, out chairStyle, out tableStyle, out torchStyle);
+            if (player.Calamity().ZoneSulphur)
+            {
+                doorStyle = ModContent.TileType<AcidwoodDoorClosed>();
+                chairStyle = 29; //palm wood chair because acidwood chair is 2 tiles wide 
+                tableStyle = ModContent.TileType<AcidwoodTableTile>();
+                torchStyle = ModContent.TileType<SulphurousTorch>();
+            }
+            if (player.Calamity().ZoneAbyss)
+            {
+                doorStyle = ModContent.TileType<AbyssDoorClosed>();
+                chairStyle = ModContent.TileType<AbyssChair>();
+                tableStyle = ModContent.TileType<AbyssTable>();
+                torchStyle = ModContent.TileType<AbyssTorch>();
+            }
+            if (player.Calamity().ZoneAstral)
+            {
+                doorStyle = ModContent.TileType<MonolithDoorClosed>();
+                chairStyle = ModContent.TileType<MonolithChair>();
+                tableStyle = ModContent.TileType<MonolithTable>();
+                torchStyle = ModContent.TileType<AstralTorch>();
+            }
+            if (player.Calamity().ZoneCalamity)
+            {
+                doorStyle = ModContent.TileType<AshenDoorClosed>();
+                chairStyle = ModContent.TileType<AshenChair>();
+                tableStyle = ModContent.TileType<AshenTable>();
+                torchStyle = ModContent.TileType<GloomTorch>();
+            }
+            if (player.Calamity().ZoneSunkenSea)
+            {
+                doorStyle = ModContent.TileType<EutrophicDoorClosed>();
+                chairStyle = ModContent.TileType<EutrophicChair>();
+                tableStyle = ModContent.TileType<EutrophicTable>();
+                torchStyle = ModContent.TileType<NavyPrismTorch>();
+            }
+        }
+        internal static void CalamityPlayer_CatchFish_Detour(Orig_CalamityPlayer_CatchFish orig, CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition)
+        {
+            int index = self.Player.FindBuffIndex(BuffID.Gills);
+            if (index >= 0) self.Player.buffType[index] = 0;
+            orig(self, attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
+            if (index >= 0) self.Player.buffType[index] = BuffID.Gills;
+
+        }
+        #endregion
+        #region Vanilla Detours
+        internal static void NPCAddBuff_Detour(On_NPC.orig_AddBuff orig, NPC self, int type, int time, bool quiet)
+        {
+            if (self.TryGetGlobalNPC<CalDLCNPCChanges>(out CalDLCNPCChanges n) && self.CalamityDLC().ImmuneToAllDebuffs)
+                return;
+            orig(self, type, time, quiet);
+        }
+        internal static bool IsItemTransformLocked(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
+        {
+            if (type == ModContent.ItemType<ProfanedSoulCrystal>() || type == ModContent.ItemType<LoreCynosure>())
+                return !WorldSavingSystem.DownedMutant;
+            return orig(type);
         }
         #endregion
     }

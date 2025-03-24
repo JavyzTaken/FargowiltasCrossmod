@@ -82,8 +82,8 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         {
             Main.spriteBatch.UseBlendState(BlendState.Additive);
 
-            if (Projectile.damage <= 0f && Projectile.Opacity > 0.4f)
-                Projectile.Opacity = 0.4f;
+            if (Projectile.damage <= 0f && Projectile.Opacity > 0.5f)
+                Projectile.Opacity = 0.5f;
 
             float rotation = Projectile.rotation;
             Vector2 drawPos = Projectile.Center;

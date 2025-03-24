@@ -12,7 +12,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     public class DeepseaProteinShake : BaseSummon
     {
         public override int NPCType => ModContent.NPCType<ReaperShark>();
-        public override string NPCName => "Reaper Shark";
         public override void AddRecipes()
         {
         }

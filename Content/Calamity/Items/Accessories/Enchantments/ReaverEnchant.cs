@@ -28,6 +28,10 @@ using Luminance.Core.Graphics;
 using FargowiltasCrossmod.Assets.Particles;
 using FargowiltasCrossmod.Content.Calamity.Items.Accessories.Forces;
 using FargowiltasSouls;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.SolarEclipse;
+using CalamityMod.Buffs.StatBuffs;
+using CalamityMod.Projectiles.Typeless;
+using FargowiltasSouls.Content.Items.Accessories.Masomode;
 
 namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
 {
@@ -36,12 +40,9 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [LegacyName("ReaverEnchantment")]
     public class ReaverEnchant : BaseEnchant
     {
-        public override bool IsLoadingEnabled(Mod mod)
-        {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
-        }
-
-        public override Color nameColor => new Color(145, 203, 102);
+        public override List<AccessoryEffect> ActiveSkillTooltips =>
+            [AccessoryEffectLoader.GetEffect<ReaverEffect>()];
+        public override Color nameColor => new(145, 203, 102);
 
         public override void SetStaticDefaults()
         {
@@ -51,11 +52,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
         {
             base.SetDefaults();
             Item.rare = ItemRarityID.Lime;
+            Item.value = 250000;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.AddEffect<ReaverEffect>(Item);
-            player.CalamityAddon().ReaverHide = hideVisual;
         }
         
         public override void AddRecipes()
@@ -66,7 +67,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Armor.Reaver.ReaverCuisses>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Tools.BeastialPickaxe>(), 1);
             recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.NecklaceofVexation>(), 1);
-            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Accessories.SpelunkersAmulet>(), 1);
+            recipe.AddIngredient(ModContent.ItemType<CalamityMod.Items.Placeables.PlantyMush>(), 50);
             recipe.AddTile(TileID.CrystalBall);
             recipe.Register();
         }
@@ -75,44 +76,72 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
     [ExtendsFromMod(ModCompatibility.Calamity.Name)]
     public class ReaverEffect : AccessoryEffect
     {
-        public override bool IsLoadingEnabled(Mod mod)
+        public override Header ToggleHeader => null;
+        public override bool ActiveSkill => true;
+        public override void ActiveSkillJustPressed(Player player, bool stunned)
         {
-            return FargowiltasCrossmod.EnchantLoadingEnabled;
+            var addon = player.CalamityAddon();
+            addon.ReaverToggle = !addon.ReaverToggle;
+            SoundEngine.PlaySound(SoundID.Item4, player.Center);
+            Color color = addon.ReaverToggle ? Color.Red : Color.Green;
+            for (int i = 0; i < 14; i++)
+            {
+                ReaverSpark spark = new(new Vector2(player.Center.X + Main.rand.NextFloat(-10, 10), player.Center.Y + Main.rand.NextFloat(-10, 10)), Main.rand.NextVector2Circular(4, 4),
+                    color, 0.3f, 20, 10, player.whoAmI);
+                spark.Spawn();
+            }
         }
-        public override Header ToggleHeader => Header.GetHeader<DevastationHeader>();
-        public override int ToggleItemType => ModContent.ItemType<ReaverEnchant>();
-        public override void OnHitByEither(Player player, NPC npc, Projectile proj)
-        {
-            player.CalamityAddon().ReaverBuff /= 2;
-        }
-        
         public override void PostUpdateEquips(Player player)
         {
-            //Lots of stats here that can be balanced.
-            int MaxReaver = 1000;
-            float lerper = player.CalamityAddon().ReaverBuff / (float)MaxReaver;
-            if (player.ForceEffect<ReaverEffect>())
+            bool force = player.ForceEffect<ReaverEffect>();
+            var addon = player.CalamityAddon();
+            if (addon.ReaverToggle) // swift mode
             {
-                player.lifeRegen += (int)MathHelper.Lerp(-20, 35, lerper);
-                player.statDefense += (int)MathHelper.Lerp(-30, 30, lerper);
-                player.statLifeMax2 += (int)MathHelper.Lerp(-110, 180, lerper);
-                player.GetDamage(DamageClass.Generic) *= MathHelper.Lerp(0.6f, 1.4f, lerper);
+                player.lifeRegen += force ? 15 : 8;
+                player.moveSpeed += force ? 0.3f : 0.15f;
+                if (player.miscCounter % 3 == 2 && player.dashDelay > 0)
+                    player.dashDelay--;
+                player.Calamity().reaverSpeed = true;
+            }
+            else // plated mode
+            {
+                player.statDefense += force ? 30 : 15;
+                player.endurance += force ? 0.3f : 0.15f;
+            }
+            Color color = addon.ReaverToggle ? Color.Red : Color.Green;
+            if (Main.rand.NextBool(6))
+            {
+                ReaverSpark spark = new(new Vector2(player.Center.X + Main.rand.NextFloat(-10, 10), player.Center.Y + Main.rand.NextFloat(-10, 10)), Main.rand.NextVector2Circular(4, 4),
+                    color, 0.3f, 20, 10, player.whoAmI);
+                spark.Spawn();
+            }
+        }
+        public override void OnHitByProjectile(Player player, Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            ReaverOnHit(player, hurtInfo);
+        }
+        public override void OnHitByNPC(Player player, NPC npc, Player.HurtInfo hurtInfo)
+        {
+            ReaverOnHit(player, hurtInfo);
+        }
+        public static void ReaverOnHit(Player player, Player.HurtInfo hurtInfo)
+        {
+            bool force = player.ForceEffect<ReaverEffect>();
+            if (player.CalamityAddon().ReaverToggle)
+            {
+
             }
             else
             {
-                player.lifeRegen += (int)MathHelper.Lerp(-10, 20, lerper);
-                player.statDefense += (int)MathHelper.Lerp(-10, 20, lerper);
-                player.statLifeMax2 += (int)MathHelper.Lerp(-50, 70, lerper);
-                player.GetDamage(DamageClass.Generic) *= MathHelper.Lerp(0.8f, 1.2f, lerper);
-            }
-            if (player.CalamityAddon().ReaverBuff < MaxReaver)
-            {
-                player.CalamityAddon().ReaverBuff++;
-            }
-            if (Main.rand.NextBool(30) && !player.CalamityAddon().ReaverHide)
-            {
-                ReaverSpark spark = new(new Vector2(player.Center.X + Main.rand.NextFloat(-10, 10), player.CalamityAddon().ReaverBuff > 400 ? player.Bottom.Y : player.Top.Y), new Vector2(0, player.CalamityAddon().ReaverBuff > 400 ? -1.6f: 1.6f), Color.Lerp(Color.Red, Color.Green, lerper), 0.3f, 20, 10, player.whoAmI, player.CalamityAddon().ReaverBuff < 400);
-                spark.Spawn();
+                player.AddBuff(ModContent.BuffType<ReaverRage>(), 60 * (force ? 5 : 10));
+                var source = player.GetSource_Misc("23");
+                if (hurtInfo.Damage > 0)
+                {
+                    int rDamage = FargoSoulsUtil.HighestDamageTypeScaling(player, force ? 700 : 400);
+
+                    if (player.whoAmI == Main.myPlayer)
+                        Projectile.NewProjectile(source, player.Center.X, player.position.Y + 36f, 0f, -18f, ModContent.ProjectileType<ReaverThornBase>(), rDamage, 0f, player.whoAmI, 0f, 0f);
+                }
             }
         }
     }

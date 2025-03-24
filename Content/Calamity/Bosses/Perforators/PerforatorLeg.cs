@@ -90,20 +90,20 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Leg.Add(new(LegSizeFactor * legLength2));
             Index = index;
         }
-        public Vector2 LegCenter(PerfsEternityNew owner) => owner.NPC.Center + owner.LegBraces[Index];
-        public Vector2 DefaultPosition(PerfsEternityNew owner) => LegCenter(owner) + DefaultOffset;
+        public Vector2 LegCenter(PerfsEternity owner) => owner.NPC.Center + owner.LegBraces[Index];
+        public Vector2 DefaultPosition(PerfsEternity owner) => LegCenter(owner) + DefaultOffset;
+        public bool WideStep(PerfsEternity owner) => owner.State == (int)PerfsEternity.States.GroundSpikeCharge && owner.Timer <= 35 + 100;
         public void Update(NPC owner)
         {
             if (DamageTime > 0)
                 DamageTime--;
 
-            var hive = owner.GetDLCBehavior<PerfsEternityNew>();
+            var hive = owner.GetDLCBehavior<PerfsEternity>();
             if (owner.IsABestiaryIconDummy)
             {
                 Leg.Update(DefaultPosition(hive));
                 return;
             }
-
             float spawnProgress = hive.SpawnProgress;
 
             // Calculate how many legs are on the ground.
@@ -129,7 +129,16 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             Vector2 stepOffset = DefaultOffset.RotatedBy(gravityDirection.AngleBetween(Vector2.UnitY));
             if (stepOffset.HasNaNs())
                 stepOffset = Vector2.Zero;
-            Vector2 idealDefaultStepPosition = PerfsEternityNew.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection, "A").ToWorldCoordinates(8f, -16f);
+            bool wideStep = WideStep(hive);
+            if (wideStep)
+            {
+                //if (hive.Timer > 35 && MathF.Sign(DefaultOffset.X) == MathF.Sign(hive.AI4 - owner.Center.X))
+                //    stepOffset *= 1.5f;
+                //else
+                    stepOffset *= 1.35f;
+            }
+                
+            Vector2 idealDefaultStepPosition = PerfsEternity.FindGround((LegCenter(hive) + stepOffset).ToTileCoordinates(), gravityDirection, "A").ToWorldCoordinates(8f, -16f);
             for (int i = 0; i < 50; i++)
             {
                 if (Collision.CanHitLine(LegCenter(hive), 1, 1, idealDefaultStepPosition, 1, 1) && !Collision.SolidCollision(idealDefaultStepPosition, 1, 1))
@@ -164,9 +173,11 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // they assume that when a leg starts an animation it was on ground to begin with.
             // 4. The owner is barely moving at all (assuming they're visible).
             float perpendicularDistanceFromOwner = Math.Abs(LumUtils.SignedDistanceToLine(Leg.EndEffectorPosition, LegCenter(hive), forwardDirection));
+            float closeFactor = wideStep ? 0.36f : 0.3f;
+            float farFactor = wideStep ? 140f : 100f;
 
-            bool tooCloseToBody = perpendicularDistanceFromOwner <= Math.Abs(DefaultOffset.X) * 0.3f;
-            bool tooFarFromOwner = perpendicularDistanceFromOwner >= LegSizeFactor * 100f || !StepDestination.WithinRange(MovingDefaultStepPosition, LegSizeFactor * 100f);
+            bool tooCloseToBody = perpendicularDistanceFromOwner <= Math.Abs(DefaultOffset.X) * closeFactor;
+            bool tooFarFromOwner = perpendicularDistanceFromOwner >= LegSizeFactor * farFactor || !StepDestination.WithinRange(MovingDefaultStepPosition, LegSizeFactor * farFactor);
             bool shouldStepForward = tooFarFromOwner || tooCloseToBody;
             bool cannotStepForward = falling || legsOnGroundIfISteppedForward <= 0 || StepAnimationInterpolant > 0f || owner.velocity.Length() <= 0.3f;
             if (owner.Opacity <= 0.1f)
@@ -197,7 +208,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
         public void UpdateMovementAnimation(Vector2 gravityDirection, NPC owner)
         {
             // Increment the animation interpolant.
-            StepAnimationInterpolant += InterpolationSpeed; //0.064f;
+            float interpolationSpeed = InterpolationSpeed;
+            float velSq = owner.velocity.LengthSquared();
+            float velocityNorm = 10 * 10;
+            if (velSq > velocityNorm)
+                interpolationSpeed *= velSq / velocityNorm;
+            StepAnimationInterpolant += interpolationSpeed;
 
 
             // Calculate the current movement destination based on the animation's completion.
@@ -262,9 +278,12 @@ namespace FargowiltasCrossmod.Content.Calamity.Bosses.Perforators
             // Start the animation.
             StepAnimationInterpolant = 0.02f;
             EndEffectorPositionAtStartOfStep = Leg.EndEffectorPosition;
-            StepDestination = PerfsEternityNew.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
+            StepDestination = PerfsEternity.FindGround((MovingDefaultStepPosition + aimAheadOffset).ToTileCoordinates(), gravityDirection, "B").ToWorldCoordinates(8f, 20f);
             InterpolationSpeed = interpolationSpeed;
-            if (owner.GetDLCBehavior<PerfsEternityNew>().PhaseTwo)
+            var hive = owner.GetDLCBehavior<PerfsEternity>();
+            if (hive.PhaseTwo)
+                InterpolationSpeed *= 1.5f;
+            if (WideStep(hive) && hive.Timer > 35)
                 InterpolationSpeed *= 1.5f;
             AnimationMode = AccelDecel;
             StepSound = true;

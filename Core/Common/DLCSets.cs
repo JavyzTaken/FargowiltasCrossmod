@@ -13,8 +13,10 @@ using FargowiltasSouls.Content.Bosses.Champions.Timber;
 using FargowiltasSouls.Content.Bosses.Champions.Will;
 using FargowiltasSouls.Content.Items.Weapons.SwarmDrops;
 using FargowiltasSouls.Content.Patreon.DemonKing;
+using FargowiltasSouls.Content.Patreon.DevAesthetic;
 using FargowiltasSouls.Content.Patreon.Duck;
 using FargowiltasSouls.Content.Patreon.GreatestKraken;
+using FargowiltasSouls.Content.Patreon.Sasha;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,8 +63,11 @@ namespace FargowiltasCrossmod.Core.Common
                 ItemType<MechanicalLeashOfCthulhu>(),
                 ItemType<SlimeSlingingSlasher>(),
                 ItemType<TheBigSting>(),
+                ItemType<BigBrainBuster>(),
                 ItemType<ScientificRailgun>(),
-                ItemType<VortexMagnetRitual>()
+                ItemType<VortexMagnetRitual>(),
+                ItemType<MissDrakovisFishingPole>(),
+                ItemType<DeviousAestheticus>()
             );
             Items.AbomTierFargoWeapon = itemFactory.CreateBoolSet(false,
                 ItemType<DragonBreath2>(),

@@ -46,8 +46,11 @@ namespace FargowiltasCrossmod.Core.Calamity
                     if (ModCompatibility.InfernumMode.InfernumDifficulty && CalDLCConfig.Instance.InfernumDisablesEternity)
                         emode = false;
 
-                WorldSavingSystem.EternityMode = emode;
-                WorldSavingSystem.ShouldBeEternityMode = emode;
+                if (Main.expertMode)
+                {
+                    WorldSavingSystem.EternityMode = emode;
+                    WorldSavingSystem.ShouldBeEternityMode = emode;
+                }
                 if (Main.netMode != NetmodeID.SinglePlayer)
                     PacketManager.SendPacket<EternityRevPacket>();
             }

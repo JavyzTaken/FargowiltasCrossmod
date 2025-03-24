@@ -13,7 +13,6 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Summons
     {
         public override string Texture => "CalamityMod/Items/SummonItems/CryoKey";
         public override int NPCType => ModContent.NPCType<Cryogen>();
-        public override string NPCName => "Cryogen";
         public override void AddRecipes()
         {
             Recipe.Create(Type).AddIngredient<CryoKey>().AddTile(TileID.WorkBenches).Register();
