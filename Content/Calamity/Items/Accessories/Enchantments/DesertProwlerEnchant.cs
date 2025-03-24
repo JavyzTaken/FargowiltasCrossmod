@@ -166,6 +166,7 @@ namespace FargowiltasCrossmod.Content.Calamity.Items.Accessories.Enchantments
             }
             if (!Collision.SolidCollision(player.BottomLeft, player.width, 6, true) && player.controlDown && player.controlJump && player.CalamityAddon().ProwlerDiveTimer == 0)
             {
+                player.StopExtraJumpInProgress();
                 player.CalamityAddon().ProwlerDiveTimer = 30;
                 player.velocity.Y = 20;
                 PushNpcs(player, true);
