@@ -142,6 +142,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         private static readonly MethodInfo Instahouse_GetTiles_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetTiles", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo Instahouse_GetFurniture_Method = typeof(Fargowiltas.Projectiles.Explosives.AutoHouseProj).GetMethod("GetFurniture", LumUtils.UniversalBindingFlags);
         private static readonly MethodInfo CalamityPlayer_CatchFish_Method = typeof(CalamityPlayer).GetMethod("CatchFish", LumUtils.UniversalBindingFlags);
+        private static readonly MethodInfo GetBestClassDamage_Method = typeof(CalamityUtils).GetMethod("GetBestClassDamage", LumUtils.UniversalBindingFlags);
         // AI override
         // GlobalNPC
         public delegate bool Orig_CalamityPreAI(CalamityGlobalNPC self, NPC npc);
@@ -194,6 +195,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public delegate void Orig_Instahouse_GetTiles(Player player, out int wallType, out int tileType, out int platformStyle, out bool moddedPlatform);
         public delegate void Orig_Instahouse_GetFurniture(Player player, out int doorStyle, out int chairStyle, out int tableStyle, out int torchStyle);
         public delegate void Orig_CalamityPlayer_CatchFish(CalamityPlayer self, FishingAttempt attempt, ref int itemDrop, ref int npcSpawn, ref AdvancedPopupRequest sonar, ref Vector2 sonarPosition);
+        public delegate StatModifier Orig_GetBestClassDamage(Player player);
 
         public override void Load()
         {
@@ -255,6 +257,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             HookHelper.ModifyMethodWithDetour(Instahouse_GetTiles_Method, Instahouse_GetTiles_Detour);
             HookHelper.ModifyMethodWithDetour(Instahouse_GetFurniture_Method, Instahouse_GetFurniture_Detour);
             HookHelper.ModifyMethodWithDetour(CalamityPlayer_CatchFish_Method, CalamityPlayer_CatchFish_Detour);
+            HookHelper.ModifyMethodWithDetour(GetBestClassDamage_Method, GetBestClassDamage_Detour);
         }
         #region GlobalNPC
         internal static bool CalamityPreAI_Detour(Orig_CalamityPreAI orig, CalamityGlobalNPC self, NPC npc)
@@ -1139,6 +1142,26 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
             orig(self, attempt, ref itemDrop, ref npcSpawn, ref sonar, ref sonarPosition);
             if (index >= 0) self.Player.buffType[index] = BuffID.Gills;
 
+        }
+        internal static StatModifier GetBestClassDamage_Detour(Orig_GetBestClassDamage orig, Player player)
+        {
+            orig(player);
+            StatModifier ret = StatModifier.Default;
+            StatModifier classless = player.GetTotalDamage<GenericDamageClass>();
+            ret.Base = classless.Base;
+            ret *= classless.Multiplicative;
+            ret.Flat = classless.Flat;
+            List<float> bestClass =
+            [
+            1f,
+            player.GetTotalDamage<MeleeDamageClass>().Additive,
+            player.GetTotalDamage<RangedDamageClass>().Additive,
+            player.GetTotalDamage<MagicDamageClass>().Additive,
+            player.GetTotalDamage<SummonDamageClass>().Additive * 0.75f, // BalancingConstants.SummonAllClassScalingFactor
+            player.GetTotalDamage<RogueDamageClass>().Additive - player.Calamity().stealthDamage // kill the exploit
+            ];
+            ret += bestClass.Max() - 1f;
+            return ret;
         }
         #endregion
         #region Vanilla Detours
