@@ -198,7 +198,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
         public override void Load()
         {
             On_NPC.AddBuff += NPCAddBuff_Detour;
-            On_ShimmerTransforms.IsItemTransformLocked += IsItemTransformLocked;
+            On_ShimmerTransforms.IsItemTransformLocked += IsItemTransformLocked_Detour;
         }
         void ICustomDetourProvider.ModifyMethods()
         {
@@ -1148,7 +1148,7 @@ namespace FargowiltasCrossmod.Core.Calamity.Systems
                 return;
             orig(self, type, time, quiet);
         }
-        internal static bool IsItemTransformLocked(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
+        internal static bool IsItemTransformLocked_Detour(On_ShimmerTransforms.orig_IsItemTransformLocked orig, int type)
         {
             if (type == ModContent.ItemType<ProfanedSoulCrystal>() || type == ModContent.ItemType<LoreCynosure>())
                 return !WorldSavingSystem.DownedMutant;
