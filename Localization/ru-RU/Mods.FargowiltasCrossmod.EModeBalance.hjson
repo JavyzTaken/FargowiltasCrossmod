@@ -12,6 +12,7 @@ FlightMastery: Полёт ослаблен при битвах с боссами
 // EarthForce: Debuff damage increase reduced to 2x
 LifeForce: Полёт ослаблен и время полёта уменьшено при битвах с боссами не из мода «Fargo's Souls»
 OnionPackUpgrade: Теперь является улучшением [i:FargowiltasSouls/MutantsPact]Договора Мутанта, позволяющим поместить в новый слот любой аксессуар
+// PactOnionUpgrade: Slot merged with [i:CalamityMod/CelestialOnion]Celestial Onion, granting a full slot
 Laudanum: Положительные эффекты дебаффов ослаблены вдвое
 HardmodeSwords: Улучшения характеристик ослаблены
 OceanCrest: Даёт иммунитет к водным дебаффам режима Вечность

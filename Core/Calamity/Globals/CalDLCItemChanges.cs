@@ -361,6 +361,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
             {
                 tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]" + Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.OnionPackUpgrade")));
             }
+            if (item.type == ModContent.ItemType<MutantsPact>() && !Main.masterMode && WorldSavingSystem.EternityMode)
+            {
+                tooltips.Add(new TooltipLine(Mod, "OnionPactUpgrade", $"[c/FF0000:{BalanceLine}]" + Language.GetTextValue($"Mods.FargowiltasCrossmod.EModeBalance.PactOnionUpgrade")));
+            }
 
 
             string key = "Mods.FargowiltasCrossmod.Items.AddedEffects.";
@@ -449,12 +453,16 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
         public override void PostUpdate()
         {
             ref bool MutantsPactSlot = ref Player.FargoSouls().MutantsPactSlot;
+            if (MutantsPactSlot)
+            {
+                Player.Calamity().extraAccessoryML = true;
+            }
             if (Player.Calamity().extraAccessoryML && !Main.masterMode && WorldSavingSystem.EternityMode)
             {
                 if (MutantsPactSlot)
                 {
                     MutantPactShouldBeEnabled = true; //store if the slot is enabled
-                    DropPactSlot();
+                    //DropPactSlot();
                     MutantsPactSlot = false; //turn it off since celestial onion slot is replacing it
                 }
             }

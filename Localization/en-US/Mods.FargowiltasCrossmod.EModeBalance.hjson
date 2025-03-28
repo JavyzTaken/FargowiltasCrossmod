@@ -11,7 +11,8 @@ SlimyShield: Does not inflict Oiled
 FlightMastery: Flight stats decreased when fighting non-Souls Mod bosses
 EarthForce: Debuff damage increase reduced to 2x
 LifeForce: Flight stats and wing time decreased when fighting non-Souls Mod bosses
-OnionPackUpgrade: Is now an upgrade to [i:FargowiltasSouls/MutantsPact]Mutant's Pact, that allows any accessory in the extra slot
+OnionPackUpgrade: Slot merged with [i:FargowiltasSouls/MutantsPact]Mutant's Pact
+PactOnionUpgrade: Slot merged with [i:CalamityMod/CelestialOnion]Celestial Onion, granting a full slot
 Laudanum: Halved strength of most positive debuff effects
 HardmodeSwords: Stat buffs decreased
 OceanCrest: Grants immunity to Eternity debuffs caused by entering water
