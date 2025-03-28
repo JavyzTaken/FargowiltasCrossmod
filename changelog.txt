@@ -1,5 +1,5 @@
-Patch 1.2.0.6
-Eternity Calclone:
--Decreased frequency and movement speed of phase 2 calclone fireballs
--Increased startup of phase 3 artillery attack and increased boss repositioning speed
--Reduced phase 3 fireblast tracking, increased maximum explosion time and speed when close to reaching their maximum time
+Patch 1.2.0.7
+Mutant's Pact now gives Celestial Onion slot instantly; no more janky slot-switching
+Souls accessories that benefit from HighestDamageTypeScaling now also benefit from Rogue damage bonuses
+(Base Calamity fix) Most cal accessories no longer benefit from unintended (rogue) stealth damage bonuses
+Fixed enigmatic Artemis/Apollo disappearance bug
