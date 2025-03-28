@@ -4,6 +4,7 @@
   <PropertyGroup>
     <AssemblyName>FargowiltasCrossmod</AssemblyName>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Content\Calamity\Bosses\Perforators\PerforatorSpike.png" />
