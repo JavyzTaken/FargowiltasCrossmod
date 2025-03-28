@@ -38,9 +38,10 @@ namespace FargowiltasCrossmod.Core.Calamity.Globals
 
 
         public abstract NPCMatcher CreateMatcher();
+        public virtual bool RequiresEternityPriority => true;
         public override GlobalNPC NewInstance(NPC target) //the cursed beast
         {
-            return CalDLCWorldSavingSystem.E_EternityRev && ExtraRequirements() ? base.NewInstance(target) : null;
+            return ((RequiresEternityPriority && CalDLCWorldSavingSystem.E_EternityRev) || WorldSavingSystem.EternityMode) && ExtraRequirements() ? base.NewInstance(target) : null;
         }
 
         /// <summary>
