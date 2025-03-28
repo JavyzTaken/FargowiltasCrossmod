@@ -1,5 +1,2 @@
-Patch 1.2.0.7
-Mutant's Pact now gives Celestial Onion slot instantly; no more janky slot-switching
-Souls accessories that benefit from HighestDamageTypeScaling now also benefit from Rogue damage bonuses
-(Base Calamity fix) Most cal accessories no longer benefit from unintended (rogue) stealth damage bonuses
-Fixed enigmatic Artemis/Apollo disappearance bug
+Patch 1.2.0.8
+Fixed DLC Mutant not working correctly if Eternity Priority is disabled
